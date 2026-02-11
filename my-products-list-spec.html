@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Products List - VLINKPAY</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="global.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        .table-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: var(--shadow-z1);
+            overflow: hidden;
+            margin-top: 24px;
+            border: 1px solid var(--grey-200);
+        }
+
+        .table-toolbar {
+            padding: 24px;
+            display: flex;
+            gap: 16px;
+            border-bottom: 1px dashed var(--grey-200);
+            align-items: center;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1400px;
+        }
+
+        th {
+            background: var(--grey-100);
+            padding: 16px 24px;
+            text-align: left;
+            font-size: 14px;
+            color: var(--grey-600);
+            font-weight: 600;
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 16px 24px;
+            border-top: 1px dashed var(--grey-300);
+            font-size: 14px;
+            color: var(--grey-800);
+            white-space: nowrap;
+        }
+
+        .card-number-link {
+            color: var(--second-main);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .card-number-link:hover {
+            text-decoration: underline;
+        }
+
+        .amount-text {
+            font-weight: 700;
+            color: var(--primary-main);
+        }
+
+        .balance-text {
+            font-weight: 700;
+            color: var(--grey-900);
+        }
+
+        .status-pill {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .status-locked {
+            background: #FFE4DE;
+            color: #B71D18;
+        }
+
+        .status-unlocked {
+            background: #E9FCD4;
+            color: #118D57;
+        }
+
+        .view-mode-toggle {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .view-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--grey-300);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--grey-600);
+            transition: 0.2s;
+        }
+
+        .view-btn:hover {
+            border-color: var(--grey-600);
+            background: var(--grey-100);
+        }
+
+        .view-btn.active {
+            border-color: var(--primary-main);
+            background: rgba(0, 167, 111, 0.08);
+            color: var(--primary-main);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(22, 28, 36, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: #fff;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 32px;
+            position: relative;
+            box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.16);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            cursor: pointer;
+            color: var(--grey-500);
+            transition: 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--grey-900);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--grey-900);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .modal-description {
+            font-size: 14px;
+            color: var(--grey-600);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .pin-input-container {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .pin-digit {
+            width: 48px;
+            height: 56px;
+            border: 2px solid var(--grey-300);
+            border-radius: 12px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .pin-digit:focus {
+            border-color: var(--primary-main);
+            background: rgba(0, 167, 111, 0.04);
+        }
+
+        .pin-error {
+            color: #FF5630;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .pin-error.show {
+            display: block;
+        }
+
+        .btn-submit-pin {
+            width: 100%;
+            background: var(--primary-main);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-submit-pin:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-submit-pin:disabled {
+            background: var(--grey-300);
+            cursor: not-allowed;
+        }
+
+        .spec-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #0d6efd;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #212529;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+
+        .table thead th {
+            font-weight: 600;
+            font-size: 14px;
+            padding: 12px;
+            border: 1px solid #0a58ca;
+            vertical-align: middle;
+        }
+
+        .table tbody td {
+            padding: 12px;
+            vertical-align: middle;
+            font-size: 13px;
+            border: 1px solid #dee2e6;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .badge-y {
+            background-color: #198754;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .badge-n {
+            background-color: #6c757d;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .description-cell {
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        .link-cell {
+            color: #0d6efd;
+            text-decoration: none;
+        }
+
+        .link-cell:hover {
+            text-decoration: underline;
+        }
+
+        .no-col {
+            width: 60px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .field-col {
+            width: 180px;
+            font-weight: 600;
+        }
+
+        .required-col,
+        .editable-col {
+            width: 100px;
+            text-align: center;
+        }
+
+        .type-col {
+            width: 120px;
+        }
+
+        .action-col {
+            width: 180px;
+            font-weight: 600;
+        }
+
+        .type-action-col {
+            width: 140px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="spec-container">
+        <h1 class="page-title">My products list</h1>
+
+        <!-- Attributes Section -->
+        <h2 class="section-title">Attributes:</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="no-col">No.</th>
+                        <th class="field-col">Fields</th>
+                        <th class="required-col">Required</th>
+                        <th class="editable-col">Editable</th>
+                        <th class="type-col">Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="no-col">1</td>
+                        <td class="field-col">Card number</td>
+                        <td class="required-col"><span class="badge-y">Y</span></td>
+                        <td class="editable-col"><span class="badge-n">N</span></td>
+                        <td class="type-col">String</td>
+                        <td class="description-cell">Mã thẻ
+                            <strong>On-click:</strong> Mở pop-up nhập mã PIN
+                            - <strong>IF</strong> wrong <strong>THEN</strong> hiển thị lỗi
+                            - <strong>ELSE</strong> navigate to <a href="#" class="link-cell">US12.02_My products
+                                details</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="no-col">2</td>
+                        <td class="field-col">Product name</td>
+                        <td class="required-col"><span class="badge-y">Y</span></td>
+                        <td class="editable-col"><span class="badge-n">N</span></td>
+                        <td class="type-col">String</td>
+                        <td class="description-cell"><strong>On-load:</strong> Hiển thị product name
+                            <em>*Refer to: T0.S1_Product name</em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="no-col">3</td>
+                        <td class="field-col">merchant_name</td>
+                        <td class="required-col"><span class="badge-y">Y</span></td>
+                        <td class="editable-col"><span class="badge-n">N</span></td>
+                        <td class="type-col">String</td>
+                        <td class="description-cell">Tên merchant/brand</td>
+                    </tr>
+                    <tr>
+                        <td class="no-col">4</td>
+                        <td class="field-col">Amount</td>
+                        <td class="required-col"><span class="badge-y">Y</span></td>
+                        <td class="editable-col"><span class="badge-n">N</span></td>
+                        <td class="type-col">Decimal</td>
+                        <td class="description-cell">Mệnh giá ban đầu</td>
+                    </tr>
+                    <tr>
+                        <td class="no-col">5</td>
+                        <td class="field-col">Balance</td>
+                        <td class="required-col"><span class="badge-y">Y</span></td>
+                        <td class="editable-col"><span class="badge-n">N</span></td>
+                        <td class="type-col">Decimal</td>
+                        <td class="description-cell">Số dư còn lại</td>
+                    </tr>
+                    <tr>
+                        <td class="no-col">6</td>
+                        <td class="field-col">currency</td>
+                        <td class="required-col"><span class="badge-y">Y</span></td>
+                        <td class="editable-col"><span class="badge-n">N</span></td>
+                        <td class="type-col">String</td>
+                        <td class="description-cell">Loại tiền (USD, VND...)</td>
+                    </tr>
+                    <tr>
+                        <td class="no-col">7</td>
+                        <td class="field-col">Card locked</td>
+                        <td class="required-col"><span class="badge-y">Y</span></td>
+                        <td class="editable-col"><span class="badge-n">N</span></td>
+                        <td class="type-col">String</td>
+                        <td class="description-cell">Hiển thị trạng thái hiện tại của thẻ</td>
+                    </tr>
+                    <tr>
+                        <td class="no-col">8</td>
+                        <td class="field-col">expiry_date</td>
+                        <td class="required-col"><span class="badge-n">N</span></td>
+                        <td class="editable-col"><span class="badge-n">N</span></td>
+                        <td class="type-col">DateTime</td>
+                        <td class="description-cell">Ngày hết hạn</td>
+                    </tr>
+                    <tr>
+                        <td class="no-col">9</td>
+                        <td class="field-col">issued by</td>
+                        <td class="required-col"><span class="badge-n">N</span></td>
+                        <td class="editable-col"><span class="badge-n">N</span></td>
+                        <td class="type-col">String</td>
+                        <td class="description-cell">Người phát hành {account_mail}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Action Section -->
+        <h2 class="section-title">Action</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="no-col">No.</th>
+                        <th class="action-col">Action</th>
+                        <th class="type-action-col">Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="no-col">1</td>
+                        <td class="action-col">View mode</td>
+                        <td class="type-action-col">Icon button</td>
+                        <td class="description-cell">Có 2 cách xem danh sách:
+                            - Card view
+                            - List view</td>
+                    </tr>
+                    <tr>
+                        <td class="no-col">2</td>
+                        <td class="action-col">Search</td>
+                        <td class="type-action-col">Search box</td>
+                        <td class="description-cell">Card number/ Product name/ Merchant name</td>
+                    </tr>
+                    <tr>
+                        <td class="no-col">3</td>
+                        <td class="action-col">Search</td>
+                        <td class="type-action-col">Search filter</td>
+                        <td class="description-cell">card clocked</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

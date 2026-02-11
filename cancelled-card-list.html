@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cancelled Cards & Products - VLINKPAY</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="global.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        .table-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: var(--shadow-z1);
+            overflow: hidden;
+            margin-top: 24px;
+            border: 1px solid var(--grey-200);
+        }
+
+        .table-toolbar {
+            padding: 24px;
+            display: flex;
+            gap: 16px;
+            border-bottom: 1px dashed var(--grey-200);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Modern MUI-style Input (match transaction history page) */
+        .field-root {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .field-label {
+            position: absolute;
+            top: -10px;
+            left: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--grey-600);
+            background: #fff;
+            padding: 0 4px;
+            z-index: 2;
+        }
+
+        .field-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .field-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 12px;
+            border: 1px solid var(--grey-300);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--grey-900);
+            outline: none;
+            transition: 0.2s;
+            background: #fff;
+        }
+
+        .field-input:focus {
+            border-color: var(--grey-900);
+            border-width: 2px;
+            padding-left: 11px;
+        }
+
+        .field-container iconify-icon {
+            position: absolute;
+            color: var(--grey-500);
+            pointer-events: none;
+        }
+
+        .date-field {
+            width: 180px;
+        }
+
+        .date-field .field-input {
+            padding-right: 40px;
+        }
+
+        .date-field iconify-icon {
+            right: 12px;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1200px;
+        }
+
+        th {
+            background: var(--grey-100);
+            padding: 16px 24px;
+            text-align: left;
+            font-size: 14px;
+            color: var(--grey-600);
+            font-weight: 600;
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 16px 24px;
+            border-top: 1px dashed var(--grey-300);
+            font-size: 14px;
+            color: var(--grey-800);
+            white-space: nowrap;
+        }
+
+        .status-pill {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .status-cancelled {
+            background: #FFE4DE;
+            color: #B71D18;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 24px 8px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--grey-900);
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--grey-600);
+        }
+
+        /* Local tabs for cancelled products/cards (match product-list tabs) */
+        .cancelled-tabs-header {
+            display: flex;
+            gap: 40px;
+            border-bottom: 1px solid var(--grey-200);
+            padding: 0 24px;
+            margin-top: 0;
+            background: #fff;
+        }
+
+        .cancelled-tab-item {
+            padding: 16px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--grey-600);
+            cursor: pointer;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        .cancelled-tab-item:hover {
+            color: var(--grey-900);
+        }
+
+        .cancelled-tab-item.active {
+            color: var(--grey-900);
+        }
+
+        .cancelled-tab-item.active::after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--grey-900);
+        }
+
+        .cancelled-tab-content {
+            display: none;
+        }
+
+        .cancelled-tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <div class="logo">
+                <span style="font-weight: 800; font-size: 22px; color: #212B36; letter-spacing: -0.5px;">VLINKPAY</span>
+            </div>
+
+            <div class="user-card">
+                <div class="avatar">
+                    <iconify-icon icon="solar:user-bold" width="24"></iconify-icon>
+                </div>
+                <div class="user-info">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Carlota Monteiro</div>
+                    <div style="font-size: 13px; color: var(--grey-600);">Admin</div>
+                </div>
+            </div>
+
+            <div class="nav-section-title">OVERVIEW</div>
+
+            <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
+                <span>Homepage</span>
+            </a>
+
+            <a href="dashboard.html" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
+                <span>Dashboard</span>
+            </a>
+
+            <div class="nav-section-title">GIFT CARD CENTER</div>
+
+            <a href="#" class="nav-item parent-active">
+                <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone"
+                        width="26"></iconify-icon></div>
+                <span>Gift & Voucher Management</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+
+            <div class="submenu">
+                <a href="my-purchase.html" class="sub-item "><span class="dot"></span>My Purchase</a>
+                <a href="#" class="sub-item "><span class="dot"></span>Merchant Map</a>
+                <a href="product-list.html" class="sub-item "><span class="dot"></span>Product Management</a>
+                <a href="digital-gifts-management.html" class="sub-item "><span class="dot"></span>VlinkPay Store</a>
+            </div>
+
+            <a href="crypto-card-list.html" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
+                <span>Crypto Card Management</span>
+            </a>
+
+            <a href="marketing-tools.html" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon>
+                </div>
+                <span>Marketing Tools</span>
+            </a>
+            <a href="#" class="nav-item ">
+                <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone"
+                        width="24"></iconify-icon>
+                </div>
+                <span>Payment Acceptance</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+            <div class="submenu">
+                <a href="gift-card-payment-box.html" class="sub-item "><span class="dot"></span>Pay with Gift Card</a>
+                <a href="crypto-payment-box.html" class="sub-item "><span class="dot"></span>Pay with Crypto</a>
+            </div>
+
+            <a href="#" class="nav-item ">
+                <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+                <span>Settings</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+            <div class="submenu">
+                <a href="merchant-payment-setup.html" class="sub-item "><span class="dot"></span>Merchant Payment
+                    Setup</a>
+                <a href="benefits-setup.html" class="sub-item "><span class="dot"></span>Benefits Setup</a>
+            </div>
+
+            <a href="#" class="nav-item ">
+                <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
+                <span>Report</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+            <div class="submenu">
+                <a href="sales-order-list.html" class="sub-item "><span class="dot"></span>Sales Orders</a>
+                <a href="card-transaction-history-merchant.html" class="sub-item "><span class="dot"></span>Card
+                    Transaction
+                    History</a>
+            </div>
+
+            <div class="nav-section-title">APPS</div>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
+                <span>Notifications</span>
+                <span class="badge-outlined">32+</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon>
+                </div>
+                <span>AI Assistant</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main">
+        <div class="page-header">
+            <a href="product-list.html" class="back-btn">
+                <iconify-icon icon="eva:arrow-ios-back-fill" width="18"></iconify-icon>
+                Back
+            </a>
+            <h1 class="page-title" style="margin: 0;">Cancelled Cards & Products</h1>
+            <div class="breadcrumbs" style="margin-top: 8px;">
+                <a href="#">Dashboard</a>
+                <span class="breadcrumbs-dot"></span>
+                <a href="product-list.html">Product Management</a>
+                <span class="breadcrumbs-dot"></span>
+                <span style="color: var(--grey-900); font-weight: 500;">Cancelled</span>
+            </div>
+        </div>
+
+        <div class="cancelled-tabs-header">
+            <div class="cancelled-tab-item active" data-tab="products" onclick="switchCancelledTab('products')">
+                VLINKPAY Platform
+            </div>
+            <div class="cancelled-tab-item" data-tab="cards" onclick="switchCancelledTab('cards')">
+                Store
+            </div>
+        </div>
+
+        <div class="table-card">
+
+
+            <div class="table-toolbar">
+                <div class="field-root" style="width: 320px;">
+                    <label class="field-label">Search</label>
+                    <div class="field-container">
+                        <input type="text" class="field-input" id="cancelSearch"
+                            placeholder="Product ID / Name / Card Number">
+                        <iconify-icon icon="solar:magnifer-linear" class="field-chevron"
+                            style="color: var(--grey-500); cursor: default;"></iconify-icon>
+                    </div>
+                </div>
+
+                <div class="field-root date-field">
+                    <label class="field-label">Start date</label>
+                    <div class="field-container">
+                        <input type="text" class="field-input" id="cancelStartDate" placeholder="Pick date">
+                        <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
+                    </div>
+                </div>
+
+                <div class="field-root date-field">
+                    <label class="field-label">End date</label>
+                    <div class="field-container">
+                        <input type="text" class="field-input" id="cancelEndDate" placeholder="Pick date">
+                        <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cancelled-tab-products" class="cancelled-tab-content active">
+
+                <div class="table-container">
+                    <table id="cancelledProductsTable">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Product Status</th>
+                                <th class="text-right">Amount</th>
+                                <th class="text-right">Available</th>
+                                <th>Cancel Reason</th>
+                                <th>Cancelled By</th>
+                                <th>Cancelled Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: 600;">E-Gift Card</td>
+                                <td><span class="status-pill status-cancelled">Cancelled</span></td>
+                                <td class="text-right">$200.00</td>
+                                <td class="text-right">45</td>
+                                <td>End of campaign</td>
+                                <td>User / Admin</td>
+                                <td>Jan 15, 2026 09:20 AM</td>
+
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">E-Voucher</td>
+                                <td><span class="status-pill status-cancelled">Cancelled</span></td>
+                                <td class="text-right">$100.00</td>
+                                <td class="text-right">0</td>
+                                <td>Out of stock / Migrated</td>
+                                <td>System</td>
+                                <td>Jan 10, 2026 09:20 AM</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <div class="pagination-rows">
+                        <span>Rows per page:</span>
+                        <select class="pagination-select">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="pagination-info">1–2 of 2</div>
+                    <div class="pagination-arrows">
+                        <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-left-fill"
+                                width="20"></iconify-icon></button>
+                        <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-right-fill"
+                                width="20"></iconify-icon></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cancelled-tab-cards" class="cancelled-tab-content">
+
+                <div class="table-container" style="margin-bottom: 8px;">
+                    <table id="cancelledCardsTable">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Product Status</th>
+                                <th>Card Number</th>
+                                <th class="text-right">Amount</th>
+                                <th class="text-right">Discount (%)</th>
+                                <th>Cancel Reason</th>
+                                <th>Cancelled By</th>
+                                <th>Cancelled Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: 600;">Gift Card</td>
+                                <td><span class="status-pill status-cancelled">Cancelled</span></td>
+                                <td>0438 **** 7108</td>
+                                <td class="text-right">$200.00</td>
+                                <td class="text-right">-</td>
+                                <td>Customer request</td>
+                                <td>User / Admin</td>
+                                <td>Jan 15, 2026 09:20 AM</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">Promotion Card</td>
+                                <td><span class="status-pill status-cancelled">Cancelled</span></td>
+                                <td>0438 **** 9981</td>
+                                <td class="text-right">$150.00</td>
+                                <td class="text-right">15%</td>
+                                <td>Promotion ended</td>
+                                <td>System</td>
+                                <td>Jan 14, 2026 02:10 PM</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">Membership Card</td>
+                                <td><span class="status-pill status-cancelled">Cancelled</span></td>
+                                <td>0438 **** 5521</td>
+                                <td class="text-right">-</td>
+                                <td class="text-right">-</td>
+                                <td>Membership expired</td>
+                                <td>User / Admin</td>
+                                <td>Jan 13, 2026 05:45 PM</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">Discount Card</td>
+                                <td><span class="status-pill status-cancelled">Cancelled</span></td>
+                                <td>0438 **** 6643</td>
+                                <td class="text-right">-</td>
+                                <td class="text-right">20%</td>
+                                <td>Fraud suspicion</td>
+                                <td>System</td>
+                                <td>Jan 12, 2026 11:30 AM</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600;">Prepaid Card</td>
+                                <td><span class="status-pill status-cancelled">Cancelled</span></td>
+                                <td>0438 **** 7719</td>
+                                <td class="text-right">$50.00</td>
+                                <td class="text-right">-</td>
+                                <td>Chargeback dispute</td>
+                                <td>System</td>
+                                <td>Jan 11, 2026 09:20 AM</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <div class="pagination-rows">
+                        <span>Rows per page:</span>
+                        <select class="pagination-select">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="pagination-info">1–5 of 5</div>
+                    <div class="pagination-arrows">
+                        <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-left-fill"
+                                width="20"></iconify-icon></button>
+                        <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-right-fill"
+                                width="20"></iconify-icon></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function parseFilterDate(value, endOfDay) {
+            if (!value) return null;
+            const parts = value.trim().split(/[\/\-]/);
+            if (parts.length !== 3) return null;
+
+            const day = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10);
+            const year = parseInt(parts[2], 10);
+            if (!day || !month || !year) return null;
+
+            const date = new Date(year, month - 1, day);
+            if (isNaN(date.getTime())) return null;
+
+            if (endOfDay) {
+                date.setHours(23, 59, 59, 999);
+            } else {
+                date.setHours(0, 0, 0, 0);
+            }
+            return date;
+        }
+
+        function filterCancelledTables() {
+            const query = (document.getElementById('cancelSearch').value || '').toLowerCase().trim();
+            const startValue = (document.getElementById('cancelStartDate') && document.getElementById('cancelStartDate').value) || '';
+            const endValue = (document.getElementById('cancelEndDate') && document.getElementById('cancelEndDate').value) || '';
+
+            const startDate = parseFilterDate(startValue, false);
+            const endDate = parseFilterDate(endValue, true);
+            const tables = ['cancelledProductsTable', 'cancelledCardsTable'];
+
+            tables.forEach((tableId) => {
+                const table = document.getElementById(tableId);
+                if (!table) return;
+                const rows = table.querySelectorAll('tbody tr');
+                rows.forEach((row) => {
+                    const text = (row.textContent || '').toLowerCase();
+                    const dateCell = row.querySelector('td:last-child');
+                    const dateText = dateCell ? (dateCell.textContent || '') : '';
+
+                    const rowDate = dateText ? new Date(dateText) : null;
+                    const matchesText = !query || text.includes(query);
+                    let matchesDate = true;
+
+                    if (rowDate && !isNaN(rowDate.getTime())) {
+                        if (startDate && rowDate < startDate) {
+                            matchesDate = false;
+                        }
+                        if (endDate && rowDate > endDate) {
+                            matchesDate = false;
+                        }
+                    }
+
+                    row.style.display = matchesText && matchesDate ? '' : 'none';
+                });
+            });
+        }
+
+        function switchCancelledTab(tabKey) {
+            const headers = document.querySelectorAll('.cancelled-tabs-header .cancelled-tab-item');
+            const contents = {
+                products: document.getElementById('cancelled-tab-products'),
+                cards: document.getElementById('cancelled-tab-cards')
+            };
+
+            headers.forEach((h) => {
+                const key = h.getAttribute('data-tab');
+                if (key === tabKey) {
+                    h.classList.add('active');
+                } else {
+                    h.classList.remove('active');
+                }
+            });
+
+            Object.keys(contents).forEach((key) => {
+                const el = contents[key];
+                if (!el) return;
+                if (key === tabKey) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const search = document.getElementById('cancelSearch');
+            if (search) {
+                search.addEventListener('input', filterCancelledTables);
+            }
+            const startDateInput = document.getElementById('cancelStartDate');
+            if (startDateInput) {
+                startDateInput.addEventListener('change', filterCancelledTables);
+            }
+            const endDateInput = document.getElementById('cancelEndDate');
+            if (endDateInput) {
+                endDateInput.addEventListener('change', filterCancelledTables);
+            }
+        });
+    </script>
+</body>
+
+</html>

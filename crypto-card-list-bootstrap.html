@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Crypto Card Management - VLINKPAY</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            background: #fff;
+            border-right: 1px solid #dee2e6;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .sidebar-content {
+            padding: 24px 16px;
+        }
+
+        .logo {
+            margin-bottom: 24px;
+            padding: 0 8px;
+        }
+
+        .user-card {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #00A76F;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #6c757d;
+            padding: 16px 8px 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            color: #495057;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #f8f9fa;
+            color: #212529;
+        }
+
+        .nav-item.active,
+        .nav-item.parent-active {
+            background: rgba(0, 167, 111, 0.08);
+            color: #00A76F;
+            font-weight: 600;
+        }
+
+        .submenu {
+            margin-left: 36px;
+            margin-bottom: 12px;
+        }
+
+        .sub-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            color: #6c757d;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .sub-item:hover {
+            color: #212529;
+            background: #f8f9fa;
+        }
+
+        .sub-item.active {
+            color: #00A76F;
+            background: rgba(0, 167, 111, 0.08);
+            font-weight: 600;
+        }
+
+        .dot {
+            width: 4px;
+            height: 4px;
+            background: currentColor;
+            border-radius: 50%;
+        }
+
+        .top-header {
+            position: fixed;
+            top: 0;
+            left: 280px;
+            right: 0;
+            height: 64px;
+            background: #fff;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 999;
+        }
+
+        .main {
+            margin-left: 280px;
+            margin-top: 64px;
+            padding: 32px;
+            min-height: calc(100vh - 64px);
+        }
+
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        .breadcrumb-item a {
+            color: #6c757d;
+            text-decoration: none;
+        }
+
+        .breadcrumb-item.active {
+            color: #212529;
+            font-weight: 500;
+        }
+
+        .badge-outlined {
+            padding: 2px 8px;
+            background: transparent;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #6c757d;
+            margin-left: auto;
+        }
+
+        .status-pill {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .status-approved {
+            background: #E9FCD4;
+            color: #118D57;
+        }
+
+        .status-draft {
+            background: #E9EDF1;
+            color: #637381;
+        }
+
+        .status-locked {
+            background: #FFE4DE;
+            color: #B71D18;
+        }
+
+        .status-unlocked {
+            background: #E9FCD4;
+            color: #118D57;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            background: transparent;
+            color: #6c757d;
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .action-btn-view {
+            color: #00A76F;
+        }
+
+        .action-btn-view:hover {
+            background: rgba(0, 167, 111, 0.08);
+        }
+
+        .table th {
+            background: #f8f9fa;
+            color: #6c757d;
+            font-weight: 600;
+            text-transform: capitalize;
+            font-size: 14px;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table tbody tr {
+            transition: background-color 0.2s;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .table td {
+            vertical-align: middle;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <div class="logo">
+                <span style="font-weight: 800; font-size: 22px; color: #212B36; letter-spacing: -0.5px;">VLINKPAY</span>
+            </div>
+
+            <div class="user-card">
+                <div class="avatar">
+                    <iconify-icon icon="solar:user-bold" width="24"></iconify-icon>
+                </div>
+                <div class="user-info">
+                    <div style="font-weight: 600; font-size: 14px; color: #212529;">Carlota Monteiro</div>
+                    <div style="font-size: 13px; color: #6c757d;">Admin</div>
+                </div>
+            </div>
+
+            <div class="nav-section-title">OVERVIEW</div>
+
+            <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
+                <iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon>
+                <span>Homepage</span>
+            </a>
+
+            <a href="dashboard.html" class="nav-item">
+                <iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon>
+                <span>Dashboard</span>
+            </a>
+
+            <div class="nav-section-title">GIFT CARD CENTER</div>
+
+            <a href="#" class="nav-item">
+                <iconify-icon icon="solar:folder-with-files-bold-duotone" width="26"></iconify-icon>
+                <span>Gift & Voucher Management</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+
+            <div class="submenu">
+                <a href="my-purchase.html" class="sub-item"><span class="dot"></span>My Purchase</a>
+                <a href="#" class="sub-item"><span class="dot"></span>Merchant Map</a>
+                <a href="product-list.html" class="sub-item"><span class="dot"></span>Product Management</a>
+                <a href="digital-gifts-management.html" class="sub-item"><span class="dot"></span>VlinkPay Store</a>
+            </div>
+
+            <a href="crypto-card-list-bootstrap.html" class="nav-item parent-active">
+                <iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon>
+                <span>Crypto Card Management</span>
+            </a>
+
+            <a href="marketing-tools.html" class="nav-item">
+                <iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon>
+                <span>Marketing Tools</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <iconify-icon icon="solar:dollar-minimalistic-bold-duotone" width="24"></iconify-icon>
+                <span>Payment Acceptance</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+            <div class="submenu">
+                <a href="gift-card-payment-box.html" class="sub-item"><span class="dot"></span>Pay with Gift Card</a>
+                <a href="crypto-payment-box.html" class="sub-item"><span class="dot"></span>Pay with Crypto</a>
+            </div>
+
+            <a href="#" class="nav-item">
+                <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
+                <span>Settings</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+            <div class="submenu">
+                <a href="merchant-payment-setup.html" class="sub-item"><span class="dot"></span>Merchant Payment
+                    Setup</a>
+                <a href="benefits-setup.html" class="sub-item"><span class="dot"></span>Benefits Setup</a>
+            </div>
+
+            <a href="#" class="nav-item">
+                <iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon>
+                <span>Report</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+            <div class="submenu">
+                <a href="sales-order-list.html" class="sub-item"><span class="dot"></span>Sales Orders</a>
+                <a href="card-transaction-history-merchant.html" class="sub-item"><span class="dot"></span>Card
+                    Transaction History</a>
+            </div>
+
+            <div class="nav-section-title">APPS</div>
+
+            <a href="#" class="nav-item">
+                <iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon>
+                <span>Notifications</span>
+                <span class="badge-outlined">32+</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon>
+                <span>AI Assistant</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="top-header">
+        <div class="text-muted small">Jan 26, 2026 10:05:53 AM (UTC)</div>
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-link text-secondary p-2">
+                <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
+            </button>
+            <iconify-icon icon="solar:user-circle-bold" width="32" class="text-secondary"></iconify-icon>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="page-header">
+            <h1 class="h3 fw-bold mb-2">Crypto Card Management</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Crypto Card Management</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Card List</li>
+                </ol>
+            </nav>
+        </div>
+
+        <!-- Table Card -->
+        <div class="card shadow-sm border-0">
+            <!-- Toolbar -->
+            <div class="card-body border-bottom">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold text-secondary">Search</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search by Card Number...">
+                            <span class="input-group-text bg-white border-start-0">
+                                <iconify-icon icon="solar:magnifer-linear" class="text-muted"></iconify-icon>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold text-secondary">Product Status</label>
+                        <select class="form-select">
+                            <option value="">All Status</option>
+                            <option value="approved">Approved</option>
+                            <option value="draft">Draft</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold text-secondary">Card Locked</label>
+                        <select class="form-select">
+                            <option value="">All</option>
+                            <option value="locked">Locked</option>
+                            <option value="unlocked">Unlocked</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Product</th>
+                            <th>Product Status</th>
+                            <th>Card Number</th>
+                            <th>Card Locked</th>
+                            <th>Issued Date</th>
+                            <th>Redeemed By</th>
+                            <th>Last Redeemed At</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-semibold">#CRY-10001</td>
+                            <td>Crypto Card</td>
+                            <td><span class="status-pill status-approved">Approved</span></td>
+                            <td><code>**** **** **** 8829</code></td>
+                            <td><span class="status-pill status-unlocked">Unlocked</span></td>
+                            <td>Jan 15, 2026 09:30 AM</td>
+                            <td>carlota.monteiro@vlinkpay.com</td>
+                            <td>Jan 25, 2026 03:15 PM</td>
+                            <td>
+                                <div class="action-btns">
+                                    <a href="crypto-card-details.html" class="action-btn action-btn-view" title="View">
+                                        <iconify-icon icon="solar:eye-bold" width="18"></iconify-icon>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">#CRY-10002</td>
+                            <td>Crypto Card</td>
+                            <td><span class="status-pill status-approved">Approved</span></td>
+                            <td><code>**** **** **** 5521</code></td>
+                            <td><span class="status-pill status-locked">Locked</span></td>
+                            <td>Jan 16, 2026 10:20 AM</td>
+                            <td>Guest</td>
+                            <td>Jan 24, 2026 11:45 AM</td>
+                            <td>
+                                <div class="action-btns">
+                                    <a href="crypto-card-details.html" class="action-btn action-btn-view" title="View">
+                                        <iconify-icon icon="solar:eye-bold" width="18"></iconify-icon>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">#CRY-10003</td>
+                            <td>Crypto Card</td>
+                            <td><span class="status-pill status-draft">Draft</span></td>
+                            <td><code>**** **** **** 3347</code></td>
+                            <td><span class="status-pill status-unlocked">Unlocked</span></td>
+                            <td>Jan 18, 2026 02:15 PM</td>
+                            <td>john.doe@example.com</td>
+                            <td>-</td>
+                            <td>
+                                <div class="action-btns">
+                                    <a href="crypto-card-details.html" class="action-btn action-btn-view" title="View">
+                                        <iconify-icon icon="solar:eye-bold" width="18"></iconify-icon>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">#CRY-10004</td>
+                            <td>Crypto Card</td>
+                            <td><span class="status-pill status-approved">Approved</span></td>
+                            <td><code>**** **** **** 9102</code></td>
+                            <td><span class="status-pill status-unlocked">Unlocked</span></td>
+                            <td>Jan 20, 2026 08:45 AM</td>
+                            <td>Guest</td>
+                            <td>Jan 26, 2026 09:00 AM</td>
+                            <td>
+                                <div class="action-btns">
+                                    <a href="crypto-card-details.html" class="action-btn action-btn-view" title="View">
+                                        <iconify-icon icon="solar:eye-bold" width="18"></iconify-icon>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">#CRY-10005</td>
+                            <td>Crypto Card</td>
+                            <td><span class="status-pill status-approved">Approved</span></td>
+                            <td><code>**** **** **** 7654</code></td>
+                            <td><span class="status-pill status-unlocked">Unlocked</span></td>
+                            <td>Jan 22, 2026 01:30 PM</td>
+                            <td>sarah.wilson@vlinkpay.com</td>
+                            <td>Jan 25, 2026 05:20 PM</td>
+                            <td>
+                                <div class="action-btns">
+                                    <a href="crypto-card-details.html" class="action-btn action-btn-view" title="View">
+                                        <iconify-icon icon="solar:eye-bold" width="18"></iconify-icon>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="card-body border-top">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-muted small">Rows per page:</span>
+                        <select class="form-select form-select-sm" style="width: auto;">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="text-muted small">1–5 of 5</div>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-secondary" disabled>
+                            <iconify-icon icon="eva:chevron-left-fill" width="20"></iconify-icon>
+                        </button>
+                        <button class="btn btn-outline-secondary" disabled>
+                            <iconify-icon icon="eva:chevron-right-fill" width="20"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Products List - VLINKPAY</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="global.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        .table-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: var(--shadow-z1);
+            overflow: hidden;
+            margin-top: 24px;
+            border: 1px solid var(--grey-200);
+        }
+
+        .table-toolbar {
+            padding: 24px;
+            display: flex;
+            gap: 16px;
+            border-bottom: 1px dashed var(--grey-200);
+            align-items: center;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1400px;
+        }
+
+        th {
+            background: var(--grey-100);
+            padding: 16px 24px;
+            text-align: left;
+            font-size: 14px;
+            color: var(--grey-600);
+            font-weight: 600;
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 16px 24px;
+            border-top: 1px dashed var(--grey-300);
+            font-size: 14px;
+            color: var(--grey-800);
+            white-space: nowrap;
+        }
+
+        .card-number-link {
+            color: var(--second-main);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .card-number-link:hover {
+            text-decoration: underline;
+        }
+
+        .amount-text {
+            font-weight: 700;
+            color: var(--primary-main);
+        }
+
+        .balance-text {
+            font-weight: 700;
+            color: var(--grey-900);
+        }
+
+        .status-pill {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .status-locked {
+            background: #FFE4DE;
+            color: #B71D18;
+        }
+
+        .status-unlocked {
+            background: #E9FCD4;
+            color: #118D57;
+        }
+
+        .view-mode-toggle {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .view-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--grey-300);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--grey-600);
+            transition: 0.2s;
+        }
+
+        .view-btn:hover {
+            border-color: var(--grey-600);
+            background: var(--grey-100);
+        }
+
+        .view-btn.active {
+            border-color: var(--primary-main);
+            background: rgba(0, 167, 111, 0.08);
+            color: var(--primary-main);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(22, 28, 36, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: #fff;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 32px;
+            position: relative;
+            box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.16);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            cursor: pointer;
+            color: var(--grey-500);
+            transition: 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--grey-900);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--grey-900);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .modal-description {
+            font-size: 14px;
+            color: var(--grey-600);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .pin-input-container {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .pin-digit {
+            width: 48px;
+            height: 56px;
+            border: 2px solid var(--grey-300);
+            border-radius: 12px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .pin-digit:focus {
+            border-color: var(--primary-main);
+            background: rgba(0, 167, 111, 0.04);
+        }
+
+        .pin-error {
+            color: #FF5630;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .pin-error.show {
+            display: block;
+        }
+
+        .btn-submit-pin {
+            width: 100%;
+            background: var(--primary-main);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-submit-pin:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-submit-pin:disabled {
+            background: var(--grey-300);
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <div class="logo">
+                <span style="font-weight: 800; font-size: 22px; color: #212B36; letter-spacing: -0.5px;">VLINKPAY</span>
+            </div>
+
+            <div class="user-card">
+                <div class="avatar">
+                    <iconify-icon icon="solar:user-bold" width="24"></iconify-icon>
+                </div>
+                <div class="user-info">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Carlota Monteiro</div>
+                    <div style="font-size: 13px; color: var(--grey-600);">Customer</div>
+                </div>
+            </div>
+
+            <div class="nav-section-title">OVERVIEW</div>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
+                <span>Homepage</span>
+            </a>
+
+            <a href="#" class="nav-item active">
+                <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
+                <span>My Products</span>
+            </a>
+
+            <a href="order-history.html" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:bag-bold-duotone" width="24"></iconify-icon></div>
+                <span>Order History</span>
+            </a>
+
+            <div class="nav-section-title">APPS</div>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
+                <span>Notifications</span>
+                <span class="badge-outlined">3</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon>
+                </div>
+                <span>AI Assistant</span>
+            </a>
+        </div>
+    </aside>
+
+    <header class="top-header">
+        <div class="header-info">Jan 27, 2026 10:05:53 AM (UTC)</div>
+        <div class="header-icons">
+            <div class="header-icon-btn">
+                <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
+            </div>
+            <div class="user-avatar-mini">
+                <iconify-icon icon="solar:user-circle-bold" width="32"></iconify-icon>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="page-header">
+            <h1 class="page-title">My Products List</h1>
+            <div class="breadcrumbs">
+                <a href="dashboard.html">Dashboard</a>
+                <span class="breadcrumbs-dot"></span>
+                <span style="color: var(--grey-900); font-weight: 500;">My Products</span>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <div class="table-toolbar" style="gap: 12px; padding: 20px 24px;">
+                <div class="field-root" style="width: 280px;">
+                    <div class="field-container">
+                        <input type="text" class="field-input"
+                            placeholder="Search by card number, product name, merchant...">
+                        <iconify-icon icon="solar:magnifer-linear" class="field-chevron"
+                            style="color: var(--grey-500); cursor: default;"></iconify-icon>
+                    </div>
+                </div>
+
+                <div class="field-root" style="width: 180px;">
+                    <label class="field-label">Card Status</label>
+                    <div class="field-container">
+                        <select class="field-input field-select">
+                            <option value="">All Statuses</option>
+                            <option value="locked">Locked</option>
+                            <option value="unlocked">Unlocked</option>
+                        </select>
+                        <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
+                    </div>
+                </div>
+
+                <div class="view-mode-toggle">
+                    <button class="view-btn active" title="List View">
+                        <iconify-icon icon="solar:list-bold" width="20"></iconify-icon>
+                    </button>
+                    <button class="view-btn" title="Card View">
+                        <iconify-icon icon="solar:widget-5-bold" width="20"></iconify-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Card Number</th>
+                            <th>Product Name</th>
+                            <th>Merchant Name</th>
+                            <th class="text-right">Amount</th>
+                            <th class="text-right">Balance</th>
+                            <th>Currency</th>
+                            <th>Card Status</th>
+                            <th>Expiry Date</th>
+                            <th>Issued By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="#" class="card-number-link"
+                                    onclick="openPinModal('8888123456781234', event)">8888 **** **** 1234</a></td>
+                            <td style="font-weight: 600;">$100 Luxury Gift Card</td>
+                            <td>Luxury Spa & Wellness</td>
+                            <td class="amount-text text-right">$100.00</td>
+                            <td class="balance-text text-right">$75.50</td>
+                            <td>USD</td>
+                            <td><span class="status-pill status-unlocked">Unlocked</span></td>
+                            <td>Dec 31, 2026</td>
+                            <td>admin@vlinkpay.com</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" class="card-number-link"
+                                    onclick="openPinModal('8888123456785678', event)">8888 **** **** 5678</a></td>
+                            <td style="font-weight: 600;">$500 Diamond Credit</td>
+                            <td>Diamond Jewelry Co.</td>
+                            <td class="amount-text text-right">$500.00</td>
+                            <td class="balance-text text-right">$500.00</td>
+                            <td>USD</td>
+                            <td><span class="status-pill status-unlocked">Unlocked</span></td>
+                            <td>Jun 30, 2026</td>
+                            <td>merchant@diamond.com</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" class="card-number-link"
+                                    onclick="openPinModal('8888123456789012', event)">8888 **** **** 9012</a></td>
+                            <td style="font-weight: 600;">$200 Spa Day E-Voucher</td>
+                            <td>Relax Spa Center</td>
+                            <td class="amount-text text-right">$200.00</td>
+                            <td class="balance-text text-right">$0.00</td>
+                            <td>USD</td>
+                            <td><span class="status-pill status-locked">Locked</span></td>
+                            <td>Mar 15, 2026</td>
+                            <td>support@relaxspa.com</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" class="card-number-link"
+                                    onclick="openPinModal('8888123456783456', event)">8888 **** **** 3456</a></td>
+                            <td style="font-weight: 600;">First Visit $30 Credit</td>
+                            <td>Beauty Haven Salon</td>
+                            <td class="amount-text text-right">$30.00</td>
+                            <td class="balance-text text-right">$30.00</td>
+                            <td>USD</td>
+                            <td><span class="status-pill status-unlocked">Unlocked</span></td>
+                            <td>Aug 20, 2026</td>
+                            <td>promo@beautyhaven.com</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" class="card-number-link"
+                                    onclick="openPinModal('8888123456787890', event)">8888 **** **** 7890</a></td>
+                            <td style="font-weight: 600;">Membership Annual</td>
+                            <td>Elite Fitness Club</td>
+                            <td class="amount-text text-right">$1,200.00</td>
+                            <td class="balance-text text-right">$950.00</td>
+                            <td>USD</td>
+                            <td><span class="status-pill status-unlocked">Unlocked</span></td>
+                            <td>Dec 31, 2026</td>
+                            <td>membership@elitefitness.com</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" class="card-number-link"
+                                    onclick="openPinModal('8888123456782345', event)">8888 **** **** 2345</a></td>
+                            <td style="font-weight: 600;">$50 Dining Voucher</td>
+                            <td>Gourmet Restaurant</td>
+                            <td class="amount-text text-right">$50.00</td>
+                            <td class="balance-text text-right">$25.80</td>
+                            <td>USD</td>
+                            <td><span class="status-pill status-unlocked">Unlocked</span></td>
+                            <td>May 10, 2026</td>
+                            <td>gifts@gourmet.com</td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" class="card-number-link"
+                                    onclick="openPinModal('8888123456786789', event)">8888 **** **** 6789</a></td>
+                            <td style="font-weight: 600;">$75 Shopping Credit</td>
+                            <td>Fashion Boutique</td>
+                            <td class="amount-text text-right">$75.00</td>
+                            <td class="balance-text text-right">$0.00</td>
+                            <td>USD</td>
+                            <td><span class="status-pill status-locked">Locked</span></td>
+                            <td>Feb 28, 2026</td>
+                            <td>store@fashionboutique.com</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <div class="pagination-rows">
+                    <span>Rows per page:</span>
+                    <select class="pagination-select">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                <div class="pagination-info">1–7 of 7</div>
+                <div class="pagination-arrows">
+                    <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-left-fill"
+                            width="20"></iconify-icon></button>
+                    <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-right-fill"
+                            width="20"></iconify-icon></button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- PIN Verification Modal -->
+    <div id="pinModal" class="modal-overlay">
+        <div class="modal-content">
+            <iconify-icon icon="eva:close-fill" class="modal-close" width="24" onclick="closePinModal()"></iconify-icon>
+
+            <h2 class="modal-title">Enter PIN Code</h2>
+            <p class="modal-description">Please enter your 4-digit PIN to view card details</p>
+
+            <div class="pin-input-container">
+                <input type="password" maxlength="1" class="pin-digit" id="pin1" oninput="moveFocus(this, 'pin2')"
+                    onkeydown="handleBackspace(event, null, 'pin1')">
+                <input type="password" maxlength="1" class="pin-digit" id="pin2" oninput="moveFocus(this, 'pin3')"
+                    onkeydown="handleBackspace(event, 'pin1', 'pin2')">
+                <input type="password" maxlength="1" class="pin-digit" id="pin3" oninput="moveFocus(this, 'pin4')"
+                    onkeydown="handleBackspace(event, 'pin2', 'pin3')">
+                <input type="password" maxlength="1" class="pin-digit" id="pin4" oninput="handlePinComplete()"
+                    onkeydown="handleBackspace(event, 'pin3', 'pin4')">
+            </div>
+
+            <div class="pin-error" id="pinError">Incorrect PIN. Please try again.</div>
+
+            <button class="btn-submit-pin" id="submitPinBtn" onclick="verifyPin()" disabled>Verify PIN</button>
+        </div>
+    </div>
+
+    <script>
+        let currentCardNumber = '';
+        const correctPin = '1234'; // Mock PIN for demo
+
+        function openPinModal(cardNumber, event) {
+            event.preventDefault();
+            currentCardNumber = cardNumber;
+            document.getElementById('pinModal').style.display = 'flex';
+            document.getElementById('pin1').focus();
+            resetPinInputs();
+        }
+
+        function closePinModal() {
+            document.getElementById('pinModal').style.display = 'none';
+            resetPinInputs();
+        }
+
+        function resetPinInputs() {
+            document.getElementById('pin1').value = '';
+            document.getElementById('pin2').value = '';
+            document.getElementById('pin3').value = '';
+            document.getElementById('pin4').value = '';
+            document.getElementById('pinError').classList.remove('show');
+            document.getElementById('submitPinBtn').disabled = true;
+        }
+
+        function moveFocus(current, nextId) {
+            if (current.value.length === 1 && nextId) {
+                document.getElementById(nextId).focus();
+            }
+            checkPinComplete();
+        }
+
+        function handleBackspace(event, prevId, currentId) {
+            if (event.key === 'Backspace') {
+                const current = document.getElementById(currentId);
+                if (current.value === '' && prevId) {
+                    event.preventDefault();
+                    document.getElementById(prevId).focus();
+                }
+            }
+        }
+
+        function checkPinComplete() {
+            const pin1 = document.getElementById('pin1').value;
+            const pin2 = document.getElementById('pin2').value;
+            const pin3 = document.getElementById('pin3').value;
+            const pin4 = document.getElementById('pin4').value;
+
+            document.getElementById('submitPinBtn').disabled = !(pin1 && pin2 && pin3 && pin4);
+        }
+
+        function handlePinComplete() {
+            checkPinComplete();
+            const pin1 = document.getElementById('pin1').value;
+            const pin2 = document.getElementById('pin2').value;
+            const pin3 = document.getElementById('pin3').value;
+            const pin4 = document.getElementById('pin4').value;
+
+            if (pin1 && pin2 && pin3 && pin4) {
+                document.getElementById('submitPinBtn').focus();
+            }
+        }
+
+        function verifyPin() {
+            const pin1 = document.getElementById('pin1').value;
+            const pin2 = document.getElementById('pin2').value;
+            const pin3 = document.getElementById('pin3').value;
+            const pin4 = document.getElementById('pin4').value;
+            const enteredPin = pin1 + pin2 + pin3 + pin4;
+
+            if (enteredPin === correctPin) {
+                // Correct PIN - navigate to details page
+                alert('PIN correct! Navigating to card details...\nCard: ' + currentCardNumber);
+                closePinModal();
+                // window.location.href = 'card-details.html?card=' + currentCardNumber;
+            } else {
+                // Wrong PIN - show error
+                document.getElementById('pinError').classList.add('show');
+                document.getElementById('pin1').value = '';
+                document.getElementById('pin2').value = '';
+                document.getElementById('pin3').value = '';
+                document.getElementById('pin4').value = '';
+                document.getElementById('pin1').focus();
+                document.getElementById('submitPinBtn').disabled = true;
+            }
+        }
+
+        // Close modal on click outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('pinModal');
+            if (event.target == modal) {
+                closePinModal();
+            }
+        }
+
+        // View mode toggle
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

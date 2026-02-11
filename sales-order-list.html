@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sales Orders - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="global.css" />
+  <style>
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: var(--shadow-z1);
+      overflow: hidden;
+    }
+
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .minimal-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 2200px;
+      /* Wider to accommodate 19 columns */
+    }
+
+    .minimal-table th {
+      background: var(--grey-100);
+      padding: 16px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey-600);
+      white-space: nowrap;
+    }
+
+    .minimal-table td {
+      padding: 16px;
+      border-top: 1px dashed var(--grey-200);
+      font-size: 14px;
+      color: var(--grey-900);
+      white-space: nowrap;
+    }
+
+    .minimal-table tr:hover td {
+      background: var(--grey-100);
+    }
+
+    .table-toolbar {
+      padding: 24px 20px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      background: #fff;
+      border-bottom: 1px dashed var(--grey-200);
+    }
+
+    /* Modern MUI-style Input */
+    .field-root {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .field-label {
+      position: absolute;
+      top: -8px;
+      left: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--grey-600);
+      background: #fff;
+      padding: 0 4px;
+      z-index: 2;
+    }
+
+    .field-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .field-input {
+      width: 100%;
+      height: 48px;
+      padding: 0 12px;
+      border: 1px solid var(--grey-300);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--grey-900);
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .field-input:focus {
+      border-color: var(--grey-900);
+    }
+
+    .search-field {
+      width: 280px;
+    }
+
+    .search-field .field-input {
+      padding-left: 40px;
+    }
+
+    .search-field iconify-icon {
+      position: absolute;
+      left: 12px;
+      color: var(--grey-500);
+    }
+
+    .date-field {
+      width: 180px;
+    }
+
+    .date-field .field-input {
+      padding-right: 40px;
+    }
+
+    .date-field iconify-icon {
+      position: absolute;
+      right: 12px;
+      color: var(--grey-500);
+    }
+
+    .select-field {
+      width: 160px;
+    }
+
+    .select-field select {
+      appearance: none;
+      width: 100%;
+      height: 48px;
+      padding: 0 12px;
+      border: 1px solid var(--grey-300);
+      border-radius: 8px;
+      font-size: 14px;
+      background: #fff;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .btn-export {
+      background: var(--primary-main);
+      color: #fff;
+      border: none;
+      padding: 0 16px;
+      height: 48px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      margin-left: auto;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: capitalize;
+    }
+
+    .status-completed {
+      background: rgba(34, 197, 94, 0.16);
+      color: rgb(17, 141, 87);
+    }
+
+    .status-pending {
+      background: rgba(255, 171, 0, 0.16);
+      color: rgb(183, 110, 0);
+    }
+
+    .status-failed {
+      background: rgba(255, 86, 48, 0.16);
+      color: rgb(183, 29, 24);
+    }
+
+    @media (max-width: 1200px) {
+      .btn-export {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-content">
+      <div class="logo">
+        <span style="font-weight: 800; font-size: 22px; color: #212B36; letter-spacing: -0.5px;">VLINKPAY</span>
+      </div>
+
+      <div class="user-card">
+        <div class="avatar">
+          <iconify-icon icon="solar:user-bold" width="24"></iconify-icon>
+        </div>
+        <div class="user-info">
+          <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Carlota Monteiro</div>
+          <div style="font-size: 13px; color: var(--grey-600);">Admin</div>
+        </div>
+      </div>
+
+      <div class="nav-section-title">OVERVIEW</div>
+
+      <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
+        <span>Homepage</span>
+      </a>
+
+      <a href="dashboard.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
+        <span>Dashboard</span>
+      </a>
+
+      <div class="nav-section-title">GIFT CARD CENTER</div>
+
+      <a href="#" class="nav-item ">
+        <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone" width="26"></iconify-icon></div>
+        <span>Gift & Voucher Management</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+
+      <div class="submenu">
+        <a href="my-purchase.html" class="sub-item "><span class="dot"></span>My Purchase</a>
+        <a href="#" class="sub-item "><span class="dot"></span>Merchant Map</a>
+        <a href="product-list.html" class="sub-item "><span class="dot"></span>Product Management</a>
+
+        <a href="digital-gifts-management.html" class="sub-item "><span class="dot"></span>VlinkPay Store</a>
+      </div>
+
+      <a href="marketing-tools.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon></div>
+        <span>Marketing Tools</span>
+      </a>
+
+      <a href="#" class="nav-item ">
+        <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone" width="24"></iconify-icon>
+        </div>
+        <span>Payment Acceptance</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="gift-card-payment-box.html" class="sub-item "><span class="dot"></span>Pay with Gift Card</a>
+        <a href="crypto-payment-box.html" class="sub-item "><span class="dot"></span>Pay with Crypto</a>
+      </div>
+
+      <a href="#" class="nav-item ">
+        <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+        <span>Settings</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="merchant-payment-setup.html" class="sub-item "><span class="dot"></span>Merchant Payment Setup</a>
+        <a href="benefits-setup.html" class="sub-item "><span class="dot"></span>Benefits Setup</a>
+      </div>
+
+      <a href="#" class="nav-item parent-active">
+        <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
+        <span>Report</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="sales-order-list.html" class="sub-item active"><span class="dot"></span>Sales Orders</a>
+        <a href="card-transaction-history-merchant.html" class="sub-item "><span class="dot"></span>Card Transaction
+          History</a>
+      </div>
+
+      <a href="crypto-card-list.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
+        <span>Crypto Card Management</span>
+      </a>
+
+      <div class="nav-section-title">APPS</div>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
+        <span>Notifications</span>
+        <span class="badge-outlined">32+</span>
+      </a>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon></div>
+        <span>AI Assistant</span>
+      </a>
+    </div>
+  </aside>
+
+  <header class="top-header">
+    <div class="header-info">Jan 16, 2026 10:00:00 AM</div>
+    <div class="header-icons">
+      <div class="header-icon-btn"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+      <div class="user-avatar-mini"><iconify-icon icon="solar:user-circle-bold" width="32"></iconify-icon></div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-header" style="display: flex; justify-content: space-between; align-items: center">
+      <div>
+        <h1 class="page-title">Sales Orders</h1>
+        <div class="breadcrumbs">
+          <a href="#">Dashboard</a>
+          <span class="breadcrumbs-dot"></span>
+          <span style="color: var(--grey-900); font-weight: 500">Sales Orders</span>
+        </div>
+      </div>
+      <!-- <button class="btn-contained">
+          <iconify-icon icon="solar:add-circle-bold" width="20"></iconify-icon>
+          Create Order
+        </button> -->
+    </div>
+
+    <div class="card">
+      <div class="table-toolbar">
+        <div class="field-root search-field">
+          <div class="field-container">
+            <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
+            <input type="text" class="field-input" placeholder="Order ID, Card, Date..." />
+          </div>
+        </div>
+
+        <!-- Start Date -->
+        <div class="field-root date-field">
+          <label class="field-label">Start date</label>
+          <div class="field-container">
+            <input type="text" class="field-input" placeholder="Pick date">
+            <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
+          </div>
+        </div>
+
+        <!-- End Date -->
+        <div class="field-root date-field">
+          <label class="field-label">End date</label>
+          <div class="field-container">
+            <input type="text" class="field-input" placeholder="Pick date">
+            <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
+          </div>
+        </div>
+
+        <div class="field-root select-field">
+          <label class="field-label">Status</label>
+          <div class="field-container">
+            <select>
+              <option>All Status</option>
+              <option>Completed</option>
+              <option>Pending</option>
+              <option>Failed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-root select-field">
+          <label class="field-label">Payment</label>
+          <div class="field-container">
+            <select>
+              <option>All Methods</option>
+              <option>Credit Card</option>
+              <option>Zelle</option>
+              <option>Venmo</option>
+              <option>Cash</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-export">
+          <iconify-icon icon="solar:export-bold" width="20"></iconify-icon>
+          Export
+        </button>
+      </div>
+
+      <div class="table-container">
+        <table class="minimal-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Order Date</th>
+              <th>Product Name</th>
+              <th>Issue Mode</th>
+              <th>Card Number</th>
+              <th>Holder Name</th>
+              <th class="text-center">Qty</th>
+              <th class="text-right">Total</br> Amount</th>
+              <th class="text-right">Discount (%)</th>
+              <th class="text-right">Discount</th>
+              <th class="text-right">Cashback (%)</th>
+              <th class="text-right">Cashback</th>
+              <th class="text-right">Merchant</br> Cashback</th>
+              <th class="text-right">VlinkPay</br> Cashback</th>
+              <th>Payment</br> Method</th>
+              <th>Status</th>
+              <th class="text-right">Fee (%)</th>
+              <th class="text-right">Platform</br> Fee</th>
+              <th class="text-right">Merchant</br> Revenue</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight: 700"><a href="sales-order-details.html"
+                  style="color: var(--primary-main); text-decoration: none">ORD-2026001</a></td>
+              <td>Jan 14, 2026 </br>10:05 AM</td>
+              <td>Amazon eGift Card</td>
+              <td>Digital</td>
+              <td>**** 5678</td>
+              <td>John Doe</td>
+              <td class="text-center">1</td>
+              <td class="text-right">$100.00</td>
+              <td class="text-right">5%</td>
+              <td class="text-right">$5.00</td>
+              <td class="text-right">0%</td>
+              <td class="text-right">$0.00</td>
+              <td class="text-right">$0.00</td>
+              <td class="text-right">$0.00</td>
+              <td>Credit Card</td>
+              <td><span class="status-badge status-completed">Completed</span></td>
+              <td class="text-right">1.5%</td>
+              <td class="text-right">$1.50</td>
+              <td class="text-right" style="font-weight: 700">$93.50</td>
+              <td class="text-center">
+                <a href="sales-order-details.html"><iconify-icon icon="solar:eye-bold"
+                    style="color: var(--primary-main); cursor: pointer"></iconify-icon></a>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700"><a href="sales-order-details.html"
+                  style="color: var(--primary-main); text-decoration: none">ORD-2026002</a></td>
+              <td>Jan 14, 2026</br> 10:05 AM</td>
+              <td>Starbucks Voucher</td>
+              <td>Digital</td>
+              <td>**** 1234</td>
+              <td>Jane Smith</td>
+              <td class="text-center">2</td>
+              <td class="text-right">$50.00</td>
+              <td class="text-right">0%</td>
+              <td class="text-right">$0.00</td>
+              <td class="text-right">0%</td>
+              <td class="text-right">$0.00</td>
+              <td class="text-right">$0.00</td>
+              <td class="text-right">$0.00</td>
+              <td>Zelle</td>
+              <td><span class="status-badge status-pending">Pending</span></td>
+              <td class="text-right">1%</td>
+              <td class="text-right">$0.50</td>
+              <td class="text-right" style="font-weight: 700">$49.50</td>
+              <td class="text-center">
+                <a href="sales-order-details.html"><iconify-icon icon="solar:eye-bold"
+                    style="color: var(--primary-main); cursor: pointer"></iconify-icon></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose IOU Package</title>
+    <link rel="stylesheet" href="global.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 390px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .required {
+            color: #dc3545;
+        }
+
+        .info-icon {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #6c757d;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #6c757d;
+            cursor: help;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-input {
+            width: 100%;
+            padding: 10px 36px 10px 14px;
+            font-size: 15px;
+            font-weight: 500;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            appearance: none;
+            color: #212529;
+            transition: all 0.3s ease;
+        }
+
+        .select-input:hover {
+            border-color: #dee2e6;
+        }
+
+        .select-input:focus {
+            outline: none;
+            border-color: #0d6efd;
+        }
+
+        .select-wrapper::after {
+            content: '▼';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            pointer-events: none;
+            font-size: 12px;
+        }
+
+        .program-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .get-more-link {
+            color: #0d6efd;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .get-more-link:hover {
+            text-decoration: underline;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: #f8f9fa;
+            color: #adb5bd;
+        }
+
+        .tab.active {
+            background: #e7f1ff;
+            color: #0d6efd;
+        }
+
+        .vmm-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .vmm-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .vmm-icon {
+            width: 40px;
+            height: 40px;
+            background: #ffc107;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .vmm-details h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .vmm-quantity {
+            color: #6c757d;
+            font-size: 12px;
+        }
+
+        .vmm-available {
+            text-align: right;
+        }
+
+        .vmm-available-label {
+            color: #6c757d;
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+
+        .vmm-available-amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .package-details {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .detail-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .detail-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 13px;
+        }
+
+        .detail-label {
+            color: #64748b;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #1e293b;
+            text-align: right;
+        }
+
+        .detail-value.highlight {
+            color: #0d6efd;
+        }
+
+        .detail-value.total {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .divider {
+            height: 1px;
+            background: #f1f5f9;
+            margin: 12px 0;
+        }
+
+        .warning-box {
+            background: #e7f1ff;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .wallet-balance {
+            font-size: 12px;
+            color: #6c757d;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .wallet-balance strong {
+            color: #198754;
+        }
+
+        .warning-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 8px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            border: 2px solid #0d6efd;
+            border-radius: 6px;
+            background: #0d6efd;
+            cursor: pointer;
+            position: relative;
+            margin-top: 2px;
+        }
+
+        .checkbox::after {
+            content: '✓';
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .checkbox-label {
+            font-size: 13px;
+            line-height: 1.4;
+            color: #212529;
+        }
+
+        .checkbox-label strong {
+            font-weight: 600;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 16px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background: #0b5ed7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Choose a Plan -->
+        <div class="form-group">
+            <label class="form-label">
+                Choose a Plan
+                <span class="required">*</span>
+                <span class="info-icon">i</span>
+            </label>
+            <div class="select-wrapper">
+                <select class="select-input" id="plan-select">
+                    <option value="12">12 MONTHS</option>
+                    <option value="6">6 MONTHS</option>
+                    <option value="3">3 MONTHS</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Select Package -->
+        <div class="form-group">
+            <label class="form-label">
+                Select Package
+                <span class="required">*</span>
+                <span class="info-icon">i</span>
+            </label>
+            <div class="select-wrapper">
+                <select class="select-input" id="package-select">
+                    <option value="3000">3,000 USDV</option>
+                    <option value="5000">5,000 USDV</option>
+                    <option value="10000">10,000 USDV</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Select Program -->
+        <div class="form-group">
+            <div class="program-header">
+                <label class="form-label">
+                    Select Program
+                    <span class="required">*</span>
+                </label>
+                <a href="#" class="get-more-link">Get more VMM V2!</a>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active">Active IOU</button>
+                <button class="tab">Debt IOU</button>
+            </div>
+
+            <!-- VMM Card -->
+            <div class="vmm-card">
+                <div class="vmm-info">
+                    <div class="vmm-icon">💎</div>
+                    <div class="vmm-details">
+                        <h3>VMM v2</h3>
+                        <p class="vmm-quantity"><strong>Quantity:</strong> 4,190,751 VMM</p>
+                    </div>
+                </div>
+                <div class="vmm-available">
+                    <p class="vmm-available-label">Available:</p>
+                    <p class="vmm-available-amount">$2,900</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Package Details -->
+        <div class="package-details">
+            <div class="detail-group">
+                <div class="detail-section-title">Summary</div>
+                <div class="detail-row">
+                    <span class="detail-label">IOU Package</span>
+                    <span class="detail-value highlight">3,000 USDV</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Monthly compensation</span>
+                    <span class="detail-value">5%</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Monthly payout</span>
+                    <span class="detail-value">150 USDV</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Reward (360 days)</span>
+                    <span class="detail-value">1,800 USDV</span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="detail-group">
+                <div class="detail-row">
+                    <span class="detail-label" style="font-weight: 600; color: #1e293b;">Total Value</span>
+                    <span class="detail-value total">4,800 USDV</span>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="detail-group">
+                <div class="detail-section-title">VMM Requirements</div>
+                <div class="detail-row">
+                    <span class="detail-label">Price</span>
+                    <span class="detail-value">$0.000692</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Required Quantity</span>
+                    <span class="detail-value total">4,335,260.1156</span>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Warning Box -->
+        <div class="warning-box">
+            <p class="warning-text">
+                You are still missing $100 worth of VMM v2 to activate the package.
+            </p>
+
+            <div style="margin-bottom: 16px;">
+                <label class="detail-label" style="display:block; margin-bottom: 6px;">Payment Wallet</label>
+                <div class="select-wrapper">
+                    <select class="select-input" id="wallet-select"
+                        style="padding: 10px 30px 10px 12px; font-size: 14px;">
+                        <option value="USDT">USDT</option>
+                        <option value="USDV">USDV</option>
+                    </select>
+                </div>
+                <div class="wallet-balance">
+                    Available: <strong id="wallet-available">2,500 USDT</strong>
+                </div>
+            </div>
+
+            <div class="fee-breakdown" style="border-top: 1px dashed #cbd5e1; margin: 16px 0; padding-top: 16px;">
+                <div class="detail-row" style="margin-bottom: 8px;">
+                    <span class="detail-label" style="display:flex;align-items:center;gap:4px; font-size: 13px;">
+                        Slippage Tolerance
+                        <span class="info-icon"
+                            style="width:14px;height:14px;font-size:10px;border-width:1px;color:#94a3b8;border-color:#cbd5e1;">i</span>
+                    </span>
+                    <span class="detail-value" style="font-size: 14px;">3%</span>
+                </div>
+                <div class="detail-row" style="margin-bottom: 8px;">
+                    <span class="detail-label" style="display:flex;align-items:center;gap:4px; font-size: 13px;">
+                        Service Fee
+                        <span class="info-icon"
+                            style="width:14px;height:14px;font-size:10px;border-width:1px;color:#94a3b8;border-color:#cbd5e1;">i</span>
+                    </span>
+                    <span class="detail-value" style="color: #198754; font-size: 14px;">Free</span>
+                </div>
+                <div class="detail-row" style="margin-top: 4px;">
+                    <span class="detail-label" style="font-weight: 700; color: #1e293b; font-size: 14px;">Total
+                        Payment</span>
+                    <span class="detail-value total">$103</span>
+                </div>
+            </div>
+
+            <div class="checkbox-container">
+                <div class="checkbox"></div>
+                <p class="checkbox-label">
+                    Confirm the purchase of <strong>$100</strong> using <strong id="selected-wallet">USDT</strong> and
+                    use the existing
+                    <strong>$2,900 VMM</strong> to activate the package.
+                </p>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button class="submit-button">
+            Pay 100 USDT & Activate Package
+        </button>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function () {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Form interactions
+        const planSelect = document.getElementById('plan-select');
+        const packageSelect = document.getElementById('package-select');
+
+        planSelect.addEventListener('change', function () {
+            console.log('Plan changed to:', this.value);
+            // Add logic to update calculations based on plan
+        });
+
+        packageSelect.addEventListener('change', function () {
+            console.log('Package changed to:', this.value);
+            // Add logic to update calculations based on package
+        });
+
+        // Submit button
+        const submitBtn = document.querySelector('.submit-button');
+        const walletSelect = document.getElementById('wallet-select');
+        const walletAvailable = document.getElementById('wallet-available');
+        const selectedWalletSpan = document.getElementById('selected-wallet');
+
+        // Mock balances
+        const balances = {
+            'USDT': '2,500 USDT',
+            'USDV': '800 USDV'
+        };
+
+        // Handle wallet selection
+        walletSelect.addEventListener('change', function () {
+            const currency = this.value;
+
+            // Update Text
+            selectedWalletSpan.textContent = currency;
+            submitBtn.textContent = `Pay 100 ${currency} & Activate Package`;
+
+            // Update Balance with simple animation
+            walletAvailable.style.opacity = '0.5';
+            setTimeout(() => {
+                walletAvailable.textContent = balances[currency];
+                walletAvailable.style.opacity = '1';
+            }, 200);
+        });
+
+        submitBtn.addEventListener('click', function () {
+            const currency = walletSelect.value;
+            alert(`Processing payment of 100 ${currency}...`);
+            // Add payment processing logic here
+        });
+    </script>
+</body>
+
+</html>

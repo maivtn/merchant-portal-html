@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Benefits Setup - VLINKPAY</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="global.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        .table-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: var(--shadow-z1);
+            overflow: hidden;
+            margin-top: 24px;
+            border: 1px solid var(--grey-200);
+        }
+
+        .table-toolbar {
+            padding: 24px;
+            display: flex;
+            gap: 16px;
+            border-bottom: 1px dashed var(--grey-200);
+            align-items: center;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--grey-100);
+            padding: 16px 24px;
+            text-align: left;
+            font-size: 14px;
+            color: var(--grey-600);
+            font-weight: 600;
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 16px 24px;
+            border-top: 1px dashed var(--grey-300);
+            font-size: 14px;
+            color: var(--grey-800);
+            white-space: nowrap;
+        }
+
+        .benefit-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .icon-discount {
+            background: rgba(255, 171, 0, 0.16);
+            color: #FFAB00;
+        }
+
+        .icon-cashback {
+            background: rgba(0, 167, 111, 0.16);
+            color: #00A76F;
+        }
+
+        .icon-gift {
+            background: rgba(255, 86, 48, 0.16);
+            color: #FF5630;
+        }
+
+        .icon-birthday {
+            background: rgba(142, 51, 255, 0.16);
+            color: #8E33FF;
+        }
+
+        .status-pill {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .status-active {
+            background: #E9FCD4;
+            color: #118D57;
+        }
+
+        .status-inactive {
+            background: #FFE4DE;
+            color: #B71D18;
+        }
+
+        .status-draft {
+            background: #E5E7EB;
+            color: #4B5563;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(22, 28, 36, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            width: 100%;
+            max-width: 560px;
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.16);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            color: var(--grey-500);
+            transition: 0.2s;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: var(--grey-900);
+        }
+
+        .modal-header {
+            margin-bottom: 32px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--grey-900);
+            margin-bottom: 8px;
+        }
+
+        .modal-description {
+            font-size: 14px;
+            color: var(--grey-600);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--grey-700);
+            margin-bottom: 8px;
+        }
+
+        .form-label .required {
+            color: #FF5630;
+            margin-left: 4px;
+        }
+
+        .upload-hint {
+            font-size: 13px;
+            color: var(--grey-600);
+            margin-bottom: 8px;
+        }
+
+        .icon-preset-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .icon-preset-item {
+            width: 100%;
+            aspect-ratio: 1;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .icon-preset-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            opacity: 0;
+            transition: opacity 0.25s;
+            background: currentColor;
+        }
+
+        .icon-preset-item.icon-discount {
+            background: #FFF9E6;
+            color: #B78103;
+        }
+
+        .icon-preset-item.icon-cashback {
+            background: #D3F8F0;
+            color: #00A76F;
+        }
+
+        .icon-preset-item.icon-gift {
+            background: #FFE7D9;
+            color: #B71D18;
+        }
+
+        .icon-preset-item.icon-birthday {
+            background: #E7E3FC;
+            color: #5119B7;
+        }
+
+        .icon-preset-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.12);
+        }
+
+        .icon-preset-item:hover::before {
+            opacity: 0.08;
+        }
+
+        .icon-preset-item.selected {
+            border-color: currentColor;
+            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .icon-upload-item {
+            width: 100%;
+            aspect-ratio: 1;
+            border: 2px dashed var(--grey-400);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--grey-50);
+            color: var(--grey-600);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .icon-upload-item:hover {
+            border-color: var(--primary-main);
+            background: rgba(0, 167, 111, 0.04);
+            color: var(--primary-main);
+        }
+
+        .icon-upload-item iconify-icon {
+            font-size: 28px;
+            margin-bottom: 2px;
+        }
+
+        .icon-upload-item span {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .icon-upload-item input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .icon-upload-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 14px;
+        }
+
+        .icon-remove-upload {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 24px;
+            height: 24px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            transition: all 0.2s;
+        }
+
+        .icon-remove-upload:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon-remove-upload iconify-icon {
+            color: #FF5630;
+            font-size: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--grey-300);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--grey-900);
+            transition: all 0.2s;
+            background: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-control:hover {
+            border-color: var(--grey-400);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-main);
+            box-shadow: 0 0 0 2px rgba(0, 167, 111, 0.12);
+        }
+
+        .form-control::placeholder {
+            color: var(--grey-500);
+        }
+
+        .form-control.error {
+            border-color: #FF5630;
+        }
+
+        .form-control.error:focus {
+            box-shadow: 0 0 0 2px rgba(255, 86, 48, 0.12);
+        }
+
+        select.form-control {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23637381' d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6l-6-6l1.41-1.41z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            padding-right: 40px;
+            appearance: none;
+        }
+
+        .preset-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .preset-chip {
+            padding: 6px 14px;
+            border: 1px solid var(--grey-300);
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--grey-700);
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fff;
+            font-weight: 500;
+        }
+
+        .preset-chip:hover {
+            border-color: var(--primary-main);
+            color: var(--primary-main);
+            background: rgba(0, 167, 111, 0.08);
+        }
+
+        .error-message {
+            color: #FF5630;
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .btn-outlined {
+            padding: 11px 24px;
+            border: 1px solid var(--grey-300);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--grey-900);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-outlined:hover {
+            background: var(--grey-100);
+            border-color: var(--grey-900);
+        }
+
+        .btn-outlined:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            padding: 11px 24px;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary-main);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 8px 16px -4px rgba(0, 167, 111, 0.24);
+        }
+
+        .btn-primary:hover {
+            background: #007B55;
+            box-shadow: 0 12px 24px -4px rgba(0, 167, 111, 0.32);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .form-control.error {
+            border-color: #FF5630;
+        }
+
+        .upload-hint {
+            font-size: 12px;
+            color: var(--grey-500);
+            margin-top: 8px;
+        }
+
+        /* Pagination Styles */
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-top: 1px dashed var(--grey-200);
+        }
+
+        .pagination-info {
+            font-size: 14px;
+            color: var(--grey-600);
+        }
+
+        .pagination {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .pagination-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--grey-300);
+            background: #fff;
+            color: var(--grey-700);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            border-color: var(--primary-main);
+            color: var(--primary-main);
+            background: rgba(0, 167, 111, 0.08);
+        }
+
+        .pagination-btn.active {
+            background: var(--primary-main);
+            color: #fff;
+            border-color: var(--primary-main);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .pagination-nav {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--grey-300);
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pagination-nav:hover:not(:disabled) {
+            border-color: var(--grey-500);
+            background: var(--grey-100);
+        }
+
+        .pagination-nav:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Tabs Styles */
+        .tabs-container {
+            margin-top: 24px;
+        }
+
+        .tabs-header {
+            display: flex;
+            gap: 40px;
+            border-bottom: 1px solid var(--grey-200);
+            margin-bottom: 0;
+            background: #fff;
+            padding: 0 24px;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .tab-item {
+            padding: 16px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--grey-600);
+            cursor: pointer;
+            position: relative;
+            transition: 0.2s;
+            text-transform: capitalize;
+        }
+
+        .tab-item:hover {
+            color: var(--grey-900);
+        }
+
+        .tab-item.active {
+            color: var(--grey-900);
+        }
+
+        .tab-item.active::after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--grey-900);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .action-link {
+            border: none;
+            background: none;
+            padding: 0;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--primary-main);
+            cursor: pointer;
+        }
+
+        .action-link.disabled {
+            color: var(--grey-400);
+            cursor: not-allowed;
+        }
+
+        .action-icon {
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .action-icon:hover {
+            transform: scale(1.15);
+            opacity: 0.8;
+        }
+
+        .action-icon.icon-view {
+            color: #00A76F !important;
+        }
+
+        .action-icon.icon-edit {
+            color: #2196F3 !important;
+            margin-left: 12px;
+        }
+
+        .action-icon.icon-delete {
+            color: #FF5630 !important;
+            margin-left: 12px;
+        }
+
+        .action-icon.icon-delete-disabled {
+            color: var(--grey-400) !important;
+            cursor: not-allowed;
+            margin-left: 12px;
+        }
+
+        .action-icon.icon-delete-disabled:hover {
+            transform: none;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <div class="logo">
+                <span style="font-weight: 800; font-size: 22px; color: #212B36; letter-spacing: -0.5px;">VLINKPAY</span>
+            </div>
+
+            <div class="user-card">
+                <div class="avatar">
+                    <iconify-icon icon="solar:user-bold" width="24"></iconify-icon>
+                </div>
+                <div class="user-info">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Carlota Monteiro</div>
+                    <div style="font-size: 13px; color: var(--grey-600);">Admin</div>
+                </div>
+            </div>
+
+            <div class="nav-section-title">OVERVIEW</div>
+
+            <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
+                <span>Homepage</span>
+            </a>
+
+            <a href="dashboard.html" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
+                <span>Dashboard</span>
+            </a>
+
+            <div class="nav-section-title">GIFT CARD CENTER</div>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone"
+                        width="26"></iconify-icon></div>
+                <span>Gift & Voucher Management</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+
+            <div class="submenu">
+                <a href="my-purchase.html" class="sub-item"><span class="dot"></span>My Purchase</a>
+                <a href="#" class="sub-item"><span class="dot"></span>Merchant Map</a>
+                <a href="product-list.html" class="sub-item"><span class="dot"></span>Product Management</a>
+                <a href="digital-gifts-management.html" class="sub-item"><span class="dot"></span>VlinkPay Store</a>
+            </div>
+
+            <a href="crypto-card-list.html" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
+                <span>Crypto Card Management</span>
+            </a>
+
+            <a href="marketing-tools.html" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon>
+                </div>
+                <span>Marketing Tools</span>
+            </a>
+
+            <a href="#" class="nav-item parent-active">
+                <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone"
+                        width="24"></iconify-icon>
+                </div>
+                <span>Payment Acceptance</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+            <div class="submenu">
+                <a href="gift-card-payment-box.html" class="sub-item"><span class="dot"></span>Pay with Gift Card</a>
+                <a href="crypto-payment-box.html" class="sub-item"><span class="dot"></span>Pay with Crypto</a>
+            </div>
+
+            <a href="#" class="nav-item parent-active">
+                <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+                <span>Settings</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+            <div class="submenu">
+                <a href="merchant-payment-setup.html" class="sub-item"><span class="dot"></span>Merchant Payment
+                    Setup</a>
+                <a href="benefits-setup.html" class="sub-item active"><span class="dot"></span>Benefits Setup</a>
+            </div>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
+                <span>Report</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+            <div class="submenu">
+                <a href="sales-order-list.html" class="sub-item"><span class="dot"></span>Sales Orders</a>
+                <a href="card-transaction-history-merchant.html" class="sub-item"><span class="dot"></span>Card
+                    Transaction
+                    History</a>
+            </div>
+
+            <div class="nav-section-title">APPS</div>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
+                <span>Notifications</span>
+                <span class="badge-outlined">32+</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon>
+                </div>
+                <span>AI Assistant</span>
+            </a>
+        </div>
+    </aside>
+
+    <header class="top-header">
+        <div class="header-info">Jan 14, 2026 10:05:32 AM (UTC)</div>
+        <div class="header-icons">
+            <div class="header-icon-btn">
+                <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
+            </div>
+            <div class="user-avatar-mini">
+                <iconify-icon icon="solar:user-circle-bold" width="32"></iconify-icon>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="page-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1 class="page-title" style="margin: 0;">Benefits Setup</h1>
+                <button onclick="openCreateModal()" class="btn-contained">
+                    <iconify-icon icon="mingcute:add-line" width="20"></iconify-icon>
+                    Create Benefit
+                </button>
+            </div>
+            <div class="breadcrumbs" style="margin-top: 8px;">
+                <a href="#">Dashboard</a>
+                <span class="breadcrumbs-dot"></span>
+                <a href="#">Settings</a>
+                <span class="breadcrumbs-dot"></span>
+                <span style="color: var(--grey-900); font-weight: 500;">Benefits Setup</span>
+            </div>
+        </div>
+
+        <div class="tabs-container">
+            <div class="tabs-header">
+                <div class="tab-item active" onclick="switchTab('benefit-list')">benefit list</div>
+                <div class="tab-item" onclick="switchTab('benefit-package')">benefit package</div>
+            </div>
+
+            <div id="benefit-list" class="tab-content active">
+                <div class="table-card">
+                    <div class="table-toolbar" style="gap: 12px; padding: 20px 24px;">
+                        <div class="field-root" style="width: 240px;">
+                            <div class="field-container">
+                                <input type="text" class="field-input" placeholder="Search benefits..."
+                                    id="searchInput">
+                                <iconify-icon icon="solar:magnifer-linear" class="field-chevron"
+                                    style="color: var(--grey-500); cursor: default;"></iconify-icon>
+                            </div>
+                        </div>
+
+                        <div class="field-root" style="width: 180px;">
+                            <label class="field-label">Status</label>
+                            <div class="field-container">
+                                <select class="field-input field-select" id="statusFilter">
+                                    <option value="">All Statuses</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                                <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Icon</th>
+                                    <th>Benefit ID</th>
+                                    <th>Benefit Name</th>
+                                    <th>Benefit Unit</th>
+                                    <th>Status</th>
+                                    <th>Created By</th>
+                                    <th>Created Date</th>
+                                    <th>Last Updated Date</th>
+                                    <th style="padding-right: 24px; text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="benefitsTableBody">
+                                <tr>
+                                    <td>
+                                        <div class="benefit-icon icon-cashback">
+                                            <iconify-icon icon="solar:dollar-minimalistic-bold-duotone"></iconify-icon>
+                                        </div>
+                                    </td>
+                                    <td>BEN001</td>
+                                    <td style="font-weight: 600;">Monthly Credit</td>
+                                    <td>USD ($)</td>
+                                    <td><span class="status-pill status-active">Active</span></td>
+                                    <td>Admin User</td>
+                                    <td>Jan 01, 2026</td>
+                                    <td>Feb 01, 2026</td>
+                                    <td style="text-align: right; padding-right: 24px;">
+                                        <iconify-icon icon="solar:eye-bold" class="action-icon"
+                                            style="color: var(--primary-main); cursor: pointer;"></iconify-icon>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="benefit-icon icon-cashback">
+                                            <iconify-icon icon="solar:refresh-bold-duotone"></iconify-icon>
+                                        </div>
+                                    </td>
+                                    <td>BEN002</td>
+                                    <td style="font-weight: 600;">Cashback</td>
+                                    <td>Percentage (%)</td>
+                                    <td><span class="status-pill status-active">Active</span></td>
+                                    <td>Admin User</td>
+                                    <td>Jan 05, 2026</td>
+                                    <td>Jan 15, 2026</td>
+                                    <td style="text-align: right; padding-right: 24px;">
+                                        <iconify-icon icon="solar:eye-bold" class="action-icon"
+                                            style="color: var(--primary-main); cursor: pointer;"></iconify-icon>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="benefit-icon icon-discount">
+                                            <iconify-icon icon="eva:percent-outline"></iconify-icon>
+                                        </div>
+                                    </td>
+                                    <td>BEN003</td>
+                                    <td style="font-weight: 600;">Discount</td>
+                                    <td>Percentage (%)</td>
+                                    <td><span class="status-pill status-active">Active</span></td>
+                                    <td>Manager User</td>
+                                    <td>Jan 10, 2026</td>
+                                    <td>Jan 20, 2026</td>
+                                    <td style="text-align: right; padding-right: 24px;">
+                                        <iconify-icon icon="solar:eye-bold" class="action-icon"
+                                            style="color: var(--primary-main); cursor: pointer;"></iconify-icon>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="benefit-icon icon-birthday">
+                                            <iconify-icon icon="material-symbols:cake"></iconify-icon>
+                                        </div>
+                                    </td>
+                                    <td>BEN004</td>
+                                    <td style="font-weight: 600;">Birthday Gift</td>
+                                    <td>USD ($)</td>
+                                    <td><span class="status-pill status-active">Active</span></td>
+                                    <td>Admin User</td>
+                                    <td>Dec 28, 2025</td>
+                                    <td>Jan 05, 2026</td>
+                                    <td style="text-align: right; padding-right: 24px;">
+                                        <iconify-icon icon="solar:eye-bold" class="action-icon"
+                                            style="color: var(--primary-main); cursor: pointer;"></iconify-icon>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="benefit-icon icon-discount">
+                                            <iconify-icon icon="eva:people-fill"></iconify-icon>
+                                        </div>
+                                    </td>
+                                    <td>BEN005</td>
+                                    <td style="font-weight: 600;">Group Discount</td>
+                                    <td>Percentage (%)</td>
+                                    <td><span class="status-pill status-active">Active</span></td>
+                                    <td>Manager User</td>
+                                    <td>Jan 12, 2026</td>
+                                    <td>Jan 25, 2026</td>
+                                    <td style="text-align: right; padding-right: 24px;">
+                                        <iconify-icon icon="solar:eye-bold" class="action-icon"
+                                            style="color: var(--primary-main); cursor: pointer;"></iconify-icon>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="benefit-icon icon-gift">
+                                            <iconify-icon icon="solar:sofa-3-bold-duotone"></iconify-icon>
+                                        </div>
+                                    </td>
+                                    <td>BEN006</td>
+                                    <td style="font-weight: 600;">Free Lounge</td>
+                                    <td>Unit</td>
+                                    <td><span class="status-pill status-active">Active</span></td>
+                                    <td>Admin User</td>
+                                    <td>Jan 15, 2026</td>
+                                    <td>Feb 01, 2026</td>
+                                    <td style="text-align: right; padding-right: 24px;">
+                                        <iconify-icon icon="solar:eye-bold" class="action-icon"
+                                            style="color: var(--primary-main); cursor: pointer;"></iconify-icon>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        <div class="pagination-rows">
+                            <span>Rows per page:</span>
+                            <select class="pagination-select">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                        <div class="pagination-info">1–2 of 2</div>
+                        <div class="pagination-arrows">
+                            <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-left-fill"
+                                    width="20"></iconify-icon></button>
+                            <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-right-fill"
+                                    width="20"></iconify-icon></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="benefit-package" class="tab-content">
+                <div class="table-card">
+                    <div class="table-toolbar" style="gap: 12px; padding: 20px 24px;">
+                        <div class="field-root" style="width: 260px;">
+                            <label class="field-label">Search</label>
+                            <div class="field-container">
+                                <input type="text" class="field-input" id="packageSearchInput"
+                                    placeholder="Search by Package ID or Name">
+                                <iconify-icon icon="solar:magnifer-linear" class="field-chevron"
+                                    style="color: var(--grey-500); cursor: default;"></iconify-icon>
+                            </div>
+                        </div>
+
+                        <div class="field-root" style="width: 180px;">
+                            <label class="field-label">Status</label>
+                            <div class="field-container">
+                                <select class="field-input field-select" id="packageStatusFilter">
+                                    <option value="">All</option>
+                                    <option value="draft">Draft</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                                <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
+                            </div>
+                        </div>
+
+                        <div class="field-root" style="width: 200px;">
+                            <label class="field-label">Sort by</label>
+                            <div class="field-container">
+                                <select class="field-input field-select" id="packageSortSelect">
+                                    <option value="createdDate">Created Date (newest)</option>
+                                    <option value="price">Price (low to high)</option>
+                                    <option value="name">Name (A–Z)</option>
+                                </select>
+                                <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <th>Package ID</th>
+                                <th>Package Name</th>
+                                <th>Price</th>
+                                <th>Currency</th>
+                                <th>Billing Cycle</th>
+                                <th>Benefit Count</th>
+                                <th>Created By</th>
+                                <th>Created Date</th>
+                                <th>Last Updated Date</th>
+                                <th>Status</th>
+                                <th style="padding-right: 24px; text-align: right;">Actions</th>
+                            </thead>
+                            <tbody id="packageTableBody">
+                                <tr>
+                                    <td class="pkg-id-cell">PKG001</td>
+                                    <td class="pkg-name-cell" style="font-weight: 600;">Welcome Package</td>
+                                    <td class="pkg-price-cell">99</td>
+                                    <td class="pkg-currency-cell">USD</td>
+                                    <td class="pkg-billing-cycle-cell">Yearly</td>
+                                    <td class="pkg-benefit-count-cell">3 benefits</td>
+                                    <td class="pkg-created-by-cell">Admin User</td>
+                                    <td class="pkg-created-date-cell">Jan 10, 2026</td>
+                                    <td class="pkg-updated-date-cell">Jan 15, 2026</td>
+                                    <td class="pkg-status-cell">
+                                        <span class="status-pill status-active" data-status="active">Active</span>
+                                    </td>
+                                    <td class="pkg-actions-cell" style="text-align: right; padding-right: 24px;">
+
+                                        <iconify-icon icon="solar:pen-bold" class="action-icon icon-edit" width="20"
+                                            onclick="editPackage('PKG001')"></iconify-icon>
+                                        <a href="benefit-package-details.html" style="text-decoration: none;">
+                                            <iconify-icon icon="solar:eye-bold" class="action-icon icon-view"
+                                                width="20"></iconify-icon>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="pkg-id-cell">PKG002</td>
+                                    <td class="pkg-name-cell" style="font-weight: 600;">Premium Package</td>
+                                    <td class="pkg-price-cell">199</td>
+                                    <td class="pkg-currency-cell">USD</td>
+                                    <td class="pkg-billing-cycle-cell">Yearly</td>
+                                    <td class="pkg-benefit-count-cell">5 benefits</td>
+                                    <td class="pkg-created-by-cell">Manager User</td>
+                                    <td class="pkg-created-date-cell">Jan 20, 2026</td>
+                                    <td class="pkg-updated-date-cell">Jan 28, 2026</td>
+                                    <td class="pkg-status-cell">
+                                        <span class="status-pill status-active" data-status="active">Active</span>
+                                    </td>
+                                    <td class="pkg-actions-cell" style="text-align: right; padding-right: 24px;">
+                                        <iconify-icon icon="solar:pen-bold" class="action-icon icon-edit" width="20"
+                                            onclick="editPackage('PKG002')"></iconify-icon>
+                                        <a href="benefit-package-details.html" style="text-decoration: none;">
+                                            <iconify-icon icon="solar:eye-bold" class="action-icon icon-view"
+                                                width="20"></iconify-icon>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="pkg-id-cell">PKG003</td>
+                                    <td class="pkg-name-cell" style="font-weight: 600;">Birthday Package</td>
+                                    <td class="pkg-price-cell">79</td>
+                                    <td class="pkg-currency-cell">USD</td>
+                                    <td class="pkg-billing-cycle-cell">Yearly</td>
+                                    <td class="pkg-benefit-count-cell">2 benefits</td>
+                                    <td class="pkg-created-by-cell">Admin User</td>
+                                    <td class="pkg-created-date-cell">Feb 01, 2026</td>
+                                    <td class="pkg-updated-date-cell">Feb 05, 2026</td>
+                                    <td class="pkg-status-cell">
+                                        <span class="status-pill status-draft" data-status="draft">Draft</span>
+                                    </td>
+                                    <td class="pkg-actions-cell" style="text-align: right; padding-right: 24px;">
+
+
+                                        <iconify-icon icon="solar:trash-bin-trash-bold" class="action-icon icon-delete"
+                                            width="20" onclick="handleDeletePackage(this)"
+                                            title="Delete package"></iconify-icon>
+                                        <iconify-icon icon="solar:pen-bold" class="action-icon icon-edit" width="20"
+                                            onclick="editPackage('PKG003')"></iconify-icon>
+                                        <a href="benefit-package-details.html" style="text-decoration: none;">
+                                            <iconify-icon icon="solar:eye-bold" class="action-icon icon-view"
+                                                width="20"></iconify-icon>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        <div class="pagination-rows">
+                            <span>Rows per page:</span>
+                            <select class="pagination-select">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                        <div class="pagination-info">1–3 of 3</div>
+                        <div class="pagination-arrows">
+                            <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-left-fill"
+                                    width="20"></iconify-icon></button>
+                            <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-right-fill"
+                                    width="20"></iconify-icon></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Benefit Modal -->
+    <div class="modal-overlay" id="createBenefitModal">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeCreateModal()">
+                <iconify-icon icon="eva:close-fill" width="24"></iconify-icon>
+            </div>
+
+            <div class="modal-header">
+                <h2 class="modal-title">Create New Benefit</h2>
+                <p class="modal-description">Fill in the required information to create a new benefit</p>
+            </div>
+
+            <form id="createBenefitForm" onsubmit="handleCreateBenefit(event)">
+                <div class="form-group">
+                    <label class="form-label">Benefit Icon</label>
+                    <div class="upload-hint">Select an icon for the benefit</div>
+                    <div class="icon-preset-grid">
+                        <div class="icon-preset-item icon-cashback" data-icon="dollar" onclick="selectIcon('dollar')">
+                            <iconify-icon icon="solar:dollar-minimalistic-bold-duotone"></iconify-icon>
+                        </div>
+                        <div class="icon-preset-item icon-cashback" data-icon="wallet" onclick="selectIcon('wallet')">
+                            <iconify-icon icon="solar:refresh-bold-duotone"></iconify-icon>
+                        </div>
+                        <div class="icon-preset-item icon-discount" data-icon="percent" onclick="selectIcon('percent')">
+                            <iconify-icon icon="eva:percent-outline"></iconify-icon>
+                        </div>
+                        <div class="icon-preset-item icon-birthday" data-icon="cake" onclick="selectIcon('cake')">
+                            <iconify-icon icon="material-symbols:cake"></iconify-icon>
+                        </div>
+                        <div class="icon-preset-item icon-discount" data-icon="people" onclick="selectIcon('people')">
+                            <iconify-icon icon="eva:people-fill"></iconify-icon>
+                        </div>
+                        <div class="icon-preset-item icon-gift" data-icon="lounge" onclick="selectIcon('lounge')">
+                            <iconify-icon icon="solar:sofa-3-bold-duotone"></iconify-icon>
+                        </div>
+                        <div class="icon-preset-item icon-discount" data-icon="discount"
+                            onclick="selectIcon('discount')">
+                            <iconify-icon icon="eva:pricetags-fill"></iconify-icon>
+                        </div>
+                        <div class="icon-preset-item icon-gift" data-icon="gift" onclick="selectIcon('gift')">
+                            <iconify-icon icon="solar:gift-bold-duotone"></iconify-icon>
+                        </div>
+                        <div class="icon-preset-item icon-birthday" data-icon="birthday"
+                            onclick="selectIcon('birthday')">
+                            <iconify-icon icon="eva:gift-fill"></iconify-icon>
+                        </div>
+                        <div class="icon-upload-item" id="uploadIconBtn">
+                            <iconify-icon icon="solar:upload-bold-duotone"></iconify-icon>
+                            <span>Upload</span>
+                            <input type="file" id="iconFileInput" accept="image/*" onchange="handleIconUpload(event)">
+                        </div>
+                    </div>
+                    <input type="hidden" id="selectedIcon" name="icon">
+                    <input type="hidden" id="uploadedIconData" name="uploadedIcon">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Benefit Name
+                        <span class="required">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="benefitName" name="benefitName"
+                        placeholder="Enter benefit name">
+                    <div class="preset-suggestions">
+                        <span class="preset-chip" onclick="fillBenefitName('Discount')">Discount</span>
+                        <span class="preset-chip" onclick="fillBenefitName('Cashback')">Cashback</span>
+                        <span class="preset-chip" onclick="fillBenefitName('Gift')">Gift</span>
+                        <span class="preset-chip" onclick="fillBenefitName('Birthday')">Birthday</span>
+                    </div>
+                    <div class="error-message" id="benefitNameError">Benefit name is required</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        Benefit Unit
+                        <span class="required">*</span>
+                    </label>
+                    <select class="form-control" id="benefitUnit" name="benefitUnit">
+                        <option value="">Select benefit unit</option>
+                        <option value="percentage">Percentage (%)</option>
+                        <option value="vnd">VND</option>
+                        <option value="usd">USD</option>
+                        <option value="unit">Unit</option>
+                        <option value="point">Point</option>
+                    </select>
+                    <div class="error-message" id="benefitUnitError">Benefit unit is required</div>
+                </div>
+
+                <div style="display: flex; gap: 12px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">Rollover Type</label>
+                        <select class="form-control" id="rolloverType" name="rolloverType">
+                            <option value="">Select rollover type</option>
+                            <option value="reset">Reset</option>
+                            <option value="rollover">Rollover</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">
+                            Cycle
+                            <span class="required" id="cycleRequiredAsterisk" style="display: none;">*</span>
+                        </label>
+                        <select class="form-control" id="cycle" name="cycle" disabled>
+                            <option value="">Select cycle</option>
+                            <option value="daily">Daily</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="quarterly">Quarterly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                        <div class="error-message" id="cycleError">Cycle is required when rollover type is selected
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 32px;">
+                    <button type="button" class="btn-outlined" onclick="closeCreateModal()" style="flex: 1;">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn-primary" style="flex: 1;">
+                        Create
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let selectedIconValue = '';
+        let uploadedIconFile = null;
+        let currentPage = 1;
+        let itemsPerPage = 5;
+        let allBenefits = [];
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            loadInitialData();
+            updatePagination();
+
+            initPackageFiltersAndSort();
+
+            const rolloverSelect = document.getElementById('rolloverType');
+            const cycleSelect = document.getElementById('cycle');
+            const cycleAsterisk = document.getElementById('cycleRequiredAsterisk');
+
+            if (rolloverSelect && cycleSelect && cycleAsterisk) {
+                rolloverSelect.addEventListener('change', function () {
+                    if (this.value) {
+                        cycleSelect.disabled = false;
+                        cycleAsterisk.style.display = 'inline';
+                    } else {
+                        cycleSelect.disabled = true;
+                        cycleSelect.value = '';
+                        cycleAsterisk.style.display = 'none';
+                        cycleSelect.classList.remove('error');
+                        const cycleError = document.getElementById('cycleError');
+                        if (cycleError) {
+                            cycleError.classList.remove('show');
+                        }
+                    }
+                });
+            }
+        });
+
+        function initPackageFiltersAndSort() {
+            const searchInput = document.getElementById('packageSearchInput');
+            const statusSelect = document.getElementById('packageStatusFilter');
+            const sortSelect = document.getElementById('packageSortSelect');
+
+            if (!document.getElementById('packageTableBody')) return;
+
+            const handler = () => applyPackageFiltersAndSort();
+
+            searchInput && searchInput.addEventListener('input', handler);
+            statusSelect && statusSelect.addEventListener('change', handler);
+            sortSelect && sortSelect.addEventListener('change', handler);
+
+            // initial apply
+            applyPackageFiltersAndSort();
+        }
+
+        function parsePackagePrice(text) {
+            if (!text) return 0;
+            // Price is now just a number, so parse directly
+            const value = parseFloat(text);
+            return isNaN(value) ? 0 : value;
+        }
+
+        function parsePackageDate(text) {
+            if (!text) return 0;
+            const d = new Date(text);
+            return isNaN(d.getTime()) ? 0 : d.getTime();
+        }
+
+        function applyPackageFiltersAndSort() {
+            const tbody = document.getElementById('packageTableBody');
+            if (!tbody) return;
+
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            const search = (document.getElementById('packageSearchInput')?.value || '').toLowerCase();
+            const statusFilter = (document.getElementById('packageStatusFilter')?.value || '');
+            const sortBy = document.getElementById('packageSortSelect')?.value || 'createdDate';
+
+            // sort
+            const sortedRows = rows.slice().sort((a, b) => {
+                if (sortBy === 'name') {
+                    const aName = (a.querySelector('.pkg-name-cell')?.textContent || '').toLowerCase();
+                    const bName = (b.querySelector('.pkg-name-cell')?.textContent || '').toLowerCase();
+                    if (aName < bName) return -1;
+                    if (aName > bName) return 1;
+                    return 0;
+                }
+                if (sortBy === 'price') {
+                    const aPrice = parsePackagePrice(a.querySelector('.pkg-price-cell')?.textContent || '');
+                    const bPrice = parsePackagePrice(b.querySelector('.pkg-price-cell')?.textContent || '');
+                    return aPrice - bPrice; // low to high
+                }
+                // createdDate - newest first
+                const aDate = parsePackageDate(a.querySelector('.pkg-created-date-cell')?.textContent || '');
+                const bDate = parsePackageDate(b.querySelector('.pkg-created-date-cell')?.textContent || '');
+                return bDate - aDate;
+            });
+
+            sortedRows.forEach(row => tbody.appendChild(row));
+
+            // filter
+            sortedRows.forEach(row => {
+                const idText = (row.querySelector('.pkg-id-cell')?.textContent || '').toLowerCase();
+                const nameText = (row.querySelector('.pkg-name-cell')?.textContent || '').toLowerCase();
+                const status = row.querySelector('.pkg-status-cell .status-pill')?.dataset.status || '';
+
+                const matchesSearch = !search || idText.includes(search) || nameText.includes(search);
+                const matchesStatus = !statusFilter || status === statusFilter;
+
+                row.style.display = matchesSearch && matchesStatus ? '' : 'none';
+            });
+        }
+
+        function editPackage(packageId) {
+            alert('Edit package ' + packageId + ' (UI coming soon)');
+        }
+
+        function handleDeletePackage(button) {
+            const row = button.closest('tr');
+            if (!row) return;
+
+            const status = row.querySelector('.pkg-status-cell .status-pill')?.dataset.status || '';
+            const packageId = (row.querySelector('.pkg-id-cell')?.textContent || '').trim();
+
+            if (status !== 'draft') {
+                alert('Only draft packages can be deleted.');
+                return;
+            }
+
+            if (!confirm('Delete package ' + packageId + '?')) {
+                return;
+            }
+
+            row.remove();
+        }
+
+        function switchTab(tabId) {
+            // Update active state on tab items
+            document.querySelectorAll('.tab-item').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            const activeTab = Array.from(document.querySelectorAll('.tab-item')).find(tab => {
+                const onclick = tab.getAttribute('onclick') || '';
+                return onclick.includes("'" + tabId + "'");
+            });
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+
+            // Update active state on tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            const target = document.getElementById(tabId);
+            if (target) {
+                target.classList.add('active');
+            }
+        }
+
+        function loadInitialData() {
+            // Get all existing rows from table
+            const rows = document.querySelectorAll('#benefitsTableBody tr');
+            allBenefits = Array.from(rows).map(row => ({
+                html: row.outerHTML,
+                text: row.textContent.toLowerCase()
+            }));
+        }
+
+        function updatePagination() {
+            const filteredBenefits = getFilteredBenefits();
+            const totalRecords = filteredBenefits.length;
+            const totalPages = Math.ceil(totalRecords / itemsPerPage);
+
+            // Update pagination info
+            const start = (currentPage - 1) * itemsPerPage + 1;
+            const end = Math.min(currentPage * itemsPerPage, totalRecords);
+
+            document.getElementById('showingStart').textContent = totalRecords > 0 ? start : 0;
+            document.getElementById('showingEnd').textContent = end;
+            document.getElementById('totalRecords').textContent = totalRecords;
+
+            // Update pagination buttons
+            const paginationNumbers = document.getElementById('paginationNumbers');
+            paginationNumbers.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'pagination-btn' + (i === currentPage ? ' active' : '');
+                btn.textContent = i;
+                btn.onclick = () => goToPage(i);
+                paginationNumbers.appendChild(btn);
+            }
+
+            // Update nav buttons
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages || totalPages === 0;
+
+            // Display current page items
+            displayCurrentPage(filteredBenefits);
+        }
+
+        function getFilteredBenefits() {
+            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            const statusFilter = document.getElementById('statusFilter')?.value || '';
+
+            return allBenefits.filter(benefit => {
+                const matchesSearch = !searchTerm || benefit.text.includes(searchTerm);
+                const matchesStatus = !statusFilter || benefit.text.includes(statusFilter);
+                return matchesSearch && matchesStatus;
+            });
+        }
+
+        function displayCurrentPage(filteredBenefits) {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageItems = filteredBenefits.slice(start, end);
+
+            const tbody = document.getElementById('benefitsTableBody');
+            tbody.innerHTML = pageItems.map(b => b.html).join('');
+        }
+
+        function changePage(direction) {
+            const totalPages = Math.ceil(getFilteredBenefits().length / itemsPerPage);
+            const newPage = currentPage + direction;
+
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                updatePagination();
+            }
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            updatePagination();
+        }
+
+        function openCreateModal() {
+            document.getElementById('createBenefitModal').classList.add('active');
+            resetForm();
+        }
+
+        function closeCreateModal() {
+            document.getElementById('createBenefitModal').classList.remove('active');
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById('createBenefitForm').reset();
+            selectedIconValue = '';
+            uploadedIconFile = null;
+
+            // Clear selected icon
+            document.querySelectorAll('.icon-preset-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+
+            // Reset upload preview
+            const uploadBtn = document.getElementById('uploadIconBtn');
+            uploadBtn.innerHTML = '<iconify-icon icon="solar:upload-bold-duotone"></iconify-icon><span>Upload</span><input type="file" id="iconFileInput" accept="image/*" onchange="handleIconUpload(event)">';
+            uploadBtn.style.border = '';
+            uploadBtn.style.background = '';
+
+            // Clear errors
+            document.querySelectorAll('.error-message').forEach(msg => {
+                msg.classList.remove('show');
+            });
+            document.querySelectorAll('.form-control').forEach(ctrl => {
+                ctrl.classList.remove('error');
+            });
+
+            const cycleSelect = document.getElementById('cycle');
+            const cycleAsterisk = document.getElementById('cycleRequiredAsterisk');
+            const cycleError = document.getElementById('cycleError');
+            if (cycleSelect && cycleAsterisk && cycleError) {
+                cycleSelect.disabled = true;
+                cycleSelect.value = '';
+                cycleAsterisk.style.display = 'none';
+                cycleError.classList.remove('show');
+            }
+        }
+
+        function handleIconUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Clear preset selections
+            document.querySelectorAll('.icon-preset-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            selectedIconValue = 'uploaded';
+            uploadedIconFile = file;
+
+            // Preview uploaded image
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const uploadBtn = document.getElementById('uploadIconBtn');
+                uploadBtn.innerHTML = `
+                    <img src="${e.target.result}" class="icon-upload-preview" alt="Uploaded icon">
+                    <div class="icon-remove-upload" onclick="removeUploadedIcon(event)">
+                        <iconify-icon icon="eva:close-circle-fill"></iconify-icon>
+                    </div>
+                    <input type="file" id="iconFileInput" accept="image/*" onchange="handleIconUpload(event)">
+                `;
+                uploadBtn.style.border = '2px solid var(--primary-main)';
+                uploadBtn.style.background = '#fff';
+
+                // Store base64 data
+                document.getElementById('uploadedIconData').value = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeUploadedIcon(event) {
+            event.stopPropagation();
+            selectedIconValue = '';
+            uploadedIconFile = null;
+            document.getElementById('uploadedIconData').value = '';
+
+            // Reset upload button
+            const uploadBtn = document.getElementById('uploadIconBtn');
+            uploadBtn.innerHTML = '<iconify-icon icon="solar:upload-bold-duotone"></iconify-icon><span>Upload</span><input type="file" id="iconFileInput" accept="image/*" onchange="handleIconUpload(event)">';
+            uploadBtn.style.border = '';
+            uploadBtn.style.background = '';
+        }
+
+        function selectIcon(iconName) {
+            selectedIconValue = iconName;
+            uploadedIconFile = null;
+            document.getElementById('selectedIcon').value = iconName;
+            document.getElementById('uploadedIconData').value = '';
+
+            // Update UI
+            document.querySelectorAll('.icon-preset-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            document.querySelector(`[data-icon="${iconName}"]`).classList.add('selected');
+
+            // Reset upload button
+            const uploadBtn = document.getElementById('uploadIconBtn');
+            uploadBtn.innerHTML = '<iconify-icon icon="solar:upload-bold-duotone"></iconify-icon><span>Upload</span><input type="file" id="iconFileInput" accept="image/*" onchange="handleIconUpload(event)">';
+            uploadBtn.style.border = '';
+            uploadBtn.style.background = '';
+        }
+
+        function fillBenefitName(name) {
+            document.getElementById('benefitName').value = name;
+        }
+
+        function handleCreateBenefit(event) {
+            event.preventDefault();
+
+            // Get form values
+            const benefitName = document.getElementById('benefitName').value.trim();
+            const benefitUnit = document.getElementById('benefitUnit').value;
+            const rolloverType = document.getElementById('rolloverType') ? document.getElementById('rolloverType').value : '';
+            const cycle = document.getElementById('cycle') ? document.getElementById('cycle').value : '';
+
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(msg => {
+                msg.classList.remove('show');
+            });
+            document.querySelectorAll('.form-control').forEach(ctrl => {
+                ctrl.classList.remove('error');
+            });
+
+            // Validate required fields
+            let hasError = false;
+
+            if (!benefitName) {
+                document.getElementById('benefitName').classList.add('error');
+                document.getElementById('benefitNameError').classList.add('show');
+                hasError = true;
+            }
+
+            if (!benefitUnit) {
+                document.getElementById('benefitUnit').classList.add('error');
+                document.getElementById('benefitUnitError').classList.add('show');
+                hasError = true;
+            }
+
+            if (rolloverType && !cycle) {
+                const cycleSelect = document.getElementById('cycle');
+                const cycleError = document.getElementById('cycleError');
+                if (cycleSelect && cycleError) {
+                    cycleSelect.classList.add('error');
+                    cycleError.classList.add('show');
+                }
+                hasError = true;
+            }
+
+            if (hasError) {
+                // Show notification
+                alert('Thông tin bắt buộc');
+                return;
+            }
+
+            // Success - Create benefit
+            const newBenefit = {
+                icon: selectedIconValue || 'discount',
+                benefitId: 'BEN' + String(Math.floor(Math.random() * 1000)).padStart(3, '0'),
+                benefitName: benefitName,
+                benefitUnit: document.getElementById('benefitUnit').options[document.getElementById('benefitUnit').selectedIndex].text,
+                status: 'Active',
+                createdBy: 'Current User',
+                createdDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                lastUpdatedDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            };
+
+            // Add to table
+            addBenefitToTable(newBenefit);
+
+            // Close modal
+            closeCreateModal();
+
+            // Show success message
+            alert('Benefit created successfully!');
+        }
+
+        function addBenefitToTable(benefit) {
+            const tbody = document.getElementById('benefitsTableBody');
+            const row = document.createElement('tr');
+
+            const iconClass = `icon-${benefit.icon}`;
+            const iconMap = {
+                'dollar': 'solar:dollar-minimalistic-bold-duotone',
+                'wallet': 'solar:refresh-bold-duotone',
+                'percent': 'eva:percent-outline',
+                'cake': 'material-symbols:cake',
+                'people': 'eva:people-fill',
+                'lounge': 'solar:sofa-3-bold-duotone',
+                'discount': 'eva:pricetags-fill',
+                'gift': 'solar:gift-bold-duotone',
+                'birthday': 'eva:gift-fill'
+            };
+
+            row.innerHTML = `
+        <td>
+          <div class="benefit-icon ${iconClass}">
+            <iconify-icon icon="${iconMap[benefit.icon] || iconMap['discount']}"></iconify-icon>
+          </div>
+        </td>
+        <td>${benefit.benefitId}</td>
+        <td>${benefit.benefitName}</td>
+        <td>${benefit.benefitUnit}</td>
+        <td><span class="status-pill status-${benefit.status.toLowerCase()}">${benefit.status}</span></td>
+        <td>${benefit.createdBy}</td>
+        <td>${benefit.createdDate}</td>
+        <td>${benefit.lastUpdatedDate}</td>
+      `;
+
+            // Add to allBenefits array
+            allBenefits.unshift({
+                html: row.outerHTML,
+                text: row.textContent.toLowerCase()
+            });
+
+            // Reset to first page and update
+            currentPage = 1;
+            updatePagination();
+        }
+
+        // Search functionality
+        document.getElementById('searchInput')?.addEventListener('input', function (e) {
+            currentPage = 1;
+            updatePagination();
+        });
+
+        // Status filter functionality
+        document.getElementById('statusFilter')?.addEventListener('change', function (e) {
+            currentPage = 1;
+            updatePagination();
+        });
+
+        // Sidebar toggle functionality
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function (e) {
+                const hasSubmenu = this.nextElementSibling?.classList.contains('submenu');
+                if (hasSubmenu) {
+                    e.preventDefault();
+                    this.classList.toggle('active');
+                }
+            });
+        });
+
+        // Initialize active states
+        document.querySelectorAll('.nav-item.parent-active').forEach(item => {
+            item.classList.add('active');
+        });
+    </script>
+</body>
+
+</html>

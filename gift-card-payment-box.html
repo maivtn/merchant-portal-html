@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gift Card Payment - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="global.css">
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <style>
+    .payment-selection-container {
+      max-width: 1000px;
+      margin: 40px auto;
+    }
+
+    .payment-options-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .payment-option-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+      padding: 40px 24px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 24px;
+      text-decoration: none;
+      background: #fff;
+      box-shadow: 0 0 2px 0 rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12);
+      border: 1px solid var(--grey-200);
+    }
+
+    .payment-option-item:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 40px 80px -8px rgba(145, 158, 171, 0.24);
+      border-color: var(--primary-main);
+      background: #fff;
+    }
+
+    .option-icon-wrapper {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border-radius: 20px;
+      background: rgba(0, 167, 111, 0.08);
+      color: var(--primary-main);
+    }
+
+    .payment-option-item:nth-of-type(2) .option-icon-wrapper {
+      background: rgba(0, 184, 217, 0.08);
+      color: #00B8D9;
+    }
+
+    .payment-option-item:nth-of-type(3) .option-icon-wrapper {
+      background: rgba(255, 171, 0, 0.08);
+      color: #FFAB00;
+    }
+
+    .option-content {
+      flex: 1;
+    }
+
+    .option-title {
+      font-weight: 700;
+      font-size: 19px;
+      color: var(--grey-900);
+      margin-bottom: 8px;
+    }
+
+    .option-description {
+      font-size: 14px;
+      color: var(--grey-600);
+      line-height: 1.6;
+    }
+
+    .option-arrow {
+      display: none;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(22, 28, 36, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-content {
+      background: #fff;
+      width: 100%;
+      max-width: 480px;
+      border-radius: 24px;
+      padding: 0;
+      position: relative;
+      box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      animation: modalFadeIn 0.3s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .modal-header {
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--grey-900);
+    }
+
+    .modal-body {
+      padding: 0 24px 32px;
+    }
+
+    .close-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      color: var(--grey-500);
+      transition: 0.2s;
+    }
+
+    .close-btn:hover {
+      background: var(--grey-100);
+      color: var(--grey-900);
+    }
+
+    /* Form Styling */
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey-600);
+      margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      color: var(--grey-500);
+      font-size: 20px;
+    }
+
+    .input-suffix {
+      position: absolute;
+      right: 14px;
+      color: var(--primary-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .modal-input-icon {
+      position: absolute;
+      left: 16px;
+      color: var(--grey-500);
+      pointer-events: none;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .minimal-input {
+      width: 100%;
+      height: 52px;
+      padding: 0 14px 0 14px;
+      border: 1px solid var(--grey-300);
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s;
+      background: #fff;
+    }
+
+    .input-wrapper .minimal-input {
+      padding-left: 40px;
+    }
+
+    .minimal-input:focus {
+      border-color: var(--grey-900);
+      box-shadow: 0 0 0 2px rgba(22, 28, 36, 0.05);
+    }
+
+    .btn-submit {
+      width: 100%;
+      height: 52px;
+      background: var(--primary-main);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 8px 16px 0 rgba(0, 167, 111, 0.24);
+    }
+
+    .btn-submit:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    /* QR UI */
+    .qr-container {
+      text-align: center;
+      padding: 8px 0;
+    }
+
+    .qr-box {
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 24px;
+      padding: 16px;
+      border: 1px dashed var(--grey-300);
+      border-radius: 20px;
+      background: var(--grey-100);
+    }
+
+    .qr-box img {
+      width: 100%;
+      height: 100%;
+      mix-blend-mode: multiply;
+    }
+
+    .qr-amount {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--grey-900);
+      margin-bottom: 8px;
+    }
+
+    .qr-subtitle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(0, 167, 111, 0.1);
+      color: var(--primary-main);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .status-waiting {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--grey-900);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* Tabs */
+    .tabs-header {
+      display: flex;
+      gap: 24px;
+      border-bottom: 1px solid var(--grey-200);
+      margin-bottom: 24px;
+    }
+
+    .tab-item {
+      padding: 12px 4px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--grey-500);
+      cursor: pointer;
+      position: relative;
+      transition: 0.2s;
+    }
+
+    .tab-item:hover {
+      color: var(--grey-900);
+    }
+
+    .tab-item.active {
+      color: var(--grey-900);
+    }
+
+    .tab-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--grey-900);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Card Preview */
+    .card-preview {
+      margin: 24px 0;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gift-card {
+      width: 200px;
+      height: 125px;
+      background: linear-gradient(135deg, #00695C 0%, #00897B 100%);
+      border-radius: 16px;
+      padding: 16px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 8px 16px rgba(0, 105, 92, 0.3);
+      flex-shrink: 0;
+    }
+
+    .card-header-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .card-logo {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      opacity: 0.9;
+    }
+
+    .card-balance {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .card-number-masked {
+      font-size: 13px;
+      letter-spacing: 2px;
+      opacity: 0.8;
+      margin: 4px 0;
+    }
+
+    .card-footer-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 10px;
+      opacity: 0.9;
+    }
+
+    .card-holder {
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .card-brand {
+      font-size: 9px;
+      opacity: 0.7;
+    }
+
+    .card-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-label {
+      font-size: 13px;
+      color: var(--grey-600);
+      font-weight: 500;
+    }
+
+    .info-value {
+      font-size: 14px;
+      color: var(--grey-900);
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-content">
+      <div class="logo">
+        <span style="font-weight: 800; font-size: 22px; color: #212B36; letter-spacing: -0.5px;">VLINKPAY</span>
+      </div>
+
+      <div class="user-card">
+        <div class="avatar">
+          <iconify-icon icon="solar:user-bold" width="24"></iconify-icon>
+        </div>
+        <div class="user-info">
+          <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Carlota Monteiro</div>
+          <div style="font-size: 13px; color: var(--grey-600);">Admin</div>
+        </div>
+      </div>
+
+      <div class="nav-section-title">OVERVIEW</div>
+
+      <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
+        <span>Homepage</span>
+      </a>
+
+      <a href="dashboard.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
+        <span>Dashboard</span>
+      </a>
+
+      <div class="nav-section-title">GIFT CARD CENTER</div>
+
+      <a href="#" class="nav-item ">
+        <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone" width="26"></iconify-icon></div>
+        <span>Gift & Voucher Management</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+
+      <div class="submenu">
+        <a href="my-purchase.html" class="sub-item "><span class="dot"></span>My Purchase</a>
+        <a href="#" class="sub-item "><span class="dot"></span>Merchant Map</a>
+        <a href="product-list.html" class="sub-item "><span class="dot"></span>Product Management</a>
+
+        <a href="digital-gifts-management.html" class="sub-item "><span class="dot"></span>VlinkPay Store</a>
+      </div>
+      <a href="marketing-tools.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon></div>
+        <span>Marketing Tools</span>
+      </a>
+      <a href="#" class="nav-item parent-active">
+        <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone" width="24"></iconify-icon>
+        </div>
+        <span>Payment Acceptance</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="gift-card-payment-box.html" class="sub-item active"><span class="dot"></span>Pay with Gift Card</a>
+        <a href="crypto-payment-box.html" class="sub-item "><span class="dot"></span>Pay with Crypto</a>
+      </div>
+
+      <a href="#" class="nav-item ">
+        <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+        <span>Settings</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="merchant-payment-setup.html" class="sub-item "><span class="dot"></span>Merchant Payment Setup</a>
+        <a href="benefits-setup.html" class="sub-item "><span class="dot"></span>Benefits Setup</a>
+      </div>
+
+      <a href="#" class="nav-item ">
+        <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
+        <span>Report</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="sales-order-list.html" class="sub-item "><span class="dot"></span>Sales Orders</a>
+        <a href="card-transaction-history-merchant.html" class="sub-item "><span class="dot"></span>Card Transaction
+          History</a>
+      </div>
+
+      <a href="crypto-card-list.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
+        <span>Crypto Card Management</span>
+      </a>
+
+      <div class="nav-section-title">APPS</div>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
+        <span>Notifications</span>
+        <span class="badge-outlined">32+</span>
+      </a>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon></div>
+        <span>AI Assistant</span>
+      </a>
+    </div>
+  </aside>
+
+  <header class="top-header">
+    <div class="header-info">Jan 14, 2026 10:05:53 AM (UTC)</div>
+    <div class="header-icons">
+      <div class="header-icon-btn">
+        <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
+      </div>
+      <div class="user-avatar-mini">
+        <iconify-icon icon="solar:user-circle-bold" width="32"></iconify-icon>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-header">
+      <h1 class="page-title">Gift Card Payment</h1>
+      <div class="breadcrumbs">
+        <span>Payment Acceptance</span>
+        <span class="breadcrumbs-dot"></span>
+        <span style="color: var(--grey-900); font-weight: 500;">Gift Card Payment</span>
+      </div>
+    </div>
+
+    <div class="payment-selection-container">
+      <div class="payment-options-list">
+        <!-- Option 1: Quick Pay -->
+        <div class="payment-option-item" onclick="openModal('modal-quick-pay')">
+          <div class="option-icon-wrapper">
+            <iconify-icon icon="solar:bolt-bold-duotone" width="40"></iconify-icon>
+          </div>
+          <div class="option-content">
+            <div class="option-title">Quick Pay</div>
+            <div class="option-description">Merchant inputs the amount. QR is generated with the exact value for
+              customer to scan.</div>
+          </div>
+        </div>
+
+        <!-- Option 2: Scan QR -->
+        <div class="payment-option-item">
+          <div class="option-icon-wrapper">
+            <iconify-icon icon="solar:qr-code-bold-duotone" width="40"></iconify-icon>
+          </div>
+          <div class="option-content">
+            <div class="option-title">Scan Gift Card QR</div>
+            <div class="option-description">Scan the customer's Gift Card QR Code directly to process the payment.</div>
+          </div>
+        </div>
+
+        <!-- Option 3: Manual Entry -->
+        <div class="payment-option-item" onclick="openModal('modal-card-details')">
+          <div class="option-icon-wrapper">
+            <iconify-icon icon="solar:card-bold-duotone" width="40"></iconify-icon>
+          </div>
+          <div class="option-content">
+            <div class="option-title">Enter Card Details</div>
+            <div class="option-description">Manually input card number and PIN to check balance or process payment.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal: Quick Pay Entry -->
+  <div id="modal-quick-pay" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">Quick Pay (QR Generation)</span>
+        <div class="close-btn" onclick="closeModal('modal-quick-pay')">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </div>
+      </div>
+      <div class="modal-body" id="quick-pay-form">
+        <div class="form-group">
+          <label class="form-label">Total Amount</label>
+          <div class="input-wrapper">
+            <span class="modal-input-icon">$</span>
+            <input type="number" class="minimal-input" placeholder="0.00" id="quick-pay-amount">
+          </div>
+        </div>
+        <button class="btn-submit" onclick="generateQR()">Generate Checkout QR</button>
+      </div>
+
+      <!-- QR Result -->
+      <div class="modal-body" id="quick-pay-qr" style="display: none;">
+        <div class="qr-container">
+          <div class="qr-box">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=VLINKPAY_PAYMENT_REQUEST"
+              alt="QR Code">
+          </div>
+          <div class="qr-amount" id="display-amount">$0.00</div>
+          <div class="qr-subtitle">
+            Pay with Gift Card
+          </div>
+          <div class="status-waiting">
+            <iconify-icon icon="solar:refresh-circle-bold-duotone" width="24" class="rotating"
+              style="color: var(--primary-main);"></iconify-icon>
+            Waiting for payment...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Enter Card Details -->
+  <div id="modal-card-details" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title"> Enter Card Details</span>
+        <div class="close-btn" onclick="closeModal('modal-card-details')">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </div>
+      </div>
+      <div class="modal-body">
+        <!-- Initial: Card Number Only -->
+        <div id="card-number-section">
+          <div class="form-group">
+            <label class="form-label">Card Number</label>
+            <div class="input-wrapper">
+              <iconify-icon icon="solar:card-bold-duotone" class="input-icon"></iconify-icon>
+              <input type="text" class="minimal-input" placeholder="Enter card number or scan..." id="card-number-input"
+                onkeypress="handleCardNumberEnter(event)">
+              <div class="input-suffix" onclick="openModal('modal-scan-qr')">
+                <iconify-icon icon="solar:qr-code-bold-duotone" width="24"></iconify-icon>
+              </div>
+            </div>
+          </div>
+          <button class="btn-submit" onclick="validateCard()">Confirm Payment</button>
+        </div>
+
+        <!-- After Card Validation: Payment Details -->
+        <div id="payment-details-section" style="display: none;">
+          <div class="form-group">
+            <label class="form-label">Card Number</label>
+            <div class="input-wrapper">
+              <iconify-icon icon="solar:card-bold-duotone" class="input-icon"></iconify-icon>
+              <input type="text" class="minimal-input" id="card-number-display" readonly>
+              <div class="input-suffix" onclick="openModal('modal-scan-qr')">
+                <iconify-icon icon="solar:qr-code-bold-duotone" width="24"></iconify-icon>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Amount</label>
+            <div class="input-wrapper">
+              <span class="modal-input-icon">$</span>
+              <input type="number" class="minimal-input" placeholder="0.00" id="payment-amount-input">
+            </div>
+          </div>
+
+          <!-- Card Preview -->
+          <div class="card-preview">
+            <img src="https://i.ibb.co/tMr10Cyz/download-7.png" alt="Gift Card Preview"
+              style="width: 200px; height: 125px; border-radius: 16px; object-fit: cover; flex-shrink: 0;">
+            <div class="card-info">
+              <div class="info-row">
+                <span class="info-label">Current Balance:</span>
+                <span class="info-value">$40.00</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Times Used:</span>
+                <span class="info-value">1</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Expiration:</span>
+                <span class="info-value">Mar 17, 2026</span>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-submit">Confirm Payment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Scan QR -->
+  <div id="modal-scan-qr" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">Scan Gift Card</span>
+        <div class="close-btn" onclick="closeModal('modal-scan-qr')">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="scanner-container">
+          <div class="scanner-frame">
+            <div class="scanner-line"></div>
+            <iconify-icon icon="solar:qr-code-bold-duotone" width="120"
+              style="opacity: 0.1; color: var(--grey-900);"></iconify-icon>
+          </div>
+          <div class="scanner-text">Position the QR code within the frame to scan automatically</div>
+          <!-- <button class="btn-submit" style="margin-top: 24px;">Upload from Gallery</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .scanner-container {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .scanner-frame {
+      width: 260px;
+      height: 260px;
+      margin: 0 auto 24px;
+      border: 2px solid var(--primary-main);
+      border-radius: 24px;
+      position: relative;
+      background: var(--grey-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .scanner-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--primary-main);
+      box-shadow: 0 0 15px var(--primary-main);
+      animation: scanMove 2.5s infinite linear;
+      z-index: 2;
+    }
+
+    .scanner-text {
+      font-size: 14px;
+      color: var(--grey-600);
+      max-width: 200px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    @keyframes scanMove {
+      0% {
+        top: 0;
+      }
+
+      50% {
+        top: 100%;
+      }
+
+      100% {
+        top: 0;
+      }
+    }
+
+    .rotating {
+      animation: rotate 2s linear infinite;
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+      if (id === 'modal-quick-pay') {
+        document.getElementById('quick-pay-form').style.display = 'block';
+        document.getElementById('quick-pay-qr').style.display = 'none';
+      }
+      if (id === 'modal-card-details') {
+        resetCardDetailsModal();
+      }
+    }
+
+    function generateQR() {
+      const amount = document.getElementById('quick-pay-amount').value || '0';
+      document.getElementById('display-amount').textContent = '$' + parseFloat(amount).toFixed(2);
+      // document.getElementById('quick-pay-form').style.display = 'none';
+      document.getElementById('quick-pay-qr').style.display = 'block';
+    }
+
+    function handleCardNumberEnter(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        validateCard();
+      }
+    }
+
+    function validateCard() {
+      const cardNumber = document.getElementById('card-number-input').value;
+      if (cardNumber && cardNumber.length >= 10) {
+        // Hide card number section
+        document.getElementById('card-number-section').style.display = 'none';
+        // Show payment details section
+        document.getElementById('payment-details-section').style.display = 'block';
+        // Set the card number in readonly field
+        document.getElementById('card-number-display').value = cardNumber;
+      }
+    }
+
+    function resetCardDetailsModal() {
+      document.getElementById('card-number-section').style.display = 'block';
+      document.getElementById('payment-details-section').style.display = 'none';
+      document.getElementById('card-number-input').value = '';
+      document.getElementById('payment-amount-input').value = '';
+    }
+
+    // Close on overlay click
+    window.onclick = function (event) {
+      if (event.target.classList.contains('modal-overlay')) {
+        closeModal(event.target.id);
+      }
+    }
+  </script>
+</body>
+
+</html>

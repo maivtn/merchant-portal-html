@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create Campaign - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="global.css">
+  <style>
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: var(--shadow-z1);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--grey-900);
+    }
+
+    .edit-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--grey-800);
+      margin-bottom: 8px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--grey-300);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: var(--grey-900);
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .template-list {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .template-item {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      padding: 4px;
+      transition: 0.2s;
+    }
+
+    .template-item.active {
+      border-color: var(--primary-main);
+      background: var(--primary-lighter);
+    }
+
+    .template-item img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .prize-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .prize-table th {
+      text-align: left;
+      padding: 12px 8px;
+      font-size: 13px;
+      color: var(--grey-600);
+      border: none;
+      background: transparent;
+    }
+
+    .prize-table td {
+      padding: 8px;
+      vertical-align: middle;
+      border-top: 1px solid var(--grey-200);
+    }
+
+    .prize-input {
+      padding: 8px 12px;
+      border: 1px solid var(--grey-300);
+      border-radius: 6px;
+      width: 100%;
+      outline: none;
+    }
+
+    .prize-id {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--grey-800);
+    }
+
+    .wheel-preview-container {
+      position: sticky;
+      top: 40px;
+    }
+
+    .wheel-wrapper {
+      perspective: 1000px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .wheel-outer {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: #B71C1C;
+      border: 12px solid #E65100;
+      position: relative;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.5);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Decoration lights on the border */
+    .wheel-outer::after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: -6px;
+      right: -6px;
+      bottom: -6px;
+      border-radius: 50%;
+      border: 2px dashed rgba(255, 255, 255, 0.6);
+      z-index: 1;
+    }
+
+    .wheel-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(#673AB7 0deg 45deg,
+          #E91E63 45deg 90deg,
+          #00BCD4 90deg 135deg,
+          #4CAF50 135deg 180deg,
+          #FF9800 180deg 225deg,
+          #F44336 225deg 270deg,
+          #9C27B0 270deg 315deg,
+          #3F51B5 315deg 360deg);
+      position: relative;
+      border: 4px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .wheel-pointer {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 50px;
+      background: #FFD700;
+      clip-path: polygon(50% 100%, 0 0, 100% 0);
+      z-index: 10;
+      filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    .center-button {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      background: radial-gradient(circle at center, #FFD700 0%, #B8860B 100%);
+      border: 6px solid #161C24;
+      border-radius: 50%;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .center-button-inner {
+      width: 80%;
+      height: 80%;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .prize-text {
+      position: absolute;
+      width: 50%;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0 50%;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding-left: 50px;
+      pointer-events: none;
+    }
+
+    .rule-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: var(--grey-800);
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .option-item {
+      border: 1px solid var(--grey-300);
+      padding: 16px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .option-item:hover {
+      background: var(--grey-100);
+    }
+
+    .option-item input {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--grey-800);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .btn-back:hover {
+      text-decoration: underline;
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      transition: 0.2s;
+    }
+
+    .btn-save {
+      background: var(--primary-main);
+      color: #fff;
+      box-shadow: 0 8px 16px 0 rgba(0, 167, 111, 0.24);
+    }
+
+    .btn-save:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-cancel {
+      background: var(--grey-200);
+      color: var(--grey-800);
+    }
+
+    .btn-cancel:hover {
+      background: var(--grey-300);
+    }
+
+    /* Header Styles */
+    .top-header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 72px;
+      padding: 0 40px;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: calc(100% - var(--sidebar-width));
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 90;
+      border-bottom: 1px dashed var(--grey-200);
+    }
+
+    .header-info {
+      font-size: 14px;
+      color: var(--grey-600);
+      font-weight: 400;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-icon-btn {
+      color: #919EAB;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+    }
+
+    .header-icon-btn:hover {
+      color: var(--grey-900);
+    }
+
+    .user-avatar-mini {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #DFE3E8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #637381;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-content">
+      <div class="logo">
+        <span style="font-weight: 800; font-size: 22px; color: #212B36; letter-spacing: -0.5px;">VLINKPAY</span>
+      </div>
+
+      <div class="user-card">
+        <div class="avatar">
+          <iconify-icon icon="solar:user-bold" width="24"></iconify-icon>
+        </div>
+        <div class="user-info">
+          <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Carlota Monteiro</div>
+          <div style="font-size: 13px; color: var(--grey-600);">Admin</div>
+        </div>
+      </div>
+
+      <div class="nav-section-title">OVERVIEW</div>
+
+      <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
+        <span>Homepage</span>
+      </a>
+
+      <a href="dashboard.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
+        <span>Dashboard</span>
+      </a>
+
+      <div class="nav-section-title">GIFT CARD CENTER</div>
+
+      <a href="#" class="nav-item parent-active">
+        <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone" width="26"></iconify-icon></div>
+        <span>Gift & Voucher Management</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+
+      <div class="submenu">
+        <a href="my-purchase.html" class="sub-item "><span class="dot"></span>My Purchase</a>
+        <a href="#" class="sub-item "><span class="dot"></span>Merchant Map</a>
+        <a href="product-list.html" class="sub-item "><span class="dot"></span>Product Management</a>
+        <a href="marketing-tools.html" class="sub-item active"><span class="dot"></span>Campaign Management</a>
+        <a href="digital-gifts-management.html" class="sub-item "><span class="dot"></span>VlinkPay Store</a>
+      </div>
+
+      <a href="marketing-tools.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon></div>
+        <span>Marketing Tools</span>
+      </a>
+
+      <a href="#" class="nav-item ">
+        <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone" width="24"></iconify-icon>
+        </div>
+        <span>Payment Acceptance</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="gift-card-payment-box.html" class="sub-item "><span class="dot"></span>Pay with Gift Card</a>
+        <a href="crypto-payment-box.html" class="sub-item "><span class="dot"></span>Pay with Crypto</a>
+      </div>
+
+      <a href="#" class="nav-item ">
+        <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+        <span>Settings</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="merchant-payment-setup.html" class="sub-item "><span class="dot"></span>Merchant Payment Setup</a>
+      </div>
+
+      <a href="#" class="nav-item ">
+        <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
+        <span>Report</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="sales-order-list.html" class="sub-item "><span class="dot"></span>Sales Orders</a>
+        <a href="card-transaction-history-merchant.html" class="sub-item "><span class="dot"></span>Card Transaction
+          History</a>
+      </div>
+
+      <a href="crypto-card-list.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
+        <span>Crypto Card Management</span>
+      </a>
+
+      <div class="nav-section-title">APPS</div>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
+        <span>Notifications</span>
+        <span class="badge-outlined">32+</span>
+      </a>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon></div>
+        <span>AI Assistant</span>
+      </a>
+    </div>
+  </aside>
+
+  <header class="top-header">
+    <div class="header-info">Jan 14, 2026 10:05:53 AM (UTC)</div>
+    <div class="header-icons">
+      <div class="header-icon-btn">
+        <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
+      </div>
+      <div class="user-avatar-mini">
+        <iconify-icon icon="solar:user-circle-bold" width="32"></iconify-icon>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-header">
+      <h1 class="page-title">Create Campaign</h1>
+      <div class="breadcrumbs">
+        <a href="marketing-tools.html">Gift & Voucher Management</a>
+        <span class="breadcrumbs-dot"></span>
+        <a href="marketing-tools.html">Campaign management</a>
+        <span class="breadcrumbs-dot"></span>
+        <span style="color: var(--grey-900); font-weight: 500;">Create New Campaign</span>
+      </div>
+    </div>
+
+    <!-- Campaign Information -->
+    <div class="card" style="max-width: 1400px; margin: 40px auto 24px;">
+      <div class="card-title">Campaign Information</div>
+
+      <form>
+        <div class="form-group">
+          <label class="form-label">Campaign Name <span style="color: #FF5630;">*</span></label>
+          <input type="text" class="form-control" value="" placeholder="Enter campaign name">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Status <span style="color: #FF5630;">*</span></label>
+          <select class="form-control">
+            <option value="active" selected>Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Start Date <span style="color: #FF5630;">*</span></label>
+            <input type="date" class="form-control" value="2024-06-01">
+          </div>
+          <div class="form-group">
+            <label class="form-label">End Date <span style="color: #FF5630;">*</span></label>
+            <input type="date" class="form-control" value="2024-08-31">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-control"
+            placeholder="Enter campaign description">The biggest promotion of the year for VLINKPAY's loyal customers. Up to 50% off on all types of service e-vouchers and digital gifts.</textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Applicable Products <span style="color: #FF5630;">*</span></label>
+          <p style="font-size: 13px; color: var(--grey-600); margin-bottom: 12px;">Select products that qualify for this
+            campaign.</p>
+
+          <!-- Selected Products Display -->
+          <div
+            style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; min-height: 40px; padding: 12px;   border-radius: 8px; background: var(--grey-100);">
+            <!-- Product Tag 1 -->
+            <span
+              style="display: inline-flex; align-items: center; gap: 6px; background: #fff; border: 1px solid var(--grey-300); border-radius: 6px; padding: 6px 10px; font-size: 13px; font-weight: 500; color: var(--grey-900);">
+              Starbucks Gift Card - $50
+              <iconify-icon icon="solar:close-circle-bold"
+                style="color: var(--grey-500); cursor: pointer; font-size: 16px;"
+                onclick="this.parentElement.remove()"></iconify-icon>
+            </span>
+            <!-- Product Tag 3 -->
+            <span
+              style="display: inline-flex; align-items: center; gap: 6px; background: #fff; border: 1px solid var(--grey-300); border-radius: 6px; padding: 6px 10px; font-size: 13px; font-weight: 500; color: var(--grey-900);">
+              iTunes Gift Card - $25
+              <iconify-icon icon="solar:close-circle-bold"
+                style="color: var(--grey-500); cursor: pointer; font-size: 16px;"
+                onclick="this.parentElement.remove()"></iconify-icon>
+            </span>
+          </div>
+
+          <!-- Add Products Button -->
+          <button type="button" onclick="document.getElementById('productModal').style.display='flex'"
+            style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--primary-main); color: #fff; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s;">
+            <iconify-icon icon="solar:add-circle-bold" width="20"></iconify-icon>
+            Add Products
+          </button>
+
+          <!-- Product Selection Modal -->
+          <div id="productModal" onclick="if(event.target === this) this.style.display='none'"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(22, 28, 36, 0.6); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center;">
+            <div onclick="event.stopPropagation()"
+              style="background: #fff; border-radius: 16px; width: 90%; max-width: 600px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+
+              <!-- Modal Header -->
+              <div
+                style="padding: 24px; border-bottom: 1px solid var(--grey-200); display: flex; align-items: center; justify-content: space-between;">
+                <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--grey-900);">Select Products</h3>
+                <button onclick="document.getElementById('productModal').style.display='none'"
+                  style="background: none; border: none; cursor: pointer; padding: 4px; display: flex; align-items: center; color: var(--grey-600); transition: 0.2s;">
+                  <iconify-icon icon="solar:close-circle-bold" width="28"></iconify-icon>
+                </button>
+              </div>
+
+              <!-- Search Box -->
+              <div style="padding: 16px 24px; border-bottom: 1px solid var(--grey-200);">
+                <div style="position: relative;">
+                  <iconify-icon icon="solar:magnifer-linear" width="20"
+                    style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--grey-500);"></iconify-icon>
+                  <input type="text" placeholder="Search by product name or Product ID..."
+                    style="width: 100%; padding: 10px 12px 10px 40px; border: 1px solid var(--grey-300); border-radius: 8px; font-size: 14px; outline: none; transition: 0.2s;"
+                    onfocus="this.style.borderColor='var(--primary-main)'"
+                    onblur="this.style.borderColor='var(--grey-300)'">
+                </div>
+              </div>
+
+              <!-- Product List -->
+              <div style="flex: 1; overflow-y: auto; padding: 16px 24px;">
+                <!-- Product Item 1 -->
+                <div
+                  onclick="this.style.background = this.style.background ? '' : 'var(--grey-100)'; var checkbox = this.querySelector('input[type=checkbox]'); checkbox.checked = this.style.background ? true : false;"
+                  style="display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-bottom: 8px; border: 1px solid transparent;"
+                  onmouseover="if(!this.style.background) this.style.borderColor='var(--grey-300)'"
+                  onmouseout="if(!this.style.background) this.style.borderColor='transparent'">
+                  <input type="checkbox"
+                    style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; accent-color: var(--primary-main); border-radius: 4px;"
+                    onclick="event.stopPropagation();">
+                  <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Starbucks Gift Card</div>
+                    <div style="font-size: 12px; color: var(--grey-600); margin-top: 4px;">Product ID: STB-GC-50</div>
+                  </div>
+                  <div style="font-weight: 700; font-size: 14px; color: var(--primary-main);">$45.00</div>
+                </div>
+
+                <!-- Product Item 2 -->
+                <div
+                  onclick="this.style.background = this.style.background ? '' : 'var(--grey-100)'; var checkbox = this.querySelector('input[type=checkbox]'); checkbox.checked = this.style.background ? true : false;"
+                  style="display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-bottom: 8px; border: 1px solid transparent;"
+                  onmouseover="if(!this.style.background) this.style.borderColor='var(--grey-300)'"
+                  onmouseout="if(!this.style.background) this.style.borderColor='transparent'">
+                  <input type="checkbox"
+                    style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; accent-color: var(--primary-main); border-radius: 4px;"
+                    onclick="event.stopPropagation();">
+                  <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Amazon Gift Card</div>
+                    <div style="font-size: 12px; color: var(--grey-600); margin-top: 4px;">Product ID: AMZ-GC-100</div>
+                  </div>
+                  <div style="font-weight: 700; font-size: 14px; color: var(--primary-main);">$95.00</div>
+                </div>
+
+                <!-- Product Item 3 -->
+                <div
+                  onclick="this.style.background = this.style.background ? '' : 'var(--grey-100)'; var checkbox = this.querySelector('input[type=checkbox]'); checkbox.checked = this.style.background ? true : false;"
+                  style="display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-bottom: 8px; border: 1px solid transparent;"
+                  onmouseover="if(!this.style.background) this.style.borderColor='var(--grey-300)'"
+                  onmouseout="if(!this.style.background) this.style.borderColor='transparent'">
+                  <input type="checkbox"
+                    style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; accent-color: var(--primary-main); border-radius: 4px;"
+                    onclick="event.stopPropagation();">
+                  <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Netflix Premium</div>
+                    <div style="font-size: 12px; color: var(--grey-600); margin-top: 4px;">Product ID: NFX-PM-1M</div>
+                  </div>
+                  <div style="font-weight: 700; font-size: 14px; color: var(--primary-main);">$15.99</div>
+                </div>
+
+                <!-- Product Item 4 -->
+                <div
+                  onclick="this.style.background = this.style.background ? '' : 'var(--grey-100)'; var checkbox = this.querySelector('input[type=checkbox]'); checkbox.checked = this.style.background ? true : false;"
+                  style="display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-bottom: 8px; border: 1px solid transparent;"
+                  onmouseover="if(!this.style.background) this.style.borderColor='var(--grey-300)'"
+                  onmouseout="if(!this.style.background) this.style.borderColor='transparent'">
+                  <input type="checkbox"
+                    style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; accent-color: var(--primary-main); border-radius: 4px;"
+                    onclick="event.stopPropagation();">
+                  <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Spotify Premium</div>
+                    <div style="font-size: 12px; color: var(--grey-600); margin-top: 4px;">Product ID: SPT-PM-3M</div>
+                  </div>
+                  <div style="font-weight: 700; font-size: 14px; color: var(--primary-main);">$29.97</div>
+                </div>
+
+                <!-- Product Item 5 -->
+                <div
+                  onclick="this.style.background = this.style.background ? '' : 'var(--grey-100)'; var checkbox = this.querySelector('input[type=checkbox]'); checkbox.checked = this.style.background ? true : false;"
+                  style="display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-bottom: 8px; border: 1px solid transparent;"
+                  onmouseover="if(!this.style.background) this.style.borderColor='var(--grey-300)'"
+                  onmouseout="if(!this.style.background) this.style.borderColor='transparent'">
+                  <input type="checkbox"
+                    style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; accent-color: var(--primary-main); border-radius: 4px;"
+                    onclick="event.stopPropagation();">
+                  <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">iTunes Gift Card</div>
+                    <div style="font-size: 12px; color: var(--grey-600); margin-top: 4px;">Product ID: ITN-GC-25</div>
+                  </div>
+                  <div style="font-weight: 700; font-size: 14px; color: var(--primary-main);">$23.00</div>
+                </div>
+
+                <!-- Product Item 6 -->
+                <div
+                  onclick="this.style.background = this.style.background ? '' : 'var(--grey-100)'; var checkbox = this.querySelector('input[type=checkbox]'); checkbox.checked = this.style.background ? true : false;"
+                  style="display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-bottom: 8px; border: 1px solid transparent;"
+                  onmouseover="if(!this.style.background) this.style.borderColor='var(--grey-300)'"
+                  onmouseout="if(!this.style.background) this.style.borderColor='transparent'">
+                  <input type="checkbox"
+                    style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; accent-color: var(--primary-main); border-radius: 4px;"
+                    onclick="event.stopPropagation();">
+                  <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Google Play Gift Card</div>
+                    <div style="font-size: 12px; color: var(--grey-600); margin-top: 4px;">Product ID: GGL-GC-50</div>
+                  </div>
+                  <div style="font-weight: 700; font-size: 14px; color: var(--primary-main);">$47.50</div>
+                </div>
+
+                <!-- Product Item 7 -->
+                <div
+                  onclick="this.style.background = this.style.background ? '' : 'var(--grey-100)'; var checkbox = this.querySelector('input[type=checkbox]'); checkbox.checked = this.style.background ? true : false;"
+                  style="display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-bottom: 8px; border: 1px solid transparent;"
+                  onmouseover="if(!this.style.background) this.style.borderColor='var(--grey-300)'"
+                  onmouseout="if(!this.style.background) this.style.borderColor='transparent'">
+                  <input type="checkbox"
+                    style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; accent-color: var(--primary-main); border-radius: 4px;"
+                    onclick="event.stopPropagation();">
+                  <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Xbox Game Pass</div>
+                    <div style="font-size: 12px; color: var(--grey-600); margin-top: 4px;">Product ID: XBX-GP-3M</div>
+                  </div>
+                  <div style="font-weight: 700; font-size: 14px; color: var(--primary-main);">$44.99</div>
+                </div>
+
+                <!-- Product Item 8 -->
+                <div
+                  onclick="this.style.background = this.style.background ? '' : 'var(--grey-100)'; var checkbox = this.querySelector('input[type=checkbox]'); checkbox.checked = this.style.background ? true : false;"
+                  style="display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-bottom: 8px; border: 1px solid transparent;"
+                  onmouseover="if(!this.style.background) this.style.borderColor='var(--grey-300)'"
+                  onmouseout="if(!this.style.background) this.style.borderColor='transparent'">
+                  <input type="checkbox"
+                    style="width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; accent-color: var(--primary-main); border-radius: 4px;"
+                    onclick="event.stopPropagation();">
+                  <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Steam Wallet</div>
+                    <div style="font-size: 12px; color: var(--grey-600); margin-top: 4px;">Product ID: STM-WLT-20</div>
+                  </div>
+                  <div style="font-weight: 700; font-size: 14px; color: var(--primary-main);">$20.00</div>
+                </div>
+              </div>
+
+              <!-- Modal Footer -->
+              <div
+                style="padding: 16px 24px; border-top: 1px solid var(--grey-200); display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 13px; color: var(--grey-600);">
+                  <span id="selectedProductCount" style="font-weight: 600; color: var(--primary-main);">0</span>
+                  products selected
+                </div>
+                <div style="display: flex; gap: 12px;">
+                  <button type="button" onclick="document.getElementById('productModal').style.display='none'"
+                    style="padding: 8px 20px; background: var(--grey-200); color: var(--grey-800); border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s;">
+                    Cancel
+                  </button>
+                  <button type="button" onclick="document.getElementById('productModal').style.display='none'"
+                    style="padding: 8px 20px; background: var(--primary-main); color: #fff; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; box-shadow: 0 8px 16px 0 rgba(0, 167, 111, 0.24);">
+                    Done
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="edit-layout">
+      <div class="left-content">
+        <!-- Spin Wheel Configuration -->
+        <div class="card">
+          <div class="card-title">Spin Wheel Settings</div>
+
+          <div class="form-group">
+            <label class="form-label">Select Spin Templates <span style="color: #FF5630;">*</span></label>
+            <div class="template-list">
+              <!-- Template 1: Classic Rainbow -->
+              <div class="template-item active">
+                <div
+                  style="width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#FF5630, #FFAB00, #36B37E, #00B8D9, #0052CC, #253858); border: 2px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
+                </div>
+              </div>
+              <!-- Template 2: Red & White -->
+              <div class="template-item">
+                <div
+                  style="width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#fff 0deg 45deg, #FF5630 45deg 90deg, #fff 90deg 135deg, #FF5630 135deg 180deg, #fff 180deg 225deg, #FF5630 225deg 270deg, #fff 270deg 315deg, #FF5630 315deg 360deg); border: 2px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
+                </div>
+              </div>
+              <!-- Template 3: Neon Blue -->
+              <div class="template-item">
+                <div
+                  style="width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#00B8D9, #0052CC, #00B8D9, #0052CC); border: 2px solid #00B8D9; box-shadow: 0 0 10px rgba(0, 184, 217, 0.5);">
+                </div>
+              </div>
+              <!-- Template 4: Golden Luxury -->
+              <div class="template-item">
+                <div
+                  style="width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#FFD700, #B8860B, #FFD700, #B8860B); border: 2px solid #FFD700; box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);">
+                </div>
+              </div>
+              <!-- Template 5: Green Mint -->
+              <div class="template-item">
+                <div
+                  style="width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#36B37E, #C8FAD6, #36B37E, #C8FAD6); border: 2px solid #36B37E; box-shadow: 0 0 5px rgba(54, 179, 126, 0.3);">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 24px; align-items: center; margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="form-label" style="margin-bottom: 0;">Number of Prizes <span
+                  style="color: #FF5630;">*</span></span>
+              <select class="form-control" style="width: 80px; padding: 6px 12px;">
+                <option>8</option>
+                <option>10</option>
+                <option>12</option>
+              </select>
+            </div>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer;">
+              <input type="checkbox"> Random Winning Percent
+            </label>
+          </div>
+
+          <table class="prize-table">
+            <thead>
+              <tr>
+                <th>Prize</th>
+                <th>Image</th>
+                <th>Prize Name</th>
+                <th style="width: 100px;">Quantity</th>
+                <th style="width: 120px;">Percent</th>
+                <th>Text Color</th>
+                <th>No Prize</th>
+                <th style="text-align: right; color: #FF5630; cursor: pointer; font-size: 13px;">Reset All</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Prize 1 -->
+              <tr>
+                <td><span class="prize-id">Prize 1<span style="color: #FF5630;">*</span></span></td>
+                <td><iconify-icon icon="solar:gallery-bold" width="32" style="color: var(--grey-300);"></iconify-icon>
+                </td>
+                <td><input type="text" class="prize-input" placeholder="Enter prize name" value="Voucher 50k"></td>
+                <td><input type="number" class="prize-input" value="10"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 4px;">
+                    <button class="prize-input" style="width: 32px; padding: 4px;">-</button>
+                    <span style="font-size: 13px; font-weight: 700;">12.5%</span>
+                    <button class="prize-input" style="width: 32px; padding: 4px;">+</button>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <div
+                    style="width: 32px; height: 32px; border: 1px solid var(--grey-300); border-radius: 8px; cursor: pointer; background: #fff; margin: 0 auto; box-shadow: inset 0 0 4px rgba(0,0,0,0.1);">
+                  </div>
+                </td>
+                <td style="text-align: center;"><input type="checkbox"></td>
+                <td style="text-align: right;"><iconify-icon icon="solar:trash-bin-trash-bold"
+                    style="color: #FF5630; cursor: pointer;"></iconify-icon></td>
+              </tr>
+              <!-- Prize 2 -->
+              <tr>
+                <td><span class="prize-id">Prize 2<span style="color: #FF5630;">*</span></span></td>
+                <td><iconify-icon icon="solar:gallery-bold" width="32" style="color: var(--grey-300);"></iconify-icon>
+                </td>
+                <td><input type="text" class="prize-input" placeholder="Enter prize name" value="IPhone 15 Pro"></td>
+                <td><input type="number" class="prize-input" value="1"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 4px;">
+                    <button class="prize-input" style="width: 32px; padding: 4px;">-</button>
+                    <span style="font-size: 13px; font-weight: 700;">12.5%</span>
+                    <button class="prize-input" style="width: 32px; padding: 4px;">+</button>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <div
+                    style="width: 32px; height: 32px; border: 1px solid var(--grey-300); border-radius: 8px; cursor: pointer; background: #fff; margin: 0 auto; box-shadow: inset 0 0 4px rgba(0,0,0,0.1);">
+                  </div>
+                </td>
+                <td style="text-align: center;"><input type="checkbox"></td>
+                <td style="text-align: right;"><iconify-icon icon="solar:trash-bin-trash-bold"
+                    style="color: #FF5630; cursor: pointer;"></iconify-icon></td>
+              </tr>
+              <!-- Prize 3 -->
+              <tr>
+                <td><span class="prize-id">Prize 3<span style="color: #FF5630;">*</span></span></td>
+                <td><iconify-icon icon="solar:gallery-bold" width="32" style="color: var(--grey-300);"></iconify-icon>
+                </td>
+                <td><input type="text" class="prize-input" placeholder="Enter prize name" value="Voucher 100k"></td>
+                <td><input type="number" class="prize-input" value="5"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 4px;">
+                    <button class="prize-input" style="width: 32px; padding: 4px;">-</button>
+                    <span style="font-size: 13px; font-weight: 700;">12.5%</span>
+                    <button class="prize-input" style="width: 32px; padding: 4px;">+</button>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <div
+                    style="width: 32px; height: 32px; border: 1px solid var(--grey-300); border-radius: 8px; cursor: pointer; background: #fff; margin: 0 auto; box-shadow: inset 0 0 4px rgba(0,0,0,0.1);">
+                  </div>
+                </td>
+                <td style="text-align: center;"><input type="checkbox"></td>
+                <td style="text-align: right;"><iconify-icon icon="solar:trash-bin-trash-bold"
+                    style="color: #FF5630; cursor: pointer;"></iconify-icon></td>
+              </tr>
+              <!-- Prize 4 -->
+              <tr>
+                <td><span class="prize-id">Prize 4<span style="color: #FF5630;">*</span></span></td>
+                <td><iconify-icon icon="solar:gallery-bold" width="32" style="color: var(--grey-300);"></iconify-icon>
+                </td>
+                <td><input type="text" class="prize-input" placeholder="Enter prize name" value="Digital Gift"></td>
+                <td><input type="number" class="prize-input" value="20"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 4px;">
+                    <button class="prize-input" style="width: 32px; padding: 4px;">-</button>
+                    <span style="font-size: 13px; font-weight: 700;">12.5%</span>
+                    <button class="prize-input" style="width: 32px; padding: 4px;">+</button>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <div
+                    style="width: 32px; height: 32px; border: 1px solid var(--grey-300); border-radius: 8px; cursor: pointer; background: #fff; margin: 0 auto; box-shadow: inset 0 0 4px rgba(0,0,0,0.1);">
+                  </div>
+                </td>
+                <td style="text-align: center;"><input type="checkbox"></td>
+                <td style="text-align: right;"><iconify-icon icon="solar:trash-bin-trash-bold"
+                    style="color: #FF5630; cursor: pointer;"></iconify-icon></td>
+              </tr>
+              <!-- Prize 5 -->
+              <tr>
+                <td><span class="prize-id">Prize 5<span style="color: #FF5630;">*</span></span></td>
+                <td><iconify-icon icon="solar:gallery-bold" width="32" style="color: var(--grey-300);"></iconify-icon>
+                </td>
+                <td><input type="text" class="prize-input" placeholder="Enter prize name" value="Better luck next time">
+                </td>
+                <td><input type="number" class="prize-input" value="100"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 4px;">
+                    <button class="prize-input" style="width: 32px; padding: 4px;">-</button>
+                    <span style="font-size: 13px; font-weight: 700;">12.5%</span>
+                    <button class="prize-input" style="width: 32px; padding: 4px;">+</button>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <div
+                    style="width: 32px; height: 32px; border: 1px solid var(--grey-300); border-radius: 8px; cursor: pointer; background: #fff; margin: 0 auto; box-shadow: inset 0 0 4px rgba(0,0,0,0.1);">
+                  </div>
+                </td>
+                <td style="text-align: center;"><input type="checkbox" checked></td>
+                <td style="text-align: right;"><iconify-icon icon="solar:trash-bin-trash-bold"
+                    style="color: #FF5630; cursor: pointer;"></iconify-icon></td>
+              </tr>
+              <!-- Prize 6 -->
+              <tr>
+                <td><span class="prize-id">Prize 6<span style="color: #FF5630;">*</span></span></td>
+                <td><iconify-icon icon="solar:gallery-bold" width="32" style="color: var(--grey-300);"></iconify-icon>
+                </td>
+                <td><input type="text" class="prize-input" placeholder="Enter prize name" value="Voucher 20k"></td>
+                <td><input type="number" class="prize-input" value="50"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 4px;">
+                    <button class="prize-input" style="width: 32px; padding: 4px;">-</button>
+                    <span style="font-size: 13px; font-weight: 700;">12.5%</span>
+                    <button class="prize-input" style="width: 32px; padding: 4px;">+</button>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <div
+                    style="width: 32px; height: 32px; border: 1px solid var(--grey-300); border-radius: 8px; cursor: pointer; background: #fff; margin: 0 auto; box-shadow: inset 0 0 4px rgba(0,0,0,0.1);">
+                  </div>
+                </td>
+                <td style="text-align: center;"><input type="checkbox"></td>
+                <td style="text-align: right;"><iconify-icon icon="solar:trash-bin-trash-bold"
+                    style="color: #FF5630; cursor: pointer;"></iconify-icon></td>
+              </tr>
+              <!-- Prize 7 -->
+              <tr>
+                <td><span class="prize-id">Prize 7<span style="color: #FF5630;">*</span></span></td>
+                <td><iconify-icon icon="solar:gallery-bold" width="32" style="color: var(--grey-300);"></iconify-icon>
+                </td>
+                <td><input type="text" class="prize-input" placeholder="Enter prize name" value="Cashback 5k"></td>
+                <td><input type="number" class="prize-input" value="200"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 4px;">
+                    <button class="prize-input" style="width: 32px; padding: 4px;">-</button>
+                    <span style="font-size: 13px; font-weight: 700;">12.5%</span>
+                    <button class="prize-input" style="width: 32px; padding: 4px;">+</button>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <div
+                    style="width: 32px; height: 32px; border: 1px solid var(--grey-300); border-radius: 8px; cursor: pointer; background: #fff; margin: 0 auto; box-shadow: inset 0 0 4px rgba(0,0,0,0.1);">
+                  </div>
+                </td>
+                <td style="text-align: center;"><input type="checkbox"></td>
+                <td style="text-align: right;"><iconify-icon icon="solar:trash-bin-trash-bold"
+                    style="color: #FF5630; cursor: pointer;"></iconify-icon></td>
+              </tr>
+              <!-- Prize 8 -->
+              <tr>
+                <td><span class="prize-id">Prize 8<span style="color: #FF5630;">*</span></span></td>
+                <td><iconify-icon icon="solar:gallery-bold" width="32" style="color: var(--grey-300);"></iconify-icon>
+                </td>
+                <td><input type="text" class="prize-input" placeholder="Enter prize name" value="Loyalty Points"></td>
+                <td><input type="number" class="prize-input" value="500"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 4px;">
+                    <button class="prize-input" style="width: 32px; padding: 4px;">-</button>
+                    <span style="font-size: 13px; font-weight: 700;">12.5%</span>
+                    <button class="prize-input" style="width: 32px; padding: 4px;">+</button>
+                  </div>
+                </td>
+                <td style="text-align: center;">
+                  <div
+                    style="width: 32px; height: 32px; border: 1px solid var(--grey-300); border-radius: 8px; cursor: pointer; background: #fff; margin: 0 auto; box-shadow: inset 0 0 4px rgba(0,0,0,0.1);">
+                  </div>
+                </td>
+                <td style="text-align: center;"><input type="checkbox"></td>
+                <td style="text-align: right;"><iconify-icon icon="solar:trash-bin-trash-bold"
+                    style="color: #FF5630; cursor: pointer;"></iconify-icon></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <button type="button"
+            style="margin-top: 16px; background: none; border: none; color: var(--primary-main); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+            <iconify-icon icon="mingcute:add-line"></iconify-icon> Add More
+          </button>
+        </div>
+      </div>
+
+      <div class="wheel-preview-container">
+        <div class="wheel-wrapper">
+          <div class="wheel-outer">
+            <div class="wheel-pointer"></div>
+            <div class="wheel-inner">
+              <div class="prize-text" style="transform: rotate(22.5deg);">Prize</div>
+              <div class="prize-text" style="transform: rotate(67.5deg);">Prize</div>
+              <div class="prize-text" style="transform: rotate(112.5deg);">Prize</div>
+              <div class="prize-text" style="transform: rotate(157.5deg);">Prize</div>
+              <div class="prize-text" style="transform: rotate(202.5deg);">Prize</div>
+              <div class="prize-text" style="transform: rotate(247.5deg);">Prize</div>
+              <div class="prize-text" style="transform: rotate(292.5deg);">Prize</div>
+              <div class="prize-text" style="transform: rotate(337.5deg);">Prize</div>
+            </div>
+            <div class="center-button">
+              <div class="center-button-inner"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="padding: 20px;">
+          <div
+            style="text-align: center; margin-bottom: 20px; font-weight: 700; font-size: 14px; color: var(--grey-600);">
+            Center Button Setting</div>
+          <div
+            style="width: 80px; height: 80px; background: #000; border: 5px solid #FFD700; border-radius: 50%; margin: 0 auto 20px;">
+          </div>
+
+          <div
+            style="display: flex; justify-content: space-around; font-size: 12px; font-weight: 700; color: var(--primary-main); cursor: pointer; margin-bottom: 20px;">
+            <span style="display: flex; align-items: center; gap: 4px;"><iconify-icon
+                icon="solar:upload-bold"></iconify-icon> Upload Logo</span>
+            <span style="display: flex; align-items: center; gap: 4px; color: var(--grey-800);"><iconify-icon
+                icon="solar:text-bold"></iconify-icon> Enter Text</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+            <span>Background Color:</span>
+            <div
+              style="width: 24px; height: 24px; background: #FFD700; border-radius: 4px; border: 1px solid var(--grey-300);">
+            </div>
+          </div>
+
+          <div
+            style="margin-top: 20px; text-align: center; color: #FF5630; font-size: 13px; font-weight: 700; cursor: pointer;">
+            <iconify-icon icon="solar:restart-bold"></iconify-icon> Reset to Default
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rules & Final Options -->
+    <div class="card" style="max-width: 1400px; margin: 0 auto 24px;">
+      <div class="card-title">Game Rules</div>
+      <div class="rule-item"><input type="checkbox"> Set Campaign Time Range</div>
+      <div class="rule-item"><input type="checkbox"> Provider Spin Credit</div>
+
+      <div style="margin-top: 32px;">
+        <div class="form-label">Select Option</div>
+        <div class="option-grid">
+          <label class="option-item">
+            <input type="radio" name="req-opt" checked>
+            <div>
+              <div style="font-weight: 700; font-size: 14px;">No Require</div>
+            </div>
+          </label>
+          <label class="option-item">
+            <input type="radio" name="req-opt">
+            <div>
+              <div style="font-weight: 700; font-size: 14px;">Require Join Campaign</div>
+            </div>
+          </label>
+          <label class="option-item">
+            <input type="radio" name="req-opt">
+            <div>
+              <div style="font-weight: 700; font-size: 14px;">Require Claim Reward</div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row"
+      style="margin-bottom: 80px; max-width: 1400px; margin: 0 auto 80px; display: flex; justify-content: flex-end; gap: 12px;">
+      <button type="button" class="btn btn-cancel"
+        onclick="window.location.href='marketing-details.html'">Cancel</button>
+      <button type="submit" class="btn btn-save">Save Changes</button>
+    </div>
+    </div>
+  </main>
+</body>
+
+</html>

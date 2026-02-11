@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Merchant Payment Setup - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="global.css">
+  <style>
+    .setup-container {
+      margin: 0 auto;
+    }
+
+    /* Card Wrapper */
+    .settings-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow-z1);
+      width: 700px;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--grey-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    /* Radio Group - Minimalist Style */
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      padding: 10px 16px;
+      border: 1px solid var(--grey-200);
+      border-radius: 12px;
+      transition: 0.2s;
+    }
+
+    .radio-item:hover {
+      background: var(--grey-100);
+      border-color: var(--grey-300);
+    }
+
+    .radio-item.active {
+      border-color: var(--primary-main);
+      background: rgba(0, 167, 111, 0.04);
+    }
+
+    .radio-circle {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--grey-400);
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+      flex-shrink: 0;
+      background: #fff;
+    }
+
+    .radio-item.active .radio-circle {
+      border-color: var(--primary-main);
+    }
+
+    .radio-item.active .radio-circle::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--primary-main);
+      border-radius: 50%;
+    }
+
+    .radio-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--grey-800);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .info-icon {
+      color: var(--grey-500);
+      font-size: 18px;
+    }
+
+    /* Coin List Styles */
+    .coin-settings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--grey-200);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .coin-header {
+      display: grid;
+      grid-template-columns: 60px 200px 1fr;
+      padding: 12px 24px;
+      background: var(--grey-100);
+      border-bottom: 1px solid var(--grey-200);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--grey-600);
+      text-transform: uppercase;
+    }
+
+    .header-label-group {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    .coin-item {
+      display: grid;
+      grid-template-columns: 60px 200px 1fr;
+      align-items: center;
+      padding: 12px 24px;
+      border-bottom: 1px dashed var(--grey-200);
+    }
+
+    .coin-item:last-child {
+      border-bottom: none;
+    }
+
+    /* Switch toggle - Minimal Multi-step/Settings style */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(145, 158, 171, 0.48);
+      transition: 0.4s;
+      border-radius: 20px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    input:checked+.slider {
+      background-color: #00A76F;
+    }
+
+    input:checked+.slider:before {
+      transform: translateX(16px);
+    }
+
+    .coin-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .coin-icon-wrapper {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--grey-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .coin-icon,
+    .coin-icon-wrapper img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .coin-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--grey-800);
+    }
+
+    .input-box-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .input-percent-wrapper {
+      display: flex;
+      align-items: center;
+      background: var(--grey-100);
+      border: 1px solid transparent;
+      padding: 8px 12px;
+      border-radius: 8px;
+      width: 100px;
+      transition: 0.2s;
+    }
+
+    .input-percent-wrapper:focus-within {
+      background: #fff;
+      border-color: var(--grey-900);
+    }
+
+    .input-percent-wrapper input {
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: right;
+      font-weight: 700;
+      font-size: 14px;
+      outline: none;
+      color: var(--grey-800);
+    }
+
+    .input-percent-wrapper span {
+      color: var(--grey-500);
+      font-size: 13px;
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    .usdv-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--grey-500);
+      margin-left: 4px;
+    }
+
+    /* Confirm Button */
+    .btn-save {
+      background: var(--primary-main);
+      color: #fff;
+      border: none;
+      padding: 12px 40px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: block;
+      margin: 24px auto 16px;
+      transition: 0.2s;
+      min-width: 220px;
+      box-shadow: 0 8px 16px 0 rgba(0, 167, 111, 0.24);
+    }
+
+    .btn-save:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px -4px rgba(0, 167, 111, 0.32);
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 13px;
+      color: var(--grey-600);
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+
+    .footer-note a {
+      color: var(--primary-main);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    /* Slider Styles */
+    .split-slider-container {
+      margin-top: 16px;
+      margin-top: 16px;
+      margin-bottom: 24px;
+      display: none;
+      width: 100%;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .slider-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--grey-800);
+      white-space: nowrap;
+    }
+
+    .slider-label b {
+      color: var(--primary-main);
+    }
+
+    .range-wrapper {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .custom-range {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      background: var(--grey-300);
+      border-radius: 4px;
+      outline: none;
+    }
+
+    .custom-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      background: #fff;
+      border: 6px solid var(--primary-main);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-range::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      background: #fff;
+      border: 6px solid var(--primary-main);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-content">
+      <div class="logo">
+        <span style="font-weight: 800; font-size: 22px; color: #212B36; letter-spacing: -0.5px;">VLINKPAY</span>
+      </div>
+
+      <div class="user-card">
+        <div class="avatar">
+          <iconify-icon icon="solar:user-bold" width="24"></iconify-icon>
+        </div>
+        <div class="user-info">
+          <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Carlota Monteiro</div>
+          <div style="font-size: 13px; color: var(--grey-600);">Admin</div>
+        </div>
+      </div>
+
+      <div class="nav-section-title">OVERVIEW</div>
+
+      <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
+        <span>Homepage</span>
+      </a>
+
+      <a href="dashboard.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
+        <span>Dashboard</span>
+      </a>
+
+      <div class="nav-section-title">GIFT CARD CENTER</div>
+
+      <a href="#" class="nav-item ">
+        <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone" width="26"></iconify-icon></div>
+        <span>Gift & Voucher Management</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+
+      <div class="submenu">
+        <a href="my-purchase.html" class="sub-item "><span class="dot"></span>My Purchase</a>
+        <a href="#" class="sub-item "><span class="dot"></span>Merchant Map</a>
+        <a href="product-list.html" class="sub-item "><span class="dot"></span>Product Management</a>
+
+        <a href="digital-gifts-management.html" class="sub-item "><span class="dot"></span>VlinkPay Store</a>
+      </div>
+
+      <a href="marketing-tools.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon></div>
+        <span>Marketing Tools</span>
+      </a>
+
+      <a href="#" class="nav-item ">
+        <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone" width="24"></iconify-icon>
+        </div>
+        <span>Payment Acceptance</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="gift-card-payment-box.html" class="sub-item "><span class="dot"></span>Pay with Gift Card</a>
+        <a href="crypto-payment-box.html" class="sub-item "><span class="dot"></span>Pay with Crypto</a>
+      </div>
+
+      <a href="#" class="nav-item parent-active">
+        <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+        <span>Settings</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="merchant-payment-setup.html" class="sub-item active"><span class="dot"></span>Merchant Payment
+          Setup</a>
+        <a href="benefits-setup.html" class="sub-item "><span class="dot"></span>Benefits Setup</a>
+      </div>
+
+      <a href="#" class="nav-item ">
+        <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
+        <span>Report</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="sales-order-list.html" class="sub-item "><span class="dot"></span>Sales Orders</a>
+        <a href="card-transaction-history-merchant.html" class="sub-item "><span class="dot"></span>Card Transaction
+          History</a>
+      </div>
+
+      <a href="crypto-card-list.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
+        <span>Crypto Card Management</span>
+      </a>
+
+      <div class="nav-section-title">APPS</div>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
+        <span>Notifications</span>
+        <span class="badge-outlined">32+</span>
+      </a>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon></div>
+        <span>AI Assistant</span>
+      </a>
+    </div>
+  </aside>
+
+  <header class="top-header">
+    <div class="header-info">Jan 14, 2026 10:05:53 AM (UTC)</div>
+    <div class="header-icons">
+      <div class="header-icon-btn">
+        <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
+      </div>
+      <div class="user-avatar-mini">
+        <iconify-icon icon="solar:user-circle-bold" width="32"></iconify-icon>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-header">
+      <h1 class="page-title">Merchant Payment Setup</h1>
+      <div class="breadcrumbs">
+        <a href="#">Settings</a>
+        <span class="breadcrumbs-dot"></span>
+        <span style="color: var(--grey-900); font-weight: 500;">Merchant Payment Setup</span>
+      </div>
+    </div>
+    <div class="setup-container">
+      <div class="settings-card">
+        <p class="page-description">Set up how received crypto will be converted to USDV, with a <b>1.5%</b> swap fee
+          applied when converting.</p>
+
+        <div class="radio-group">
+          <div class="radio-item" onclick="toggleConversionMode('auto')">
+            <div class="radio-circle"></div>
+            <div class="radio-label">
+              Auto Convert to USDV
+              <iconify-icon icon="solar:info-circle-outline" class="info-icon"></iconify-icon>
+            </div>
+          </div>
+
+          <div class="radio-item-wrapper">
+            <div class="radio-item" onclick="toggleConversionMode('split')">
+              <div class="radio-circle"></div>
+              <div class="radio-label">
+                Split All Between Crypto & USDV
+                <iconify-icon icon="solar:info-circle-outline" class="info-icon"></iconify-icon>
+              </div>
+            </div>
+            <div id="split-slider" class="split-slider-container">
+              <div class="slider-row">
+                <span class="slider-label">Crypto <b id="crypto-val">0%</b></span>
+                <div class="range-wrapper">
+                  <input type="range" class="custom-range" value="0" min="0" max="100" id="split-range">
+                </div>
+                <span class="slider-label">USDV <b id="usdv-val">100%</b></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="radio-item active" onclick="toggleConversionMode('preferences')">
+            <div class="radio-circle"></div>
+            <div class="radio-label">
+              Set Preferences per Coin
+              <iconify-icon icon="solar:info-circle-outline" class="info-icon"></iconify-icon>
+            </div>
+          </div>
+        </div>
+
+        <div id="coin-settings-container">
+          <span class="section-label">Individual Coin Preferences</span>
+          <div id="coin-settings" class="coin-settings-list">
+            <div class="coin-header">
+              <span>Status</span>
+              <span>Asset</span>
+              <div class="header-label-group">
+                <span>Receive Coin</span>
+                <span>Convert to USDV</span>
+              </div>
+            </div>
+            <!-- VMM v2 -->
+            <div class="coin-item">
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+              <div class="coin-info">
+                <div class="coin-icon-wrapper">
+                  <img
+                    src="https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/VMMV2.png"
+                    width="100%" alt="">
+                </div>
+                <span class="coin-name">VMM v2</span>
+              </div>
+              <div class="input-box-group">
+                <div class="input-percent-wrapper">
+                  <input type="text" value="0">
+                  <span>%</span>
+                </div>
+                <div class="input-percent-wrapper">
+                  <input type="text" value="100">
+                  <span>%</span>
+                </div>
+                <span class="usdv-label">USDV</span>
+              </div>
+            </div>
+
+            <!-- VLG -->
+            <div class="coin-item">
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+              <div class="coin-info">
+                <div class="coin-icon-wrapper">
+                  <img
+                    src="https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/VLG.png"
+                    width="100%" alt="">
+                </div>
+                <span class="coin-name">VLG</span>
+              </div>
+              <div class="input-box-group">
+                <div class="input-percent-wrapper">
+                  <input type="text" value="0">
+                  <span>%</span>
+                </div>
+                <div class="input-percent-wrapper">
+                  <input type="text" value="100">
+                  <span>%</span>
+                </div>
+                <span class="usdv-label">USDV</span>
+              </div>
+            </div>
+
+            <!-- USDT -->
+            <div class="coin-item">
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+              <div class="coin-info">
+                <div class="coin-icon-wrapper">
+                  <iconify-icon icon="cryptocurrency:usdt" class="coin-icon" style="color: #26a17b;"></iconify-icon>
+                </div>
+                <span class="coin-name">USDT</span>
+              </div>
+              <div class="input-box-group">
+                <div class="input-percent-wrapper">
+                  <input type="text" value="0">
+                  <span>%</span>
+                </div>
+                <div class="input-percent-wrapper">
+                  <input type="text" value="100">
+                  <span>%</span>
+                </div>
+                <span class="usdv-label">USDV</span>
+              </div>
+            </div>
+
+            <!-- USDC -->
+            <div class="coin-item">
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+              <div class="coin-info">
+                <div class="coin-icon-wrapper">
+                  <iconify-icon icon="cryptocurrency:usdc" class="coin-icon" style="color: #2775ca;"></iconify-icon>
+                </div>
+                <span class="coin-name">USDC</span>
+              </div>
+              <div class="input-box-group">
+                <div class="input-percent-wrapper">
+                  <input type="text" value="0">
+                  <span>%</span>
+                </div>
+                <div class="input-percent-wrapper">
+                  <input type="text" value="100">
+                  <span>%</span>
+                </div>
+                <span class="usdv-label">USDV</span>
+              </div>
+            </div>
+
+            <!-- BTC -->
+            <div class="coin-item">
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+              <div class="coin-info">
+                <div class="coin-icon-wrapper">
+                  <iconify-icon icon="cryptocurrency:btc" class="coin-icon" style="color: #f7931a;"></iconify-icon>
+                </div>
+                <span class="coin-name">BTC</span>
+              </div>
+              <div class="input-box-group">
+                <div class="input-percent-wrapper">
+                  <input type="text" value="0">
+                  <span>%</span>
+                </div>
+                <div class="input-percent-wrapper">
+                  <input type="text" value="100">
+                  <span>%</span>
+                </div>
+                <span class="usdv-label">USDV</span>
+              </div>
+            </div>
+
+            <!-- ETH -->
+            <div class="coin-item">
+              <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+              </label>
+              <div class="coin-info">
+                <div class="coin-icon-wrapper">
+                  <iconify-icon icon="cryptocurrency:eth" class="coin-icon" style="color: #627eea;"></iconify-icon>
+                </div>
+                <span class="coin-name">ETH</span>
+              </div>
+              <div class="input-box-group">
+                <div class="input-percent-wrapper">
+                  <input type="text" value="0">
+                  <span>%</span>
+                </div>
+                <div class="input-percent-wrapper">
+                  <input type="text" value="100">
+                  <span>%</span>
+                </div>
+                <span class="usdv-label">USDV</span>
+              </div>
+            </div>
+
+            <!-- Dogecoin -->
+            <div class="coin-item">
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+              <div class="coin-info">
+                <div class="coin-icon-wrapper">
+                  <iconify-icon icon="cryptocurrency:doge" class="coin-icon" style="color: #c2a633;"></iconify-icon>
+                </div>
+                <span class="coin-name">Dogecoin</span>
+              </div>
+              <div class="input-box-group">
+                <div class="input-percent-wrapper">
+                  <input type="text" value="0">
+                  <span>%</span>
+                </div>
+                <div class="input-percent-wrapper">
+                  <input type="text" value="100">
+                  <span>%</span>
+                </div>
+                <span class="usdv-label">USDV</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-save">Confirm & Save Changes</button>
+      </div>
+
+      <div class="footer-note" style="margin-top: 24px;">
+        By saving changes, you agree to the <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function toggleConversionMode(mode) {
+      const coinContainer = document.getElementById('coin-settings-container');
+      const splitSlider = document.getElementById('split-slider');
+
+      // Hide all optional sections first
+      coinContainer.style.display = 'none';
+      splitSlider.style.display = 'none';
+
+      if (mode === 'preferences') {
+        coinContainer.style.display = 'block';
+      } else if (mode === 'split') {
+        splitSlider.style.display = 'block';
+      }
+    }
+
+    // Slider Logic
+    const rangeInput = document.getElementById('split-range');
+    const cryptoVal = document.getElementById('crypto-val');
+    const usdvVal = document.getElementById('usdv-val');
+
+    if (rangeInput) {
+      rangeInput.addEventListener('input', (e) => {
+        const val = e.target.value;
+        cryptoVal.innerText = `${val}%`;
+        usdvVal.innerText = `${100 - val}%`;
+      });
+    }
+
+    // Initialize radio selection and handle click
+    document.querySelectorAll('.radio-item').forEach(item => {
+      item.addEventListener('click', function () {
+        document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // Run once on load to set initial state based on active class
+    window.onload = () => {
+      const activeItem = document.querySelector('.radio-item.active');
+      if (activeItem) {
+        // If it's the "preferences" one (3rd item), show it
+        if (activeItem.innerText.includes('Set Preferences')) {
+          toggleConversionMode('preferences');
+        }
+      }
+    };
+  </script>
+</body>
+
+</html>

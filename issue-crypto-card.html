@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Issue Crypto Card - VLINKPAY</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="global.css">
+    <style>
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .preview-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-z1);
+            position: sticky;
+            top: 112px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: var(--shadow-z1);
+        }
+
+        .crypto-card-preview {
+            width: 100%;
+            aspect-ratio: 1.6 / 1;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.12), 0 0 2px 0 rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .crypto-card-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .promo-banner {
+            background: rgba(0, 167, 111, 0.08);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--primary-main);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .form-section {
+            margin-bottom: 32px;
+        }
+
+        .form-section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--grey-900);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            margin-bottom: 10px;
+        }
+
+        .crypto-item {
+            border: 1px solid var(--grey-300);
+            border-radius: 6px;
+            padding: 6px 4px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            text-align: center;
+        }
+
+        .crypto-item:hover {
+            border-color: var(--grey-400);
+            background: var(--grey-50);
+        }
+
+        .crypto-item.active {
+            border-color: var(--primary-main);
+            background: rgba(0, 167, 111, 0.04);
+        }
+
+        .crypto-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--grey-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--grey-700);
+            flex-shrink: 0;
+        }
+
+        .crypto-item.active .crypto-icon {
+            background: var(--primary-lighter);
+            color: var(--primary-dark);
+        }
+
+        .crypto-info {
+            flex: 1;
+        }
+
+        .crypto-name {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--grey-900);
+            line-height: 1.1;
+        }
+
+        .crypto-symbol {
+            font-size: 9px;
+            color: var(--grey-600);
+        }
+
+        .selected-cryptos-list {
+            display: none;
+            background: var(--grey-100);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+
+        .selected-crypto-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
+            margin-bottom: 6px;
+        }
+
+        .selected-crypto-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .selected-crypto-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .crypto-icon-small {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary-lighter);
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .selected-crypto-amount {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .crypto-amount-input {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .crypto-amount-input span {
+            position: absolute;
+            left: 10px;
+            color: var(--grey-600);
+            font-weight: 600;
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        .crypto-amount-input input {
+            width: 110px;
+            height: 36px;
+            padding: 0 10px 0 24px;
+            border: 1px solid var(--grey-300);
+            border-radius: 6px;
+            outline: none;
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--grey-900);
+            font-size: 13px;
+            background: #fff;
+            transition: all 0.2s;
+        }
+
+        .crypto-amount-input input:focus {
+            border-color: var(--primary-main);
+            background: rgba(0, 167, 111, 0.02);
+        }
+
+        .crypto-amount-input input::placeholder {
+            color: var(--grey-400);
+            font-weight: 500;
+        }
+
+        .remove-crypto-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            color: var(--grey-500);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+
+        .remove-crypto-btn:hover {
+            background: #FFE4DE;
+            color: #FF5630;
+        }
+
+        .amount-item {
+            border: 1px solid var(--grey-300);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--grey-600);
+            transition: 0.2s;
+            background: #fff;
+        }
+
+        .amount-item:hover {
+            border-color: var(--grey-600);
+        }
+
+        .amount-item.active {
+            border-color: var(--primary-main);
+            color: var(--primary-main);
+            background: rgba(0, 167, 111, 0.08);
+            border-width: 1.5px;
+        }
+
+        .custom-amount-input {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .custom-amount-input span {
+            position: absolute;
+            left: 12px;
+            color: var(--grey-500);
+            font-weight: 700;
+        }
+
+        .custom-amount-input input {
+            padding-left: 28px !important;
+            width: 100%;
+            height: 46px;
+            border: 1px solid var(--grey-300);
+            border-radius: 8px;
+            outline: none;
+            font-family: inherit;
+            font-weight: 700;
+            color: var(--grey-900);
+            font-size: 15px;
+        }
+
+        .custom-amount-input input:focus {
+            border-color: var(--grey-900);
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--grey-300);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--grey-600);
+            transition: 0.2s;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .qty-btn:hover {
+            border-color: var(--grey-600);
+            background: var(--grey-100);
+        }
+
+        .qty-value {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--grey-900);
+            min-width: 32px;
+            text-align: center;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 46px;
+            padding: 12px 16px;
+            border: 1px solid var(--grey-300);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #fff;
+            transition: 0.2s;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--grey-900);
+        }
+
+        .btn-issue {
+            width: 100%;
+            background: var(--primary-main);
+            color: #fff;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 16px 0 rgba(0, 167, 111, 0.24);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 32px;
+        }
+
+        .btn-issue:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px 0 rgba(0, 167, 111, 0.3);
+        }
+
+        .card-summary {
+            border-top: 1px dashed var(--grey-300);
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px dashed var(--grey-300);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--grey-900);
+        }
+
+        .fee-breakdown {
+            background: var(--grey-100);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+
+        .fee-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--grey-600);
+            margin-bottom: 6px;
+        }
+
+        .fee-row:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <div class="logo">
+                <span style="font-weight: 800; font-size: 22px; color: #212B36; letter-spacing: -0.5px;">VLINKPAY</span>
+            </div>
+
+            <div class="user-card">
+                <div class="avatar">
+                    <iconify-icon icon="solar:user-bold" width="24"></iconify-icon>
+                </div>
+                <div class="user-info">
+                    <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Carlota Monteiro</div>
+                    <div style="font-size: 13px; color: var(--grey-600);">Admin</div>
+                </div>
+            </div>
+
+            <div class="nav-section-title">OVERVIEW</div>
+
+            <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
+                <span>Homepage</span>
+            </a>
+
+            <a href="dashboard.html" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
+                <span>Dashboard</span>
+            </a>
+
+            <div class="nav-section-title">GIFT CARD CENTER</div>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone"
+                        width="26"></iconify-icon></div>
+                <span>Gift & Voucher Management</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+
+            <div class="submenu">
+                <a href="my-purchase.html" class="sub-item"><span class="dot"></span>My Purchase</a>
+                <a href="#" class="sub-item"><span class="dot"></span>Merchant Map</a>
+                <a href="product-list.html" class="sub-item"><span class="dot"></span>Product Management</a>
+                <a href="digital-gifts-management.html" class="sub-item"><span class="dot"></span>VlinkPay Store</a>
+            </div>
+
+            <a href="crypto-card-list.html" class="nav-item parent-active">
+                <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
+                <span>Crypto Card Management</span>
+            </a>
+
+            <a href="marketing-tools.html" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon>
+                </div>
+                <span>Marketing Tools</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone"
+                        width="24"></iconify-icon>
+                </div>
+                <span>Payment Acceptance</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+            <div class="submenu">
+                <a href="gift-card-payment-box.html" class="sub-item"><span class="dot"></span>Pay with Gift Card</a>
+                <a href="crypto-payment-box.html" class="sub-item"><span class="dot"></span>Pay with Crypto</a>
+            </div>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+                <span>Settings</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+            <div class="submenu">
+                <a href="merchant-payment-setup.html" class="sub-item"><span class="dot"></span>Merchant Payment
+                    Setup</a>
+                <a href="benefits-setup.html" class="sub-item"><span class="dot"></span>Benefits Setup</a>
+            </div>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
+                <span>Report</span>
+                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+            </a>
+            <div class="submenu">
+                <a href="sales-order-list.html" class="sub-item"><span class="dot"></span>Sales Orders</a>
+                <a href="card-transaction-history-merchant.html" class="sub-item"><span class="dot"></span>Card
+                    Transaction
+                    History</a>
+            </div>
+
+            <div class="nav-section-title">APPS</div>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
+                <span>Notifications</span>
+                <span class="badge-outlined">32+</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon>
+                </div>
+                <span>AI Assistant</span>
+            </a>
+        </div>
+    </aside>
+
+    <header class="top-header">
+        <div class="header-info">Jan 27, 2026 10:05:53 AM (UTC)</div>
+        <div class="header-icons">
+            <div class="header-icon-btn">
+                <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
+            </div>
+            <div class="user-avatar-mini">
+                <iconify-icon icon="solar:user-circle-bold" width="32"></iconify-icon>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="page-header">
+            <a href="crypto-card-list.html" class="back-btn">
+                <iconify-icon icon="eva:arrow-ios-back-fill" width="18"></iconify-icon>
+                Back
+            </a>
+            <h1 class="page-title" style="margin: 0;">Issue Crypto Card</h1>
+            <div class="breadcrumbs" style="margin-top: 8px;">
+                <a href="crypto-card-list.html">Crypto Card Management</a>
+                <span class="breadcrumbs-dot"></span>
+                <span style="color: var(--grey-900); font-weight: 500;">Issue Card</span>
+            </div>
+        </div>
+
+        <div class="layout-grid">
+            <!-- Left Column: Preview -->
+            <div class="preview-card">
+                <div class="crypto-card-preview">
+                    <img src="https://i.ibb.co/tMr10Cyz/download-7.png" alt="Crypto Card">
+                </div>
+
+                <div class="card-summary">
+                    <div id="crypto-list-summary" style="margin-bottom: 16px;">
+                        <!-- Dynamic crypto list will be inserted here -->
+                    </div>
+
+                    <div class="summary-row">
+                        <span style="color: var(--grey-600);">Quantity</span>
+                        <span id="summary-qty" style="font-weight: 700;">x 1</span>
+                    </div>
+
+                    <div class="fee-breakdown">
+                        <div class="fee-row">
+                            <span>Transfer Fee (1.5%)</span>
+                            <span id="transfer-fee" style="font-weight: 600;">$7.50</span>
+                        </div>
+                        <div class="fee-row">
+                            <span>Platform Fee</span>
+                            <span style="font-weight: 600; color: var(--primary-main);">Free</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-total">
+                        <span>Total Fee</span>
+                        <span id="summary-fee" style="color: #FF5630;">$7.50</span>
+                    </div>
+                    <div class="summary-total" style="border-top: none; margin-top: 8px; padding-top: 0;">
+                        <span>Total Amount</span>
+                        <span id="summary-total" style="color: var(--primary-main);">$507.50</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Form -->
+            <div class="card" style="padding: 32px;">
+                <div class="promo-banner">
+                    <iconify-icon icon="solar:star-bold" width="24"></iconify-icon>
+                    Issue crypto cards with low fees!
+                </div>
+
+                <div class="form-section">
+                    <label class="form-section-title">Select Crypto Assets</label>
+                    <div class="crypto-grid">
+                        <div class="crypto-item" onclick="toggleCrypto(this, 'Bitcoin', 'BTC', '₿')">
+                            <div class="crypto-icon">₿</div>
+                            <div class="crypto-name">Bitcoin</div>
+                            <div class="crypto-symbol">BTC</div>
+                        </div>
+                        <div class="crypto-item" onclick="toggleCrypto(this, 'Ethereum', 'ETH', 'Ξ')">
+                            <div class="crypto-icon">Ξ</div>
+                            <div class="crypto-name">Ethereum</div>
+                            <div class="crypto-symbol">ETH</div>
+                        </div>
+                        <div class="crypto-item" onclick="toggleCrypto(this, 'Tether', 'USDT', '₮')">
+                            <div class="crypto-icon">₮</div>
+                            <div class="crypto-name">Tether</div>
+                            <div class="crypto-symbol">USDT</div>
+                        </div>
+                        <div class="crypto-item" onclick="toggleCrypto(this, 'USD Coin', 'USDC', '$')">
+                            <div class="crypto-icon">$</div>
+                            <div class="crypto-name">USD Coin</div>
+                            <div class="crypto-symbol">USDC</div>
+                        </div>
+                        <div class="crypto-item" onclick="toggleCrypto(this, 'Binance', 'BNB', 'B')">
+                            <div class="crypto-icon">B</div>
+                            <div class="crypto-name">Binance</div>
+                            <div class="crypto-symbol">BNB</div>
+                        </div>
+                        <div class="crypto-item" onclick="toggleCrypto(this, 'Cardano', 'ADA', 'A')">
+                            <div class="crypto-icon">A</div>
+                            <div class="crypto-name">Cardano</div>
+                            <div class="crypto-symbol">ADA</div>
+                        </div>
+                        <div class="crypto-item" onclick="toggleCrypto(this, 'Solana', 'SOL', 'S')">
+                            <div class="crypto-icon">S</div>
+                            <div class="crypto-name">Solana</div>
+                            <div class="crypto-symbol">SOL</div>
+                        </div>
+                        <div class="crypto-item" onclick="toggleCrypto(this, 'Ripple', 'XRP', 'X')">
+                            <div class="crypto-icon">X</div>
+                            <div class="crypto-name">Ripple</div>
+                            <div class="crypto-symbol">XRP</div>
+                        </div>
+                    </div>
+
+                    <div id="selected-cryptos-list" class="selected-cryptos-list">
+                        <div
+                            style="font-size: 12px; font-weight: 700; color: var(--grey-700); margin-bottom: 12px; text-transform: uppercase;">
+                            Selected Crypto Assets</div>
+                        <div id="selected-cryptos-container">
+                            <!-- Dynamic rows will be inserted here -->
+                        </div>
+                    </div>
+
+                    <span
+                        style="font-size: 12px; color: var(--grey-600); font-weight: 500; margin-top: 8px; display: block;">Click
+                        to select cryptos, then enter amount for each</span>
+                </div>
+
+                <div class="form-section">
+                    <label class="form-section-title">Number of Cards</label>
+                    <div class="quantity-selector">
+                        <button class="qty-btn" onclick="updateQty(-1)">-</button>
+                        <span id="qty-val" class="qty-value">1</span>
+                        <button class="qty-btn" onclick="updateQty(1)">+</button>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <label class="form-section-title">Cardholder Name (Optional)</label>
+                    <input type="text" class="form-control" placeholder="Enter cardholder name">
+                </div>
+
+                <div class="form-section" style="margin-bottom: 0;">
+                    <label class="form-section-title">Card Label (Optional)</label>
+                    <input type="text" class="form-control" placeholder="e.g., Company Gift, Customer Reward">
+                </div>
+
+                <button class="btn-issue" onclick="window.location.href='crypto-card-list.html'">
+                    <iconify-icon icon="solar:card-send-bold" width="22"></iconify-icon>
+                    Issue Card
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let selectedCryptos = {}; // {symbol: {name, icon, amount}}
+        let qty = 1;
+        const transferFeeRate = 0.015; // 1.5%
+
+        function toggleCrypto(el, name, symbol, icon) {
+            el.classList.toggle('active');
+
+            if (el.classList.contains('active')) {
+                selectedCryptos[symbol] = { name, icon, amount: 0 };
+            } else {
+                delete selectedCryptos[symbol];
+            }
+            renderSelectedCryptos();
+            updateSummary();
+        }
+
+        function handleCryptoAmount(symbol, value) {
+            const num = parseFloat(value.replace(/,/g, ''));
+            if (selectedCryptos[symbol]) {
+                selectedCryptos[symbol].amount = !isNaN(num) ? num : 0;
+            }
+            updateSummary();
+        }
+
+        function removeCrypto(symbol) {
+            delete selectedCryptos[symbol];
+            const cryptoItems = document.querySelectorAll('.crypto-item');
+            cryptoItems.forEach(item => {
+                if (item.getAttribute('onclick').includes(`'${symbol}'`)) {
+                    item.classList.remove('active');
+                }
+            });
+            renderSelectedCryptos();
+            updateSummary();
+        }
+
+        function renderSelectedCryptos() {
+            const container = document.getElementById('selected-cryptos-container');
+            const listDiv = document.getElementById('selected-cryptos-list');
+
+            if (Object.keys(selectedCryptos).length === 0) {
+                listDiv.style.display = 'none';
+                return;
+            }
+
+            listDiv.style.display = 'block';
+            let html = '';
+
+            Object.keys(selectedCryptos).forEach(symbol => {
+                const crypto = selectedCryptos[symbol];
+                html += `
+                    <div class="selected-crypto-row">
+                        <div class="selected-crypto-info">
+                            <span class="crypto-icon-small">${crypto.icon}</span>
+                            <div>
+                                <div style="font-weight: 600; font-size: 12px; color: var(--grey-800);">${crypto.name}</div>
+                                <div style="font-size: 10px; color: var(--grey-600);">${symbol}</div>
+                            </div>
+                        </div>
+                        <div class="selected-crypto-amount">
+                            <div class="crypto-amount-input">
+                                <span>$</span>
+                                <input type="text" placeholder="0.00" value="${crypto.amount || ''}" 
+                                    oninput="handleCryptoAmount('${symbol}', this.value)">
+                            </div>
+                            <button class="remove-crypto-btn" onclick="removeCrypto('${symbol}')" title="Remove">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function updateQty(delta) {
+            qty = Math.max(1, qty + delta);
+            document.getElementById('qty-val').innerText = qty;
+            updateSummary();
+        }
+
+        function updateSummary() {
+            // Calculate totals
+            let totalAmount = 0;
+            let cryptoListHTML = '';
+
+            Object.keys(selectedCryptos).forEach(symbol => {
+                const crypto = selectedCryptos[symbol];
+                totalAmount += crypto.amount;
+
+                if (crypto.amount > 0) {
+                    cryptoListHTML += `
+                        <div class="summary-row">
+                            <span style="color: var(--grey-600);">${crypto.name} (${symbol})</span>
+                            <span style="font-weight: 700;">$${crypto.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        </div>
+                    `;
+                }
+            });
+
+            if (cryptoListHTML) {
+                cryptoListHTML = `<div style="font-size: 13px; font-weight: 700; color: var(--grey-700); margin-bottom: 8px;">CRYPTO ASSETS</div>` + cryptoListHTML;
+            } else {
+                cryptoListHTML = '<div style="text-align: center; color: var(--grey-500); font-size: 14px; padding: 12px;">No crypto selected</div>';
+            }
+
+            document.getElementById('crypto-list-summary').innerHTML = cryptoListHTML;
+
+            const transferFee = totalAmount * transferFeeRate;
+            const totalPerCard = totalAmount + transferFee;
+            const grandTotal = totalPerCard * qty;
+
+            document.getElementById('summary-qty').innerText = `x ${qty}`;
+            document.getElementById('transfer-fee').innerText = `$${transferFee.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`; document.getElementById('summary-fee').innerText = `$${(transferFee * qty).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('summary-total').innerText = `$${grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        // Initialize
+        updateSummary();
+    </script>
+</body>
+
+</html>

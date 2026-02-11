@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Customer Registration - VLINKPAY</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f5f5;
+            padding: 40px 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .section-header iconify-icon {
+            color: #5B6FED;
+        }
+
+        .section-header h5 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #5B6FED;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-label .required {
+            color: #dc3545;
+            margin-left: 2px;
+        }
+
+        .form-control,
+        .form-select {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #5B6FED;
+            box-shadow: 0 0 0 3px rgba(91, 111, 237, 0.1);
+        }
+
+        .input-group-text {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .input-group .form-control {
+            border-left: none;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .digital-card-section {
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d3561 100%);
+            border-radius: 16px;
+            padding: 32px;
+            color: #fff;
+            margin-top: 32px;
+        }
+
+        .digital-card-section .section-header {
+            border-bottom-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .digital-card-section .section-header h5,
+        .digital-card-section .section-header iconify-icon {
+            color: #fff;
+        }
+
+        .digital-card-section .form-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .digital-card-section .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .digital-card-section .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .digital-card-section .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .card-note {
+            background: rgba(91, 111, 237, 0.2);
+            border-left: 3px solid #5B6FED;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .card-note p {
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .terms-checkbox {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 32px;
+        }
+
+        .terms-checkbox .form-check-label {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .terms-checkbox a {
+            color: #5B6FED;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .terms-checkbox a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-submit {
+            background: #5B6FED;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 24px;
+            transition: all 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #4a5ed9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(91, 111, 237, 0.3);
+        }
+
+        .info-icon {
+            color: #999;
+            cursor: help;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4 p-md-5">
+                        <!-- Section 01: Account Identification -->
+                        <div class="section-header">
+                            <iconify-icon icon="solar:user-id-bold" width="24"></iconify-icon>
+                            <h5>01. Account Identification</h5>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">
+                                Email Login <span class="required">*</span>
+                                <iconify-icon icon="solar:info-circle-linear" width="16"
+                                    class="info-icon"></iconify-icon>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <iconify-icon icon="solar:letter-bold" width="18"></iconify-icon>
+                                </span>
+                                <input type="email" class="form-control" placeholder="customer@gmail.com" required>
+                            </div>
+                        </div>
+
+                        <!-- Section 02: Identity Verification -->
+                        <div class="section-header mt-5">
+                            <iconify-icon icon="solar:user-check-bold" width="24"></iconify-icon>
+                            <h5>02. Identity Verification</h5>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    Full Name <span class="required">*</span>
+                                </label>
+                                <input type="text" class="form-control" placeholder="Brian Nguyen" required>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    Phone Number <span class="required">*</span>
+                                    <iconify-icon icon="solar:info-circle-linear" width="16"
+                                        class="info-icon"></iconify-icon>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">+1</span>
+                                    <input type="tel" class="form-control" placeholder="832 799 3583" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    Date of Birth <span class="required">*</span>
+                                    <iconify-icon icon="solar:info-circle-linear" width="16"
+                                        class="info-icon"></iconify-icon>
+                                </label>
+                                <input type="date" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">Gender</label>
+                                <select class="form-select">
+                                    <option value="male" selected>Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Section 03: Contact Address -->
+                        <div class="section-header mt-5">
+                            <iconify-icon icon="solar:map-point-bold" width="24"></iconify-icon>
+                            <h5>03. Contact Address</h5>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8 mb-4">
+                                <label class="form-label">
+                                    Street Address <span class="required">*</span>
+                                    <iconify-icon icon="solar:info-circle-linear" width="16"
+                                        class="info-icon"></iconify-icon>
+                                </label>
+                                <input type="text" class="form-control" placeholder="17922 Daffy Patch" required>
+                            </div>
+
+                            <div class="col-md-4 mb-4">
+                                <label class="form-label">Apt/Suite</label>
+                                <input type="text" class="form-control" placeholder="Unit 101">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5 mb-4">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-control" placeholder="Richmond">
+                            </div>
+
+                            <div class="col-md-3 mb-4">
+                                <label class="form-label">State</label>
+                                <input type="text" class="form-control" placeholder="TX">
+                            </div>
+
+                            <div class="col-md-4 mb-4">
+                                <label class="form-label">Zip Code</label>
+                                <input type="text" class="form-control" placeholder="77407">
+                            </div>
+                        </div>
+
+                        <!-- Section 04: Digital Membership Card -->
+                        <div class="digital-card-section">
+                            <div class="section-header">
+                                <iconify-icon icon="solar:card-bold" width="24"></iconify-icon>
+                                <h5>Digital Membership Card</h5>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label">Login Username</label>
+                                    <input type="text" class="form-control" value="------" readonly>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label">Default Password</label>
+                                    <input type="password" class="form-control" value="******" readonly>
+                                </div>
+                            </div>
+
+                            <div class="card-note">
+                                <p>
+                                    <iconify-icon icon="solar:info-circle-bold" width="16"></iconify-icon>
+                                    Users can accumulate points and receive benefits by providing their Email/Phone
+                                    number at checkout
+                                    without needing to carry a physical card.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Terms & Conditions -->
+                        <div class="terms-checkbox">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                <label class="form-check-label" for="termsCheck">
+                                    I confirm that the information above is accurate and agree to the
+                                    <a href="#">Privacy Policy</a>.
+                                    We are committed to protecting member data to the highest security standards.
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn-submit">
+                            <iconify-icon icon="solar:check-circle-bold" width="20"
+                                style="vertical-align: middle;"></iconify-icon>
+                            Register Member
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Form validation
+        document.querySelector('.btn-submit').addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const termsCheck = document.getElementById('termsCheck');
+            if (!termsCheck.checked) {
+                alert('Please agree to the Privacy Policy to continue.');
+                return;
+            }
+
+            // Add your form submission logic here
+            alert('Registration successful! Welcome to VLINKPAY.');
+        });
+
+        // Phone number formatting
+        document.querySelector('input[type="tel"]').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 3 && value.length <= 6) {
+                value = value.slice(0, 3) + ' ' + value.slice(3);
+            } else if (value.length > 6) {
+                value = value.slice(0, 3) + ' ' + value.slice(3, 6) + ' ' + value.slice(6, 10);
+            }
+            e.target.value = value;
+        });
+    </script>
+</body>
+
+</html>

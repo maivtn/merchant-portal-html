@@ -91,7 +91,7 @@
         .status-pill {
             padding: 4px 8px;
             border-radius: 6px;
-            font-weight: 700;
+            font-weight: normal;
             font-size: 12px;
             text-transform: uppercase;
             white-space: nowrap;
@@ -823,7 +823,7 @@
                             <div class="field-container">
                                 <select class="field-input field-select" id="statusFilter">
                                     <option value="">All Statuses</option>
-                                    <option value="active">Active</option>
+                                    <option value="active">Approved</option>
                                     <option value="inactive">Inactive</option>
                                 </select>
                                 <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
@@ -856,7 +856,7 @@
                                     <td>BEN001</td>
                                     <td style="font-weight: 600;">Monthly Credit</td>
                                     <td>USD ($)</td>
-                                    <td><span class="status-pill status-active">Active</span></td>
+                                    <td><span class="status-pill status-active">Approved</span></td>
                                     <td>Admin User</td>
                                     <td>Jan 01, 2026</td>
                                     <td>Feb 01, 2026</td>
@@ -874,7 +874,7 @@
                                     <td>BEN002</td>
                                     <td style="font-weight: 600;">Cashback</td>
                                     <td>Percentage (%)</td>
-                                    <td><span class="status-pill status-active">Active</span></td>
+                                    <td><span class="status-pill status-active">Approved</span></td>
                                     <td>Admin User</td>
                                     <td>Jan 05, 2026</td>
                                     <td>Jan 15, 2026</td>
@@ -892,7 +892,7 @@
                                     <td>BEN003</td>
                                     <td style="font-weight: 600;">Discount</td>
                                     <td>Percentage (%)</td>
-                                    <td><span class="status-pill status-active">Active</span></td>
+                                    <td><span class="status-pill status-active">Approved</span></td>
                                     <td>Manager User</td>
                                     <td>Jan 10, 2026</td>
                                     <td>Jan 20, 2026</td>
@@ -910,7 +910,7 @@
                                     <td>BEN004</td>
                                     <td style="font-weight: 600;">Birthday Gift</td>
                                     <td>USD ($)</td>
-                                    <td><span class="status-pill status-active">Active</span></td>
+                                    <td><span class="status-pill status-active">Approved</span></td>
                                     <td>Admin User</td>
                                     <td>Dec 28, 2025</td>
                                     <td>Jan 05, 2026</td>
@@ -928,7 +928,7 @@
                                     <td>BEN005</td>
                                     <td style="font-weight: 600;">Group Discount</td>
                                     <td>Percentage (%)</td>
-                                    <td><span class="status-pill status-active">Active</span></td>
+                                    <td><span class="status-pill status-active">Approved</span></td>
                                     <td>Manager User</td>
                                     <td>Jan 12, 2026</td>
                                     <td>Jan 25, 2026</td>
@@ -946,7 +946,7 @@
                                     <td>BEN006</td>
                                     <td style="font-weight: 600;">Free Lounge</td>
                                     <td>Unit</td>
-                                    <td><span class="status-pill status-active">Active</span></td>
+                                    <td><span class="status-pill status-active">Approved</span></td>
                                     <td>Admin User</td>
                                     <td>Jan 15, 2026</td>
                                     <td>Feb 01, 2026</td>
@@ -998,7 +998,7 @@
                                 <select class="field-input field-select" id="packageStatusFilter">
                                     <option value="">All</option>
                                     <option value="draft">Draft</option>
-                                    <option value="active">Active</option>
+                                    <option value="active">Approved</option>
                                     <option value="inactive">Inactive</option>
                                 </select>
                                 <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
@@ -1027,26 +1027,30 @@
                                 <th>Currency</th>
                                 <th>Billing Cycle</th>
                                 <th>Benefit Count</th>
+                                <th>Status</th>
+                                <th>Sale Status</th>
                                 <th>Created By</th>
                                 <th>Created Date</th>
                                 <th>Last Updated Date</th>
-                                <th>Status</th>
                                 <th style="padding-right: 24px; text-align: right;">Actions</th>
                             </thead>
                             <tbody id="packageTableBody">
                                 <tr>
                                     <td class="pkg-id-cell">PKG001</td>
-                                    <td class="pkg-name-cell" style="font-weight: 600;">Welcome Package</td>
+                                    <td class="pkg-name-cell" style="font-weight: 600;">SILVER</td>
                                     <td class="pkg-price-cell">99</td>
                                     <td class="pkg-currency-cell">USD</td>
                                     <td class="pkg-billing-cycle-cell">Yearly</td>
                                     <td class="pkg-benefit-count-cell">3 benefits</td>
+                                    <td class="pkg-status-cell">
+                                        <span class="status-pill status-active" data-status="active">Approved</span>
+                                    </td>
+                                    <td class="pkg-sale-status-cell">
+                                        <span class="status-pill status-active" data-status="on">Active</span>
+                                    </td>
                                     <td class="pkg-created-by-cell">Admin User</td>
                                     <td class="pkg-created-date-cell">Jan 10, 2026</td>
                                     <td class="pkg-updated-date-cell">Jan 15, 2026</td>
-                                    <td class="pkg-status-cell">
-                                        <span class="status-pill status-active" data-status="active">Active</span>
-                                    </td>
                                     <td class="pkg-actions-cell" style="text-align: right; padding-right: 24px;">
 
                                         <iconify-icon icon="solar:pen-bold" class="action-icon icon-edit" width="20"
@@ -1059,17 +1063,20 @@
                                 </tr>
                                 <tr>
                                     <td class="pkg-id-cell">PKG002</td>
-                                    <td class="pkg-name-cell" style="font-weight: 600;">Premium Package</td>
+                                    <td class="pkg-name-cell" style="font-weight: 600;">GOLD</td>
                                     <td class="pkg-price-cell">199</td>
                                     <td class="pkg-currency-cell">USD</td>
                                     <td class="pkg-billing-cycle-cell">Yearly</td>
                                     <td class="pkg-benefit-count-cell">5 benefits</td>
+                                    <td class="pkg-status-cell">
+                                        <span class="status-pill status-active" data-status="active">Approved</span>
+                                    </td>
+                                    <td class="pkg-sale-status-cell">
+                                        <span class="status-pill status-active" data-status="on">Active</span>
+                                    </td>
                                     <td class="pkg-created-by-cell">Manager User</td>
                                     <td class="pkg-created-date-cell">Jan 20, 2026</td>
                                     <td class="pkg-updated-date-cell">Jan 28, 2026</td>
-                                    <td class="pkg-status-cell">
-                                        <span class="status-pill status-active" data-status="active">Active</span>
-                                    </td>
                                     <td class="pkg-actions-cell" style="text-align: right; padding-right: 24px;">
                                         <iconify-icon icon="solar:pen-bold" class="action-icon icon-edit" width="20"
                                             onclick="editPackage('PKG002')"></iconify-icon>
@@ -1082,17 +1089,20 @@
                                 </tr>
                                 <tr>
                                     <td class="pkg-id-cell">PKG003</td>
-                                    <td class="pkg-name-cell" style="font-weight: 600;">Birthday Package</td>
+                                    <td class="pkg-name-cell" style="font-weight: 600;">PLATINUM</td>
                                     <td class="pkg-price-cell">79</td>
                                     <td class="pkg-currency-cell">USD</td>
                                     <td class="pkg-billing-cycle-cell">Yearly</td>
                                     <td class="pkg-benefit-count-cell">2 benefits</td>
-                                    <td class="pkg-created-by-cell">Admin User</td>
-                                    <td class="pkg-created-date-cell">Feb 01, 2026</td>
-                                    <td class="pkg-updated-date-cell">Feb 05, 2026</td>
                                     <td class="pkg-status-cell">
                                         <span class="status-pill status-draft" data-status="draft">Draft</span>
                                     </td>
+                                    <td class="pkg-sale-status-cell">
+                                        <span class="status-pill status-inactive" data-status="off">Inactive</span>
+                                    </td>
+                                    <td class="pkg-created-by-cell">Admin User</td>
+                                    <td class="pkg-created-date-cell">Feb 01, 2026</td>
+                                    <td class="pkg-updated-date-cell">Feb 05, 2026</td>
                                     <td class="pkg-actions-cell" style="text-align: right; padding-right: 24px;">
 
 

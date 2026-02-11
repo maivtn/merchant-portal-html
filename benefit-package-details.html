@@ -171,6 +171,96 @@
             left: 22px;
         }
 
+        .term-chip {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px dashed var(--grey-300);
+            background: transparent;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--grey-600);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .term-chip:hover {
+            background: var(--grey-100);
+            border-color: var(--grey-400);
+            color: var(--grey-800);
+        }
+
+        /* Tier Badge Styles */
+        .tier-selection,
+        .price-selection,
+        .discount-selection,
+        .billing-selection {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .tier-badge,
+        .price-badge,
+        .discount-badge,
+        .billing-badge {
+            position: relative;
+            flex: 0 0 auto;
+        }
+
+        .tier-badge input[type="radio"],
+        .price-badge input[type="radio"],
+        .discount-badge input[type="radio"],
+        .billing-badge input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .tier-badge label,
+        .price-badge label,
+        .discount-badge label,
+        .billing-badge label {
+            display: inline-block;
+            padding: 10px 24px;
+            border: 2px solid var(--grey-300);
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--grey-700);
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tier-badge label:hover,
+        .price-badge label:hover,
+        .discount-badge label:hover,
+        .billing-badge label:hover {
+            border-color: var(--grey-400);
+            background: var(--grey-50);
+        }
+
+        .tier-badge input[type="radio"]:checked+label,
+        .price-badge input[type="radio"]:checked+label,
+        .discount-badge input[type="radio"]:checked+label,
+        .billing-badge input[type="radio"]:checked+label {
+            border-color: var(--primary-main);
+            background: rgba(0, 167, 111, 0.08);
+            color: var(--primary-main);
+        }
+
+        .custom-package-input {
+            display: none;
+            margin-top: 12px;
+        }
+
+        .custom-package-input.show {
+            display: block;
+        }
+
         .benefit-items {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -542,7 +632,7 @@
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: normal;
             text-transform: uppercase;
         }
 
@@ -634,19 +724,26 @@
 
     <main class="main">
         <div class="page-header">
-            <a href="benefits-setup.html" class="back-btn">
-                <iconify-icon icon="eva:arrow-ios-back-fill" width="18"></iconify-icon>
-                Back
-            </a>
-            <h1 class="page-title">Create Benefit Package</h1>
-            <div class="breadcrumbs">
-                <a href="#">Dashboard</a>
-                <span class="breadcrumbs-dot"></span>
-                <a href="#">Settings</a>
-                <span class="breadcrumbs-dot"></span>
-                <a href="benefits-setup.html">Benefits Setup</a>
-                <span class="breadcrumbs-dot"></span>
-                <span style="color: var(--grey-900); font-weight: 500;">Create Package</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <div>
+                    <a href="benefits-setup.html" class="back-btn">
+                        <iconify-icon icon="eva:arrow-ios-back-fill" width="18"></iconify-icon>
+                        Back
+                    </a>
+                    <h1 class="page-title">Create Benefit Package</h1>
+                    <div class="breadcrumbs">
+                        <a href="#">Dashboard</a>
+                        <span class="breadcrumbs-dot"></span>
+                        <a href="#">Settings</a>
+                        <span class="breadcrumbs-dot"></span>
+                        <a href="benefits-setup.html">Benefits Setup</a>
+                        <span class="breadcrumbs-dot"></span>
+                        <span style="color: var(--grey-900); font-weight: 500;">Create Package</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-outlined" id="saveDraftBtn" style="white-space: nowrap;">
+                    Save for Update Later
+                </button>
             </div>
         </div>
 
@@ -654,65 +751,46 @@
             <!-- Left Column: Form -->
             <div class="form-column">
                 <form id="packageForm">
-                    <!-- Basic Information Section -->
+                    <!-- Step 1: Package Name -->
                     <div class="form-section">
-                        <h3 class="section-title">
-                            <iconify-icon icon="solar:document-text-bold-duotone" width="24"></iconify-icon>
-                            Basic Information
+                        <h3 class="section-title" style="color: var(--grey-700);">
+                            Step 1: Package Name <span class="required">*</span>
                         </h3>
 
                         <div class="form-group">
-                            <label class="form-label">
-                                Package Name
-                                <span class="required">*</span>
-                            </label>
-                            <input type="text" class="form-control" id="packageName" placeholder="Enter package name"
-                                value="Welcome Package">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Package ID</label>
-                            <input type="text" class="form-control" id="packageId" value="PKG001" disabled>
-                            <p class="form-hint">Auto-generated upon creation</p>
-                        </div>
-
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    Price
-                                    <span class="required">*</span>
-                                </label>
-                                <div class="input-group">
-                                    <input type="number" class="form-control" id="price" placeholder="0.00" value="99"
-                                        min="0" step="0.01">
-                                    <select class="form-control" id="currency">
-                                        <option value="USD" selected>USD</option>
-                                        <option value="EUR">EUR</option>
-                                        <option value="VND">VND</option>
-                                    </select>
+                            <div class="tier-selection">
+                                <div class="tier-badge">
+                                    <input type="radio" name="packageName" id="tier-silver" value="SILVER" checked>
+                                    <label for="tier-silver">SILVER</label>
+                                </div>
+                                <div class="tier-badge">
+                                    <input type="radio" name="packageName" id="tier-gold" value="GOLD">
+                                    <label for="tier-gold">GOLD</label>
+                                </div>
+                                <div class="tier-badge">
+                                    <input type="radio" name="packageName" id="tier-platinum" value="PLATINUM">
+                                    <label for="tier-platinum">PLATINUM</label>
+                                </div>
+                                <div class="tier-badge">
+                                    <input type="radio" name="packageName" id="tier-elite" value="ELITE">
+                                    <label for="tier-elite">ELITE</label>
+                                </div>
+                                <div class="tier-badge">
+                                    <input type="radio" name="packageName" id="tier-custom" value="Custom">
+                                    <label for="tier-custom">Custom</label>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">
-                                    Billing Cycle
-                                    <span class="required">*</span>
-                                </label>
-                                <select class="form-control" id="billingCycle">
-                                    <option value="monthly">Monthly</option>
-                                    <option value="yearly" selected>Yearly</option>
-                                </select>
+                            <div class="custom-package-input" id="customPackageInput">
+                                <input type="text" class="form-control" id="customPackageName"
+                                    placeholder="Enter custom package name">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Benefits Section -->
+                    <!-- Step 2: Benefits -->
                     <div class="form-section">
-                        <h3 class="section-title">
-                            <iconify-icon icon="solar:gift-bold-duotone" width="24"></iconify-icon>
-                            Benefits
-                            <span style="font-size: 13px; font-weight: 500; color: var(--grey-600); margin-left: auto;">
-                                <span id="benefitCount">3</span> benefits
-                            </span>
+                        <h3 class="section-title" style="color: var(--grey-700);">
+                            Step 2: Benefits <span class="required">*</span>
                         </h3>
 
                         <div class="benefit-selector">
@@ -779,13 +857,128 @@
                         </div>
                     </div>
 
+                    <!-- Step 3: Price -->
+                    <div class="form-section">
+                        <h3 class="section-title" style="color: var(--grey-700);">
+                            Step 3: Price <span class="required">*</span>
+                        </h3>
+
+                        <div class="form-group">
+                            <div class="price-selection">
+                                <div class="price-badge">
+                                    <input type="radio" name="price" id="price-100" value="100">
+                                    <label for="price-100">$100</label>
+                                </div>
+                                <div class="price-badge">
+                                    <input type="radio" name="price" id="price-500" value="500">
+                                    <label for="price-500">$500</label>
+                                </div>
+                                <div class="price-badge">
+                                    <input type="radio" name="price" id="price-1000" value="1000" checked>
+                                    <label for="price-1000">$1,000</label>
+                                </div>
+                                <div class="price-badge">
+                                    <input type="radio" name="price" id="price-2000" value="2000">
+                                    <label for="price-2000">$2,000</label>
+                                </div>
+                                <div class="price-badge">
+                                    <input type="radio" name="price" id="price-symbol" value="symbol">
+                                    <label for="price-symbol">$</label>
+                                </div>
+                                <div class="price-badge">
+                                    <input type="radio" name="price" id="price-custom" value="custom">
+                                    <label for="price-custom">Custom</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Discount -->
+                    <div class="form-section">
+                        <h3 class="section-title" style="color: var(--grey-700);">
+                            Step 4: Discount
+                        </h3>
+
+                        <div class="form-group">
+                            <div class="discount-selection">
+                                <div class="discount-badge">
+                                    <input type="radio" name="discount" id="discount-5" value="5">
+                                    <label for="discount-5">5%</label>
+                                </div>
+                                <div class="discount-badge">
+                                    <input type="radio" name="discount" id="discount-10" value="10" checked>
+                                    <label for="discount-10">10%</label>
+                                </div>
+                                <div class="discount-badge">
+                                    <input type="radio" name="discount" id="discount-15" value="15">
+                                    <label for="discount-15">15%</label>
+                                </div>
+                                <div class="discount-badge">
+                                    <input type="radio" name="discount" id="discount-20" value="20">
+                                    <label for="discount-20">20%</label>
+                                </div>
+                                <div class="discount-badge">
+                                    <input type="radio" name="discount" id="discount-symbol" value="symbol">
+                                    <label for="discount-symbol">%</label>
+                                </div>
+                                <div class="discount-badge">
+                                    <input type="radio" name="discount" id="discount-custom" value="custom">
+                                    <label for="discount-custom">Custom</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Billing Cycle -->
+                    <div class="form-section">
+                        <h3 class="section-title" style="color: var(--grey-700);">
+                            Step 5: Billing Cycle <span class="required">*</span>
+                        </h3>
+
+                        <div class="form-group">
+                            <div class="billing-selection">
+                                <div class="billing-badge">
+                                    <input type="radio" name="billingCycle" id="billing-monthly" value="monthly">
+                                    <label for="billing-monthly">Monthly</label>
+                                </div>
+                                <div class="billing-badge">
+                                    <input type="radio" name="billingCycle" id="billing-yearly" value="yearly" checked>
+                                    <label for="billing-yearly">Yearly</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Terms and conditions -->
+                    <div class="form-section">
+                        <h3 class="section-title" style="color: var(--grey-700);">
+                            Step 6: Terms and conditions
+                        </h3>
+
+                        <div class="form-group">
+                            <textarea class="form-control" id="packageTerms" rows="5"
+                                placeholder="Enter terms and conditions">Valid for services only. Not applicable to products.
+No cash value.
+Valid for one-time use per invoice.
+Please present this card before payment.</textarea>
+                            <div class="suggested-terms" style="margin-top: 12px;">
+                                <div
+                                    style="font-size: 13px; font-weight: 600; color: var(--grey-700); margin-bottom: 8px;">
+                                    SUGGESTED TERMS:</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                    <button type="button" class="term-chip">+ Applies to...</button>
+                                    <button type="button" class="term-chip">+ Has no cash value...</button>
+                                    <button type="button" class="term-chip">+ Please present...</button>
+                                    <button type="button" class="term-chip">+ One-time use only</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Form Footer -->
                     <div class="form-footer">
-                        <button type="button" class="btn-outlined" id="saveDraftBtn">
-                            Save as Draft
-                        </button>
-                        <button type="submit" class="btn-primary" id="createActivateBtn">
-                            Create & Activate
+                        <button type="submit" class="btn-primary" id="createActivateBtn" style="width: 100%;">
+                            Save and Activate Package
                         </button>
                     </div>
                 </form>
@@ -800,18 +993,6 @@
                         <iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon>
                         Marketing
                     </h3>
-
-                    <div class="form-group">
-                        <label class="form-label">Discount Percentage</label>
-                        <input type="number" class="form-control" id="discountPercent" placeholder="0" value="20"
-                            min="0" max="100">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Badge Label</label>
-                        <input type="text" class="form-control" id="badgeLabel" placeholder="e.g., SAVE 10%"
-                            value="Save 20%">
-                    </div>
 
                     <div class="form-group">
                         <div class="toggle-field">
@@ -898,29 +1079,42 @@
         let mostPopular = true;
 
         function updatePreview() {
-            const packageName = document.getElementById('packageName').value || 'Package Name';
-            const packageId = document.getElementById('packageId').value || 'PKG001';
-            const price = document.getElementById('price').value || '0';
-            const currency = document.getElementById('currency').value;
-            const billingCycle = document.getElementById('billingCycle').value;
-            const badgeLabel = document.getElementById('badgeLabel').value || 'SAVE 10%';
+            const packageNameRadio = document.querySelector('input[name="packageName"]:checked');
+            let packageName = packageNameRadio ? packageNameRadio.value : 'SILVER';
 
-            // Currency symbols
-            const currencySymbols = { USD: '$', EUR: '€', VND: '₫' };
-            const symbol = currencySymbols[currency] || currency;
+            // Use custom input if Custom is selected
+            if (packageName === 'Custom') {
+                const customName = document.getElementById('customPackageName').value.trim();
+                packageName = customName || 'Custom';
+            }
+
+            // Get price from radio buttons
+            const priceRadio = document.querySelector('input[name="price"]:checked');
+            const price = priceRadio ? priceRadio.value : '100';
+
+            // Get discount from radio buttons
+            const discountRadio = document.querySelector('input[name="discount"]:checked');
+            const discount = discountRadio ? discountRadio.value : '0';
+
+            // Get billing cycle from radio buttons
+            const billingCycleRadio = document.querySelector('input[name="billingCycle"]:checked');
+            const billingCycle = billingCycleRadio ? billingCycleRadio.value : 'monthly';
 
             // Billing display
             const billingDisplay = billingCycle === 'monthly' ? '/mo' : '/yr';
 
             // Update preview
             document.getElementById('previewPackageName').textContent = packageName;
-            document.getElementById('previewPackageId').textContent = `Package ID: ${packageId}`;
-            document.getElementById('previewPrice').textContent = `${symbol}${price}`;
+            document.getElementById('previewPrice').textContent = `$${price}`;
             document.getElementById('previewBilling').textContent = billingDisplay;
 
-            // Update save badge with icon
+            // Update save badge with discount
             const saveBadge = document.getElementById('previewSaveBadge');
-            saveBadge.innerHTML = `<iconify-icon icon="solar:sale-bold" width="14"></iconify-icon>${badgeLabel}`;
+            if (discount && discount !== '0') {
+                saveBadge.innerHTML = `<iconify-icon icon="solar:sale-bold" width="14"></iconify-icon>SAVE ${discount}%`;
+            } else {
+                saveBadge.innerHTML = `<iconify-icon icon="solar:sale-bold" width="14"></iconify-icon>SAVE 10%`;
+            }
 
             document.getElementById('previewPopularBadge').style.display = mostPopular ? 'inline-flex' : 'none';
 
@@ -956,11 +1150,22 @@
         }
 
         // Form field listeners
-        document.getElementById('packageName').addEventListener('input', updatePreview);
-        document.getElementById('price').addEventListener('input', updatePreview);
-        document.getElementById('currency').addEventListener('change', updatePreview);
-        document.getElementById('billingCycle').addEventListener('change', updatePreview);
-        document.getElementById('badgeLabel').addEventListener('input', updatePreview);
+        document.querySelectorAll('input[name="packageName"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                // Toggle custom input visibility
+                const customInput = document.getElementById('customPackageInput');
+                if (this.value === 'Custom') {
+                    customInput.classList.add('show');
+                    document.getElementById('customPackageName').focus();
+                } else {
+                    customInput.classList.remove('show');
+                }
+                updatePreview();
+            });
+        });
+
+        // Custom package name input listener
+        document.getElementById('customPackageName').addEventListener('input', updatePreview);
 
         // Most Popular Toggle
         document.getElementById('mostPopularToggle').addEventListener('click', function () {
@@ -1072,6 +1277,35 @@
         // Initialize existing benefit cards
         document.querySelectorAll('#benefitList .benefit-card').forEach(setupBenefitCardEvents);
 
+        // Price selection change handler
+        document.querySelectorAll('input[name="price"]').forEach(radio => {
+            radio.addEventListener('change', updateBenefitPreview);
+        });
+
+        // Discount selection change handler
+        document.querySelectorAll('input[name="discount"]').forEach(radio => {
+            radio.addEventListener('change', updateBenefitPreview);
+        });
+
+        // Billing cycle selection change handler
+        document.querySelectorAll('input[name="billingCycle"]').forEach(radio => {
+            radio.addEventListener('change', updateBenefitPreview);
+        });
+
+        // Suggested terms chips - insert into textarea
+        document.querySelectorAll('.term-chip').forEach(chip => {
+            chip.addEventListener('click', function () {
+                const termsTextarea = document.getElementById('packageTerms');
+                const currentText = termsTextarea.value;
+                const chipText = this.textContent.trim();
+
+                if (currentText) {
+                    termsTextarea.value = currentText + '\n' + chipText;
+                } else {
+                    termsTextarea.value = chipText;
+                }
+            });
+        });
 
 
         // Form Submit

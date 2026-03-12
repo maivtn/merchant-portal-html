@@ -201,6 +201,77 @@
       align-items: center;
     }
 
+    /* ── Icon Select ────────────────────────────── */
+    .icon-select {
+      position: relative;
+      user-select: none;
+    }
+    .icon-select-trigger {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      height: 48px;
+      padding: 0 14px;
+      border: 1px solid var(--grey-300);
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+    }
+    .icon-select-trigger:hover { border-color: var(--grey-500); }
+    .icon-select.open .icon-select-trigger {
+      border-color: var(--grey-900);
+      box-shadow: 0 0 0 2px rgba(22,28,36,.05);
+    }
+    .icon-select-text { flex: 1; color: var(--grey-900); }
+    .icon-select-chevron {
+      width: 16px; height: 16px; flex-shrink: 0;
+      color: var(--grey-500); transition: transform 0.2s;
+    }
+    .icon-select.open .icon-select-chevron { transform: rotate(180deg); }
+
+    .icon-select-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0; right: 0;
+      background: #fff;
+      border: 1px solid var(--grey-200);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px -4px rgba(0,0,0,.14);
+      z-index: 200;
+      overflow: hidden;
+    }
+    .icon-select.open .icon-select-dropdown { display: block; }
+
+    .icon-select-option {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      font-size: 14px; color: var(--grey-800);
+      cursor: pointer; transition: background 0.12s;
+    }
+    .icon-select-option:hover { background: var(--grey-100, #f9fafb); }
+    .icon-select-option.selected {
+      background: #f0fdf7; color: #00a76f; font-weight: 600;
+    }
+
+    /* Coin icon circles */
+    .coin-icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0;
+      line-height: 1;
+    }
+    .coin-btc  { background: #f7931a; }
+    .coin-eth  { background: #627eea; }
+    .coin-usdt { background: #26a17b; }
+    .coin-vrc  { background: #00a76f; }
+    .coin-btcnet { background: #f7931a; }
+
     .input-prefix {
       position: absolute;
       left: 14px;
@@ -637,9 +708,6 @@
       <div class="header-icon-btn">
         <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
       </div>
-      <div class="user-avatar-mini">
-        <iconify-icon icon="solar:user-circle-bold" width="32"></iconify-icon>
-      </div>
     </div>
   </header>
 
@@ -722,20 +790,48 @@
         </div>
         <div class="form-group">
           <label class="form-label">Asset</label>
-          <select class="minimal-select">
-            <option>Bitcoin (BTC)</option>
-            <option>Ethereum (ETH)</option>
-            <option>Tether (USDT)</option>
-            <option>Vlinkpay (VRC)</option>
-          </select>
+          <div class="icon-select" id="assetSelect1">
+            <div class="icon-select-trigger" onclick="toggleIconSelect('assetSelect1')">
+              <div class="coin-icon coin-btc">₿</div>
+              <span class="icon-select-text">Bitcoin (BTC)</span>
+              <svg class="icon-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="icon-select-dropdown">
+              <div class="icon-select-option selected" onclick="pickOption('assetSelect1',this,'coin-btc','₿','Bitcoin (BTC)')">
+                <div class="coin-icon coin-btc">₿</div>Bitcoin (BTC)
+              </div>
+              <div class="icon-select-option" onclick="pickOption('assetSelect1',this,'coin-eth','Ξ','Ethereum (ETH)')">
+                <div class="coin-icon coin-eth">Ξ</div>Ethereum (ETH)
+              </div>
+              <div class="icon-select-option" onclick="pickOption('assetSelect1',this,'coin-usdt','₮','Tether (USDT)')">
+                <div class="coin-icon coin-usdt">₮</div>Tether (USDT)
+              </div>
+              <div class="icon-select-option" onclick="pickOption('assetSelect1',this,'coin-vrc','V','Vlinkpay (VRC)')">
+                <div class="coin-icon coin-vrc">V</div>Vlinkpay (VRC)
+              </div>
+            </div>
+          </div>
         </div>
         <div class="form-group">
           <label class="form-label">Network</label>
-          <select class="minimal-select">
-            <option>Vlinkpay (VRC20)</option>
-            <option>Ethereum (ERC20)</option>
-            <option>Bitcoin Network</option>
-          </select>
+          <div class="icon-select" id="networkSelect1">
+            <div class="icon-select-trigger" onclick="toggleIconSelect('networkSelect1')">
+              <div class="coin-icon coin-vrc">V</div>
+              <span class="icon-select-text">Vlinkpay (VRC20)</span>
+              <svg class="icon-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="icon-select-dropdown">
+              <div class="icon-select-option selected" onclick="pickOption('networkSelect1',this,'coin-vrc','V','Vlinkpay (VRC20)')">
+                <div class="coin-icon coin-vrc">V</div>Vlinkpay (VRC20)
+              </div>
+              <div class="icon-select-option" onclick="pickOption('networkSelect1',this,'coin-eth','Ξ','Ethereum (ERC20)')">
+                <div class="coin-icon coin-eth">Ξ</div>Ethereum (ERC20)
+              </div>
+              <div class="icon-select-option" onclick="pickOption('networkSelect1',this,'coin-btcnet','₿','Bitcoin Network')">
+                <div class="coin-icon coin-btcnet">₿</div>Bitcoin Network
+              </div>
+            </div>
+          </div>
         </div>
         <button class="btn-submit" onclick="showResult('form-enter-amount', 'result-enter-amount')">Generate QR Code</button>
       </div>
@@ -781,18 +877,42 @@
       <div class="modal-body">
         <div class="form-group">
           <label class="form-label">Assets</label>
-          <select class="minimal-select">
-            <option>Bitcoin (BTC)</option>
-            <option>Ethereum (ETH)</option>
-            <option>Tether (USDT)</option>
-          </select>
+          <div class="icon-select" id="assetSelect2">
+            <div class="icon-select-trigger" onclick="toggleIconSelect('assetSelect2')">
+              <div class="coin-icon coin-btc">₿</div>
+              <span class="icon-select-text">Bitcoin (BTC)</span>
+              <svg class="icon-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="icon-select-dropdown">
+              <div class="icon-select-option selected" onclick="pickOption('assetSelect2',this,'coin-btc','₿','Bitcoin (BTC)')">
+                <div class="coin-icon coin-btc">₿</div>Bitcoin (BTC)
+              </div>
+              <div class="icon-select-option" onclick="pickOption('assetSelect2',this,'coin-eth','Ξ','Ethereum (ETH)')">
+                <div class="coin-icon coin-eth">Ξ</div>Ethereum (ETH)
+              </div>
+              <div class="icon-select-option" onclick="pickOption('assetSelect2',this,'coin-usdt','₮','Tether (USDT)')">
+                <div class="coin-icon coin-usdt">₮</div>Tether (USDT)
+              </div>
+            </div>
+          </div>
         </div>
         <div class="form-group">
           <label class="form-label">Network</label>
-          <select class="minimal-select">
-            <option>Vlinkpay (VRC20)</option>
-            <option>Ethereum (ERC20)</option>
-          </select>
+          <div class="icon-select" id="networkSelect2">
+            <div class="icon-select-trigger" onclick="toggleIconSelect('networkSelect2')">
+              <div class="coin-icon coin-vrc">V</div>
+              <span class="icon-select-text">Vlinkpay (VRC20)</span>
+              <svg class="icon-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="icon-select-dropdown">
+              <div class="icon-select-option selected" onclick="pickOption('networkSelect2',this,'coin-vrc','V','Vlinkpay (VRC20)')">
+                <div class="coin-icon coin-vrc">V</div>Vlinkpay (VRC20)
+              </div>
+              <div class="icon-select-option" onclick="pickOption('networkSelect2',this,'coin-eth','Ξ','Ethereum (ERC20)')">
+                <div class="coin-icon coin-eth">Ξ</div>Ethereum (ERC20)
+              </div>
+            </div>
+          </div>
         </div>
         <div class="result-container" style="padding: 16px;">
           <div style="display: flex; gap: 12px; align-items: flex-start;">
@@ -910,6 +1030,35 @@
   </div>
 
   <script>
+    /* ── Icon Select logic ───────────────────────────── */
+    function toggleIconSelect(id) {
+      const el = document.getElementById(id);
+      const isOpen = el.classList.contains('open');
+      // close all
+      document.querySelectorAll('.icon-select.open').forEach(e => e.classList.remove('open'));
+      if (!isOpen) el.classList.add('open');
+    }
+
+    function pickOption(selectId, optionEl, coinClass, symbol, label) {
+      const el = document.getElementById(selectId);
+      // update trigger
+      const trigger = el.querySelector('.icon-select-trigger');
+      trigger.querySelector('.coin-icon').className = 'coin-icon ' + coinClass;
+      trigger.querySelector('.coin-icon').textContent = symbol;
+      trigger.querySelector('.icon-select-text').textContent = label;
+      // mark selected
+      el.querySelectorAll('.icon-select-option').forEach(o => o.classList.remove('selected'));
+      optionEl.classList.add('selected');
+      el.classList.remove('open');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.icon-select')) {
+        document.querySelectorAll('.icon-select.open').forEach(e => e.classList.remove('open'));
+      }
+    });
+
     function openModal(id) {
       document.getElementById(id).style.display = 'flex';
     }

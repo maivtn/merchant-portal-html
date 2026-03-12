@@ -102,13 +102,13 @@
 
     .category-chip {
       border: 1px solid #dfe3e8;
-      border-radius: 6px;
-      padding: 5px 12px;
+      border-radius: 20px;
+      padding: 4px 10px;
       font-size: 14px;
       font-weight: 500;
       color: #637381;
       cursor: pointer;
-      background: white;
+      background: transparent;
       transition: all 0.15s;
       font-family: inherit;
       white-space: nowrap;
@@ -1252,9 +1252,6 @@
       <div class="header-icon-btn">
         <i data-lucide="settings" style="width:24px;height:24px;"></i>
       </div>
-      <div class="user-avatar-mini">
-        <i data-lucide="circle-user" style="width:32px;height:32px;"></i>
-      </div>
     </div>
   </header>
 
@@ -1787,14 +1784,21 @@
     function formatDate(d) {
       if (!d || d === '—') return '<span class="td-dash">—</span>';
       try {
-        const dt = new Date(d + (d.length === 10 ? 'T00:00:00' : ''));
+        const dt = new Date(d.length === 10 ? d + 'T00:00:00' : d);
+        if (isNaN(dt)) return `<span class="td-secondary">${d}</span>`;
         return `<span class="td-secondary">${dt.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}</span>`;
       } catch (e) { return `<span class="td-secondary">${d}</span>`; }
     }
 
     function formatDateTime(d) {
       if (!d || d === '—') return '<span class="td-dash">—</span>';
-      return `<span class="td-secondary">${d}</span>`;
+      try {
+        const dt = new Date(String(d).replace(' ', 'T'));
+        if (isNaN(dt)) return `<span class="td-secondary">${d}</span>`;
+        const date = dt.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+        const time = dt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+        return `<span class="td-secondary">${date} ${time}</span>`;
+      } catch (e) { return `<span class="td-secondary">${d}</span>`; }
     }
 
     function actionButtons(product) {

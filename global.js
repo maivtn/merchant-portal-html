@@ -320,6 +320,37 @@
   // Also expose so pages that inject date inputs dynamically can re-init
   window.initDatePlaceholders = initDatePlaceholders;
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SHARED DATE FORMATTERS  ← use across all pages
+  //   fmtDate('2026-01-15')              → "Jan 15, 2026"
+  //   fmtDateTime('2026-01-15T14:20:05') → "Jan 15, 2026 02:20 PM"
+  //   fmtDateTime('2026-01-15 09:30 AM') → "Jan 15, 2026 09:30 AM"
+  // ═══════════════════════════════════════════════════════════════════════════
+  function fmtDate(iso) {
+    if (!iso || iso === '—' || iso === '-') return '—';
+    try {
+      const d = new Date(String(iso).length === 10 ? iso + 'T00:00:00' : iso);
+      if (isNaN(d)) return iso;
+      return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+    } catch (e) { return iso; }
+  }
+
+  function fmtDateTime(iso) {
+    if (!iso || iso === '—' || iso === '-') return '—';
+    try {
+      // Normalise 24h strings like "2026-01-15 14:20:05" → ISO
+      const normalised = String(iso).replace(' ', 'T');
+      const d = new Date(normalised);
+      if (isNaN(d)) return iso;
+      const date = d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+      const time = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+      return date + ' ' + time;
+    } catch (e) { return iso; }
+  }
+
+  window.fmtDate     = fmtDate;
+  window.fmtDateTime = fmtDateTime;
+
   // Expose to global scope
   window.toggleSidebar  = toggleSidebar;
   window.closeSidebar   = closeSidebar;

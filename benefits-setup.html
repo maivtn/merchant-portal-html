@@ -2,1796 +2,1020 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Benefits Setup - VLINKPAY</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="global.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Benefits Setup - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="global.css">
   <script src="global.js" defer></script>
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-    <style>
-        .table-card {
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: var(--shadow-z1);
-            overflow: hidden;
-            margin-top: 24px;
-            border: 1px solid var(--grey-200);
-        }
-
-        .table-toolbar {
-            padding: 24px;
-            display: flex;
-            gap: 16px;
-            border-bottom: 1px dashed var(--grey-200);
-            align-items: center;
-        }
-
-        .table-container {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            background: var(--grey-100);
-            padding: 16px 24px;
-            text-align: left;
-            font-size: 14px;
-            color: var(--grey-600);
-            font-weight: 600;
-            text-transform: capitalize;
-            white-space: nowrap;
-        }
-
-        td {
-            padding: 16px 24px;
-            border-top: 1px dashed var(--grey-300);
-            font-size: 14px;
-            color: var(--grey-800);
-            white-space: nowrap;
-        }
-
-        .benefit-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .icon-discount {
-            background: rgba(255, 171, 0, 0.16);
-            color: #FFAB00;
-        }
-
-        .icon-cashback {
-            background: rgba(0, 167, 111, 0.16);
-            color: #00A76F;
-        }
-
-        .icon-gift {
-            background: rgba(255, 86, 48, 0.16);
-            color: #FF5630;
-        }
-
-        .icon-birthday {
-            background: rgba(142, 51, 255, 0.16);
-            color: #8E33FF;
-        }
-
-        .status-pill {
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: normal;
-            font-size: 12px;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-
-        .status-active {
-            background: #E9FCD4;
-            color: #118D57;
-        }
-
-        .status-inactive {
-            background: #FFE4DE;
-            color: #B71D18;
-        }
-
-        .status-draft {
-            background: #E5E7EB;
-            color: #4B5563;
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(22, 28, 36, 0.8);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: #fff;
-            width: 100%;
-            max-width: 560px;
-            border-radius: 24px;
-            padding: 40px;
-            position: relative;
-            box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.16);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            cursor: pointer;
-            color: var(--grey-500);
-            transition: 0.2s;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-close:hover {
-            color: var(--grey-900);
-        }
-
-        .modal-header {
-            margin-bottom: 32px;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--grey-900);
-            margin-bottom: 8px;
-        }
-
-        .modal-description {
-            font-size: 14px;
-            color: var(--grey-600);
-        }
-
-        .form-group {
-            margin-bottom: 24px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--grey-700);
-            margin-bottom: 8px;
-        }
-
-        .form-label .required {
-            color: #FF5630;
-            margin-left: 4px;
-        }
-
-        .upload-hint {
-            font-size: 13px;
-            color: var(--grey-600);
-            margin-bottom: 8px;
-        }
-
-        .icon-preset-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            margin-top: 12px;
-        }
-
-        .icon-preset-item {
-            width: 100%;
-            aspect-ratio: 1;
-            border: 2px solid transparent;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 32px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .icon-preset-item::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 16px;
-            opacity: 0;
-            transition: opacity 0.25s;
-            background: currentColor;
-        }
-
-        .icon-preset-item.icon-discount {
-            background: #FFF9E6;
-            color: #B78103;
-        }
-
-        .icon-preset-item.icon-cashback {
-            background: #D3F8F0;
-            color: #00A76F;
-        }
-
-        .icon-preset-item.icon-gift {
-            background: #FFE7D9;
-            color: #B71D18;
-        }
-
-        .icon-preset-item.icon-birthday {
-            background: #E7E3FC;
-            color: #5119B7;
-        }
-
-        .icon-preset-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.12);
-        }
-
-        .icon-preset-item:hover::before {
-            opacity: 0.08;
-        }
-
-        .icon-preset-item.selected {
-            border-color: currentColor;
-            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.04);
-        }
-
-        .icon-upload-item {
-            width: 100%;
-            aspect-ratio: 1;
-            border: 2px dashed var(--grey-400);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            background: var(--grey-50);
-            color: var(--grey-600);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .icon-upload-item:hover {
-            border-color: var(--primary-main);
-            background: rgba(0, 167, 111, 0.04);
-            color: var(--primary-main);
-        }
-
-        .icon-upload-item iconify-icon {
-            font-size: 28px;
-            margin-bottom: 2px;
-        }
-
-        .icon-upload-item span {
-            font-size: 10px;
-            font-weight: 500;
-        }
-
-        .icon-upload-item input[type="file"] {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .icon-upload-preview {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 14px;
-        }
-
-        .icon-remove-upload {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 24px;
-            height: 24px;
-            background: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            z-index: 10;
-            transition: all 0.2s;
-        }
-
-        .icon-remove-upload:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .icon-remove-upload iconify-icon {
-            color: #FF5630;
-            font-size: 20px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--grey-300);
-            border-radius: 8px;
-            font-size: 14px;
-            color: var(--grey-900);
-            transition: all 0.2s;
-            background: #fff;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .form-control:hover {
-            border-color: var(--grey-400);
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-main);
-            box-shadow: 0 0 0 2px rgba(0, 167, 111, 0.12);
-        }
-
-        .form-control::placeholder {
-            color: var(--grey-500);
-        }
-
-        .form-control.error {
-            border-color: #FF5630;
-        }
-
-        .form-control.error:focus {
-            box-shadow: 0 0 0 2px rgba(255, 86, 48, 0.12);
-        }
-
-        select.form-control {
-            cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23637381' d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6l-6-6l1.41-1.41z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 20px;
-            padding-right: 40px;
-            appearance: none;
-        }
-
-        .preset-suggestions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .preset-chip {
-            padding: 6px 14px;
-            border: 1px solid var(--grey-300);
-            border-radius: 6px;
-            font-size: 13px;
-            color: var(--grey-700);
-            cursor: pointer;
-            transition: all 0.2s;
-            background: #fff;
-            font-weight: 500;
-        }
-
-        .preset-chip:hover {
-            border-color: var(--primary-main);
-            color: var(--primary-main);
-            background: rgba(0, 167, 111, 0.08);
-        }
-
-        .error-message {
-            color: #FF5630;
-            font-size: 12px;
-            margin-top: 6px;
-            display: none;
-            font-weight: 500;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .btn-outlined {
-            padding: 11px 24px;
-            border: 1px solid var(--grey-300);
-            border-radius: 8px;
-            background: #fff;
-            color: var(--grey-900);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .btn-outlined:hover {
-            background: var(--grey-100);
-            border-color: var(--grey-900);
-        }
-
-        .btn-outlined:active {
-            transform: scale(0.98);
-        }
-
-        .btn-primary {
-            padding: 11px 24px;
-            border: none;
-            border-radius: 8px;
-            background: var(--primary-main);
-            color: #fff;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Poppins', sans-serif;
-            box-shadow: 0 8px 16px -4px rgba(0, 167, 111, 0.24);
-        }
-
-        .btn-primary:hover {
-            background: #007B55;
-            box-shadow: 0 12px 24px -4px rgba(0, 167, 111, 0.32);
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .form-control.error {
-            border-color: #FF5630;
-        }
-
-        .upload-hint {
-            font-size: 12px;
-            color: var(--grey-500);
-            margin-top: 8px;
-        }
-
-        /* Pagination Styles */
-        .pagination-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 24px;
-            border-top: 1px dashed var(--grey-200);
-        }
-
-        .pagination-info {
-            font-size: 14px;
-            color: var(--grey-600);
-        }
-
-        .pagination {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .pagination-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 1px solid var(--grey-300);
-            background: #fff;
-            color: var(--grey-700);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pagination-btn:hover:not(:disabled) {
-            border-color: var(--primary-main);
-            color: var(--primary-main);
-            background: rgba(0, 167, 111, 0.08);
-        }
-
-        .pagination-btn.active {
-            background: var(--primary-main);
-            color: #fff;
-            border-color: var(--primary-main);
-        }
-
-        .pagination-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .pagination-nav {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 1px solid var(--grey-300);
-            background: #fff;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pagination-nav:hover:not(:disabled) {
-            border-color: var(--grey-500);
-            background: var(--grey-100);
-        }
-
-        .pagination-nav:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        /* Tabs Styles */
-        .tabs-container {
-            margin-top: 24px;
-        }
-
-        .tabs-header {
-            display: flex;
-            gap: 40px;
-            border-bottom: 1px solid var(--grey-200);
-            margin-bottom: 0;
-            background: #fff;
-            padding: 0 24px;
-            border-radius: 16px 16px 0 0;
-        }
-
-        .tab-item {
-            padding: 16px 0;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--grey-600);
-            cursor: pointer;
-            position: relative;
-            transition: 0.2s;
-            text-transform: capitalize;
-        }
-
-        .tab-item:hover {
-            color: var(--grey-900);
-        }
-
-        .tab-item.active {
-            color: var(--grey-900);
-        }
-
-        .tab-item.active::after {
-            content: "";
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--grey-900);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .action-link {
-            border: none;
-            background: none;
-            padding: 0;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--primary-main);
-            cursor: pointer;
-        }
-
-        .action-link.disabled {
-            color: var(--grey-400);
-            cursor: not-allowed;
-        }
-
-        .action-icon {
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .action-icon:hover {
-            transform: scale(1.15);
-            opacity: 0.8;
-        }
-
-        .action-icon.icon-view {
-            color: #00A76F !important;
-        }
-
-        .action-icon.icon-edit {
-            color: #2196F3 !important;
-            margin-left: 12px;
-        }
-
-        .action-icon.icon-delete {
-            color: #FF5630 !important;
-            margin-left: 12px;
-        }
-
-        .action-icon.icon-delete-disabled {
-            color: var(--grey-400) !important;
-            cursor: not-allowed;
-            margin-left: 12px;
-        }
-
-        .action-icon.icon-delete-disabled:hover {
-            transform: none;
-            opacity: 1;
-        }
-
-        /* ── Responsive ─────────────────────────────────── */
-        @media (max-width: 767px) {
-            .table-toolbar {
-                flex-direction: column !important;
-                align-items: stretch !important;
-                padding: 12px 16px !important;
-                gap: 10px !important;
-            }
-            .modal-content {
-                max-width: 100%;
-                padding: 24px 16px 32px;
-                border-radius: 20px 20px 0 0;
-            }
-            .modal-overlay {
-                align-items: flex-end;
-            }
-            .modal-title {
-                font-size: 18px;
-            }
-            .icon-preset-grid {
-                grid-template-columns: repeat(4, 1fr) !important;
-            }
-        }
-
-        @media (min-width: 768px) and (max-width: 1023px) {
-            .table-toolbar {
-                flex-wrap: wrap !important;
-                gap: 10px !important;
-            }
-        }
-    </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    /* ── Icon reset ──────────────────────────────────── */
+    i[data-lucide], svg[data-lucide] {
+      display: inline-flex; align-items: center; justify-content: center;
+      vertical-align: middle; flex-shrink: 0;
+    }
+
+    /* ── Page header row ─────────────────────────────── */
+    .page-header-row {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+      margin-bottom: 4px;
+    }
+    .btn-create {
+      display: flex; align-items: center; gap: 6px;
+      padding: 0 20px; height: 44px;
+      background: #00a76f; color: #fff;
+      border: none; border-radius: 8px;
+      font-size: 14px; font-weight: 600; font-family: inherit;
+      cursor: pointer; white-space: nowrap; flex-shrink: 0;
+      box-shadow: 0 8px 16px 0 rgba(0,167,111,.24);
+      transition: all .2s;
+    }
+    .btn-create:hover { background: #007b55; box-shadow: 0 12px 24px 0 rgba(0,167,111,.3); }
+    .btn-create svg  { width: 18px; height: 18px; }
+    .btn-create .btn-text { display: inline; }
+
+    /* ── Main card ───────────────────────────────────── */
+    .main-card {
+      background: #fff; border-radius: 16px;
+      box-shadow: 0 0 2px 0 rgb(145 158 171/.2), 0 12px 24px -4px rgb(145 158 171/.12);
+      overflow: hidden;
+    }
+
+    /* ── Tab Bar ─────────────────────────────────────── */
+    .tab-bar {
+      display: flex; padding: 0 24px;
+      border-bottom: 1px solid #f4f6f8;
+    }
+    .tab-btn {
+      padding: 14px 4px; margin-right: 28px; margin-bottom: -1px;
+      background: none; border: none; border-bottom: 2px solid transparent;
+      font-size: 14px; font-weight: 400; color: #637381;
+      cursor: pointer; transition: color .15s, border-color .15s;
+      white-space: nowrap; font-family: inherit; user-select: none;
+    }
+    .tab-btn:hover { color: #212b36; }
+    .tab-btn.active { color: #212b36; font-weight: 600; border-bottom-color: #212b36; }
+
+    /* ── Toolbar ─────────────────────────────────────── */
+    .toolbar {
+      padding: 20px 24px; display: flex; align-items: center;
+      gap: 12px; border-bottom: 1px dashed rgb(145 158 171/.3);
+      flex-wrap: wrap;
+    }
+    .search-wrap {
+      position: relative; display: flex; align-items: center;
+      width: 240px; flex-shrink: 0;
+    }
+    .search-wrap svg { position: absolute; left: 11px; color: #919eab; width: 16px; height: 16px; pointer-events: none; }
+    .search-input {
+      width: 100%; height: 40px; padding: 0 12px 0 34px;
+      border: 1px solid #dfe3e8; border-radius: 8px;
+      font-size: 13px; font-family: inherit; color: #212b36;
+      outline: none; transition: border-color .2s;
+    }
+    .search-input::placeholder { color: #919eab; }
+    .search-input:focus { border-color: #212b36; }
+
+    .status-wrap { position: relative; flex-shrink: 0; }
+    .status-label {
+      position: absolute; top: -8px; left: 10px;
+      font-size: 11px; font-weight: 600; color: #637381;
+      background: #fff; padding: 0 4px; z-index: 2; pointer-events: none;
+    }
+    .status-select {
+      width: 160px; height: 40px;
+      padding: 0 32px 0 12px;
+      border: 1px solid #dfe3e8; border-radius: 8px;
+      font-size: 13px; font-family: inherit; color: #212b36;
+      outline: none; cursor: pointer; appearance: none;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center #fff;
+      transition: border-color .2s;
+    }
+    .status-select:focus { border-color: #212b36; }
+
+    /* ── Table ───────────────────────────────────────── */
+    .table-scroll { width: 100%; overflow-x: auto; }
+    .data-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    .data-table th {
+      background: #f9fafb; padding: 14px 16px;
+      font-size: 14px; font-weight: 600; color: #637381;
+      text-align: left; white-space: nowrap;
+      cursor: pointer; user-select: none;
+      border-bottom: 1px solid #f4f6f8;
+    }
+    .data-table th.no-sort { cursor: default; }
+    .th-inner { display: inline-flex; align-items: center; gap: 4px; }
+    .sort-ic { width: 14px; height: 14px; color: #00a76f; }
+    .data-table td {
+      padding: 14px 16px; border-top: 1px dashed rgb(145 158 171/.24);
+      font-size: 14px; color: #212b36; white-space: nowrap;
+    }
+    .data-table tr:hover td { background: #f9fafb; }
+
+    /* Benefit icon cell */
+    .b-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .b-icon svg { width: 20px; height: 20px; }
+
+    /* Status badges */
+    .badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; padding: 4px 8px; border-radius: 6px;
+      letter-spacing: .3px; white-space: nowrap;
+    }
+    .badge-active   { background: #d8fbde; color: #007b55; }
+    .badge-inactive { background: #ffe4de; color: #b71d18; }
+    .badge-approved { background: #d8fbde; color: #007b55; font-weight: 400; }
+    .badge-pending  { background: #fff3cc; color: #b8860b; font-weight: 400; }
+    .badge-rejected { background: #ffe4de; color: #b71d18; font-weight: 400; }
+    .badge-draft    { background: #f4f6f8; color: #637381; font-weight: 400; }
+
+    /* Eye button */
+    .btn-eye {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px;
+      border: 1px solid #dfe3e8; border-radius: 6px;
+      background: transparent; color: #00a76f; cursor: pointer;
+      transition: .2s;
+    }
+    .btn-eye:hover { background: #f0fdf7; border-color: #00a76f; }
+    .btn-eye svg { width: 18px; height: 18px; }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 40px 16px; color: #919eab; font-size: 14px; }
+
+    /* ── Mobile card list ────────────────────────────── */
+    .mobile-list { display: none; padding: 12px 16px; }
+
+    .m-card {
+      background: #fff; border: 1px solid #f4f6f8; border-radius: 12px;
+      box-shadow: 0 1px 2px 0 rgba(145,158,171,.08);
+      padding: 16px; margin-bottom: 12px;
+    }
+    .m-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .m-card-titles { flex: 1; }
+    .m-card-name { font-size: 15px; font-weight: 700; color: #212b36; }
+    .m-card-id   { font-size: 13px; color: #637381; margin-top: 2px; }
+    .m-divider   { border-top: 1px dashed rgb(145 158 171/.24); margin: 12px 0; }
+    .m-rows      { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+    .m-row       { display: flex; justify-content: space-between; align-items: center; }
+    .m-label     { font-size: 12px; color: #637381; }
+    .m-value     { font-size: 13px; color: #212b36; font-weight: 500; text-align: right; }
+    .m-actions   { display: flex; align-items: center; gap: 10px; }
+
+    /* Toggle switch */
+    .toggle-wrap { display: flex; align-items: center; gap: 8px; }
+    .toggle {
+      position: relative; width: 36px; height: 20px; flex-shrink: 0; cursor: pointer;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute; inset: 0; border-radius: 10px;
+      background: #ff5630; transition: background .2s;
+    }
+    .toggle input:checked ~ .toggle-track { background: #00a76f; }
+    .toggle-thumb {
+      position: absolute; top: 2px; left: 2px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2);
+      transition: left .2s;
+    }
+    .toggle input:checked ~ .toggle-thumb { left: 18px; }
+
+    /* Mobile View button */
+    .btn-view-m {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border: 1px solid #dfe3e8; border-radius: 6px;
+      background: transparent; color: #00a76f;
+      font-size: 13px; font-weight: 500; font-family: inherit;
+      cursor: pointer; transition: .2s; margin-left: auto;
+    }
+    .btn-view-m:hover { background: #f0fdf7; border-color: #00a76f; }
+    .btn-view-m svg { width: 16px; height: 16px; }
+
+    /* Package mobile: price header */
+    .m-pkg-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+    .m-pkg-name  { font-size: 15px; font-weight: 700; color: #212b36; }
+    .m-pkg-price { font-size: 18px; font-weight: 700; color: #00a76f; }
+    .m-pkg-id    { font-size: 13px; color: #637381; margin-bottom: 12px; }
+
+    /* ── Pagination ──────────────────────────────────── */
+    .pagination {
+      display: flex; align-items: center; gap: 8px;
+      padding: 16px 20px; border-top: 1px dashed rgb(145 158 171/.24);
+      flex-wrap: wrap;
+    }
+    .pag-rows { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #637381; }
+    .pag-select {
+      height: 32px; border: 1px solid #dfe3e8; border-radius: 6px;
+      font-size: 13px; font-family: inherit; color: #212b36;
+      padding: 0 24px 0 8px; outline: none; cursor: pointer; appearance: none;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 4px center;
+    }
+    .pag-info { margin-left: auto; font-size: 13px; color: #637381; }
+    .pag-btn {
+      width: 32px; height: 32px;
+      border: 1px solid #dfe3e8; border-radius: 6px;
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #637381; transition: .2s;
+    }
+    .pag-btn:hover:not(:disabled) { border-color: #212b36; color: #212b36; }
+    .pag-btn:disabled { cursor: not-allowed; color: #c4cdd5; border-color: #f4f6f8; }
+    .pag-btn svg { width: 18px; height: 18px; }
+
+    /* ═══════════════════════════════════════════════════
+       CREATE BENEFIT MODAL
+    ══════════════════════════════════════════════════ */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.5); z-index: 1000;
+      align-items: center; justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      background: #fff; width: 100%; max-width: 600px;
+      max-height: 95vh; overflow-y: auto;
+      border-radius: 16px;
+      box-shadow: 0 24px 48px -8px rgba(0,0,0,.2);
+      animation: modalIn .25s ease-out;
+    }
+    @keyframes modalIn { from { opacity: 0; transform: scale(.95); } to { opacity: 1; transform: scale(1); } }
+
+    .modal-head {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 24px; border-bottom: 1px solid #f4f6f8;
+    }
+    .modal-title { font-size: 24px; font-weight: 700; color: #161c24; }
+    .modal-desc  { font-size: 14px; color: #637381; margin-top: 4px; }
+    .modal-close {
+      width: 32px; height: 32px; border: none; border-radius: 8px;
+      background: transparent; color: #637381; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: .2s; flex-shrink: 0;
+    }
+    .modal-close:hover { background: #f4f6f8; color: #212b36; }
+    .modal-close svg { width: 20px; height: 20px; }
+
+    .modal-body { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+
+    /* Icon grid */
+    .section-label { font-size: 14px; font-weight: 600; color: #212b36; margin-bottom: 4px; }
+    .section-desc  { font-size: 13px; color: #637381; margin-bottom: 12px; }
+
+    .icon-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
+    }
+    .icon-btn {
+      aspect-ratio: 1; border-radius: 12px; border: 2px solid transparent;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all .2s; background: none; padding: 0;
+    }
+    .icon-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+    .icon-btn.selected { border-color: #00a76f; }
+    .icon-btn svg { width: 28px; height: 28px; }
+
+    .icon-upload-btn {
+      aspect-ratio: 1; border-radius: 12px;
+      border: 2px dashed #dfe3e8; background: #f9fafb;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 4px; cursor: pointer; transition: .2s;
+    }
+    .icon-upload-btn:hover { border-color: #919eab; background: #f4f6f8; }
+    .icon-upload-btn svg { width: 20px; height: 20px; color: #637381; }
+    .icon-upload-btn span { font-size: 11px; font-weight: 500; color: #637381; }
+
+    .icon-error { color: #ff5630; font-size: 12px; margin-top: 4px; display: none; }
+
+    /* Form fields */
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-label {
+      font-size: 14px; font-weight: 600; color: #212b36;
+    }
+    .form-label .req { color: #ff5630; margin-left: 2px; }
+    .form-input, .form-select {
+      width: 100%; height: 44px; padding: 0 14px;
+      border: 1px solid #dfe3e8; border-radius: 8px;
+      font-size: 14px; font-family: inherit; color: #212b36;
+      outline: none; transition: all .2s; background: #fff;
+      box-sizing: border-box;
+    }
+    .form-input::placeholder { color: #919eab; }
+    .form-input:focus, .form-select:focus {
+      border-color: #212b36; box-shadow: 0 0 0 3px rgba(33,43,54,.08);
+    }
+    .form-select {
+      padding-right: 40px; appearance: none; cursor: pointer;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 14px center #fff;
+    }
+    .form-select:invalid, .form-select option[value=""] { color: #919eab; }
+    .form-error { color: #ff5630; font-size: 12px; display: none; }
+
+    /* Suggestions */
+    .suggestions-label { font-size: 12px; font-weight: 500; color: #637381; margin-top: 8px; margin-bottom: 6px; }
+    .chips-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .suggestion-chip {
+      padding: 6px 12px; border-radius: 6px;
+      border: 1px solid #dfe3e8; background: #fff;
+      font-size: 13px; font-weight: 500; color: #637381;
+      cursor: pointer; transition: .2s; font-family: inherit;
+    }
+    .suggestion-chip:hover { border-color: #00a76f; background: #f0fdf7; color: #00a76f; }
+
+    /* 2-col grid for Rollover + Cycle */
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* Modal footer */
+    .modal-foot {
+      display: flex; gap: 12px; padding: 24px;
+      border-top: 1px solid #f4f6f8;
+    }
+    .btn-cancel {
+      flex: 1; height: 44px; border: 1px solid #dfe3e8; border-radius: 8px;
+      background: #fff; font-size: 14px; font-weight: 600;
+      color: #212b36; cursor: pointer; font-family: inherit; transition: .2s;
+    }
+    .btn-cancel:hover { background: #f9fafb; border-color: #919eab; }
+    .btn-create-submit {
+      flex: 1; height: 44px; border: none; border-radius: 8px;
+      background: #00a76f; color: #fff;
+      font-size: 14px; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: .2s;
+    }
+    .btn-create-submit:hover { background: #007b55; box-shadow: 0 4px 12px rgba(0,167,111,.24); }
+
+    /* ── Responsive ──────────────────────────────────── */
+    @media (max-width: 767px) {
+      .tab-btn { font-size: 12px; margin-right: 16px; padding: 12px 4px; }
+      .tab-bar { padding: 0 16px; }
+      .toolbar { padding: 12px 16px; gap: 8px; }
+      .search-wrap { width: 100%; flex: 1; }
+      .status-wrap .status-select { width: 128px; }
+      .table-scroll { display: none; }
+      .mobile-list { display: block; }
+      .pagination { padding: 12px 16px; }
+      .pag-rows span { display: none; }
+      /* Modal */
+      .modal-box { border-radius: 16px 16px 0 0; }
+      .modal-overlay { align-items: flex-end; animation: none; }
+      .modal-box { animation: slideUp .25s ease-out; }
+      @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+      .modal-head { padding: 16px; }
+      .modal-title { font-size: 20px; }
+      .modal-desc { font-size: 12px; }
+      .modal-body { padding: 16px; gap: 16px; }
+      .modal-foot { padding: 16px; gap: 8px; }
+      .icon-grid { grid-template-columns: repeat(5, 1fr); gap: 8px; }
+      .btn-create .btn-text { display: none; }
+      .btn-create { padding: 0 14px; }
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .toolbar { flex-wrap: wrap; }
+      .search-wrap { flex: 1; }
+    }
+  </style>
 </head>
 
 <body>
-    <aside class="sidebar">
-        <div class="sidebar-content">
-            <div class="logo">
-                <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLINKPAY" class="sidebar-logo" />
-            </div>
+  <aside class="sidebar">
+    <div class="sidebar-content">
+      <div class="logo">
+        <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLINKPAY" class="sidebar-logo" />
+      </div>
+      <div class="user-card">
+        <div class="avatar"><iconify-icon icon="solar:user-bold" width="24"></iconify-icon></div>
+        <div class="user-info">
+          <div style="font-weight:600;font-size:14px;color:var(--grey-900)">Carlota Monteiro</div>
+          <div style="font-size:13px;color:var(--grey-600)">Admin</div>
+        </div>
+      </div>
 
-            <div class="user-card">
-                <div class="avatar">
-                    <iconify-icon icon="solar:user-bold" width="24"></iconify-icon>
-                </div>
-                <div class="user-info">
-                    <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Carlota Monteiro</div>
-                    <div style="font-size: 13px; color: var(--grey-600);">Admin</div>
-                </div>
-            </div>
+      <div class="nav-section-title">OVERVIEW</div>
+      <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
+        <span>Homepage</span>
+      </a>
+      <a href="dashboard.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
+        <span>Dashboard</span>
+      </a>
 
-            <div class="nav-section-title">OVERVIEW</div>
-
-            <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
-                <span>Homepage</span>
-            </a>
-
-            <a href="dashboard.html" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
-                <span>Dashboard</span>
-            </a>
-
-            <div class="nav-section-title">GIFT CARD CENTER</div>
-
-            <a href="#" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone"
-                        width="26"></iconify-icon></div>
-                <span>Gift & Voucher Management</span>
-                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
-            </a>
-
-            <div class="submenu">
-                <a href="my-purchase.html" class="sub-item"><span class="dot"></span>My Purchase</a>
-                <a href="#" class="sub-item"><span class="dot"></span>Merchant Map</a>
-                <a href="product-list.html" class="sub-item"><span class="dot"></span>Product Management</a>
-                <a href="digital-gifts-management.html" class="sub-item"><span class="dot"></span>VlinkPay Store</a>
+      <div class="nav-section-title">GIFT CARD CENTER</div>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone" width="26"></iconify-icon></div>
+        <span>Gift &amp; Voucher Management</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="my-purchase.html" class="sub-item"><span class="dot"></span>My Purchase</a>
+        <a href="#" class="sub-item"><span class="dot"></span>Merchant Map</a>
+        <a href="product-list.html" class="sub-item"><span class="dot"></span>Product Management</a>
+        <a href="digital-gifts-management.html" class="sub-item"><span class="dot"></span>VlinkPay Store</a>
         <a href="cancelled-cards.html" class="sub-item"><span class="dot"></span>Cancelled Cards</a>
-            </div>
+      </div>
+      <a href="marketing-tools.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon></div>
+        <span>Marketing Tools</span>
+      </a>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone" width="24"></iconify-icon></div>
+        <span>Payment Acceptance</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="gift-card-payment.html" class="sub-item"><span class="dot"></span>Pay with Gift Card</a>
+        <a href="crypto-payment.html" class="sub-item"><span class="dot"></span>Pay with Crypto</a>
+      </div>
+      <a href="#" class="nav-item parent-active">
+        <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+        <span>Settings</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="merchant-payment-setup.html" class="sub-item"><span class="dot"></span>Merchant Payment Setup</a>
+        <a href="benefits-setup.html" class="sub-item active"><span class="dot"></span>Benefits Setup</a>
+      </div>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
+        <span>Report</span>
+        <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
+      </a>
+      <div class="submenu">
+        <a href="sales-order-list.html" class="sub-item"><span class="dot"></span>Sales Orders</a>
+        <a href="card-transaction-history-merchant.html" class="sub-item"><span class="dot"></span>Card Transaction History</a>
+        <a href="membership-report.html" class="sub-item"><span class="dot"></span>Membership Report</a>
+      </div>
+      <a href="crypto-card-list.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
+        <span>Crypto Card Management</span>
+      </a>
 
-            <a href="crypto-card-list.html" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
-                <span>Crypto Card Management</span>
-            </a>
+      <div class="nav-section-title">APPS</div>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
+        <span>Notifications</span>
+        <span class="badge-outlined">32+</span>
+      </a>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon></div>
+        <span>AI Assistant</span>
+      </a>
+    </div>
+  </aside>
 
-            <a href="marketing-tools.html" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon>
-                </div>
-                <span>Marketing Tools</span>
-            </a>
+  <header class="top-header">
+    <div class="header-info">Jan 14, 2026 10:05:32 AM (UTC)</div>
+    <div class="header-icons">
+      <div class="header-icon-btn"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+      <div class="user-avatar-mini"><iconify-icon icon="solar:user-circle-bold" width="32"></iconify-icon></div>
+    </div>
+  </header>
 
-            <a href="#" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone"
-                        width="24"></iconify-icon>
-                </div>
-                <span>Payment Acceptance</span>
-                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
-            </a>
-            <div class="submenu">
-                <a href="gift-card-payment.html" class="sub-item"><span class="dot"></span>Pay with Gift Card</a>
-                <a href="crypto-payment.html" class="sub-item"><span class="dot"></span>Pay with Crypto</a>
-            </div>
-
-            <a href="#" class="nav-item parent-active active">
-                <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
-                <span>Settings</span>
-                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
-            </a>
-            <div class="submenu">
-                <a href="merchant-payment-setup.html" class="sub-item"><span class="dot"></span>Merchant Payment
-                    Setup</a>
-                <a href="benefits-setup.html" class="sub-item active"><span class="dot"></span>Benefits Setup</a>
-            </div>
-
-            <a href="#" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
-                <span>Report</span>
-                <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
-            </a>
-            <div class="submenu">
-                <a href="sales-order-list.html" class="sub-item"><span class="dot"></span>Sales Orders</a>
-                <a href="card-transaction-history-merchant.html" class="sub-item"><span class="dot"></span>Card
-                    Transaction
-                    History</a>
-                <a href="membership-report.html" class="sub-item"><span class="dot"></span>Membership Report</a>
-            </div>
-
-            <div class="nav-section-title">APPS</div>
-
-            <a href="#" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
-                <span>Notifications</span>
-                <span class="badge-outlined">32+</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon>
-                </div>
-                <span>AI Assistant</span>
-            </a>
-        </div>
-    </aside>
-
-    <header class="top-header">
-        <div class="header-info">Jan 14, 2026 10:05:32 AM (UTC)</div>
-        <div class="header-icons">
-            <div class="header-icon-btn">
-                <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
-            </div>
-            <div class="user-avatar-mini">
-                <iconify-icon icon="solar:user-circle-bold" width="32"></iconify-icon>
-            </div>
-        </div>
-    </header>
-
-    <main class="main">
-        <div class="page-header">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h1 class="page-title" style="margin: 0;">Benefits Setup</h1>
-                <button onclick="openCreateModal()" class="btn-contained">
-                    <iconify-icon icon="mingcute:add-line" width="20"></iconify-icon>
-                    Create Benefit
-                </button>
-            </div>
-            <div class="breadcrumbs" style="margin-top: 8px;">
-                <a href="#">Dashboard</a>
-                <span class="breadcrumbs-dot"></span>
-                <a href="#">Settings</a>
-                <span class="breadcrumbs-dot"></span>
-                <span style="color: var(--grey-900); font-weight: 500;">Benefits Setup</span>
-            </div>
-        </div>
-
-        <div class="tabs-container">
-            <div class="tabs-header">
-                <div class="tab-item active" onclick="switchTab('benefit-list')">benefit list</div>
-                <div class="tab-item" onclick="switchTab('benefit-package')">benefit package</div>
-            </div>
-
-            <div id="benefit-list" class="tab-content active">
-                <div class="table-card">
-                    <div class="table-toolbar" style="gap: 12px; padding: 20px 24px;">
-                        <div class="field-root" style="width: 240px;">
-                            <div class="field-container">
-                                <input type="text" class="field-input" placeholder="Search benefits..."
-                                    id="searchInput">
-                                <iconify-icon icon="solar:magnifer-linear" class="field-chevron"
-                                    style="color: var(--grey-500); cursor: default;"></iconify-icon>
-                            </div>
-                        </div>
-
-                        <div class="field-root" style="width: 180px;">
-                            <label class="field-label">Status</label>
-                            <div class="field-container">
-                                <select class="field-input field-select" id="statusFilter">
-                                    <option value="">All Statuses</option>
-                                    <option value="active">Approved</option>
-                                    <option value="inactive">Inactive</option>
-                                </select>
-                                <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Icon</th>
-                                    <th>Benefit ID</th>
-                                    <th>Benefit Name</th>
-                                    <th>Benefit Unit</th>
-                                    <th>Status</th>
-                                    <th>Created By</th>
-                                    <th>Created Date</th>
-                                    <th>Last Updated Date</th>
-                                    <th style="padding-right: 24px; text-align: right;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="benefitsTableBody">
-                                <tr>
-                                    <td>
-                                        <div class="benefit-icon icon-cashback">
-                                            <iconify-icon icon="solar:dollar-minimalistic-bold-duotone"></iconify-icon>
-                                        </div>
-                                    </td>
-                                    <td>BEN001</td>
-                                    <td style="font-weight: 600;">Monthly Credit</td>
-                                    <td>USD ($)</td>
-                                    <td><span class="status-pill status-active">Approved</span></td>
-                                    <td>Admin User</td>
-                                    <td>Jan 01, 2026</td>
-                                    <td>Feb 01, 2026</td>
-                                    <td style="text-align: right; padding-right: 24px;">
-                                        <iconify-icon icon="solar:eye-bold" class="action-icon"
-                                            style="color: var(--primary-main); cursor: pointer;"></iconify-icon>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="benefit-icon icon-cashback">
-                                            <iconify-icon icon="solar:refresh-bold-duotone"></iconify-icon>
-                                        </div>
-                                    </td>
-                                    <td>BEN002</td>
-                                    <td style="font-weight: 600;">Cashback</td>
-                                    <td>Percentage (%)</td>
-                                    <td><span class="status-pill status-active">Approved</span></td>
-                                    <td>Admin User</td>
-                                    <td>Jan 05, 2026</td>
-                                    <td>Jan 15, 2026</td>
-                                    <td style="text-align: right; padding-right: 24px;">
-                                        <iconify-icon icon="solar:eye-bold" class="action-icon"
-                                            style="color: var(--primary-main); cursor: pointer;"></iconify-icon>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="benefit-icon icon-discount">
-                                            <iconify-icon icon="eva:percent-outline"></iconify-icon>
-                                        </div>
-                                    </td>
-                                    <td>BEN003</td>
-                                    <td style="font-weight: 600;">Discount</td>
-                                    <td>Percentage (%)</td>
-                                    <td><span class="status-pill status-active">Approved</span></td>
-                                    <td>Manager User</td>
-                                    <td>Jan 10, 2026</td>
-                                    <td>Jan 20, 2026</td>
-                                    <td style="text-align: right; padding-right: 24px;">
-                                        <iconify-icon icon="solar:eye-bold" class="action-icon"
-                                            style="color: var(--primary-main); cursor: pointer;"></iconify-icon>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="benefit-icon icon-birthday">
-                                            <iconify-icon icon="material-symbols:cake"></iconify-icon>
-                                        </div>
-                                    </td>
-                                    <td>BEN004</td>
-                                    <td style="font-weight: 600;">Birthday Gift</td>
-                                    <td>USD ($)</td>
-                                    <td><span class="status-pill status-active">Approved</span></td>
-                                    <td>Admin User</td>
-                                    <td>Dec 28, 2025</td>
-                                    <td>Jan 05, 2026</td>
-                                    <td style="text-align: right; padding-right: 24px;">
-                                        <iconify-icon icon="solar:eye-bold" class="action-icon"
-                                            style="color: var(--primary-main); cursor: pointer;"></iconify-icon>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="benefit-icon icon-discount">
-                                            <iconify-icon icon="eva:people-fill"></iconify-icon>
-                                        </div>
-                                    </td>
-                                    <td>BEN005</td>
-                                    <td style="font-weight: 600;">Group Discount</td>
-                                    <td>Percentage (%)</td>
-                                    <td><span class="status-pill status-active">Approved</span></td>
-                                    <td>Manager User</td>
-                                    <td>Jan 12, 2026</td>
-                                    <td>Jan 25, 2026</td>
-                                    <td style="text-align: right; padding-right: 24px;">
-                                        <iconify-icon icon="solar:eye-bold" class="action-icon"
-                                            style="color: var(--primary-main); cursor: pointer;"></iconify-icon>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="benefit-icon icon-gift">
-                                            <iconify-icon icon="solar:sofa-3-bold-duotone"></iconify-icon>
-                                        </div>
-                                    </td>
-                                    <td>BEN006</td>
-                                    <td style="font-weight: 600;">Free Lounge</td>
-                                    <td>Unit</td>
-                                    <td><span class="status-pill status-active">Approved</span></td>
-                                    <td>Admin User</td>
-                                    <td>Jan 15, 2026</td>
-                                    <td>Feb 01, 2026</td>
-                                    <td style="text-align: right; padding-right: 24px;">
-                                        <iconify-icon icon="solar:eye-bold" class="action-icon"
-                                            style="color: var(--primary-main); cursor: pointer;"></iconify-icon>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="pagination">
-                        <div class="pagination-rows">
-                            <span>Rows per page:</span>
-                            <select class="pagination-select">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                            </select>
-                        </div>
-                        <div class="pagination-info">1–2 of 2</div>
-                        <div class="pagination-arrows">
-                            <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-left-fill"
-                                    width="20"></iconify-icon></button>
-                            <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-right-fill"
-                                    width="20"></iconify-icon></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="benefit-package" class="tab-content">
-                <div class="table-card">
-                    <div class="table-toolbar" style="gap: 12px; padding: 20px 24px;">
-                        <div class="field-root" style="width: 260px;">
-                            <label class="field-label">Search</label>
-                            <div class="field-container">
-                                <input type="text" class="field-input" id="packageSearchInput"
-                                    placeholder="Search by Package ID or Name">
-                                <iconify-icon icon="solar:magnifer-linear" class="field-chevron"
-                                    style="color: var(--grey-500); cursor: default;"></iconify-icon>
-                            </div>
-                        </div>
-
-                        <div class="field-root" style="width: 180px;">
-                            <label class="field-label">Status</label>
-                            <div class="field-container">
-                                <select class="field-input field-select" id="packageStatusFilter">
-                                    <option value="">All</option>
-                                    <option value="draft">Draft</option>
-                                    <option value="active">Approved</option>
-                                    <option value="inactive">Inactive</option>
-                                </select>
-                                <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
-                            </div>
-                        </div>
-
-                        <div class="field-root" style="width: 200px;">
-                            <label class="field-label">Sort by</label>
-                            <div class="field-container">
-                                <select class="field-input field-select" id="packageSortSelect">
-                                    <option value="createdDate">Created Date (newest)</option>
-                                    <option value="price">Price (low to high)</option>
-                                    <option value="name">Name (A–Z)</option>
-                                </select>
-                                <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <th>Package ID</th>
-                                <th>Package Name</th>
-                                <th>Price</th>
-                                <th>Currency</th>
-                                <th>Billing Cycle</th>
-                                <th>Benefit Count</th>
-                                <th>Status</th>
-                                <th>Sale Status</th>
-                                <th>Created By</th>
-                                <th>Created Date</th>
-                                <th>Last Updated Date</th>
-                                <th style="padding-right: 24px; text-align: right;">Actions</th>
-                            </thead>
-                            <tbody id="packageTableBody">
-                                <tr>
-                                    <td class="pkg-id-cell">PKG001</td>
-                                    <td class="pkg-name-cell" style="font-weight: 600;">SILVER</td>
-                                    <td class="pkg-price-cell">99</td>
-                                    <td class="pkg-currency-cell">USD</td>
-                                    <td class="pkg-billing-cycle-cell">Yearly</td>
-                                    <td class="pkg-benefit-count-cell">3 benefits</td>
-                                    <td class="pkg-status-cell">
-                                        <span class="status-pill status-active" data-status="active">Approved</span>
-                                    </td>
-                                    <td class="pkg-sale-status-cell">
-                                        <span class="status-pill status-active" data-status="on">Active</span>
-                                    </td>
-                                    <td class="pkg-created-by-cell">Admin User</td>
-                                    <td class="pkg-created-date-cell">Jan 10, 2026</td>
-                                    <td class="pkg-updated-date-cell">Jan 15, 2026</td>
-                                    <td class="pkg-actions-cell" style="text-align: right; padding-right: 24px;">
-
-                                        <iconify-icon icon="solar:pen-bold" class="action-icon icon-edit" width="20"
-                                            onclick="editPackage('PKG001')"></iconify-icon>
-                                        <a href="benefit-package-view-active.html" style="text-decoration: none;">
-                                            <iconify-icon icon="solar:eye-bold" class="action-icon icon-view"
-                                                width="20"></iconify-icon>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="pkg-id-cell">PKG002</td>
-                                    <td class="pkg-name-cell" style="font-weight: 600;">GOLD</td>
-                                    <td class="pkg-price-cell">199</td>
-                                    <td class="pkg-currency-cell">USD</td>
-                                    <td class="pkg-billing-cycle-cell">Yearly</td>
-                                    <td class="pkg-benefit-count-cell">5 benefits</td>
-                                    <td class="pkg-status-cell">
-                                        <span class="status-pill status-active" data-status="active">Approved</span>
-                                    </td>
-                                    <td class="pkg-sale-status-cell">
-                                        <span class="status-pill status-active" data-status="on">Active</span>
-                                    </td>
-                                    <td class="pkg-created-by-cell">Manager User</td>
-                                    <td class="pkg-created-date-cell">Jan 20, 2026</td>
-                                    <td class="pkg-updated-date-cell">Jan 28, 2026</td>
-                                    <td class="pkg-actions-cell" style="text-align: right; padding-right: 24px;">
-                                        <iconify-icon icon="solar:pen-bold" class="action-icon icon-edit" width="20"
-                                            onclick="editPackage('PKG002')"></iconify-icon>
-                                        <a href="benefit-package-view-active.html" style="text-decoration: none;">
-                                            <iconify-icon icon="solar:eye-bold" class="action-icon icon-view"
-                                                width="20"></iconify-icon>
-                                        </a>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="pkg-id-cell">PKG003</td>
-                                    <td class="pkg-name-cell" style="font-weight: 600;">PLATINUM</td>
-                                    <td class="pkg-price-cell">79</td>
-                                    <td class="pkg-currency-cell">USD</td>
-                                    <td class="pkg-billing-cycle-cell">Yearly</td>
-                                    <td class="pkg-benefit-count-cell">2 benefits</td>
-                                    <td class="pkg-status-cell">
-                                        <span class="status-pill status-draft" data-status="draft">Draft</span>
-                                    </td>
-                                    <td class="pkg-sale-status-cell">
-                                        <span class="status-pill status-inactive" data-status="off">Inactive</span>
-                                    </td>
-                                    <td class="pkg-created-by-cell">Admin User</td>
-                                    <td class="pkg-created-date-cell">Feb 01, 2026</td>
-                                    <td class="pkg-updated-date-cell">Feb 05, 2026</td>
-                                    <td class="pkg-actions-cell" style="text-align: right; padding-right: 24px;">
-
-
-                                        <iconify-icon icon="solar:trash-bin-trash-bold" class="action-icon icon-delete"
-                                            width="20" onclick="handleDeletePackage(this)"
-                                            title="Delete package"></iconify-icon>
-                                        <iconify-icon icon="solar:pen-bold" class="action-icon icon-edit" width="20"
-                                            onclick="editPackage('PKG003')"></iconify-icon>
-                                        <a href="benefit-package-view.html" style="text-decoration: none;">
-                                            <iconify-icon icon="solar:eye-bold" class="action-icon icon-view"
-                                                width="20"></iconify-icon>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="pagination">
-                        <div class="pagination-rows">
-                            <span>Rows per page:</span>
-                            <select class="pagination-select">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                            </select>
-                        </div>
-                        <div class="pagination-info">1–3 of 3</div>
-                        <div class="pagination-arrows">
-                            <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-left-fill"
-                                    width="20"></iconify-icon></button>
-                            <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-right-fill"
-                                    width="20"></iconify-icon></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Create Benefit Modal -->
-    <div class="modal-overlay" id="createBenefitModal">
-        <div class="modal-content">
-            <div class="modal-close" onclick="closeCreateModal()">
-                <iconify-icon icon="eva:close-fill" width="24"></iconify-icon>
-            </div>
-
-            <div class="modal-header">
-                <h2 class="modal-title">Create New Benefit</h2>
-                <p class="modal-description">Fill in the required information to create a new benefit</p>
-            </div>
-
-            <form id="createBenefitForm" onsubmit="handleCreateBenefit(event)">
-                <div class="form-group">
-                    <label class="form-label">Benefit Icon</label>
-                    <div class="upload-hint">Select an icon for the benefit</div>
-                    <div class="icon-preset-grid">
-                        <div class="icon-preset-item icon-cashback" data-icon="dollar" onclick="selectIcon('dollar')">
-                            <iconify-icon icon="solar:dollar-minimalistic-bold-duotone"></iconify-icon>
-                        </div>
-                        <div class="icon-preset-item icon-cashback" data-icon="wallet" onclick="selectIcon('wallet')">
-                            <iconify-icon icon="solar:refresh-bold-duotone"></iconify-icon>
-                        </div>
-                        <div class="icon-preset-item icon-discount" data-icon="percent" onclick="selectIcon('percent')">
-                            <iconify-icon icon="eva:percent-outline"></iconify-icon>
-                        </div>
-                        <div class="icon-preset-item icon-birthday" data-icon="cake" onclick="selectIcon('cake')">
-                            <iconify-icon icon="material-symbols:cake"></iconify-icon>
-                        </div>
-                        <div class="icon-preset-item icon-discount" data-icon="people" onclick="selectIcon('people')">
-                            <iconify-icon icon="eva:people-fill"></iconify-icon>
-                        </div>
-                        <div class="icon-preset-item icon-gift" data-icon="lounge" onclick="selectIcon('lounge')">
-                            <iconify-icon icon="solar:sofa-3-bold-duotone"></iconify-icon>
-                        </div>
-                        <div class="icon-preset-item icon-discount" data-icon="discount"
-                            onclick="selectIcon('discount')">
-                            <iconify-icon icon="eva:pricetags-fill"></iconify-icon>
-                        </div>
-                        <div class="icon-preset-item icon-gift" data-icon="gift" onclick="selectIcon('gift')">
-                            <iconify-icon icon="solar:gift-bold-duotone"></iconify-icon>
-                        </div>
-                        <div class="icon-preset-item icon-birthday" data-icon="birthday"
-                            onclick="selectIcon('birthday')">
-                            <iconify-icon icon="eva:gift-fill"></iconify-icon>
-                        </div>
-                        <div class="icon-upload-item" id="uploadIconBtn">
-                            <iconify-icon icon="solar:upload-bold-duotone"></iconify-icon>
-                            <span>Upload</span>
-                            <input type="file" id="iconFileInput" accept="image/*" onchange="handleIconUpload(event)">
-                        </div>
-                    </div>
-                    <input type="hidden" id="selectedIcon" name="icon">
-                    <input type="hidden" id="uploadedIconData" name="uploadedIcon">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">
-                        Benefit Name
-                        <span class="required">*</span>
-                    </label>
-                    <input type="text" class="form-control" id="benefitName" name="benefitName"
-                        placeholder="Enter benefit name">
-                    <div class="preset-suggestions">
-                        <span class="preset-chip" onclick="fillBenefitName('Discount')">Discount</span>
-                        <span class="preset-chip" onclick="fillBenefitName('Cashback')">Cashback</span>
-                        <span class="preset-chip" onclick="fillBenefitName('Gift')">Gift</span>
-                        <span class="preset-chip" onclick="fillBenefitName('Birthday')">Birthday</span>
-                    </div>
-                    <div class="error-message" id="benefitNameError">Benefit name is required</div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">
-                        Benefit Unit
-                        <span class="required">*</span>
-                    </label>
-                    <select class="form-control" id="benefitUnit" name="benefitUnit">
-                        <option value="">Select benefit unit</option>
-                        <option value="percentage">Percentage (%)</option>
-                        <option value="vnd">VND</option>
-                        <option value="usd">USD</option>
-                        <option value="unit">Unit</option>
-                        <option value="point">Point</option>
-                    </select>
-                    <div class="error-message" id="benefitUnitError">Benefit unit is required</div>
-                </div>
-
-                <div style="display: flex; gap: 12px;">
-                    <div class="form-group" style="flex: 1;">
-                        <label class="form-label">Rollover Type</label>
-                        <select class="form-control" id="rolloverType" name="rolloverType">
-                            <option value="">Select rollover type</option>
-                            <option value="reset">Reset</option>
-                            <option value="rollover">Rollover</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group" style="flex: 1;">
-                        <label class="form-label">
-                            Cycle
-                            <span class="required" id="cycleRequiredAsterisk" style="display: none;">*</span>
-                        </label>
-                        <select class="form-control" id="cycle" name="cycle" disabled>
-                            <option value="">Select cycle</option>
-                            <option value="daily">Daily</option>
-                            <option value="monthly">Monthly</option>
-                            <option value="quarterly">Quarterly</option>
-                            <option value="yearly">Yearly</option>
-                        </select>
-                        <div class="error-message" id="cycleError">Cycle is required when rollover type is selected
-                        </div>
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 12px; margin-top: 32px;">
-                    <button type="button" class="btn-outlined" onclick="closeCreateModal()" style="flex: 1;">
-                        Cancel
-                    </button>
-                    <button type="submit" class="btn-primary" style="flex: 1;">
-                        Create
-                    </button>
-                </div>
-            </form>
-        </div>
+  <main class="main">
+    <div class="page-header">
+      <div class="page-header-row">
+        <h1 class="page-title" style="margin:0">Benefits Setup</h1>
+        <button class="btn-create" id="btnCreate" onclick="openModal()">
+          <i data-lucide="plus"></i>
+          <span class="btn-text" id="btnCreateText">Create Benefit</span>
+        </button>
+      </div>
+      <div class="breadcrumbs" style="margin-top:8px">
+        <a href="dashboard.html">Dashboard</a>
+        <span class="breadcrumbs-dot"></span>
+        <span style="color:#212b36;font-weight:500">Benefits Setup</span>
+      </div>
     </div>
 
-    <script>
-        let selectedIconValue = '';
-        let uploadedIconFile = null;
-        let currentPage = 1;
-        let itemsPerPage = 5;
-        let allBenefits = [];
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            loadInitialData();
-            updatePagination();
-
-            initPackageFiltersAndSort();
-
-            const rolloverSelect = document.getElementById('rolloverType');
-            const cycleSelect = document.getElementById('cycle');
-            const cycleAsterisk = document.getElementById('cycleRequiredAsterisk');
-
-            if (rolloverSelect && cycleSelect && cycleAsterisk) {
-                rolloverSelect.addEventListener('change', function () {
-                    if (this.value) {
-                        cycleSelect.disabled = false;
-                        cycleAsterisk.style.display = 'inline';
-                    } else {
-                        cycleSelect.disabled = true;
-                        cycleSelect.value = '';
-                        cycleAsterisk.style.display = 'none';
-                        cycleSelect.classList.remove('error');
-                        const cycleError = document.getElementById('cycleError');
-                        if (cycleError) {
-                            cycleError.classList.remove('show');
-                        }
-                    }
-                });
-            }
-        });
-
-        function initPackageFiltersAndSort() {
-            const searchInput = document.getElementById('packageSearchInput');
-            const statusSelect = document.getElementById('packageStatusFilter');
-            const sortSelect = document.getElementById('packageSortSelect');
-
-            if (!document.getElementById('packageTableBody')) return;
-
-            const handler = () => applyPackageFiltersAndSort();
-
-            searchInput && searchInput.addEventListener('input', handler);
-            statusSelect && statusSelect.addEventListener('change', handler);
-            sortSelect && sortSelect.addEventListener('change', handler);
-
-            // initial apply
-            applyPackageFiltersAndSort();
-        }
-
-        function parsePackagePrice(text) {
-            if (!text) return 0;
-            // Price is now just a number, so parse directly
-            const value = parseFloat(text);
-            return isNaN(value) ? 0 : value;
-        }
-
-        function parsePackageDate(text) {
-            if (!text) return 0;
-            const d = new Date(text);
-            return isNaN(d.getTime()) ? 0 : d.getTime();
-        }
-
-        function applyPackageFiltersAndSort() {
-            const tbody = document.getElementById('packageTableBody');
-            if (!tbody) return;
-
-            const rows = Array.from(tbody.querySelectorAll('tr'));
-            const search = (document.getElementById('packageSearchInput')?.value || '').toLowerCase();
-            const statusFilter = (document.getElementById('packageStatusFilter')?.value || '');
-            const sortBy = document.getElementById('packageSortSelect')?.value || 'createdDate';
-
-            // sort
-            const sortedRows = rows.slice().sort((a, b) => {
-                if (sortBy === 'name') {
-                    const aName = (a.querySelector('.pkg-name-cell')?.textContent || '').toLowerCase();
-                    const bName = (b.querySelector('.pkg-name-cell')?.textContent || '').toLowerCase();
-                    if (aName < bName) return -1;
-                    if (aName > bName) return 1;
-                    return 0;
-                }
-                if (sortBy === 'price') {
-                    const aPrice = parsePackagePrice(a.querySelector('.pkg-price-cell')?.textContent || '');
-                    const bPrice = parsePackagePrice(b.querySelector('.pkg-price-cell')?.textContent || '');
-                    return aPrice - bPrice; // low to high
-                }
-                // createdDate - newest first
-                const aDate = parsePackageDate(a.querySelector('.pkg-created-date-cell')?.textContent || '');
-                const bDate = parsePackageDate(b.querySelector('.pkg-created-date-cell')?.textContent || '');
-                return bDate - aDate;
-            });
-
-            sortedRows.forEach(row => tbody.appendChild(row));
-
-            // filter
-            sortedRows.forEach(row => {
-                const idText = (row.querySelector('.pkg-id-cell')?.textContent || '').toLowerCase();
-                const nameText = (row.querySelector('.pkg-name-cell')?.textContent || '').toLowerCase();
-                const status = row.querySelector('.pkg-status-cell .status-pill')?.dataset.status || '';
-
-                const matchesSearch = !search || idText.includes(search) || nameText.includes(search);
-                const matchesStatus = !statusFilter || status === statusFilter;
-
-                row.style.display = matchesSearch && matchesStatus ? '' : 'none';
-            });
-        }
-
-        function editPackage(packageId) {
-            alert('Edit package ' + packageId + ' (UI coming soon)');
-        }
-
-        function handleDeletePackage(button) {
-            const row = button.closest('tr');
-            if (!row) return;
-
-            const status = row.querySelector('.pkg-status-cell .status-pill')?.dataset.status || '';
-            const packageId = (row.querySelector('.pkg-id-cell')?.textContent || '').trim();
-
-            if (status !== 'draft') {
-                alert('Only draft packages can be deleted.');
-                return;
-            }
-
-            if (!confirm('Delete package ' + packageId + '?')) {
-                return;
-            }
-
-            row.remove();
-        }
-
-        function switchTab(tabId) {
-            // Update active state on tab items
-            document.querySelectorAll('.tab-item').forEach(tab => {
-                tab.classList.remove('active');
-            });
-
-            const activeTab = Array.from(document.querySelectorAll('.tab-item')).find(tab => {
-                const onclick = tab.getAttribute('onclick') || '';
-                return onclick.includes("'" + tabId + "'");
-            });
-            if (activeTab) {
-                activeTab.classList.add('active');
-            }
-
-            // Update active state on tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            const target = document.getElementById(tabId);
-            if (target) {
-                target.classList.add('active');
-            }
-        }
-
-        function loadInitialData() {
-            // Get all existing rows from table
-            const rows = document.querySelectorAll('#benefitsTableBody tr');
-            allBenefits = Array.from(rows).map(row => ({
-                html: row.outerHTML,
-                text: row.textContent.toLowerCase()
-            }));
-        }
-
-        function updatePagination() {
-            const filteredBenefits = getFilteredBenefits();
-            const totalRecords = filteredBenefits.length;
-            const totalPages = Math.ceil(totalRecords / itemsPerPage);
-
-            // Update pagination info
-            const start = (currentPage - 1) * itemsPerPage + 1;
-            const end = Math.min(currentPage * itemsPerPage, totalRecords);
-
-            document.getElementById('showingStart').textContent = totalRecords > 0 ? start : 0;
-            document.getElementById('showingEnd').textContent = end;
-            document.getElementById('totalRecords').textContent = totalRecords;
-
-            // Update pagination buttons
-            const paginationNumbers = document.getElementById('paginationNumbers');
-            paginationNumbers.innerHTML = '';
-
-            for (let i = 1; i <= totalPages; i++) {
-                const btn = document.createElement('button');
-                btn.className = 'pagination-btn' + (i === currentPage ? ' active' : '');
-                btn.textContent = i;
-                btn.onclick = () => goToPage(i);
-                paginationNumbers.appendChild(btn);
-            }
-
-            // Update nav buttons
-            document.getElementById('prevPage').disabled = currentPage === 1;
-            document.getElementById('nextPage').disabled = currentPage === totalPages || totalPages === 0;
-
-            // Display current page items
-            displayCurrentPage(filteredBenefits);
-        }
-
-        function getFilteredBenefits() {
-            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
-            const statusFilter = document.getElementById('statusFilter')?.value || '';
-
-            return allBenefits.filter(benefit => {
-                const matchesSearch = !searchTerm || benefit.text.includes(searchTerm);
-                const matchesStatus = !statusFilter || benefit.text.includes(statusFilter);
-                return matchesSearch && matchesStatus;
-            });
-        }
-
-        function displayCurrentPage(filteredBenefits) {
-            const start = (currentPage - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const pageItems = filteredBenefits.slice(start, end);
-
-            const tbody = document.getElementById('benefitsTableBody');
-            tbody.innerHTML = pageItems.map(b => b.html).join('');
-        }
-
-        function changePage(direction) {
-            const totalPages = Math.ceil(getFilteredBenefits().length / itemsPerPage);
-            const newPage = currentPage + direction;
-
-            if (newPage >= 1 && newPage <= totalPages) {
-                currentPage = newPage;
-                updatePagination();
-            }
-        }
-
-        function goToPage(page) {
-            currentPage = page;
-            updatePagination();
-        }
-
-        function openCreateModal() {
-            document.getElementById('createBenefitModal').classList.add('active');
-            resetForm();
-        }
-
-        function closeCreateModal() {
-            document.getElementById('createBenefitModal').classList.remove('active');
-            resetForm();
-        }
-
-        function resetForm() {
-            document.getElementById('createBenefitForm').reset();
-            selectedIconValue = '';
-            uploadedIconFile = null;
-
-            // Clear selected icon
-            document.querySelectorAll('.icon-preset-item').forEach(item => {
-                item.classList.remove('selected');
-            });
-
-            // Reset upload preview
-            const uploadBtn = document.getElementById('uploadIconBtn');
-            uploadBtn.innerHTML = '<iconify-icon icon="solar:upload-bold-duotone"></iconify-icon><span>Upload</span><input type="file" id="iconFileInput" accept="image/*" onchange="handleIconUpload(event)">';
-            uploadBtn.style.border = '';
-            uploadBtn.style.background = '';
-
-            // Clear errors
-            document.querySelectorAll('.error-message').forEach(msg => {
-                msg.classList.remove('show');
-            });
-            document.querySelectorAll('.form-control').forEach(ctrl => {
-                ctrl.classList.remove('error');
-            });
-
-            const cycleSelect = document.getElementById('cycle');
-            const cycleAsterisk = document.getElementById('cycleRequiredAsterisk');
-            const cycleError = document.getElementById('cycleError');
-            if (cycleSelect && cycleAsterisk && cycleError) {
-                cycleSelect.disabled = true;
-                cycleSelect.value = '';
-                cycleAsterisk.style.display = 'none';
-                cycleError.classList.remove('show');
-            }
-        }
-
-        function handleIconUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            // Clear preset selections
-            document.querySelectorAll('.icon-preset-item').forEach(item => {
-                item.classList.remove('selected');
-            });
-            selectedIconValue = 'uploaded';
-            uploadedIconFile = file;
-
-            // Preview uploaded image
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const uploadBtn = document.getElementById('uploadIconBtn');
-                uploadBtn.innerHTML = `
-                    <img src="${e.target.result}" class="icon-upload-preview" alt="Uploaded icon">
-                    <div class="icon-remove-upload" onclick="removeUploadedIcon(event)">
-                        <iconify-icon icon="eva:close-circle-fill"></iconify-icon>
-                    </div>
-                    <input type="file" id="iconFileInput" accept="image/*" onchange="handleIconUpload(event)">
-                `;
-                uploadBtn.style.border = '2px solid var(--primary-main)';
-                uploadBtn.style.background = '#fff';
-
-                // Store base64 data
-                document.getElementById('uploadedIconData').value = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function removeUploadedIcon(event) {
-            event.stopPropagation();
-            selectedIconValue = '';
-            uploadedIconFile = null;
-            document.getElementById('uploadedIconData').value = '';
-
-            // Reset upload button
-            const uploadBtn = document.getElementById('uploadIconBtn');
-            uploadBtn.innerHTML = '<iconify-icon icon="solar:upload-bold-duotone"></iconify-icon><span>Upload</span><input type="file" id="iconFileInput" accept="image/*" onchange="handleIconUpload(event)">';
-            uploadBtn.style.border = '';
-            uploadBtn.style.background = '';
-        }
-
-        function selectIcon(iconName) {
-            selectedIconValue = iconName;
-            uploadedIconFile = null;
-            document.getElementById('selectedIcon').value = iconName;
-            document.getElementById('uploadedIconData').value = '';
-
-            // Update UI
-            document.querySelectorAll('.icon-preset-item').forEach(item => {
-                item.classList.remove('selected');
-            });
-            document.querySelector(`[data-icon="${iconName}"]`).classList.add('selected');
-
-            // Reset upload button
-            const uploadBtn = document.getElementById('uploadIconBtn');
-            uploadBtn.innerHTML = '<iconify-icon icon="solar:upload-bold-duotone"></iconify-icon><span>Upload</span><input type="file" id="iconFileInput" accept="image/*" onchange="handleIconUpload(event)">';
-            uploadBtn.style.border = '';
-            uploadBtn.style.background = '';
-        }
-
-        function fillBenefitName(name) {
-            document.getElementById('benefitName').value = name;
-        }
-
-        function handleCreateBenefit(event) {
-            event.preventDefault();
-
-            // Get form values
-            const benefitName = document.getElementById('benefitName').value.trim();
-            const benefitUnit = document.getElementById('benefitUnit').value;
-            const rolloverType = document.getElementById('rolloverType') ? document.getElementById('rolloverType').value : '';
-            const cycle = document.getElementById('cycle') ? document.getElementById('cycle').value : '';
-
-            // Clear previous errors
-            document.querySelectorAll('.error-message').forEach(msg => {
-                msg.classList.remove('show');
-            });
-            document.querySelectorAll('.form-control').forEach(ctrl => {
-                ctrl.classList.remove('error');
-            });
-
-            // Validate required fields
-            let hasError = false;
-
-            if (!benefitName) {
-                document.getElementById('benefitName').classList.add('error');
-                document.getElementById('benefitNameError').classList.add('show');
-                hasError = true;
-            }
-
-            if (!benefitUnit) {
-                document.getElementById('benefitUnit').classList.add('error');
-                document.getElementById('benefitUnitError').classList.add('show');
-                hasError = true;
-            }
-
-            if (rolloverType && !cycle) {
-                const cycleSelect = document.getElementById('cycle');
-                const cycleError = document.getElementById('cycleError');
-                if (cycleSelect && cycleError) {
-                    cycleSelect.classList.add('error');
-                    cycleError.classList.add('show');
-                }
-                hasError = true;
-            }
-
-            if (hasError) {
-                // Show notification
-                alert('Thông tin bắt buộc');
-                return;
-            }
-
-            // Success - Create benefit
-            const newBenefit = {
-                icon: selectedIconValue || 'discount',
-                benefitId: 'BEN' + String(Math.floor(Math.random() * 1000)).padStart(3, '0'),
-                benefitName: benefitName,
-                benefitUnit: document.getElementById('benefitUnit').options[document.getElementById('benefitUnit').selectedIndex].text,
-                status: 'Active',
-                createdBy: 'Current User',
-                createdDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                lastUpdatedDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-            };
-
-            // Add to table
-            addBenefitToTable(newBenefit);
-
-            // Close modal
-            closeCreateModal();
-
-            // Show success message
-            alert('Benefit created successfully!');
-        }
-
-        function addBenefitToTable(benefit) {
-            const tbody = document.getElementById('benefitsTableBody');
-            const row = document.createElement('tr');
-
-            const iconClass = `icon-${benefit.icon}`;
-            const iconMap = {
-                'dollar': 'solar:dollar-minimalistic-bold-duotone',
-                'wallet': 'solar:refresh-bold-duotone',
-                'percent': 'eva:percent-outline',
-                'cake': 'material-symbols:cake',
-                'people': 'eva:people-fill',
-                'lounge': 'solar:sofa-3-bold-duotone',
-                'discount': 'eva:pricetags-fill',
-                'gift': 'solar:gift-bold-duotone',
-                'birthday': 'eva:gift-fill'
-            };
-
-            row.innerHTML = `
-        <td>
-          <div class="benefit-icon ${iconClass}">
-            <iconify-icon icon="${iconMap[benefit.icon] || iconMap['discount']}"></iconify-icon>
+    <div class="main-card">
+      <!-- Tabs -->
+      <div class="tab-bar">
+        <button class="tab-btn active" id="tab-benefit" onclick="switchTab('benefit')">Benefit List</button>
+        <button class="tab-btn" id="tab-package" onclick="switchTab('package')">Membership Package</button>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="search-wrap">
+          <i data-lucide="search"></i>
+          <input type="text" class="search-input" id="searchInput" placeholder="Benefit ID/Name" oninput="onSearch()" />
+        </div>
+        <div class="status-wrap">
+          <span class="status-label">Status</span>
+          <select class="status-select" id="statusFilter" onchange="onFilter()">
+            <option value="">All Statuses</option>
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="INACTIVE">INACTIVE</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Desktop Table -->
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Mobile Cards -->
+      <div class="mobile-list" id="mobileList"></div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <div class="pag-rows">
+          <span>Rows per page:</span>
+          <select class="pag-select" id="rowsPerPage" onchange="changeRows()">
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+          </select>
+        </div>
+        <div class="pag-info" id="pagInfo">0–0 of 0</div>
+        <button class="pag-btn" id="btnPrev" onclick="prevPage()" disabled><i data-lucide="chevron-left"></i></button>
+        <button class="pag-btn" id="btnNext" onclick="nextPage()" disabled><i data-lucide="chevron-right"></i></button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════
+       CREATE BENEFIT MODAL
+  ═══════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="createModal">
+    <div class="modal-box" role="dialog" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title" id="modalTitle">Create New Benefit</div>
+          <div class="modal-desc">Fill in the required information to create a new benefit</div>
+        </div>
+        <button class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Icon selection -->
+        <div>
+          <div class="section-label">Benefit Icon</div>
+          <div class="section-desc">Select an icon for the benefit</div>
+          <div class="icon-grid" id="iconGrid"></div>
+          <div class="icon-error" id="iconError">Please select an icon</div>
+        </div>
+
+        <!-- Benefit Name -->
+        <div class="form-group">
+          <label class="form-label">Benefit Name <span class="req">*</span></label>
+          <input type="text" class="form-input" id="benefitName" placeholder="Enter benefit name" oninput="clearError('nameError')" />
+          <div class="form-error" id="nameError">Benefit name is required</div>
+          <div class="suggestions-label">Suggestions</div>
+          <div class="chips-row">
+            <button class="suggestion-chip" onclick="fillName('Discount')">Discount</button>
+            <button class="suggestion-chip" onclick="fillName('Cashback')">Cashback</button>
+            <button class="suggestion-chip" onclick="fillName('Gift')">Gift</button>
+            <button class="suggestion-chip" onclick="fillName('Birthday')">Birthday</button>
           </div>
-        </td>
-        <td>${benefit.benefitId}</td>
-        <td>${benefit.benefitName}</td>
-        <td>${benefit.benefitUnit}</td>
-        <td><span class="status-pill status-${benefit.status.toLowerCase()}">${benefit.status}</span></td>
-        <td>${benefit.createdBy}</td>
-        <td>${benefit.createdDate}</td>
-        <td>${benefit.lastUpdatedDate}</td>
-      `;
+        </div>
 
-            // Add to allBenefits array
-            allBenefits.unshift({
-                html: row.outerHTML,
-                text: row.textContent.toLowerCase()
-            });
+        <!-- Benefit Unit -->
+        <div class="form-group">
+          <label class="form-label">Benefit Unit <span class="req">*</span></label>
+          <select class="form-select" id="benefitUnit" onchange="clearError('unitError')">
+            <option value="" disabled selected>Select benefit unit</option>
+            <option value="USD ($)">USD ($)</option>
+            <option value="Percentage (%)">Percentage (%)</option>
+            <option value="Points">Points</option>
+          </select>
+          <div class="form-error" id="unitError">Benefit unit is required</div>
+        </div>
 
-            // Reset to first page and update
-            currentPage = 1;
-            updatePagination();
+        <!-- Rollover Type + Cycle -->
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Rollover Type</label>
+            <select class="form-select" id="rolloverType">
+              <option value="" selected>Select rollover type</option>
+              <option value="Monthly">Monthly</option>
+              <option value="Yearly">Yearly</option>
+              <option value="Never">Never</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Cycle</label>
+            <select class="form-select" id="cycleField">
+              <option value="" selected>Select cycle</option>
+              <option value="Daily">Daily</option>
+              <option value="Weekly">Weekly</option>
+              <option value="Monthly">Monthly</option>
+              <option value="Yearly">Yearly</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-create-submit" onclick="submitCreate()">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <script>
+    /* ═══════════════════════════════════════════════════════
+       MOCK DATA
+    ═══════════════════════════════════════════════════════ */
+    const BENEFITS = [
+      { id:'BEN001', name:'Discount',         unit:'Percentage (%)', iconIdx:2,  status:'ACTIVE',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-01-10' },
+      { id:'BEN002', name:'Cashback',          unit:'USD ($)',         iconIdx:0,  status:'ACTIVE',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-01-15' },
+      { id:'BEN003', name:'Birthday Bonus',    unit:'Points',         iconIdx:3,  status:'ACTIVE',   createdBy:'manager@vlinkpay.com',  createdDate:'2025-02-01' },
+      { id:'BEN004', name:'Free Gift',         unit:'USD ($)',         iconIdx:7,  status:'INACTIVE', createdBy:'admin@vlinkpay.com',    createdDate:'2025-02-10' },
+      { id:'BEN005', name:'Loyalty Points',    unit:'Points',         iconIdx:4,  status:'ACTIVE',   createdBy:'manager@vlinkpay.com',  createdDate:'2025-02-20' },
+      { id:'BEN006', name:'VIP Lounge',        unit:'Percentage (%)', iconIdx:5,  status:'ACTIVE',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-03-01' },
+      { id:'BEN007', name:'Referral Reward',   unit:'USD ($)',         iconIdx:6,  status:'INACTIVE', createdBy:'ops@vlinkpay.com',      createdDate:'2025-03-05' },
+      { id:'BEN008', name:'Early Access',      unit:'Points',         iconIdx:1,  status:'ACTIVE',   createdBy:'product@vlinkpay.com',  createdDate:'2025-03-10' },
+      { id:'BEN009', name:'Welcome Bonus',     unit:'USD ($)',         iconIdx:8,  status:'ACTIVE',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-03-15' },
+      { id:'BEN010', name:'Anniversary Gift',  unit:'Points',         iconIdx:3,  status:'ACTIVE',   createdBy:'manager@vlinkpay.com',  createdDate:'2025-03-20' },
+      { id:'BEN011', name:'Flash Discount',    unit:'Percentage (%)', iconIdx:2,  status:'INACTIVE', createdBy:'marketing@vlinkpay.com',createdDate:'2025-04-01' },
+      { id:'BEN012', name:'Membership Perk',   unit:'USD ($)',         iconIdx:0,  status:'ACTIVE',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-04-05' },
+    ];
+
+    const PACKAGES = [
+      { id:'PKG001', name:'SILVER',   price:'$150',   currency:'USD', billingCycle:'Yearly',    benefitCount:3,  status:'APPROVED', saleStatus:'ACTIVE',   createdBy:'admin@vlinkpay.com',   createdDate:'2025-01-10', updatedDate:'2025-02-01' },
+      { id:'PKG002', name:'GOLD',     price:'$500',   currency:'USD', billingCycle:'Yearly',    benefitCount:7,  status:'APPROVED', saleStatus:'ACTIVE',   createdBy:'admin@vlinkpay.com',   createdDate:'2025-01-15', updatedDate:'2025-02-10' },
+      { id:'PKG003', name:'PLATINUM', price:'$1,200', currency:'USD', billingCycle:'Yearly',    benefitCount:12, status:'APPROVED', saleStatus:'ACTIVE',   createdBy:'manager@vlinkpay.com', createdDate:'2025-02-01', updatedDate:'2025-03-01' },
+      { id:'PKG004', name:'BRONZE',   price:'$50',    currency:'USD', billingCycle:'Monthly',   benefitCount:2,  status:'PENDING',  saleStatus:'INACTIVE', createdBy:'admin@vlinkpay.com',   createdDate:'2025-03-01', updatedDate:'2025-03-05' },
+      { id:'PKG005', name:'DIAMOND',  price:'$2,000', currency:'USD', billingCycle:'Yearly',    benefitCount:15, status:'DRAFT',    saleStatus:'INACTIVE', createdBy:'product@vlinkpay.com', createdDate:'2025-03-10', updatedDate:'2025-03-12' },
+      { id:'PKG006', name:'STARTER',  price:'$30',    currency:'USD', billingCycle:'Monthly',   benefitCount:1,  status:'REJECTED', saleStatus:'INACTIVE', createdBy:'ops@vlinkpay.com',     createdDate:'2025-04-01', updatedDate:'2025-04-03' },
+      { id:'PKG007', name:'CORPORATE',price:'$5,000', currency:'USD', billingCycle:'Yearly',    benefitCount:20, status:'PENDING',  saleStatus:'INACTIVE', createdBy:'admin@vlinkpay.com',   createdDate:'2025-04-05', updatedDate:'2025-04-05' },
+    ];
+
+    /* ── Icon presets ── */
+    const ICONS = [
+      { el:'dollar-sign',   bg:'#c8fae5', color:'#00a76f' },
+      { el:'refresh-cw',    bg:'#c8fae5', color:'#00a76f' },
+      { el:'percent',       bg:'#ffe4cc', color:'#cc5500' },
+      { el:'cake',          bg:'#e0d4ff', color:'#7c3aed' },
+      { el:'users',         bg:'#fff9cc', color:'#b8860b' },
+      { el:'sofa',          bg:'#ffd4d4', color:'#d32f2f' },
+      { el:'tag',           bg:'#fff9cc', color:'#b8860b' },
+      { el:'gift',          bg:'#ffd4d4', color:'#d32f2f' },
+      { el:'gift',          bg:'#e0d4ff', color:'#7c3aed' },
+    ];
+
+    function benefitIconHtml(idx) {
+      if (idx === undefined || idx === null) return `<div class="b-icon" style="background:#f4f6f8"></div>`;
+      const ic = ICONS[idx];
+      return `<div class="b-icon" style="background:${ic.bg};color:${ic.color}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${iconPath(ic.el)}</svg>
+      </div>`;
+    }
+
+    function iconPath(name) {
+      const paths = {
+        'dollar-sign': '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+        'refresh-cw':  '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>',
+        'percent':     '<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
+        'cake':        '<path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v2"/><path d="M12 8v2"/><path d="M17 8v2"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/>',
+        'users':       '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+        'sofa':        '<path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z"/><path d="M4 18v2"/><path d="M20 18v2"/><path d="M12 4v9"/>',
+        'tag':         '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>',
+        'gift':        '<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>',
+      };
+      return paths[name] || '';
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       STATE
+    ═══════════════════════════════════════════════════════ */
+    let activeTab   = 'benefit';
+    let searchQuery = '';
+    let statusFilter= '';
+    let sortCol     = '';
+    let sortDir     = 'asc';
+    let currentPage = 1;
+    let rowsPerPage = 5;
+
+    /* ── Column defs ── */
+    const BENEFIT_COLS = [
+      { key:'icon',        label:'Icon',         sort:false },
+      { key:'id',          label:'Benefit ID',   sort:true  },
+      { key:'name',        label:'Benefit Name', sort:true  },
+      { key:'unit',        label:'Benefit Unit', sort:true  },
+      { key:'status',      label:'Status',       sort:true  },
+      { key:'createdBy',   label:'Created By',   sort:true  },
+      { key:'createdDate', label:'Created Date', sort:true  },
+      { key:'actions',     label:'Actions',      sort:false },
+    ];
+    const PACKAGE_COLS = [
+      { key:'id',          label:'Package ID',        sort:true },
+      { key:'name',        label:'Package Name',      sort:true },
+      { key:'price',       label:'Price',             sort:true },
+      { key:'currency',    label:'Currency',          sort:true },
+      { key:'billingCycle',label:'Billing Cycle',     sort:true },
+      { key:'benefitCount',label:'Benefit Count',     sort:true },
+      { key:'status',      label:'Status',            sort:true },
+      { key:'saleStatus',  label:'Sale Status',       sort:true },
+      { key:'createdBy',   label:'Created By',        sort:true },
+      { key:'createdDate', label:'Created Date',      sort:true },
+      { key:'updatedDate', label:'Last Updated Date', sort:true },
+      { key:'actions',     label:'Actions',           sort:false},
+    ];
+
+    /* ── Helpers ── */
+    function fmtDate(iso) {
+      if (!iso) return '—';
+      return new Date(iso+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'2-digit',year:'numeric'});
+    }
+    function parseVal(v) {
+      const n = parseFloat(String(v).replace(/[$,%]/g,'').replace(/,/g,''));
+      return isNaN(n) ? v : n;
+    }
+    function svgSort(dir) {
+      return dir === 'asc'
+        ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sort-ic"><polyline points="18 15 12 9 6 15"/></svg>`
+        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sort-ic"><polyline points="6 9 12 15 18 9"/></svg>`;
+    }
+    function badgeHtml(val, type='benefit') {
+      if (type === 'benefit') {
+        const cls = val === 'ACTIVE' ? 'badge-active' : 'badge-inactive';
+        return `<span class="badge ${cls}">${val}</span>`;
+      }
+      if (type === 'sale') {
+        const cls = val === 'ACTIVE' ? 'badge-active' : 'badge-inactive';
+        return `<span class="badge ${cls}">${val}</span>`;
+      }
+      const map = { APPROVED:'badge-approved', PENDING:'badge-pending', REJECTED:'badge-rejected', DRAFT:'badge-draft' };
+      return `<span class="badge ${map[val]||'badge-draft'}">${val}</span>`;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       FILTER + SORT
+    ═══════════════════════════════════════════════════════ */
+    function getFiltered() {
+      const src = activeTab === 'benefit' ? BENEFITS : PACKAGES;
+      const q   = searchQuery.toLowerCase();
+      return src.filter(r => {
+        if (q) {
+          const searchable = activeTab === 'benefit'
+            ? `${r.id} ${r.name} ${r.unit}`.toLowerCase()
+            : `${r.id} ${r.name}`.toLowerCase();
+          if (!searchable.includes(q)) return false;
         }
+        if (statusFilter) {
+          const field = activeTab === 'benefit' ? r.status : r.status;
+          if (field !== statusFilter) return false;
+        }
+        return true;
+      });
+    }
 
-        // Search functionality
-        document.getElementById('searchInput')?.addEventListener('input', function (e) {
-            currentPage = 1;
-            updatePagination();
-        });
+    function getSorted(data) {
+      if (!sortCol) return data;
+      return [...data].sort((a,b) => {
+        let av = a[sortCol], bv = b[sortCol];
+        if (sortCol === 'createdDate' || sortCol === 'updatedDate') { av = av||''; bv = bv||''; }
+        else { av = parseVal(av); bv = parseVal(bv); }
+        let cmp = typeof av === 'number' && typeof bv === 'number'
+          ? av - bv
+          : String(av).localeCompare(String(bv), undefined, {numeric:true, sensitivity:'base'});
+        return sortDir === 'asc' ? cmp : -cmp;
+      });
+    }
 
-        // Status filter functionality
-        document.getElementById('statusFilter')?.addEventListener('change', function (e) {
-            currentPage = 1;
-            updatePagination();
-        });
+    /* ═══════════════════════════════════════════════════════
+       RENDER
+    ═══════════════════════════════════════════════════════ */
+    function render() {
+      const cols     = activeTab === 'benefit' ? BENEFIT_COLS : PACKAGE_COLS;
+      const filtered = getSorted(getFiltered());
+      const total    = filtered.length;
+      const pages    = Math.max(1, Math.ceil(total / rowsPerPage));
+      if (currentPage > pages) currentPage = pages;
+      const start = (currentPage-1)*rowsPerPage;
+      const rows  = filtered.slice(start, start+rowsPerPage);
 
-        // Sidebar toggle functionality
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function (e) {
-                const hasSubmenu = this.nextElementSibling?.classList.contains('submenu');
-                if (hasSubmenu) {
-                    e.preventDefault();
-                    this.classList.toggle('active');
-                }
-            });
-        });
+      /* HEAD */
+      document.getElementById('tableHead').innerHTML = `<tr>${cols.map(c=>`
+        <th class="${c.sort?'':'no-sort'}" ${c.sort?`onclick="sortBy('${c.key}')"`:''}><span class="th-inner">
+          ${c.label}${sortCol===c.key ? svgSort(sortDir):''}
+        </span></th>`).join('')}</tr>`;
 
-        // Initialize active states
-        document.querySelectorAll('.nav-item.parent-active').forEach(item => {
-            item.classList.add('active');
-        });
-    </script>
+      /* BODY */
+      const tbody = document.getElementById('tableBody');
+      if (!rows.length) {
+        const msg = activeTab === 'benefit' ? 'No benefits found' : 'No membership packages found';
+        tbody.innerHTML = `<tr><td colspan="${cols.length}" class="empty-state">${msg}</td></tr>`;
+      } else {
+        tbody.innerHTML = rows.map(r => `<tr>${cols.map(c => {
+          if (c.key === 'icon') return `<td>${benefitIconHtml(r.iconIdx)}</td>`;
+          if (c.key === 'status') return `<td>${badgeHtml(r.status, activeTab==='benefit'?'benefit':'pkg')}</td>`;
+          if (c.key === 'saleStatus') return `<td>${badgeHtml(r.saleStatus,'sale')}</td>`;
+          if (c.key === 'createdDate' || c.key === 'updatedDate') return `<td style="color:#637381">${fmtDate(r[c.key])}</td>`;
+          if (c.key === 'actions') return `<td><button class="btn-eye" title="View detail"><i data-lucide="eye"></i></button></td>`;
+          return `<td>${r[c.key]??'—'}</td>`;
+        }).join('')}</tr>`).join('');
+      }
+
+      renderMobile(rows);
+
+      /* PAGINATION */
+      const s = total===0?0:start+1, e=Math.min(start+rowsPerPage,total);
+      document.getElementById('pagInfo').textContent = `${s}–${e} of ${total}`;
+      document.getElementById('btnPrev').disabled = currentPage <= 1;
+      document.getElementById('btnNext').disabled = currentPage >= pages;
+
+      lucide.createIcons();
+    }
+
+    function renderMobile(rows) {
+      const list = document.getElementById('mobileList');
+      if (!rows.length) {
+        const msg = activeTab === 'benefit' ? 'No benefits found' : 'No membership packages found';
+        list.innerHTML = `<div class="empty-state">${msg}</div>`;
+        return;
+      }
+      if (activeTab === 'benefit') {
+        list.innerHTML = rows.map(r => `
+          <div class="m-card">
+            <div class="m-card-header">
+              ${benefitIconHtml(r.iconIdx)}
+              <div class="m-card-titles">
+                <div class="m-card-name">${r.name}</div>
+                <div class="m-card-id">${r.id}</div>
+              </div>
+            </div>
+            <div class="m-divider"></div>
+            <div class="m-rows">
+              <div class="m-row"><span class="m-label">Unit:</span><span class="m-value">${r.unit}</span></div>
+              <div class="m-row"><span class="m-label">Created By:</span><span class="m-value">${r.createdBy}</span></div>
+              <div class="m-row"><span class="m-label">Created Date:</span><span class="m-value">${fmtDate(r.createdDate)}</span></div>
+            </div>
+            <div class="m-divider"></div>
+            <div class="m-actions">
+              <label class="toggle">
+                <input type="checkbox" ${r.status==='ACTIVE'?'checked':''} onchange="toggleStatus('${r.id}', this)" />
+                <div class="toggle-track"></div>
+                <div class="toggle-thumb"></div>
+              </label>
+              ${badgeHtml(r.status,'benefit')}
+              <button class="btn-view-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
+            </div>
+          </div>`).join('');
+      } else {
+        list.innerHTML = rows.map(r => `
+          <div class="m-card">
+            <div class="m-pkg-header">
+              <span class="m-pkg-name">${r.name}</span>
+              <span class="m-pkg-price">${r.price}</span>
+            </div>
+            <div class="m-pkg-id">${r.id}</div>
+            <div class="m-divider"></div>
+            <div class="m-rows">
+              <div class="m-row"><span class="m-label">Currency:</span><span class="m-value">${r.currency}</span></div>
+              <div class="m-row"><span class="m-label">Billing Cycle:</span><span class="m-value">${r.billingCycle}</span></div>
+              <div class="m-row"><span class="m-label">Benefits:</span><span class="m-value">${r.benefitCount}</span></div>
+              <div class="m-row"><span class="m-label">Status:</span><span class="m-value">${badgeHtml(r.status,'pkg')}</span></div>
+              <div class="m-row"><span class="m-label">Sale Status:</span><span class="m-value">${badgeHtml(r.saleStatus,'sale')}</span></div>
+              <div class="m-row"><span class="m-label">Created By:</span><span class="m-value">${r.createdBy}</span></div>
+              <div class="m-row"><span class="m-label">Created Date:</span><span class="m-value">${fmtDate(r.createdDate)}</span></div>
+              <div class="m-row"><span class="m-label">Last Updated:</span><span class="m-value">${fmtDate(r.updatedDate)}</span></div>
+            </div>
+            <div class="m-divider"></div>
+            <div class="m-actions">
+              <button class="btn-view-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
+            </div>
+          </div>`).join('');
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       EVENTS
+    ═══════════════════════════════════════════════════════ */
+    function switchTab(tab) {
+      activeTab    = tab;
+      searchQuery  = '';
+      statusFilter = '';
+      sortCol      = '';
+      currentPage  = 1;
+      document.getElementById('searchInput').value   = '';
+      document.getElementById('statusFilter').value  = '';
+
+      document.getElementById('tab-benefit').classList.toggle('active', tab==='benefit');
+      document.getElementById('tab-package').classList.toggle('active', tab==='package');
+
+      // Update search placeholder + status options
+      const si = document.getElementById('searchInput');
+      si.placeholder = tab==='benefit' ? 'Benefit ID/Name' : 'Search by Package ID or Name';
+
+      const sf = document.getElementById('statusFilter');
+      if (tab === 'benefit') {
+        sf.innerHTML = `<option value="">All Statuses</option><option value="ACTIVE">ACTIVE</option><option value="INACTIVE">INACTIVE</option>`;
+      } else {
+        sf.innerHTML = `<option value="">All</option><option value="APPROVED">APPROVED</option><option value="PENDING">PENDING</option><option value="REJECTED">REJECTED</option><option value="DRAFT">DRAFT</option>`;
+      }
+
+      // Update Create button text
+      document.getElementById('btnCreateText').textContent = tab==='benefit' ? 'Create Benefit' : 'Create Membership Package';
+
+      render();
+    }
+
+    function onSearch()  { searchQuery = document.getElementById('searchInput').value; currentPage=1; render(); }
+    function onFilter()  { statusFilter = document.getElementById('statusFilter').value; currentPage=1; render(); }
+    function sortBy(col) { if(sortCol===col) sortDir=sortDir==='asc'?'desc':'asc'; else{sortCol=col;sortDir='asc';} render(); }
+    function changeRows(){ rowsPerPage=parseInt(document.getElementById('rowsPerPage').value); currentPage=1; render(); }
+    function prevPage()  { if(currentPage>1){currentPage--;render();} }
+    function nextPage()  { const p=Math.ceil(getFiltered().length/rowsPerPage); if(currentPage<p){currentPage++;render();} }
+
+    function toggleStatus(id, el) {
+      const b = BENEFITS.find(r=>r.id===id);
+      if (b) { b.status = el.checked ? 'ACTIVE' : 'INACTIVE'; render(); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       MODAL
+    ═══════════════════════════════════════════════════════ */
+    let selectedIcon = null;
+
+    function buildIconGrid() {
+      const grid = document.getElementById('iconGrid');
+      grid.innerHTML = ICONS.map((ic,i) => `
+        <button class="icon-btn" style="background:${ic.bg};color:${ic.color}" onclick="selectIcon(${i})" id="icon-btn-${i}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">${iconPath(ic.el)}</svg>
+        </button>`).join('') + `
+        <div class="icon-upload-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+          <span>Upload</span>
+        </div>`;
+    }
+
+    function selectIcon(i) {
+      selectedIcon = i;
+      document.querySelectorAll('.icon-btn').forEach((b,idx)=>b.classList.toggle('selected', idx===i));
+      document.getElementById('iconError').style.display = 'none';
+    }
+
+    function fillName(v) {
+      document.getElementById('benefitName').value = v;
+      clearError('nameError');
+    }
+
+    function clearError(id) { document.getElementById(id).style.display='none'; }
+
+    function openModal() {
+      buildIconGrid();
+      document.getElementById('createModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('createModal').classList.remove('open');
+      resetForm();
+    }
+
+    function resetForm() {
+      selectedIcon = null;
+      document.getElementById('benefitName').value = '';
+      document.getElementById('benefitUnit').value = '';
+      document.getElementById('rolloverType').value = '';
+      document.getElementById('cycleField').value = '';
+      document.querySelectorAll('.icon-btn').forEach(b=>b.classList.remove('selected'));
+      ['iconError','nameError','unitError'].forEach(id=>{ document.getElementById(id).style.display='none'; });
+    }
+
+    function submitCreate() {
+      let valid = true;
+      if (selectedIcon === null) { document.getElementById('iconError').style.display='block'; valid=false; }
+      const name = document.getElementById('benefitName').value.trim();
+      if (!name) { document.getElementById('nameError').style.display='block'; valid=false; }
+      const unit = document.getElementById('benefitUnit').value;
+      if (!unit) { document.getElementById('unitError').style.display='block'; valid=false; }
+      if (!valid) return;
+
+      const newId = 'BEN' + String(BENEFITS.length+1).padStart(3,'0');
+      BENEFITS.push({
+        id: newId, name, unit, iconIdx: selectedIcon,
+        status: 'ACTIVE', createdBy: 'admin@vlinkpay.com',
+        createdDate: new Date().toISOString().slice(0,10)
+      });
+
+      closeModal();
+      if (activeTab !== 'benefit') switchTab('benefit');
+      render();
+    }
+
+    document.getElementById('createModal').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeModal();
+    });
+
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+    /* Init */
+    document.addEventListener('DOMContentLoaded', () => { render(); lucide.createIcons(); });
+  </script>
 </body>
-
 </html>

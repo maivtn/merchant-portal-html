@@ -817,7 +817,7 @@
 
       /* HEAD */
       document.getElementById('tableHead').innerHTML = `<tr>${cols.map(c=>`
-        <th class="${c.sort?'':'no-sort'}" ${c.sort?`onclick="sortBy('${c.key}')"`:''}><span class="th-inner">
+        <th class="${c.sort?'':'no-sort'}${c.key==='actions'?' col-actions':''}" ${c.sort?`onclick="sortBy('${c.key}')"`:''}><span class="th-inner">
           ${c.label}${sortCol===c.key ? svgSort(sortDir):''}
         </span></th>`).join('')}</tr>`;
 
@@ -832,7 +832,7 @@
           if (c.key === 'status') return `<td>${badgeHtml(r.status, activeTab==='benefit'?'benefit':'pkg')}</td>`;
           if (c.key === 'saleStatus') return `<td>${badgeHtml(r.saleStatus,'sale')}</td>`;
           if (c.key === 'createdDate' || c.key === 'updatedDate') return `<td style="color:#637381">${fmtDate(r[c.key])}</td>`;
-          if (c.key === 'actions') return `<td><button class="btn-eye" title="View detail"><i data-lucide="eye"></i></button></td>`;
+          if (c.key === 'actions') return `<td class="col-actions"><button class="btn-eye" title="View detail"><i data-lucide="eye"></i></button></td>`;
           return `<td>${r[c.key]??'—'}</td>`;
         }).join('')}</tr>`).join('');
       }

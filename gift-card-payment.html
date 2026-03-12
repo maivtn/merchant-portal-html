@@ -593,66 +593,164 @@
   </div>
 
   <!-- Modal: Enter Card Details -->
+  <!-- ═══════════════════════════════════════════════════
+       Modal: Enter Card Details (2-step)
+  ════════════════════════════════════════════════════ -->
   <div id="modal-card-details" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="modal-title">Card Transaction</span>
-        <div class="close-btn" onclick="closeModal('modal-card-details')">
+        <span class="modal-title">Enter Card Details</span>
+        <div class="close-btn" onclick="ecdClose()">
           <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
         </div>
       </div>
-      <div class="modal-body">
-        <div class="tabs-header">
-          <div class="tab-item active" onclick="switchTab('apply-card')">Apply Card</div>
-          <div class="tab-item" onclick="switchTab('check-balance')">Check Balance</div>
-        </div>
 
-        <!-- Tab: Apply Card -->
-        <div id="apply-card" class="tab-content active">
-          <div class="form-group">
-            <label class="form-label">Payment Amount</label>
-            <div class="input-wrapper">
-              <iconify-icon icon="solar:dollar-minimalistic-bold-duotone" class="input-icon"></iconify-icon>
-              <input type="number" class="minimal-input" placeholder="0.00">
+      <!-- Step 1: Card Number -->
+      <div class="modal-body" id="ecd-step1">
+        <div class="form-group" style="margin-bottom:28px">
+          <label class="form-label sgc-label">
+            Card Number <span style="color:#ff5630">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input type="text" class="minimal-input sgc-qr-input" id="ecdCardInput"
+              placeholder="Enter card number or scan..."
+              oninput="ecdClearError()" />
+            <div class="input-suffix" onclick="ecdSimulateScan()" title="Scan QR">
+              <iconify-icon icon="solar:qr-code-scan-bold-duotone" width="26" style="color:var(--primary-main)"></iconify-icon>
             </div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Card Number</label>
-            <div class="input-wrapper">
-              <iconify-icon icon="solar:card-bold-duotone" class="input-icon"></iconify-icon>
-              <input type="text" class="minimal-input" placeholder="Enter card number">
-              <div class="input-suffix" onclick="openModal('modal-scan-qr')">
-                <iconify-icon icon="solar:qr-code-bold-duotone" width="24"></iconify-icon>
+          <div id="ecdCardError" class="sgc-error" style="display:none">Please enter a card number</div>
+        </div>
+        <button class="btn-submit" onclick="ecdContinue()">Continue</button>
+      </div>
+
+      <!-- Step 2: Amount + Card Preview + Confirm -->
+      <div class="modal-body" id="ecd-step2" style="display:none">
+        <!-- Card Number (readonly) -->
+        <div class="form-group">
+          <label class="form-label sgc-label">
+            Card Number <span style="color:#ff5630">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input type="text" class="minimal-input sgc-qr-input" id="ecdCardDisplay" readonly />
+            <div class="input-suffix">
+              <iconify-icon icon="solar:qr-code-scan-bold-duotone" width="26" style="color:var(--primary-main)"></iconify-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Amount -->
+        <div class="form-group">
+          <label class="form-label sgc-label">
+            Amount <span style="color:#ff5630">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon" style="font-size:15px;font-weight:600;color:var(--grey-500)">$</span>
+            <input type="number" class="minimal-input" id="ecdAmount" placeholder="0" style="padding-left:32px" min="0" />
+          </div>
+        </div>
+
+        <!-- Gift Card Visual Preview -->
+        <div class="ecd-preview-wrap">
+          <div class="ecd-gift-card">
+            <div class="ecd-gc-header">
+              <div class="ecd-gc-brand">
+                <div class="ecd-gc-logo"></div>
+                <div>
+                  <div class="ecd-gc-merchant">BITCOIN NAIL BAR</div>
+                  <div class="ecd-gc-slogan">BUSINESS SLOGAN</div>
+                </div>
+              </div>
+              <div class="ecd-gc-badge">
+                <div class="ecd-gc-badge-label">GIFT CARD</div>
+                <div class="ecd-gc-badge-amount">$50</div>
+              </div>
+            </div>
+            <div class="ecd-gc-number">•••• •••• •••• ••••</div>
+            <div class="ecd-gc-footer">
+              <div>
+                <div class="ecd-gc-valid-label">VALID THRU</div>
+                <div class="ecd-gc-valid-date">Mar 17, 2026</div>
+                <div class="ecd-gc-holder">MARY SMITH</div>
+              </div>
+              <div class="ecd-gc-vlinkpay">
+                <iconify-icon icon="solar:shield-check-bold-duotone" width="14" style="vertical-align:middle"></iconify-icon>
+                VLINKPAY
               </div>
             </div>
           </div>
-          <!-- <div class="form-group">
-             <label class="form-label">Security PIN (Optional)</label>
-             <div class="input-wrapper">
-               <iconify-icon icon="solar:lock-password-bold-duotone" class="input-icon"></iconify-icon>
-               <input type="password" class="minimal-input" placeholder="••••">
-             </div>
-          </div> -->
-          <button class="btn-submit">Confirm Transaction</button>
+
+          <div class="ecd-card-info">
+            <div class="ecd-info-row">Current Balance: <strong>$40.00</strong></div>
+            <div class="ecd-info-row">Times Used: <strong>1</strong></div>
+            <div class="ecd-info-row">Expiration: <strong>Mar 17, 2026</strong></div>
+          </div>
         </div>
 
-        <!-- Tab: Check Balance -->
-        <div id="check-balance" class="tab-content">
-          <div class="form-group">
-            <label class="form-label">Card Number</label>
-            <div class="input-wrapper">
-              <iconify-icon icon="solar:card-bold-duotone" class="input-icon"></iconify-icon>
-              <input type="text" class="minimal-input" placeholder="Enter card number">
-              <div class="input-suffix" onclick="openModal('modal-scan-qr')">
-                <iconify-icon icon="solar:qr-code-bold-duotone" width="24"></iconify-icon>
-              </div>
-            </div>
-          </div>
-          <button class="btn-submit">Check Balance</button>
-        </div>
+        <button class="btn-submit" onclick="ecdConfirmPayment()">Confirm Payment</button>
       </div>
     </div>
   </div>
+
+  <style>
+    /* ── Enter Card Details modal ── */
+    .ecd-preview-wrap {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: #f9fafb;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 24px;
+    }
+
+    /* Gift card visual */
+    .ecd-gift-card {
+      width: 170px;
+      min-width: 170px;
+      height: 108px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1a5c3a 0%, #0d3d28 100%);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,.25);
+      flex-shrink: 0;
+    }
+    .ecd-gc-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .ecd-gc-brand  { display: flex; align-items: center; gap: 6px; }
+    .ecd-gc-logo   { width: 18px; height: 18px; border-radius: 4px; background: rgba(255,255,255,.25); flex-shrink: 0; }
+    .ecd-gc-merchant { font-size: 7px; font-weight: 700; letter-spacing: .5px; }
+    .ecd-gc-slogan   { font-size: 5.5px; opacity: .7; letter-spacing: .3px; }
+    .ecd-gc-badge    { text-align: right; }
+    .ecd-gc-badge-label  { font-size: 5.5px; opacity: .8; letter-spacing: .8px; }
+    .ecd-gc-badge-amount {
+      font-size: 12px; font-weight: 700;
+      background: rgba(255,255,255,.22); border-radius: 4px;
+      padding: 1px 6px; margin-top: 2px;
+    }
+    .ecd-gc-number {
+      font-size: 9px; letter-spacing: 3px; opacity: .7;
+      font-family: monospace;
+    }
+    .ecd-gc-footer { display: flex; justify-content: space-between; align-items: flex-end; }
+    .ecd-gc-valid-label { font-size: 5px; opacity: .65; letter-spacing: .6px; }
+    .ecd-gc-valid-date  { font-size: 7.5px; font-weight: 600; }
+    .ecd-gc-holder      { font-size: 7.5px; font-weight: 700; letter-spacing: .4px; margin-top: 2px; color: #f0c060; }
+    .ecd-gc-vlinkpay    { font-size: 6px; opacity: .8; letter-spacing: .5px; display: flex; align-items: center; gap: 2px; }
+
+    /* Card info */
+    .ecd-card-info { flex: 1; display: flex; flex-direction: column; gap: 8px; justify-content: center; }
+    .ecd-info-row  { font-size: 13px; color: var(--grey-700, #454f5b); }
+    .ecd-info-row strong { color: var(--grey-900); }
+
+    @media (max-width: 767px) {
+      .ecd-preview-wrap { flex-direction: column; }
+      .ecd-gift-card { width: 100%; min-width: unset; height: 130px; }
+    }
+  </style>
 
   <!-- Modal: Scan QR -->
   <div id="modal-scan-qr" class="modal-overlay">
@@ -746,6 +844,124 @@
     }
   </style>
 
+  <!-- ═══════════════════════════════════════════════════
+       Modal: Scan Gift Card QR (2-step)
+  ════════════════════════════════════════════════════ -->
+  <div id="modal-scan-gift-card" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">Scan Gift Card QR</span>
+        <div class="close-btn" onclick="closeScanGiftCardModal()">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </div>
+      </div>
+
+      <!-- Step 1: Enter / Scan QR Code -->
+      <div class="modal-body" id="sgc-step1">
+        <div class="form-group" style="margin-bottom:28px">
+          <label class="form-label sgc-label">
+            Gift Card QR Code <span style="color:#ff5630">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input type="text" class="minimal-input sgc-qr-input" id="sgcQrInput"
+              placeholder="Enter or scan QR code"
+              oninput="sgcClearError()" />
+            <div class="input-suffix" onclick="sgcSimulateScan()" title="Scan QR">
+              <iconify-icon icon="solar:qr-code-scan-bold-duotone" width="26" style="color:var(--primary-main)"></iconify-icon>
+            </div>
+          </div>
+          <div id="sgcQrError" class="sgc-error" style="display:none">Please enter or scan the QR code</div>
+        </div>
+        <button class="btn-submit" onclick="sgcContinue()">Continue</button>
+      </div>
+
+      <!-- Step 2: Card info + Amount + Confirm -->
+      <div class="modal-body" id="sgc-step2" style="display:none">
+        <div class="form-group">
+          <label class="form-label sgc-label">
+            Gift Card QR Code <span style="color:#ff5630">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input type="text" class="minimal-input sgc-qr-input" id="sgcQrDisplay" readonly />
+            <div class="input-suffix">
+              <iconify-icon icon="solar:qr-code-scan-bold-duotone" width="26" style="color:var(--primary-main)"></iconify-icon>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label sgc-label">
+            Amount <span style="color:#ff5630">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon" style="font-size:15px;font-weight:600;color:var(--grey-500)">$</span>
+            <input type="number" class="minimal-input" id="sgcAmount" placeholder="0"
+              style="padding-left:32px" min="0" />
+          </div>
+        </div>
+
+        <!-- Card preview -->
+        <div class="sgc-card-preview">
+          <img class="sgc-card-img" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=280&h=176&fit=crop&crop=center" alt="Gift Card" />
+          <div class="sgc-card-info">
+            <div class="sgc-card-name">E-Gift Card <span style="font-weight:400;color:var(--grey-600)">(Multiple Cards)</span></div>
+            <div class="sgc-card-balance">Current Total Balance: <strong>$450</strong></div>
+          </div>
+        </div>
+
+        <button class="btn-submit" onclick="sgcConfirmPayment()">Confirm Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .sgc-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 10px;
+    }
+    .sgc-qr-input { padding-right: 52px !important; }
+    .sgc-error {
+      font-size: 12px;
+      color: #ff5630;
+      margin-top: 6px;
+    }
+    .sgc-card-preview {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      background: #f9fafb;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 24px;
+    }
+    .sgc-card-img {
+      width: 110px;
+      height: 70px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .sgc-card-info { flex: 1; }
+    .sgc-card-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 6px;
+    }
+    .sgc-card-balance {
+      font-size: 14px;
+      color: var(--grey-700, #454f5b);
+    }
+    .sgc-card-balance strong { color: var(--grey-900); }
+
+    @media (max-width: 767px) {
+      .sgc-card-preview { flex-direction: column; align-items: flex-start; }
+      .sgc-card-img { width: 100%; height: 120px; }
+    }
+  </style>
+
   <script>
     function openModal(id) {
       document.getElementById(id).style.display = 'flex';
@@ -791,8 +1007,104 @@
     // Close on overlay click
     window.onclick = function (event) {
       if (event.target.classList.contains('modal-overlay')) {
-        closeModal(event.target.id);
+        const id = event.target.id;
+        if (id === 'modal-card-details') { ecdClose(); }
+        else if (id === 'modal-scan-gift-card') { closeScanGiftCardModal(); }
+        else { closeModal(id); }
       }
+    }
+
+    /* ── Enter Card Details modal ── */
+    function ecdClose() {
+      closeModal('modal-card-details');
+      document.getElementById('ecdCardInput').value = '';
+      document.getElementById('ecdCardError').style.display = 'none';
+      document.getElementById('ecd-step1').style.display = 'block';
+      document.getElementById('ecd-step2').style.display = 'none';
+    }
+
+    function ecdClearError() {
+      document.getElementById('ecdCardError').style.display = 'none';
+    }
+
+    function ecdSimulateScan() {
+      const num = Array.from({length: 16}, () => Math.floor(Math.random() * 10)).join('');
+      document.getElementById('ecdCardInput').value = num;
+      ecdClearError();
+    }
+
+    function ecdContinue() {
+      const card = document.getElementById('ecdCardInput').value.trim();
+      if (!card) {
+        document.getElementById('ecdCardError').style.display = 'block';
+        return;
+      }
+      document.getElementById('ecdCardDisplay').value = card;
+      document.getElementById('ecdAmount').value = '';
+      document.getElementById('ecd-step1').style.display = 'none';
+      document.getElementById('ecd-step2').style.display = 'block';
+    }
+
+    function ecdConfirmPayment() {
+      const amount = parseFloat(document.getElementById('ecdAmount').value);
+      if (!amount || amount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+      }
+      if (amount > 40) {
+        alert('Amount exceeds current balance of $40.00.');
+        return;
+      }
+      alert('Payment confirmed! Amount: $' + amount.toFixed(2));
+      ecdClose();
+    }
+
+    /* ── Scan Gift Card QR modal ── */
+    function openScanGiftCardModal() {
+      document.getElementById('sgcQrInput').value = '';
+      document.getElementById('sgcQrError').style.display = 'none';
+      document.getElementById('sgc-step1').style.display = 'block';
+      document.getElementById('sgc-step2').style.display = 'none';
+      document.getElementById('modal-scan-gift-card').style.display = 'flex';
+      setTimeout(() => document.getElementById('sgcQrInput').focus(), 100);
+    }
+
+    function closeScanGiftCardModal() {
+      document.getElementById('modal-scan-gift-card').style.display = 'none';
+    }
+
+    function sgcClearError() {
+      document.getElementById('sgcQrError').style.display = 'none';
+    }
+
+    function sgcSimulateScan() {
+      // Simulate a scanned QR value for demo
+      const demo = 'GPC-' + Math.random().toString(36).substring(2, 36);
+      document.getElementById('sgcQrInput').value = demo;
+      sgcClearError();
+    }
+
+    function sgcContinue() {
+      const qr = document.getElementById('sgcQrInput').value.trim();
+      if (!qr) {
+        document.getElementById('sgcQrError').style.display = 'block';
+        return;
+      }
+      // Populate step 2
+      document.getElementById('sgcQrDisplay').value = qr;
+      document.getElementById('sgcAmount').value = '';
+      document.getElementById('sgc-step1').style.display = 'none';
+      document.getElementById('sgc-step2').style.display = 'block';
+    }
+
+    function sgcConfirmPayment() {
+      const amount = parseFloat(document.getElementById('sgcAmount').value);
+      if (!amount || amount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+      }
+      alert('Payment confirmed! Amount: $' + amount.toFixed(2));
+      closeScanGiftCardModal();
     }
   </script>
 </body>

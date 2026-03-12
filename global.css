@@ -155,7 +155,7 @@ body {
   text-decoration: none;
   color: var(--grey-600);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   border-radius: 8px;
   transition: background 0.18s, color 0.18s, transform 0.15s;
 }
@@ -332,7 +332,9 @@ body {
 ══════════════════════════════════════════════════════════ */
 .badge,
 .status-pill,
-.status-badge {
+.status-badge,
+[class^="badge-"],
+[class*=" badge-"] {
   display: inline-block !important;
   padding: 3px 10px !important;
   border-radius: 6px !important;
@@ -918,6 +920,17 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
     margin-bottom: 8px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   ACTION COLUMN — always right-aligned
+═══════════════════════════════════════════════════════ */
+.col-actions,
+th.col-actions,
+td.col-actions { text-align: right !important; }
+
+/* Flex button groups inside action cells */
+.col-actions .action-btns,
+td.col-actions .action-btns { justify-content: flex-end !important; }
 
 /* ═══════════════════════════════════════════════════════
    RESPONSIVE — TABLET ONLY  (768px – 1023px)

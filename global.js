@@ -1,12 +1,96 @@
 /**
  * global.js — Shared layout logic for VLINKPAY merchant portal
- * Handles: sidebar toggle, hamburger injection, overlay, responsive behavior
+ * Handles: sidebar data & render, sidebar toggle, hamburger injection, overlay, responsive behavior
  */
 
 (function () {
   'use strict';
 
-  // ─── SVG Icons (inline, no dependency on icon library) ───────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SIDEBAR MENU DATA  ← Edit here to update sidebar across ALL pages
+  // ═══════════════════════════════════════════════════════════════════════════
+  const SIDEBAR_MENU = [
+    // ── OVERVIEW ─────────────────────────────────────────────────────────────
+    { type: 'section', label: 'OVERVIEW' },
+    {
+      type: 'link', label: 'Homepage',
+      icon: 'solar:home-2-bold-duotone', iconWidth: 24,
+      href: 'https://p2pexchangeatmvlinkpay.tiiny.site'
+    },
+    {
+      type: 'link', label: 'Dashboard',
+      icon: 'solar:widget-bold-duotone', iconWidth: 24,
+      href: 'dashboard.html'
+    },
+
+    // ── GIFT CARD CENTER ──────────────────────────────────────────────────────
+    { type: 'section', label: 'GIFT CARD CENTER' },
+    {
+      type: 'group', label: 'Gift & Voucher Management',
+      icon: 'solar:folder-with-files-bold-duotone', iconWidth: 26,
+      children: [
+        { label: 'My Purchase',        href: 'my-purchase.html',               relatedPages: ['order-details.html', 'order-history.html'] },
+        { label: 'Merchant Map',       href: '#' },
+        { label: 'Product Management', href: 'product-list.html',              relatedPages: ['gift-card-details.html', 'voucher-details.html', 'issue-card.html', 'issue-digital.html', 'issue-digital-details.html', 'issue-digital-membership-details.html', 'product-history.html'] },
+        { label: 'VlinkPay Store',     href: 'digital-gifts-management.html' },
+        { label: 'Cancelled Cards',    href: 'cancelled-cards.html',           relatedPages: ['cancelled-card-list.html'] },
+      ]
+    },
+    {
+      type: 'link', label: 'Crypto Card Management',
+      icon: 'solar:wallet-bold-duotone', iconWidth: 24,
+      href: 'crypto-card-list.html',
+      relatedPages: ['crypto-card-details.html', 'crypto-card-list-bootstrap.html', 'issue-crypto-card.html']
+    },
+    {
+      type: 'link', label: 'Marketing Tools',
+      icon: 'solar:chart-square-bold-duotone', iconWidth: 24,
+      href: 'marketing-tools.html',
+      relatedPages: ['marketing-create.html', 'marketing-edit.html', 'marketing-details.html']
+    },
+    {
+      type: 'group', label: 'Payment Acceptance',
+      icon: 'solar:dollar-minimalistic-bold-duotone', iconWidth: 24,
+      children: [
+        { label: 'Pay with Gift Card', href: 'gift-card-payment.html', relatedPages: ['gift-card-payment-box.html'] },
+        { label: 'Pay with Crypto',    href: 'crypto-payment.html',    relatedPages: ['crypto-payment-box.html'] },
+      ]
+    },
+    {
+      type: 'group', label: 'Settings',
+      icon: 'solar:settings-bold-duotone', iconWidth: 24,
+      children: [
+        { label: 'Merchant Payment Setup', href: 'merchant-payment-setup.html' },
+        { label: 'Benefits Setup',         href: 'benefits-setup.html', relatedPages: ['benefit-package-details.html', 'benefit-package-view.html', 'benefit-package-view-active.html'] },
+      ]
+    },
+    {
+      type: 'group', label: 'Report',
+      icon: 'solar:chart-bold-duotone', iconWidth: 24,
+      children: [
+        { label: 'Sales Orders',      href: 'sales-order-list.html',                   relatedPages: ['sales-order-details.html'] },
+        { label: 'Redeem History',    href: 'card-transaction-history-merchant.html',   relatedPages: ['card-transaction-history.html'] },
+        { label: 'Membership Report', href: 'membership-report.html' },
+      ]
+    },
+
+    // ── APPS ──────────────────────────────────────────────────────────────────
+    { type: 'section', label: 'APPS' },
+    {
+      type: 'link', label: 'Notifications',
+      icon: 'solar:letter-bold-duotone', iconWidth: 24,
+      href: '#', badge: '32+'
+    },
+    {
+      type: 'link', label: 'AI Assistant',
+      icon: 'solar:chat-round-dots-bold-duotone', iconWidth: 24,
+      href: '#'
+    },
+  ];
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SVG ICONS
+  // ═══════════════════════════════════════════════════════════════════════════
   const HAMBURGER_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
     viewBox="0 0 24 24" fill="none" stroke="currentColor"
     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -15,18 +99,101 @@
     <line x1="3" y1="18" x2="21" y2="18"/>
   </svg>`;
 
-  // ─── Init on DOM ready ────────────────────────────────────────────────────
+  const CHEVRON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+    viewBox="0 0 24 24" fill="currentColor" style="margin-left:auto;flex-shrink:0">
+    <path d="M7 10l5 5 5-5z"/>
+  </svg>`;
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // INIT
+  // ═══════════════════════════════════════════════════════════════════════════
   document.addEventListener('DOMContentLoaded', function () {
+    renderSidebarNav();
     injectHamburger();
     injectMobileLogo();
     injectOverlay();
     bindNavLinks();
     bindKeyboard();
     handleResize();
+    initDatePlaceholders();
     window.addEventListener('resize', handleResize);
   });
 
-  // ─── Inject hamburger button into .top-header ─────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // RENDER SIDEBAR NAV FROM DATA
+  // ═══════════════════════════════════════════════════════════════════════════
+  function renderSidebarNav() {
+    const sc = document.querySelector('.sidebar-content');
+    if (!sc) return;
+
+    // Determine the current page filename
+    // Pages can override this by setting: window.SIDEBAR_ACTIVE_PAGE = 'some-page.html'
+    const curPage = ((window.SIDEBAR_ACTIVE_PAGE ||
+      window.location.pathname.split('/').pop() ||
+      'index.html') + '').toLowerCase().split('?')[0].split('#')[0];
+
+    // Helper: check if a menu item or any of its relatedPages matches current page
+    function isItemActive(item) {
+      const hrefPage = (item.href || '').split('/').pop().toLowerCase();
+      if (hrefPage === curPage) return true;
+      if (item.relatedPages && item.relatedPages.some(p => p.toLowerCase() === curPage)) return true;
+      return false;
+    }
+
+    // Remove all nav-related nodes that were previously in the sidebar HTML
+    // (everything from the first .nav-section-title onwards)
+    const firstSection = sc.querySelector('.nav-section-title');
+    if (firstSection) {
+      let node = firstSection;
+      while (node) {
+        const next = node.nextSibling;
+        node.remove();
+        node = next;
+      }
+    }
+
+    // Build and inject nav HTML
+    let html = '';
+    for (const item of SIDEBAR_MENU) {
+      if (item.type === 'section') {
+        html += `<div class="nav-section-title">${item.label}</div>\n`;
+
+      } else if (item.type === 'link') {
+        const active = isItemActive(item);
+        const badge = item.badge
+          ? `<span class="badge-outlined">${item.badge}</span>` : '';
+        html += `<a href="${item.href}" class="nav-item${active ? ' active' : ''}">
+          <div class="nav-icon"><iconify-icon icon="${item.icon}" width="${item.iconWidth || 24}"></iconify-icon></div>
+          <span>${item.label}</span>${badge}
+        </a>\n`;
+
+      } else if (item.type === 'group') {
+        // Check if any child (or their relatedPages) matches current page
+        const activeChild = (item.children || []).find(c => isItemActive(c));
+        const parentCls = activeChild ? ' parent-active' : '';
+
+        html += `<a href="#" class="nav-item${parentCls}">
+          <div class="nav-icon"><iconify-icon icon="${item.icon}" width="${item.iconWidth || 24}"></iconify-icon></div>
+          <span>${item.label}</span>${CHEVRON_SVG}
+        </a>
+        <div class="submenu">\n`;
+
+        for (const child of (item.children || [])) {
+          const childActive = isItemActive(child);
+          html += `  <a href="${child.href}" class="sub-item${childActive ? ' active' : ''}">
+            <span class="dot"></span>${child.label}
+          </a>\n`;
+        }
+        html += `</div>\n`;
+      }
+    }
+
+    sc.insertAdjacentHTML('beforeend', html);
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // HAMBURGER BUTTON
+  // ═══════════════════════════════════════════════════════════════════════════
   function injectHamburger() {
     const header = document.querySelector('.top-header');
     if (!header || document.getElementById('hamburgerBtn')) return;
@@ -38,12 +205,12 @@
     btn.setAttribute('type', 'button');
     btn.innerHTML = HAMBURGER_SVG;
     btn.addEventListener('click', toggleSidebar);
-
-    // Insert as first child of header
     header.insertBefore(btn, header.firstChild);
   }
 
-  // ─── Inject mobile logo in header (visible only on mobile) ──────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MOBILE LOGO
+  // ═══════════════════════════════════════════════════════════════════════════
   function injectMobileLogo() {
     const header = document.querySelector('.top-header');
     if (!header || document.getElementById('mobileLogo')) return;
@@ -54,7 +221,6 @@
     logo.src = 'https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg';
     logo.alt = 'VLINKPAY';
 
-    // Insert after hamburger button (second child position)
     const hamburger = document.getElementById('hamburgerBtn');
     if (hamburger && hamburger.nextSibling) {
       header.insertBefore(logo, hamburger.nextSibling);
@@ -63,7 +229,9 @@
     }
   }
 
-  // ─── Inject sidebar overlay ───────────────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SIDEBAR OVERLAY
+  // ═══════════════════════════════════════════════════════════════════════════
   function injectOverlay() {
     if (document.getElementById('sidebarOverlay')) return;
     const overlay = document.createElement('div');
@@ -73,38 +241,31 @@
     document.body.appendChild(overlay);
   }
 
-  // ─── Close sidebar when clicking a nav/sub link on mobile/tablet ──────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SIDEBAR TOGGLE / RESPONSIVE
+  // ═══════════════════════════════════════════════════════════════════════════
   function bindNavLinks() {
     const sidebar = document.querySelector('.sidebar');
     if (!sidebar) return;
     sidebar.addEventListener('click', function (e) {
       const link = e.target.closest('a.nav-item, a.sub-item');
-      if (link && window.innerWidth < 1024) {
-        closeSidebar();
-      }
+      if (link && window.innerWidth < 1024) closeSidebar();
     });
   }
 
-  // ─── ESC key closes sidebar ───────────────────────────────────────────────
   function bindKeyboard() {
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeSidebar();
     });
   }
 
-  // ─── Auto-close if resized back to desktop ────────────────────────────────
   function handleResize() {
-    if (window.innerWidth >= 1024) {
-      closeSidebar();
-    }
+    if (window.innerWidth >= 1024) closeSidebar();
   }
 
-  // ─── Toggle sidebar open/close ────────────────────────────────────────────
   function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    const isOpen = sidebar && sidebar.classList.contains('open');
-    if (isOpen) {
+    if (sidebar && sidebar.classList.contains('open')) {
       closeSidebar();
     } else {
       openSidebar();
@@ -127,7 +288,39 @@
     document.body.classList.remove('sidebar-open');
   }
 
-  // ─── Expose to global scope for inline onclick usage if needed ────────────
-  window.toggleSidebar = toggleSidebar;
-  window.closeSidebar = closeSidebar;
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DATE INPUT "PICK A DATE" PLACEHOLDER
+  // ═══════════════════════════════════════════════════════════════════════════
+  function initDatePlaceholders() {
+    document.querySelectorAll('input[type="date"].field-input').forEach(function (inp) {
+      // Inject placeholder span once
+      var fc = inp.closest('.field-container');
+      if (fc && !fc.querySelector('.date-ph')) {
+        var ph = document.createElement('span');
+        ph.className = 'date-ph';
+        ph.textContent = 'Pick a date';
+        fc.appendChild(ph);
+      }
+
+      // Sync data-empty attribute so CSS can react
+      function sync() {
+        if (inp.value) {
+          inp.removeAttribute('data-empty');
+        } else {
+          inp.setAttribute('data-empty', '');
+        }
+      }
+
+      inp.addEventListener('change', sync);
+      inp.addEventListener('input', sync);
+      sync(); // run on init
+    });
+  }
+
+  // Also expose so pages that inject date inputs dynamically can re-init
+  window.initDatePlaceholders = initDatePlaceholders;
+
+  // Expose to global scope
+  window.toggleSidebar  = toggleSidebar;
+  window.closeSidebar   = closeSidebar;
 })();

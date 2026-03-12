@@ -156,7 +156,17 @@ body {
   color: var(--grey-600);
   font-size: 14px;
   font-weight: 500;
-  transition: 0.2s;
+  border-radius: 8px;
+  transition: background 0.18s, color 0.18s, transform 0.15s;
+}
+.sub-item:hover {
+  background: rgba(145, 158, 171, 0.1);
+  color: var(--grey-900);
+  transform: translateX(4px);
+}
+.sub-item:hover .dot {
+  background: var(--grey-700);
+  transform: scale(2);
 }
 .sub-item .dot {
   width: 4px;
@@ -164,7 +174,7 @@ body {
   border-radius: 50%;
   background: var(--grey-500);
   margin-right: 16px;
-  transition: 0.2s;
+  transition: background 0.18s, transform 0.18s;
   flex-shrink: 0;
 }
 .sub-item.active {
@@ -174,6 +184,13 @@ body {
 .sub-item.active .dot {
   background: var(--primary-main);
   transform: scale(3);
+}
+.sub-item.active:hover {
+  background: rgba(0, 167, 111, 0.08);
+  color: var(--primary-dark, #007867);
+}
+.sub-item.active:hover .dot {
+  background: var(--primary-main);
 }
 .badge-outlined {
   margin-left: auto;
@@ -307,37 +324,82 @@ body {
   background: var(--primary-dark);
 }
 
-.status-pill {
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 12px;
-}
-.status-active {
-  background: #d3fcd2;
-  color: #118d57;
+/* ══════════════════════════════════════════════════════════
+   UNIFIED STATUS BADGE / PILL SYSTEM  (reference: product-list.html)
+   Used as: .badge .badge-{variant}
+            .status-pill .status-{variant}
+            .status-badge .status-{variant}
+══════════════════════════════════════════════════════════ */
+.badge,
+.status-pill,
+.status-badge {
+  display: inline-block !important;
+  padding: 3px 10px !important;
+  border-radius: 6px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.4px !important;
+  white-space: nowrap !important;
+  text-transform: none !important;
+  line-height: 1.6 !important;
 }
 
-.status-badge {
-  display: inline-flex;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
+/* ── Green: approved / active / unlocked / completed / created ── */
+.badge-approved, .badge-active, .badge-unlocked,
+.badge-completed, .badge-created,
+.status-pill.status-approved, .status-pill.status-active,
+.status-pill.status-unlocked, .status-pill.status-completed,
+.status-pill.status-created,
+.status-badge.status-approved, .status-badge.status-active,
+.status-badge.status-completed, .status-badge.status-created {
+  background: #d8fbde !important;
+  color: #007b55 !important;
 }
-.status-badge.status-active {
-  background: rgba(0, 167, 111, 0.16);
-  color: #00a76f;
+
+/* ── Amber: awaiting / pending ── */
+.badge-awaiting, .badge-pending,
+.status-pill.status-awaiting, .status-pill.status-pending,
+.status-badge.status-awaiting, .status-badge.status-pending {
+  background: #fff8e2 !important;
+  color: #7a4f01 !important;
 }
-.status-badge.status-inactive {
-  background: rgba(255, 86, 48, 0.16);
-  color: #ff5630;
+
+/* ── Red: cancelled / failed / rejected ── */
+.badge-cancelled, .badge-failed, .badge-rejected,
+.status-pill.status-cancelled, .status-pill.status-failed,
+.status-badge.status-cancelled, .status-badge.status-failed,
+.status-badge.status-rejected {
+  background: #ffe4de !important;
+  color: #b71d18 !important;
 }
-.status-badge.status-awaiting {
-  background: #fff5cc;
-  color: #b76e00;
+
+/* ── Grey: expired / inactive / draft ── */
+.badge-expired, .badge-inactive, .badge-draft,
+.status-pill.status-expired, .status-pill.status-inactive,
+.status-pill.status-draft,
+.status-badge.status-inactive, .status-badge.status-draft {
+  background: #f4f6f8 !important;
+  color: #637381 !important;
 }
+
+/* ── Orange: locked ── */
+.badge-locked,
+.status-pill.status-locked,
+.status-badge.status-locked {
+  background: #fff0e6 !important;
+  color: #b76e00 !important;
+}
+
+/* ── Blue: updated / info ── */
+.badge-updated, .badge-info,
+.status-pill.status-updated,
+.status-badge.status-updated {
+  background: #d0f2ff !important;
+  color: #006c9c !important;
+}
+
+/* ── Generic active shorthand (used standalone without .badge prefix) ── */
+.status-active { background: #d8fbde !important; color: #007b55 !important; }
 
 .action-icon {
   width: 18px;
@@ -493,6 +555,23 @@ body {
   color: var(--grey-900);
 }
 
+/* ── Pagination select (shared across all pages) ────── */
+.pag-select {
+  height: 32px;
+  border: 1px solid #dfe3e8;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #212b36;
+  padding: 0 28px 0 8px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center;
+}
+.pag-select:focus { border-color: #212b36; }
+
 /* Generic select with custom chevron icon (for dropdowns with leading icons, etc.) */
 .select-with-chevron {
   position: relative;
@@ -540,6 +619,34 @@ body {
   height: 100%;
   opacity: 0;
   cursor: pointer;
+}
+
+/* ── "Pick a date" placeholder for date inputs ──────── */
+.date-ph {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--grey-400, #919eab);
+  font-size: 14px;
+  font-family: inherit;
+  pointer-events: none;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.1s;
+  z-index: 1;
+}
+/* Show placeholder when input is empty */
+input[type="date"].field-input[data-empty] ~ .date-ph {
+  opacity: 1;
+}
+/* Hide when focused */
+input[type="date"].field-input[data-empty]:focus ~ .date-ph {
+  opacity: 0;
+}
+/* WebKit: hide native "mm/dd/yyyy" ghost text when empty & not focused */
+input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
+  color: transparent;
 }
 .date-field .field-container > iconify-icon,
 .date-field .field-container > svg,

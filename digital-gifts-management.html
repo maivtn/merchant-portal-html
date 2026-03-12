@@ -351,31 +351,81 @@
       color: var(--grey-900);
     }
 
-    /* ── Responsive ────────────────────────────────────── */
+    /* ── Responsive: iPad (768–1023px) ─────────────────── */
     @media (max-width: 1023px) {
       .layout-grid {
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 20px;
       }
-      .preview-card {
-        position: static;
-      }
+      .preview-card { position: static; }
+      .card[style] { padding: 24px !important; }
+      .promo-banner { font-size: 16px; padding: 12px 16px; }
+      .amount-item { font-size: 14px; padding: 10px 8px; }
+      .btn-checkout { padding: 14px 32px; font-size: 15px; }
+      .summary-total { font-size: 16px; }
+      .recipient-form { padding: 20px; gap: 16px; }
     }
 
+    /* ── Responsive: Mobile (< 768px) ──────────────────── */
     @media (max-width: 767px) {
-      .form-section {
-        padding: 20px 16px;
+      .page-title { font-size: 18px !important; }
+      .card[style] { padding: 16px !important; }
+      .preview-card { padding: 16px; }
+      .promo-banner {
+        font-size: 13px;
+        padding: 10px 12px;
+        gap: 8px;
+        margin-bottom: 16px;
       }
+
+      /* Amount grid: 3 cols, compact */
       .amount-grid {
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 8px;
+        margin-bottom: 8px;
       }
+      .amount-item {
+        font-size: 13px;
+        padding: 8px 4px;
+      }
+      .custom-amount-input input {
+        font-size: 13px;
+        height: 40px;
+      }
+
+      /* Section titles & labels */
+      .form-section { margin-bottom: 20px; }
+      .form-section-title { font-size: 13px; margin-bottom: 12px; }
+      .label-main { font-size: 13px; }
+      .label-hint { font-size: 11px; }
+
+      /* Quantity */
+      .qty-value { font-size: 14px; }
+      .qty-btn { width: 28px; height: 28px; font-size: 16px; }
+
+      /* Send as gift */
+      .checkbox-wrapper span { font-size: 13px !important; }
+
+      /* Recipient form */
+      .recipient-form { padding: 14px; gap: 12px; margin-bottom: 16px; }
       .form-group-row {
         grid-template-columns: 1fr !important;
-        gap: 6px;
+        gap: 4px;
       }
-      .form-group-row label {
-        font-size: 13px;
+      .form-control-minimal { height: 40px; font-size: 13px; padding: 10px 12px; }
+
+      /* Order summary in preview */
+      .summary-row { font-size: 13px; margin-bottom: 8px; }
+      .summary-total { font-size: 15px; }
+      .order-summary { margin-top: 16px; padding-top: 16px; }
+
+      /* Checkout button */
+      .btn-checkout {
+        width: 100%;
+        min-width: unset;
+        padding: 13px 24px;
+        font-size: 14px;
+        border-radius: 10px;
       }
     }
   </style>

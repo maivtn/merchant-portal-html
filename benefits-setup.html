@@ -121,20 +121,6 @@
       display: flex; align-items: center; justify-content: center;
     }
     .b-icon svg { width: 20px; height: 20px; }
-
-    /* Status badges */
-    .badge {
-      display: inline-block; font-size: 11px; font-weight: 700;
-      text-transform: uppercase; padding: 4px 8px; border-radius: 6px;
-      letter-spacing: .3px; white-space: nowrap;
-    }
-    .badge-active   { background: #d8fbde; color: #007b55; }
-    .badge-inactive { background: #ffe4de; color: #b71d18; }
-    .badge-approved { background: #d8fbde; color: #007b55; font-weight: 400; }
-    .badge-pending  { background: #fff3cc; color: #b8860b; font-weight: 400; }
-    .badge-rejected { background: #ffe4de; color: #b71d18; font-weight: 400; }
-    .badge-draft    { background: #f4f6f8; color: #637381; font-weight: 400; }
-
     /* Eye button */
     .btn-eye {
       display: inline-flex; align-items: center; justify-content: center;
@@ -215,7 +201,7 @@
       height: 32px; border: 1px solid #dfe3e8; border-radius: 6px;
       font-size: 13px; font-family: inherit; color: #212b36;
       padding: 0 24px 0 8px; outline: none; cursor: pointer; appearance: none;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 4px center;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center;
     }
     .pag-info { margin-left: auto; font-size: 13px; color: #637381; }
     .pag-btn {
@@ -286,10 +272,34 @@
       border: 2px dashed #dfe3e8; background: #f9fafb;
       display: flex; flex-direction: column; align-items: center;
       justify-content: center; gap: 4px; cursor: pointer; transition: .2s;
+      width: 100%; padding: 0; box-sizing: border-box;
     }
     .icon-upload-btn:hover { border-color: #919eab; background: #f4f6f8; }
     .icon-upload-btn svg { width: 20px; height: 20px; color: #637381; }
     .icon-upload-btn span { font-size: 11px; font-weight: 500; color: #637381; }
+
+    /* Upload preview cell */
+    .icon-upload-wrap { position: relative; aspect-ratio: 1; }
+    .upload-preview-box {
+      position: relative; width: 100%; height: 100%;
+    }
+    .upload-preview-box img {
+      width: 100%; height: 100%; object-fit: cover;
+      border-radius: 12px; display: block;
+      border: 2px solid #00a76f;
+    }
+    .upload-remove-btn {
+      position: absolute; top: -9px; right: -9px;
+      width: 22px; height: 22px;
+      background: #fff; border: 1.5px solid #dfe3e8;
+      border-radius: 50%; padding: 0;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 3;
+      box-shadow: 0 1px 6px rgba(0,0,0,.18);
+      transition: background .15s, border-color .15s;
+    }
+    .upload-remove-btn:hover { background: #ff5630; border-color: #ff5630; color: #fff; }
+    .upload-remove-btn svg { width: 11px; height: 11px; pointer-events: none; }
 
     .icon-error { color: #ff5630; font-size: 12px; margin-top: 4px; display: none; }
 
@@ -557,13 +567,16 @@
         <button class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></button>
       </div>
 
+      <!-- Hidden file input for icon upload -->
+      <input type="file" id="iconFileInput" accept="image/*" style="display:none" onchange="handleIconUpload(this)">
+
       <div class="modal-body">
         <!-- Icon selection -->
         <div>
           <div class="section-label">Benefit Icon</div>
-          <div class="section-desc">Select an icon for the benefit</div>
+          <div class="section-desc">Select a preset icon or upload your own image</div>
           <div class="icon-grid" id="iconGrid"></div>
-          <div class="icon-error" id="iconError">Please select an icon</div>
+          <div class="icon-error" id="iconError">Please select or upload an icon</div>
         </div>
 
         <!-- Benefit Name -->
@@ -666,7 +679,12 @@
       { el:'gift',          bg:'#e0d4ff', color:'#7c3aed' },
     ];
 
-    function benefitIconHtml(idx) {
+    function benefitIconHtml(idx, dataUrl) {
+      if (dataUrl) {
+        return `<div class="b-icon" style="background:#f0fdf7;overflow:hidden;padding:0">
+          <img src="${dataUrl}" style="width:40px;height:40px;object-fit:cover;border-radius:10px;display:block" alt="icon"/>
+        </div>`;
+      }
       if (idx === undefined || idx === null) return `<div class="b-icon" style="background:#f4f6f8"></div>`;
       const ic = ICONS[idx];
       return `<div class="b-icon" style="background:${ic.bg};color:${ic.color}">
@@ -811,7 +829,7 @@
         tbody.innerHTML = `<tr><td colspan="${cols.length}" class="empty-state">${msg}</td></tr>`;
       } else {
         tbody.innerHTML = rows.map(r => `<tr>${cols.map(c => {
-          if (c.key === 'icon') return `<td>${benefitIconHtml(r.iconIdx)}</td>`;
+          if (c.key === 'icon') return `<td>${benefitIconHtml(r.iconIdx, r.iconDataUrl)}</td>`;
           if (c.key === 'status') return `<td>${badgeHtml(r.status, activeTab==='benefit'?'benefit':'pkg')}</td>`;
           if (c.key === 'saleStatus') return `<td>${badgeHtml(r.saleStatus,'sale')}</td>`;
           if (c.key === 'createdDate' || c.key === 'updatedDate') return `<td style="color:#637381">${fmtDate(r[c.key])}</td>`;
@@ -842,7 +860,7 @@
         list.innerHTML = rows.map(r => `
           <div class="m-card">
             <div class="m-card-header">
-              ${benefitIconHtml(r.iconIdx)}
+              ${benefitIconHtml(r.iconIdx, r.iconDataUrl)}
               <div class="m-card-titles">
                 <div class="m-card-name">${r.name}</div>
                 <div class="m-card-id">${r.id}</div>
@@ -939,22 +957,80 @@
     /* ═══════════════════════════════════════════════════════
        MODAL
     ═══════════════════════════════════════════════════════ */
-    let selectedIcon = null;
+    let selectedIcon       = null;
+    let uploadedIconDataUrl = null;
+
+    const UPLOAD_BTN_HTML = `
+      <div class="icon-upload-wrap" id="iconUploadWrap">
+        <button type="button" class="icon-upload-btn" id="iconUploadBtn" onclick="triggerIconUpload()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
+            <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+          </svg>
+          <span>Upload</span>
+        </button>
+      </div>`;
 
     function buildIconGrid() {
       const grid = document.getElementById('iconGrid');
       grid.innerHTML = ICONS.map((ic,i) => `
         <button class="icon-btn" style="background:${ic.bg};color:${ic.color}" onclick="selectIcon(${i})" id="icon-btn-${i}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">${iconPath(ic.el)}</svg>
-        </button>`).join('') + `
-        <div class="icon-upload-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        </button>`).join('') + UPLOAD_BTN_HTML;
+    }
+
+    function triggerIconUpload() {
+      document.getElementById('iconFileInput').click();
+    }
+
+    function handleIconUpload(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        uploadedIconDataUrl = e.target.result;
+        // Deselect any preset icon
+        selectedIcon = null;
+        document.querySelectorAll('.icon-btn').forEach(b => b.classList.remove('selected'));
+        document.getElementById('iconError').style.display = 'none';
+
+        // Replace upload button with image preview + remove button
+        const wrap = document.getElementById('iconUploadWrap');
+        if (wrap) {
+          wrap.innerHTML = `
+            <div class="upload-preview-box">
+              <img src="${uploadedIconDataUrl}" alt="Uploaded icon" />
+              <button type="button" class="upload-remove-btn" onclick="removeUploadedIcon()" title="Remove image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>`;
+        }
+        // Reset file input so same file can be re-uploaded
+        input.value = '';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeUploadedIcon() {
+      uploadedIconDataUrl = null;
+      const wrap = document.getElementById('iconUploadWrap');
+      if (wrap) wrap.innerHTML = `
+        <button type="button" class="icon-upload-btn" id="iconUploadBtn" onclick="triggerIconUpload()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
+            <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+          </svg>
           <span>Upload</span>
-        </div>`;
+        </button>`;
     }
 
     function selectIcon(i) {
       selectedIcon = i;
+      // Clear any uploaded image when a preset is selected
+      uploadedIconDataUrl = null;
+      removeUploadedIcon();
       document.querySelectorAll('.icon-btn').forEach((b,idx)=>b.classList.toggle('selected', idx===i));
       document.getElementById('iconError').style.display = 'none';
     }
@@ -978,6 +1054,7 @@
 
     function resetForm() {
       selectedIcon = null;
+      uploadedIconDataUrl = null;
       document.getElementById('benefitName').value = '';
       document.getElementById('benefitUnit').value = '';
       document.getElementById('rolloverType').value = '';
@@ -988,7 +1065,7 @@
 
     function submitCreate() {
       let valid = true;
-      if (selectedIcon === null) { document.getElementById('iconError').style.display='block'; valid=false; }
+      if (selectedIcon === null && !uploadedIconDataUrl) { document.getElementById('iconError').style.display='block'; valid=false; }
       const name = document.getElementById('benefitName').value.trim();
       if (!name) { document.getElementById('nameError').style.display='block'; valid=false; }
       const unit = document.getElementById('benefitUnit').value;
@@ -997,7 +1074,9 @@
 
       const newId = 'BEN' + String(BENEFITS.length+1).padStart(3,'0');
       BENEFITS.push({
-        id: newId, name, unit, iconIdx: selectedIcon,
+        id: newId, name, unit,
+        iconIdx: selectedIcon,
+        iconDataUrl: uploadedIconDataUrl || null,
         status: 'ACTIVE', createdBy: 'admin@vlinkpay.com',
         createdDate: new Date().toISOString().slice(0,10)
       });

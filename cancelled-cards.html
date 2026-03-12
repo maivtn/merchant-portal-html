@@ -114,35 +114,8 @@
       width: 15px; height: 15px;
     }
 
-    /* Date wrap */
-    .date-wrap {
-      position: relative; flex-shrink: 0;
-    }
-    .date-label {
-      position: absolute; top: -9px; left: 10px;
-      font-size: 11px; font-weight: 600;
-      color: #637381; background: #fff;
-      padding: 0 4px; pointer-events: none; z-index: 2;
-    }
-    .date-input-inner {
-      position: relative; display: flex; align-items: center;
-    }
-    .date-input {
-      min-width: 160px; height: 40px;
-      padding: 0 32px 0 12px;
-      border: 1px solid #dfe3e8; border-radius: 8px;
-      font-size: 13px; font-family: inherit;
-      color: #212b36; outline: none; cursor: pointer;
-      transition: border-color .2s;
-    }
-    .date-input::placeholder { color: #919eab; }
-    .date-input:focus { border-color: #212b36; }
-    .date-input::-webkit-calendar-picker-indicator { opacity: 0; position: absolute; right: 0; width: 100%; }
-    .date-cal-icon {
-      position: absolute; right: 8px;
-      color: #919eab; pointer-events: none;
-      width: 15px; height: 15px;
-    }
+    /* Date fields use global .field-root.date-field */
+    .filter-bar .date-field { width: 180px; }
 
     /* Mobile filter button */
     .btn-filter {
@@ -189,16 +162,6 @@
     .td-date  { color: #637381; white-space: nowrap; }
     .td-by    { white-space: nowrap; }
     .td-null  { color: #c4cdd5; }
-
-    .badge-cancelled {
-      display: inline-block;
-      background: #ffe4de; color: #b71d18;
-      font-size: 11px; font-weight: 400;
-      letter-spacing: .4px;
-      padding: 3px 10px; border-radius: 6px;
-      white-space: nowrap;
-    }
-
     .empty-row td {
       text-align: center; padding: 48px 24px;
       color: #919eab; font-size: 14px; border: none;
@@ -244,7 +207,7 @@
       font-size: 13px; font-family: inherit; color: #212b36;
       padding: 0 24px 0 8px; outline: none; cursor: pointer;
       appearance: none;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 6px center;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center;
     }
     .pag-info { margin-left: auto; font-size: 13px; color: #637381; }
     .pag-btn {
@@ -289,18 +252,9 @@
     .filter-modal-body {
       padding: 16px; display: flex; gap: 8px;
     }
-    .filter-modal-body .fm-date {
-      flex: 1;
-    }
-    .fm-label { font-size: 12px; font-weight: 600; color: #637381; margin-bottom: 6px; display: block; }
-    .fm-input {
-      width: 100%; height: 40px;
-      padding: 0 12px;
-      border: 1px solid #dfe3e8; border-radius: 8px;
-      font-size: 13px; font-family: inherit; color: #212b36;
-      outline: none; box-sizing: border-box;
-    }
-    .fm-input:focus { border-color: #212b36; }
+    .filter-modal-body .fm-date { flex: 1; }
+    /* Mobile modal date fields use global .field-root.date-field */
+    .filter-modal-body .date-field { width: 100%; margin-top: 8px; }
 
     .filter-modal-foot {
       display: flex; gap: 8px;
@@ -329,7 +283,7 @@
       .filter-bar    { padding: 10px 16px; gap: 8px; flex-wrap: nowrap; }
       .search-wrap   { flex: 1; }
       .search-input  { width: 100%; }
-      .date-wrap     { display: none; }
+      .filter-bar .date-field { display: none; }
       .btn-filter    { display: flex; }
       .table-scroll  { display: none; }
       .mobile-list   { display: block; }
@@ -472,19 +426,19 @@
         </div>
 
         <!-- Desktop date pickers -->
-        <div class="date-wrap" id="dateWrapFrom">
-          <span class="date-label">Cancelled From</span>
-          <div class="date-input-inner">
-            <input type="date" class="date-input" id="dateFrom" onchange="applyDateFilter()" />
-            <i data-lucide="calendar" class="date-cal-icon"></i>
+        <div class="field-root date-field" id="dateWrapFrom">
+          <label class="field-label">Cancelled From</label>
+          <div class="field-container">
+            <input type="date" class="field-input" id="dateFrom" onchange="applyDateFilter()" />
+            <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
         </div>
 
-        <div class="date-wrap" id="dateWrapTo">
-          <span class="date-label">To</span>
-          <div class="date-input-inner">
-            <input type="date" class="date-input" id="dateTo" onchange="applyDateFilter()" />
-            <i data-lucide="calendar" class="date-cal-icon"></i>
+        <div class="field-root date-field" id="dateWrapTo">
+          <label class="field-label">To</label>
+          <div class="field-container">
+            <input type="date" class="field-input" id="dateTo" onchange="applyDateFilter()" />
+            <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
         </div>
 
@@ -538,12 +492,22 @@
       </div>
       <div class="filter-modal-body">
         <div class="fm-date">
-          <label class="fm-label">Cancelled From</label>
-          <input type="date" class="fm-input" id="mDateFrom" />
+          <div class="field-root date-field">
+            <label class="field-label">Cancelled From</label>
+            <div class="field-container">
+              <input type="date" class="field-input" id="mDateFrom" />
+              <i data-lucide="calendar" style="width:16px;height:16px;"></i>
+            </div>
+          </div>
         </div>
         <div class="fm-date">
-          <label class="fm-label">To</label>
-          <input type="date" class="fm-input" id="mDateTo" />
+          <div class="field-root date-field">
+            <label class="field-label">To</label>
+            <div class="field-container">
+              <input type="date" class="field-input" id="mDateTo" />
+              <i data-lucide="calendar" style="width:16px;height:16px;"></i>
+            </div>
+          </div>
         </div>
       </div>
       <div class="filter-modal-foot">
@@ -559,20 +523,20 @@
        MOCK DATA
     ═══════════════════════════════════════════════════════ */
     const ALL_CARDS = [
-      { id:'#PRD-20301', name:'Gift Card',       category:'Gift card',    platform:'Store',            status:'CANCELLED', cardNumber:'0438 **** 7108', amount:'$200.00', discount:'15%', cancelReason:'Customer request',         cancelledBy:'admin@vlinkpay.com',   cancelledDate:'2028-01-15' },
-      { id:'#PRD-20302', name:'E-Voucher',       category:'E-Voucher',    platform:'VLINKPAY Platform',status:'CANCELLED', cardNumber:'-',              amount:'$50.00',  discount:'-',   cancelReason:'Expired campaign',         cancelledBy:'merchant@store.com',   cancelledDate:'2028-01-18' },
-      { id:'#PRD-20303', name:'Promotion Card',  category:'Promotion',    platform:'Store',            status:'CANCELLED', cardNumber:'1234 **** 5678', amount:'-',       discount:'20%', cancelReason:'Promotion ended',          cancelledBy:'ops@vlinkpay.com',     cancelledDate:'2028-01-20' },
-      { id:'#PRD-20304', name:'Discount Card',   category:'Discount',     platform:'Store',            status:'CANCELLED', cardNumber:'9876 **** 4321', amount:'-',       discount:'10%', cancelReason:'Fraud suspicion',          cancelledBy:'admin@vlinkpay.com',   cancelledDate:'2028-01-22' },
-      { id:'#PRD-20305', name:'Membership Gold', category:'Membership',   platform:'Store',            status:'CANCELLED', cardNumber:'5555 **** 1111', amount:'$500.00', discount:'-',   cancelReason:'Membership expired',       cancelledBy:'admin@vlinkpay.com',   cancelledDate:'2028-01-25' },
-      { id:'#PRD-20306', name:'Prepaid Card',    category:'Prepaid card', platform:'Store',            status:'CANCELLED', cardNumber:'7777 **** 9999', amount:'$100.00', discount:'-',   cancelReason:'Customer request',         cancelledBy:'support@vlinkpay.com', cancelledDate:'2028-01-28' },
-      { id:'#PRD-20307', name:'E-Gift Card',     category:'E-Gift card',  platform:'VLINKPAY Platform',status:'CANCELLED', cardNumber:'-',              amount:'$75.00',  discount:'-',   cancelReason:'Chargeback dispute',       cancelledBy:'finance@vlinkpay.com', cancelledDate:'2028-02-01' },
-      { id:'#PRD-20308', name:'Crypto Card VRC', category:'Crypto Card',  platform:'VLINKPAY Platform',status:'CANCELLED', cardNumber:'-',              amount:'$300.00', discount:'-',   cancelReason:'Regulatory compliance',    cancelledBy:'compliance@vlinkpay.com',cancelledDate:'2028-02-05' },
-      { id:'#PRD-20309', name:'Gift Card Silver',category:'Gift card',    platform:'Store',            status:'CANCELLED', cardNumber:'2222 **** 8888', amount:'$150.00', discount:'5%',  cancelReason:'Low balance usage',        cancelledBy:'admin@vlinkpay.com',   cancelledDate:'2028-02-08' },
-      { id:'#PRD-20310', name:'E-Voucher Plus',  category:'E-Voucher',    platform:'VLINKPAY Platform',status:'CANCELLED', cardNumber:'-',              amount:'$25.00',  discount:'-',   cancelReason:'Product discontinued',     cancelledBy:'product@vlinkpay.com', cancelledDate:'2028-02-10' },
-      { id:'#PRD-20311', name:'Promo Weekend',   category:'Promotion',    platform:'Store',            status:'CANCELLED', cardNumber:'3333 **** 6666', amount:'-',       discount:'30%', cancelReason:'Promotion ended',          cancelledBy:'marketing@vlinkpay.com',cancelledDate:'2028-02-12' },
-      { id:'#PRD-20312', name:'Discount VIP',    category:'Discount',     platform:'Store',            status:'CANCELLED', cardNumber:'4444 **** 0000', amount:'-',       discount:'25%', cancelReason:'Customer request',         cancelledBy:'admin@vlinkpay.com',   cancelledDate:'2028-02-15' },
-      { id:'#PRD-20313', name:'Membership Plat', category:'Membership',   platform:'Store',            status:'CANCELLED', cardNumber:'6666 **** 2222', amount:'$1,200.00',discount:'-',  cancelReason:'Customer request',         cancelledBy:'admin@vlinkpay.com',   cancelledDate:'2028-02-18' },
-      { id:'#PRD-20314', name:'E-Gift Premium',  category:'E-Gift card',  platform:'VLINKPAY Platform',status:'CANCELLED', cardNumber:'-',              amount:'$250.00', discount:'-',   cancelReason:'Fraud suspicion',          cancelledBy:'security@vlinkpay.com',cancelledDate:'2028-02-20' },
+      { id:'#PRD-20301', name:'Gift Card',      category:'Gift card',    platform:'Store',            status:'CANCELLED', cardNumber:'0438 **** 7108', amount:'$200.00', discount:'15%', cancelReason:'Customer request',      cancelledBy:'admin@vlinkpay.com',    cancelledDate:'2028-01-15' },
+      { id:'#PRD-20302', name:'E-Voucher',     category:'E-Voucher',    platform:'VLINKPAY Platform',status:'CANCELLED', cardNumber:'-',              amount:'$50.00',  discount:'-',   cancelReason:'Expired campaign',       cancelledBy:'merchant@store.com',    cancelledDate:'2028-01-18' },
+      { id:'#PRD-20303', name:'Promotion',     category:'Promotion',    platform:'Store',            status:'CANCELLED', cardNumber:'1234 **** 5678', amount:'-',       discount:'20%', cancelReason:'Promotion ended',        cancelledBy:'ops@vlinkpay.com',      cancelledDate:'2028-01-20' },
+      { id:'#PRD-20304', name:'Discount',      category:'Discount',     platform:'Store',            status:'CANCELLED', cardNumber:'9876 **** 4321', amount:'-',       discount:'10%', cancelReason:'Fraud suspicion',        cancelledBy:'admin@vlinkpay.com',    cancelledDate:'2028-01-22' },
+      { id:'#PRD-20305', name:'Membership',    category:'Membership',   platform:'Store',            status:'CANCELLED', cardNumber:'5555 **** 1111', amount:'$500.00', discount:'-',   cancelReason:'Membership expired',     cancelledBy:'admin@vlinkpay.com',    cancelledDate:'2028-01-25' },
+      { id:'#PRD-20306', name:'Prepaid Card',  category:'Prepaid card', platform:'Store',            status:'CANCELLED', cardNumber:'7777 **** 9999', amount:'$100.00', discount:'-',   cancelReason:'Customer request',       cancelledBy:'support@vlinkpay.com',  cancelledDate:'2028-01-28' },
+      { id:'#PRD-20307', name:'E-Gift Card',   category:'E-Gift card',  platform:'VLINKPAY Platform',status:'CANCELLED', cardNumber:'-',              amount:'$75.00',  discount:'-',   cancelReason:'Chargeback dispute',     cancelledBy:'finance@vlinkpay.com',  cancelledDate:'2028-02-01' },
+      { id:'#PRD-20308', name:'Crypto Card',   category:'Crypto Card',  platform:'Store',            status:'CANCELLED', cardNumber:'8821 **** 4400', amount:'$300.00', discount:'-',   cancelReason:'Regulatory compliance',  cancelledBy:'compliance@vlinkpay.com',cancelledDate:'2028-02-05' },
+      { id:'#PRD-20309', name:'Gift Card',     category:'Gift card',    platform:'Store',            status:'CANCELLED', cardNumber:'2222 **** 8888', amount:'$150.00', discount:'5%',  cancelReason:'Low balance usage',      cancelledBy:'admin@vlinkpay.com',    cancelledDate:'2028-02-08' },
+      { id:'#PRD-20310', name:'E-Voucher',     category:'E-Voucher',    platform:'VLINKPAY Platform',status:'CANCELLED', cardNumber:'-',              amount:'$25.00',  discount:'-',   cancelReason:'Product discontinued',   cancelledBy:'product@vlinkpay.com',  cancelledDate:'2028-02-10' },
+      { id:'#PRD-20311', name:'Promotion',     category:'Promotion',    platform:'Store',            status:'CANCELLED', cardNumber:'3333 **** 6666', amount:'-',       discount:'30%', cancelReason:'Promotion ended',        cancelledBy:'marketing@vlinkpay.com',cancelledDate:'2028-02-12' },
+      { id:'#PRD-20312', name:'Discount',      category:'Discount',     platform:'Store',            status:'CANCELLED', cardNumber:'4444 **** 0000', amount:'-',       discount:'25%', cancelReason:'Customer request',       cancelledBy:'admin@vlinkpay.com',    cancelledDate:'2028-02-15' },
+      { id:'#PRD-20313', name:'Membership',    category:'Membership',   platform:'Store',            status:'CANCELLED', cardNumber:'6666 **** 2222', amount:'$1,200.00',discount:'-',  cancelReason:'Customer request',       cancelledBy:'admin@vlinkpay.com',    cancelledDate:'2028-02-18' },
+      { id:'#PRD-20314', name:'E-Gift Card',   category:'E-Gift card',  platform:'VLINKPAY Platform',status:'CANCELLED', cardNumber:'-',              amount:'$250.00', discount:'-',   cancelReason:'Fraud suspicion',        cancelledBy:'security@vlinkpay.com', cancelledDate:'2028-02-20' },
       { id:'#PRD-20315', name:'Prepaid Gold',    category:'Prepaid card', platform:'Store',            status:'CANCELLED', cardNumber:'8888 **** 3333', amount:'$200.00', discount:'-',   cancelReason:'Chargeback dispute',       cancelledBy:'finance@vlinkpay.com', cancelledDate:'2028-02-22' },
     ];
 

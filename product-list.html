@@ -23,8 +23,6 @@
       flex-shrink: 0;
     }
     /* Positioned chevrons & calendar icons inside filter inputs */
-    .filter-chevron,
-    .search-icon,
     .pagination-select-chevron {
       display: block;
       line-height: 0;
@@ -103,9 +101,9 @@
     .filter-bar {
       display: flex;
       gap: 16px;
-      padding: 14px 24px;
+      padding: 20px 24px;
       border-bottom: 1px dashed rgba(145,158,171,0.24);
-      align-items: flex-end;
+      align-items: center;
       flex-wrap: wrap;
     }
     .filter-bar-mobile {
@@ -119,59 +117,10 @@
       .filter-bar { display: none; }
       .filter-bar-mobile { display: flex; }
     }
-    .filter-field { display: flex; flex-direction: column; gap: 5px; }
-    .filter-label { font-size: 12px; font-weight: 600; color: #637381; }
-    .filter-input-wrap { position: relative; }
-    .filter-select {
-      padding: 7px 32px 7px 10px;
-      border: 1px solid #dfe3e8;
-      border-radius: 8px;
-      font-size: 13px;
-      font-family: inherit;
-      color: #212b36;
-      outline: none;
-      transition: border-color 0.15s;
-      appearance: none;
-      -webkit-appearance: none;
-      background: white;
-      cursor: pointer;
-      box-sizing: border-box;
-    }
-    .filter-select:focus { border-color: #212b36; }
-    .filter-select { min-width: 160px; }
-    .filter-chevron {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #637381;
-      pointer-events: none;
-    }
-    .search-wrapper { display: flex; flex-direction: column; gap: 5px; }
-    .search-input-wrap { position: relative; }
-    .search-input {
-      padding: 7px 34px 7px 10px;
-      border: 1px solid #dfe3e8;
-      border-radius: 8px;
-      font-size: 13px;
-      font-family: inherit;
-      color: #212b36;
-      outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
-      width: 260px;
-      box-sizing: border-box;
-    }
-    @media (max-width: 767px) { .search-input { width: 100%; } }
-    .search-input::placeholder { color: #919eab; }
-    .search-input:focus { border-color: #212b36; box-shadow: 0 0 0 2px rgba(33,43,54,0.08); }
-    .search-icon {
-      position: absolute;
-      right: 9px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #919eab;
-      pointer-events: none;
-    }
+    /* ── Local overrides for filter-bar field widths ── */
+    .filter-bar .search-field { width: 280px; }
+    .filter-bar .status-field { width: 200px; }
+    .filter-bar .locked-field { width: 170px; }
     .filter-btn-mobile {
       display: flex;
       align-items: center;
@@ -583,32 +532,9 @@
     .mobile-filter-title { font-size: 16px; font-weight: 700; color: #212b36; }
     .mobile-filter-field { margin-bottom: 16px; }
     .mobile-filter-label { display: block; font-size: 12px; font-weight: 600; color: #637381; margin-bottom: 6px; }
-    .mobile-filter-select {
-      width: 100%;
-      padding: 10px 32px 10px 12px;
-      border: 1px solid #dfe3e8;
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: inherit;
-      color: #212b36;
-      appearance: none;
-      -webkit-appearance: none;
-      background: white;
-      outline: none;
-      box-sizing: border-box;
-    }
-    .mobile-filter-date {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #dfe3e8;
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: inherit;
-      color: #212b36;
-      outline: none;
-      box-sizing: border-box;
-    }
-    .mobile-date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    /* mobile filter sheet uses global field-root; remove old mobile-filter-select */
+    .mobile-filter-sheet .field-root { width: 100%; }
+    .mobile-date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 8px; }
     .mobile-filter-footer { display: flex; gap: 12px; margin-top: 24px; }
     .mobile-filter-footer button {
       flex: 1; height: 44px;
@@ -754,7 +680,7 @@
       </a>
       <div class="submenu">
         <a href="sales-order-list.html" class="sub-item"><span class="dot"></span>Sales Orders</a>
-        <a href="card-transaction-history-merchant.html" class="sub-item"><span class="dot"></span>Card Transaction History</a>
+        <a href="card-transaction-history-merchant.html" class="sub-item"><span class="dot"></span>Redeem History</a>
         <a href="membership-report.html" class="sub-item"><span class="dot"></span>Membership Report</a>
       </div>
 
@@ -824,37 +750,37 @@
 
       <!-- Desktop Filter Bar -->
       <div class="filter-bar">
-        <div class="search-wrapper">
-          <label class="filter-label">Search</label>
-          <div class="search-input-wrap">
-            <input type="text" id="searchInput" class="search-input" placeholder="Product ID / Name / Card Number" oninput="applyFilters()">
-            <i data-lucide="search" class="search-icon" style="width:16px;height:16px;"></i>
+        <div class="field-root search-field">
+          <label class="field-label">Search</label>
+          <div class="field-container">
+            <i data-lucide="search" style="width:16px;height:16px;"></i>
+            <input type="text" id="searchInput" class="field-input" placeholder="Product ID / Name / Card Number" oninput="applyFilters()">
           </div>
         </div>
 
-        <div class="filter-field">
-          <label class="filter-label">Product Status</label>
-          <div class="filter-input-wrap">
-            <select id="statusFilter" class="filter-select" onchange="applyFilters()">
+        <div class="field-root status-field">
+          <label class="field-label">Product Status</label>
+          <div class="field-container">
+            <select id="statusFilter" class="field-input field-select" onchange="applyFilters()">
               <option value="">All Statuses</option>
               <option value="AWAITING APPROVAL">AWAITING APPROVAL</option>
               <option value="APPROVED">APPROVED</option>
               <option value="CANCELLED">CANCELLED</option>
               <option value="EXPIRED">EXPIRED</option>
             </select>
-            <i data-lucide="chevron-down" class="filter-chevron" style="width:16px;height:16px;"></i>
+            <i data-lucide="chevron-down" class="field-chevron" style="width:16px;height:16px;"></i>
           </div>
         </div>
 
-        <div class="filter-field">
-          <label class="filter-label">Card Locked</label>
-          <div class="filter-input-wrap">
-            <select id="lockedFilter" class="filter-select" onchange="applyFilters()">
+        <div class="field-root locked-field">
+          <label class="field-label">Card Locked</label>
+          <div class="field-container">
+            <select id="lockedFilter" class="field-input field-select" onchange="applyFilters()">
               <option value="">All Statuses</option>
               <option value="LOCKED">LOCKED</option>
               <option value="UNLOCKED">UNLOCKED</option>
             </select>
-            <i data-lucide="chevron-down" class="filter-chevron" style="width:16px;height:16px;"></i>
+            <i data-lucide="chevron-down" class="field-chevron" style="width:16px;height:16px;"></i>
           </div>
         </div>
 
@@ -877,9 +803,11 @@
 
       <!-- Mobile Filter Bar -->
       <div class="filter-bar-mobile">
-        <div style="flex: 1; position: relative;">
-          <input type="text" id="searchInputMobile" class="search-input" style="width:100%;" placeholder="Product ID / Name / Card Number" oninput="syncMobileSearch()">
-          <i data-lucide="search" class="search-icon" style="width:16px;height:16px;"></i>
+        <div class="field-root search-field" style="flex:1;">
+          <div class="field-container">
+            <i data-lucide="search" style="width:16px;height:16px;"></i>
+            <input type="text" id="searchInputMobile" class="field-input" placeholder="Product ID / Name / Card Number" oninput="syncMobileSearch()">
+          </div>
         </div>
         <button class="filter-btn-mobile" onclick="openMobileFilter()">
           <i data-lucide="sliders-horizontal" style="width:16px;height:16px;"></i>
@@ -1073,38 +1001,48 @@
 
       <div class="mobile-filter-field">
         <label class="mobile-filter-label">Product Status</label>
-        <div style="position:relative;">
-          <select id="mobileStatusFilter" class="mobile-filter-select">
-            <option value="">All Statuses</option>
-            <option value="AWAITING APPROVAL">AWAITING APPROVAL</option>
-            <option value="APPROVED">APPROVED</option>
-            <option value="CANCELLED">CANCELLED</option>
-            <option value="EXPIRED">EXPIRED</option>
-          </select>
-          <i data-lucide="chevron-down" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:#637381;width:16px;height:16px;"></i>
+        <div class="field-root" style="width:100%;">
+          <div class="field-container">
+            <select id="mobileStatusFilter" class="field-input field-select">
+              <option value="">All Statuses</option>
+              <option value="AWAITING APPROVAL">AWAITING APPROVAL</option>
+              <option value="APPROVED">APPROVED</option>
+              <option value="CANCELLED">CANCELLED</option>
+              <option value="EXPIRED">EXPIRED</option>
+            </select>
+            <i data-lucide="chevron-down" class="field-chevron" style="width:16px;height:16px;"></i>
+          </div>
         </div>
       </div>
 
       <div class="mobile-filter-field">
         <label class="mobile-filter-label">Card Locked</label>
-        <div style="position:relative;">
-          <select id="mobileLockedFilter" class="mobile-filter-select">
-            <option value="">All Statuses</option>
-            <option value="LOCKED">LOCKED</option>
-            <option value="UNLOCKED">UNLOCKED</option>
-          </select>
-          <i data-lucide="chevron-down" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:#637381;width:16px;height:16px;"></i>
+        <div class="field-root" style="width:100%;">
+          <div class="field-container">
+            <select id="mobileLockedFilter" class="field-input field-select">
+              <option value="">All Statuses</option>
+              <option value="LOCKED">LOCKED</option>
+              <option value="UNLOCKED">UNLOCKED</option>
+            </select>
+            <i data-lucide="chevron-down" class="field-chevron" style="width:16px;height:16px;"></i>
+          </div>
         </div>
       </div>
 
       <div class="mobile-date-row">
-        <div class="mobile-filter-field" style="margin-bottom:0;">
-          <label class="mobile-filter-label">Created From</label>
-          <input type="date" id="mobileFromDate" class="mobile-filter-date">
+        <div class="field-root date-field" style="width:100%;">
+          <label class="field-label">Created From</label>
+          <div class="field-container">
+            <input type="date" id="mobileFromDate" class="field-input">
+            <i data-lucide="calendar" style="width:16px;height:16px;"></i>
+          </div>
         </div>
-        <div class="mobile-filter-field" style="margin-bottom:0;">
-          <label class="mobile-filter-label">To</label>
-          <input type="date" id="mobileToDate" class="mobile-filter-date">
+        <div class="field-root date-field" style="width:100%;">
+          <label class="field-label">To</label>
+          <div class="field-container">
+            <input type="date" id="mobileToDate" class="field-input">
+            <i data-lucide="calendar" style="width:16px;height:16px;"></i>
+          </div>
         </div>
       </div>
 

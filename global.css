@@ -112,13 +112,29 @@ body {
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
-  transition: 0.2s;
+  transition: background 0.18s, color 0.18s, transform 0.15s;
+  position: relative;
 }
+.nav-item:hover {
+  background: rgba(145, 158, 171, 0.12);
+  color: var(--grey-900);
+  transform: translateX(3px);
+}
+.nav-item:hover .nav-icon {
+  color: var(--grey-900);
+}
+.nav-item.active,
 .nav-item.parent-active {
   background: rgba(0, 167, 111, 0.08);
   color: var(--primary-main);
   font-weight: 600;
   margin-bottom: 4px;
+}
+.nav-item.active:hover,
+.nav-item.parent-active:hover {
+  background: rgba(0, 167, 111, 0.16);
+  color: var(--primary-dark, #007867);
+  transform: translateX(3px);
 }
 .nav-icon {
   width: 24px;
@@ -228,6 +244,12 @@ body {
 }
 
 /* Shared Components */
+/* ── Breadcrumbs: temporarily hidden ── */
+.breadcrumbs,
+.breadcrumb,
+.breadcrumb-desktop {
+  display: none !important;
+}
 .breadcrumbs {
   font-size: 14px;
   color: var(--grey-600);
@@ -616,10 +638,9 @@ body {
 ═══════════════════════════════════════════════════════ */
 .mobile-logo {
   display: none;
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--grey-900);
-  letter-spacing: -0.5px;
+  height: 36px;
+  width: auto;
+  object-fit: contain;
   flex: 1;
 }
 

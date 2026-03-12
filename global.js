@@ -48,10 +48,11 @@
     const header = document.querySelector('.top-header');
     if (!header || document.getElementById('mobileLogo')) return;
 
-    const logo = document.createElement('span');
+    const logo = document.createElement('img');
     logo.id = 'mobileLogo';
     logo.className = 'mobile-logo';
-    logo.textContent = 'VLINKPAY';
+    logo.src = 'https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg';
+    logo.alt = 'VLINKPAY';
 
     // Insert after hamburger button (second child position)
     const hamburger = document.getElementById('hamburgerBtn');

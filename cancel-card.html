@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cancel Card - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="global.css">
+  <script src="global.js" defer></script>
+  <style>
+    /* ── Lucide icon reset ─────────────────────────── */
+    i[data-lucide], svg[data-lucide] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    /* ── Table card ────────────────────────────────── */
+    .table-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 0 2px 0 rgb(145 158 171 / 0.2), 0 12px 24px -4px rgb(145 158 171 / 0.12);
+      overflow: hidden;
+      margin-top: 8px;
+      border: 1px solid var(--grey-200, #f4f6f8);
+    }
+
+    /* ── Toolbar ───────────────────────────────────── */
+    .table-toolbar {
+      padding: 16px 24px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      border-bottom: 1px dashed var(--grey-200, #f0f2f5);
+    }
+
+    .toolbar-left {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex: 1;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* Search */
+    .search-wrap {
+      position: relative;
+      width: 280px;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 40px;
+      padding: 0 12px 0 38px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #212b36;
+      outline: none;
+      transition: border-color 0.2s;
+      background: #fff;
+    }
+
+    .search-input:focus { border-color: #212b36; }
+
+    .search-icon-wrap {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #637381;
+      pointer-events: none;
+      display: flex;
+    }
+
+    /* Status filter */
+    .filter-select-wrap {
+      position: relative;
+    }
+
+    .filter-select {
+      height: 40px;
+      padding: 0 32px 0 12px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #212b36;
+      outline: none;
+      appearance: none;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .filter-select:focus { border-color: #212b36; }
+
+    .filter-select-chevron {
+      position: absolute;
+      right: 9px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #637381;
+      display: flex;
+    }
+
+    /* Result count */
+    .result-count {
+      font-size: 13px;
+      color: #637381;
+      white-space: nowrap;
+    }
+
+    /* ── Table ─────────────────────────────────────── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th {
+      background: #f4f6f8;
+      padding: 11px 16px;
+      text-align: left;
+      font-size: 12px;
+      color: #637381;
+      font-weight: 600;
+      text-transform: uppercase;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+    }
+
+    .data-table td {
+      padding: 13px 16px;
+      border-top: 1px dashed rgba(145,158,171,0.24);
+      font-size: 14px;
+      color: #212b36;
+      white-space: nowrap;
+    }
+
+    .data-table tbody tr:hover td {
+      background: #f9fafb;
+    }
+
+    /* Product ID */
+    .td-id {
+      font-weight: 700;
+      color: #212b36;
+    }
+
+    /* Card number monospace */
+    .td-card-number {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+
+    .td-dash { font-family: inherit; }
+
+    /* Status badge */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: currentColor;
+    }
+
+    .badge-awaiting {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .badge-approved {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge-cancelled {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .badge-expired {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    /* ── Action buttons ────────────────────────────── */
+    .action-btns {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .action-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    /* Delete button */
+    .action-btn-delete {
+      background: rgba(255, 86, 48, 0.08);
+      color: #ff5630;
+    }
+
+    .action-btn-delete:hover {
+      background: rgba(255, 86, 48, 0.18);
+    }
+
+    /* View button */
+    .action-btn-view {
+      background: rgba(0, 167, 111, 0.08);
+      color: #00a76f;
+    }
+
+    .action-btn-view:hover {
+      background: rgba(0, 167, 111, 0.18);
+    }
+
+    /* ── Empty state ───────────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 56px 24px;
+      color: #637381;
+    }
+
+    .empty-icon {
+      width: 56px;
+      height: 56px;
+      background: #f4f6f8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      color: #9ca3af;
+    }
+
+    .empty-state h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #212b36;
+      margin-bottom: 6px;
+    }
+
+    .empty-state p {
+      font-size: 14px;
+      color: #637381;
+    }
+
+    /* ── Pagination ────────────────────────────────── */
+    .pagination-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      border-top: 1px dashed rgba(145,158,171,0.24);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .pagination-info {
+      font-size: 13px;
+      color: #637381;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .page-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: 1px solid #dfe3e8;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: #212b36;
+      transition: 0.15s;
+    }
+
+    .page-btn:hover:not(:disabled) { background: #f4f6f8; }
+    .page-btn.active { background: #212b36; color: #fff; border-color: #212b36; }
+    .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── Mobile card view ──────────────────────────── */
+    .mobile-list { display: none; }
+
+    .mobile-card {
+      background: #fff;
+      border: 1px solid #f0f2f5;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 10px;
+    }
+
+    .mobile-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .mobile-card-id {
+      font-size: 14px;
+      font-weight: 700;
+      color: #212b36;
+    }
+
+    .mobile-card-name {
+      font-size: 13px;
+      color: #637381;
+      margin-top: 2px;
+    }
+
+    .mobile-card-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+      border-bottom: 1px dashed rgba(145,158,171,0.16);
+      font-size: 13px;
+    }
+
+    .mobile-card-row:last-of-type { border-bottom: none; }
+
+    .mobile-label { color: #637381; font-weight: 500; }
+    .mobile-value { color: #212b36; font-weight: 600; }
+
+    .mobile-card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .mobile-action-btn {
+      flex: 1;
+      height: 36px;
+      border-radius: 8px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .mobile-btn-delete {
+      background: rgba(255, 86, 48, 0.08);
+      color: #ff5630;
+    }
+
+    .mobile-btn-delete:hover { background: rgba(255, 86, 48, 0.18); }
+
+    .mobile-btn-view {
+      background: rgba(0, 167, 111, 0.08);
+      color: #00a76f;
+    }
+
+    .mobile-btn-view:hover { background: rgba(0, 167, 111, 0.18); }
+
+    /* ── Cancel Card Modal ─────────────────────────── */
+    .cancel-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .cancel-overlay.open {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .cancel-modal {
+      background: #fff;
+      border-radius: 16px;
+      max-width: 448px;
+      width: 100%;
+      box-shadow: 0 0 2px 0 rgb(145 158 171 / 0.2), 0 12px 24px -4px rgb(145 158 171 / 0.12);
+      overflow: hidden;
+    }
+
+    /* Header */
+    .cancel-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px;
+      border-bottom: 1px solid #f4f6f8;
+    }
+
+    .cancel-modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #161c24;
+    }
+
+    .cancel-close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid #dfe3e8;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #637381;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+
+    .cancel-close-btn:hover { background: #f4f6f8; }
+
+    /* Content */
+    .cancel-modal-body {
+      padding: 24px;
+    }
+
+    .cancel-confirm-text {
+      font-size: 14px;
+      color: #637381;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    /* Info box */
+    .cancel-info-box {
+      background: #f9fafb;
+      border: 1px solid #f4f6f8;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cancel-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cancel-info-label {
+      font-size: 13px;
+      color: #637381;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .cancel-info-value {
+      font-size: 14px;
+      color: #212b36;
+      font-weight: 600;
+      text-align: right;
+      word-break: break-word;
+    }
+
+    .cancel-info-value.mono {
+      font-family: 'Courier New', monospace;
+      letter-spacing: 0.5px;
+    }
+
+    /* Reason label */
+    .cancel-reason-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #212b36;
+      margin-bottom: 8px;
+    }
+
+    /* Reason textarea */
+    .cancel-reason-textarea {
+      width: 100%;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: #212b36;
+      font-family: inherit;
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+
+    .cancel-reason-textarea:focus { border-color: #212b36; }
+    .cancel-reason-textarea::placeholder { color: #9ca3af; }
+
+    /* Footer */
+    .cancel-modal-footer {
+      display: flex;
+      gap: 12px;
+      padding: 24px;
+      border-top: 1px solid #f4f6f8;
+    }
+
+    .btn-modal-close {
+      flex: 1;
+      height: 44px;
+      border-radius: 8px;
+      border: 1px solid #dfe3e8;
+      background: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      color: #212b36;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-modal-close:hover { background: #f4f6f8; }
+
+    .btn-modal-cancel-card {
+      flex: 1;
+      height: 44px;
+      border-radius: 8px;
+      border: none;
+      background: #ff5630;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-modal-cancel-card:hover { background: #d63f1f; }
+
+    /* ── Responsive ────────────────────────────────── */
+    @media (max-width: 767px) {
+      .data-table-wrap { display: none; }
+      .mobile-list { display: block; }
+
+      .table-toolbar { padding: 12px 16px; }
+
+      .search-wrap { width: 100%; }
+
+      .toolbar-left { width: 100%; }
+
+      .cancel-modal {
+        max-width: 100%;
+        border-radius: 20px 20px 0 0;
+        margin: 0;
+      }
+
+      .cancel-overlay {
+        align-items: flex-end;
+        padding: 0;
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .search-wrap { width: 220px; }
+    }
+  </style>
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-content">
+      <div class="logo">
+        <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLINKPAY" class="sidebar-logo" />
+      </div>
+
+      <div class="user-card">
+        <div class="avatar">
+          <i data-lucide="user" style="width:20px;height:20px;"></i>
+        </div>
+        <div class="user-info">
+          <div style="font-weight:600;font-size:14px;color:var(--grey-900);">Carlota Monteiro</div>
+          <div style="font-size:13px;color:var(--grey-600);">Admin</div>
+        </div>
+      </div>
+
+      <div class="nav-section-title">OVERVIEW</div>
+
+      <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
+        <div class="nav-icon"><i data-lucide="home" style="width:24px;height:24px;"></i></div>
+        <span>Homepage</span>
+      </a>
+
+      <a href="dashboard.html" class="nav-item">
+        <div class="nav-icon"><i data-lucide="layout-dashboard" style="width:24px;height:24px;"></i></div>
+        <span>Dashboard</span>
+      </a>
+
+      <div class="nav-section-title">GIFT CARD CENTER</div>
+
+      <a href="#" class="nav-item parent-active">
+        <div class="nav-icon"><i data-lucide="folder-open" style="width:24px;height:24px;"></i></div>
+        <span>Gift & Voucher Management</span>
+        <i data-lucide="chevron-down" style="margin-left:auto;width:16px;height:16px;"></i>
+      </a>
+
+      <div class="submenu">
+        <a href="my-purchase.html" class="sub-item"><span class="dot"></span>My Purchase</a>
+        <a href="#" class="sub-item"><span class="dot"></span>Merchant Map</a>
+        <a href="product-list.html" class="sub-item"><span class="dot"></span>Product Management</a>
+        <a href="digital-gifts-management.html" class="sub-item"><span class="dot"></span>VlinkPay Store</a>
+        <a href="cancelled-cards.html" class="sub-item active"><span class="dot"></span>Cancelled Cards</a>
+      </div>
+
+      <a href="crypto-card-list.html" class="nav-item">
+        <div class="nav-icon"><i data-lucide="wallet" style="width:24px;height:24px;"></i></div>
+        <span>Crypto Card Management</span>
+      </a>
+
+      <a href="marketing-tools.html" class="nav-item">
+        <div class="nav-icon"><i data-lucide="bar-chart-2" style="width:24px;height:24px;"></i></div>
+        <span>Marketing Tools</span>
+      </a>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><i data-lucide="credit-card" style="width:24px;height:24px;"></i></div>
+        <span>Payment Acceptance</span>
+        <i data-lucide="chevron-down" style="margin-left:auto;width:16px;height:16px;"></i>
+      </a>
+      <div class="submenu">
+        <a href="gift-card-payment.html" class="sub-item"><span class="dot"></span>Pay with Gift Card</a>
+        <a href="crypto-payment.html" class="sub-item"><span class="dot"></span>Pay with Crypto</a>
+      </div>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><i data-lucide="settings" style="width:24px;height:24px;"></i></div>
+        <span>Settings</span>
+        <i data-lucide="chevron-down" style="margin-left:auto;width:16px;height:16px;"></i>
+      </a>
+      <div class="submenu">
+        <a href="merchant-payment-setup.html" class="sub-item"><span class="dot"></span>Merchant Payment Setup</a>
+        <a href="benefits-setup.html" class="sub-item"><span class="dot"></span>Benefits Setup</a>
+      </div>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><i data-lucide="bar-chart" style="width:24px;height:24px;"></i></div>
+        <span>Report</span>
+        <i data-lucide="chevron-down" style="margin-left:auto;width:16px;height:16px;"></i>
+      </a>
+      <div class="submenu">
+        <a href="sales-order-list.html" class="sub-item"><span class="dot"></span>Sales Orders</a>
+        <a href="card-transaction-history-merchant.html" class="sub-item"><span class="dot"></span>Card Transaction History</a>
+        <a href="membership-report.html" class="sub-item"><span class="dot"></span>Membership Report</a>
+      </div>
+
+      <div class="nav-section-title">APPS</div>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><i data-lucide="bell" style="width:24px;height:24px;"></i></div>
+        <span>Notifications</span>
+        <span class="badge-outlined">32+</span>
+      </a>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><i data-lucide="message-circle" style="width:24px;height:24px;"></i></div>
+        <span>AI Assistant</span>
+      </a>
+    </div>
+  </aside>
+
+  <header class="top-header">
+    <div class="header-info">Jan 14, 2026 10:05:53 AM (UTC)</div>
+    <div class="header-icons">
+      <div class="header-icon-btn">
+        <i data-lucide="settings" style="width:24px;height:24px;"></i>
+      </div>
+      <div class="user-avatar-mini">
+        <i data-lucide="user-circle" style="width:32px;height:32px;"></i>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-header">
+      <h1 class="page-title">Cancel Card</h1>
+      <div class="breadcrumbs">
+        <a href="#">Gift & Voucher Management</a>
+        <span class="breadcrumbs-dot"></span>
+        <span style="color:var(--grey-900);font-weight:500;">Cancel Card</span>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <!-- Toolbar -->
+      <div class="table-toolbar">
+        <div class="toolbar-left">
+          <!-- Search -->
+          <div class="search-wrap">
+            <span class="search-icon-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
+            <input type="text" class="search-input" id="searchInput" placeholder="Product ID / Name / Card Number" oninput="renderTable()">
+          </div>
+
+          <!-- Status filter -->
+          <div class="filter-select-wrap">
+            <select class="filter-select" id="statusFilter" onchange="renderTable()">
+              <option value="">All Statuses</option>
+              <option value="AWAITING APPROVAL" selected>Awaiting Approval</option>
+              <option value="APPROVED">Approved</option>
+              <option value="CANCELLED">Cancelled</option>
+              <option value="EXPIRED">Expired</option>
+            </select>
+            <span class="filter-select-chevron">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </div>
+
+          <span class="result-count" id="resultCount"></span>
+        </div>
+      </div>
+
+      <!-- Desktop table -->
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Product ID</th>
+              <th>Product Name</th>
+              <th>Card Number</th>
+              <th>Category</th>
+              <th>Issue Mode</th>
+              <th>Product Status</th>
+              <th>Created Date</th>
+              <th style="text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+        <div id="emptyState" class="empty-state" style="display:none;">
+          <div class="empty-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </div>
+          <h3>No products found</h3>
+          <p>Try adjusting your search or filter criteria.</p>
+        </div>
+      </div>
+
+      <!-- Mobile list -->
+      <div class="mobile-list" id="mobileList"></div>
+
+      <!-- Pagination -->
+      <div class="pagination-bar" id="paginationBar">
+        <div class="pagination-info" id="paginationInfo"></div>
+        <div class="pagination-controls" id="paginationControls"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ══════════════════════════════════
+       CANCEL CARD MODAL
+  ══════════════════════════════════ -->
+  <div class="cancel-overlay" id="cancelOverlay" onclick="handleOverlayClick(event)">
+    <div class="cancel-modal" onclick="event.stopPropagation()">
+
+      <!-- Header -->
+      <div class="cancel-modal-header">
+        <span class="cancel-modal-title">Cancel Card</span>
+        <button class="cancel-close-btn" onclick="closeModal()" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="cancel-modal-body">
+        <p class="cancel-confirm-text">Are you sure you want to cancel this card?</p>
+
+        <!-- Card info box -->
+        <div class="cancel-info-box">
+          <div class="cancel-info-row">
+            <span class="cancel-info-label">Card Number:</span>
+            <span class="cancel-info-value" id="modalCardNumber">&mdash;</span>
+          </div>
+          <div class="cancel-info-row">
+            <span class="cancel-info-label">Package Name:</span>
+            <span class="cancel-info-value" id="modalPackageName"></span>
+          </div>
+        </div>
+
+        <!-- Reason textarea -->
+        <label class="cancel-reason-label" for="cancelReasonInput">Reason for Cancellation</label>
+        <textarea
+          id="cancelReasonInput"
+          class="cancel-reason-textarea"
+          rows="4"
+          placeholder="Please provide a reason for cancelling this card..."
+        ></textarea>
+      </div>
+
+      <!-- Footer -->
+      <div class="cancel-modal-footer">
+        <button class="btn-modal-close" onclick="closeModal()">Close</button>
+        <button class="btn-modal-cancel-card" onclick="submitCancel()">Cancel Card</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ══════════════════════════════════════════════
+       MOCK DATA
+    ══════════════════════════════════════════════ */
+    const products = [
+      {
+        id: '#PRD-10255', name: 'E-Gift Card', category: 'E-Gift card',
+        issueMode: 'VLINKPAY Platform', productStatus: 'AWAITING APPROVAL',
+        cardNumber: '—', createdDate: '2024-06-15', detailUrl: 'gift-card-details.html'
+      },
+      {
+        id: '#PRD-10258', name: 'E-Gift Card', category: 'E-Gift card',
+        issueMode: 'VLINKPAY Platform', productStatus: 'AWAITING APPROVAL',
+        cardNumber: '—', createdDate: '2024-05-01', detailUrl: 'gift-card-details.html'
+      },
+      {
+        id: '#PRD-10264', name: 'Promo Voucher', category: 'E-Voucher',
+        issueMode: 'VLINKPAY Platform', productStatus: 'AWAITING APPROVAL',
+        cardNumber: '—', createdDate: '2026-01-10', detailUrl: '#'
+      },
+      {
+        id: '#PRD-10265', name: 'Holiday Gift Card', category: 'Gift card',
+        issueMode: 'VLINKPAY Platform', productStatus: 'AWAITING APPROVAL',
+        cardNumber: '8888 **** **** 3456', createdDate: '2026-01-12', detailUrl: 'gift-card-details.html'
+      },
+      {
+        id: '#PRD-10256', name: 'E-Gift Card', category: 'E-Gift card',
+        issueMode: 'VLINKPAY Platform', productStatus: 'APPROVED',
+        cardNumber: '—', createdDate: '2024-06-16', detailUrl: 'gift-card-details.html'
+      },
+      {
+        id: '#PRD-10257', name: 'E-Voucher', category: 'E-Voucher',
+        issueMode: 'VLINKPAY Platform', productStatus: 'APPROVED',
+        cardNumber: '—', createdDate: '2024-01-10', detailUrl: 'voucher-details.html'
+      },
+      {
+        id: '#PRD-10259', name: 'Digital Gift Card', category: 'Gift card',
+        issueMode: 'Store', productStatus: 'APPROVED',
+        cardNumber: '8888 **** **** 3456', createdDate: '2024-07-10', detailUrl: 'issue-digital-details.html'
+      },
+      {
+        id: '#PRD-10262', name: 'Crypto Card', category: 'Crypto Card',
+        issueMode: 'Store', productStatus: 'EXPIRED',
+        cardNumber: '7777 **** **** 1234', createdDate: '2024-01-01', detailUrl: '#'
+      },
+      {
+        id: '#PRD-10263', name: 'Promotion Gift Card', category: 'Promotion',
+        issueMode: 'VLINKPAY Platform', productStatus: 'CANCELLED',
+        cardNumber: '—', createdDate: '2024-03-01', detailUrl: '#'
+      }
+    ];
+
+    /* ══════════════════════════════════════════════
+       STATE
+    ══════════════════════════════════════════════ */
+    let selectedCard = null;  // { cardNumber, packageName }
+    let cancelReason = '';
+    let currentPage = 1;
+    const rowsPerPage = 10;
+
+    /* ══════════════════════════════════════════════
+       FILTER / SEARCH
+    ══════════════════════════════════════════════ */
+    function getFiltered() {
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      const status = document.getElementById('statusFilter').value;
+
+      return products.filter(p => {
+        const matchSearch = !q ||
+          p.id.toLowerCase().includes(q) ||
+          p.name.toLowerCase().includes(q) ||
+          p.cardNumber.toLowerCase().includes(q);
+        const matchStatus = !status || p.productStatus === status;
+        return matchSearch && matchStatus;
+      });
+    }
+
+    /* ══════════════════════════════════════════════
+       STATUS BADGE
+    ══════════════════════════════════════════════ */
+    function statusBadge(status) {
+      const map = {
+        'AWAITING APPROVAL': { cls: 'badge-awaiting', label: 'Awaiting Approval' },
+        'APPROVED':          { cls: 'badge-approved',  label: 'Approved' },
+        'CANCELLED':         { cls: 'badge-cancelled', label: 'Cancelled' },
+        'EXPIRED':           { cls: 'badge-expired',   label: 'Expired' },
+      };
+      const { cls, label } = map[status] || { cls: 'badge-expired', label: status };
+      return `<span class="status-badge ${cls}"><span class="status-dot"></span>${label}</span>`;
+    }
+
+    /* ══════════════════════════════════════════════
+       INLINE SVG ICONS
+    ══════════════════════════════════════════════ */
+    const IC = {
+      trash2: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>`,
+      eye:    `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`,
+      trash2sm: `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>`,
+      eyesm:  `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`,
+    };
+
+    /* ══════════════════════════════════════════════
+       RENDER TABLE
+    ══════════════════════════════════════════════ */
+    function renderTable() {
+      currentPage = 1;
+      render();
+    }
+
+    function render() {
+      const filtered = getFiltered();
+      const total = filtered.length;
+      const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
+      currentPage = Math.min(currentPage, totalPages);
+
+      const start = (currentPage - 1) * rowsPerPage;
+      const pageData = filtered.slice(start, start + rowsPerPage);
+
+      // Result count
+      document.getElementById('resultCount').textContent =
+        total === 1 ? '1 result' : `${total} results`;
+
+      // ── Desktop table ──
+      const tbody = document.getElementById('tableBody');
+      const empty = document.getElementById('emptyState');
+
+      if (pageData.length === 0) {
+        tbody.innerHTML = '';
+        empty.style.display = 'block';
+      } else {
+        empty.style.display = 'none';
+        tbody.innerHTML = pageData.map(p => {
+          const isAwaiting = p.productStatus === 'AWAITING APPROVAL';
+          const cardNumDisplay = p.cardNumber === '—'
+            ? `<span class="td-dash">—</span>`
+            : `<span class="td-card-number">${p.cardNumber}</span>`;
+
+          const deleteBtn = isAwaiting
+            ? `<button class="action-btn action-btn-delete" title="Delete" onclick="openModal('${p.id}','${escapeJs(p.cardNumber)}','${escapeJs(p.name)}')">${IC.trash2}</button>`
+            : '';
+
+          return `<tr>
+            <td class="td-id">${p.id}</td>
+            <td>${p.name}</td>
+            <td>${cardNumDisplay}</td>
+            <td>${p.category}</td>
+            <td>${p.issueMode}</td>
+            <td>${statusBadge(p.productStatus)}</td>
+            <td>${p.createdDate}</td>
+            <td style="text-align:right;">
+              <div class="action-btns" style="justify-content:flex-end;">
+                ${deleteBtn}
+                <a href="${p.detailUrl}" class="action-btn action-btn-view" title="View">${IC.eye}</a>
+              </div>
+            </td>
+          </tr>`;
+        }).join('');
+      }
+
+      // ── Mobile list ──
+      const mobileList = document.getElementById('mobileList');
+      if (pageData.length === 0) {
+        mobileList.innerHTML = '';
+      } else {
+        mobileList.innerHTML = '<div style="padding: 12px 16px;">' +
+          pageData.map(p => {
+            const isAwaiting = p.productStatus === 'AWAITING APPROVAL';
+            const deleteBtn = isAwaiting
+              ? `<button class="mobile-action-btn mobile-btn-delete" onclick="openModal('${p.id}','${escapeJs(p.cardNumber)}','${escapeJs(p.name)}')">${IC.trash2sm} Delete</button>`
+              : '';
+
+            return `<div class="mobile-card">
+              <div class="mobile-card-header">
+                <div>
+                  <div class="mobile-card-id">${p.id}</div>
+                  <div class="mobile-card-name">${p.name}</div>
+                </div>
+                ${statusBadge(p.productStatus)}
+              </div>
+              <div class="mobile-card-row">
+                <span class="mobile-label">Card Number</span>
+                <span class="mobile-value${p.cardNumber !== '—' ? ' td-card-number' : ''}">${p.cardNumber}</span>
+              </div>
+              <div class="mobile-card-row">
+                <span class="mobile-label">Category</span>
+                <span class="mobile-value">${p.category}</span>
+              </div>
+              <div class="mobile-card-row">
+                <span class="mobile-label">Created Date</span>
+                <span class="mobile-value">${p.createdDate}</span>
+              </div>
+              <div class="mobile-card-actions">
+                ${deleteBtn}
+                <a href="${p.detailUrl}" class="mobile-action-btn mobile-btn-view">${IC.eyesm} View</a>
+              </div>
+            </div>`;
+          }).join('') +
+          '</div>';
+      }
+
+      // ── Pagination ──
+      document.getElementById('paginationInfo').textContent =
+        total === 0 ? '' : `Showing ${start + 1}–${Math.min(start + rowsPerPage, total)} of ${total}`;
+
+      const controls = document.getElementById('paginationControls');
+      if (totalPages <= 1) {
+        controls.innerHTML = '';
+      } else {
+        let html = `<button class="page-btn" onclick="prevPage()" ${currentPage === 1 ? 'disabled' : ''}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>`;
+
+        for (let i = 1; i <= totalPages; i++) {
+          html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
+        }
+
+        html += `<button class="page-btn" onclick="nextPage()" ${currentPage === totalPages ? 'disabled' : ''}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>`;
+
+        controls.innerHTML = html;
+      }
+    }
+
+    /* ══════════════════════════════════════════════
+       PAGINATION
+    ══════════════════════════════════════════════ */
+    function goPage(n) { currentPage = n; render(); }
+    function prevPage() { if (currentPage > 1) { currentPage--; render(); } }
+    function nextPage() {
+      const total = getFiltered().length;
+      if (currentPage < Math.ceil(total / rowsPerPage)) { currentPage++; render(); }
+    }
+
+    /* ══════════════════════════════════════════════
+       MODAL — OPEN
+    ══════════════════════════════════════════════ */
+    function openModal(productId, cardNumber, packageName) {
+      selectedCard = { cardNumber, packageName };
+      cancelReason = '';
+      document.getElementById('cancelReasonInput').value = '';
+
+      // Populate info box
+      const cardNumEl = document.getElementById('modalCardNumber');
+      cardNumEl.textContent = cardNumber;
+      if (cardNumber !== '—') {
+        cardNumEl.classList.add('mono');
+      } else {
+        cardNumEl.classList.remove('mono');
+      }
+
+      document.getElementById('modalPackageName').textContent = packageName;
+
+      // Open overlay
+      document.getElementById('cancelOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    /* ══════════════════════════════════════════════
+       MODAL — CLOSE
+    ══════════════════════════════════════════════ */
+    function closeModal() {
+      document.getElementById('cancelOverlay').classList.remove('open');
+      document.getElementById('cancelReasonInput').value = '';
+      document.body.style.overflow = '';
+      selectedCard = null;
+      cancelReason = '';
+    }
+
+    function handleOverlayClick(event) {
+      if (event.target === document.getElementById('cancelOverlay')) {
+        closeModal();
+      }
+    }
+
+    /* ══════════════════════════════════════════════
+       MODAL — SUBMIT
+    ══════════════════════════════════════════════ */
+    function submitCancel() {
+      cancelReason = document.getElementById('cancelReasonInput').value.trim();
+
+      // TODO: Implement cancel card API call
+      // POST /api/products/{productId}/cancel
+      // Body: { cardNumber, packageName, reason, cancelledBy, cancelledAt }
+      console.log('Cancelling card:', selectedCard, 'Reason:', cancelReason);
+
+      closeModal();
+    }
+
+    /* ══════════════════════════════════════════════
+       ESC KEY
+    ══════════════════════════════════════════════ */
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    /* ══════════════════════════════════════════════
+       UTILS
+    ══════════════════════════════════════════════ */
+    function escapeJs(str) {
+      return (str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+
+    /* ══════════════════════════════════════════════
+       INIT
+    ══════════════════════════════════════════════ */
+    document.addEventListener('DOMContentLoaded', function () {
+      lucide.createIcons();
+      render();
+    });
+  </script>
+</body>
+
+</html>

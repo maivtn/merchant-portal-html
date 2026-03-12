@@ -68,8 +68,13 @@ body {
   margin-bottom: 32px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding-left: 12px;
+  padding-left: 4px;
+}
+.sidebar-logo {
+  height: 44px;
+  width: auto;
+  display: block;
+  object-fit: contain;
 }
 .user-card {
   background: var(--grey-200);
@@ -498,14 +503,45 @@ body {
   opacity: 1;
 }
 
+/* ── Date Field ──────────────────────────────────── */
 .date-field {
   width: 180px;
 }
 .date-field .field-input {
   padding-right: 40px;
+  cursor: pointer;
 }
-.date-field iconify-icon {
+.date-field .field-input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.date-field .field-container > iconify-icon,
+.date-field .field-container > svg,
+.date-field .field-container > i[data-lucide] {
+  position: absolute;
   right: 12px;
+  color: var(--grey-500);
+  pointer-events: none;
+}
+
+/* ── Search Field ────────────────────────────────── */
+.search-field {
+  width: 280px;
+}
+.search-field .field-input {
+  padding-left: 40px;
+}
+.search-field .field-container > iconify-icon,
+.search-field .field-container > svg,
+.search-field .field-container > i[data-lucide] {
+  position: absolute;
+  left: 12px;
+  color: var(--grey-500);
+  pointer-events: none;
 }
 
 .term-section {
@@ -573,4 +609,207 @@ body {
   font-weight: 700;
   color: var(--grey-500);
   text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE LOGO (injected by global.js, visible only on mobile)
+═══════════════════════════════════════════════════════ */
+.mobile-logo {
+  display: none;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--grey-900);
+  letter-spacing: -0.5px;
+  flex: 1;
+}
+
+/* ═══════════════════════════════════════════════════════
+   HAMBURGER BUTTON (visible only on mobile)
+═══════════════════════════════════════════════════════ */
+.hamburger-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--grey-600);
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+  padding: 0;
+}
+.hamburger-btn:hover {
+  background: var(--grey-200);
+  color: var(--grey-900);
+}
+
+/* ═══════════════════════════════════════════════════════
+   SIDEBAR OVERLAY (mobile backdrop)
+═══════════════════════════════════════════════════════ */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 28, 36, 0.5);
+  z-index: 150;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.sidebar-overlay.open {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE — MOBILE + TABLET  (< 1024px)
+   Sidebar ẩn, hamburger hiện trên cả mobile lẫn iPad
+═══════════════════════════════════════════════════════ */
+@media (max-width: 1023px) {
+
+  /* Sidebar: hidden off-screen by default */
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 200;
+    box-shadow: none;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.16);
+  }
+
+  /* Prevent body scroll when sidebar open */
+  body.sidebar-open {
+    overflow: hidden;
+  }
+
+  /* Header: full width, hamburger on left, icons on right */
+  .top-header {
+    left: 0;
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .hamburger-btn {
+    display: flex;
+  }
+  .mobile-logo {
+    display: block;
+  }
+
+  /* Main content: no sidebar offset */
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE — MOBILE ONLY  (< 768px)
+═══════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  .top-header {
+    padding: 0 12px 0 4px;
+  }
+  .header-info {
+    display: none;
+  }
+  .main {
+    padding: 16px;
+    padding-top: 88px;
+  }
+  .page-header {
+    margin-bottom: 20px;
+  }
+  .page-title {
+    font-size: 18px;
+  }
+  .breadcrumbs {
+    display: none;
+  }
+
+  /* ── Toolbar: stack filter items vertically ── */
+  .table-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 12px 16px !important;
+    gap: 10px !important;
+  }
+  .field-root {
+    flex-shrink: 1 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  .search-field,
+  .date-field,
+  .select-field {
+    width: 100% !important;
+  }
+  .field-input,
+  .filter-input {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* ── Tabs: horizontal scroll to prevent squeeze ── */
+  .tabs-header,
+  .cancelled-tabs-header,
+  .nav-tabs {
+    gap: 16px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tabs-header::-webkit-scrollbar,
+  .cancelled-tabs-header::-webkit-scrollbar { display: none; }
+  .tab-item,
+  .nav-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── Pagination: compact ── */
+  .pagination {
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 12px 16px;
+    justify-content: center;
+  }
+  .pagination-info {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE — TABLET ONLY  (768px – 1023px)
+═══════════════════════════════════════════════════════ */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .top-header {
+    padding: 0 20px;
+  }
+  .main {
+    padding: 24px;
+    padding-top: 88px;
+  }
+
+  /* ── Toolbar: allow items to wrap on tablet ── */
+  .table-toolbar {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+  .field-root {
+    flex-shrink: 1 !important;
+    min-width: 0 !important;
+  }
 }

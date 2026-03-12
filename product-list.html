@@ -4,257 +4,466 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Product list - VLINKPAY</title>
+  <title>Product Management - VLINKPAY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="global.css">
-  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="global.js" defer></script>
   <style>
-    .table-card {
+    /* Lucide icon sizing helpers — target both <i> before and <svg> after createIcons() */
+    i[data-lucide],
+    svg[data-lucide] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+    /* Positioned chevrons & calendar icons inside filter inputs */
+    .filter-chevron,
+    .search-icon,
+    .pagination-select-chevron {
+      display: block;
+      line-height: 0;
+    }
+  </style>
+  <style>
+    /* ===== Platform Tabs ===== */
+    .platform-tabs {
+      display: flex;
+      gap: 40px;
+      border-bottom: 1px solid #f4f6f8;
       background: #fff;
-      border-radius: 16px;
-      box-shadow: var(--shadow-z1);
-      overflow: hidden;
-      margin-top: 24px;
-      border: 1px solid var(--grey-200);
+      padding: 0 24px;
+    }
+    @media (max-width: 767px) {
+      .platform-tabs { gap: 24px; padding: 0 16px; }
+    }
+    .platform-tab {
+      padding: 16px 0;
+      font-size: 14px;
+      font-weight: 500;
+      color: #637381;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.15s;
+      white-space: nowrap;
+      border: none;
+      background: none;
+      font-family: inherit;
+    }
+    @media (max-width: 767px) { .platform-tab { font-size: 12px; } }
+    .platform-tab:hover { color: #212b36; }
+    .platform-tab.active { color: #161c24; font-weight: 700; }
+    .platform-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #161c24;
     }
 
-    .table-toolbar {
-      padding: 24px;
+    /* ===== Category Chips ===== */
+    .category-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 14px 24px;
+      border-bottom: 1px dashed rgba(145,158,171,0.24);
+    }
+    @media (max-width: 767px) { .category-chips { padding: 12px 16px; } }
+    .category-chip {
+      border: 1px solid #dfe3e8;
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #637381;
+      cursor: pointer;
+      background: white;
+      transition: all 0.15s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    @media (max-width: 767px) { .category-chip { font-size: 12px; } }
+    .category-chip:hover { border-color: #919eab; color: #212b36; }
+    .category-chip.active {
+      background: #00a76f;
+      border-color: #00a76f;
+      color: white;
+      font-weight: 700;
+    }
+
+    /* ===== Filter Bar Desktop ===== */
+    .filter-bar {
       display: flex;
       gap: 16px;
-      border-bottom: 1px dashed var(--grey-200);
+      padding: 14px 24px;
+      border-bottom: 1px dashed rgba(145,158,171,0.24);
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+    .filter-bar-mobile {
+      display: none;
+      gap: 10px;
+      padding: 12px 16px;
+      border-bottom: 1px dashed rgba(145,158,171,0.24);
       align-items: center;
     }
+    @media (max-width: 767px) {
+      .filter-bar { display: none; }
+      .filter-bar-mobile { display: flex; }
+    }
+    .filter-field { display: flex; flex-direction: column; gap: 5px; }
+    .filter-label { font-size: 12px; font-weight: 600; color: #637381; }
+    .filter-input-wrap { position: relative; }
+    .filter-select {
+      padding: 7px 32px 7px 10px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #212b36;
+      outline: none;
+      transition: border-color 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+      background: white;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+    .filter-select:focus { border-color: #212b36; }
+    .filter-select { min-width: 160px; }
+    .filter-chevron {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #637381;
+      pointer-events: none;
+    }
+    .search-wrapper { display: flex; flex-direction: column; gap: 5px; }
+    .search-input-wrap { position: relative; }
+    .search-input {
+      padding: 7px 34px 7px 10px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #212b36;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 260px;
+      box-sizing: border-box;
+    }
+    @media (max-width: 767px) { .search-input { width: 100%; } }
+    .search-input::placeholder { color: #919eab; }
+    .search-input:focus { border-color: #212b36; box-shadow: 0 0 0 2px rgba(33,43,54,0.08); }
+    .search-icon {
+      position: absolute;
+      right: 9px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #919eab;
+      pointer-events: none;
+    }
+    .filter-btn-mobile {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      color: #212b36;
+      background: white;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
 
-    .table-container {
+    /* ===== Data Table ===== */
+    .table-wrapper {
       width: 100%;
       overflow-x: auto;
     }
-
-    table {
+    @media (max-width: 767px) { .table-wrapper { display: none; } }
+    .data-table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 1800px;
+      min-width: 2060px;
     }
-
-    th {
-      background: var(--grey-100);
-      padding: 16px 16px;
+    .data-table th {
+      background: #f4f6f8;
+      padding: 12px 16px;
       text-align: left;
-      font-size: 14px;
-      color: var(--grey-600);
-      font-weight: 600;
-      text-transform: capitalize;
-      white-space: nowrap;
-    }
-
-    td {
-      padding: 16px 16px;
-      border-top: 1px dashed var(--grey-300);
-      font-size: 14px;
-      color: var(--grey-800);
-      white-space: nowrap;
-    }
-
-    .status-pill {
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-weight: 500;
       font-size: 12px;
+      color: #637381;
+      font-weight: 600;
       text-transform: uppercase;
       white-space: nowrap;
+      letter-spacing: 0.3px;
+      user-select: none;
+    }
+    .data-table th.sortable { cursor: pointer; }
+    .data-table th.sortable:hover .th-text { color: #212b36; }
+    .th-inner { display: flex; align-items: center; gap: 4px; }
+    .th-text { color: #637381; }
+    .th-sort-icon { width: 14px; height: 14px; flex-shrink: 0; color: #00a76f; display: none; }
+    .th-sort-icon.visible { display: inline-flex; }
+    .col-issue-mode { display: none; }
+    .data-table td {
+      padding: 13px 16px;
+      border-top: 1px dashed rgba(145,158,171,0.24);
+      font-size: 14px;
+      color: #212b36;
+      white-space: nowrap;
+    }
+    .data-table tbody tr:hover { background: #f9fafb; transition: background 0.15s; }
+    .td-id { color: #637381; font-size: 13px; }
+    .td-name { color: #212b36; font-size: 14px; font-weight: 600; }
+    .td-amount { color: #007b55; font-weight: 700; }
+    .td-secondary { color: #637381; }
+    .td-dash { color: #919eab; }
+    .td-mono { font-family: monospace; }
+    .td-email { color: #637381; }
+
+    /* ===== Badges ===== */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.4px;
+      white-space: nowrap;
+    }
+    .badge-awaiting  { background: #fff8e2; color: #7a4f01; }
+    .badge-approved  { background: #d8fbde; color: #007b55; }
+    .badge-cancelled { background: #ffe4de; color: #b71d18; }
+    .badge-expired   { background: #f4f6f8; color: #637381; }
+    .badge-active    { background: #d8fbde; color: #007b55; }
+    .badge-inactive  { background: #f4f6f8; color: #637381; }
+    .badge-locked    { background: #fff0e6; color: #b76e00; }
+    .badge-unlocked  { background: #d8fbde; color: #007b55; }
+
+    /* ===== Action Buttons ===== */
+    .action-btns { display: flex; gap: 6px; align-items: center; justify-content: center; }
+    .action-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s, color 0.15s;
+      font-family: inherit;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+    .action-btn-delete { background: rgba(255,86,48,0.08); color: #ff5630; }
+    .action-btn-delete:hover { background: rgba(255,86,48,0.18); }
+    .action-btn-view { background: rgba(0,167,111,0.08); color: #00a76f; }
+    .action-btn-view:hover { background: rgba(0,167,111,0.18); }
+    .action-btn-copy { background: rgba(145,158,171,0.08); color: #637381; }
+    .action-btn-copy:hover { background: rgba(0,167,111,0.08); color: #00a76f; }
+
+    /* ===== Empty State ===== */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: #919eab;
+      font-size: 14px;
     }
 
-    .status-unused {
-      background: #E9FCD4;
-      color: #118D57;
+    /* ===== Mobile Cards ===== */
+    .mobile-cards { display: none; flex-direction: column; gap: 12px; padding: 16px; }
+    @media (max-width: 767px) { .mobile-cards { display: flex; } }
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #f4f6f8;
+      box-shadow: 0 1px 4px rgba(145,158,171,0.12);
+      padding: 16px;
     }
+    .product-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px; }
+    .product-card-name { font-size: 15px; font-weight: 700; color: #212b36; }
+    .product-card-amount { font-size: 15px; font-weight: 700; color: #007b55; white-space: nowrap; margin-left: 8px; }
+    .product-card-id { font-size: 12px; color: #637381; margin-bottom: 12px; }
+    .product-card-info { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; margin-bottom: 12px; }
+    .info-field-label { font-size: 11px; color: #919eab; font-weight: 500; margin-bottom: 2px; }
+    .info-field-value { font-size: 13px; color: #212b36; }
+    .product-card-actions {
+      display: flex;
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(145,158,171,0.24);
+    }
+    .mobile-action-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s;
+      text-decoration: none;
+    }
+    .mobile-btn-view { background: rgba(0,167,111,0.08); color: #00a76f; }
+    .mobile-btn-view:hover { background: rgba(0,167,111,0.18); }
+    .mobile-btn-delete { background: rgba(255,86,48,0.08); color: #ff5630; }
+    .mobile-btn-delete:hover { background: rgba(255,86,48,0.18); }
 
-    .status-used {
-      background: #E9EDF1;
+    /* ===== Pagination ===== */
+    .pagination-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 16px;
+      padding: 12px 24px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 767px) { .pagination-bar { padding: 10px 16px; gap: 10px; } }
+    .pagination-rows-label { font-size: 13px; color: #637381; display: flex; align-items: center; gap: 8px; }
+    .pagination-select-wrap { position: relative; display: inline-block; }
+    .pagination-select {
+      border: 1px solid #dfe3e8;
+      border-radius: 6px;
+      padding: 4px 28px 4px 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #212b36;
+      appearance: none;
+      -webkit-appearance: none;
+      background: white;
+      cursor: pointer;
+      outline: none;
+    }
+    .pagination-select-chevron {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
       color: #637381;
     }
-
-    .status-active {
-      background: #E9FCD4;
-      color: #118D57;
+    .pagination-info { font-size: 13px; color: #637381; }
+    .pagination-arrows { display: flex; gap: 4px; }
+    .pagination-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #637381;
+      transition: background 0.15s;
     }
+    .pagination-btn:hover:not(:disabled) { background: #f4f6f8; }
+    .pagination-btn:disabled { color: #c4cdd5; cursor: not-allowed; }
 
-    .status-expired {
-      background: #FFE4DE;
-      color: #B71D18;
-    }
-
-    .status-awaiting {
-      background: #FFF5CC;
-      color: #B76E00;
-    }
-
-    .status-issued {
-      background: #CAFDF5;
-      color: #006C9C;
-    }
-
-    .status-locked {
-      background: #FFE4DE;
-      color: #B71D18;
-    }
-
-    .status-unlocked {
-      background: #E9FCD4;
-      color: #118D57;
-    }
-
-    .status-inactive {
-      background: #FFE4DE;
-      color: #B71D18;
-    }
-
-    .amount-text {
-      font-weight: 700;
-      color: var(--primary-main);
-      white-space: nowrap;
-    }
-
-    .campaign-link {
-      color: var(--second-main);
-      text-decoration: none;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-
-    .campaign-link:hover {
-      text-decoration: underline;
-    }
-
-    /* Modal Styles */
-    .modal-overlay {
+    /* ===== Cancel Card Modal ===== */
+    .overlay {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(22,28,36,0.3);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .overlay.open { display: flex; }
+    .cancel-modal {
+      background: white;
       width: 100%;
-      height: 100%;
-      background: rgba(22, 28, 36, 0.8);
+      max-width: 28rem;
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      box-shadow: 0 24px 48px -8px rgba(0,0,0,0.16);
+      margin: 16px;
+    }
+    .cancel-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .cancel-modal-title { font-size: 18px; font-weight: 700; color: #161c24; }
+    .modal-close-btn {
+      background: none; border: none; cursor: pointer;
+      color: #637381; transition: color 0.15s; padding: 2px; display: flex;
+    }
+    .modal-close-btn:hover { color: #212b36; }
+    .cancel-confirm-text { font-size: 14px; color: #637381; margin-bottom: 16px; }
+    .card-info-box { background: #f9fafb; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; }
+    .card-info-row { display: flex; justify-content: space-between; align-items: center; }
+    .card-info-row + .card-info-row { margin-top: 8px; }
+    .card-info-label { font-size: 12px; color: #919eab; }
+    .card-info-value { font-size: 13px; font-weight: 600; color: #212b36; }
+    .card-info-value.mono { font-family: monospace; }
+    .reason-label { display: block; font-size: 13px; font-weight: 600; color: #212b36; margin-bottom: 6px; }
+    .reason-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #212b36;
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.15s;
+      box-sizing: border-box;
+    }
+    .reason-textarea::placeholder { color: #919eab; }
+    .reason-textarea:focus { border-color: #212b36; }
+    .cancel-modal-footer { display: flex; gap: 12px; margin-top: 20px; }
+    .cancel-modal-footer button {
+      flex: 1; height: 44px; border-radius: 8px;
+      font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; border: none; transition: background 0.15s;
+    }
+    .btn-modal-cancel { border: 1px solid #dfe3e8 !important; background: white; color: #212b36; }
+    .btn-modal-cancel:hover { background: #f4f6f8; }
+    .btn-confirm-cancel { background: #ff5630; color: white; }
+    .btn-confirm-cancel:hover { background: #b71d18; }
+
+    /* ===== Issue Card Modal ===== */
+    .issue-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(22,28,36,0.8);
       display: none;
       align-items: center;
       justify-content: center;
       z-index: 1000;
       backdrop-filter: blur(4px);
     }
-
-    .modal-content {
+    .issue-overlay.open { display: flex; }
+    .issue-modal-content {
       background: #fff;
       width: 100%;
       max-width: 560px;
       border-radius: 24px;
       padding: 40px;
       position: relative;
-      box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.16);
+      box-shadow: 0 24px 48px -8px rgba(0,0,0,0.16);
+      margin: 16px;
     }
-
-    .modal-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      cursor: pointer;
-      color: var(--grey-500);
-      transition: 0.2s;
-    }
-
-    .modal-close:hover {
-      color: var(--grey-900);
-    }
-
-    .modal-header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .modal-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--grey-900);
-      margin-bottom: 8px;
-    }
-
-    .modal-description {
-      font-size: 16px;
-      color: var(--grey-600);
-    }
-
-    .modal-input-group {
-      margin-bottom: 24px;
-    }
-
-    .modal-label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--grey-700);
-      margin-bottom: 8px;
-    }
-
-    .modal-textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1.5px solid var(--grey-300);
-      border-radius: 8px;
-      font-size: 14px;
-      color: var(--grey-900);
-      outline: none;
-      transition: 0.2s;
-      font-family: inherit;
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    .modal-textarea:focus {
-      border-color: var(--grey-900);
-      border-width: 2px;
-      padding: 11px 15px;
-    }
-
-    .modal-footer {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin-top: 24px;
-    }
-
-    .modal-btn {
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      transition: 0.2s;
-      border: none;
-      min-width: 100px;
-    }
-
-    .modal-btn-cancel {
-      background: transparent;
-      color: var(--grey-700);
-      border: 1px solid var(--grey-300);
-    }
-
-    .modal-btn-cancel:hover {
-      background: var(--grey-100);
-    }
-
-    .modal-btn-danger {
-      background: #FF5630;
-      color: #fff;
-      box-shadow: 0 8px 16px 0 rgba(255, 86, 48, 0.24);
-    }
-
-    .modal-btn-danger:hover {
-      background: #B71D18;
-    }
-
+    .issue-modal-header { text-align: center; margin-bottom: 32px; }
+    .issue-modal-title { font-size: 24px; font-weight: 700; color: var(--grey-900); margin-bottom: 8px; }
+    .issue-modal-desc { font-size: 16px; color: var(--grey-600); }
     .option-card {
       display: flex;
       align-items: center;
@@ -268,159 +477,197 @@
       position: relative;
       text-decoration: none;
     }
-
     .option-card:hover {
       border-color: var(--primary-main);
-      box-shadow: 0 8px 16px 0 rgba(145, 158, 171, 0.16);
+      box-shadow: 0 8px 16px 0 rgba(145,158,171,0.16);
       transform: translateY(-2px);
     }
-
+    .option-card:last-child { margin-bottom: 0; }
     .option-icon-box {
-      width: 64px;
-      height: 64px;
+      width: 64px; height: 64px;
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-
-    .icon-digital {
-      background: rgba(0, 167, 111, 0.16);
-      color: #00A76F;
-    }
-
-    .icon-quick {
-      background: rgba(0, 184, 217, 0.16);
-      color: #00B8D9;
-    }
-
-    .icon-advanced {
-      background: rgba(255, 171, 0, 0.16);
-      color: #FFAB00;
-    }
-
-    .icon-crypto {
-      background: rgba(142, 51, 255, 0.16);
-      color: #8E33FF;
-    }
-
-    .option-info {
-      flex: 1;
-    }
-
-    .option-name {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--grey-900);
-      margin-bottom: 4px;
-    }
-
-    .option-desc {
-      font-size: 14px;
-      color: var(--grey-600);
-      line-height: 1.5;
-    }
-
+    .icon-digital  { background: rgba(0,167,111,0.16); color: #00A76F; }
+    .icon-quick    { background: rgba(0,184,217,0.16); color: #00B8D9; }
+    .icon-advanced { background: rgba(255,171,0,0.16); color: #FFAB00; }
+    .icon-crypto   { background: rgba(142,51,255,0.16); color: #8E33FF; }
+    .option-info { flex: 1; }
+    .option-name { font-size: 18px; font-weight: 700; color: var(--grey-900); margin-bottom: 4px; }
+    .option-desc { font-size: 14px; color: var(--grey-600); line-height: 1.5; }
     .badge-recommended {
-      position: absolute;
-      top: 0;
-      right: 0;
-      background: #919EAB;
+      position: absolute; top: 0; right: 0;
+      background: #A29B01;
       color: #fff;
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 12px; font-weight: 700;
       padding: 8px 16px;
       border-radius: 0 20px 0 20px;
-      background: #919EAB;
     }
 
-    .badge-recommended.active {
-      background: #A29B01;
+    /* ===== Issue Card Modal — Responsive ===== */
+
+    /* iPad (768px – 1023px) */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .issue-modal-content {
+        max-width: 460px;
+        padding: 32px;
+      }
+      .issue-modal-title { font-size: 20px; }
+      .issue-modal-desc  { font-size: 15px; }
+      .option-card       { padding: 18px; gap: 16px; border-radius: 16px; }
+      .option-icon-box   { width: 52px; height: 52px; }
+      .option-name       { font-size: 16px; }
     }
 
-    /* Quick product name filter */
-    .filter-chip-group {
-      display: inline-flex;
-      align-items: center;
-      background: #F4F6F8;
-      border-radius: 999px;
-      padding: 2px;
-      gap: 4px;
+    /* Mobile (< 768px) — bottom sheet */
+    @media (max-width: 767px) {
+      .issue-overlay {
+        align-items: flex-end;
+        padding: 0;
+      }
+      .issue-modal-content {
+        max-width: 100%;
+        width: 100%;
+        border-radius: 20px 20px 0 0;
+        padding: 20px 16px 32px;
+        margin: 0;
+        max-height: 92vh;
+        overflow-y: auto;
+        /* drag handle */
+      }
+      .issue-modal-content::before {
+        content: '';
+        display: block;
+        width: 36px;
+        height: 4px;
+        background: #dfe3e8;
+        border-radius: 2px;
+        margin: 0 auto 20px;
+      }
+      .modal-close-btn[onclick="closeIssueCardModal()"] {
+        top: 16px;
+        right: 16px;
+      }
+      .issue-modal-header { margin-bottom: 16px; }
+      .issue-modal-title  { font-size: 17px; }
+      .issue-modal-desc   { font-size: 13px; }
+      .option-card        { padding: 12px 14px; gap: 12px; border-radius: 14px; margin-bottom: 10px; }
+      .option-icon-box    { width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0; }
+      .option-icon-box i,
+      .option-icon-box svg { width: 22px !important; height: 22px !important; }
+      .option-name        { font-size: 14px; margin-bottom: 2px; }
+      .option-desc        { font-size: 12px; line-height: 1.4; }
+      .badge-recommended  { font-size: 10px; padding: 5px 10px; }
     }
 
-    .filter-chip {
-      border: none;
-      border-radius: 999px;
-      padding: 6px 14px;
-      background: transparent;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--grey-700);
-      cursor: pointer;
-      transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-      white-space: nowrap;
+    /* ===== Mobile Filter Modal ===== */
+    .mobile-filter-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.3);
+      display: none;
+      align-items: flex-end;
+      z-index: 1001;
     }
-
-    .filter-chip:hover {
-      background: rgba(25, 118, 210, 0.08);
-    }
-
-    .filter-chip.active {
-      background: var(--primary-main);
-      color: #fff;
-      box-shadow: 0 8px 16px rgba(25, 118, 210, 0.36);
-    }
-
-    /* Tabs Styling */
-    .tabs-container {
-      margin-top: 0;
-    }
-
-    .tabs-header {
-      display: flex;
-      gap: 40px;
-      border-bottom: 1px solid var(--grey-200);
-      margin-bottom: 0;
-      background: #fff;
-      padding: 0 24px;
+    .mobile-filter-overlay.open { display: flex; }
+    .mobile-filter-sheet {
+      background: white;
+      width: 100%;
       border-radius: 16px 16px 0 0;
+      padding: 24px 20px;
+      max-height: 85vh;
+      overflow-y: auto;
     }
+    .mobile-filter-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .mobile-filter-title { font-size: 16px; font-weight: 700; color: #212b36; }
+    .mobile-filter-field { margin-bottom: 16px; }
+    .mobile-filter-label { display: block; font-size: 12px; font-weight: 600; color: #637381; margin-bottom: 6px; }
+    .mobile-filter-select {
+      width: 100%;
+      padding: 10px 32px 10px 12px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #212b36;
+      appearance: none;
+      -webkit-appearance: none;
+      background: white;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .mobile-filter-date {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #212b36;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .mobile-date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .mobile-filter-footer { display: flex; gap: 12px; margin-top: 24px; }
+    .mobile-filter-footer button {
+      flex: 1; height: 44px;
+      border-radius: 8px; font-size: 14px; font-weight: 600;
+      font-family: inherit; cursor: pointer; border: none; transition: background 0.15s;
+    }
+    .btn-filter-reset { border: 1px solid #dfe3e8 !important; background: white; color: #212b36; }
+    .btn-filter-reset:hover { background: #f4f6f8; }
+    .btn-filter-apply { background: #00a76f; color: white; }
+    .btn-filter-apply:hover { background: #007a56; }
 
-    .tab-item {
-      padding: 16px 0;
+    /* ===== Issue Card Button ===== */
+    .btn-issue-desktop {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: #00a76f;
+      color: white;
+      border: none;
+      border-radius: 8px;
       font-size: 14px;
       font-weight: 600;
-      color: var(--grey-600);
+      font-family: inherit;
       cursor: pointer;
-      position: relative;
-      transition: 0.2s;
+      transition: background 0.15s;
+      white-space: nowrap;
     }
-
-    .tab-item:hover {
-      color: var(--grey-900);
-    }
-
-    .tab-item.active {
-      color: var(--grey-900);
-    }
-
-    .tab-item.active::after {
-      content: "";
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: var(--grey-900);
-    }
-
-    .tab-content {
+    .btn-issue-desktop:hover { background: #007a56; }
+    .btn-issue-mobile {
       display: none;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: #00a76f;
+      color: white;
+      border: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s;
+      flex-shrink: 0;
     }
+    .btn-issue-mobile:hover { background: #007a56; }
+    @media (max-width: 767px) {
+      .btn-issue-desktop { display: none; }
+      .btn-issue-mobile { display: flex; }
+    }
+    .breadcrumb-desktop { display: block; }
+    @media (max-width: 767px) { .breadcrumb-desktop { display: none; } }
+    .page-title-text { font-size: 22px; font-weight: 700; color: #161c24; margin: 0; }
+    @media (max-width: 767px) { .page-title-text { font-size: 18px; } }
 
-    .tab-content.active {
-      display: block;
+    /* ===== Main Card ===== */
+    .main-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 0 2px 0 rgb(145 158 171 / 0.2), 0 12px 24px -4px rgb(145 158 171 / 0.12);
+      overflow: hidden;
+      margin-top: 24px;
     }
   </style>
 </head>
@@ -429,12 +676,12 @@
   <aside class="sidebar">
     <div class="sidebar-content">
       <div class="logo">
-        <span style="font-weight: 800; font-size: 22px; color: #212B36; letter-spacing: -0.5px;">VLINKPAY</span>
+        <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLINKPAY" class="sidebar-logo" />
       </div>
 
       <div class="user-card">
         <div class="avatar">
-          <iconify-icon icon="solar:user-bold" width="24"></iconify-icon>
+          <i data-lucide="user" style="width:24px;height:24px;"></i>
         </div>
         <div class="user-info">
           <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Carlota Monteiro</div>
@@ -445,83 +692,81 @@
       <div class="nav-section-title">OVERVIEW</div>
 
       <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
-        <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
+        <div class="nav-icon"><i data-lucide="home" style="width:24px;height:24px;"></i></div>
         <span>Homepage</span>
       </a>
 
       <a href="dashboard.html" class="nav-item">
-        <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
+        <div class="nav-icon"><i data-lucide="layout-dashboard" style="width:24px;height:24px;"></i></div>
         <span>Dashboard</span>
       </a>
 
       <div class="nav-section-title">GIFT CARD CENTER</div>
 
       <a href="#" class="nav-item parent-active">
-        <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone" width="26"></iconify-icon></div>
+        <div class="nav-icon"><i data-lucide="folder-open" style="width:24px;height:24px;"></i></div>
         <span>Gift & Voucher Management</span>
-        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+        <i data-lucide="chevron-down" style="margin-left:auto;width:16px;height:16px;"></i>
       </a>
 
       <div class="submenu">
-        <a href="my-purchase.html" class="sub-item "><span class="dot"></span>My Purchase</a>
-        <a href="#" class="sub-item "><span class="dot"></span>Merchant Map</a>
+        <a href="my-purchase.html" class="sub-item"><span class="dot"></span>My Purchase</a>
+        <a href="#" class="sub-item"><span class="dot"></span>Merchant Map</a>
         <a href="product-list.html" class="sub-item active"><span class="dot"></span>Product Management</a>
-
-        <a href="digital-gifts-management.html" class="sub-item "><span class="dot"></span>VlinkPay Store</a>
+        <a href="digital-gifts-management.html" class="sub-item"><span class="dot"></span>VlinkPay Store</a>
       </div>
 
       <a href="crypto-card-list.html" class="nav-item">
-        <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
+        <div class="nav-icon"><i data-lucide="wallet" style="width:24px;height:24px;"></i></div>
         <span>Crypto Card Management</span>
       </a>
 
       <a href="marketing-tools.html" class="nav-item">
-        <div class="nav-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon></div>
+        <div class="nav-icon"><i data-lucide="bar-chart-2" style="width:24px;height:24px;"></i></div>
         <span>Marketing Tools</span>
       </a>
-      <a href="#" class="nav-item ">
-        <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone" width="24"></iconify-icon>
-        </div>
+
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><i data-lucide="credit-card" style="width:24px;height:24px;"></i></div>
         <span>Payment Acceptance</span>
-        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+        <i data-lucide="chevron-down" style="margin-left:auto;width:16px;height:16px;"></i>
       </a>
       <div class="submenu">
-        <a href="gift-card-payment-box.html" class="sub-item "><span class="dot"></span>Pay with Gift Card</a>
-        <a href="crypto-payment-box.html" class="sub-item "><span class="dot"></span>Pay with Crypto</a>
+        <a href="gift-card-payment.html" class="sub-item"><span class="dot"></span>Pay with Gift Card</a>
+        <a href="crypto-payment.html" class="sub-item"><span class="dot"></span>Pay with Crypto</a>
       </div>
 
-      <a href="#" class="nav-item ">
-        <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><i data-lucide="settings" style="width:24px;height:24px;"></i></div>
         <span>Settings</span>
-        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+        <i data-lucide="chevron-down" style="margin-left:auto;width:16px;height:16px;"></i>
       </a>
       <div class="submenu">
-        <a href="merchant-payment-setup.html" class="sub-item "><span class="dot"></span>Merchant Payment Setup</a>
-        <a href="benefits-setup.html" class="sub-item "><span class="dot"></span>Benefits Setup</a>
+        <a href="merchant-payment-setup.html" class="sub-item"><span class="dot"></span>Merchant Payment Setup</a>
+        <a href="benefits-setup.html" class="sub-item"><span class="dot"></span>Benefits Setup</a>
       </div>
 
-      <a href="#" class="nav-item ">
-        <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><i data-lucide="bar-chart" style="width:24px;height:24px;"></i></div>
         <span>Report</span>
-        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
+        <i data-lucide="chevron-down" style="margin-left:auto;width:16px;height:16px;"></i>
       </a>
       <div class="submenu">
-        <a href="sales-order-list.html" class="sub-item "><span class="dot"></span>Sales Orders</a>
-        <a href="card-transaction-history-merchant.html" class="sub-item "><span class="dot"></span>Card Transaction
-          History</a>
+        <a href="sales-order-list.html" class="sub-item"><span class="dot"></span>Sales Orders</a>
+        <a href="card-transaction-history-merchant.html" class="sub-item"><span class="dot"></span>Card Transaction History</a>
         <a href="membership-report.html" class="sub-item"><span class="dot"></span>Membership Report</a>
       </div>
 
       <div class="nav-section-title">APPS</div>
 
       <a href="#" class="nav-item">
-        <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
+        <div class="nav-icon"><i data-lucide="mail" style="width:24px;height:24px;"></i></div>
         <span>Notifications</span>
         <span class="badge-outlined">32+</span>
       </a>
 
       <a href="#" class="nav-item">
-        <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon></div>
+        <div class="nav-icon"><i data-lucide="message-circle" style="width:24px;height:24px;"></i></div>
         <span>AI Assistant</span>
       </a>
     </div>
@@ -531,663 +776,250 @@
     <div class="header-info">Jan 14, 2026 10:05:53 AM (UTC)</div>
     <div class="header-icons">
       <div class="header-icon-btn">
-        <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
+        <i data-lucide="settings" style="width:24px;height:24px;"></i>
       </div>
       <div class="user-avatar-mini">
-        <iconify-icon icon="solar:user-circle-bold" width="32"></iconify-icon>
+        <i data-lucide="circle-user" style="width:32px;height:32px;"></i>
       </div>
     </div>
   </header>
 
   <main class="main">
+    <!-- Page Header -->
     <div class="page-header">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h1 class="page-title" style="margin: 0;">Product list</h1>
-        <button onclick="openModal()" class="btn-contained">
-          <iconify-icon icon="mingcute:add-line" width="20"></iconify-icon>
-          Issue card
+        <h1 class="page-title-text">Product Management</h1>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button class="btn-issue-desktop" onclick="openIssueCardModal()">
+            <i data-lucide="plus" style="width:20px;height:20px;"></i>
+            Issue Card
+          </button>
+          <button class="btn-issue-mobile" onclick="openIssueCardModal()">
+            <i data-lucide="plus" style="width:20px;height:20px;"></i>
+          </button>
+        </div>
+      </div>
+      <div class="breadcrumb-desktop" style="margin-top: 6px;">
+        <span style="font-size: 13px; color: #637381;">Gift &amp; Voucher</span>
+        <span style="font-size: 13px; color: #637381; margin: 0 6px;">•</span>
+        <span style="font-size: 13px; color: #637381;">Product Management</span>
+      </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="main-card">
+
+      <!-- Platform Tabs -->
+      <div class="platform-tabs">
+        <button class="platform-tab active" data-platform="all" onclick="setPlatformTab('all', this)">All</button>
+        <button class="platform-tab" data-platform="VLINKPAY Platform" onclick="setPlatformTab('VLINKPAY Platform', this)">VLINKPAY Platform</button>
+        <button class="platform-tab" data-platform="Store" onclick="setPlatformTab('Store', this)">Store</button>
+      </div>
+
+      <!-- Category Chips -->
+      <div class="category-chips" id="categoryChips">
+        <!-- chips injected by JS based on active platform tab -->
+      </div>
+
+      <!-- Desktop Filter Bar -->
+      <div class="filter-bar">
+        <div class="search-wrapper">
+          <label class="filter-label">Search</label>
+          <div class="search-input-wrap">
+            <input type="text" id="searchInput" class="search-input" placeholder="Product ID / Name / Card Number" oninput="applyFilters()">
+            <i data-lucide="search" class="search-icon" style="width:16px;height:16px;"></i>
+          </div>
+        </div>
+
+        <div class="filter-field">
+          <label class="filter-label">Product Status</label>
+          <div class="filter-input-wrap">
+            <select id="statusFilter" class="filter-select" onchange="applyFilters()">
+              <option value="">All Statuses</option>
+              <option value="AWAITING APPROVAL">AWAITING APPROVAL</option>
+              <option value="APPROVED">APPROVED</option>
+              <option value="CANCELLED">CANCELLED</option>
+              <option value="EXPIRED">EXPIRED</option>
+            </select>
+            <i data-lucide="chevron-down" class="filter-chevron" style="width:16px;height:16px;"></i>
+          </div>
+        </div>
+
+        <div class="filter-field">
+          <label class="filter-label">Card Locked</label>
+          <div class="filter-input-wrap">
+            <select id="lockedFilter" class="filter-select" onchange="applyFilters()">
+              <option value="">All Statuses</option>
+              <option value="LOCKED">LOCKED</option>
+              <option value="UNLOCKED">UNLOCKED</option>
+            </select>
+            <i data-lucide="chevron-down" class="filter-chevron" style="width:16px;height:16px;"></i>
+          </div>
+        </div>
+
+        <div class="field-root date-field">
+          <label class="field-label">Created From</label>
+          <div class="field-container">
+            <input type="date" id="fromDate" class="field-input" onchange="applyFilters()">
+            <i data-lucide="calendar" style="width:16px;height:16px;"></i>
+          </div>
+        </div>
+
+        <div class="field-root date-field">
+          <label class="field-label">To</label>
+          <div class="field-container">
+            <input type="date" id="toDate" class="field-input" onchange="applyFilters()">
+            <i data-lucide="calendar" style="width:16px;height:16px;"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Filter Bar -->
+      <div class="filter-bar-mobile">
+        <div style="flex: 1; position: relative;">
+          <input type="text" id="searchInputMobile" class="search-input" style="width:100%;" placeholder="Product ID / Name / Card Number" oninput="syncMobileSearch()">
+          <i data-lucide="search" class="search-icon" style="width:16px;height:16px;"></i>
+        </div>
+        <button class="filter-btn-mobile" onclick="openMobileFilter()">
+          <i data-lucide="sliders-horizontal" style="width:16px;height:16px;"></i>
+          Filter
         </button>
       </div>
-      <div class="breadcrumbs" style="margin-top: 8px;">
-        <a href="#">Dashboard</a>
-        <span class="breadcrumbs-dot"></span>
-        <a href="#">Gift & Voucher Management</a>
-        <span class="breadcrumbs-dot"></span>
-        <span style="color: var(--grey-900); font-weight: 500;">Product Management</span>
+
+      <!-- Desktop Table -->
+      <div class="table-wrapper" id="tableWrapper">
+        <table class="data-table" id="dataTable">
+          <thead>
+            <tr>
+              <th class="col-issue-mode" style="min-width:160px;">Issue Mode</th>
+              <th class="sortable" style="min-width:120px;" onclick="sortTable('id')">
+                <div class="th-inner"><span class="th-text">Product ID</span><span id="sort-id" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:160px;" onclick="sortTable('name')">
+                <div class="th-inner"><span class="th-text">Product Name</span><span id="sort-name" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:170px;" onclick="sortTable('productStatus')">
+                <div class="th-inner"><span class="th-text">Product Status</span><span id="sort-productStatus" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:110px;" onclick="sortTable('salesStatus')">
+                <div class="th-inner"><span class="th-text">Sales Status</span><span id="sort-salesStatus" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:170px;" onclick="sortTable('cardNumber')">
+                <div class="th-inner"><span class="th-text">Card Number</span><span id="sort-cardNumber" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:110px;" onclick="sortTable('cardLocked')">
+                <div class="th-inner"><span class="th-text">Card Locked</span><span id="sort-cardLocked" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:100px;" onclick="sortTable('amount')">
+                <div class="th-inner"><span class="th-text">Amount</span><span id="sort-amount" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:70px;" onclick="sortTable('sold')">
+                <div class="th-inner"><span class="th-text">Sold</span><span id="sort-sold" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:80px;" onclick="sortTable('available')">
+                <div class="th-inner"><span class="th-text">Available</span><span id="sort-available" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:120px;" onclick="sortTable('expiryTime')">
+                <div class="th-inner"><span class="th-text">Expiry Time</span><span id="sort-expiryTime" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:150px;" onclick="sortTable('campaignName')">
+                <div class="th-inner"><span class="th-text">Campaign Name</span><span id="sort-campaignName" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:190px;" onclick="sortTable('redeemBy')">
+                <div class="th-inner"><span class="th-text">Redeem By</span><span id="sort-redeemBy" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:175px;" onclick="sortTable('lastRedeem')">
+                <div class="th-inner"><span class="th-text">Last Redeem</span><span id="sort-lastRedeem" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:120px;" onclick="sortTable('createdDate')">
+                <div class="th-inner"><span class="th-text">Created Date</span><span id="sort-createdDate" class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable" style="min-width:120px;" onclick="sortTable('lastUpdated')">
+                <div class="th-inner"><span class="th-text">Last Updated</span><span id="sort-lastUpdated" class="th-sort-icon"></span></div>
+              </th>
+              <th style="min-width:90px; text-align:center;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+        <div id="tableEmpty" class="empty-state" style="display:none;">No products found</div>
       </div>
-    </div>
 
-    <div class="tabs-container">
-      <div class="tabs-header">
-        <div class="tab-item active" onclick="switchTab('all')">All</div>
-        <div class="tab-item" onclick="switchTab('quick-mode')">VLINKPAY Platform</div>
-        <div class="tab-item" onclick="switchTab('issue-digital')">Store</div>
-      </div>
+      <!-- Mobile Cards -->
+      <div id="mobileCards" class="mobile-cards"></div>
+      <div id="mobileEmpty" class="empty-state" style="display:none;">No products found</div>
 
-      <!-- Tab: All (combined view of both tables) -->
-      <div id="all" class="tab-content active">
-        <div class="table-card">
-          <div class="table-toolbar" style="gap: 12px; padding: 20px 24px; flex-wrap: wrap;">
-            <div style="display: flex; align-items: center; gap: 12px; width: 100%; margin-bottom: 24px;">
-              <span class="field-label" style="margin-bottom: 0;">Product Name:</span>
-              <div class="filter-chip-group" id="allProductNameFilter">
-                <button type="button" class="filter-chip active" data-filter="all">All</button>
-                <button type="button" class="filter-chip" data-filter="gift-card">Gift card</button>
-                <button type="button" class="filter-chip" data-filter="promotion">Promotion</button>
-                <button type="button" class="filter-chip" data-filter="discount">Discount</button>
-                <button type="button" class="filter-chip" data-filter="membership">Membership</button>
-                <button type="button" class="filter-chip" data-filter="prepaid">Prepaid card</button>
-                <button type="button" class="filter-chip" data-filter="e-gift-card">E-Gift card</button>
-                <button type="button" class="filter-chip" data-filter="voucher">Voucher</button>
-              </div>
-            </div>
-            <div class="field-root" style="width: 240px;">
-              <div class="field-container">
-                <input type="text" id="allSearchInput" class="field-input" placeholder="Search products...">
-                <iconify-icon icon="solar:magnifer-linear" class="field-chevron"
-                  style="color: var(--grey-500); cursor: default;"></iconify-icon>
-              </div>
-            </div>
-
-            <div class="field-root" style="width: 180px;">
-              <label class="field-label">Product Status</label>
-              <div class="field-container">
-                <select class="field-input field-select" id="allProductStatus">
-                  <option value="">All Statuses</option>
-                  <option value="approved">Approved</option>
-                  <option value="awaiting">Awaiting Approval</option>
-                  <option value="issued">Issued</option>
-                </select>
-                <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
-              </div>
-            </div>
-
-            <div class="field-root" style="width: 180px;">
-              <label class="field-label">Card Locked</label>
-              <div class="field-container">
-                <select class="field-input field-select" id="allCardLocked">
-                  <option value="">All Statuses</option>
-                  <option value="locked">Locked</option>
-                  <option value="unlocked">Unlocked</option>
-                </select>
-                <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
-              </div>
-            </div>
-          </div>
-
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Issue Mode</th>
-                  <th>Product ID</th>
-                  <th>Product Name</th>
-                  <th>Product Status</th>
-                  <th>Sales Status</th>
-                  <th>Card Number</th>
-                  <th>Card Locked</th>
-                  <th class="text-right">Amount</th>
-                  <th class="text-right">Sold</th>
-                  <th class="text-right">Available</th>
-                  <th>Expiry Time</th>
-                  <th>Campaign Name</th>
-                  <th>Created Date</th>
-                  <th>Last Updated</th>
-                  <th style="padding-right: 24px; text-align: right;">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- From VLINKPAY Platform -->
-                <tr>
-                  <td>VLINKPAY Platform</td>
-                  <td>#PRD-10255</td>
-                  <td style="font-weight: 600;"><a href="gift-card-details.html"
-                      style="color: inherit; text-decoration: none;">E-Gift Card</a></td>
-                  <td><span class="status-pill status-awaiting">Awaiting Approval</span></td>
-                  <td><span class="status-pill status-inactive">In-active</span></td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td class="amount-text text-right">$100.00</td>
-                  <td class="text-right">120</td>
-                  <td class="text-right">80</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>Jun 15, 2024</td>
-                  <td>Jun 15, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)" onclick="openRemoveModal('#PRD-10255', 'Gift Card')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:trash-bin-minimalistic-bold"
-                        class="action-icon" style="color: #FF5630;"></iconify-icon></a>
-                    <a href="gift-card-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>VLINKPAY Platform</td>
-                  <td>#PRD-10256</td>
-                  <td style="font-weight: 600;"><a href="gift-card-details.html"
-                      style="color: inherit; text-decoration: none;">E-Gift Card</a></td>
-                  <td><span class="status-pill status-unused">Approved</span></td>
-                  <td><span class="status-pill status-inactive">In-active</span></td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td class="amount-text text-right">$500.00</td>
-                  <td class="text-right">45</td>
-                  <td class="text-right">0</td>
-                  <td>-</td>
-                  <td><a href="marketing-details.html" class="campaign-link">VIP Pre-payment</a></td>
-                  <td>Jun 16, 2024</td>
-                  <td>Jun 20, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)" onclick="copyProductLink('gift-card-details.html', '#PRD-10256')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:link-bold" class="action-icon"
-                        style="color: var(--second-main);"></iconify-icon></a>
-                    <a href="gift-card-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>VLINKPAY Platform</td>
-                  <td>#PRD-10257</td>
-                  <td style="font-weight: 600;"><a href="voucher-detail.html"
-                      style="color: inherit; text-decoration: none;">Voucher</a></td>
-                  <td><span class="status-pill status-active">Approved</span></td>
-                  <td><span class="status-pill status-active">Active</span></td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td class="amount-text text-right">$200.00</td>
-                  <td class="text-right">350</td>
-                  <td class="text-right">150</td>
-                  <td>-</td>
-                  <td><a href="marketing-details.html" class="campaign-link">Summer Glow</a></td>
-                  <td>Jan 10, 2024</td>
-                  <td>Jan 15, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)" onclick="copyProductLink('voucher-details.html', '#PRD-10257')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:link-bold" class="action-icon"
-                        style="color: var(--second-main);"></iconify-icon></a>
-                    <a href="voucher-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>VLINKPAY Platform</td>
-                  <td>#PRD-10258</td>
-                  <td style="font-weight: 600;"><a href="gift-card-details.html"
-                      style="color: inherit; text-decoration: none;">E-Gift Card</a></td>
-                  <td><span class="status-pill status-awaiting">Awaiting Approval</span></td>
-                  <td><span class="status-pill status-inactive">In-active</span></td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td class="amount-text text-right">$30.00</td>
-                  <td class="text-right">50</td>
-                  <td class="text-right">250</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>May 01, 2024</td>
-                  <td>Jul 01, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)" onclick="openRemoveModal('#PRD-10258', 'First Visit $30 Credit')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:trash-bin-minimalistic-bold"
-                        class="action-icon" style="color: #FF5630;"></iconify-icon></a>
-                    <a href="gift-card-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>VLINKPAY Platform</td>
-                  <td>#PRD-10261</td>
-                  <td style="font-weight: 600;"><a href="voucher-details.html"
-                      style="color: inherit; text-decoration: none;">Voucher</a></td>
-                  <td><span class="status-pill status-active">Approved</span></td>
-                  <td><span class="status-pill status-active">Active</span></td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td class="amount-text text-right">$75.00</td>
-                  <td class="text-right">200</td>
-                  <td class="text-right">50</td>
-                  <td>-</td>
-                  <td><a href="marketing-details.html" class="campaign-link">Summer Rewards</a></td>
-                  <td>Jul 12, 2024</td>
-                  <td>Jul 12, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)" onclick="copyProductLink('voucher-details.html', '#PRD-10261')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:link-bold" class="action-icon"
-                        style="color: var(--second-main);"></iconify-icon></a>
-                    <a href="voucher-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-
-                <!-- From Store -->
-                <tr>
-                  <td>Store</td>
-                  <td>#PRD-10259</td>
-                  <td style="font-weight: 600;"><a href="issue-digital-details.html"
-                      style="color: inherit; text-decoration: none;">Digital Gift Card</a></td>
-                  <td><span class="status-pill status-active">Approved</span></td>
-                  <td>-</td>
-                  <td>8888 **** **** 3456</td>
-                  <td><span class="status-pill status-locked">Locked</span></td>
-                  <td class="amount-text text-right">$45.00</td>
-                  <td class="text-right">-</td>
-                  <td class="text-right">-</td>
-                  <td>Nov 30, 2024</td>
-                  <td>-</td>
-                  <td>Jul 10, 2024</td>
-                  <td>Jul 10, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)" onclick="copyProductLink('issue-digital-details.html', '#PRD-10259')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:link-bold" class="action-icon"
-                        style="color: var(--second-main);"></iconify-icon></a>
-                    <a href="issue-digital-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Store</td>
-                  <td>#PRD-10260</td>
-                  <td style="font-weight: 600;"><a href="issue-digital-membership-details.html"
-                      style="color: inherit; text-decoration: none;">Membership Annual</a></td>
-                  <td><span class="status-pill status-active">Approved</span></td>
-                  <td>-</td>
-                  <td>8888 **** **** 7890</td>
-                  <td><span class="status-pill status-unlocked">Unlocked</span></td>
-                  <td class="amount-text text-right">$1,200.00</td>
-                  <td class="text-right">-</td>
-                  <td class="text-right">-</td>
-                  <td>Dec 15, 2024</td>
-                  <td>-</td>
-                  <td>Jun 20, 2024</td>
-                  <td>Jun 20, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)"
-                      onclick="copyProductLink('issue-digital-membership-details.html', '#PRD-10260')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:link-bold" class="action-icon"
-                        style="color: var(--second-main);"></iconify-icon></a>
-                    <a href="issue-digital-membership-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="pagination">
-            <div class="pagination-rows">
-              <span>Rows per page:</span>
-              <select class="pagination-select">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-              </select>
-            </div>
-            <div class="pagination-info">1–7 of 7</div>
-            <div class="pagination-arrows">
-              <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-left-fill"
-                  width="20"></iconify-icon></button>
-              <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-right-fill"
-                  width="20"></iconify-icon></button>
-            </div>
+      <!-- Pagination -->
+      <div class="pagination-bar">
+        <div class="pagination-rows-label">
+          Rows per page:
+          <div class="pagination-select-wrap">
+            <select id="rowsPerPage" class="pagination-select" onchange="setRowsPerPage()">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="25">25</option>
+            </select>
+            <i data-lucide="chevron-down" class="pagination-select-chevron" style="width:14px;height:14px;"></i>
           </div>
         </div>
-      </div>
-
-      <!-- Tab: Quick Mode -->
-      <div id="quick-mode" class="tab-content">
-        <div class="table-card">
-          <div class="table-toolbar" style="gap: 12px; padding: 20px 24px; flex-wrap: wrap;">
-            <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
-              <span class="field-label" style="margin-bottom: 0;">Product Name:</span>
-              <div class="filter-chip-group" id="productNameFilter">
-                <button type="button" class="filter-chip active" data-filter="all">All</button>
-                <button type="button" class="filter-chip" data-filter="gift">E-Gift Card</button>
-                <button type="button" class="filter-chip" data-filter="voucher">Voucher</button>
-              </div>
-            </div>
-            <div class="field-root" style="width: 240px;">
-              <div class="field-container">
-                <input type="text" class="field-input" placeholder="Search products...">
-                <iconify-icon icon="solar:magnifer-linear" class="field-chevron"
-                  style="color: var(--grey-500); cursor: default;"></iconify-icon>
-              </div>
-            </div>
-
-            <div class="field-root" style="width: 180px;">
-              <label class="field-label">Product Status</label>
-              <div class="field-container">
-                <select class="field-input field-select">
-                  <option value="">All Statuses</option>
-                  <option value="approved">Approved</option>
-                  <option value="awaiting">Awaiting Approval</option>
-                </select>
-                <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
-              </div>
-            </div>
-
-            <div class="field-root" style="width: 180px;">
-              <label class="field-label">Sales Status</label>
-              <div class="field-container">
-                <select class="field-input field-select">
-                  <option value="">All Statuses</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">In-active</option>
-                </select>
-                <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
-              </div>
-            </div>
-          </div>
-
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Product ID</th>
-                  <th>Product Name</th>
-                  <th>Product Status</th>
-                  <th>Sales Status</th>
-                  <th class="text-right">Amount</th>
-                  <th class="text-right">Sold</th>
-                  <th class="text-right">Available</th>
-                  <th>Campaign Name</th>
-                  <th>Created Date</th>
-                  <th>Last Updated</th>
-                  <th style="padding-right: 24px; text-align: right;">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>#PRD-10255</td>
-                  <td style="font-weight: 600;"><a href="gift-card-details.html"
-                      style="color: inherit; text-decoration: none;">E-Gift Card</a></td>
-                  <td><span class="status-pill status-awaiting">Awaiting Approval</span></td>
-                  <td><span class="status-pill status-inactive">In-active</span></td>
-                  <td class="amount-text text-right">$100.00</td>
-                  <td class="text-right">120</td>
-                  <td class="text-right">80</td>
-                  <td>-</td>
-                  <td>Jun 15, 2024</td>
-                  <td>Jun 15, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)" onclick="openRemoveModal('#PRD-10255', 'Gift Card')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:trash-bin-minimalistic-bold"
-                        class="action-icon" style="color: #FF5630;"></iconify-icon></a>
-                    <a href="gift-card-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>#PRD-10256</td>
-                  <td style="font-weight: 600;"><a href="gift-card-details.html"
-                      style="color: inherit; text-decoration: none;">E-Gift Card</a></td>
-                  <td><span class="status-pill status-unused">Approved</span></td>
-                  <td><span class="status-pill status-inactive">In-active</span></td>
-                  <td class="amount-text text-right">$500.00</td>
-                  <td class="text-right">45</td>
-                  <td class="text-right">0</td>
-                  <td><a href="marketing-details.html" class="campaign-link">VIP Pre-payment</a></td>
-                  <td>Jun 16, 2024</td>
-                  <td>Jun 20, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)" onclick="copyProductLink('gift-card-details.html', '#PRD-10256')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:link-bold" class="action-icon"
-                        style="color: var(--second-main);"></iconify-icon></a>
-                    <a href="gift-card-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>#PRD-10257</td>
-                  <td style="font-weight: 600;"><a href="voucher-detail.html"
-                      style="color: inherit; text-decoration: none;">Voucher</a></td>
-                  <td><span class="status-pill status-active">Approved</span></td>
-                  <td><span class="status-pill status-active">Active</span></td>
-                  <td class="amount-text text-right">$200.00</td>
-                  <td class="text-right">350</td>
-                  <td class="text-right">150</td>
-                  <td><a href="marketing-details.html" class="campaign-link">Summer Glow</a></td>
-                  <td>Jan 10, 2024</td>
-                  <td>Jan 15, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)" onclick="copyProductLink('voucher-details.html', '#PRD-10257')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:link-bold" class="action-icon"
-                        style="color: var(--second-main);"></iconify-icon></a>
-                    <a href="voucher-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>#PRD-10258</td>
-                  <td style="font-weight: 600;"><a href="gift-card-details.html"
-                      style="color: inherit; text-decoration: none;">E-Gift Card</a></td>
-                  <td><span class="status-pill status-awaiting">Awaiting Approval</span></td>
-                  <td><span class="status-pill status-inactive">In-active</span></td>
-                  <td class="amount-text text-right">$30.00</td>
-                  <td class="text-right">50</td>
-                  <td class="text-right">250</td>
-                  <td>-</td>
-                  <td>May 01, 2024</td>
-                  <td>Jul 01, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)" onclick="openRemoveModal('#PRD-10258', 'First Visit $30 Credit')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:trash-bin-minimalistic-bold"
-                        class="action-icon" style="color: #FF5630;"></iconify-icon></a>
-                    <a href="gift-card-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>#PRD-10261</td>
-                  <td style="font-weight: 600;"><a href="voucher-details.html"
-                      style="color: inherit; text-decoration: none;">Voucher</a></td>
-                  <td><span class="status-pill status-active">Approved</span></td>
-                  <td><span class="status-pill status-active">Active</span></td>
-                  <td class="amount-text text-right">$75.00</td>
-                  <td class="text-right">200</td>
-                  <td class="text-right">50</td>
-                  <td><a href="marketing-details.html" class="campaign-link">Summer Rewards</a></td>
-                  <td>Jul 12, 2024</td>
-                  <td>Jul 12, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)" onclick="copyProductLink('voucher-details.html', '#PRD-10261')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:link-bold" class="action-icon"
-                        style="color: var(--second-main);"></iconify-icon></a>
-                    <a href="voucher-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="pagination">
-            <div class="pagination-rows">
-              <span>Rows per page:</span>
-              <select class="pagination-select">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-              </select>
-            </div>
-            <div class="pagination-info">1–5 of 5</div>
-            <div class="pagination-arrows">
-              <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-left-fill"
-                  width="20"></iconify-icon></button>
-              <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-right-fill"
-                  width="20"></iconify-icon></button>
-            </div>
-          </div>
+        <div id="paginationInfo" class="pagination-info">0–0 of 0</div>
+        <div class="pagination-arrows">
+          <button id="prevBtn" class="pagination-btn" onclick="prevPage()" disabled>
+            <i data-lucide="chevron-left" style="width:20px;height:20px;"></i>
+          </button>
+          <button id="nextBtn" class="pagination-btn" onclick="nextPage()" disabled>
+            <i data-lucide="chevron-right" style="width:20px;height:20px;"></i>
+          </button>
         </div>
       </div>
-
-      <!-- Tab: Issue Digital -->
-      <div id="issue-digital" class="tab-content">
-        <div class="table-card">
-          <div class="table-toolbar">
-            <div class="field-root" style="width: 240px;">
-              <div class="field-container">
-                <input type="text" class="field-input" placeholder="Search products...">
-                <iconify-icon icon="solar:magnifer-linear" class="field-chevron"
-                  style="color: var(--grey-500); cursor: default;"></iconify-icon>
-              </div>
-            </div>
-
-            <div class="field-root" style="width: 180px;">
-              <label class="field-label">Product Status</label>
-              <div class="field-container">
-                <select class="field-input field-select">
-                  <option value="">All Statuses</option>
-                  <option value="approved">Approved</option>
-                  <option value="awaiting">Awaiting Approval</option>
-                  <option value="issued">Issued</option>
-                </select>
-                <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
-              </div>
-            </div>
-
-            <div class="field-root" style="width: 180px;">
-              <label class="field-label">Card Locked</label>
-              <div class="field-container">
-                <select class="field-input field-select">
-                  <option value="">All Statuses</option>
-                  <option value="locked">Locked</option>
-                  <option value="unlocked">Unlocked</option>
-                </select>
-                <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
-              </div>
-            </div>
-          </div>
-
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Product ID</th>
-                  <th>Product Name</th>
-                  <th>Product Status</th>
-                  <th>Card Number</th>
-                  <th>Card Locked</th>
-                  <th class="text-right">Amount</th>
-                  <th>Expiry Time</th>
-                  <th>Campaign Name</th>
-                  <th>Created Date</th>
-                  <th>Last Updated</th>
-                  <th style="padding-right: 24px; text-align: right;">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>#PRD-10259</td>
-                  <td style="font-weight: 600;"><a href="issue-digital-details.html"
-                      style="color: inherit; text-decoration: none;">Digital Gift Card</a></td>
-                  <td><span class="status-pill status-active">Approved</span></td>
-                  <td>8888 **** **** 3456</td>
-                  <td><span class="status-pill status-locked">Locked</span></td>
-                  <td class="amount-text text-right">$45.00</td>
-                  <td>Nov 30, 2024</td>
-                  <td>-</td>
-                  <td>Jul 10, 2024</td>
-                  <td>Jul 10, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)" onclick="copyProductLink('issue-digital-details.html', '#PRD-10259')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:link-bold" class="action-icon"
-                        style="color: var(--second-main);"></iconify-icon></a>
-                    <a href="issue-digital-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>#PRD-10260</td>
-                  <td style="font-weight: 600;"><a href="issue-digital-membership-details.html"
-                      style="color: inherit; text-decoration: none;">Membership Annual</a></td>
-                  <td><span class="status-pill status-active">Approved</span></td>
-                  <td>8888 **** **** 7890</td>
-                  <td><span class="status-pill status-unlocked">Unlocked</span></td>
-                  <td class="amount-text text-right">$1,200.00</td>
-                  <td>Dec 15, 2024</td>
-                  <td>-</td>
-                  <td>Jun 20, 2024</td>
-                  <td>Jun 20, 2024</td>
-                  <td style="text-align: right; padding-right: 24px;">
-                    <a href="javascript:void(0)"
-                      onclick="copyProductLink('issue-digital-membership-details.html', '#PRD-10260')"
-                      style="margin-right: 12px;"><iconify-icon icon="solar:link-bold" class="action-icon"
-                        style="color: var(--second-main);"></iconify-icon></a>
-                    <a href="issue-digital-membership-details.html"><iconify-icon icon="solar:eye-bold"
-                        class="action-icon view-icon primary"></iconify-icon></a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="pagination">
-            <div class="pagination-rows">
-              <span>Rows per page:</span>
-              <select class="pagination-select">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-              </select>
-            </div>
-            <div class="pagination-info">1–2 of 2</div>
-            <div class="pagination-arrows">
-              <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-left-fill"
-                  width="20"></iconify-icon></button>
-              <button class="pagination-btn" disabled><iconify-icon icon="eva:chevron-right-fill"
-                  width="20"></iconify-icon></button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     </div>
   </main>
 
   <!-- Cancel Card Modal -->
-  <div id="removeModal" class="modal-overlay">
-    <div class="modal-content" style="max-width: 480px;">
-      <iconify-icon icon="eva:close-fill" class="modal-close" width="24" onclick="closeRemoveModal()"></iconify-icon>
-
-      <div class="modal-header">
-        <h2 class="modal-title">Cancel Card</h2>
-        <p class="modal-description">Are you sure you want to cancel this card?</p>
+  <div id="cancelModal" class="overlay" onclick="handleOverlayClick(event, 'cancelModal')">
+    <div class="cancel-modal">
+      <div class="cancel-modal-header">
+        <span class="cancel-modal-title">Cancel Card</span>
+        <button class="modal-close-btn" onclick="closeCancelModal()">
+          <i data-lucide="x" style="width:20px;height:20px;"></i>
+        </button>
       </div>
-
-      <div style="padding: 16px; background: var(--grey-100); border-radius: 12px; margin-bottom: 24px;">
-        <div style="font-size: 13px; color: var(--grey-600); margin-bottom: 4px;">Product ID</div>
-        <div id="removeProductId" style="font-size: 14px; font-weight: 700; color: var(--grey-900);"></div>
-        <div style="font-size: 13px; color: var(--grey-600); margin-top: 8px; margin-bottom: 4px;">Product Name
+      <p class="cancel-confirm-text">Are you sure you want to cancel this card?</p>
+      <div class="card-info-box">
+        <div class="card-info-row">
+          <span class="card-info-label">Card Number</span>
+          <span id="cancelCardNumber" class="card-info-value mono"></span>
         </div>
-        <div id="removeProductName" style="font-size: 14px; font-weight: 700; color: var(--grey-900);"></div>
+        <div class="card-info-row">
+          <span class="card-info-label">Package Name</span>
+          <span id="cancelPackageName" class="card-info-value"></span>
+        </div>
       </div>
-
-      <div class="modal-input-group">
-        <label class="modal-label">Reason for Cancellation *</label>
-        <textarea id="removeReason" class="modal-textarea"
-          placeholder="Please enter the reason for cancelling this card..."></textarea>
-      </div>
-
-      <div class="modal-footer">
-        <button class="modal-btn modal-btn-cancel" onclick="closeRemoveModal()">Close</button>
-        <button class="modal-btn modal-btn-danger" onclick="confirmRemove()">Cancel Card</button>
+      <label class="reason-label">Reason for Cancellation</label>
+      <textarea id="cancelReason" class="reason-textarea" rows="4"
+        placeholder="Please provide a reason for cancelling this card..."></textarea>
+      <div class="cancel-modal-footer">
+        <button class="btn-modal-cancel" onclick="closeCancelModal()">Cancel</button>
+        <button class="btn-confirm-cancel" onclick="confirmCancel()">Confirm Cancel</button>
       </div>
     </div>
   </div>
 
-  <!-- Creation Mode Modal -->
-  <div id="modeModal" class="modal-overlay">
-    <div class="modal-content">
-      <iconify-icon icon="eva:close-fill" class="modal-close" width="24" onclick="closeModal()"></iconify-icon>
-
-      <div class="modal-header">
-        <h2 class="modal-title">Create Gifts and Vouchers</h2>
-        <p class="modal-description">Choose your creation mode to get started</p>
+  <!-- Issue Card Modal -->
+  <div id="issueCardModal" class="issue-overlay" onclick="handleOverlayClick(event, 'issueCardModal')">
+    <div class="issue-modal-content">
+      <button class="modal-close-btn" style="position:absolute;top:20px;right:20px;" onclick="closeIssueCardModal()">
+        <i data-lucide="x" style="width:24px;height:24px;"></i>
+      </button>
+      <div class="issue-modal-header">
+        <h2 class="issue-modal-title">Create Gift &amp; Voucher</h2>
+        <p class="issue-modal-desc">Choose your creation mode to get started</p>
       </div>
 
       <a href="issue-digital.html" class="option-card">
         <div class="option-icon-box icon-digital">
-          <iconify-icon icon="solar:gift-bold-duotone" width="32"></iconify-icon>
+          <i data-lucide="gift" style="width:32px;height:32px;"></i>
         </div>
         <div class="option-info">
           <div class="option-name">Issue Digital</div>
@@ -1197,7 +1029,7 @@
 
       <a href="issue-crypto-card.html" class="option-card">
         <div class="option-icon-box icon-crypto">
-          <iconify-icon icon="solar:wallet-bold-duotone" width="32"></iconify-icon>
+          <i data-lucide="wallet" style="width:32px;height:32px;"></i>
         </div>
         <div class="option-info">
           <div class="option-name">Crypto Card</div>
@@ -1206,259 +1038,614 @@
       </a>
 
       <a href="issue-card.html" class="option-card">
-        <div class="badge-recommended" style="background: #A29B12;">Recommended</div>
+        <div class="badge-recommended">Recommended</div>
         <div class="option-icon-box icon-quick">
-          <iconify-icon icon="solar:bolt-bold-duotone" width="32"></iconify-icon>
+          <i data-lucide="zap" style="width:32px;height:32px;"></i>
         </div>
         <div class="option-info">
           <div class="option-name">Quick Mode</div>
-          <div class="option-desc">Fast and simple gift creation with guided steps<br>Perfect for quick voucher and gift
-            card creation</div>
+          <div class="option-desc">Fast and simple gift creation with guided steps<br>Perfect for quick voucher and gift card creation</div>
         </div>
       </a>
 
-      <a href="issue-card.html" class="option-card" style="margin-bottom: 0;">
+      <a href="issue-card.html" class="option-card">
         <div class="option-icon-box icon-advanced">
-          <iconify-icon icon="solar:crown-minimalistic-bold-duotone" width="32"></iconify-icon>
+          <i data-lucide="crown" style="width:32px;height:32px;"></i>
         </div>
         <div class="option-info">
           <div class="option-name">Advanced Mode</div>
-          <div class="option-desc">Full customization with complete design control<br>Custom logo, advanced settings and
-            business branding</div>
+          <div class="option-desc">Full customization with complete design control<br>Custom logo, advanced settings and business branding</div>
         </div>
       </a>
     </div>
   </div>
 
+  <!-- Mobile Filter Modal -->
+  <div id="mobileFilterModal" class="mobile-filter-overlay" onclick="handleOverlayClick(event, 'mobileFilterModal')">
+    <div class="mobile-filter-sheet">
+      <div class="mobile-filter-header">
+        <span class="mobile-filter-title">Filter</span>
+        <button class="modal-close-btn" onclick="closeMobileFilter()">
+          <i data-lucide="x" style="width:20px;height:20px;"></i>
+        </button>
+      </div>
+
+      <div class="mobile-filter-field">
+        <label class="mobile-filter-label">Product Status</label>
+        <div style="position:relative;">
+          <select id="mobileStatusFilter" class="mobile-filter-select">
+            <option value="">All Statuses</option>
+            <option value="AWAITING APPROVAL">AWAITING APPROVAL</option>
+            <option value="APPROVED">APPROVED</option>
+            <option value="CANCELLED">CANCELLED</option>
+            <option value="EXPIRED">EXPIRED</option>
+          </select>
+          <i data-lucide="chevron-down" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:#637381;width:16px;height:16px;"></i>
+        </div>
+      </div>
+
+      <div class="mobile-filter-field">
+        <label class="mobile-filter-label">Card Locked</label>
+        <div style="position:relative;">
+          <select id="mobileLockedFilter" class="mobile-filter-select">
+            <option value="">All Statuses</option>
+            <option value="LOCKED">LOCKED</option>
+            <option value="UNLOCKED">UNLOCKED</option>
+          </select>
+          <i data-lucide="chevron-down" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:#637381;width:16px;height:16px;"></i>
+        </div>
+      </div>
+
+      <div class="mobile-date-row">
+        <div class="mobile-filter-field" style="margin-bottom:0;">
+          <label class="mobile-filter-label">Created From</label>
+          <input type="date" id="mobileFromDate" class="mobile-filter-date">
+        </div>
+        <div class="mobile-filter-field" style="margin-bottom:0;">
+          <label class="mobile-filter-label">To</label>
+          <input type="date" id="mobileToDate" class="mobile-filter-date">
+        </div>
+      </div>
+
+      <div class="mobile-filter-footer">
+        <button class="btn-filter-reset" onclick="resetMobileFilter()">Reset</button>
+        <button class="btn-filter-apply" onclick="applyMobileFilter()">Apply</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    let currentRemoveProductId = '';
-    let currentRemoveProductName = '';
+    // ===== Lucide inline SVGs for JS-generated content =====
+    const IC = {
+      trash2:      `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>`,
+      link2:       `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`,
+      eye:         `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
+      trash2sm:    `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>`,
+      eyesm:       `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
+      chevronUp:   `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>`,
+      chevronDown: `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`,
+    };
 
-    function openRemoveModal(productId, productName) {
-      currentRemoveProductId = productId;
-      currentRemoveProductName = productName;
-      document.getElementById('removeProductId').textContent = productId;
-      document.getElementById('removeProductName').textContent = productName;
-      document.getElementById('removeReason').value = '';
-      document.getElementById('removeModal').style.display = 'flex';
-    }
-
-    function closeRemoveModal() {
-      document.getElementById('removeModal').style.display = 'none';
-      currentRemoveProductId = '';
-      currentRemoveProductName = '';
-    }
-
-    function confirmRemove() {
-      const reason = document.getElementById('removeReason').value.trim();
-      if (!reason) {
-        alert('Please enter a reason for cancellation');
-        return;
+    // ===== Data =====
+    const products = [
+      {
+        id: '#PRD-10255', name: 'E-Gift Card', category: 'E-Gift card',
+        issueMode: 'VLINKPAY Platform', productStatus: 'AWAITING APPROVAL',
+        salesStatus: 'IN-ACTIVE', cardNumber: '—', cardLocked: '—',
+        amount: 100, amountDisplay: '$100.00', sold: 120, available: 80,
+        expiryTime: '—', campaignName: '—', redeemBy: '—', lastRedeem: '—',
+        createdDate: '2024-06-15', lastUpdated: '2024-06-15',
+        detailUrl: 'gift-card-details.html'
+      },
+      {
+        id: '#PRD-10256', name: 'E-Gift Card', category: 'E-Gift card',
+        issueMode: 'VLINKPAY Platform', productStatus: 'APPROVED',
+        salesStatus: 'IN-ACTIVE', cardNumber: '—', cardLocked: '—',
+        amount: 500, amountDisplay: '$500.00', sold: 45, available: 0,
+        expiryTime: '—', campaignName: 'VIP Pre-payment', redeemBy: '—', lastRedeem: '—',
+        createdDate: '2024-06-16', lastUpdated: '2024-06-20',
+        detailUrl: 'gift-card-details.html'
+      },
+      {
+        id: '#PRD-10257', name: 'E-Voucher', category: 'E-Voucher',
+        issueMode: 'VLINKPAY Platform', productStatus: 'APPROVED',
+        salesStatus: 'ACTIVE', cardNumber: '—', cardLocked: '—',
+        amount: 200, amountDisplay: '$200.00', sold: 350, available: 150,
+        expiryTime: '—', campaignName: 'Summer Glow',
+        redeemBy: 'customer@email.com', lastRedeem: '2024-06-20 10:30',
+        createdDate: '2024-01-10', lastUpdated: '2024-01-15',
+        detailUrl: 'voucher-details.html'
+      },
+      {
+        id: '#PRD-10258', name: 'E-Gift Card', category: 'E-Gift card',
+        issueMode: 'VLINKPAY Platform', productStatus: 'AWAITING APPROVAL',
+        salesStatus: 'IN-ACTIVE', cardNumber: '—', cardLocked: '—',
+        amount: 30, amountDisplay: '$30.00', sold: 50, available: 250,
+        expiryTime: '—', campaignName: '—', redeemBy: '—', lastRedeem: '—',
+        createdDate: '2024-05-01', lastUpdated: '2024-07-01',
+        detailUrl: 'gift-card-details.html'
+      },
+      {
+        id: '#PRD-10261', name: 'E-Voucher', category: 'E-Voucher',
+        issueMode: 'VLINKPAY Platform', productStatus: 'APPROVED',
+        salesStatus: 'ACTIVE', cardNumber: '—', cardLocked: '—',
+        amount: 75, amountDisplay: '$75.00', sold: 200, available: 50,
+        expiryTime: '—', campaignName: 'Summer Rewards',
+        redeemBy: 'jane.doe@email.com', lastRedeem: '2024-07-15 14:22',
+        createdDate: '2024-07-12', lastUpdated: '2024-07-12',
+        detailUrl: 'voucher-details.html'
+      },
+      {
+        id: '#PRD-10259', name: 'Digital Gift Card', category: 'Gift card',
+        issueMode: 'Store', productStatus: 'APPROVED',
+        salesStatus: '—', cardNumber: '8888 **** **** 3456', cardLocked: 'LOCKED',
+        amount: 45, amountDisplay: '$45.00', sold: '—', available: '—',
+        expiryTime: '2024-11-30', campaignName: '—',
+        redeemBy: 'john.smith@email.com', lastRedeem: '2024-10-01 09:15',
+        createdDate: '2024-07-10', lastUpdated: '2024-07-10',
+        detailUrl: 'issue-digital-details.html'
+      },
+      {
+        id: '#PRD-10260', name: 'Membership Annual', category: 'Membership',
+        issueMode: 'Store', productStatus: 'APPROVED',
+        salesStatus: '—', cardNumber: '8888 **** **** 7890', cardLocked: 'UNLOCKED',
+        amount: 1200, amountDisplay: '$1,200.00', sold: '—', available: '—',
+        expiryTime: '2024-12-15', campaignName: '—',
+        redeemBy: 'member@company.com', lastRedeem: '2024-12-01 16:45',
+        createdDate: '2024-06-20', lastUpdated: '2024-06-20',
+        detailUrl: 'issue-digital-membership-details.html'
+      },
+      {
+        id: '#PRD-10262', name: 'Crypto Card', category: 'Crypto Card',
+        issueMode: 'Store', productStatus: 'EXPIRED',
+        salesStatus: '—', cardNumber: '7777 **** **** 1234', cardLocked: 'LOCKED',
+        amount: 250, amountDisplay: '$250.00', sold: '—', available: '—',
+        expiryTime: '2024-01-31', campaignName: '—',
+        redeemBy: '—', lastRedeem: '2024-01-15 11:20',
+        createdDate: '2024-01-01', lastUpdated: '2024-01-31',
+        detailUrl: '#'
+      },
+      {
+        id: '#PRD-10263', name: 'Promotion Gift Card', category: 'Promotion',
+        issueMode: 'Store', productStatus: 'CANCELLED',
+        salesStatus: 'IN-ACTIVE', cardNumber: '—', cardLocked: '—',
+        amount: 50, amountDisplay: '$50.00', sold: 10, available: 90,
+        expiryTime: '—', campaignName: 'Holiday Sale',
+        redeemBy: '—', lastRedeem: '—',
+        createdDate: '2024-03-01', lastUpdated: '2024-03-15',
+        detailUrl: '#'
       }
-      // Here you would typically send the removal request to your backend
-      alert('Card ' + currentRemoveProductId + ' cancelled successfully!\nReason: ' + reason);
-      closeRemoveModal();
-      // Optionally reload the page or remove the row from the table
-      // location.reload();
+    ];
+
+    // ===== State =====
+    let platformTab = 'all';
+    let categoryTab = 'All';
+
+    // ── Categories per platform ──────────────────────────────────────────
+    const PLATFORM_CATEGORIES = {
+      'all':              ['All', 'E-Gift card', 'E-Voucher', 'Gift card', 'Promotion', 'Discount', 'Membership', 'Prepaid card', 'Crypto Card'],
+      'VLINKPAY Platform':['All', 'E-Gift card', 'E-Voucher'],
+      'Store':            ['All', 'Gift card', 'Promotion', 'Discount', 'Membership', 'Prepaid card', 'Crypto Card'],
+    };
+
+    function updateCategoryChips(platform) {
+      const cats = PLATFORM_CATEGORIES[platform] || PLATFORM_CATEGORIES['all'];
+      const container = document.getElementById('categoryChips');
+      container.innerHTML = cats.map(c =>
+        `<button class="category-chip${c === categoryTab ? ' active' : ''}" data-cat="${c}">${c}</button>`
+      ).join('');
+    }
+    let searchQuery = '';
+    let statusFilter = '';
+    let lockedFilter = '';
+    let fromDate = '';
+    let toDate = '';
+    let sortKey = '';
+    let sortDir = 'asc';
+    let currentPage = 1;
+    let rowsPerPage = 10;
+
+    // Mobile temp filters
+    let tempStatusFilter = '';
+    let tempLockedFilter = '';
+    let tempFromDate = '';
+    let tempToDate = '';
+
+    // ===== Badge Helpers =====
+    function productStatusBadge(status) {
+      if (status === '—') return '<span class="td-dash">—</span>';
+      const map = {
+        'AWAITING APPROVAL': 'badge-awaiting',
+        'APPROVED': 'badge-approved',
+        'CANCELLED': 'badge-cancelled',
+        'EXPIRED': 'badge-expired'
+      };
+      const cls = map[status] || 'badge-expired';
+      return `<span class="badge ${cls}">${status}</span>`;
     }
 
-    function openModal() {
-      document.getElementById('modeModal').style.display = 'flex';
+    function salesStatusBadge(status) {
+      if (status === '—') return '<span class="td-dash">—</span>';
+      const map = { 'ACTIVE': 'badge-active', 'IN-ACTIVE': 'badge-inactive' };
+      const cls = map[status] || 'badge-inactive';
+      return `<span class="badge ${cls}">${status}</span>`;
     }
-    function closeModal() {
-      document.getElementById('modeModal').style.display = 'none';
+
+    function cardLockedBadge(status) {
+      if (status === '—') return '<span class="td-dash">—</span>';
+      const map = { 'LOCKED': 'badge-locked', 'UNLOCKED': 'badge-unlocked' };
+      const cls = map[status] || 'badge-locked';
+      return `<span class="badge ${cls}">${status}</span>`;
     }
-    // Close on click outside
-    window.onclick = function (event) {
-      const modeModal = document.getElementById('modeModal');
-      const removeModal = document.getElementById('removeModal');
-      if (event.target == modeModal) {
-        closeModal();
+
+    function formatDate(d) {
+      if (!d || d === '—') return '<span class="td-dash">—</span>';
+      try {
+        const dt = new Date(d + (d.length === 10 ? 'T00:00:00' : ''));
+        return `<span class="td-secondary">${dt.toLocaleDateString('en-US', { month:'short', day:'2-digit', year:'numeric' })}</span>`;
+      } catch(e) { return `<span class="td-secondary">${d}</span>`; }
+    }
+
+    function formatDateTime(d) {
+      if (!d || d === '—') return '<span class="td-dash">—</span>';
+      return `<span class="td-secondary">${d}</span>`;
+    }
+
+    function actionButtons(product) {
+      const status = product.productStatus;
+      let btns = '';
+      if (status === 'AWAITING APPROVAL') {
+        btns += `<button class="action-btn action-btn-delete" title="Cancel card" onclick="openCancelModal('${product.id}','${product.cardNumber}','${product.name}')">${IC.trash2}</button>`;
       }
-      if (event.target == removeModal) {
-        closeRemoveModal();
+      if (status === 'APPROVED') {
+        btns += `<button class="action-btn action-btn-copy" title="Copy link" onclick="copyProductLink('${product.detailUrl}','${product.id}')">${IC.link2}</button>`;
       }
+      btns += `<a href="${product.detailUrl}" class="action-btn action-btn-view" title="View">${IC.eye}</a>`;
+      return `<div class="action-btns">${btns}</div>`;
     }
 
-    function applyProductNameFilter(filter) {
-      const rows = document.querySelectorAll('#quick-mode tbody tr');
-      rows.forEach((row) => {
-        const nameCell = row.querySelector('td:nth-child(2)');
-        if (!nameCell) return;
-        const text = (nameCell.textContent || '').toLowerCase();
+    function mobileActionButtons(product) {
+      const status = product.productStatus;
+      let btns = '';
+      if (status === 'AWAITING APPROVAL') {
+        btns += `<button class="mobile-action-btn mobile-btn-delete" onclick="openCancelModal('${product.id}','${product.cardNumber}','${product.name}')">${IC.trash2sm} Delete</button>`;
+      }
+      btns += `<a href="${product.detailUrl}" class="mobile-action-btn mobile-btn-view">${IC.eyesm} View</a>`;
+      return btns;
+    }
 
-        let show = true;
-        if (filter === 'gift') {
-          show = text.includes('gift');
-        } else if (filter === 'voucher') {
-          show = text.includes('voucher');
+    // ===== Filter & Sort =====
+    function getFiltered() {
+      let data = products.slice();
+
+      // Platform tab
+      if (platformTab !== 'all') {
+        data = data.filter(p => p.issueMode === platformTab);
+      }
+
+      // Category chip
+      if (categoryTab !== 'All') {
+        data = data.filter(p => p.category === categoryTab);
+      }
+
+      // Search
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase().trim();
+        data = data.filter(p =>
+          p.id.toLowerCase().includes(q) ||
+          p.name.toLowerCase().includes(q) ||
+          p.cardNumber.toLowerCase().includes(q)
+        );
+      }
+
+      // Product status
+      if (statusFilter) {
+        data = data.filter(p => p.productStatus === statusFilter);
+      }
+
+      // Card locked
+      if (lockedFilter) {
+        data = data.filter(p => p.cardLocked === lockedFilter);
+      }
+
+      // Date range
+      if (fromDate) {
+        data = data.filter(p => p.createdDate >= fromDate);
+      }
+      if (toDate) {
+        data = data.filter(p => p.createdDate <= toDate);
+      }
+
+      return data;
+    }
+
+    function getSorted(data) {
+      if (!sortKey) return data;
+      return data.slice().sort((a, b) => {
+        let va = a[sortKey], vb = b[sortKey];
+        if (sortKey === 'amount') { va = a.amount; vb = b.amount; }
+        else if (sortKey === 'sold' || sortKey === 'available') {
+          va = (va === '—') ? -1 : Number(va);
+          vb = (vb === '—') ? -1 : Number(vb);
+          return sortDir === 'asc' ? va - vb : vb - va;
         }
-
-        row.style.display = show ? '' : 'none';
+        va = String(va); vb = String(vb);
+        const cmp = va.localeCompare(vb);
+        return sortDir === 'asc' ? cmp : -cmp;
       });
     }
 
-    function setupProductNameFilter() {
-      const group = document.getElementById('productNameFilter');
-      if (!group) return;
-
-      const chips = group.querySelectorAll('.filter-chip');
-      chips.forEach((chip) => {
-        chip.addEventListener('click', () => {
-          chips.forEach((c) => c.classList.remove('active'));
-          chip.classList.add('active');
-
-          const filter = chip.getAttribute('data-filter') || 'all';
-          applyProductNameFilter(filter);
-        });
-      });
-    }
-
-    // --- All tab filters (name + created date) ---
-
-    let allProductNameFilter = 'all';
-
-    function applyAllCombinedFilter() {
-      const rows = document.querySelectorAll('#all tbody tr');
-      const searchInput = document.getElementById('allSearchInput');
-      const statusSelect = document.getElementById('allProductStatus');
-      const cardLockedSelect = document.getElementById('allCardLocked');
-      const searchValue = searchInput && searchInput.value
-        ? searchInput.value.toLowerCase().trim()
-        : '';
-      const statusValue = statusSelect ? (statusSelect.value || '').toLowerCase() : '';
-      const cardLockedValue = cardLockedSelect ? (cardLockedSelect.value || '').toLowerCase() : '';
-
-      rows.forEach((row) => {
-        const nameCell = row.querySelector('td:nth-child(3)');
-        const idCell = row.querySelector('td:nth-child(2)');
-        const statusCell = row.querySelector('td:nth-child(4)');
-        const cardLockedCell = row.querySelector('td:nth-child(7)');
-        const nameText = nameCell ? (nameCell.textContent || '').toLowerCase() : '';
-        const idText = idCell ? (idCell.textContent || '').toLowerCase() : '';
-        const statusText = statusCell ? (statusCell.textContent || '').toLowerCase() : '';
-        const cardLockedText = cardLockedCell ? (cardLockedCell.textContent || '').toLowerCase() : '';
-
-        let show = true;
-
-        // Name filter
-        if (allProductNameFilter === 'gift-card') {
-          show = nameText.includes('gift card') && !nameText.includes('e-gift');
-        } else if (allProductNameFilter === 'promotion') {
-          show = nameText.includes('promotion');
-        } else if (allProductNameFilter === 'discount') {
-          show = nameText.includes('discount');
-        } else if (allProductNameFilter === 'membership') {
-          show = nameText.includes('membership');
-        } else if (allProductNameFilter === 'prepaid') {
-          show = nameText.includes('prepaid');
-        } else if (allProductNameFilter === 'e-gift-card') {
-          show = nameText.includes('e-gift');
-        } else if (allProductNameFilter === 'voucher') {
-          show = nameText.includes('voucher');
-        }
-
-        // Text search by Product ID or Product Name
-        if (show && searchValue) {
-          const combined = (idText + ' ' + nameText).trim();
-          if (!combined.includes(searchValue)) {
-            show = false;
-          }
-        }
-
-        // Product Status filter (uses Product Status column)
-        if (show && statusValue) {
-          if (!statusText.includes(statusValue)) {
-            show = false;
-          }
-        }
-
-        // Card Locked filter (uses Card Locked column)
-        if (show && cardLockedValue) {
-          if (!cardLockedText.includes(cardLockedValue)) {
-            show = false;
-          }
-        }
-
-        row.style.display = show ? '' : 'none';
-      });
-    }
-
-    function applyAllProductNameFilter(filter) {
-      allProductNameFilter = filter || 'all';
-      applyAllCombinedFilter();
-    }
-
-    function setupAllProductNameFilter() {
-      const group = document.getElementById('allProductNameFilter');
-      if (!group) return;
-
-      const chips = group.querySelectorAll('.filter-chip');
-      chips.forEach((chip) => {
-        chip.addEventListener('click', () => {
-          chips.forEach((c) => c.classList.remove('active'));
-          chip.classList.add('active');
-
-          const filter = chip.getAttribute('data-filter') || 'all';
-          applyAllProductNameFilter(filter);
-        });
-      });
-    }
-
-    function setupAllSearchAndStatusFilters() {
-      const searchInput = document.getElementById('allSearchInput');
-      const statusSelect = document.getElementById('allProductStatus');
-      const cardLockedSelect = document.getElementById('allCardLocked');
-
-      if (searchInput) {
-        searchInput.addEventListener('input', applyAllCombinedFilter);
+    function sortTable(key) {
+      if (sortKey === key) {
+        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortKey = key;
+        sortDir = 'asc';
       }
-      if (statusSelect) {
-        statusSelect.addEventListener('change', applyAllCombinedFilter);
-      }
-      if (cardLockedSelect) {
-        cardLockedSelect.addEventListener('change', applyAllCombinedFilter);
+      currentPage = 1;
+      render();
+    }
+
+    function updateSortIcons() {
+      document.querySelectorAll('.th-sort-icon').forEach(el => {
+        el.innerHTML = '';
+        el.classList.remove('visible');
+      });
+      if (sortKey) {
+        const icon = document.getElementById('sort-' + sortKey);
+        if (icon) {
+          icon.classList.add('visible');
+          icon.innerHTML = sortDir === 'asc' ? IC.chevronUp : IC.chevronDown;
+        }
       }
     }
 
-    function switchTab(tabId) {
-      // Update active state on tab items
-      document.querySelectorAll('.tab-item').forEach(tab => {
-        tab.classList.remove('active');
-      });
+    // ===== Render =====
+    function render() {
+      const filtered = getFiltered();
+      const sorted = getSorted(filtered);
+      const total = sorted.length;
 
-      function copyProductLink(productUrl, productId) {
-        const fullUrl = window.location.origin + window.location.pathname.replace('product-list.html', productUrl);
+      // Adjust page if out of range
+      const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
+      if (currentPage > totalPages) currentPage = totalPages;
 
-        navigator.clipboard.writeText(fullUrl).then(function () {
-          // Success feedback
-          alert('Product link copied to clipboard!\n' + productId + '\n' + fullUrl);
-        }, function (err) {
-          // Fallback for older browsers
-          const textArea = document.createElement('textarea');
-          textArea.value = fullUrl;
-          document.body.appendChild(textArea);
-          textArea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textArea);
-          alert('Product link copied to clipboard!\n' + productId + '\n' + fullUrl);
-        });
+      const start = total === 0 ? 0 : (currentPage - 1) * rowsPerPage + 1;
+      const end = Math.min(currentPage * rowsPerPage, total);
+      const pageData = sorted.slice(start - 1, end);
+
+      // Update sort icons
+      updateSortIcons();
+
+      // Render table
+      const tbody = document.getElementById('tableBody');
+      const tableEmpty = document.getElementById('tableEmpty');
+      if (total === 0) {
+        tbody.innerHTML = '';
+        tableEmpty.style.display = 'block';
+      } else {
+        tableEmpty.style.display = 'none';
+        tbody.innerHTML = pageData.map(p => `
+          <tr>
+            <td class="col-issue-mode">${p.issueMode}</td>
+            <td class="td-id">${p.id}</td>
+            <td class="td-name"><a href="${p.detailUrl}" style="color:inherit;text-decoration:none;">${p.name}</a></td>
+            <td>${productStatusBadge(p.productStatus)}</td>
+            <td>${salesStatusBadge(p.salesStatus)}</td>
+            <td>${p.cardNumber === '—' ? '<span class="td-dash">—</span>' : `<span class="td-mono">${p.cardNumber}</span>`}</td>
+            <td>${cardLockedBadge(p.cardLocked)}</td>
+            <td class="td-amount">${p.amountDisplay}</td>
+            <td class="td-secondary">${p.sold === '—' ? '<span class="td-dash">—</span>' : p.sold}</td>
+            <td class="td-secondary">${p.available === '—' ? '<span class="td-dash">—</span>' : p.available}</td>
+            <td>${p.expiryTime === '—' ? '<span class="td-dash">—</span>' : `<span class="td-secondary">${p.expiryTime}</span>`}</td>
+            <td>${p.campaignName === '—' ? '<span class="td-dash">—</span>' : `<span style="color:#212b36;max-width:140px;overflow:hidden;text-overflow:ellipsis;display:inline-block;">${p.campaignName}</span>`}</td>
+            <td>${p.redeemBy === '—' ? '<span class="td-dash">—</span>' : `<span class="td-email">${p.redeemBy}</span>`}</td>
+            <td>${formatDateTime(p.lastRedeem)}</td>
+            <td>${formatDate(p.createdDate)}</td>
+            <td>${formatDate(p.lastUpdated)}</td>
+            <td>${actionButtons(p)}</td>
+          </tr>
+        `).join('');
       }
-      event.target.classList.add('active');
 
-      // Update active state on tab contents
-      document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.remove('active');
-      });
-      document.getElementById(tabId).classList.add('active');
+      // Render mobile cards
+      const mobileCards = document.getElementById('mobileCards');
+      const mobileEmpty = document.getElementById('mobileEmpty');
+      if (total === 0) {
+        mobileCards.innerHTML = '';
+        mobileEmpty.style.display = 'block';
+      } else {
+        mobileEmpty.style.display = 'none';
+        mobileCards.innerHTML = pageData.map(p => {
+          let infoItems = `
+            <div class="info-field">
+              <div class="info-field-label">Category</div>
+              <div class="info-field-value">${p.category}</div>
+            </div>
+            <div class="info-field">
+              <div class="info-field-label">Created Date</div>
+              <div class="info-field-value">${p.createdDate}</div>
+            </div>
+          `;
+          if (p.salesStatus !== '—') infoItems += `<div class="info-field"><div class="info-field-label">Sales Status</div><div class="info-field-value">${salesStatusBadge(p.salesStatus)}</div></div>`;
+          if (p.cardNumber !== '—') infoItems += `<div class="info-field"><div class="info-field-label">Card Number</div><div class="info-field-value" style="font-family:monospace;font-size:12px;">${p.cardNumber}</div></div>`;
+          if (p.cardLocked !== '—') infoItems += `<div class="info-field"><div class="info-field-label">Card Locked</div><div class="info-field-value">${cardLockedBadge(p.cardLocked)}</div></div>`;
+          if (p.campaignName !== '—') infoItems += `<div class="info-field"><div class="info-field-label">Campaign</div><div class="info-field-value">${p.campaignName}</div></div>`;
+          if (p.sold !== '—') infoItems += `<div class="info-field"><div class="info-field-label">Sold / Available</div><div class="info-field-value">${p.sold} / ${p.available}</div></div>`;
+
+          return `
+            <div class="product-card">
+              <div class="product-card-header">
+                <span class="product-card-name">${p.name}</span>
+                <span class="product-card-amount">${p.amountDisplay}</span>
+              </div>
+              <div class="product-card-header" style="margin-bottom:10px;">
+                <span class="product-card-id">${p.id}</span>
+                ${productStatusBadge(p.productStatus)}
+              </div>
+              <div class="product-card-info">${infoItems}</div>
+              <div class="product-card-actions">${mobileActionButtons(p)}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Pagination
+      document.getElementById('paginationInfo').textContent = `${start}–${end} of ${total}`;
+      document.getElementById('prevBtn').disabled = currentPage <= 1;
+      document.getElementById('nextBtn').disabled = currentPage >= totalPages;
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-      setupProductNameFilter();
-      setupAllProductNameFilter();
-      setupAllSearchAndStatusFilters();
-      // Ensure initial filter shows all rows
-      applyAllCombinedFilter();
+    // ===== Filter Functions =====
+    function applyFilters() {
+      searchQuery = document.getElementById('searchInput').value;
+      statusFilter = document.getElementById('statusFilter').value;
+      lockedFilter = document.getElementById('lockedFilter').value;
+      fromDate = document.getElementById('fromDate').value;
+      toDate = document.getElementById('toDate').value;
+      currentPage = 1;
+      render();
+    }
+
+    function syncMobileSearch() {
+      const val = document.getElementById('searchInputMobile').value;
+      document.getElementById('searchInput').value = val;
+      searchQuery = val;
+      currentPage = 1;
+      render();
+    }
+
+    function setPlatformTab(tab, el) {
+      platformTab = tab;
+      categoryTab = 'All';
+      document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      updateCategoryChips(tab);
+      currentPage = 1;
+      render();
+    }
+
+    // Category chips
+    document.getElementById('categoryChips').addEventListener('click', function(e) {
+      const chip = e.target.closest('.category-chip');
+      if (!chip) return;
+      document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      categoryTab = chip.dataset.cat;
+      currentPage = 1;
+      render();
+    });
+
+    // ===== Pagination =====
+    function setRowsPerPage() {
+      rowsPerPage = parseInt(document.getElementById('rowsPerPage').value);
+      currentPage = 1;
+      render();
+    }
+    function prevPage() { if (currentPage > 1) { currentPage--; render(); } }
+    function nextPage() {
+      const total = getSorted(getFiltered()).length;
+      const totalPages = Math.ceil(total / rowsPerPage);
+      if (currentPage < totalPages) { currentPage++; render(); }
+    }
+
+    // ===== Cancel Card Modal =====
+    function openCancelModal(productId, cardNumber, packageName) {
+      document.getElementById('cancelCardNumber').textContent = cardNumber;
+      document.getElementById('cancelPackageName').textContent = packageName;
+      document.getElementById('cancelReason').value = '';
+      document.getElementById('cancelModal').classList.add('open');
+    }
+    function closeCancelModal() {
+      document.getElementById('cancelModal').classList.remove('open');
+      document.getElementById('cancelReason').value = '';
+    }
+    function confirmCancel() {
+      closeCancelModal();
+    }
+
+    // ===== Issue Card Modal =====
+    function openIssueCardModal() {
+      document.getElementById('issueCardModal').classList.add('open');
+    }
+    function closeIssueCardModal() {
+      document.getElementById('issueCardModal').classList.remove('open');
+    }
+
+    // ===== Mobile Filter Modal =====
+    function openMobileFilter() {
+      tempStatusFilter = statusFilter;
+      tempLockedFilter = lockedFilter;
+      tempFromDate = fromDate;
+      tempToDate = toDate;
+      document.getElementById('mobileStatusFilter').value = tempStatusFilter;
+      document.getElementById('mobileLockedFilter').value = tempLockedFilter;
+      document.getElementById('mobileFromDate').value = tempFromDate;
+      document.getElementById('mobileToDate').value = tempToDate;
+      document.getElementById('mobileFilterModal').classList.add('open');
+    }
+    function closeMobileFilter() {
+      document.getElementById('mobileFilterModal').classList.remove('open');
+    }
+    function resetMobileFilter() {
+      document.getElementById('mobileStatusFilter').value = '';
+      document.getElementById('mobileLockedFilter').value = '';
+      document.getElementById('mobileFromDate').value = '';
+      document.getElementById('mobileToDate').value = '';
+    }
+    function applyMobileFilter() {
+      statusFilter = document.getElementById('mobileStatusFilter').value;
+      lockedFilter = document.getElementById('mobileLockedFilter').value;
+      fromDate = document.getElementById('mobileFromDate').value;
+      toDate = document.getElementById('mobileToDate').value;
+      document.getElementById('statusFilter').value = statusFilter;
+      document.getElementById('lockedFilter').value = lockedFilter;
+      document.getElementById('fromDate').value = fromDate;
+      document.getElementById('toDate').value = toDate;
+      currentPage = 1;
+      closeMobileFilter();
+      render();
+    }
+
+    // ===== Overlay Click =====
+    function handleOverlayClick(event, modalId) {
+      if (event.target === document.getElementById(modalId)) {
+        if (modalId === 'cancelModal') closeCancelModal();
+        else if (modalId === 'issueCardModal') closeIssueCardModal();
+        else if (modalId === 'mobileFilterModal') closeMobileFilter();
+      }
+    }
+
+    // ESC key closes modals
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeCancelModal();
+        closeIssueCardModal();
+        closeMobileFilter();
+      }
+    });
+
+    // ===== Copy Link =====
+    function copyProductLink(productUrl, productId) {
+      const fullUrl = window.location.origin + window.location.pathname.replace('product-list.html', productUrl);
+      navigator.clipboard.writeText(fullUrl).then(function() {
+        alert('Product link copied!\n' + productId + '\n' + fullUrl);
+      }, function() {
+        const el = document.createElement('textarea');
+        el.value = fullUrl;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        alert('Product link copied!\n' + productId + '\n' + fullUrl);
+      });
+    }
+
+    // ===== Init =====
+    document.addEventListener('DOMContentLoaded', function() {
+      lucide.createIcons();
+      updateCategoryChips('all');
+      render();
     });
   </script>
 </body>

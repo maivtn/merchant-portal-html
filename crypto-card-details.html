@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="global.css">
-  <script src="global.js" defer></script>
+    <script src="global.js" defer></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <style>
         .details-card {
@@ -41,20 +41,62 @@
 
         .product-card-visual-large {
             width: 100%;
+        }
+
+        .card-preview-flip {
+            position: relative;
+            width: 100%;
             aspect-ratio: 1.6 / 1;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.12), 0 0 2px 0 rgba(0, 0, 0, 0.2);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+            cursor: pointer;
+        }
+
+        .card-preview-face {
+            position: absolute;
+            inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: opacity 0.3s ease;
         }
 
-        .product-card-visual-large img {
+        .card-preview-face.back {
+            opacity: 0;
+        }
+
+        .card-preview-flip.flipped .card-preview-face.front {
+            opacity: 0;
+        }
+
+        .card-preview-flip.flipped .card-preview-face.back {
+            opacity: 1;
+        }
+
+        .card-preview-flip img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .card-preview-label {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.85);
+            color: #e5e7eb;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
         }
 
         .crypto-card-icon {
@@ -114,23 +156,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px dashed var(--grey-200);
-        }
-
-        .info-item:last-child {
-            border-bottom: none;
+            padding: 6px 0;
         }
 
         .info-label {
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 400;
             color: var(--grey-600);
         }
 
         .info-value {
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 400;
             color: var(--grey-900);
             text-align: right;
         }
@@ -163,10 +200,16 @@
             padding: 12px 16px;
             text-align: left;
             font-size: 13px;
-            font-weight: 700;
-            color: var(--grey-700);
-            text-transform: uppercase;
+            font-weight: 600;
+            color: #637381;
+            text-transform: capitalize;
             border-bottom: 1px solid var(--grey-300);
+        }
+
+        .crypto-table th.assets-col-balance,
+        .crypto-table th.assets-col-amount,
+        .crypto-table th.assets-col-price {
+            text-align: right;
         }
 
         .crypto-table td {
@@ -178,6 +221,91 @@
 
         .crypto-table tbody tr:hover {
             background: var(--grey-50);
+        }
+
+        .assets-table-wrap {
+            overflow-x: auto;
+        }
+
+        .assets-table th {
+            white-space: nowrap;
+        }
+
+        .asset-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .asset-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .asset-name {
+            font-weight: 600;
+            color: var(--grey-900);
+        }
+
+        .asset-balance-mobile {
+            font-weight: 700;
+            color: var(--grey-900);
+            font-size: 14px;
+            display: none;
+        }
+
+        .asset-amount-mobile {
+            font-size: 13px;
+            color: var(--grey-600);
+            display: none;
+        }
+
+        .asset-symbol {
+            font-size: 12px;
+            color: var(--grey-500);
+        }
+
+        .assets-cell-balance,
+        .assets-cell-amount,
+        .assets-cell-price {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .asset-price {
+            white-space: nowrap;
+        }
+
+        @media (max-width: 900px) {
+            .assets-table thead {
+                display: table-header-group;
+            }
+
+            .assets-table th.assets-col-balance,
+            .assets-table th.assets-col-amount {
+                display: none;
+            }
+
+            .assets-table td.assets-cell-balance,
+            .assets-table td.assets-cell-amount {
+                display: none;
+            }
+
+            .asset-balance-mobile,
+            .asset-amount-mobile {
+                display: block;
+            }
+
+            .assets-table td.assets-cell-asset,
+            .assets-table td.assets-cell-price {
+                display: table-cell;
+            }
+
+            .assets-table td.assets-cell-price {
+                text-align: right;
+                vertical-align: middle;
+            }
         }
 
         .crypto-icon {
@@ -682,52 +810,122 @@
             font-weight: 500;
             color: var(--grey-500);
         }
-    
-    /* ─── Responsive: iPad (max-width: 1023px) ─── */
-    @media (max-width: 1023px) {
-      .page-title { font-size: 20px !important; }
-      .product-main-layout {
-        grid-template-columns: 1fr !important;
-        gap: 20px !important;
-      }
-      .product-visual-column,
-      .product-info-column { padding: 24px !important; }
-      .details-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-      .table-toolbar { flex-wrap: wrap; gap: 10px; padding: 16px 20px !important; }
-      .table-wrap, .table-responsive, .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      table { min-width: 600px; }
-    }
-    /* ─── Responsive: Mobile (max-width: 767px) ─── */
-    @media (max-width: 767px) {
-      .page-title { font-size: 18px !important; }
-      .product-main-layout {
-        grid-template-columns: 1fr !important;
-        gap: 16px !important;
-      }
-      .product-visual-column,
-      .product-info-column { padding: 16px !important; border-radius: 16px !important; }
-      .details-header { flex-direction: column; align-items: flex-start; gap: 10px; }
-      .details-header h2, .details-header .card-name { font-size: 16px !important; }
-      .grid-info { gap: 0 !important; }
-      .info-item { padding: 10px 0 !important; }
-      .table-toolbar {
-        flex-direction: column !important; align-items: stretch !important;
-        padding: 12px 16px !important; gap: 8px !important;
-      }
-      .table-wrap, .table-responsive, .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      table { min-width: 580px; }
-      .pag-bar, .pagination-bar {
-        flex-direction: column; align-items: center; gap: 8px; padding: 12px 16px !important;
-      }
-    }
-  </style>
+
+        /* ─── Responsive: iPad (max-width: 1023px) ─── */
+        @media (max-width: 1023px) {
+            .page-title {
+                font-size: 20px !important;
+            }
+
+            .product-main-layout {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
+
+            .product-visual-column,
+            .product-info-column {
+                padding: 24px !important;
+            }
+
+            .details-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .table-toolbar {
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 16px 20px !important;
+            }
+
+            .table-wrap,
+            .table-responsive,
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        /* ─── Responsive: Mobile (max-width: 767px) ─── */
+        @media (max-width: 767px) {
+            .page-title {
+                font-size: 18px !important;
+            }
+
+            .product-main-layout {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+
+            .product-visual-column,
+            .product-info-column {
+                padding: 14px !important;
+                border-radius: 14px !important;
+            }
+
+            .details-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                margin-bottom: 10px;
+            }
+
+            .product-info-header h1 {
+                font-size: 16px !important;
+            }
+
+            .price-tag .amount {
+                font-size: 20px;
+            }
+
+            .grid-info {
+                gap: 2px !important;
+            }
+
+            .info-item {
+                padding: 0px 0 !important;
+            }
+
+            .info-label {
+                font-size: 12px;
+            }
+
+            .info-value {
+                font-size: 12px;
+            }
+
+            .table-toolbar {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                padding: 12px 16px !important;
+                gap: 8px !important;
+            }
+
+            .table-wrap,
+            .table-responsive,
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .pag-bar,
+            .pagination-bar {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+                padding: 12px 16px !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <aside class="sidebar">
         <div class="sidebar-content">
             <div class="logo">
-                <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLINKPAY" class="sidebar-logo" />
+                <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg"
+                    alt="VLINKPAY" class="sidebar-logo" />
             </div>
 
             <div class="user-card">
@@ -766,7 +964,7 @@
                 <a href="#" class="sub-item"><span class="dot"></span>Merchant Map</a>
                 <a href="product-list.html" class="sub-item"><span class="dot"></span>Product Management</a>
                 <a href="digital-gifts-management.html" class="sub-item"><span class="dot"></span>VlinkPay Store</a>
-        <a href="cancelled-cards.html" class="sub-item"><span class="dot"></span>Cancelled Cards</a>
+                <a href="cancelled-cards.html" class="sub-item"><span class="dot"></span>Cancelled Cards</a>
             </div>
 
             <a href="crypto-card-list.html" class="nav-item parent-active">
@@ -833,16 +1031,17 @@
     </aside>
 
     <header class="top-header">
-    <div class="header-left">
-      <button class="hamburger hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
-    </div>
-    <div class="header-right">
-        <div class="header-info">Jan 26, 2026 10:05:32 AM (UTC)</div>
-        <div class="header-icons">
-            <div class="header-icon-btn">
-                <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
-            </div>
+        <div class="header-left">
+            <button class="hamburger hamburger-btn" id="hamburgerBtn"
+                aria-label="Toggle menu"><span></span><span></span><span></span></button>
         </div>
+        <div class="header-right">
+            <div class="header-info">Jan 26, 2026 10:05:32 AM (UTC)</div>
+            <div class="header-icons">
+                <div class="header-icon-btn">
+                    <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
+                </div>
+            </div>
     </header>
 
     <main class="main">
@@ -871,32 +1070,127 @@
             <div id="card-info" class="tab-content active">
                 <div class="details-card">
                     <div class="action-buttons" style="margin-bottom: 24px;">
-                        <div style="display: flex; gap: 12px; justify-content: end;">
-
-                            <button class="btn-action btn-outlined-primary">
-                                <iconify-icon icon="solar:chat-round-dots-bold" width="20"></iconify-icon>
-                                Send SMS
-                            </button>
-                            <button class="btn-action btn-outlined-primary">
-                                <iconify-icon icon="solar:letter-bold" width="20"></iconify-icon>
-                                Send Email
-                            </button>
-                            <button class="btn-action btn-outlined-primary">
-                                <iconify-icon icon="solar:printer-bold" width="20"></iconify-icon>
-                                Print
-                            </button>
-                            <button class="btn-action btn-outlined-primary">
-                                <iconify-icon icon="solar:download-bold" width="20"></iconify-icon>
-                                Download
-                            </button>
-                            <button class="btn-action btn-outlined-primary" onclick="openReloadModal()">
-                                <iconify-icon icon="solar:refresh-bold" width="20"></iconify-icon>
-                                Reload
-                            </button>
-                            <button class="btn-action btn-edit">
-                                <iconify-icon icon="solar:pen-bold" width="20"></iconify-icon>
-                                Edit
-                            </button>
+                        <div class="am-menu" style="width: 100%;">
+                            <div class="am-button am-button--sms">
+                                <div class="am-button-icon">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                        preserveAspectRatio="none">
+                                        <g id="Icon">
+                                            <path
+                                                d="M17.5 12.5C17.5 12.942 17.3244 13.366 17.0118 13.6785C16.6993 13.9911 16.2754 14.1667 15.8333 14.1667H5.83333L2.5 17.5V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H15.8333C16.2754 2.5 16.6993 2.67559 17.0118 2.98816C17.3244 3.30072 17.5 3.72464 17.5 4.16667V12.5Z"
+                                                stroke="#7F22FE" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="1.5" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="am-button-label">Send SMS</div>
+                            </div>
+                            <div class="am-button am-button--email">
+                                <div class="am-button-icon">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                        preserveAspectRatio="none">
+                                        <g id="Icon">
+                                            <path
+                                                d="M16.6667 3.33333H3.33333C2.41286 3.33333 1.66667 4.07953 1.66667 5V15C1.66667 15.9205 2.41286 16.6667 3.33333 16.6667H16.6667C17.5871 16.6667 18.3333 15.9205 18.3333 15V5C18.3333 4.07953 17.5871 3.33333 16.6667 3.33333Z"
+                                                stroke="#0084D1" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="1.5" />
+                                            <path
+                                                d="M18.3333 5.83333L10.8583 10.5833C10.6011 10.7445 10.3036 10.83 10 10.83C9.6964 10.83 9.39894 10.7445 9.14167 10.5833L1.66667 5.83333"
+                                                stroke="#0084D1" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="1.5" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="am-button-label">Send Email</div>
+                            </div>
+                            <div class="am-button am-button--print">
+                                <div class="am-button-icon">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                        preserveAspectRatio="none">
+                                        <g clip-path="url(#clip0_am_print)" id="Icon">
+                                            <path
+                                                d="M5 15H3.33333C2.89131 15 2.46738 14.8244 2.15482 14.5118C1.84226 14.1993 1.66667 13.7754 1.66667 13.3333V9.16667C1.66667 8.72464 1.84226 8.30072 2.15482 7.98816C2.46738 7.6756 2.89131 7.5 3.33333 7.5H16.6667C17.1087 7.5 17.5326 7.6756 17.8452 7.98816C18.1577 8.30072 18.3333 8.72464 18.3333 9.16667V13.3333C18.3333 13.7754 18.1577 14.1993 17.8452 14.5118C17.5326 14.8244 17.1087 15 16.6667 15H15"
+                                                stroke="#E17100" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="1.5" />
+                                            <path
+                                                d="M5 7.5V2.5C5 2.27899 5.0878 2.06702 5.24408 1.91074C5.40036 1.75446 5.61232 1.66667 5.83333 1.66667H14.1667C14.3877 1.66667 14.5996 1.75446 14.7559 1.91074C14.9122 2.06702 15 2.27899 15 2.5V7.5"
+                                                stroke="#E17100" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="1.5" />
+                                            <path
+                                                d="M14.1667 11.6667H5.83333C5.3731 11.6667 5 12.0398 5 12.5V17.5C5 17.9602 5.3731 18.3333 5.83333 18.3333H14.1667C14.6269 18.3333 15 17.9602 15 17.5V12.5C15 12.0398 14.6269 11.6667 14.1667 11.6667Z"
+                                                stroke="#E17100" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="1.5" />
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_am_print">
+                                                <rect fill="white" width="20" height="20" />
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                </div>
+                                <div class="am-button-label">Print</div>
+                            </div>
+                            <div class="am-button am-button--download">
+                                <div class="am-button-icon">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                        preserveAspectRatio="none">
+                                        <g id="Icon">
+                                            <path
+                                                d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5"
+                                                stroke="#009966" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="1.5" />
+                                            <path d="M5.83333 8.33333L10 12.5L14.1667 8.33333" stroke="#009966"
+                                                stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                                            <path d="M10 12.5V2.5" stroke="#009966" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="1.5" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="am-button-label">Download</div>
+                            </div>
+                            <div class="am-button am-button--reload" onclick="openReloadModal()">
+                                <div class="am-button-icon">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                        preserveAspectRatio="none">
+                                        <g id="RefreshCw">
+                                            <path
+                                                d="M2.5 10C2.5 8.01088 3.29018 6.10322 4.6967 4.6967C6.10322 3.29018 8.01088 2.5 10 2.5C12.0967 2.50789 14.1092 3.32602 15.6167 4.78333L17.5 6.66667"
+                                                stroke="#155DFC" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="1.5" />
+                                            <path d="M17.5 2.5V6.66667H13.3333" stroke="#155DFC" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="1.5" />
+                                            <path
+                                                d="M17.5 10C17.5 11.9891 16.7098 13.8968 15.3033 15.3033C13.8968 16.7098 11.9891 17.5 10 17.5C7.90329 17.4921 5.89081 16.674 4.38333 15.2167L2.5 13.3333"
+                                                stroke="#155DFC" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="1.5" />
+                                            <path d="M6.66667 13.3333H2.5V17.5" stroke="#155DFC" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="1.5" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="am-button-label">Reload</div>
+                            </div>
+                            <div class="am-button am-button--edit">
+                                <div class="am-button-icon">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                        preserveAspectRatio="none">
+                                        <g clip-path="url(#clip0_am_edit)" id="Icon">
+                                            <path
+                                                d="M17.645 5.67667C18.0856 5.23619 18.3332 4.63872 18.3332 4.01571C18.3333 3.3927 18.0859 2.79517 17.6454 2.35458C17.2049 1.91399 16.6075 1.66643 15.9845 1.66635C15.3614 1.66627 14.7639 1.91369 14.3233 2.35417L3.20167 13.4783C3.00818 13.6713 2.86509 13.9088 2.785 14.17L1.68417 17.7967C1.66263 17.8687 1.661 17.9453 1.67946 18.0182C1.69792 18.0911 1.73577 18.1577 1.789 18.2108C1.84223 18.264 1.90885 18.3017 1.9818 18.3201C2.05475 18.3384 2.1313 18.3367 2.20333 18.315L5.83083 17.215C6.09181 17.1356 6.32931 16.9934 6.5225 16.8008L17.645 5.67667Z"
+                                                stroke="#4F39F6" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="1.5" />
+                                            <path d="M12.5 4.16667L15.8333 7.5" stroke="#4F39F6" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="1.5" />
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_am_edit">
+                                                <rect fill="white" width="20" height="20" />
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                </div>
+                                <div class="am-button-label">Edit</div>
+                            </div>
                         </div>
                     </div>
 
@@ -904,7 +1198,19 @@
                         <!-- Left Column: Visual & Actions -->
                         <div class="product-visual-column">
                             <div class="product-card-visual-large">
-                                <img src="https://i.ibb.co/tMr10Cyz/download-7.png" alt="Crypto Card">
+                                <div class="card-preview-flip" id="cryptoPreviewFlip"
+                                    onclick="toggleCryptoPreviewFlip()">
+                                    <div class="card-preview-face front">
+                                        <img src="cryptocard-front.png" alt="Crypto Card Front">
+                                    </div>
+                                    <div class="card-preview-face back">
+                                        <img src="cryptocard-back.png" alt="Crypto Card Back">
+                                    </div>
+                                    <div class="card-preview-label">
+                                        <iconify-icon icon="solar:refresh-bold" width="14"></iconify-icon>
+                                        Tap to flip
+                                    </div>
+                                </div>
                             </div>
                             <div class="action-buttons">
                                 <div class="switch-wrapper">
@@ -927,33 +1233,60 @@
                             <div class="product-info-column">
                                 <div class="details-header">
                                     <div class="product-info-header">
-                                        <span class="status-badge status-active"
-                                            style="margin-bottom: 8px;">Approved</span>
-                                        <h1>Crypto Card</h1>
-                                        <p style="color: var(--grey-600); font-size: 13px;">Product ID: #CRY-10001</p>
+                                        <h1>Crypto card</h1>
+                                        <span id="cryptoStatusBadge" class="status-badge status-draft"
+                                            style="margin-top: 4px;">Draft</span>
                                     </div>
                                     <div class="price-tag">
-                                        <span class="label">Total Asset</span>
-                                        <span class="amount">$2,500.00</span>
+                                        <span class="label" style="letter-spacing: 0.08em;">BALANCE</span>
+                                        <span class="amount">$200</span>
                                     </div>
                                 </div>
 
                                 <div class="grid-info">
                                     <div class="info-item">
-                                        <span class="info-label">Product</span>
-                                        <span class="info-value">Crypto Card</span>
-                                    </div>
-                                    <div class="info-item">
                                         <span class="info-label">Card Number</span>
-                                        <span class="info-value" style="font-family: monospace;">8829 **** **** 3456</span>
+                                        <span class="info-value" style="font-family: monospace;">1234 **** ****
+                                            1234</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">PIN</span>
                                         <span class="info-value">***</span>
                                     </div>
                                     <div class="info-item">
+                                        <span class="info-label">Card Holder Name</span>
+                                        <span class="info-value">CARLOTA MONTEIRO</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Phone Number</span>
+                                        <span class="info-value">+1 (408) 555-1234</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Date of Birth</span>
+                                        <span class="info-value">Jun 15, 2000</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Email</span>
+                                        <span class="info-value">carlota.monteiro@vlinkpay.com</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Address</span>
+                                        <span class="info-value">
+                                            742 Evergreen Terrace, Los Angeles, CA 90017, United States
+                                        </span>
+                                    </div>
+
+                                    <div class="info-item">
                                         <span class="info-label">Issued Date</span>
-                                        <span class="info-value">Jan 15, 2026 09:30 AM</span>
+                                        <span class="info-value">Jun 15, 2024</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Received Via</span>
+                                        <span class="info-value">SMS</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Phone Number</span>
+                                        <span class="info-value">+1 (408) 555-1234</span>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Redeemed By</span>
@@ -961,87 +1294,80 @@
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Last Redeemed At</span>
-                                        <span class="info-value">Jan 25, 2026 03:15 PM</span>
+                                        <span class="info-value">Jun 15, 2024</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Crypto List Section -->
+                    <!-- Assets Section -->
                     <div class="crypto-list-section">
                         <div class="section-title">
-                            <iconify-icon icon="solar:bill-list-bold-duotone" width="22"
-                                style="color: var(--grey-600);"></iconify-icon>
-                            Crypto List
+                            <span
+                                style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:999px;background:rgba(22,119,255,0.08);margin-right:4px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 5.25C12.4142 5.25 12.75 5.58579 12.75 6V6.31673C14.3804 6.60867 15.75 7.83361 15.75 9.5C15.75 9.91421 15.4142 10.25 15 10.25C14.5858 10.25 14.25 9.91421 14.25 9.5C14.25 8.65573 13.3765 7.75 12 7.75C10.6235 7.75 9.75 8.65573 9.75 9.5C9.75 10.3443 10.6235 11.25 12 11.25C13.9372 11.25 15.75 12.5828 15.75 14.5C15.75 16.1664 14.3804 17.3913 12.75 17.6833V18C12.75 18.4142 12.4142 18.75 12 18.75C11.5858 18.75 11.25 18.4142 11.25 18V17.6833C9.61957 17.3913 8.25 16.1664 8.25 14.5C8.25 14.0858 8.58579 13.75 9 13.75C9.41421 13.75 9.75 14.0858 9.75 14.5C9.75 15.3443 10.6235 16.25 12 16.25C13.3765 16.25 14.25 15.3443 14.25 14.5C14.25 13.6557 13.3765 12.75 12 12.75C10.0628 12.75 8.25 11.4172 8.25 9.5C8.25 7.83361 9.61957 6.60867 11.25 6.31673V6C11.25 5.58579 11.5858 5.25 12 5.25Z"
+                                        fill="#1C274C" />
+                                </svg>
+                            </span>
+                            Assets
                         </div>
 
-                        <div style="overflow-x: auto;">
-                            <table class="crypto-table">
+                        <div class="assets-table-wrap">
+                            <table class="crypto-table assets-table">
                                 <thead>
                                     <tr>
-                                        <th>Asset</th>
-                                        <th style="text-align: right;">Balance</th>
-                                        <th style="text-align: right;">Amount</th>
-                                        <th>Unit</th>
-                                        <th style="text-align: right;">Rate Amount</th>
-                                        <th style="text-align: right;">Total Asset</th>
-                                        <th style="text-align: right;">Transfer Fee (%)</th>
-                                        <th style="text-align: right;">Platform Fee (%)</th>
-                                        <th style="text-align: right;">Total Fee</th>
+                                        <th class="assets-col-asset">Assets</th>
+                                        <th class="assets-col-balance">Balance</th>
+                                        <th class="assets-col-amount">Amount</th>
+                                        <th class="assets-col-price">Price</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>
-                                            <div style="display: flex; align-items: center; gap: 12px;">
+                                        <td class="assets-cell-asset">
+                                            <div class="asset-main">
                                                 <div class="crypto-icon">₿</div>
-                                                <div>
-                                                    <div style="font-weight: 600;">Bitcoin</div>
-                                                    <div style="font-size: 12px; color: var(--grey-500);">BTC</div>
+                                                <div class="asset-text">
+                                                    <div class="asset-name">Bitcoin</div>
+                                                    <div class="asset-balance-mobile">0.0003593 BTC</div>
+                                                    <div class="asset-amount-mobile">$25</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td style="text-align: right; font-weight: 600;">0.05000000</td>
-                                        <td style="text-align: right; font-weight: 600;">$2,250.00</td>
-                                        <td>USD</td>
-                                        <td style="text-align: right;">$45,000.00</td>
-                                        <td style="text-align: right; font-weight: 700; color: var(--primary-main);">
-                                            $2,250.00</td>
-                                        <td style="text-align: right;">1.5%</td>
-                                        <td style="text-align: right;">Free</td>
-                                        <td style="text-align: right; font-weight: 600; color: #ff5630;">$33.75</td>
+                                        <td class="assets-cell-balance">
+                                            <div class="asset-balance">0.0003593</div>
+                                        </td>
+                                        <td class="assets-cell-amount">
+                                            <div class="asset-amount">$25</div>
+                                        </td>
+                                        <td class="assets-cell-price">
+                                            <div class="asset-price">$69,583.615</div>
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <div style="display: flex; align-items: center; gap: 12px;">
+                                        <td class="assets-cell-asset">
+                                            <div class="asset-main">
                                                 <div class="crypto-icon">Ξ</div>
-                                                <div>
-                                                    <div style="font-weight: 600;">Ethereum</div>
-                                                    <div style="font-size: 12px; color: var(--grey-500);">ETH</div>
+                                                <div class="asset-text">
+                                                    <div class="asset-name">Ethereum</div>
+                                                    <div class="asset-balance-mobile">0.01214 ETH</div>
+                                                    <div class="asset-amount-mobile">$25</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td style="text-align: right; font-weight: 600;">0.10000000</td>
-                                        <td style="text-align: right; font-weight: 600;">$250.00</td>
-                                        <td>USD</td>
-                                        <td style="text-align: right;">$2,500.00</td>
-                                        <td style="text-align: right; font-weight: 700; color: var(--primary-main);">
-                                            $250.00</td>
-                                        <td style="text-align: right;">1.5%</td>
-                                        <td style="text-align: right;">Free</td>
-                                        <td style="text-align: right; font-weight: 600; color: #ff5630;">$3.75</td>
-                                    </tr>
-                                    <tr style="background: var(--grey-50);">
-                                        <td colspan="5" style="text-align: right; font-weight: 700; font-size: 15px;">
-                                            Total</td>
-                                        <td
-                                            style="text-align: right; font-weight: 700; font-size: 15px; color: var(--primary-main);">
-                                            $2,500.00</td>
-                                        <td colspan="2"></td>
-                                        <td
-                                            style="text-align: right; font-weight: 700; font-size: 15px; color: #ff5630;">
-                                            $37.50</td>
+                                        <td class="assets-cell-balance">
+                                            <div class="asset-balance">0.01214</div>
+                                        </td>
+                                        <td class="assets-cell-amount">
+                                            <div class="asset-amount">$25</div>
+                                        </td>
+                                        <td class="assets-cell-price">
+                                            <div class="asset-price">$2,059.61</div>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1296,6 +1622,12 @@
             event.target.classList.add('active');
         }
 
+        function toggleCryptoPreviewFlip() {
+            const el = document.getElementById('cryptoPreviewFlip');
+            if (!el) return;
+            el.classList.toggle('flipped');
+        }
+
         function openReloadModal() {
             const modal = document.getElementById('reloadModal');
             if (modal) {
@@ -1494,6 +1826,24 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
+            const params = new URLSearchParams(window.location.search);
+            const statusParam = params.get('status');
+            if (statusParam) {
+                const badge = document.getElementById('cryptoStatusBadge');
+                if (badge) {
+                    badge.textContent = statusParam;
+                    badge.classList.remove('status-active', 'status-draft', 'status-cancelled');
+                    if (statusParam.toUpperCase() === 'APPROVED') {
+                        badge.classList.add('status-active');
+                    } else if (statusParam.toUpperCase() === 'DRAFT' || statusParam.toUpperCase() === 'AWAITING APPROVAL') {
+                        badge.classList.add('status-draft');
+                    } else if (statusParam.toUpperCase() === 'EXPIRED' || statusParam.toUpperCase() === 'CANCELLED') {
+                        badge.classList.add('status-cancelled');
+                    } else {
+                        badge.classList.add('status-draft');
+                    }
+                }
+            }
             const assetSelect = document.getElementById('reloadAsset');
             const amountInput = document.getElementById('reloadAmount');
             const amountUnitSelect = document.getElementById('reloadAmountUnit');

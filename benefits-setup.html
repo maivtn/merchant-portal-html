@@ -1542,17 +1542,22 @@
         ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sort-ic"><polyline points="18 15 12 9 6 15"/></svg>`
         : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sort-ic"><polyline points="6 9 12 15 18 9"/></svg>`;
     }
+    function toCapitalize(str) {
+      if (!str) return str;
+      return String(str).toLowerCase().replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    }
     function badgeHtml(val, type = 'benefit') {
+      const label = toCapitalize(val);
       if (type === 'benefit') {
         const cls = val === 'ACTIVE' ? 'badge-active' : 'badge-inactive';
-        return `<span class="badge ${cls}">${val}</span>`;
+        return `<span class="badge ${cls}">${label}</span>`;
       }
       if (type === 'sale') {
         const cls = val === 'ACTIVE' ? 'badge-active' : 'badge-inactive';
-        return `<span class="badge ${cls}">${val}</span>`;
+        return `<span class="badge ${cls}">${label}</span>`;
       }
       const map = { APPROVED: 'badge-approved', PENDING: 'badge-pending', REJECTED: 'badge-rejected', DRAFT: 'badge-draft' };
-      return `<span class="badge ${map[val] || 'badge-draft'}">${val}</span>`;
+      return `<span class="badge ${map[val] || 'badge-draft'}">${label}</span>`;
     }
 
     /* ═══════════════════════════════════════════════════════
@@ -1618,7 +1623,7 @@
           if (c.key === 'status') {
             if (activeTab === 'benefit') {
               const isActive = r.status === 'ACTIVE';
-              return `<td><div class="status-cell"><label class="toggle status-toggle"><input type="checkbox" ${isActive ? 'checked' : ''} onchange="toggleStatus('${r.id}', this)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label><span class="status-badge-pill status-${isActive ? 'active' : 'inactive'}">${r.status}</span></div></td>`;
+              return `<td><div class="status-cell"><label class="toggle status-toggle"><input type="checkbox" ${isActive ? 'checked' : ''} onchange="toggleStatus('${r.id}', this)"><div class="toggle-track"></div><div class="toggle-thumb"></div></label><span class="status-badge-pill status-${isActive ? 'active' : 'inactive'}">${toCapitalize(r.status)}</span></div></td>`;
             }
             return `<td>${badgeHtml(r.status, 'pkg')}</td>`;
           }
@@ -1675,7 +1680,7 @@
                 <div class="toggle-track"></div>
                 <div class="toggle-thumb"></div>
               </label>
-              <span class="status-badge-pill status-${r.status === 'ACTIVE' ? 'active' : 'inactive'}">${r.status}</span>
+              <span class="status-badge-pill status-${r.status === 'ACTIVE' ? 'active' : 'inactive'}">${toCapitalize(r.status)}</span>
               <button class="btn-view-m" onclick="openViewBenefitModal('${r.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
             </div>
           </div>`).join('');

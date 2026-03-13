@@ -205,6 +205,25 @@
     .table-wrapper {
       width: 100%;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      /* Reserve space so horizontal scrollbar is visible when table overflows */
+      scrollbar-gutter: stable;
+    }
+
+    /* Always show horizontal scrollbar when content can scroll (avoids overlay-only scrollbars) */
+    .table-wrapper::-webkit-scrollbar {
+      height: 8px;
+    }
+    .table-wrapper::-webkit-scrollbar-track {
+      background: #f4f6f8;
+      border-radius: 4px;
+    }
+    .table-wrapper::-webkit-scrollbar-thumb {
+      background: #c4cdd5;
+      border-radius: 4px;
+    }
+    .table-wrapper::-webkit-scrollbar-thumb:hover {
+      background: #919eab;
     }
 
     @media (max-width: 767px) {
@@ -216,7 +235,7 @@
     .data-table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 2060px;
+      min-width: 2200px;
     }
 
     .data-table th {
@@ -1413,7 +1432,7 @@
               <option value="AWAITING APPROVAL">AWAITING APPROVAL</option>
               <option value="APPROVED">APPROVED</option>
               <option value="CANCELLED">CANCELLED</option>
-              <option value="EXPIRED">EXPIRED</option>
+              <option value="DRAFT">Draft</option>
             </select>
             <i data-lucide="chevron-down" class="field-chevron" style="width:16px;height:16px;"></i>
           </div>
@@ -1686,7 +1705,7 @@
               <option value="AWAITING APPROVAL">AWAITING APPROVAL</option>
               <option value="APPROVED">APPROVED</option>
               <option value="CANCELLED">CANCELLED</option>
-              <option value="EXPIRED">EXPIRED</option>
+              <option value="DRAFT">Draft</option>
             </select>
             <i data-lucide="chevron-down" class="field-chevron" style="width:16px;height:16px;"></i>
           </div>
@@ -1814,12 +1833,22 @@
       },
       {
         id: '#PRD-10262', name: 'Crypto Card', category: 'Crypto Card',
-        issueMode: 'Store', productStatus: 'EXPIRED',
+        issueMode: 'Store', productStatus: 'DRAFT',
         salesStatus: '—', cardNumber: '7777 **** **** 1234', cardLocked: 'LOCKED',
         amount: 250, amountDisplay: '$250.00', sold: '—', available: '—',
         expiryTime: '2024-01-31', campaignName: '—',
         redeemBy: '—', lastRedeem: '2024-01-15 11:20',
         createdDate: '2024-01-01', lastUpdated: '2024-01-31',
+        detailUrl: 'crypto-card-details.html'
+      },
+      {
+        id: '#PRD-10264', name: 'Crypto Card', category: 'Crypto Card',
+        issueMode: 'Store', productStatus: 'APPROVED',
+        salesStatus: 'ACTIVE', cardNumber: '5521 **** **** 7734', cardLocked: 'UNLOCKED',
+        amount: 500, amountDisplay: '$500.00', sold: 12, available: 88,
+        expiryTime: '2025-12-31', campaignName: '—',
+        redeemBy: 'customer@email.com', lastRedeem: '2024-08-20 10:30',
+        createdDate: '2024-06-15', lastUpdated: '2024-08-20',
         detailUrl: 'crypto-card-details.html'
       },
       {
@@ -1869,30 +1898,36 @@
     let tempToDate = '';
 
     // ===== Badge Helpers =====
+    function toCapitalize(str) {
+      if (!str || str === '—') return str;
+      return String(str).toLowerCase().replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    }
+
     function productStatusBadge(status) {
       if (status === '—') return '<span class="td-dash">—</span>';
       const map = {
         'AWAITING APPROVAL': 'badge-awaiting',
         'APPROVED': 'badge-approved',
         'CANCELLED': 'badge-cancelled',
-        'EXPIRED': 'badge-expired'
+        'DRAFT': 'badge-draft'
       };
-      const cls = map[status] || 'badge-expired';
-      return `<span class="badge ${cls}">${status}</span>`;
+      const cls = map[status] || 'badge-draft';
+      const label = toCapitalize(status);
+      return `<span class="badge ${cls}">${label}</span>`;
     }
 
     function salesStatusBadge(status) {
       if (status === '—') return '<span class="td-dash">—</span>';
       const map = { 'ACTIVE': 'badge-active', 'IN-ACTIVE': 'badge-inactive' };
       const cls = map[status] || 'badge-inactive';
-      return `<span class="badge ${cls}">${status}</span>`;
+      return `<span class="badge ${cls}">${toCapitalize(status)}</span>`;
     }
 
     function cardLockedBadge(status) {
       if (status === '—') return '<span class="td-dash">—</span>';
       const map = { 'LOCKED': 'badge-locked', 'UNLOCKED': 'badge-unlocked' };
       const cls = map[status] || 'badge-locked';
-      return `<span class="badge ${cls}">${status}</span>`;
+      return `<span class="badge ${cls}">${toCapitalize(status)}</span>`;
     }
 
     function formatDate(d) {

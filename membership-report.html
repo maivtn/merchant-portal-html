@@ -9,8 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="global.js" defer></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
   <style>
     /* ── Card wrapper ──────────────────────────────────── */
     .report-card {
@@ -64,6 +66,15 @@
       gap: 12px;
       border-bottom: 1px dashed rgba(145,158,171,.3);
       flex-wrap: nowrap;
+    }
+
+    .toolbar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: nowrap;
+      flex: 1;
+      min-width: 0;
     }
 
     /* Search field */
@@ -129,30 +140,50 @@
     .date-input {
       width: 180px;
       height: 48px;
-      padding: 0 36px 0 12px;
+      padding: 0 40px 0 12px;
       border: 1px solid #dfe3e8;
       border-radius: 8px;
       font-size: 14px;
       font-family: inherit;
       color: #212b36;
       outline: none;
-      transition: 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
       cursor: pointer;
+      background: #fff;
     }
 
     .date-input::placeholder { color: #919eab; }
-    .date-input:focus { border-color: #212b36; }
+    .date-input:hover { border-color: #c4cdd5; }
+    .date-input:focus { border-color: #00a76f; box-shadow: 0 0 0 3px rgba(0, 167, 111, 0.12); }
 
-    .date-input::-webkit-calendar-picker-indicator { opacity: 0; position: absolute; right: 0; width: 100%; cursor: pointer; }
-
+    .date-input-wrap.flatpickr-wrapper .date-input { padding-right: 40px; }
     .date-icon {
       position: absolute;
-      right: 10px;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
       color: #919eab;
       pointer-events: none;
       width: 18px;
       height: 18px;
     }
+
+    /* Flatpickr calendar theme */
+    .flatpickr-calendar {
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.12);
+      border: 1px solid #e5e7eb;
+    }
+    .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+      background: #00a76f;
+      border-color: #00a76f;
+    }
+    .flatpickr-day:hover { border-color: #00a76f; background: rgba(0, 167, 111, 0.08); }
+    .flatpickr-months .flatpickr-month { background: #00a76f; }
+    .flatpickr-current-month .flatpickr-monthDropdown-months:hover { background: rgba(255,255,255,.1); }
+    .flatpickr-weekday { color: #637381; }
+    .flatpickr-months .flatpickr-prev-month:hover svg,
+    .flatpickr-months .flatpickr-next-month:hover svg { fill: rgba(255,255,255,.9); }
 
     /* Mobile filter button */
     .btn-filter-mobile {
@@ -422,9 +453,12 @@
       color: #212b36;
       outline: none;
       box-sizing: border-box;
+      cursor: pointer;
+      background: #fff;
     }
 
-    .filter-date-input:focus { border-color: #212b36; }
+    .filter-date-input:hover { border-color: #c4cdd5; }
+    .filter-date-input:focus { border-color: #00a76f; box-shadow: 0 0 0 3px rgba(0, 167, 111, 0.12); }
 
     .filter-modal-footer {
       display: flex;
@@ -463,6 +497,7 @@
       .tab-btn { font-size: 12px; padding: 12px 4px; margin-right: 16px; }
       .tab-bar { padding: 0 16px; }
       .table-toolbar { padding: 12px 16px; gap: 8px; flex-wrap: nowrap; }
+      .toolbar-row { flex: 1; min-width: 0; gap: 8px; }
       .search-wrap { flex: 1; width: auto; }
       .search-input { height: 38px; font-size: 13px; }
       .search-wrap svg { width: 16px; height: 16px; }
@@ -482,6 +517,7 @@
 
     @media (min-width: 768px) and (max-width: 1023px) {
       .table-toolbar { flex-wrap: nowrap; gap: 10px; }
+      .toolbar-row { flex-wrap: nowrap; gap: 10px; }
       .search-wrap { width: 220px; min-width: 0; flex-shrink: 1; }
     }
   </style>
@@ -609,32 +645,31 @@
         <button class="tab-btn" id="tab-package" onclick="switchTab('package')">Membership Package Report</button>
       </div>
 
-      <!-- ── Toolbar ── -->
+      <!-- ── Toolbar (search + filter in one row) ── -->
       <div class="table-toolbar">
-        <div class="search-wrap">
-          <i data-lucide="search"></i>
-          <input type="text" class="search-input" id="searchInput"
-            placeholder="Search by Card number or Package Name"
-            oninput="onSearch()" />
-        </div>
-
-        <!-- Desktop date filters -->
-        <div class="date-wrap" id="dateWrapFrom">
-          <span class="date-label">Start date</span>
-          <div class="date-input-wrap">
-            <input type="date" class="date-input" id="dateFrom" onchange="applyFilters()" />
-            <i data-lucide="calendar" class="date-icon"></i>
+        <div class="toolbar-row">
+          <div class="search-wrap">
+            <i data-lucide="search"></i>
+            <input type="text" class="search-input" id="searchInput"
+              placeholder="Search by Card number or Package Name"
+              oninput="onSearch()" />
+          </div>
+          <!-- Desktop date filters -->
+          <div class="date-wrap" id="dateWrapFrom">
+            <span class="date-label">Start date</span>
+            <div class="date-input-wrap">
+              <input type="text" class="date-input" id="dateFrom" placeholder="Pick a date" readonly />
+              <i data-lucide="calendar" class="date-icon"></i>
+            </div>
+          </div>
+          <div class="date-wrap" id="dateWrapTo">
+            <span class="date-label">End date</span>
+            <div class="date-input-wrap">
+              <input type="text" class="date-input" id="dateTo" placeholder="Pick a date" readonly />
+              <i data-lucide="calendar" class="date-icon"></i>
+            </div>
           </div>
         </div>
-
-        <div class="date-wrap" id="dateWrapTo">
-          <span class="date-label">End date</span>
-          <div class="date-input-wrap">
-            <input type="date" class="date-input" id="dateTo" onchange="applyFilters()" />
-            <i data-lucide="calendar" class="date-icon"></i>
-          </div>
-        </div>
-
         <!-- Mobile filter button -->
         <button class="btn-filter-mobile" onclick="openFilterModal()">
           <i data-lucide="filter"></i>
@@ -687,11 +722,11 @@
       </div>
       <div class="filter-group">
         <label class="filter-group-label">Start date</label>
-        <input type="date" class="filter-date-input" id="mDateFrom" />
+        <input type="text" class="filter-date-input" id="mDateFrom" placeholder="Pick a date" readonly />
       </div>
       <div class="filter-group">
         <label class="filter-group-label">End date</label>
-        <input type="date" class="filter-date-input" id="mDateTo" />
+        <input type="text" class="filter-date-input" id="mDateTo" placeholder="Pick a date" readonly />
       </div>
       <div class="filter-modal-footer">
         <button class="btn-reset" onclick="resetMobileFilter()">Reset</button>
@@ -1027,6 +1062,37 @@
     document.addEventListener('DOMContentLoaded', () => {
       render();
       lucide.createIcons();
+
+      if (window.flatpickr) {
+        flatpickr('#dateFrom', {
+          dateFormat: 'Y-m-d',
+          allowInput: false,
+          disableMobile: true,
+          onChange(selectedDates, dateStr) {
+            document.getElementById('dateFrom').value = dateStr;
+            applyFilters();
+          }
+        });
+        flatpickr('#dateTo', {
+          dateFormat: 'Y-m-d',
+          allowInput: false,
+          disableMobile: true,
+          onChange(selectedDates, dateStr) {
+            document.getElementById('dateTo').value = dateStr;
+            applyFilters();
+          }
+        });
+        flatpickr('#mDateFrom', {
+          dateFormat: 'Y-m-d',
+          allowInput: false,
+          disableMobile: true
+        });
+        flatpickr('#mDateTo', {
+          dateFormat: 'Y-m-d',
+          allowInput: false,
+          disableMobile: true
+        });
+      }
     });
   </script>
 </body>

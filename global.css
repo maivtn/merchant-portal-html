@@ -1019,3 +1019,152 @@ td.col-actions .action-btns { justify-content: flex-end !important; }
     min-width: 0 !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   PAGINATION — shared across list/table pages
+   Use: .pagination > .pagination-rows + .pagination-info + .pagination-btn(s)
+═══════════════════════════════════════════════════════ */
+.pagination,
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 12px 24px;
+  border-top: 1px dashed rgba(145, 158, 171, 0.24);
+  flex-wrap: wrap;
+}
+
+.pagination-rows,
+.pagination-rows-label,
+.pag-rows {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--grey-600);
+}
+
+.pagination-select-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.pagination-select,
+.pag-select {
+  height: 32px;
+  min-height: 32px;
+  padding: 4px 28px 4px 12px;
+  border: 1px solid var(--grey-300);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--grey-800);
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.pagination-select-chevron {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--grey-600);
+  display: block;
+  line-height: 0;
+}
+
+.pagination-info {
+  font-size: 13px;
+  color: var(--grey-600);
+  margin-left: auto;
+}
+
+.pagination-arrows {
+  display: flex;
+  gap: 4px;
+}
+
+.pagination-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--grey-300);
+  background: #fff;
+  color: var(--grey-600);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: var(--grey-100);
+  border-color: var(--grey-300);
+  color: var(--grey-800);
+}
+
+.pagination-btn:disabled {
+  color: var(--grey-500);
+  cursor: not-allowed;
+  border-color: var(--grey-200);
+  background: var(--grey-100);
+}
+
+.pagination-btn svg,
+.pagination-btn i {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 767px) {
+  .pagination,
+  .pagination-bar {
+    padding: 12px 16px;
+    gap: 12px;
+    justify-content: center;
+  }
+  .pagination-rows span,
+  .pagination-rows-label span,
+  .pag-rows span {
+    display: none;
+  }
+  .pagination-rows,
+  .pagination-rows-label,
+  .pag-rows {
+    font-size: 12px;
+    gap: 6px;
+  }
+  .pagination-select-wrap {
+    max-width: 56px;
+  }
+  .pagination-select,
+  .pag-select {
+    width: 100%;
+    min-width: 0;
+    max-width: 56px;
+    padding: 6px 20px 6px 6px;
+    font-size: 12px;
+    min-height: 32px;
+  }
+  .pagination-select-chevron {
+    right: 4px;
+  }
+  .pagination-info {
+    font-size: 12px;
+  }
+  .pagination-btn {
+    width: 36px;
+    height: 36px;
+  }
+  .pagination-btn svg,
+  .pagination-btn i {
+    width: 18px;
+    height: 18px;
+  }
+}

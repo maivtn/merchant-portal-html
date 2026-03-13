@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Create Membership Package - VLINKPAY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <!-- Tom Select (benefit dropdown with icon + checkbox) -->
+  <link href="https://cdn.jsdelivr.net/npm/tom-select@2.5.2/dist/css/tom-select.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.5.2/dist/js/tom-select.complete.min.js"></script>
   <link rel="stylesheet" href="global.css">
   <script src="global.js" defer></script>
   <style>
     :root {
       --c-primary: #00A76F;
-      --c-primary-low: rgba(0,167,111,0.08);
-      --c-primary-border: rgba(0,167,111,0.28);
+      --c-primary-low: rgba(0, 167, 111, 0.08);
+      --c-primary-border: rgba(0, 167, 111, 0.28);
       --c-border: #e2e8f0;
       --c-surface: #ffffff;
       --c-surface-subtle: #f8fafc;
@@ -30,10 +36,80 @@
       --transition-base: 0.2s ease;
     }
 
+    /* ─── TOP HEADER (align with global.css) ─── */
+    .top-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 24px;
+    }
+    .top-header .header-left {
+      display: none;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .top-header .header-right {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+    }
+    .header-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--c-border);
+      color: var(--c-text-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    /* Hamburger: 3-line icon, shown only when .hamburger-btn is displayed (global @1023px) */
+    .hamburger,
+    .hamburger-btn {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: none;
+      border-radius: 8px;
+      background: none;
+      cursor: pointer;
+      color: var(--c-text-2);
+      transition: background 0.15s, color 0.15s;
+    }
+    .hamburger:hover,
+    .hamburger-btn:hover {
+      background: var(--c-border);
+      color: var(--c-text-1);
+    }
+    .hamburger span,
+    .hamburger-btn span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      border-radius: 1px;
+      background: currentColor;
+    }
+    @media (max-width: 1023px) {
+      .top-header .header-left { display: flex; }
+      .hamburger,
+      .hamburger-btn { display: flex; }
+    }
+    @media (max-width: 767px) {
+      .top-header { padding: 0 12px 0 16px; }
+    }
+
     /* ─── LAYOUT ─── */
     .cmp-layout {
       display: grid;
-      grid-template-columns: 340px 1fr;
+      grid-template-columns: 420px 1fr;
       gap: 28px;
       align-items: start;
       margin-top: 24px;
@@ -41,406 +117,1889 @@
 
     /* ─── PAGE HEADER ─── */
     .page-header-row {
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 12px; margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 4px;
     }
-    .page-header-left { display: flex; align-items: center; gap: 10px; }
+
+    .page-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .btn-back {
-      width: 36px; height: 36px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--c-text-2); background: transparent;
-      border: none; cursor: pointer; transition: var(--transition-base);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--c-text-2);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition-base);
       text-decoration: none;
     }
-    .btn-back:hover { background: var(--c-border); color: var(--c-text-1); }
-    .page-title { font-size: 22px; font-weight: 700; color: var(--c-text-1); }
-    .btn-save-later {
-      display: flex; align-items: center; gap: 6px;
-      padding: 9px 18px; border-radius: var(--radius-sm);
-      border: 1.5px solid var(--c-primary);
-      background: var(--c-surface); color: var(--c-primary);
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      transition: var(--transition-base); font-family: inherit;
+
+    .btn-back:hover {
+      background: var(--c-border);
+      color: var(--c-text-1);
     }
-    .btn-save-later:hover { background: var(--c-primary-low); }
-    .required-note { font-size: 12px; color: #ff5630; font-weight: 500; margin-bottom: 16px; }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--c-text-1);
+    }
+
+    .btn-save-later {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--c-primary);
+      background: var(--c-surface);
+      color: var(--c-primary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-base);
+      font-family: inherit;
+    }
+
+    .btn-save-later:hover {
+      background: var(--c-primary-low);
+    }
+
+    .required-note {
+      font-size: 12px;
+      color: #ff5630;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
 
     /* ─── LEFT PANEL ─── */
     .panel-card {
-      background: var(--c-surface); border-radius: var(--radius-lg);
-      box-shadow: 0 0 2px rgba(145,158,171,0.2), 0 12px 24px -4px rgba(145,158,171,0.12);
-      overflow: hidden; margin-bottom: 16px;
+      background: var(--c-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 0 2px rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12);
+      overflow: hidden;
+      margin-bottom: 16px;
     }
-    .panel-card:last-child { margin-bottom: 0; }
 
-    /* ─── MEMBERSHIP CARD PREVIEW ─── */
-    .pkg-card-wrap {
-      padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 0;
+    .panel-card:last-child {
+      margin-bottom: 0;
     }
-    .pkg-card {
-      width: 100%; max-width: 280px;
+
+    /* Panel card header + collapse (ref: issue-digital) */
+    .panel-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--c-border);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .panel-card-header .header-icon {
+      color: var(--c-primary);
+      display: flex;
+      align-items: center;
+    }
+
+    .panel-card-header .header-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--c-text-1);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex: 1;
+    }
+
+    .panel-card-header .chevron {
+      color: var(--c-text-3);
+      transition: transform 0.2s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .panel-card-header.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    .panel-card-body {
+      padding: 20px;
+    }
+
+    .collapse-wrap {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.25s ease;
+      opacity: 0;
+    }
+
+    .collapse-wrap.open {
+      max-height: 2000px;
+      opacity: 1;
+    }
+
+    /* Design Collection (ref: issue-digital) */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .color-dots {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .panel-card-header .header-actions {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+      margin-right: 4px;
+    }
+
+    .btn-panel-action {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--c-border);
+      background: var(--c-surface);
+      color: var(--c-text-2);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .btn-panel-action:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+    }
+
+    /* Brand Identity — Style Tags & AI (from issue-digital.html) */
+    .style-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .style-tag {
+      padding: 5px 12px;
       border-radius: 20px;
-      padding: 24px 22px 20px;
+      background: var(--c-surface-subtle);
+      border: 1px solid var(--c-border);
+      color: var(--c-text-2);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-base);
+      font-family: inherit;
+    }
+
+    .style-tag:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+    }
+
+    .style-tag.active {
+      background: var(--c-text-1);
+      border-color: var(--c-text-1);
+      color: #fff;
+    }
+
+    .ai-textarea-wrap {
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      background: var(--c-surface);
+      margin-bottom: 10px;
+      transition: border-color var(--transition-base);
+    }
+
+    .ai-textarea-wrap:focus-within {
+      border-color: var(--c-primary);
+    }
+
+    .ai-textarea-wrap textarea {
+      width: 100%;
+      border: none;
+      background: transparent;
+      resize: none;
+      min-height: 72px;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--c-text-1);
+      line-height: 1.6;
+      outline: none;
+    }
+
+    .ai-textarea-wrap textarea::placeholder {
+      color: var(--c-text-3);
+    }
+
+    .ai-prompts-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+      margin-bottom: 8px;
+    }
+
+    .ai-prompts-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--c-text-3);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .ai-prompts-label span {
+      color: var(--c-primary);
+    }
+
+    .ai-category-select {
+      padding: 5px 28px 5px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-xs);
+      background: var(--c-surface);
+      appearance: none;
+      color: var(--c-text-2);
+      cursor: pointer;
+      outline: none;
+      font-family: inherit;
+      max-width: 170px;
+    }
+
+    .ai-category-select:focus {
+      border-color: var(--c-primary);
+    }
+
+    .ai-prompts-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--c-border) transparent;
+    }
+
+    .ai-prompt-badge {
+      padding: 7px 10px;
+      border-radius: var(--radius-xs);
+      border: 1.5px solid var(--c-border);
+      background: var(--c-surface-subtle);
+      font-size: 11px;
+      color: var(--c-text-2);
+      cursor: pointer;
+      transition: var(--transition-base);
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ai-prompt-badge:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+      background: var(--c-primary-low);
+    }
+
+    .btn-ai-gen {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--c-primary);
+      background: var(--c-primary-low);
+      color: var(--c-primary);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition-base);
+      font-family: inherit;
+      width: 100%;
+    }
+
+    .btn-ai-gen:hover {
+      background: rgba(0, 167, 111, 0.16);
+    }
+
+    .btn-ai-gen:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    /* Business Information (ref: issue-digital) */
+    .biz-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .biz-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .biz-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 96px;
+      flex-shrink: 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-text-3);
+    }
+
+    .biz-input {
+      flex: 1;
+      height: 40px;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      background: var(--c-surface);
+      font-size: 13px;
+      color: var(--c-text-1);
+      font-family: inherit;
+      padding: 0 12px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .biz-input:focus {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px rgba(0, 171, 85, 0.1);
+    }
+
+    .btn-biz-save {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 28px;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--c-primary);
+      font-size: 13px;
+      font-weight: 600;
+      border: 1.5px solid var(--c-primary);
+      cursor: pointer;
+      margin-top: 14px;
+      font-family: inherit;
+    }
+
+    .btn-biz-save:hover {
+      background: var(--c-primary-low);
+    }
+
+    .biz-phone-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      height: 40px;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      background: var(--c-surface);
+      overflow: hidden;
+      transition: border-color var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .biz-phone-wrap:focus-within {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px rgba(0, 167, 85, 0.10);
+    }
+
+    .biz-dial-select {
+      height: 100%;
+      border: none;
+      outline: none;
+      background: var(--c-surface-subtle);
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--c-text-1);
+      font-weight: 600;
+      padding: 0 8px 0 10px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      min-width: 76px;
+    }
+
+    .biz-phone-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--c-border);
+      flex-shrink: 0;
+    }
+
+    .biz-phone-input {
+      flex: 1;
+      height: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--c-text-1);
+      padding: 0 12px;
+    }
+
+    .biz-phone-input::placeholder {
+      color: #b0b8c1;
+    }
+
+    /* Step card + Terms (ref: issue-digital) */
+    .step-card {
+      background: var(--c-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 0 2px rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .step-card .step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      user-select: none;
+      flex-wrap: wrap;
+    }
+
+    .step-card .step-header:hover {
+      background: var(--c-surface-subtle);
+    }
+
+    .step-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--c-primary-low);
+      color: var(--c-primary);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-title-text {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--c-text-1);
+    }
+
+    .step-title-text .step-required {
+      color: #ff5630;
+      font-size: 13px;
+      margin-left: 2px;
+    }
+
+    .step-card .step-chevron {
+      color: var(--c-text-3);
+      transition: transform 0.2s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .step-card .step-header.open .step-chevron {
+      transform: rotate(180deg);
+    }
+
+    .step-card .step-body {
+      padding: 0 20px 20px;
+    }
+
+    .terms-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .terms-actions-header {
+      margin-left: auto;
+      margin-bottom: 0;
+    }
+
+    .btn-terms {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 14px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--c-border);
+      background: var(--c-surface);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-text-2);
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-terms:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+    }
+
+    .terms-box {
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      background: var(--c-surface);
+      transition: border-color 0.2s;
+    }
+
+    .terms-box:focus-within {
+      border-color: var(--c-primary);
+    }
+
+    .terms-textarea {
+      width: 100%;
+      border: none;
+      resize: none;
+      min-height: 100px;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--c-text-2);
+      line-height: 1.7;
+      outline: none;
+    }
+
+    .suggested-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin: 14px 0 8px;
+    }
+
+    .suggested-terms {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .term-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      border-radius: var(--radius-xs);
+      background: var(--c-surface-subtle);
+      border: 1px solid var(--c-border);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-text-2);
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .term-chip:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+      background: var(--c-primary-low);
+    }
+
+    .adv-accordion-trigger {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      cursor: pointer;
+      padding: 8px 0;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      width: 100%;
+      border-top: 1px dashed var(--c-border);
+      margin-top: 4px;
+    }
+
+    .adv-accordion-trigger:hover {
+      color: var(--c-text-1);
+    }
+
+    .adv-accordion-trigger i {
+      transition: transform 0.2s ease;
+    }
+
+    .adv-accordion-trigger i.open {
+      transform: rotate(180deg);
+    }
+
+    .adv-accordion-body {
+      padding: 12px 0 0;
+    }
+
+    /* ─── MEMBERSHIP CARD PREVIEW (AC: Preview-Card-AC.md) ─── */
+    .pkg-card-wrap {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .pkg-card {
+      box-sizing: border-box;
+      width: 292px;
+      min-height: 376px;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+      border-radius: 16px;
+      padding: 24px;
       position: relative;
-      min-height: 210px;
-      display: flex; flex-direction: column; align-items: center;
-      background: linear-gradient(135deg, #1a1f2e 0%, #2d3148 50%, #1e2235 100%);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(109.907deg, var(--pkg-brand-color, #101828) 8.49%, #1f2937 50%, var(--pkg-brand-color, #101828) 91.51%);
+      border: 1px solid rgba(255, 255, 255, 0.07);
       color: #fff;
       overflow: hidden;
       transition: background 0.3s;
     }
-    .pkg-card::before {
-      content: ''; position: absolute; inset: 0; border-radius: 20px;
-      background: inherit; opacity: 0.9;
+
+    .pkg-card>* {
+      position: relative;
+      z-index: 1;
     }
-    .pkg-card > * { position: relative; z-index: 1; }
-    .pkg-badge-row {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      width: 100%; margin-bottom: 12px;
-    }
+
+    /* FR-2: Save badge — absolute top-left, flag shape */
     .pkg-save-badge {
-      background: #ff9500; color: #fff; font-size: 10px; font-weight: 700;
-      padding: 3px 8px; border-radius: 6px; letter-spacing: 0.4px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      background: var(--pkg-accent-color, #F7931A);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 16px 0 24px 0;
     }
+
+    /* FR-3: Most Popular badge — absolute top-right */
     .pkg-popular-badge {
-      background: rgba(255,255,255,0.15); color: #fff;
-      font-size: 10px; font-weight: 600; padding: 3px 10px;
-      border-radius: 20px; border: 1px solid rgba(255,255,255,0.25);
-      backdrop-filter: blur(4px);
+      position: absolute;
+      top: 0;
+      right: 8px;
+      z-index: 2;
+      background: #fff;
+      color: #000;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 0 0 12px 12px;
     }
+
+    /* FR-4: Package icon — center, 56px, accent border + glow */
     .pkg-icon-circle {
-      width: 52px; height: 52px; border-radius: 50%;
-      border: 2px solid rgba(255,165,0,0.6);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 10px; background: rgba(255,165,0,0.1);
-      color: #ffad33;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 2px solid var(--pkg-accent-color, #F7931A);
+      box-shadow: 0 0 15px 0 rgba(247, 147, 26, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: var(--pkg-accent-color, #F7931A);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 40px;
+      background: transparent;
+      color: inherit;
+      font-size: 24px;
+      line-height: 1;
     }
+
+    .pkg-icon-circle svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* FR-5: Package name — Playfair Display, accent color */
     .pkg-name-preview {
-      font-size: 22px; font-weight: 800; letter-spacing: 2px;
-      text-align: center; margin-bottom: 2px;
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 2.2px;
+      text-align: center;
+      margin-top: 16px;
+      margin-bottom: 16px;
+      color: var(--pkg-accent-color, #F7931A);
+      text-transform: uppercase;
       transition: color 0.2s;
     }
+
+    /* FR-6: Price — 32px white, period muted */
     .pkg-price-preview {
-      font-size: 26px; font-weight: 800; text-align: center;
-      margin-bottom: 2px; transition: color 0.2s;
+      font-size: 32px;
+      font-weight: 700;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 4px;
     }
-    .pkg-price-preview sup { font-size: 14px; font-weight: 600; vertical-align: super; }
-    .pkg-price-preview .period { font-size: 13px; font-weight: 400; opacity: 0.7; }
+
+    .pkg-price-preview sup {
+      font-size: 32px;
+      font-weight: 700;
+      vertical-align: baseline;
+    }
+
+    .pkg-price-preview .period {
+      font-size: 13px;
+      font-weight: 400;
+      color: #99a1af;
+      vertical-align: baseline;
+    }
+
+    /* FR-7: Benefits count */
     .pkg-benefits-count {
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      opacity: 0.55; margin-bottom: 14px;
+      font-size: 12px;
+      color: #6a7282;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 16px;
     }
+
+    /* FR-8: Decorative divider */
+    .pkg-divider {
+      height: 1px;
+      width: 100%;
+      margin: 0 0 16px;
+      background: linear-gradient(90deg, transparent 0%, rgba(247, 147, 26, 0.25) 50%, transparent 100%);
+    }
+
+    /* FR-9: Benefits list */
     .pkg-benefit-list {
-      width: 100%; display: flex; flex-direction: column; gap: 5px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: 180px;
+      overflow-y: auto;
     }
+
     .pkg-benefit-item {
-      display: flex; align-items: center; gap: 7px;
-      font-size: 12px; opacity: 0.85;
-      transition: color 0.2s;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13.6px;
+      line-height: 20.4px;
+      color: #d1d5dc;
     }
-    .pkg-benefit-item svg { flex-shrink: 0; color: var(--c-primary); }
+
+    .pkg-benefit-item svg {
+      flex-shrink: 0;
+      width: 14px;
+      height: 14px;
+      margin-top: 2px;
+      stroke: #F7931A;
+    }
 
     /* ─── MOST POPULAR TOGGLE ─── */
     .popular-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 20px; border-top: 1px solid var(--c-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-top: 1px solid var(--c-border);
     }
-    .popular-label { font-size: 13px; font-weight: 600; color: var(--c-text-2); }
-    .toggle-wrap { display: flex; align-items: center; gap: 8px; }
+
+    .popular-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-text-2);
+    }
+
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .toggle-switch {
-      position: relative; width: 40px; height: 22px;
+      position: relative;
+      width: 40px;
+      height: 22px;
       display: inline-block;
     }
-    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
     .toggle-slider {
-      position: absolute; inset: 0; background: #dde1e6;
-      border-radius: 22px; cursor: pointer; transition: .25s;
+      position: absolute;
+      inset: 0;
+      background: #dde1e6;
+      border-radius: 22px;
+      cursor: pointer;
+      transition: .25s;
     }
+
     .toggle-slider:before {
-      content: ''; position: absolute;
-      width: 16px; height: 16px; border-radius: 50%;
-      background: #fff; left: 3px; top: 3px; transition: .25s;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      left: 3px;
+      top: 3px;
+      transition: .25s;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
     }
-    .toggle-switch input:checked + .toggle-slider { background: var(--c-primary); }
-    .toggle-switch input:checked + .toggle-slider:before { transform: translateX(18px); }
-    .toggle-status { font-size: 12px; font-weight: 700; color: var(--c-primary); }
+
+    .toggle-switch input:checked+.toggle-slider {
+      background: var(--c-primary);
+    }
+
+    .toggle-switch input:checked+.toggle-slider:before {
+      transform: translateX(18px);
+    }
+
+    .toggle-status {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c-primary);
+    }
 
     /* ─── PANEL SECTION (collapsible) ─── */
-    .panel-section { border-top: 1px solid var(--c-border); }
+    .panel-section {
+      border-top: 1px solid var(--c-border);
+    }
+
     .panel-section-hd {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 13px 20px; cursor: pointer; user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 20px;
+      cursor: pointer;
+      user-select: none;
       transition: background 0.15s;
     }
-    .panel-section-hd:hover { background: var(--c-surface-subtle); }
-    .panel-section-hd-left { display: flex; align-items: center; gap: 8px; }
-    .panel-section-title { font-size: 11px; font-weight: 700; color: var(--c-text-3); letter-spacing: 0.8px; text-transform: uppercase; }
-    .panel-section-body { padding: 0 20px 16px; }
-    .panel-section-body.collapsed { display: none; }
-    .panel-chevron { transition: transform 0.22s; color: var(--c-text-3); }
-    .panel-chevron.open { transform: rotate(180deg); }
+
+    .panel-section-hd:hover {
+      background: var(--c-surface-subtle);
+    }
+
+    .panel-section-hd-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-text-3);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .panel-section-body {
+      padding: 0 20px 16px;
+    }
+
+    .panel-section-body.collapsed {
+      display: none;
+    }
+
+    .panel-chevron {
+      transition: transform 0.22s;
+      color: var(--c-text-3);
+    }
+
+    .panel-chevron.open {
+      transform: rotate(180deg);
+    }
 
     /* ─── DESIGN COLLECTION ─── */
-    .color-swatches { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 4px; }
+    .color-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 4px;
+    }
+
     .color-dot {
-      width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
-      border: 2.5px solid transparent; transition: 0.15s;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2.5px solid transparent;
+      transition: 0.15s;
       position: relative;
     }
-    .color-dot.active, .color-dot:hover {
-      border-color: rgba(0,0,0,0.25);
+
+    .color-dot.active,
+    .color-dot:hover {
+      border-color: rgba(0, 0, 0, 0.25);
       transform: scale(1.1);
     }
+
     .color-dot.active::after {
-      content: ''; position: absolute; inset: 4px;
-      border-radius: 50%; background: rgba(255,255,255,0.5);
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
     }
+
     .color-picker-dot {
-      width: 26px; height: 26px; border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
       background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
-      cursor: pointer; border: 2px solid #e2e8f0;
+      cursor: pointer;
+      border: 2px solid #e2e8f0;
       transition: transform 0.15s;
     }
-    .color-picker-dot:hover { transform: scale(1.1); }
-    input.hidden-color { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; }
+
+    .color-picker-dot:hover {
+      transform: scale(1.1);
+    }
+
+    input.hidden-color {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      height: 0;
+    }
 
     /* ─── TEXT COLOR (ADVANCE) ─── */
-    .text-color-rows { display: flex; flex-direction: column; gap: 12px; padding-top: 4px; }
-    .text-color-row { display: flex; align-items: center; gap: 6px; }
-    .text-color-row-label { font-size: 11px; color: var(--c-text-3); width: 90px; flex-shrink: 0; }
-    .tc-dot {
-      width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
-      border: 2px solid #e2e8f0; transition: 0.15s; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 8px; font-weight: 700;
+    .text-color-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-top: 4px;
     }
-    .tc-dot.auto { background: #f4f6f8; color: #637381; font-size: 7px; font-weight: 800; letter-spacing: -0.5px; }
-    .tc-dot.active { border-color: var(--c-primary); transform: scale(1.12); }
+
+    .text-color-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .text-color-row-label {
+      font-size: 11px;
+      color: var(--c-text-3);
+      width: 90px;
+      flex-shrink: 0;
+    }
+
+    .tc-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #e2e8f0;
+      transition: 0.15s;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      font-weight: 700;
+    }
+
+    .tc-dot.auto {
+      background: #f4f6f8;
+      color: #637381;
+      font-size: 7px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .tc-dot.active {
+      border-color: var(--c-primary);
+      transform: scale(1.12);
+    }
+
     .tc-picker-dot {
-      width: 22px; height: 22px; border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
       background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
-      cursor: pointer; border: 2px solid #e2e8f0; flex-shrink: 0;
+      cursor: pointer;
+      border: 2px solid #e2e8f0;
+      flex-shrink: 0;
     }
 
     /* ─── BRAND IDENTITY ─── */
-    .brand-btns { display: flex; gap: 8px; padding-top: 4px; }
-    .btn-brand {
-      display: flex; align-items: center; gap: 6px;
-      padding: 7px 14px; border-radius: var(--radius-sm);
-      border: 1.5px solid var(--c-border); background: var(--c-surface);
-      font-size: 12px; font-weight: 600; color: var(--c-text-2);
-      cursor: pointer; transition: var(--transition-base); font-family: inherit;
+    .brand-btns {
+      display: flex;
+      gap: 8px;
+      padding-top: 4px;
     }
-    .btn-brand:hover { border-color: var(--c-primary); color: var(--c-primary); background: var(--c-primary-low); }
-    .brand-preview { margin-top: 10px; display: none; }
-    .brand-preview img { max-height: 48px; max-width: 100%; border-radius: 8px; }
+
+    .btn-brand {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--c-border);
+      background: var(--c-surface);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-text-2);
+      cursor: pointer;
+      transition: var(--transition-base);
+      font-family: inherit;
+    }
+
+    .btn-brand:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+      background: var(--c-primary-low);
+    }
+
+    .brand-preview {
+      margin-top: 10px;
+      display: none;
+    }
+
+    .brand-preview img {
+      max-height: 48px;
+      max-width: 100%;
+      border-radius: 8px;
+    }
 
     /* ─── RIGHT PANEL — STEPS ─── */
+    /* Steps panel: wrapper only (ref: issue-digital) */
     .steps-panel {
-      background: var(--c-surface); border-radius: var(--radius-lg);
-      box-shadow: 0 0 2px rgba(145,158,171,0.2), 0 12px 24px -4px rgba(145,158,171,0.12);
-      overflow: hidden; padding-bottom: 20px;
+      padding-bottom: 20px;
     }
-    .step-block {
-      padding: 20px 24px 18px;
-      border-bottom: 1px solid var(--c-border);
-    }
-    .step-block:last-child { border-bottom: none; }
-    .step-header {
-      display: flex; align-items: center; justify-content: space-between;
-      cursor: pointer; user-select: none;
-    }
-    .step-title {
-      font-size: 14px; font-weight: 700; color: var(--c-text-1);
-      display: flex; align-items: center; gap: 6px;
-    }
-    .step-title .req { color: #ff5630; font-size: 14px; }
-    .step-chevron { transition: transform 0.22s; color: var(--c-text-3); flex-shrink: 0; }
-    .step-chevron.open { transform: rotate(180deg); }
-    .step-body { margin-top: 14px; }
-    .step-body.collapsed { display: none; }
 
     /* ─── PRESET BUTTONS ─── */
-    .preset-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .preset-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
     .preset-btn {
-      padding: 7px 18px; border-radius: var(--radius-sm);
-      border: 1.5px solid var(--c-border); background: var(--c-surface);
-      font-size: 13px; font-weight: 600; color: var(--c-text-2);
-      cursor: pointer; transition: var(--transition-base); font-family: inherit;
+      padding: 7px 18px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--c-border);
+      background: var(--c-surface);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-text-2);
+      cursor: pointer;
+      transition: var(--transition-base);
+      font-family: inherit;
     }
-    .preset-btn:hover { border-color: var(--c-primary); color: var(--c-primary); background: var(--c-primary-low); }
+
+    .preset-btn:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+      background: var(--c-primary-low);
+    }
+
     .preset-btn.active {
-      border-color: var(--c-primary); color: var(--c-primary);
-      background: var(--c-primary-low); font-weight: 700;
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+      background: var(--c-primary-low);
+      font-weight: 700;
     }
+
     .preset-custom {
-      flex: 1; min-width: 100px; max-width: 160px;
-      padding: 7px 12px; border-radius: var(--radius-sm);
-      border: 1.5px solid var(--c-border); font-size: 13px;
-      color: var(--c-text-1); background: var(--c-surface);
-      font-family: inherit; outline: none; transition: var(--transition-base);
+      flex: 1;
+      min-width: 100px;
+      max-width: 160px;
+      padding: 7px 12px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--c-border);
+      font-size: 13px;
+      color: var(--c-text-1);
+      background: var(--c-surface);
+      font-family: inherit;
+      outline: none;
+      transition: var(--transition-base);
     }
-    .preset-custom:focus { border-color: var(--c-primary); box-shadow: 0 0 0 3px var(--c-primary-low); }
-    .preset-custom::placeholder { color: #b0bac5; }
+
+    .preset-custom:focus {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px var(--c-primary-low);
+    }
+
+    .preset-custom::placeholder {
+      color: #b0bac5;
+    }
 
     /* ─── PRICE PRESET ─── */
-    .price-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .price-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
     .price-prefix-wrap {
-      display: flex; align-items: center;
-      border: 1.5px solid var(--c-border); border-radius: var(--radius-sm);
-      overflow: hidden; background: var(--c-surface);
+      display: flex;
+      align-items: center;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--c-surface);
       transition: border-color 0.2s;
     }
-    .price-prefix-wrap:focus-within { border-color: var(--c-primary); box-shadow: 0 0 0 3px var(--c-primary-low); }
+
+    .price-prefix-wrap:focus-within {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px var(--c-primary-low);
+    }
+
     .price-prefix {
-      padding: 7px 10px; background: var(--c-surface-subtle);
-      font-size: 13px; font-weight: 600; color: var(--c-text-3);
+      padding: 7px 10px;
+      background: var(--c-surface-subtle);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-text-3);
       border-right: 1px solid var(--c-border);
     }
+
     .price-input {
-      border: none; outline: none; padding: 7px 12px;
-      font-size: 13px; color: var(--c-text-1);
-      width: 80px; font-family: inherit; background: transparent;
+      border: none;
+      outline: none;
+      padding: 7px 12px;
+      font-size: 13px;
+      color: var(--c-text-1);
+      width: 80px;
+      font-family: inherit;
+      background: transparent;
     }
 
     /* ─── DISCOUNT ─── */
-    .discount-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-    .pct-prefix-wrap {
-      display: flex; align-items: center;
-      border: 1.5px solid var(--c-border); border-radius: var(--radius-sm);
-      overflow: hidden; background: var(--c-surface);
-      transition: border-color 0.2s;
-    }
-    .pct-prefix-wrap:focus-within { border-color: var(--c-primary); box-shadow: 0 0 0 3px var(--c-primary-low); }
-    .pct-suffix {
-      padding: 7px 10px; background: var(--c-surface-subtle);
-      font-size: 13px; font-weight: 600; color: var(--c-text-3);
-      border-left: 1px solid var(--c-border);
-    }
-    .pct-input {
-      border: none; outline: none; padding: 7px 12px;
-      font-size: 13px; color: var(--c-text-1);
-      width: 70px; font-family: inherit; background: transparent;
+    .discount-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
     }
 
-    /* ─── BENEFITS SELECT ─── */
-    .benefit-select-wrap { position: relative; }
-    .benefit-select {
-      width: 100%; padding: 10px 36px 10px 14px;
-      border: 1.5px solid var(--c-border); border-radius: var(--radius-sm);
-      font-size: 13px; color: var(--c-text-2); background: var(--c-surface);
-      appearance: none; font-family: inherit; cursor: pointer; outline: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 12px center;
+    .pct-prefix-wrap {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--c-surface);
       transition: border-color 0.2s;
     }
-    .benefit-select:focus { border-color: var(--c-primary); box-shadow: 0 0 0 3px var(--c-primary-low); }
-    .selected-benefits-box {
-      margin-top: 12px; display: none;
+
+    .pct-prefix-wrap:focus-within {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px var(--c-primary-low);
     }
-    .selected-benefits-label {
-      font-size: 11px; font-weight: 700; color: var(--c-text-3);
-      letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 10px;
+
+    .pct-suffix {
+      padding: 7px 10px;
+      background: var(--c-surface-subtle);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-text-3);
+      border-left: 1px solid var(--c-border);
     }
-    .selected-benefits-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px;
+
+    .pct-input {
+      border: none;
+      outline: none;
+      padding: 7px 12px;
+      font-size: 13px;
+      color: var(--c-text-1);
+      width: 70px;
+      font-family: inherit;
+      background: transparent;
     }
-    .ben-chip {
-      border: 1.5px solid var(--c-border); border-radius: var(--radius-md);
-      padding: 10px 12px; position: relative; background: var(--c-surface);
+
+    /* ─── MEMBERSHIP BENEFITS (from issue-digital.html) ─── */
+    .mb-select-wrap {
+      position: relative;
     }
-    .ben-chip-hd {
-      display: flex; align-items: center; gap: 7px; margin-bottom: 8px;
+
+    .mb-select {
+      width: 100%;
+      border: 0;
+      padding: 0;
+      border-radius: var(--radius-sm);
+      background: var(--c-surface);
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--c-text-1);
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      outline: none;
+      transition: border-color var(--transition-base), box-shadow var(--transition-base);
     }
-    .ben-chip-icon {
-      width: 26px; height: 26px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+
+    .mb-select:focus {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px rgba(0, 171, 85, 0.10);
     }
-    .ben-chip-name { font-size: 12px; font-weight: 600; color: var(--c-text-1); flex: 1; }
-    .ben-chip-remove {
-      width: 18px; height: 18px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      background: #f4f6f8; border: none; cursor: pointer;
-      color: var(--c-text-3); font-size: 10px; transition: 0.15s; flex-shrink: 0;
+
+    .mb-select-wrap .ts-wrapper {
+      font-family: 'Poppins', sans-serif;
     }
-    .ben-chip-remove:hover { background: #ffe4e4; color: #ff5630; }
-    .ben-chip-input {
-      width: 100%; padding: 6px 10px; border-radius: var(--radius-xs);
-      border: 1px solid var(--c-border); font-size: 12px;
-      color: var(--c-text-1); font-family: inherit; outline: none;
-      background: var(--c-surface-subtle); transition: border-color 0.2s;
+
+    .mb-select-wrap .ts-control {
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      min-height: 42px;
+      padding: 0 10px;
     }
-    .ben-chip-input:focus { border-color: var(--c-primary); background: #fff; }
-    .ben-chip-unit { font-size: 10px; color: var(--c-text-3); margin-top: 4px; }
+
+    .mb-select-wrap .ts-control:focus-within {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px rgba(0, 171, 85, 0.10);
+    }
+
+    .mb-select-wrap .ts-dropdown .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+    }
+
+    .mb-select-wrap .ts-dropdown .tomselect-checkbox {
+      flex-shrink: 0;
+      margin-right: 4px;
+    }
+
+    .mb-select-wrap .ts-dropdown .mb-opt-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .mb-select-wrap .ts-dropdown .mb-opt-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-text-1);
+    }
+
+    .ts-dropdown .dropdown-header {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--c-border);
+      background: var(--c-surface-subtle);
+    }
+
+    .ts-dropdown .dropdown-header-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .ts-dropdown .dropdown-header-label {
+      flex: 1;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c-text-2);
+    }
+
+    .ts-dropdown .dropdown-header-close {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--c-text-3);
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .ts-dropdown .dropdown-header-close:hover {
+      background: var(--c-surface);
+      color: var(--c-text-1);
+    }
+
+    .mb-selected-area {
+      background: var(--c-surface-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-top: 10px;
+    }
+
+    .mb-selected-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .mb-cards-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .mb-card {
+      background: var(--c-surface);
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      min-width: 0;
+      position: relative;
+    }
+
+    .mb-card-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .mb-card-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .mb-card-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-text-2);
+    }
+
+    .mb-card-remove {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: none;
+      background: #fee2e2;
+      color: #ef4444;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .mb-card-remove:hover {
+      background: #fca5a5;
+    }
+
+    .mb-value-input {
+      width: 100%;
+      height: 32px;
+      border: 1.5px solid var(--c-border);
+      border-radius: 6px;
+      padding: 0 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--c-text-1);
+      background: var(--c-surface);
+      outline: none;
+      transition: border-color var(--transition-base);
+    }
+
+    .mb-value-input:focus {
+      border-color: var(--c-primary);
+    }
+
+    .mb-empty-hint {
+      font-size: 12px;
+      color: var(--c-text-3);
+      text-align: center;
+      padding: 8px 0 4px;
+    }
+
+    @media (max-width: 767px) {
+      .mb-cards-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+    }
 
     /* ─── TERMS ─── */
     .terms-toolbar {
-      display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; align-items: center;
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      align-items: center;
     }
+
     .btn-terms-action {
-      display: flex; align-items: center; gap: 5px;
-      padding: 6px 12px; border-radius: var(--radius-sm);
-      border: 1.5px solid var(--c-border); background: var(--c-surface);
-      font-size: 12px; font-weight: 600; color: var(--c-text-2);
-      cursor: pointer; transition: var(--transition-base); font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--c-border);
+      background: var(--c-surface);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-text-2);
+      cursor: pointer;
+      transition: var(--transition-base);
+      font-family: inherit;
     }
-    .btn-terms-action:hover { border-color: var(--c-primary); color: var(--c-primary); background: var(--c-primary-low); }
+
+    .btn-terms-action:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+      background: var(--c-primary-low);
+    }
+
     .terms-textarea {
-      width: 100%; min-height: 90px; padding: 12px;
-      border: 1.5px solid var(--c-border); border-radius: var(--radius-sm);
-      font-size: 13px; color: var(--c-text-1); font-family: inherit;
-      resize: vertical; outline: none; transition: border-color 0.2s;
+      width: 100%;
+      min-height: 90px;
+      padding: 12px;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--c-text-1);
+      font-family: inherit;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
       background: var(--c-surface);
     }
-    .terms-textarea:focus { border-color: var(--c-primary); box-shadow: 0 0 0 3px var(--c-primary-low); }
-    .suggested-label { font-size: 11px; color: var(--c-text-3); font-weight: 600; margin-top: 10px; margin-bottom: 6px; }
-    .suggested-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .terms-textarea:focus {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px var(--c-primary-low);
+    }
+
+    .suggested-label {
+      font-size: 11px;
+      color: var(--c-text-3);
+      font-weight: 600;
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+
+    .suggested-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
     .suggested-chip {
-      padding: 4px 10px; border-radius: 20px;
-      border: 1px solid var(--c-border); background: var(--c-surface);
-      font-size: 11px; color: var(--c-text-2); cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--c-border);
+      background: var(--c-surface);
+      font-size: 11px;
+      color: var(--c-text-2);
+      cursor: pointer;
       transition: var(--transition-base);
     }
-    .suggested-chip:hover { border-color: var(--c-primary); color: var(--c-primary); background: var(--c-primary-low); }
+
+    .suggested-chip:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+      background: var(--c-primary-low);
+    }
 
     /* ─── SUBMIT BAR ─── */
     .submit-bar {
-      display: flex; justify-content: center; padding: 20px 24px 4px;
+      display: flex;
+      justify-content: center;
+      padding: 20px 24px 4px;
     }
+
     .btn-submit {
-      padding: 13px 40px; border-radius: var(--radius-sm);
-      background: var(--c-primary); color: #fff;
-      font-size: 14px; font-weight: 700; border: none; cursor: pointer;
-      transition: var(--transition-base); font-family: inherit;
-      box-shadow: 0 6px 16px rgba(0,167,111,0.32);
+      padding: 13px 40px;
+      border-radius: var(--radius-sm);
+      background: var(--c-primary);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition-base);
+      font-family: inherit;
+      box-shadow: 0 6px 16px rgba(0, 167, 111, 0.32);
     }
-    .btn-submit:hover { background: #007a52; box-shadow: 0 8px 20px rgba(0,167,111,0.4); }
+
+    .btn-submit:hover {
+      background: #007a52;
+      box-shadow: 0 8px 20px rgba(0, 167, 111, 0.4);
+    }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 1023px) {
-      .cmp-layout { grid-template-columns: 1fr; }
-      .left-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-      .left-col .panel-card { margin-bottom: 0; }
+      .cmp-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .left-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .left-col .panel-card {
+        margin-bottom: 0;
+      }
     }
+
     @media (max-width: 767px) {
-      .cmp-layout { gap: 16px; margin-top: 16px; }
-      .left-col { grid-template-columns: 1fr; }
-      .page-title { font-size: 17px; }
-      .step-block { padding: 14px 16px 12px; }
-      .preset-btn { padding: 6px 12px; font-size: 12px; }
-      .preset-custom, .price-input, .pct-input { font-size: 12px; }
-      .selected-benefits-grid { grid-template-columns: 1fr 1fr; }
-      .btn-save-later { padding: 7px 12px; font-size: 12px; }
+      .cmp-layout {
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .left-col {
+        grid-template-columns: 1fr;
+      }
+
+      .page-title {
+        font-size: 17px;
+      }
+
+      .step-block {
+        padding: 14px 16px 12px;
+      }
+
+      .preset-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+
+      .preset-custom,
+      .price-input,
+      .pct-input {
+        font-size: 12px;
+      }
+
+      .mb-cards-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .btn-save-later {
+        padding: 7px 12px;
+        font-size: 12px;
+      }
     }
+
     @media (max-width: 480px) {
-      .selected-benefits-grid { grid-template-columns: 1fr; }
-      .preset-row, .price-row, .discount-row { gap: 6px; }
+      .mb-cards-row {
+        grid-template-columns: 1fr;
+      }
+
+      .preset-row,
+      .price-row,
+      .discount-row {
+        gap: 6px;
+      }
+    }
+
+    /* T&C modals (from issue-digital.html) */
+    .tc-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .tc-modal-overlay.open {
+      display: flex;
+    }
+
+    .tc-modal-box {
+      background: #fff;
+      width: 100%;
+      max-width: 480px;
+      border-radius: 20px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+      padding: 28px 28px 24px;
+      margin: 16px;
+    }
+
+    .tc-modal-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .tc-modal-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(0, 167, 111, 0.1);
+      color: #00a76f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .tc-modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #212b36;
+      line-height: 1.2;
+    }
+
+    .tc-modal-subtitle {
+      font-size: 13px;
+      color: #637381;
+      margin-top: 3px;
+    }
+
+    .tc-modal-close {
+      margin-left: auto;
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #919eab;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.15s;
+    }
+
+    .tc-modal-close:hover {
+      background: #f4f6f8;
+      color: #212b36;
+    }
+
+    .tc-template-list {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 340px;
+      overflow-y: auto;
+    }
+
+    .tc-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1.5px solid #e2e8f0;
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .tc-item:hover {
+      border-color: #b0c4c4;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .tc-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .tc-item-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #212b36;
+      margin-bottom: 4px;
+    }
+
+    .tc-item-date {
+      font-size: 12px;
+      color: #919eab;
+    }
+
+    .tc-item-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 16px;
+      flex-shrink: 0;
+    }
+
+    .btn-tc-select {
+      padding: 7px 18px;
+      border-radius: 10px;
+      border: 1.5px solid #00a76f;
+      background: rgba(0, 167, 111, 0.08);
+      color: #00a76f;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s;
+      font-family: inherit;
+    }
+
+    .btn-tc-select:hover {
+      background: rgba(0, 167, 111, 0.16);
+    }
+
+    .btn-tc-delete {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255, 86, 48, 0.1);
+      color: #ff5630;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.15s;
+    }
+
+    .btn-tc-delete:hover {
+      background: rgba(255, 86, 48, 0.18);
+    }
+
+    .tc-field-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #212b36;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .tc-name-input {
+      width: 100%;
+      padding: 13px 16px;
+      border-radius: 12px;
+      border: 1.5px solid #e2e8f0;
+      font-size: 14px;
+      color: #212b36;
+      font-family: inherit;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .tc-name-input:focus {
+      border-color: #00a76f;
+      box-shadow: 0 0 0 3px rgba(0, 167, 111, 0.1);
+    }
+
+    .tc-modal-foot {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .tc-btn-cancel {
+      padding: 11px 36px;
+      border-radius: 12px;
+      border: 1.5px solid #e2e8f0;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      color: #454f5b;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .tc-btn-cancel:hover {
+      border-color: #919eab;
+      background: #f4f6f8;
+    }
+
+    .tc-btn-save {
+      padding: 11px 36px;
+      border-radius: 12px;
+      border: none;
+      background: #00a76f;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 6px 16px rgba(0, 167, 111, 0.3);
+    }
+
+    .tc-btn-save:hover {
+      background: #007a52;
     }
   </style>
 </head>
+
 <body>
   <div class="layout">
     <aside class="sidebar">
@@ -451,7 +2010,7 @@
     </aside>
     <header class="top-header">
       <div class="header-left">
-        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+        <button class="hamburger hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -461,223 +2020,331 @@
     </header>
     <main class="main">
 
-        <!-- PAGE HEADER -->
-        <div class="page-header-row">
-          <div class="page-header-left">
-            <a href="benefits-setup.html" class="btn-back" title="Back to Benefits Setup">
-              <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
-            </a>
-            <span class="page-title">Create Membership Package</span>
-          </div>
-          <button class="btn-save-later" onclick="saveLater()">
-            <i data-lucide="save" style="width:15px;height:15px;"></i>
-            Save for Update Later
-          </button>
+      <!-- PAGE HEADER -->
+      <div class="page-header-row">
+        <div class="page-header-left">
+          <a href="benefits-setup.html" class="btn-back" title="Back to Benefits Setup">
+            <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
+          </a>
+          <span class="page-title">Create Membership Package</span>
         </div>
+        <button class="btn-save-later" onclick="saveLater()">
+          <i data-lucide="save" style="width:15px;height:15px;"></i>
+          Save for Update Later
+        </button>
+      </div>
 
-        <div class="cmp-layout">
-          <!-- ═══════════════════════════
+      <div class="cmp-layout">
+        <!-- ═══════════════════════════
                LEFT COLUMN
           ═══════════════════════════ -->
-          <div class="left-col">
+        <div class="left-col">
 
-            <!-- Card Preview -->
-            <div class="panel-card">
-              <div class="pkg-card-wrap">
-                <div class="pkg-card" id="pkgCard">
-                  <div class="pkg-badge-row">
-                    <span class="pkg-save-badge" id="saveBadge" style="display:none">SAVE 10%</span>
-                    <span style="flex:1"></span>
-                    <span class="pkg-popular-badge" id="popularBadge" style="display:none">Most Popular</span>
-                  </div>
-                  <div class="pkg-icon-circle">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <circle cx="12" cy="12" r="10"/><path d="M9 9.5C9 8.1 10.1 7 11.5 7h1C13.9 7 15 8.1 15 9.5c0 1.2-.8 2.2-2 2.4V13M12 17h.01"/>
-                    </svg>
-                  </div>
-                  <div class="pkg-name-preview" id="previewName">SILVER</div>
-                  <div class="pkg-price-preview" id="previewPrice"><sup>$</sup>99<span class="period"> /yr</span></div>
-                  <div class="pkg-benefits-count" id="previewBenCount">0 BENEFITS</div>
-                  <div class="pkg-benefit-list" id="previewBenList"></div>
-                </div>
+          <!-- Card Preview -->
+          <div class="panel-card">
+            <div class="pkg-card-wrap">
+              <div class="pkg-card" id="pkgCard">
+                <span class="pkg-save-badge" id="saveBadge">SAVE 0%</span>
+                <span class="pkg-popular-badge" id="popularBadge" style="display:none">Most Popular</span>
+                <div class="pkg-icon-circle" id="pkgIconCircle">₿</div>
+                <div class="pkg-name-preview" id="previewName">SILVER</div>
+                <div class="pkg-price-preview" id="previewPrice"><sup>$</sup>0<span class="period"> /yr</span></div>
+                <div class="pkg-benefits-count" id="previewBenCount">0 BENEFITS</div>
+                <div class="pkg-divider"></div>
+                <div class="pkg-benefit-list" id="previewBenList"></div>
               </div>
-              <!-- Most Popular Toggle -->
-              <div class="popular-row">
-                <span class="popular-label">Mark as Most Popular</span>
-                <div class="toggle-wrap">
-                  <label class="toggle-switch">
-                    <input type="checkbox" id="popularToggle" onchange="toggleMostPopular(this)" />
-                    <span class="toggle-slider"></span>
-                  </label>
-                  <span class="toggle-status" id="popularStatus" style="display:none">ON</span>
+            </div>
+            <!-- Most Popular Toggle -->
+            <div class="popular-row">
+              <span class="popular-label">Mark as Most Popular</span>
+              <div class="toggle-wrap">
+                <label class="toggle-switch">
+                  <input type="checkbox" id="popularToggle" onchange="toggleMostPopular(this)" />
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-status" id="popularStatus" style="display:none">ON</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Design Collection (ref: issue-digital) -->
+          <div class="panel-card">
+            <div class="panel-card-header open" id="hdr-design" onclick="togglePanel('design-collection','hdr-design')">
+              <div class="header-icon"><i data-lucide="palette" style="width:16px;height:16px;"></i></div>
+              <span class="header-title">Design Collection</span>
+              <div class="chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+            </div>
+            <div class="collapse-wrap open" id="design-collection">
+              <div class="panel-card-body">
+                <div class="section-label">
+                  <iconify-icon icon="solar:color-filter-bold-duotone" width="14"></iconify-icon>
+                  Preset Colors
+                </div>
+                <div class="color-dots" id="colorSwatches"><!-- filled by JS --></div>
+                <button class="adv-accordion-trigger" onclick="toggleSection('textColorBody','textColorChev')">
+                  <iconify-icon icon="solar:text-bold-duotone" width="14"></iconify-icon>
+                  Custom Text Color (Advanced)
+                  <i data-lucide="chevron-down" id="textColorChev"
+                    style="width:14px;height:14px;margin-left:auto;transition:transform 0.2s;"></i>
+                </button>
+                <div class="collapse-wrap" id="textColorBody">
+                  <div class="adv-accordion-body">
+                    <div class="text-color-rows">
+                      <div class="text-color-row">
+                        <span class="text-color-row-label">Package Name</span>
+                        <div class="tc-dot auto active" data-field="name" data-color="auto"
+                          onclick="setTextColor('name','auto',this)" title="Auto">AUTO</div>
+                        <div class="tc-dot active" data-field="name" style="background:#2563eb;"
+                          onclick="setTextColor('name','#2563eb',this)" title="Blue"></div>
+                        <div class="tc-dot" data-field="name" style="background:#b8860b;"
+                          onclick="setTextColor('name','#b8860b',this)" title="Gold"></div>
+                        <div class="tc-dot" data-field="name" style="background:#161c24;"
+                          onclick="setTextColor('name','#161c24',this)" title="Black"></div>
+                        <div class="tc-picker-dot" title="Custom" onclick="this.nextElementSibling.click()"></div>
+                        <input type="color" class="hidden-color" onchange="setTextColor('name',this.value,null)">
+                      </div>
+                      <div class="text-color-row">
+                        <span class="text-color-row-label">Price</span>
+                        <div class="tc-dot auto active" data-field="price" data-color="auto"
+                          onclick="setTextColor('price','auto',this)" title="Auto">AUTO</div>
+                        <div class="tc-dot" data-field="price" style="background:#2563eb;"
+                          onclick="setTextColor('price','#2563eb',this)" title="Blue"></div>
+                        <div class="tc-dot" data-field="price" style="background:#b8860b;"
+                          onclick="setTextColor('price','#b8860b',this)" title="Gold"></div>
+                        <div class="tc-dot" data-field="price" style="background:#161c24;"
+                          onclick="setTextColor('price','#161c24',this)" title="Black"></div>
+                        <div class="tc-picker-dot" title="Custom" onclick="this.nextElementSibling.click()"></div>
+                        <input type="color" class="hidden-color" onchange="setTextColor('price',this.value,null)">
+                      </div>
+                      <div class="text-color-row">
+                        <span class="text-color-row-label">Other info (Benefit)</span>
+                        <div class="tc-dot auto active" data-field="other" data-color="auto"
+                          onclick="setTextColor('other','auto',this)" title="Auto">AUTO</div>
+                        <div class="tc-dot" data-field="other" style="background:#2563eb;"
+                          onclick="setTextColor('other','#2563eb',this)" title="Blue"></div>
+                        <div class="tc-dot" data-field="other" style="background:#b8860b;"
+                          onclick="setTextColor('other','#b8860b',this)" title="Gold"></div>
+                        <div class="tc-dot" data-field="other" style="background:#161c24;"
+                          onclick="setTextColor('other','#161c24',this)" title="Black"></div>
+                        <div class="tc-picker-dot" title="Custom" onclick="this.nextElementSibling.click()"></div>
+                        <input type="color" class="hidden-color" onchange="setTextColor('other',this.value,null)">
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- Design Collection -->
-            <div class="panel-card">
-              <div class="panel-section" style="border-top:none;">
-                <div class="panel-section-hd" onclick="toggleSection('designBody','designChev')">
-                  <div class="panel-section-hd-left">
-                    <i data-lucide="palette" style="width:14px;height:14px;color:var(--c-text-3)"></i>
-                    <span class="panel-section-title">Design Collection</span>
-                  </div>
-                  <i data-lucide="chevron-down" class="panel-chevron open" id="designChev" style="width:16px;height:16px;"></i>
+          <!-- Brand Identity (from issue-digital.html) -->
+          <div class="panel-card">
+            <div class="panel-card-header open" id="hdr-brand" onclick="togglePanel('brand-identity','hdr-brand')">
+              <div class="header-icon"><i data-lucide="badge-check" style="width:16px;height:16px;"></i></div>
+              <span class="header-title">Brand Identity</span>
+              <div class="header-actions" onclick="event.stopPropagation()">
+                <button class="btn-panel-action" onclick="openLogoLibrary()">
+                  <i data-lucide="library" style="width:13px;height:13px;"></i> Library
+                </button>
+                <label class="btn-panel-action" style="cursor:pointer">
+                  <i data-lucide="upload" style="width:13px;height:13px;"></i> Upload
+                  <input type="file" accept="image/*" style="display:none" onchange="onLogoUpload(this)">
+                </label>
+              </div>
+              <div class="chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+            </div>
+            <div class="collapse-wrap open" id="brand-identity">
+              <div class="panel-card-body">
+                <div class="brand-preview" id="brandPreview" style="display:none;">
+                  <img id="brandPreviewImg" src="" alt="Brand logo" />
                 </div>
-                <div class="panel-section-body" id="designBody">
-                  <div class="color-swatches" id="colorSwatches">
-                    <!-- filled by JS -->
+                <div class="section-label" style="margin-bottom:10px;">Style Tags</div>
+                <div class="style-tags" id="styleTags">
+                  <button class="style-tag active" onclick="toggleStyleTag(this)">Luxury Gold</button>
+                  <button class="style-tag" onclick="toggleStyleTag(this)">Minimalist</button>
+                  <button class="style-tag" onclick="toggleStyleTag(this)">Vintage Badge</button>
+                  <button class="style-tag" onclick="toggleStyleTag(this)">Playful</button>
+                  <button class="style-tag" onclick="toggleStyleTag(this)">Modern – Tech</button>
+                  <button class="style-tag" onclick="toggleStyleTag(this)">Pastel</button>
+                  <button class="style-tag" onclick="toggleStyleTag(this)">Neon</button>
+                  <button class="style-tag" onclick="toggleStyleTag(this)">Vibrant</button>
+                </div>
+                <div class="section-label" style="margin-bottom:8px;">AI Logo Description</div>
+                <div class="ai-textarea-wrap">
+                  <textarea id="aiDescription" rows="3"
+                    placeholder="Describe your logo idea (e.g. elegant spa brand, gold & black theme, minimalist style)..."></textarea>
+                </div>
+                <div class="ai-prompts-header">
+                  <div class="ai-prompts-label">SUGGESTED DESCRIPTIONS for <span id="categoryLabel">Nail Spa &amp; Nail
+                      Salon</span></div>
+                  <select class="ai-category-select" id="categorySelect" onchange="onCategorySelect(this.value)">
+                    <option value="1" selected>Nail Spa &amp; Nail Salon</option>
+                    <option value="2">Beauty, Fashion &amp; Lifestyle</option>
+                    <option value="3">Retail &amp; Consumer Services</option>
+                    <option value="4">Hospitality &amp; Food Services</option>
+                    <option value="5">Financial &amp; Fintech Services</option>
+                    <option value="6">Technology &amp; Digital Products</option>
+                    <option value="7">Health, Wellness &amp; Medical</option>
+                    <option value="8">Real Estate &amp; Property Services</option>
+                    <option value="9">Travel, Tourism &amp; Experiences</option>
+                    <option value="10">Entertainment, Media &amp; Creative</option>
+                  </select>
+                </div>
+                <div class="ai-prompts-list" id="aiPromptsList"></div>
+                <button class="btn-ai-gen" onclick="generateAiLogo()">
+                  <iconify-icon icon="solar:magic-stick-bold-duotone" width="18"></iconify-icon>
+                  Generate Logo with AI
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Business Information & Contact (from issue-digital.html) -->
+          <div class="panel-card">
+            <div class="panel-card-header" id="hdr-bizinfo" onclick="togglePanel('business-info','hdr-bizinfo')">
+              <div class="header-icon"><i data-lucide="building-2" style="width:16px;height:16px;"></i></div>
+              <span class="header-title">Business Information &amp; Contact</span>
+              <div class="chevron" style="margin-left:auto;"><i data-lucide="chevron-down"
+                  style="width:16px;height:16px;"></i></div>
+            </div>
+            <div class="collapse-wrap" id="business-info">
+              <div class="panel-card-body">
+                <div class="biz-list">
+                  <div class="biz-row">
+                    <div class="biz-label">
+                      <i data-lucide="store" style="width:14px;height:14px;color:var(--c-primary)"></i>
+                      <span>Brand Name</span>
+                    </div>
+                    <input type="text" class="biz-input" id="bizBrandName" placeholder="e.g. VLinkPay"
+                      oninput="onBizInfoChange()">
                   </div>
+                  <div class="biz-row">
+                    <div class="biz-label">
+                      <i data-lucide="message-square-quote" style="width:14px;height:14px;color:var(--c-primary)"></i>
+                      <span>Slogan</span>
+                    </div>
+                    <input type="text" class="biz-input" id="bizSlogan" placeholder="e.g. Pay Smarter, Live Better"
+                      oninput="onBizInfoChange()">
+                  </div>
+                  <div class="biz-row">
+                    <div class="biz-label">
+                      <i data-lucide="phone" style="width:14px;height:14px;color:var(--c-primary)"></i>
+                      <span>Phone</span>
+                    </div>
+                    <div class="biz-phone-wrap">
+                      <select class="biz-dial-select" id="bizDialCode" onchange="onBizInfoChange()">
+                        <option value="+1">+1</option>
+                        <option value="+44">+44</option>
+                        <option value="+61">+61</option>
+                        <option value="+84">+84</option>
+                        <option value="+86">+86</option>
+                        <option value="+91">+91</option>
+                        <option value="+65">+65</option>
+                        <option value="+60">+60</option>
+                        <option value="+66">+66</option>
+                        <option value="+62">+62</option>
+                        <option value="+63">+63</option>
+                        <option value="+852">+852</option>
+                        <option value="+886">+886</option>
+                        <option value="+971">+971</option>
+                        <option value="+81">+81</option>
+                        <option value="+82">+82</option>
+                        <option value="+33">+33</option>
+                        <option value="+49">+49</option>
+                        <option value="+55">+55</option>
+                        <option value="+52">+52</option>
+                        <option value="+7">+7</option>
+                      </select>
+                      <div class="biz-phone-divider"></div>
+                      <input type="tel" class="biz-phone-input" id="bizPhone" placeholder="Phone Number"
+                        oninput="onBizInfoChange()">
+                    </div>
+                  </div>
+                  <div class="biz-row">
+                    <div class="biz-label">
+                      <i data-lucide="mail" style="width:14px;height:14px;color:var(--c-primary)"></i>
+                      <span>Email</span>
+                    </div>
+                    <input type="email" class="biz-input" id="bizEmail" placeholder="e.g. hello@brand.com"
+                      oninput="onBizInfoChange()">
+                  </div>
+                  <div class="biz-row">
+                    <div class="biz-label">
+                      <i data-lucide="globe" style="width:14px;height:14px;color:var(--c-primary)"></i>
+                      <span>Website</span>
+                    </div>
+                    <input type="url" class="biz-input" id="bizWebsite" placeholder="e.g. https://www.brand.com"
+                      oninput="onBizInfoChange()">
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:center;margin-top:14px;">
+                  <button class="btn-biz-save" onclick="saveBizInfo()">
+                    <i data-lucide="save" style="width:14px;height:14px;"></i> Save
+                  </button>
                 </div>
               </div>
+            </div>
+          </div>
 
-              <!-- Custom Text Color -->
-              <div class="panel-section">
-                <div class="panel-section-hd" onclick="toggleSection('textColorBody','textColorChev')">
-                  <div class="panel-section-hd-left">
-                    <i data-lucide="type" style="width:14px;height:14px;color:var(--c-text-3)"></i>
-                    <span class="panel-section-title">Custom Text Color (Advance)</span>
-                  </div>
-                  <i data-lucide="chevron-down" class="panel-chevron" id="textColorChev" style="width:16px;height:16px;"></i>
-                </div>
-                <div class="panel-section-body collapsed" id="textColorBody">
-                  <div class="text-color-rows">
-                    <div class="text-color-row">
-                      <span class="text-color-row-label">Package Name</span>
-                      <div class="tc-dot auto active" data-field="name" data-color="auto" onclick="setTextColor('name','auto',this)" title="Auto">AUTO</div>
-                      <div class="tc-dot active" data-field="name" style="background:#2563eb;" onclick="setTextColor('name','#2563eb',this)" title="Blue"></div>
-                      <div class="tc-dot" data-field="name" style="background:#b8860b;" onclick="setTextColor('name','#b8860b',this)" title="Gold"></div>
-                      <div class="tc-dot" data-field="name" style="background:#161c24;" onclick="setTextColor('name','#161c24',this)" title="Black"></div>
-                      <div class="tc-picker-dot" title="Custom" onclick="this.nextElementSibling.click()"></div>
-                      <input type="color" class="hidden-color" onchange="setTextColor('name',this.value,null)">
-                    </div>
-                    <div class="text-color-row">
-                      <span class="text-color-row-label">Price</span>
-                      <div class="tc-dot auto active" data-field="price" data-color="auto" onclick="setTextColor('price','auto',this)" title="Auto">AUTO</div>
-                      <div class="tc-dot" data-field="price" style="background:#2563eb;" onclick="setTextColor('price','#2563eb',this)" title="Blue"></div>
-                      <div class="tc-dot" data-field="price" style="background:#b8860b;" onclick="setTextColor('price','#b8860b',this)" title="Gold"></div>
-                      <div class="tc-dot" data-field="price" style="background:#161c24;" onclick="setTextColor('price','#161c24',this)" title="Black"></div>
-                      <div class="tc-picker-dot" title="Custom" onclick="this.nextElementSibling.click()"></div>
-                      <input type="color" class="hidden-color" onchange="setTextColor('price',this.value,null)">
-                    </div>
-                    <div class="text-color-row">
-                      <span class="text-color-row-label">Other info (Benefit)</span>
-                      <div class="tc-dot auto active" data-field="other" data-color="auto" onclick="setTextColor('other','auto',this)" title="Auto">AUTO</div>
-                      <div class="tc-dot" data-field="other" style="background:#2563eb;" onclick="setTextColor('other','#2563eb',this)" title="Blue"></div>
-                      <div class="tc-dot" data-field="other" style="background:#b8860b;" onclick="setTextColor('other','#b8860b',this)" title="Gold"></div>
-                      <div class="tc-dot" data-field="other" style="background:#161c24;" onclick="setTextColor('other','#161c24',this)" title="Black"></div>
-                      <div class="tc-picker-dot" title="Custom" onclick="this.nextElementSibling.click()"></div>
-                      <input type="color" class="hidden-color" onchange="setTextColor('other',this.value,null)">
-                    </div>
-                  </div>
-                </div>
-              </div>
+        </div><!-- /left-col -->
 
-              <!-- Brand Identity -->
-              <div class="panel-section">
-                <div class="panel-section-hd" onclick="toggleSection('brandBody','brandChev')">
-                  <div class="panel-section-hd-left">
-                    <i data-lucide="image" style="width:14px;height:14px;color:var(--c-text-3)"></i>
-                    <span class="panel-section-title">Brand Identity</span>
-                  </div>
-                  <i data-lucide="chevron-down" class="panel-chevron" id="brandChev" style="width:16px;height:16px;"></i>
-                </div>
-                <div class="panel-section-body collapsed" id="brandBody">
-                  <div class="brand-btns">
-                    <button class="btn-brand">
-                      <i data-lucide="layout-grid" style="width:14px;height:14px;"></i> Library
-                    </button>
-                    <button class="btn-brand" onclick="document.getElementById('brandUploadInput').click()">
-                      <i data-lucide="upload" style="width:14px;height:14px;"></i> Upload
-                    </button>
-                    <input type="file" id="brandUploadInput" accept="image/*" style="display:none" onchange="handleBrandUpload(this)">
-                  </div>
-                  <div class="brand-preview" id="brandPreview">
-                    <img id="brandPreviewImg" src="" alt="Brand logo" />
-                  </div>
-                </div>
-              </div>
-
-              <!-- Business Information -->
-              <div class="panel-section">
-                <div class="panel-section-hd" onclick="toggleSection('bizBody','bizChev')">
-                  <div class="panel-section-hd-left">
-                    <i data-lucide="building-2" style="width:14px;height:14px;color:var(--c-text-3)"></i>
-                    <span class="panel-section-title">Business Information &amp; Contact</span>
-                  </div>
-                  <i data-lucide="chevron-down" class="panel-chevron" id="bizChev" style="width:16px;height:16px;"></i>
-                </div>
-                <div class="panel-section-body collapsed" id="bizBody">
-                  <div style="display:flex;flex-direction:column;gap:10px;">
-                    <div>
-                      <label style="font-size:12px;color:var(--c-text-3);font-weight:500;">Business Name</label>
-                      <input type="text" class="preset-custom" style="max-width:100%;width:100%;margin-top:4px;" placeholder="e.g. VLINKPAY Inc." />
-                    </div>
-                    <div>
-                      <label style="font-size:12px;color:var(--c-text-3);font-weight:500;">Contact Email</label>
-                      <input type="email" class="preset-custom" style="max-width:100%;width:100%;margin-top:4px;" placeholder="support@example.com" />
-                    </div>
-                    <div>
-                      <label style="font-size:12px;color:var(--c-text-3);font-weight:500;">Website</label>
-                      <input type="url" class="preset-custom" style="max-width:100%;width:100%;margin-top:4px;" placeholder="https://" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div><!-- /panel-card design -->
-
-          </div><!-- /left-col -->
-
-          <!-- ═══════════════════════════
+        <!-- ═══════════════════════════
                RIGHT COLUMN — FORM STEPS
           ═══════════════════════════ -->
-          <div>
-            <p class="required-note">* required</p>
-            <div class="steps-panel">
+        <div>
+          <p class="required-note">* required</p>
+          <div class="steps-panel">
 
-              <!-- STEP 1: Package Name -->
-              <div class="step-block">
-                <div class="step-header" onclick="toggleStep('step1Body','step1Chev')">
-                  <span class="step-title">Step 1: Package Name <span class="req">*</span></span>
-                  <i data-lucide="chevron-up" class="step-chevron open" id="step1Chev" style="width:18px;height:18px;"></i>
-                </div>
+            <!-- STEP 1: Package Name (ref: issue-digital) -->
+            <div class="step-card">
+              <div class="step-header open" id="shdr-1" onclick="togglePanel('scollapse-1','shdr-1')">
+                <div class="step-badge">1</div>
+                <div class="step-title-text">Package Name <span class="step-required">*</span></div>
+                <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+              </div>
+              <div class="collapse-wrap open" id="scollapse-1">
                 <div class="step-body" id="step1Body">
                   <div class="preset-row">
                     <button class="preset-btn active" onclick="selectName('SILVER',this)">SILVER</button>
                     <button class="preset-btn" onclick="selectName('GOLD',this)">GOLD</button>
                     <button class="preset-btn" onclick="selectName('PLATINUM',this)">PLATINUM</button>
                     <button class="preset-btn" onclick="selectName('ELITE',this)">ELITE</button>
-                    <input type="text" class="preset-custom" id="customNameInput"
-                      placeholder="Custom" oninput="onCustomName(this)" />
+                    <input type="text" class="preset-custom" id="customNameInput" placeholder="Custom"
+                      oninput="onCustomName(this)" />
                   </div>
                 </div>
               </div>
+            </div>
 
-              <!-- STEP 2: Benefits -->
-              <div class="step-block">
-                <div class="step-header" onclick="toggleStep('step2Body','step2Chev')">
-                  <span class="step-title">Step 2: Benefits <span class="req">*</span></span>
-                  <i data-lucide="chevron-up" class="step-chevron open" id="step2Chev" style="width:18px;height:18px;"></i>
-                </div>
+            <!-- STEP 2: Benefits (from issue-digital.html) -->
+            <div class="step-card">
+              <div class="step-header open" id="shdr-2" onclick="togglePanel('scollapse-2','shdr-2')">
+                <div class="step-badge">2</div>
+                <div class="step-title-text">Benefits <span class="step-required">*</span></div>
+                <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+              </div>
+              <div class="collapse-wrap open" id="scollapse-2">
                 <div class="step-body" id="step2Body">
-                  <div class="benefit-select-wrap">
-                    <select class="benefit-select" id="benefitSelect" onchange="addBenefit(this)">
-                      <option value="" disabled selected>Select Benefit</option>
-                    </select>
+                  <div class="mb-select-wrap">
+                    <select class="mb-select" id="mbBenefitSelect" multiple placeholder="Select Benefit"></select>
                   </div>
-                  <div class="selected-benefits-box" id="selectedBenefitsBox">
-                    <div class="selected-benefits-label">Selected Benefit</div>
-                    <div class="selected-benefits-grid" id="selectedBenefitsGrid"></div>
+                  <div class="mb-selected-area" id="mbSelectedArea">
+                    <div class="mb-selected-label">Selected Benefits</div>
+                    <div class="mb-cards-row" id="mbCardsRow">
+                      <div class="mb-empty-hint" id="mbEmptyHint">No benefits selected yet</div>
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <!-- STEP 3: Price -->
-              <div class="step-block">
-                <div class="step-header" onclick="toggleStep('step3Body','step3Chev')">
-                  <span class="step-title">Step 3: Price <span class="req">*</span></span>
-                  <i data-lucide="chevron-up" class="step-chevron open" id="step3Chev" style="width:18px;height:18px;"></i>
-                </div>
+            <!-- STEP 3: Price -->
+            <div class="step-card">
+              <div class="step-header open" id="shdr-3" onclick="togglePanel('scollapse-3','shdr-3')">
+                <div class="step-badge">3</div>
+                <div class="step-title-text">Price <span class="step-required">*</span></div>
+                <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+              </div>
+              <div class="collapse-wrap open" id="scollapse-3">
                 <div class="step-body" id="step3Body">
                   <div class="price-row">
                     <button class="preset-btn" onclick="selectPrice(100,this)">$100</button>
@@ -686,19 +2353,22 @@
                     <button class="preset-btn" onclick="selectPrice(2000,this)">$2,000</button>
                     <div class="price-prefix-wrap">
                       <span class="price-prefix">$</span>
-                      <input type="number" class="price-input" id="customPriceInput"
-                        placeholder="99" min="0" oninput="onCustomPrice(this)" />
+                      <input type="number" class="price-input" id="customPriceInput" placeholder="99" min="0"
+                        oninput="onCustomPrice(this)" />
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <!-- STEP 4: Discount -->
-              <div class="step-block">
-                <div class="step-header" onclick="toggleStep('step4Body','step4Chev')">
-                  <span class="step-title">Step 4: Discount</span>
-                  <i data-lucide="chevron-up" class="step-chevron open" id="step4Chev" style="width:18px;height:18px;"></i>
-                </div>
+            <!-- STEP 4: Discount -->
+            <div class="step-card">
+              <div class="step-header open" id="shdr-4" onclick="togglePanel('scollapse-4','shdr-4')">
+                <div class="step-badge">4</div>
+                <div class="step-title-text">Discount</div>
+                <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+              </div>
+              <div class="collapse-wrap open" id="scollapse-4">
                 <div class="step-body" id="step4Body">
                   <div class="discount-row">
                     <button class="preset-btn" onclick="selectDiscount(5,this)">5%</button>
@@ -706,70 +2376,89 @@
                     <button class="preset-btn" onclick="selectDiscount(15,this)">15%</button>
                     <button class="preset-btn" onclick="selectDiscount(20,this)">20%</button>
                     <div class="pct-prefix-wrap">
-                      <input type="number" class="pct-input" id="customDiscountInput"
-                        placeholder="Custom" min="0" max="100" oninput="onCustomDiscount(this)" />
+                      <input type="number" class="pct-input" id="customDiscountInput" placeholder="Custom" min="0"
+                        max="100" oninput="onCustomDiscount(this)" />
                       <span class="pct-suffix">%</span>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <!-- STEP 5: Membership Period -->
-              <div class="step-block">
-                <div class="step-header" onclick="toggleStep('step5Body','step5Chev')">
-                  <span class="step-title">Step 5: Membership Period <span class="req">*</span></span>
-                  <i data-lucide="chevron-up" class="step-chevron open" id="step5Chev" style="width:18px;height:18px;"></i>
-                </div>
+            <!-- STEP 5: Membership Period -->
+            <div class="step-card">
+              <div class="step-header open" id="shdr-5" onclick="togglePanel('scollapse-5','shdr-5')">
+                <div class="step-badge">5</div>
+                <div class="step-title-text">Membership Period <span class="step-required">*</span></div>
+                <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+              </div>
+              <div class="collapse-wrap open" id="scollapse-5">
                 <div class="step-body" id="step5Body">
                   <div class="preset-row">
                     <button class="preset-btn" onclick="selectPeriod(30,this)">30 Days</button>
                     <button class="preset-btn" onclick="selectPeriod(90,this)">90 Days</button>
                     <button class="preset-btn" onclick="selectPeriod(180,this)">180 Days</button>
                     <button class="preset-btn active" onclick="selectPeriod(365,this)">365 Days</button>
-                    <input type="number" class="preset-custom" id="customPeriodInput"
-                      placeholder="Custom" min="1" oninput="onCustomPeriod(this)" />
+                    <input type="number" class="preset-custom" id="customPeriodInput" placeholder="Custom" min="1"
+                      oninput="onCustomPeriod(this)" />
                   </div>
                 </div>
               </div>
+            </div>
 
-              <!-- STEP 6: Terms & Conditions -->
-              <div class="step-block" style="border-bottom:none;">
-                <div class="step-header" onclick="toggleStep('step6Body','step6Chev')">
-                  <span class="step-title">Step 6: Terms and conditions</span>
-                  <div style="display:flex;align-items:center;gap:8px;">
-                    <button class="btn-terms-action" onclick="event.stopPropagation(); loadTCTemplate()" style="padding:5px 10px;font-size:11px;">
-                      <i data-lucide="file-text" style="width:12px;height:12px;"></i> T&amp;C templates
-                    </button>
-                    <button class="btn-terms-action" onclick="event.stopPropagation(); saveTC()" style="padding:5px 10px;font-size:11px;border-color:var(--c-primary);color:var(--c-primary);">
-                      <i data-lucide="save" style="width:12px;height:12px;"></i> Save T&amp;C
-                    </button>
-                    <i data-lucide="chevron-up" class="step-chevron open" id="step6Chev" style="width:18px;height:18px;"></i>
-                  </div>
+            <!-- STEP 6: Terms & Conditions (from issue-digital.html) -->
+            <div class="step-card">
+              <div class="step-header open" id="shdr-6" onclick="togglePanel('scollapse-6','shdr-6')">
+                <div class="step-badge">6</div>
+                <div class="step-title-text">Terms &amp; Conditions</div>
+                <div class="terms-actions terms-actions-header" id="termsActions" onclick="event.stopPropagation()">
+                  <button class="btn-terms" onclick="loadTerms()">
+                    <i data-lucide="folder-open" style="width:13px;height:13px;"></i> Load Terms
+                  </button>
+                  <button class="btn-terms" onclick="saveTerms()">
+                    <i data-lucide="save" style="width:13px;height:13px;"></i> Save Terms
+                  </button>
                 </div>
-                <div class="step-body" id="step6Body">
-                  <textarea class="terms-textarea" id="termsTextarea"
-                    placeholder="Valid for services only. Not applicable to products.&#10;No cash value.&#10;Valid for one-time use per invoice.&#10;Please present this card before payment."
-                  ></textarea>
-                  <div class="suggested-label">SUGGESTED TERMS:</div>
-                  <div class="suggested-chips">
-                    <button class="suggested-chip" onclick="addSuggestedTerm('Applies to services only. Not applicable to products.')">+ Applies to...</button>
-                    <button class="suggested-chip" onclick="addSuggestedTerm('Has no cash value and cannot be exchanged for cash.')">+ Has no cash value...</button>
-                    <button class="suggested-chip" onclick="addSuggestedTerm('Please present this card before payment.')">+ Please present...</button>
-                    <button class="suggested-chip" onclick="addSuggestedTerm('One-time use only per transaction.')">+ One-time use only</button>
+                <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+              </div>
+              <div class="collapse-wrap open" id="scollapse-6">
+                <div class="step-body">
+                  <div class="terms-box">
+                    <textarea class="terms-textarea" id="termsTextarea" rows="5"
+                      placeholder="Enter terms and conditions..." oninput="syncTermsToCard()">Valid for services only. Not applicable to products.
+No cash value.
+Valid for one-time use per invoice.
+Please present this card before payment.</textarea>
+                  </div>
+                  <div class="suggested-label">SUGGESTED TERMS</div>
+                  <div class="suggested-terms">
+                    <div class="term-chip" onclick="addTerm('Valid for services only. Not applicable to products.')">
+                      <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i> Valid for services only...
+                    </div>
+                    <div class="term-chip" onclick="addTerm('No cash value.')">
+                      <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i> No cash value
+                    </div>
+                    <div class="term-chip" onclick="addTerm('Valid for one-time use per invoice.')">
+                      <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i> One-time use only
+                    </div>
+                    <div class="term-chip" onclick="addTerm('Please present this card before payment.')">
+                      <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i> Present before payment
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <!-- SUBMIT -->
-              <div class="submit-bar">
-                <button class="btn-submit" onclick="submitPackage()">
-                  Create and Activate Package
-                </button>
-              </div>
+            <!-- SUBMIT -->
+            <div class="submit-bar">
+              <button class="btn-submit" onclick="submitPackage()">
+                Create and Activate Package
+              </button>
+            </div>
 
-            </div><!-- /steps-panel -->
-          </div><!-- /right col -->
-        </div><!-- /cmp-layout -->
+          </div><!-- /steps-panel -->
+        </div><!-- /right col -->
+      </div><!-- /cmp-layout -->
 
     </main>
   </div>
@@ -779,16 +2468,16 @@
        MOCK DATA — same as benefits-setup.html
     ═══════════════════════════════════════════════════════ */
     const BENEFITS_DATA = [
-      { id:'BEN001', name:'Discount',       unit:'Percentage (%)', iconIdx:2, iconBg:'#ffe4cc', iconColor:'#cc5500' },
-      { id:'BEN002', name:'Cashback',        unit:'USD ($)',         iconIdx:0, iconBg:'#c8fae5', iconColor:'#00a76f' },
-      { id:'BEN003', name:'Birthday Bonus',  unit:'Points',         iconIdx:3, iconBg:'#e0d4ff', iconColor:'#7c3aed' },
-      { id:'BEN004', name:'Free Gift',       unit:'USD ($)',         iconIdx:7, iconBg:'#ffd4d4', iconColor:'#d32f2f' },
-      { id:'BEN005', name:'Loyalty Points',  unit:'Points',         iconIdx:4, iconBg:'#fff9cc', iconColor:'#b8860b' },
-      { id:'BEN006', name:'VIP Lounge',      unit:'Percentage (%)', iconIdx:5, iconBg:'#ffd4d4', iconColor:'#d32f2f' },
-      { id:'BEN007', name:'Referral Reward', unit:'USD ($)',         iconIdx:6, iconBg:'#fff9cc', iconColor:'#b8860b' },
-      { id:'BEN008', name:'Early Access',    unit:'Points',         iconIdx:1, iconBg:'#c8fae5', iconColor:'#00a76f' },
-      { id:'BEN009', name:'Welcome Bonus',   unit:'USD ($)',         iconIdx:8, iconBg:'#e0d4ff', iconColor:'#7c3aed' },
-      { id:'BEN010', name:'Monthly Credit',  unit:'USD ($)',         iconIdx:0, iconBg:'#c8fae5', iconColor:'#00a76f' },
+      { id: 'BEN001', name: 'Discount', unit: '%', icon: '%', iconIdx: 2, iconBg: '#ffe4cc', iconColor: '#cc5500' },
+      { id: 'BEN002', name: 'Cashback', unit: '$', icon: '↩', iconIdx: 0, iconBg: '#c8fae5', iconColor: '#00a76f' },
+      { id: 'BEN003', name: 'Birthday Bonus', unit: 'pts', icon: '🎂', iconIdx: 3, iconBg: '#e0d4ff', iconColor: '#7c3aed' },
+      { id: 'BEN004', name: 'Free Gift', unit: '$', icon: '🎁', iconIdx: 7, iconBg: '#ffd4d4', iconColor: '#d32f2f' },
+      { id: 'BEN005', name: 'Loyalty Points', unit: 'pts', icon: '★', iconIdx: 4, iconBg: '#fff9cc', iconColor: '#b8860b' },
+      { id: 'BEN006', name: 'VIP Lounge', unit: '%', icon: '☕', iconIdx: 5, iconBg: '#ffd4d4', iconColor: '#d32f2f' },
+      { id: 'BEN007', name: 'Referral Reward', unit: '$', icon: '↩', iconIdx: 6, iconBg: '#fff9cc', iconColor: '#b8860b' },
+      { id: 'BEN008', name: 'Early Access', unit: 'pts', icon: '⚡', iconIdx: 1, iconBg: '#c8fae5', iconColor: '#00a76f' },
+      { id: 'BEN009', name: 'Welcome Bonus', unit: '$', icon: '🎁', iconIdx: 8, iconBg: '#e0d4ff', iconColor: '#7c3aed' },
+      { id: 'BEN010', name: 'Monthly Credit', unit: '$', icon: '$', iconIdx: 0, iconBg: '#c8fae5', iconColor: '#00a76f' },
     ];
 
     const DESIGN_COLORS = [
@@ -824,9 +2513,16 @@
        INIT
     ═══════════════════════════════════════════════════════ */
     document.addEventListener('DOMContentLoaded', () => {
+      const card = document.getElementById('pkgCard');
+      if (card) {
+        card.style.setProperty('--pkg-brand-color', DESIGN_COLORS[9].card);
+        card.style.setProperty('--pkg-accent-color', '#F7931A');
+      }
       buildColorSwatches();
-      buildBenefitSelect();
+      initMbBenefitSelect();
+      renderAiPrompts();
       updatePreview();
+      document.getElementById('popularBadge').style.display = state.isMostPopular ? '' : 'none';
       lucide.createIcons();
     });
 
@@ -834,7 +2530,7 @@
       const wrap = document.getElementById('colorSwatches');
       wrap.innerHTML = DESIGN_COLORS.map((c, i) => `
         <div class="color-dot ${i === 9 ? 'active' : ''}"
-          style="background:${c.bg};" title="Color ${i+1}"
+          style="background:${c.bg};" title="Color ${i + 1}"
           onclick="selectCardColor(${i}, this)"></div>
       `).join('') + `
         <div class="color-picker-dot" title="Custom color" onclick="document.getElementById('customCardColor').click()"></div>
@@ -842,10 +2538,64 @@
       `;
     }
 
-    function buildBenefitSelect() {
-      const sel = document.getElementById('benefitSelect');
-      sel.innerHTML = `<option value="" disabled selected>Select Benefit</option>` +
-        BENEFITS_DATA.map(b => `<option value="${b.id}">${b.name} (${b.unit})</option>`).join('');
+    let mbTomSelect = null;
+
+    function initMbBenefitSelect() {
+      const sel = document.getElementById('mbBenefitSelect');
+      if (!sel) return;
+      if (mbTomSelect) { mbTomSelect.destroy(); mbTomSelect = null; }
+      sel.innerHTML = '';
+      BENEFITS_DATA.forEach(b => {
+        const opt = document.createElement('option');
+        opt.value = b.id;
+        opt.textContent = `${b.name} (${b.unit})`;
+        opt.dataset.icon = b.icon || b.unit;
+        opt.dataset.iconBg = b.iconBg;
+        opt.dataset.iconColor = b.iconColor;
+        sel.appendChild(opt);
+      });
+      const benefitMap = Object.fromEntries(BENEFITS_DATA.map(b => [b.id, b]));
+      mbTomSelect = new TomSelect('#mbBenefitSelect', {
+        plugins: {
+          checkbox_options: {},
+          dropdown_header: { title: 'Select Benefit' }
+        },
+        placeholder: 'Select Benefit',
+        maxItems: null,
+        dropdownParent: 'body',
+        render: {
+          option: function (data, escape) {
+            const b = benefitMap[data.value];
+            if (!b) return escape(data.text);
+            return '<div class="option">' +
+              '<span class="mb-opt-icon" style="background:' + escape(b.iconBg) + ';color:' + escape(b.iconColor) + '">' + escape(b.icon || b.unit) + '</span>' +
+              '<span class="mb-opt-text">' + escape(b.name) + ' (' + escape(b.unit) + ')</span>' +
+              '</div>';
+          },
+          item: function (data, escape) {
+            const b = benefitMap[data.value];
+            if (!b) return escape(data.text);
+            return '<div class="item">' +
+              '<span class="mb-opt-icon" style="background:' + escape(b.iconBg) + ';color:' + escape(b.iconColor) + '">' + escape(b.icon || b.unit) + '</span>' +
+              escape(b.name) + ' (' + escape(b.unit) + ')' +
+              '</div>';
+          }
+        },
+        onChange: function (values) {
+          const next = values || [];
+          const prevIds = state.selectedBenefits.map(b => b.id);
+          next.forEach(id => {
+            if (!state.selectedBenefits.find(b => b.id === id)) {
+              const data = benefitMap[id];
+              if (data) state.selectedBenefits.push({ id, name: data.name, unit: data.unit, value: '', icon: data.icon, iconBg: data.iconBg, iconColor: data.iconColor });
+            }
+          });
+          state.selectedBenefits = state.selectedBenefits.filter(b => next.includes(b.id));
+          renderMbCards();
+          updatePreview();
+        }
+      });
+      renderMbCards();
     }
 
     /* ═══════════════════════════════════════════════════════
@@ -865,24 +2615,12 @@
     }
 
     /* ═══════════════════════════════════════════════════════
-       STEP 2 — BENEFITS
+       STEP 2 — BENEFITS (from issue-digital: Tom Select + cards)
     ═══════════════════════════════════════════════════════ */
-    function addBenefit(sel) {
-      const id = sel.value;
-      if (!id || state.selectedBenefits.find(b => b.id === id)) {
-        sel.value = '';
-        return;
-      }
-      const data = BENEFITS_DATA.find(b => b.id === id);
-      state.selectedBenefits.push({ id, name: data.name, unit: data.unit, value: '', iconBg: data.iconBg, iconColor: data.iconColor });
-      sel.value = '';
-      renderSelectedBenefits();
-      updatePreview();
-    }
-
     function removeBenefit(id) {
       state.selectedBenefits = state.selectedBenefits.filter(b => b.id !== id);
-      renderSelectedBenefits();
+      if (mbTomSelect) mbTomSelect.removeItem(id);
+      renderMbCards();
       updatePreview();
     }
 
@@ -892,30 +2630,28 @@
       updatePreview();
     }
 
-    function renderSelectedBenefits() {
-      const box = document.getElementById('selectedBenefitsBox');
-      const grid = document.getElementById('selectedBenefitsGrid');
+    function renderMbCards() {
+      const row = document.getElementById('mbCardsRow');
+      const hint = document.getElementById('mbEmptyHint');
+      if (!row) return;
       if (!state.selectedBenefits.length) {
-        box.style.display = 'none';
+        row.innerHTML = '<div class="mb-empty-hint" id="mbEmptyHint">No benefits selected yet</div>';
         return;
       }
-      box.style.display = 'block';
-      grid.innerHTML = state.selectedBenefits.map(b => `
-        <div class="ben-chip">
-          <div class="ben-chip-hd">
-            <div class="ben-chip-icon" style="background:${b.iconBg};color:${b.iconColor}">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-              </svg>
+      row.innerHTML = state.selectedBenefits.map(b => {
+        const val = (b.value || '').replace(/"/g, '&quot;');
+        return `
+          <div class="mb-card" id="mbcard-${b.id}">
+            <button class="mb-card-remove" onclick="removeBenefit('${b.id}')" title="Remove">✕</button>
+            <div class="mb-card-header">
+              <div class="mb-card-icon" style="background:${b.iconBg};color:${b.iconColor}">${b.icon || b.unit}</div>
+              <span class="mb-card-name">${b.name} (${b.unit})</span>
             </div>
-            <span class="ben-chip-name">${b.name}</span>
-            <button class="ben-chip-remove" onclick="removeBenefit('${b.id}')" title="Remove">✕</button>
-          </div>
-          <input type="text" class="ben-chip-input" placeholder="Enter value"
-            value="${b.value}" oninput="onBenefitValueChange('${b.id}', this.value)" />
-          <div class="ben-chip-unit">${b.unit}</div>
-        </div>
-      `).join('');
+            <input type="text" class="mb-value-input" placeholder="Enter value"
+              value="${val}"
+              oninput="onBenefitValueChange('${b.id}', this.value)">
+          </div>`;
+      }).join('');
     }
 
     /* ═══════════════════════════════════════════════════════
@@ -975,12 +2711,13 @@
       document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
       if (el) el.classList.add('active');
       state.cardBg = DESIGN_COLORS[idx].bg;
-      document.getElementById('pkgCard').style.background = state.cardBg;
+      const card = document.getElementById('pkgCard');
+      card.style.setProperty('--pkg-brand-color', DESIGN_COLORS[idx].card);
     }
     function applyCustomCardColor(hex) {
       document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
       state.cardBg = hex;
-      document.getElementById('pkgCard').style.background = hex;
+      document.getElementById('pkgCard').style.setProperty('--pkg-brand-color', hex);
     }
 
     /* ─── TEXT COLORS ─── */
@@ -996,7 +2733,7 @@
       const name = document.getElementById('previewName');
       const price = document.getElementById('previewPrice');
       const otherEls = document.querySelectorAll('.pkg-benefit-item');
-      if (name)  name.style.color  = state.textColors.name  === 'auto' ? '' : state.textColors.name;
+      if (name) name.style.color = state.textColors.name === 'auto' ? '' : state.textColors.name;
       if (price) price.style.color = state.textColors.price === 'auto' ? '' : state.textColors.price;
       otherEls.forEach(el => el.style.color = state.textColors.other === 'auto' ? '' : state.textColors.other);
     }
@@ -1006,47 +2743,46 @@
       state.isMostPopular = cb.checked;
       const badge = document.getElementById('popularBadge');
       const status = document.getElementById('popularStatus');
-      badge.style.display  = cb.checked ? '' : 'none';
+      badge.style.display = cb.checked ? '' : 'none';
       status.style.display = cb.checked ? '' : 'none';
       status.textContent = cb.checked ? 'ON' : 'OFF';
     }
 
-    /* ─── SAVE BADGE ─── */
+    /* ─── SAVE BADGE (AC: always visible) ─── */
     function updateSaveBadge() {
       const b = document.getElementById('saveBadge');
-      if (state.discount) {
-        b.textContent = `SAVE ${state.discount}%`;
-        b.style.display = '';
-      } else {
-        b.style.display = 'none';
-      }
+      const pct = state.discount != null ? Math.round(state.discount) : 0;
+      b.textContent = `SAVE ${pct}%`;
     }
 
     /* ═══════════════════════════════════════════════════════
        UPDATE CARD PREVIEW
     ═══════════════════════════════════════════════════════ */
     function updatePreview() {
-      document.getElementById('previewName').textContent = state.name || 'PACKAGE';
+      document.getElementById('previewName').textContent = (state.name || 'PACKAGE').toUpperCase();
 
-      // Price
+      // finalPrice = price - discount (AC FR-6)
       const priceEl = document.getElementById('previewPrice');
-      if (state.price) {
-        const periodLabel = state.period === 365 ? '/yr' : state.period === 30 ? '/mo' : `/${state.period}d`;
-        priceEl.innerHTML = `<sup>$</sup>${state.price.toLocaleString()}<span class="period"> ${periodLabel}</span>`;
-      } else {
-        priceEl.innerHTML = `<span style="font-size:14px;opacity:0.5;">Price not set</span>`;
-      }
+      const discount = state.discount != null ? state.discount : 0;
+      const rawPrice = state.price != null ? state.price : 0;
+      const finalPrice = Math.max(0, rawPrice * (1 - discount / 100));
+      const periodLabel = state.period === 365 ? '/yr' : state.period === 30 ? '/mo' : `/${state.period}d`;
+      priceEl.innerHTML = `<sup>$</sup>${finalPrice % 1 === 0 ? finalPrice : finalPrice.toFixed(2)}<span class="period"> ${periodLabel}</span>`;
 
-      // Benefits
-      const bens = state.selectedBenefits.filter(b => b.value);
-      document.getElementById('previewBenCount').textContent = `${state.selectedBenefits.length} BENEFIT${state.selectedBenefits.length !== 1 ? 'S' : ''}`;
-      document.getElementById('previewBenList').innerHTML = bens.slice(0, 4).map(b => `
-        <div class="pkg-benefit-item">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-          ${b.name}: ${b.value}
-        </div>
-      `).join('');
+      // Benefits count: "1 Benefit" / "X Benefits" (AC FR-7)
+      const count = state.selectedBenefits.length;
+      document.getElementById('previewBenCount').textContent = count === 1 ? '1 BENEFIT' : `${count} BENEFITS`;
 
+      // Benefits list with checkmark #F7931A (AC FR-9) — show all selected, value optional
+      const bens = state.selectedBenefits;
+      const checkSvg = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#F7931A" stroke-width="1.17" stroke-linecap="round" stroke-linejoin="round"><path d="M2.33 7L5.83 10.5L11.67 3.5"/></svg>';
+      document.getElementById('previewBenList').innerHTML = bens.slice(0, 10).map(b => {
+        const text = b.value ? `${b.name}: ${b.value}` : b.name;
+        return `<div class="pkg-benefit-item">${checkSvg}<span>${text}</span></div>`;
+      }).join('');
+
+      updateSaveBadge();
+      document.getElementById('popularBadge').style.display = state.isMostPopular ? '' : 'none';
       applyTextColors();
     }
 
@@ -1056,8 +2792,19 @@
     function toggleSection(bodyId, chevId) {
       const body = document.getElementById(bodyId);
       const chev = document.getElementById(chevId);
-      body.classList.toggle('collapsed');
-      chev.classList.toggle('open');
+      if (body && body.classList.contains('collapse-wrap')) {
+        body.classList.toggle('open');
+        if (chev) chev.classList.toggle('open');
+      } else {
+        if (body) body.classList.toggle('collapsed');
+        if (chev) chev.classList.toggle('open');
+      }
+    }
+    function togglePanel(collapseId, headerId) {
+      const wrap = document.getElementById(collapseId);
+      const hdr = document.getElementById(headerId);
+      if (wrap) wrap.classList.toggle('open');
+      if (hdr) hdr.classList.toggle('open');
     }
     function toggleStep(bodyId, chevId) {
       const body = document.getElementById(bodyId);
@@ -1067,40 +2814,193 @@
     }
 
     /* ═══════════════════════════════════════════════════════
-       TERMS & CONDITIONS
+       TERMS & CONDITIONS (from issue-digital.html)
     ═══════════════════════════════════════════════════════ */
-    const TC_TEMPLATES = [
-      'Valid for services only. Not applicable to products.\nNo cash value.\nValid for one-time use per invoice.\nPlease present this card before payment.',
-      'This membership package is non-transferable.\nBenefits are subject to change without notice.\nVoid where prohibited by law.',
-    ];
-    let tcIdx = 0;
-    function loadTCTemplate() {
-      document.getElementById('termsTextarea').value = TC_TEMPLATES[tcIdx % TC_TEMPLATES.length];
-      tcIdx++;
-    }
-    function saveTC() {
-      const val = document.getElementById('termsTextarea').value;
-      if (val) window.showCopyToast && window.showCopyToast('Terms saved!');
-    }
-    function addSuggestedTerm(term) {
+    function syncTermsToCard() {
       const ta = document.getElementById('termsTextarea');
-      ta.value = ta.value ? ta.value + '\n' + term : term;
+      const el = document.getElementById('pkgTermsPreview');
+      if (ta && el) el.textContent = ta.value || '';
+    }
+    function addTerm(text) {
+      const ta = document.getElementById('termsTextarea');
+      if (!ta) return;
+      ta.value = ta.value ? ta.value + '\n' + text : text;
+      syncTermsToCard();
+    }
+    let tcTemplates = [
+      { id: 1, name: 'Silver Membership T&Cs', date: new Date('2025-06-12T17:06:00'), content: 'Valid for services only. Not applicable to products.\nNo cash value.\nValid for one-time use per invoice.\nPlease present this card before payment.' },
+      { id: 2, name: 'Gold Membership T&Cs', date: new Date('2025-06-12T09:00:00'), content: 'Valid for Gold members only.\nBenefits are non-transferable.\nPresent your membership card for all transactions.\nCashback credited within 5 business days.' },
+    ];
+    let nextTcId = 3;
+    function loadTerms() {
+      renderTcList();
+      document.getElementById('loadTermsModal').classList.add('open');
+      lucide.createIcons();
+    }
+    function closeLoadTerms() {
+      document.getElementById('loadTermsModal').classList.remove('open');
+    }
+    function renderTcList() {
+      const list = document.getElementById('tcTemplateList');
+      if (!list) return;
+      if (!tcTemplates.length) {
+        list.innerHTML = '<div style="text-align:center;padding:24px;color:#919eab;font-size:13px;">No saved templates yet.</div>';
+        return;
+      }
+      list.innerHTML = tcTemplates.map(t => `
+        <div class="tc-item" id="tcitem-${t.id}">
+          <div class="tc-item-info">
+            <div class="tc-item-name">${t.name}</div>
+            <div class="tc-item-date">${fmtTcDate(t.date)}</div>
+          </div>
+          <div class="tc-item-actions">
+            <button class="btn-tc-select" onclick="selectTcTemplate(${t.id})">Select</button>
+            <button class="btn-tc-delete" onclick="deleteTcTemplate(${t.id})" title="Delete">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+    function selectTcTemplate(id) {
+      const t = tcTemplates.find(x => x.id === id);
+      if (!t) return;
+      document.getElementById('termsTextarea').value = t.content;
+      syncTermsToCard();
+      closeLoadTerms();
+    }
+    function deleteTcTemplate(id) {
+      tcTemplates = tcTemplates.filter(x => x.id !== id);
+      renderTcList();
+    }
+    function fmtTcDate(d) {
+      return d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
+    }
+    function saveTerms() {
+      const ta = document.getElementById('termsTextarea');
+      if (!ta || !ta.value.trim()) {
+        window.showCopyToast && window.showCopyToast('Please enter terms first.');
+        return;
+      }
+      document.getElementById('tcSaveNameInput').value = '';
+      document.getElementById('saveTermsModal').classList.add('open');
+      setTimeout(() => document.getElementById('tcSaveNameInput').focus(), 80);
+      lucide.createIcons();
+    }
+    function closeSaveTerms() {
+      document.getElementById('saveTermsModal').classList.remove('open');
+    }
+    function confirmSaveTc() {
+      const name = document.getElementById('tcSaveNameInput').value.trim();
+      if (!name) {
+        document.getElementById('tcSaveNameInput').style.borderColor = '#ff5630';
+        document.getElementById('tcSaveNameInput').focus();
+        setTimeout(() => { document.getElementById('tcSaveNameInput').style.borderColor = ''; }, 1500);
+        return;
+      }
+      const content = document.getElementById('termsTextarea').value.trim();
+      tcTemplates.unshift({ id: nextTcId++, name, date: new Date(), content });
+      closeSaveTerms();
+      window.showCopyToast && window.showCopyToast('Template saved!');
     }
 
     /* ═══════════════════════════════════════════════════════
-       BRAND
+       BRAND IDENTITY (from issue-digital.html)
     ═══════════════════════════════════════════════════════ */
-    function handleBrandUpload(input) {
-      const file = input.files && input.files[0];
-      if (!file) return;
+    const AI_PROMPTS = {
+      1: { label: 'Nail Spa & Nail Salon', prompts: ['Design a luxury nail spa logo for a professional and high-end nail salon with gold accents', 'Create a premium nail salon brand logo with a modern and professional identity', 'Develop a high-class nail spa logo that reflects relaxation, beauty, and professionalism', 'Design a modern luxury nail salon logo that balances femininity and professionalism', 'Create an exclusive nail spa logo that communicates quality, hygiene, and premium care', 'Design a premium nail salon logo suitable for storefront signage and appointment apps'] },
+      2: { label: 'Beauty, Fashion & Lifestyle', prompts: ['Create an elegant beauty brand logo with a chic and sophisticated aesthetic', 'Design a fashion-forward lifestyle brand logo with clean, minimal lines', 'Develop a luxury cosmetics logo that conveys glamour, style, and exclusivity', 'Create a modern beauty studio logo using pastel tones and organic shapes', 'Design a high-end fashion label logo with bold typography and a minimalist crest', 'Build a lifestyle brand identity that blends wellness, fashion, and aspirational living'] },
+      3: { label: 'Retail & Consumer Services', prompts: ['Design a friendly retail store logo that feels approachable and trustworthy', 'Create a modern consumer services logo with bold, clean typography', 'Develop a versatile brand mark for a multi-category retail shop', 'Design a vibrant logo for a local retail brand with community-first values', 'Create a premium logo for a boutique consumer goods store with artisan feel', 'Build a clean, scalable brand identity for a regional retail chain'] },
+      4: { label: 'Hospitality & Food Services', prompts: ['Design a warm, inviting restaurant logo with artisan and farm-to-table vibes', 'Create a bold, memorable café logo with coffee-inspired iconography', 'Develop a luxury hotel brand identity that conveys elegance and comfort', 'Design a modern food truck logo that is fun, energetic, and crave-worthy', 'Create a sophisticated fine-dining logo with a timeless and refined aesthetic', 'Build a playful bakery logo that evokes warmth, sweetness, and craftsmanship'] },
+      5: { label: 'Financial & Fintech Services', prompts: ['Design a trustworthy fintech logo with a sleek, modern digital-first feel', 'Create a professional financial services brand mark that conveys stability', 'Develop a bold crypto/blockchain company logo that feels innovative and secure', 'Design a clean digital banking logo using geometric shapes and blue tones', 'Create a modern wealth management logo that balances trust and aspiration', 'Build a fintech startup identity that blends speed, security, and innovation'] },
+      6: { label: 'Technology & Digital Products', prompts: ['Design a cutting-edge tech company logo with a futuristic and digital aesthetic', 'Create a SaaS product logo that is clean, memorable, and scalable', 'Develop a bold software startup logo using abstract geometry and gradient', 'Design a minimalist AI-company logo that communicates intelligence and clarity', 'Create a cybersecurity brand identity that projects strength and reliability', 'Build a modern developer-tools logo that resonates with engineering teams'] },
+      7: { label: 'Health, Wellness & Medical', prompts: ['Design a calming wellness center logo with natural, organic visual language', 'Create a professional medical clinic logo that projects care and confidence', 'Develop a modern fitness brand logo that motivates and energizes', 'Design a holistic health brand identity using nature-inspired colors and symbols', 'Create a clean pharmacy logo with a trustworthy and approachable tone', 'Build a mental health platform logo that communicates warmth and safety'] },
+      8: { label: 'Real Estate & Property Services', prompts: ['Design a premium real estate brand logo with architectural and luxury cues', 'Create a modern property management logo that inspires trust and authority', 'Develop a friendly home-buying platform logo with welcoming, warm aesthetics', 'Design a bold commercial real estate logo using strong geometry and navy tones', 'Create an upscale residential development brand mark with refined elegance', 'Build a real estate investment firm identity that communicates growth and stability'] },
+      9: { label: 'Travel, Tourism & Experiences', prompts: ['Design a vibrant travel agency logo that evokes adventure and wanderlust', 'Create a sleek airline or aviation brand identity with a global feel', 'Develop a luxury tourism brand mark using globe-inspired iconography', 'Design a boutique travel experience logo that feels curated and exclusive', 'Create an adventure tourism brand logo that is bold, outdoor, and energetic', 'Build a destination travel brand identity with sun, sea, and discovery vibes'] },
+      10: { label: 'Entertainment, Media & Creative', prompts: ['Design a dynamic entertainment brand logo with bold, expressive typography', 'Create a modern media company logo that feels fresh, digital, and creative', 'Develop a music streaming platform mark with rhythm-inspired visual elements', 'Design a film production company logo with cinematic depth and drama', 'Create a creative agency logo that balances wit, craft, and innovation', 'Build a gaming or esports brand identity that is powerful, vibrant, and iconic'] },
+    };
+    let currentCategory = 1;
+    function renderAiPrompts() {
+      const list = document.getElementById('aiPromptsList');
+      const cat = AI_PROMPTS[currentCategory];
+      if (!list || !cat) return;
+      list.innerHTML = (cat.prompts || []).map(p =>
+        `<button class="ai-prompt-badge" onclick="useAiPrompt(this)" title="${p.replace(/"/g, '&quot;')}">${p}</button>`
+      ).join('');
+    }
+    function onCategorySelect(val) {
+      currentCategory = parseInt(val) || 1;
+      const cat = AI_PROMPTS[currentCategory];
+      const lbl = document.getElementById('categoryLabel');
+      if (lbl && cat) lbl.textContent = cat.label;
+      renderAiPrompts();
+    }
+    function useAiPrompt(btn) {
+      const ta = document.getElementById('aiDescription');
+      if (ta) {
+        ta.value = btn.title || btn.textContent.trim();
+        ta.focus();
+        ta.style.borderColor = 'var(--c-primary)';
+        setTimeout(() => { ta.style.borderColor = ''; }, 1200);
+      }
+    }
+    function toggleStyleTag(btn) {
+      btn.classList.toggle('active');
+      updateAiDescription();
+    }
+    function updateAiDescription() {
+      const activeTags = [...document.querySelectorAll('.style-tag.active')].map(b => b.textContent.trim());
+      const ta = document.getElementById('aiDescription');
+      if (ta && !ta.value) {
+        ta.placeholder = activeTags.length > 0
+          ? 'Style: ' + activeTags.join(', ') + '. Describe your logo idea...'
+          : 'Describe your logo idea (e.g. elegant spa brand, gold & black theme, minimalist style)...';
+      }
+    }
+    function onLogoUpload(input) {
+      if (!input.files || !input.files[0]) return;
       const reader = new FileReader();
       reader.onload = e => {
         const preview = document.getElementById('brandPreview');
         const img = document.getElementById('brandPreviewImg');
-        img.src = e.target.result;
-        preview.style.display = 'block';
+        if (img) img.src = e.target.result;
+        if (preview) preview.style.display = 'block';
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(input.files[0]);
+    }
+    function openLogoLibrary() {
+      window.showCopyToast && window.showCopyToast('Logo library — coming soon');
+    }
+    function generateAiLogo() {
+      const ta = document.getElementById('aiDescription');
+      if (!ta || !ta.value.trim()) {
+        if (ta) { ta.style.borderColor = '#ff5630'; ta.focus(); setTimeout(() => { ta.style.borderColor = ''; }, 2000); }
+        return;
+      }
+      const btn = document.querySelector('.btn-ai-gen');
+      if (btn) { btn.innerHTML = '<iconify-icon icon="solar:refresh-bold" width="18"></iconify-icon> Generating...'; btn.disabled = true; }
+      setTimeout(() => {
+        if (btn) { btn.innerHTML = '<iconify-icon icon="solar:magic-stick-bold-duotone" width="18"></iconify-icon> Generate Logo with AI'; btn.disabled = false; }
+        window.showCopyToast && window.showCopyToast('Logo generated (preview coming soon)');
+      }, 1500);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       BUSINESS INFORMATION (from issue-digital.html)
+    ═══════════════════════════════════════════════════════ */
+    const bizInfo = { brandName: '', slogan: '', phone: '', email: '', website: '' };
+    function onBizInfoChange() {
+      bizInfo.brandName = (document.getElementById('bizBrandName') || {}).value || '';
+      bizInfo.slogan = (document.getElementById('bizSlogan') || {}).value || '';
+      const dial = (document.getElementById('bizDialCode') || {}).value || '';
+      const num = (document.getElementById('bizPhone') || {}).value || '';
+      bizInfo.phone = num ? (dial + ' ' + num).trim() : '';
+      bizInfo.email = (document.getElementById('bizEmail') || {}).value || '';
+      bizInfo.website = (document.getElementById('bizWebsite') || {}).value || '';
+    }
+    function saveBizInfo() {
+      onBizInfoChange();
+      window.showCopyToast && window.showCopyToast('Business information saved!');
     }
 
     /* ═══════════════════════════════════════════════════════
@@ -1131,6 +3031,63 @@
       window.showCopyToast && window.showCopyToast('Package created successfully!');
       setTimeout(() => { window.location.href = 'benefits-setup.html'; }, 1200);
     }
+
+    document.getElementById('loadTermsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLoadTerms(); });
+    document.getElementById('saveTermsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSaveTerms(); });
   </script>
+
+  <!-- Load Terms modal (from issue-digital.html) -->
+  <div class="tc-modal-overlay" id="loadTermsModal">
+    <div class="tc-modal-box">
+      <div class="tc-modal-head">
+        <div class="tc-modal-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            <path d="M9 6l3 3 3-3" />
+          </svg>
+        </div>
+        <div>
+          <div class="tc-modal-title">T&amp;C templates</div>
+        </div>
+        <button class="tc-modal-close" onclick="closeLoadTerms()">
+          <i data-lucide="x" style="width:16px;height:16px;"></i>
+        </button>
+      </div>
+      <div class="tc-template-list" id="tcTemplateList"></div>
+    </div>
+  </div>
+
+  <!-- Save Terms modal (from issue-digital.html) -->
+  <div class="tc-modal-overlay" id="saveTermsModal">
+    <div class="tc-modal-box">
+      <div class="tc-modal-head">
+        <div class="tc-modal-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            <path d="M9 6l3 3 3-3" />
+          </svg>
+        </div>
+        <div>
+          <div class="tc-modal-title">Save T&amp;C as Template</div>
+          <div class="tc-modal-subtitle">Name it for later reuse</div>
+        </div>
+        <button class="tc-modal-close" onclick="closeSaveTerms()">
+          <i data-lucide="x" style="width:16px;height:16px;"></i>
+        </button>
+      </div>
+      <div style="margin-top:20px;">
+        <label class="tc-field-label">Name</label>
+        <input type="text" class="tc-name-input" id="tcSaveNameInput" placeholder="e.g. Silver Membership T&Cs"
+          onkeydown="if(event.key==='Enter')confirmSaveTc()" />
+      </div>
+      <div class="tc-modal-foot">
+        <button class="tc-btn-cancel" onclick="closeSaveTerms()">Cancel</button>
+        <button class="tc-btn-save" onclick="confirmSaveTc()">Save</button>
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>

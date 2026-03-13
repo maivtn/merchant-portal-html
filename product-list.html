@@ -301,6 +301,13 @@
       color: #637381;
     }
 
+    /* ===== Actions column (reference for other table UIs) ===== */
+    .data-table th.col-actions,
+    .data-table td.col-actions {
+      text-align: right;
+      min-width: 90px;
+    }
+
     /* ===== Badges ===== */
     /* ===== Action Buttons ===== */
     .action-btns {
@@ -411,26 +418,37 @@
     }
 
     .product-card-info {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
       margin-bottom: 12px;
+    }
+
+    .info-field {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
     }
 
     .info-field-label {
       font-size: 11px;
       color: #919eab;
       font-weight: 500;
-      margin-bottom: 2px;
+      flex-shrink: 0;
     }
 
     .info-field-value {
       font-size: 13px;
       color: #212b36;
+      text-align: right;
     }
 
     .product-card-actions {
       display: flex;
+      align-items: center;
+      justify-content: center;
       gap: 8px;
       padding-top: 12px;
       border-top: 1px dashed rgba(145, 158, 171, 0.24);
@@ -481,8 +499,33 @@
 
     @media (max-width: 767px) {
       .pagination-bar {
-        padding: 10px 16px;
-        gap: 10px;
+        padding: 12px 16px;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .pagination-rows-label {
+        font-size: 12px;
+        gap: 6px;
+      }
+      .pagination-select {
+        padding: 6px 24px 6px 8px;
+        font-size: 12px;
+        min-height: 32px;
+      }
+      .pagination-select-chevron {
+        right: 6px;
+      }
+      .pagination-info {
+        font-size: 12px;
+      }
+      .pagination-btn {
+        width: 36px;
+        height: 36px;
+      }
+      .pagination-btn i {
+        width: 18px !important;
+        height: 18px !important;
       }
     }
 
@@ -1460,7 +1503,7 @@
                 <div class="th-inner"><span class="th-text">Last Updated</span><span id="sort-lastUpdated"
                     class="th-sort-icon"></span></div>
               </th>
-              <th class="col-actions" style="min-width:90px;">Actions</th>
+              <th class="col-actions">Actions</th>
                 </tr>
               </thead>
           <tbody id="tableBody"></tbody>

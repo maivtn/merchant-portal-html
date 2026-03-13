@@ -203,19 +203,117 @@
       font-size: 13px; line-height: 1.75; color: var(--c-text-2);
     }
 
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 1023px) {
-      .overview-card { grid-template-columns: 1fr; }
-      .overview-left { padding: 24px; }
-      .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+    /* ─── MAIN CONTENT (ensure padding on all viewports) ─── */
+    .main-content {
+      padding: 32px 24px 40px;
+      padding-top: 96px;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
     }
+
+    /* ─── RESPONSIVE ─── */
+    /* Tablet and below: stack overview, 2-col benefits */
+    @media (max-width: 1024px) {
+      .main-content { padding: 24px 20px 32px; padding-top: 92px; }
+      .page-header-row { margin-bottom: 20px; gap: 16px; }
+      .overview-card {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .overview-left {
+        padding: 28px 20px;
+        order: 1;
+      }
+      .overview-right { padding: 24px 20px 28px; order: 2; }
+      .mem-card { max-width: 280px; margin: 0 auto; }
+      .benefits-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .section-card { padding: 22px 20px; }
+    }
+
+    /* Mobile: single column, tighter spacing */
     @media (max-width: 767px) {
-      .page-title { font-size: 17px; }
-      .overview-right { padding: 20px 18px; }
-      .benefits-grid { grid-template-columns: 1fr; }
+      .main-content { padding: 16px 14px 24px; padding-top: 88px; }
+      .page-header-row {
+        flex-direction: column;
+        align-items: stretch;
+        margin-bottom: 16px;
+        gap: 12px;
+      }
+      .page-header-left { flex-wrap: wrap; }
+      .page-title { font-size: 18px; line-height: 1.3; }
+      .btn-edit {
+        width: 100%;
+        justify-content: center;
+        min-height: 44px;
+      }
+      .overview-card { margin-bottom: 16px; }
+      .overview-left { padding: 20px 16px; }
+      .overview-right { padding: 18px 16px 22px; }
+      .mem-card {
+        max-width: 100%;
+        min-height: 180px;
+        padding: 16px 14px 14px;
+      }
+      .mem-name { font-size: 18px; letter-spacing: 1.5px; }
+      .mem-price { font-size: 20px; }
+      .mem-count { font-size: 8px; margin-bottom: 10px; }
+      .mem-benefit-item { font-size: 10px; }
+      .info-name-row { flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
       .info-pkg-name { font-size: 20px; }
-      .price-amount { font-size: 24px; }
-      .section-card { padding: 18px; }
+      .price-header { margin-bottom: 16px; padding-bottom: 12px; }
+      .price-amount { font-size: 26px; }
+      .info-row {
+        padding: 10px 0;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      .info-row-label { min-width: 0; flex: 1; }
+      .info-row-value { text-align: right; word-break: break-word; }
+      .benefits-grid { grid-template-columns: 1fr; gap: 10px; }
+      .benefit-item-card { padding: 12px 14px; }
+      .benefit-item-value { font-size: 18px; }
+      .section-card { padding: 16px 14px; margin-bottom: 16px; }
+      .section-title { font-size: 14px; margin-bottom: 14px; }
+      .terms-text { font-size: 12px; line-height: 1.7; }
+    }
+
+    /* Small phones: minimal padding, touch-friendly */
+    @media (max-width: 480px) {
+      .main-content { padding: 12px 12px 20px; padding-top: 84px; }
+      .page-title { font-size: 17px; }
+      .overview-left { padding: 16px 12px; }
+      .overview-right { padding: 14px 12px 18px; }
+      .mem-card {
+        min-height: 170px;
+        padding: 14px 12px 12px;
+      }
+      .mem-icon-circle { width: 42px; height: 42px; margin-bottom: 6px; }
+      .mem-name { font-size: 16px; }
+      .mem-price { font-size: 18px; }
+      .mem-price sup { font-size: 10px; }
+      .mem-price .period { font-size: 11px; }
+      .info-pkg-name { font-size: 18px; }
+      .price-amount { font-size: 22px; }
+      .section-card { padding: 14px 12px; margin-bottom: 12px; }
+      .section-title { font-size: 13px; margin-bottom: 12px; }
+      .benefit-item-card { padding: 12px; }
+      .benefit-item-name { font-size: 12px; }
+      .benefit-item-value { font-size: 16px; }
+    }
+
+    /* Prevent horizontal scroll and overflow */
+    .overview-card,
+    .section-card,
+    .benefits-grid,
+    .mem-card {
+      box-sizing: border-box;
+    }
+    .info-row-value,
+    .terms-text,
+    .benefit-item-value {
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
   </style>
 </head>

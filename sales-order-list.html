@@ -54,6 +54,36 @@
       background: var(--grey-100);
     }
 
+    /* col-actions (ref: product-list.html) */
+    .minimal-table th.col-actions,
+    .minimal-table td.col-actions {
+      text-align: right;
+      min-width: 90px;
+    }
+    .minimal-table td.col-actions .action-btns {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .minimal-table td.col-actions .action-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s, color 0.15s;
+      background: rgba(0, 167, 111, 0.08);
+      color: #00a76f;
+      text-decoration: none;
+    }
+    .minimal-table td.col-actions .action-btn:hover {
+      background: rgba(0, 167, 111, 0.18);
+    }
+
     .table-toolbar {
       padding: 24px 20px;
       display: flex;
@@ -407,8 +437,11 @@
               <td class="text-right">$1.50</td>
               <td class="text-right" style="font-weight: 700">$93.50</td>
               <td class="col-actions">
-                <a href="sales-order-details.html"><iconify-icon icon="solar:eye-bold"
-                    style="color: var(--primary-main); cursor: pointer"></iconify-icon></a>
+                <div class="action-btns">
+                  <a href="sales-order-details.html" class="action-btn action-btn-view" title="View">
+                    <iconify-icon icon="solar:eye-bold" width="18"></iconify-icon>
+                  </a>
+                </div>
               </td>
             </tr>
             <tr>
@@ -433,8 +466,11 @@
               <td class="text-right">$0.50</td>
               <td class="text-right" style="font-weight: 700">$49.50</td>
               <td class="col-actions">
-                <a href="sales-order-details.html"><iconify-icon icon="solar:eye-bold"
-                    style="color: var(--primary-main); cursor: pointer"></iconify-icon></a>
+                <div class="action-btns">
+                  <a href="sales-order-details.html" class="action-btn action-btn-view" title="View">
+                    <iconify-icon icon="solar:eye-bold" width="18"></iconify-icon>
+                  </a>
+                </div>
               </td>
             </tr>
           </tbody>

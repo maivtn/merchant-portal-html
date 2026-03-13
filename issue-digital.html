@@ -845,56 +845,126 @@
     }
 
     /* ── Crypto assets (Step 3) ───────────────────────────── */
-    .crypto-asset-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    .crypto-asset-select-wrap {
       margin-bottom: 14px;
     }
 
-    .crypto-pill {
+    .crypto-select .ts-control {
+      border-radius: 12px;
+      min-height: 42px;
+      padding-inline: 10px;
+      font-size: 14px;
+    }
+
+    .crypto-select .ts-control .item {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid #e2e8f0;
-      background: #fff;
-      font-size: 13px;
-      font-weight: 500;
-      color: #111827;
-      cursor: pointer;
-      transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
-    }
-
-    .crypto-pill:hover {
-      border-color: #00ab55;
-      background: rgba(0, 171, 85, 0.04);
-    }
-
-    .crypto-pill.active {
-      border-color: #00ab55;
-      background: rgba(0, 171, 85, 0.08);
-      color: #004b2b;
-      box-shadow: 0 0 0 1px rgba(0, 171, 85, 0.32);
-    }
-
-    .crypto-pill-icon {
-      width: 20px;
-      height: 20px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background: #f3f4f6;
+      padding: 2px;
+      border-radius: 50%;
+      background: #eef2ff;
       font-size: 12px;
     }
 
-    .crypto-pill-icon img {
+    .crypto-select .ts-control .item .crypto-item-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .crypto-select .ts-control .item .crypto-item-icon img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    .ts-control input {
+      font-size: 14px;
+    }
+
+    .crypto-select .ts-dropdown .option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-block: 6px;
+    }
+
+    .option-crypto {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      width: 100%;
+    }
+
+    .crypto-select .ts-dropdown .option.option-crypto {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      width: 100%;
+    }
+
+    .crypto-option-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #f0f0f0;
+    }
+
+    .crypto-option-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .crypto-option-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .crypto-option-name {
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.3;
+    }
+
+    .crypto-option-amount {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+      line-height: 1.3;
+    }
+
+    .crypto-option-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .crypto-option-available-label {
+      font-size: 12px;
+      color: #6b7280;
+      line-height: 1.3;
+    }
+
+    .crypto-option-available-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+      line-height: 1.3;
+    }
+
+    .crypto-option-label {
+      font-size: 13px;
+      font-weight: 500;
     }
 
     .crypto-selected-card {
@@ -2972,7 +3042,7 @@
         <div class="step-card">
           <div class="step-header open" id="shdr-2" onclick="toggleStep(2)">
             <div class="step-badge" id="sbadge-2">2</div>
-            <div class="step-title-text">Customer Details</div>
+            <div class="step-title-text" id="step2Title">Customer Details</div>
             <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="scollapse-2">
@@ -3042,39 +3112,8 @@
           </div>
           <div class="collapse-wrap open" id="scollapse-crypto">
             <div class="step-body">
-              <div class="crypto-asset-pills">
-                <button type="button" class="crypto-pill" data-asset="BTC" onclick="toggleAsset(this,'BTC')">
-                  <span class="crypto-pill-icon">
-                    <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/1.png" alt="BTC">
-                  </span>
-                  <span class="crypto-pill-label">BTC</span>
-                </button>
-                <button type="button" class="crypto-pill" data-asset="ETH" onclick="toggleAsset(this,'ETH')">
-                  <span class="crypto-pill-icon">
-                    <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png" alt="ETH">
-                  </span>
-                  <span class="crypto-pill-label">ETH</span>
-                </button>
-                <button type="button" class="crypto-pill" data-asset="USDT" onclick="toggleAsset(this,'USDT')">
-                  <span class="crypto-pill-icon">
-                    <img
-                      src="https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/USDT.png"
-                      alt="USDT">
-                  </span>
-                  <span class="crypto-pill-label">USDT</span>
-                </button>
-                <button type="button" class="crypto-pill" data-asset="SHIB" onclick="toggleAsset(this,'SHIB')">
-                  <span class="crypto-pill-icon">
-                    <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/5994.png" alt="SHIB">
-                  </span>
-                  <span class="crypto-pill-label">SHIB</span>
-                </button>
-                <button type="button" class="crypto-pill" data-asset="DOGE" onclick="toggleAsset(this,'DOGE')">
-                  <span class="crypto-pill-icon">
-                    <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/74.png" alt="DOGE">
-                  </span>
-                  <span class="crypto-pill-label">DOGE</span>
-                </button>
+              <div class="crypto-asset-select-wrap">
+                <select id="cryptoAssetsSelect" class="crypto-select" multiple placeholder="Select assets"></select>
               </div>
 
               <div class="crypto-selected-card">
@@ -3849,9 +3888,9 @@ Please present this card before payment.</textarea>
         logoBox.textContent = CARD_TYPE_ICONS[name] || '💳';
       }
 
-      // Show/hide rank
+      // Show/hide rank (hidden for Prepaid Card & Crypto Card)
       const rankSection = document.getElementById('rankSection');
-      if (rankSection) rankSection.style.display = typeId === '4' ? 'none' : '';
+      if (rankSection) rankSection.style.display = (typeId === '4' || typeId === '5') ? 'none' : '';
 
       // Show/hide Step 3 (Expiration — hidden for GiftCard & PrepaidCard & Crypto)
       const step3 = document.getElementById('step3Card');
@@ -3898,15 +3937,29 @@ Please present this card before payment.</textarea>
       const birthdayField = document.getElementById('birthdayField');
       const termsActions = document.getElementById('termsActions');
       const isMembership = typeId === '2';
+      const isCrypto = typeId === '5';
+
+      // Step 2 title + fields based on card type
+      const step2Title = document.getElementById('step2Title');
+      const nameInput = document.getElementById('holderName');
+      const emailInput = document.getElementById('holderEmail');
 
       // Birthday: only for Membership
       if (birthdayField) birthdayField.style.display = isMembership ? '' : 'none';
 
-      // Email placeholder: changes based on card type
-      const emailInput = document.getElementById('holderEmail');
-      if (emailInput) emailInput.placeholder = isMembership
-        ? 'Enter member email (optional)'
-        : 'Enter email address';
+      if (isCrypto) {
+        if (step2Title) step2Title.textContent = 'Recipient Information';
+        if (nameInput) nameInput.placeholder = 'Recipient Name';
+        if (emailInput) emailInput.placeholder = 'Recipient Email';
+      } else if (isMembership) {
+        if (step2Title) step2Title.textContent = 'Customer Details';
+        if (nameInput) nameInput.placeholder = 'Enter full name (optional)';
+        if (emailInput) emailInput.placeholder = 'Enter member email (optional)';
+      } else {
+        if (step2Title) step2Title.textContent = 'Customer Details';
+        if (nameInput) nameInput.placeholder = 'Enter full name (optional)';
+        if (emailInput) emailInput.placeholder = 'Enter email address';
+      }
 
       // T&C load/save buttons: always visible regardless of card type
       if (termsActions) termsActions.style.display = '';
@@ -3961,52 +4014,46 @@ Please present this card before payment.</textarea>
     /* ──────────────────────────────────────────────
        CRYPTO ASSETS (for Crypto Card)
     ────────────────────────────────────────────── */
+    const CRYPTO_ASSET_NAMES = { BTC: 'Bitcoin', ETH: 'Ethereum', USDT: 'Tether', SHIB: 'Shiba Inu' };
     const CRYPTO_ASSETS = [
       {
         id: 'BTC',
         name: 'BTC',
         iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png',
-        available: 200.55
+        available: 200.55,
+        balance: 0.0003593
       },
       {
         id: 'ETH',
         name: 'ETH',
         iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
-        available: 200.55
+        available: 200.55,
+        balance: 0.052
       },
       {
         id: 'USDT',
         name: 'USDT',
         iconUrl: 'https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/USDT.png',
-        available: 500.00
+        available: 500.00,
+        balance: 500
       },
       {
         id: 'SHIB',
         name: 'SHIB',
         iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5994.png',
-        available: 1000.00
+        available: 1000.00,
+        balance: 12500000
       },
       {
         id: 'DOGE',
         name: 'DOGE',
         iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/74.png',
-        available: 750.00
+        available: 750.00,
+        balance: 2500
       }
     ];
 
     const selectedAssets = {}; // { BTC: '50', ETH: '100', ... }
-
-    function toggleAsset(btn, id) {
-      const isActive = btn.classList.contains('active');
-      if (isActive) {
-        delete selectedAssets[id];
-        btn.classList.remove('active');
-      } else {
-        selectedAssets[id] = selectedAssets[id] || '';
-        btn.classList.add('active');
-      }
-      renderSelectedAssets();
-    }
 
     function updateAssetAmount(id, val) {
       selectedAssets[id] = val;
@@ -4055,6 +4102,73 @@ Please present this card before payment.</textarea>
           </div>
         `;
       }).join('');
+    }
+
+    function initCryptoSelect() {
+      const sel = document.getElementById('cryptoAssetsSelect');
+      if (!sel) return;
+      sel.innerHTML = '';
+      CRYPTO_ASSETS.forEach(a => {
+        const opt = document.createElement('option');
+        opt.value = a.id;
+        opt.textContent = a.name;
+        opt.dataset.iconUrl = a.iconUrl || '';
+        sel.appendChild(opt);
+      });
+      const assetMap = Object.fromEntries(CRYPTO_ASSETS.map(a => [a.id, a]));
+      new TomSelect('#cryptoAssetsSelect', {
+        plugins: {
+          checkbox_options: {},
+          dropdown_header: { title: 'Select Assets' }
+        },
+        maxItems: null,
+        dropdownParent: 'body',
+        render: {
+          option: function (data, escape) {
+            const a = assetMap[data.value];
+            if (!a) return escape(data.text);
+            const fullName = CRYPTO_ASSET_NAMES[a.id] || a.name;
+            const availableFmt = typeof a.available === 'number'
+              ? '$' + a.available.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 })
+              : '';
+            return `
+              <div class="option option-crypto">
+                <div class="crypto-option-icon">
+                  ${a.iconUrl ? `<img src="${escape(a.iconUrl)}" alt="${escape(a.name)}">` : ''}
+                </div>
+                <div class="crypto-option-text">
+                  <div class="crypto-option-name">${escape(fullName)}</div>
+                  <div class="crypto-option-amount">${escape(typeof a.balance !== 'undefined' && a.balance != null ? (Number(a.balance).toLocaleString('en-US', { maximumFractionDigits: 8 }) + ' ' + a.name) : a.name)}</div>
+                </div>
+                <div class="crypto-option-right">
+                  <div class="crypto-option-available-label">Available</div>
+                  <div class="crypto-option-available-value">${escape(availableFmt)}</div>
+                </div>
+              </div>
+            `;
+          },
+          item: function (data, escape) {
+            const a = assetMap[data.value];
+            if (!a) return escape(data.text);
+            return `
+              <div class="item">
+                <span class="crypto-item-icon">${a.iconUrl ? `<img src="${escape(a.iconUrl)}" alt="${escape(a.name)}">` : ''}</span>
+              </div>
+            `;
+          }
+        },
+        onChange(values) {
+          const next = values || [];
+          // keep amounts for existing selections
+          Object.keys(selectedAssets).forEach(id => {
+            if (!next.includes(id)) delete selectedAssets[id];
+          });
+          next.forEach(id => {
+            if (!selectedAssets[id]) selectedAssets[id] = '';
+          });
+          renderSelectedAssets();
+        }
+      });
     }
     function clearRankSelection() {
       document.querySelectorAll('.rank-pill').forEach(p => p.classList.remove('active'));
@@ -4275,6 +4389,8 @@ Please present this card before payment.</textarea>
       renderAiPrompts();
       // Init membership benefit select
       initMbBenefitSelect();
+      // Init crypto assets select (Tom Select)
+      initCryptoSelect();
       // Init step visibility for default card type (E-Gift Card)
       const step3 = document.getElementById('step3Card');
       const step5 = document.getElementById('step5Card');

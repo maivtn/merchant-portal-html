@@ -2818,7 +2818,7 @@
                     <span>Brand Name</span>
                   </div>
                   <input type="text" class="biz-input" id="bizBrandName" placeholder="e.g. VLinkPay"
-                    oninput="onBizInfoChange()">
+                    value="Bitcoin Nail Bar" oninput="onBizInfoChange()">
                 </div>
                 <!-- Slogan -->
                 <div class="biz-row">
@@ -2899,7 +2899,7 @@
       <!-- ══════════════════ RIGHT PANEL ══════════════════ -->
       <div class="right-panel">
         <p class="required-note">
-          * required fields
+          * required
         </p>
 
         <!-- STEP 1: Select Product Line -->
@@ -3314,7 +3314,8 @@ Please present this card before payment.</textarea>
 
               <!-- Desktop confirm -->
               <button class="btn-confirm-desktop" onclick="confirmIssuance()">
-                <iconify-icon icon="solar:check-circle-bold-duotone" width="20"></iconify-icon>
+                <iconify-icon icon="solar:check-circle-bold-duotone" width="20"
+                  style="position: relative; top: 1px;"></iconify-icon>
                 Confirm Issuance
               </button>
             </div>
@@ -3328,7 +3329,8 @@ Please present this card before payment.</textarea>
   <!-- Mobile Bottom Bar -->
   <div class="confirm-bar">
     <button onclick="confirmIssuance()">
-      <iconify-icon icon="solar:check-circle-bold-duotone" width="20"></iconify-icon>
+      <iconify-icon icon="solar:check-circle-bold-duotone" width="20"
+        style="position: relative; top: 4px;"></iconify-icon>
       Confirm Issuance
     </button>
   </div>
@@ -3352,6 +3354,14 @@ Please present this card before payment.</textarea>
       const opening = !body.classList.contains('open');
       body.classList.toggle('open', opening);
       if (hdr) hdr.classList.toggle('open', opening);
+      // On mobile: when Brand Identity is collapsed, also hide header actions
+      const isMobile = window.innerWidth <= 767;
+      if (isMobile && headerId === 'hdr-brand' && hdr) {
+        const actions = hdr.querySelector('.header-actions');
+        if (actions) {
+          actions.style.display = opening ? '' : 'none';
+        }
+      }
       // Rotate inline chevron for adv section
       const ch = document.getElementById('hdr-adv-chevron');
       if (sectionId === 'adv-text-colors' && ch) {
@@ -3718,7 +3728,7 @@ Please present this card before payment.</textarea>
     /* ──────────────────────────────────────────────
        CARD 4: BUSINESS INFORMATION
     ────────────────────────────────────────────── */
-    const bizInfo = { brandName: '', slogan: '', phone: '', email: '', website: '' };
+    const bizInfo = { brandName: 'Bitcoin Nail Bar', slogan: '', phone: '', email: '', website: '' };
 
     function onBizInfoChange() {
       bizInfo.brandName = document.getElementById('bizBrandName').value;
@@ -3732,7 +3742,7 @@ Please present this card before payment.</textarea>
       // Live update card front preview
       const cardTitle = document.getElementById('previewCardTitle');
       const cardSlogan = document.getElementById('previewSlogan');
-      if (cardTitle && bizInfo.brandName) cardTitle.textContent = bizInfo.brandName.toUpperCase();
+      if (cardTitle) cardTitle.textContent = (bizInfo.brandName || 'Bitcoin Nail Bar').toUpperCase();
       if (cardSlogan) cardSlogan.textContent = (bizInfo.slogan || 'YOUR SLOGAN HERE').toUpperCase();
 
       // Live update card back contact info
@@ -3819,10 +3829,8 @@ Please present this card before payment.</textarea>
       currentCardType = name;
       currentTypeId = typeId;
 
-      // Update preview card title
-      const cardTitle = document.getElementById('previewCardTitle');
+      // Update preview header (panel) title only – card front brand name always shows Brand Name
       const headerTitle = document.getElementById('previewCardHeaderTitle');
-      if (cardTitle) cardTitle.textContent = name.toUpperCase();
       if (headerTitle) headerTitle.textContent = name;
 
       // Update bottom-right type label
@@ -4260,6 +4268,8 @@ Please present this card before payment.</textarea>
 
       // Init card front for default card type (E-Gift Card, typeId=0)
       updateCardValueBadge();
+      // Init card brand name from default business info
+      onBizInfoChange();
 
       // Init AI prompt list with default category
       renderAiPrompts();

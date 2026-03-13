@@ -1488,6 +1488,9 @@
       padding: 12px;
       margin-top: 10px;
     }
+    .mb-selected-area.is-empty {
+      display: none;
+    }
 
     .mb-selected-label {
       font-size: 11px;
@@ -2327,7 +2330,7 @@
                   <div class="mb-select-wrap">
                     <select class="mb-select" id="mbBenefitSelect" multiple placeholder="Select Benefit"></select>
                   </div>
-                  <div class="mb-selected-area" id="mbSelectedArea">
+                  <div class="mb-selected-area is-empty" id="mbSelectedArea">
                     <div class="mb-selected-label">Selected Benefits</div>
                     <div class="mb-cards-row" id="mbCardsRow">
                       <div class="mb-empty-hint" id="mbEmptyHint">No benefits selected yet</div>
@@ -2632,8 +2635,9 @@ Please present this card before payment.</textarea>
 
     function renderMbCards() {
       const row = document.getElementById('mbCardsRow');
-      const hint = document.getElementById('mbEmptyHint');
+      const area = document.getElementById('mbSelectedArea');
       if (!row) return;
+      if (area) area.classList.toggle('is-empty', !state.selectedBenefits.length);
       if (!state.selectedBenefits.length) {
         row.innerHTML = '<div class="mb-empty-hint" id="mbEmptyHint">No benefits selected yet</div>';
         return;

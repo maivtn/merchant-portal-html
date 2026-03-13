@@ -10,8 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="global.css">
+  <!-- Flatpickr date picker -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="global.js" defer></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
   <style>
     /* ── Base icon reset ─────────────────────────────── */
     i[data-lucide],
@@ -773,7 +776,7 @@
         <div class="field-root date-field" id="dateWrapFrom">
           <label class="field-label">Cancelled From</label>
           <div class="field-container">
-            <input type="date" class="field-input" id="dateFrom" onchange="applyDateFilter()" />
+            <input type="text" class="field-input" id="dateFrom" placeholder="Pick a date" readonly />
             <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
         </div>
@@ -781,7 +784,7 @@
         <div class="field-root date-field" id="dateWrapTo">
           <label class="field-label">To</label>
           <div class="field-container">
-            <input type="date" class="field-input" id="dateTo" onchange="applyDateFilter()" />
+            <input type="text" class="field-input" id="dateTo" placeholder="Pick a date" readonly />
             <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
         </div>
@@ -839,7 +842,7 @@
           <div class="field-root date-field">
             <label class="field-label">Cancelled From</label>
             <div class="field-container">
-              <input type="date" class="field-input" id="mDateFrom" />
+              <input type="text" class="field-input" id="mDateFrom" placeholder="Pick a date" readonly />
               <i data-lucide="calendar" style="width:16px;height:16px;"></i>
             </div>
           </div>
@@ -848,7 +851,7 @@
           <div class="field-root date-field">
             <label class="field-label">To</label>
             <div class="field-container">
-              <input type="date" class="field-input" id="mDateTo" />
+              <input type="text" class="field-input" id="mDateTo" placeholder="Pick a date" readonly />
               <i data-lucide="calendar" style="width:16px;height:16px;"></i>
             </div>
           </div>
@@ -1186,7 +1189,37 @@
     document.addEventListener('DOMContentLoaded', () => {
       buildChips();
       render();
-      lucide.createIcons();
+    lucide.createIcons();
+
+    // Flatpickr date pickers for Cancelled Cards
+    flatpickr('#dateFrom', {
+      dateFormat: 'Y-m-d',
+      allowInput: false,
+      disableMobile: true,
+      onChange(selectedDates, dateStr) {
+        document.getElementById('dateFrom').value = dateStr;
+        applyDateFilter();
+      }
+    });
+    flatpickr('#dateTo', {
+      dateFormat: 'Y-m-d',
+      allowInput: false,
+      disableMobile: true,
+      onChange(selectedDates, dateStr) {
+        document.getElementById('dateTo').value = dateStr;
+        applyDateFilter();
+      }
+    });
+    flatpickr('#mDateFrom', {
+      dateFormat: 'Y-m-d',
+      allowInput: false,
+      disableMobile: true,
+    });
+    flatpickr('#mDateTo', {
+      dateFormat: 'Y-m-d',
+      allowInput: false,
+      disableMobile: true,
+    });
     });
   </script>
 </body>

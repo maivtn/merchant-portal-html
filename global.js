@@ -222,11 +222,16 @@
     logo.alt = 'VLINKPAY';
 
     const hamburger = document.getElementById('hamburgerBtn');
-    if (hamburger && hamburger.nextSibling) {
-      header.insertBefore(logo, hamburger.nextSibling);
-    } else {
-      header.appendChild(logo);
+    if (hamburger) {
+      const parent = hamburger.parentNode;
+      // If hamburger is inside the header (directly or via wrapper), insert logo right after it
+      if (parent && parent.contains(hamburger)) {
+        parent.insertBefore(logo, hamburger.nextSibling);
+        return;
+      }
     }
+    // Fallback: append at the end of the header
+    header.appendChild(logo);
   }
 
   // ═══════════════════════════════════════════════════════════════════════════

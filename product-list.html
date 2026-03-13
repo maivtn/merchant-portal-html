@@ -716,6 +716,37 @@
       background: #b71d18;
     }
 
+    /* Cancel Success Modal */
+    .cancel-success-modal {
+      text-align: center;
+    }
+    .cancel-success-icon {
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: center;
+    }
+    .cancel-success-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: #212b36;
+      margin: 0 0 20px;
+    }
+    .btn-ok-success {
+      width: 100%;
+      height: 44px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      background: var(--c-primary, #00ab55);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-ok-success:hover {
+      background: #008f4a;
+    }
+
     /* ===== Issue Card Modal ===== */
     .issue-overlay {
       position: fixed;
@@ -1498,6 +1529,17 @@
     </div>
   </div>
 
+  <!-- Cancel Success Modal (shown after card is cancelled) -->
+  <div id="cancelSuccessModal" class="overlay" onclick="handleOverlayClick(event, 'cancelSuccessModal')">
+    <div class="cancel-modal cancel-success-modal">
+      <div class="cancel-success-icon">
+        <i data-lucide="check-circle" style="width:48px;height:48px;color:#00ab55;"></i>
+      </div>
+      <p class="cancel-success-text">Card has been cancelled successfully.</p>
+      <button class="btn-ok-success" onclick="closeCancelSuccessModal()">OK</button>
+    </div>
+  </div>
+
   <!-- Issue Card Modal -->
   <div id="issueCardModal" class="issue-overlay" onclick="handleOverlayClick(event, 'issueCardModal')">
     <div class="issue-modal-content">
@@ -2075,6 +2117,12 @@
     }
     function confirmCancel() {
       closeCancelModal();
+      document.getElementById('cancelSuccessModal').classList.add('open');
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function closeCancelSuccessModal() {
+      document.getElementById('cancelSuccessModal').classList.remove('open');
     }
 
     // ===== Issue Card Modal =====
@@ -2124,6 +2172,7 @@
     function handleOverlayClick(event, modalId) {
       if (event.target === document.getElementById(modalId)) {
         if (modalId === 'cancelModal') closeCancelModal();
+        else if (modalId === 'cancelSuccessModal') closeCancelSuccessModal();
         else if (modalId === 'issueCardModal') closeIssueCardModal();
         else if (modalId === 'mobileFilterModal') closeMobileFilter();
       }
@@ -2133,6 +2182,7 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
         closeCancelModal();
+        closeCancelSuccessModal();
         closeIssueCardModal();
         closeMobileFilter();
       }

@@ -747,10 +747,11 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
 ═══════════════════════════════════════════════════════ */
 .mobile-logo {
   display: none;
-  height: 36px;
+  height: 24px;
   width: auto;
   object-fit: contain;
-  flex: 1;
+  margin-left: 8px;
+  flex-shrink: 0;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -886,6 +887,29 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
   .filter-input {
     width: 100% !important;
     box-sizing: border-box;
+  }
+
+  /* ── Inputs full width on mobile ── */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="image"]),
+  select,
+  textarea,
+  .input-minimal,
+  .biz-input,
+  .biz-phone-input,
+  .search-input,
+  .search-input-minimal,
+  .reason-textarea,
+  .preset-custom {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+  .form-field,
+  .field-container,
+  .date-input-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
   }
 
   /* ── Tabs: horizontal scroll to prevent squeeze ── */

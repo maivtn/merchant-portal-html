@@ -17,6 +17,73 @@
   <link rel="stylesheet" href="global.css">
   <script src="global.js" defer></script>
   <style>
+    /* ─── FLATPICKR OVERRIDES ─── */
+    .flatpickr-calendar {
+      font-family: 'Poppins', sans-serif !important;
+      border-radius: 14px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14) !important;
+      border: 1px solid #e2e8f0 !important;
+    }
+
+    .flatpickr-day.selected,
+    .flatpickr-day.selected:hover {
+      background: #00AB55 !important;
+      border-color: #00AB55 !important;
+    }
+
+    .flatpickr-day:hover {
+      background: rgba(0, 171, 85, 0.10) !important;
+      border-color: transparent !important;
+    }
+
+    .flatpickr-day.today {
+      border-color: #00AB55 !important;
+    }
+
+    .flatpickr-months .flatpickr-month,
+    .flatpickr-weekdays,
+    span.flatpickr-weekday {
+      background: #fff !important;
+      color: #212B36 !important;
+    }
+
+    .flatpickr-current-month .flatpickr-monthDropdown-months,
+    .flatpickr-current-month input.cur-year {
+      font-family: 'Poppins', sans-serif !important;
+      font-weight: 700 !important;
+    }
+
+    .flatpickr-prev-month svg,
+    .flatpickr-next-month svg {
+      fill: #637381 !important;
+    }
+
+    .fp-input {
+      cursor: pointer !important;
+    }
+
+    .date-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .date-input-icon {
+      position: absolute;
+      left: 10px;
+      width: 15px;
+      height: 15px;
+      color: var(--c-text-3);
+      pointer-events: none;
+      flex-shrink: 0;
+    }
+
+    .date-has-icon {
+      padding-left: 32px !important;
+      width: 100%;
+    }
+
     /* ═══════════════════════════════════════════════════════
        DESIGN TOKENS
     ═══════════════════════════════════════════════════════ */
@@ -43,7 +110,7 @@
     ═══════════════════════════════════════════════════════ */
     .create-card-layout {
       display: grid;
-      grid-template-columns: 360px 1fr;
+      grid-template-columns: 420px 1fr;
       gap: 28px;
       align-items: start;
       margin-top: 28px;
@@ -222,120 +289,389 @@
     }
 
     .card-front {
-      background: linear-gradient(135deg, #1E293B 0%, #3B4A5A 100%);
+      background: linear-gradient(135deg, #0d4a34 0%, #1a6644 60%, #0f5c40 100%);
       padding: 24px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       color: #fff;
-      box-shadow: 0 16px 32px rgba(30, 41, 59, 0.3);
+      box-shadow: 0 16px 32px rgba(13, 74, 52, 0.35);
     }
 
+    /* ── Card Back ── */
     .card-back {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      background: #0d3b2e;
       transform: rotateY(180deg);
       padding: 0;
       display: flex;
       flex-direction: column;
       box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
     }
 
-    .card-stripe {
-      background: #222;
-      height: 44px;
-      margin-top: 24px;
+    .cb-stripe {
+      background: #111;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 16px;
+      gap: 8px;
+      flex-shrink: 0;
     }
 
-    .card-back-info {
-      padding: 16px 24px;
+    .cb-pin-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.8);
+      letter-spacing: 2px;
+    }
+
+    .cb-pin-dots {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 3px;
+    }
+
+    .cb-body {
+      flex: 1;
+      display: flex;
+      gap: 10px;
+      padding: 10px 14px;
+      overflow: hidden;
+    }
+
+    .cb-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+    }
+
+    .cb-section-title {
+      font-size: 9px;
+      font-weight: 800;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cb-terms-text {
+      font-size: 6.5px;
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.5;
+    }
+
+    .cb-merchant-tc {
+      font-size: 6.5px;
+      color: rgba(255, 255, 255, 0.45);
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .cb-contact {
+      flex-shrink: 0;
+      padding: 10px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .cb-contact-title {
+      font-size: 7.5px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .cb-contact-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 7.5px;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .cb-contact-icon {
+      width: 10px;
+      height: 10px;
+      flex-shrink: 0;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    .cb-qr-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .cb-qr-box {
+      width: 68px;
+      height: 68px;
+      background: #fff;
+      border-radius: 6px;
+    }
+
+    .cb-scan-label {
+      font-size: 7px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.8);
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    /* ── Card Front Layout ── */
+    .cf-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cf-logo-wrap {
+      flex-shrink: 0;
+    }
+
+    .card-logo-box {
+      width: 52px;
+      height: 52px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    }
+
+    .card-logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .cf-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .cf-brand-name {
+      font-size: 17px;
+      font-weight: 800;
+      color: #f0d57a;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      line-height: 1.2;
+      font-style: italic;
+    }
+
+    .cf-slogan {
+      font-size: 9px;
+      font-weight: 600;
+      color: rgba(240, 213, 122, 0.75);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .cf-mid {
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
 
-    .card-cvv-row {
+    .cf-number {
       display: flex;
+      gap: 14px;
       align-items: center;
-      gap: 12px;
+      margin: 0;
     }
 
-    .card-cvv-strip {
-      flex: 1;
-      height: 36px;
-      background: #fff;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding: 0 12px;
-    }
-
-    .card-cvv-strip span {
-      color: #333;
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .card-logo-box {
-      width: 44px;
-      height: 44px;
-      background: rgba(255, 255, 255, 0.18);
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-
-    .card-chip {
-      width: 36px;
-      height: 26px;
-      background: linear-gradient(135deg, #e8c97e, #f0d990);
-      border-radius: 4px;
-    }
-
-    .card-number-display {
-      font-size: 16px;
-      font-weight: 600;
+    .cf-num-group {
+      font-size: 11px;
       letter-spacing: 3px;
-      margin: 14px 0;
-      opacity: 0.9;
+      color: rgba(255, 255, 255, 0.65);
     }
 
-    .card-bottom {
+    .cf-bottom {
       display: flex;
-      justify-content: space-between;
       align-items: flex-end;
+      justify-content: space-between;
     }
 
-    .card-holder-name {
-      font-size: 13px;
+    /* Value badge (top-right) — $50, 10% OFF */
+    .cf-value-badge {
+      margin-left: auto;
+      flex-shrink: 0;
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      padding: 5px 14px;
+      border-radius: 10px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* VALID THRU row */
+    .cf-expiry-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .cf-expiry-label {
+      font-size: 9px;
       font-weight: 600;
-      opacity: 0.9;
+      color: rgba(255, 255, 255, 0.55);
+      letter-spacing: 1px;
       text-transform: uppercase;
     }
 
-    .card-expiry {
-      font-size: 11px;
-      opacity: 0.7;
+    .cf-expiry-date {
+      font-size: 13px;
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: 0.5px;
     }
 
-    .card-type-badge {
+    /* Bottom holder (left) */
+    .cf-holder {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
+
+    .cf-holder-name {
+      font-size: 18px;
+      font-weight: 800;
+      font-style: italic;
+      color: #f0d57a;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+
+    .cf-holder-rank {
+      font-size: 15px;
+      font-weight: 700;
+      font-style: italic;
+      color: rgba(240, 213, 122, 0.75);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Right column: type label + pill */
+    .cf-right-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .cf-type-label {
       font-size: 9px;
       font-weight: 700;
-      background: rgba(255, 255, 255, 0.18);
-      color: #ffffff;
-      padding: 2px 8px;
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      letter-spacing: 0.5px;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 1.5px;
       text-transform: uppercase;
+    }
+
+    .cf-vlinkpay-pill {
+      background: #fff;
+      border-radius: 20px;
+      padding: 5px 12px 6px 12px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 767px) {
+      .card-front {
+        padding: 14px;
+      }
+
+      .cf-top {
+        gap: 8px;
+      }
+
+      .card-logo-box {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+        border-radius: 8px;
+      }
+
+      .cf-brand-name {
+        font-size: 12px;
+        letter-spacing: 1px;
+      }
+
+      .cf-slogan {
+        font-size: 7px;
+        letter-spacing: 1px;
+      }
+
+      .cf-value-badge {
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 8px;
+      }
+
+      .cf-number {
+        gap: 8px;
+      }
+
+      .cf-num-group {
+        font-size: 8px;
+        letter-spacing: 2px;
+      }
+
+      .cf-mid {
+        gap: 4px;
+      }
+
+      .cf-expiry-label {
+        font-size: 7px;
+      }
+
+      .cf-expiry-date {
+        font-size: 10px;
+      }
+
+      .cf-holder {
+        gap: 6px;
+      }
+
+      .cf-holder-name {
+        font-size: 12px;
+      }
+
+      .cf-holder-rank {
+        font-size: 10px;
+      }
+
+      .cf-type-label {
+        font-size: 7px;
+      }
+
+      .cf-vlinkpay-pill {
+        padding: 3px 8px 4px 8px;
+        border-radius: 14px;
+      }
+
+      .cf-vlinkpay-pill img {
+        height: 12px;
+      }
     }
 
     .flip-btn {
@@ -377,7 +713,7 @@
 
     .color-dots {
       display: flex;
-      gap: 8px;
+      gap: 4px;
       flex-wrap: wrap;
       margin-bottom: 16px;
     }
@@ -385,7 +721,7 @@
     .color-dot {
       width: 26px;
       height: 26px;
-      border-radius: 6px;
+      border-radius: 50%;
       cursor: pointer;
       border: 2.5px solid transparent;
       transition: var(--transition-base);
@@ -1128,7 +1464,7 @@
     .preset-btn {
       padding: 9px 20px;
       border: 1.5px solid var(--c-border);
-      border-radius: var(--radius-sm);
+      border-radius: 20px;
       background: var(--c-surface);
       font-size: 14px;
       font-weight: 700;
@@ -1154,7 +1490,7 @@
       display: flex;
       align-items: center;
       border: 1.5px solid var(--c-border);
-      border-radius: var(--radius-sm);
+      border-radius: 20px;
       padding: 0 12px;
       height: 42px;
       background: var(--c-surface);
@@ -1331,8 +1667,8 @@
       }
 
       .mb-card {
-        min-width: calc(50% - 4px);
-        flex: 1 1 calc(50% - 4px);
+        min-width: 100%;
+        flex: 1 1 100%;
       }
     }
 
@@ -1484,6 +1820,12 @@
       font-size: 16px;
       font-weight: 800;
       color: var(--c-text-2);
+    }
+
+    .payment-icon img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
     }
 
     .payment-method.active .payment-icon {
@@ -1694,6 +2036,11 @@
         font-size: 14px;
       }
 
+      .payment-icon img {
+        width: 18px;
+        height: 18px;
+      }
+
       .payment-method span {
         font-size: 11px;
       }
@@ -1726,8 +2073,19 @@
       }
 
       .page-header-row {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .btn-save-draft {
+        padding: 8px;
+        min-width: 36px;
+        border-radius: var(--radius-sm);
+      }
+
+      .btn-save-draft .btn-save-text {
+        display: none;
       }
 
       .btn-panel-action {
@@ -1787,7 +2145,7 @@
         </div>
         <button class="btn-save-draft" onclick="saveDraft()">
           <i data-lucide="save" style="width:16px;height:16px;"></i>
-          <span>Save for Later</span>
+          <span class="btn-save-text">Save for Later</span>
         </button>
       </div>
     </div>
@@ -1802,7 +2160,7 @@
             <div class="header-icon">
               <iconify-icon icon="solar:card-bold-duotone" width="18"></iconify-icon>
             </div>
-            <span class="header-title" id="previewCardTitle">E-Gift Card</span>
+            <span class="header-title" id="previewCardHeaderTitle">E-Gift Card</span>
             <button class="flip-btn" onclick="flipCard(event)"
               style="width:auto;padding:5px 12px;font-size:11px;margin:0;">
               <iconify-icon icon="solar:refresh-bold" width="14"></iconify-icon>
@@ -1815,37 +2173,96 @@
               <div class="card-inner" id="cardInner" onclick="flipCard(event)">
                 <!-- FRONT -->
                 <div class="card-face card-front" id="cardFront">
-                  <div class="card-top">
-                    <div class="card-logo-box">🎁</div>
-                    <div class="card-chip"></div>
-                  </div>
-                  <div class="card-number-display">8888 &nbsp;****&nbsp; ****&nbsp; 1234</div>
-                  <div class="card-bottom">
-                    <div>
-                      <div class="card-expiry">VALID THRU</div>
-                      <div style="font-size:13px;font-weight:700;opacity:0.9">12/28</div>
+                  <!-- TOP ROW: Logo + Brand (left)  |  Value badge (right, conditional) -->
+                  <div class="cf-top">
+                    <div class="cf-logo-wrap">
+                      <div class="card-logo-box" id="cardLogoBox">🎁</div>
                     </div>
-                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;">
-                      <div class="card-type-badge" id="cardTypeBadge">E-Gift Card</div>
-                      <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg"
-                        style="height:16px;filter:brightness(0) invert(1);opacity:0.8" alt="">
+                    <div class="cf-brand">
+                      <div class="cf-brand-name" id="previewCardTitle">E-GIFT CARD</div>
+                      <div class="cf-slogan" id="previewSlogan">LUXURY BEAUTY INNOVATION</div>
+                    </div>
+                    <div class="cf-value-badge" id="cfValueBadge" style="display:none;">$50</div>
+                  </div>
+
+                  <!-- MIDDLE: Card Number + VALID THRU -->
+                  <div class="cf-mid">
+                    <div class="cf-number">
+                      <span class="cf-num-group">●●●●</span>
+                      <span class="cf-num-group">●●●●</span>
+                      <span class="cf-num-group">●●●●</span>
+                      <span class="cf-num-group">●●●●</span>
+                    </div>
+                    <!-- VALID THRU (conditional) -->
+                    <div class="cf-expiry-row" id="cfExpiryRow" style="display:none;">
+                      <span class="cf-expiry-label">VALID THRU</span>
+                      <span class="cf-expiry-date" id="cfExpiryDate">—</span>
+                    </div>
+                  </div>
+
+                  <!-- BOTTOM: Holder + Rank (left)  |  Type label + Pill (right) -->
+                  <div class="cf-bottom">
+                    <div class="cf-holder">
+                      <span class="cf-holder-name" id="previewHolderName">CARD HOLDER</span>
+                      <span class="cf-holder-rank" id="previewRank"></span>
+                    </div>
+                    <div class="cf-right-col">
+                      <div class="cf-type-label" id="cardTypeBadge">GIFT CARD</div>
+                      <div class="cf-vlinkpay-pill">
+                        <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg"
+                          style="height:16px;" alt="VLinkPay">
+                      </div>
                     </div>
                   </div>
                 </div>
                 <!-- BACK -->
                 <div class="card-face card-back">
-                  <div class="card-stripe"></div>
-                  <div class="card-back-info">
-                    <div class="card-cvv-row">
-                      <div class="card-cvv-strip"><span>***</span></div>
-                      <div style="font-size:11px;color:rgba(255,255,255,0.6)">CVV</div>
+                  <!-- PIN stripe -->
+                  <div class="cb-stripe">
+                    <span class="cb-pin-label">PIN</span>
+                    <span class="cb-pin-dots">●●●</span>
+                  </div>
+                  <!-- Main back content -->
+                  <div class="cb-body">
+                    <div class="cb-main">
+                      <!-- Terms -->
+                      <div class="cb-section-title">TERMS &amp; CONDITIONS:</div>
+                      <div class="cb-terms-text">
+                        This card is issued by [MERCHANT NAME] for use in the merchant's program.
+                        VLINKPAY provides technology services only and is not the issuer of this card.
+                        The merchant is responsible for card fulfillment, customer support, refunds,
+                        disputes, and program terms. Not a credit or debit card. No interest, no overdraft.
+                        No cash access and no ATM withdrawals. Void if copied or altered.
+                      </div>
+                      <div class="cb-merchant-tc" id="cbMerchantTC">
+                        {{Terms &amp; Conditions của Merchant tự nhập khi tạo card}}
+                      </div>
                     </div>
-                    <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:12px;line-height:1.5">
-                      This card is the property of VLINKPAY. Use of this card is subject to the cardholder agreement.
+                    <!-- QR code -->
+                    <div class="cb-qr-col">
+                      <div class="cb-qr-box"></div>
+                      <div class="cb-scan-label">SCAN TO PAY</div>
                     </div>
-                    <div style="display:flex;justify-content:flex-end;margin-top:16px;">
-                      <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg"
-                        style="height:16px;filter:brightness(0) invert(1);opacity:0.6" alt="">
+                  </div>
+                  <!-- Contact (bottom of card) -->
+                  <div class="cb-contact">
+                    <div class="cb-contact-title">For help, contact <span id="cbMerchantName">[MERCHANT
+                        NAME]</span>:</div>
+                    <div class="cb-contact-row">
+                      <i data-lucide="phone" class="cb-contact-icon"></i>
+                      <span id="cbPhone">+ 1 (777) 777-7777</span>
+                    </div>
+                    <div class="cb-contact-row">
+                      <i data-lucide="mail" class="cb-contact-icon"></i>
+                      <span id="cbEmail">merchant@example.com</span>
+                    </div>
+                    <div class="cb-contact-row">
+                      <i data-lucide="globe" class="cb-contact-icon"></i>
+                      <span id="cbWebsite">www.merchant.com</span>
+                    </div>
+                    <div class="cb-contact-row">
+                      <i data-lucide="shield-check" class="cb-contact-icon"></i>
+                      <span>Verify card at www.vlinkpay.com/check-balance</span>
                     </div>
                   </div>
                 </div>
@@ -1857,7 +2274,7 @@
         <!-- Card 2: Design Collection (collapsible) -->
         <div class="panel-card">
           <div class="panel-card-header open" id="hdr-design" onclick="toggleSection('design-collection','hdr-design')">
-            <div class="header-icon"><iconify-icon icon="solar:palette-bold-duotone" width="18"></iconify-icon></div>
+            <div class="header-icon"><i data-lucide="palette" style="width:16px;height:16px;"></i></div>
             <span class="header-title">Design Collection</span>
             <div class="chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
           </div>
@@ -1964,8 +2381,7 @@
         <!-- Card 3: Brand Identity (collapsible) -->
         <div class="panel-card">
           <div class="panel-card-header open" id="hdr-brand" onclick="toggleSection('brand-identity','hdr-brand')">
-            <div class="header-icon"><iconify-icon icon="solar:shield-star-bold-duotone" width="18"></iconify-icon>
-            </div>
+            <div class="header-icon"><i data-lucide="badge-check" style="width:16px;height:16px;"></i></div>
             <span class="header-title">Brand Identity</span>
             <div class="header-actions" onclick="event.stopPropagation()">
               <button class="btn-panel-action" onclick="openLogoLibrary()">
@@ -2205,23 +2621,20 @@
               <div class="customer-row">
                 <!-- Name: always visible -->
                 <div class="form-field">
-                  <label class="field-label-sm" id="lblHolderName">Holder Name</label>
-                  <input type="text" class="input-minimal" placeholder="e.g. John Doe" id="holderName">
+                  <input type="text" class="input-minimal" placeholder="Enter full name (optional)" id="holderName"
+                    oninput="updateCardHolder(this.value)">
                 </div>
-                <!-- Email: label changes for Membership -->
+                <!-- Email: placeholder changes for Membership -->
                 <div class="form-field" id="emailFieldWrap">
-                  <label class="field-label-sm" id="lblHolderEmail">
-                    Holder Email <span id="emailRequired" style="color:#ff5630">*</span>
-                  </label>
-                  <input type="email" class="input-minimal" placeholder="email@example.com" id="holderEmail">
+                  <input type="email" class="input-minimal" placeholder="Enter email address" id="holderEmail">
                 </div>
                 <!-- Birthday: only for Membership -->
                 <div class="form-field" id="birthdayField" style="display:none;">
-                  <label class="field-label-sm">
-                    Birthday
-                    <span style="font-weight:400;color:var(--c-text-3)">(optional)</span>
-                  </label>
-                  <input type="text" class="input-minimal fp-input" id="holderBirthday" placeholder="Pick a date" readonly>
+                  <div class="date-input-wrap">
+                    <i data-lucide="calendar" class="date-input-icon"></i>
+                    <input type="text" class="input-minimal fp-input date-has-icon" id="holderBirthday"
+                      placeholder="Birthday (optional)" readonly>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2248,8 +2661,11 @@
                   <option value="custom">Custom Date</option>
                 </select>
                 <span id="customDateWrap" style="display:none;">
-                  <input type="text" class="input-minimal fp-input" id="customDate"
-                    placeholder="Pick a date" readonly style="width:180px;flex-shrink:0;">
+                  <div class="date-input-wrap" style="width:190px;flex-shrink:0;">
+                    <i data-lucide="calendar" class="date-input-icon"></i>
+                    <input type="text" class="input-minimal fp-input date-has-icon" id="customDate"
+                      placeholder="Pick a date" readonly>
+                  </div>
                 </span>
               </div>
             </div>
@@ -2306,7 +2722,8 @@
                     <button class="preset-btn active" onclick="selectPreset(this,'promoAmount')">$50</button>
                     <button class="preset-btn" onclick="selectPreset(this,'promoAmount')">$100</button>
                     <button class="preset-btn" onclick="selectPreset(this,'promoAmount')">$250</button>
-                    <div class="custom-input-row"><span class="symbol">$</span><input type="text" placeholder="Custom">
+                    <div class="custom-input-row"><span class="symbol">$</span><input type="text" placeholder="Custom"
+                        oninput="clearPresets('promoAmount');updateCardValueBadge();">
                     </div>
                   </div>
                 </div>
@@ -2315,7 +2732,8 @@
                     <button class="preset-btn active" onclick="selectPreset(this,'promoDisc')">5%</button>
                     <button class="preset-btn" onclick="selectPreset(this,'promoDisc')">10%</button>
                     <button class="preset-btn" onclick="selectPreset(this,'promoDisc')">15%</button>
-                    <div class="custom-input-row"><span class="symbol">%</span><input type="text" placeholder="Custom">
+                    <div class="custom-input-row"><span class="symbol">%</span><input type="text" placeholder="Custom"
+                        oninput="clearPresets('promoDisc');updateCardValueBadge();">
                     </div>
                   </div>
                 </div>
@@ -2386,8 +2804,8 @@
           <div class="collapse-wrap open" id="scollapse-6">
             <div class="step-body">
               <div class="terms-box">
-                <textarea class="terms-textarea" id="termsTextarea" rows="5"
-                  placeholder="Enter terms and conditions...">Valid for services only. Not applicable to products.
+                <textarea class="terms-textarea" id="termsTextarea" rows="5" placeholder="Enter terms and conditions..."
+                  oninput="syncTermsToCard()">Valid for services only. Not applicable to products.
 No cash value.
 Valid for one-time use per invoice.
 Please present this card before payment.</textarea>
@@ -2428,33 +2846,39 @@ Please present this card before payment.</textarea>
             <div class="step-body">
               <div class="payment-grid">
                 <div class="payment-method" onclick="selectPayment(this,'Gift')">
-                  <div class="payment-icon">🎁</div>
+                  <div class="payment-icon"><img
+                      src="https://staging-merchant.vlinkpay.com/assets/images/sell-EGift/payment/gift.png" alt="Gift">
+                  </div>
                   <span>Gift</span>
                 </div>
                 <div class="payment-method active" onclick="selectPayment(this,'Cash')">
-                  <div class="payment-icon">💵</div>
+                  <div class="payment-icon"><img
+                      src="https://staging-merchant.vlinkpay.com/assets/images/sell-EGift/payment/cash.png" alt="Cash">
+                  </div>
                   <span>Cash</span>
                 </div>
                 <div class="payment-method" onclick="selectPayment(this,'Credit')">
-                  <div class="payment-icon" style="background:var(--c-surface-subtle)">
-                    <iconify-icon icon="solar:card-bold-duotone" width="18"
-                      style="color:var(--c-text-2)"></iconify-icon>
-                  </div>
+                  <div class="payment-icon"><img
+                      src="https://staging-merchant.vlinkpay.com/assets/images/sell-EGift/payment/credit.png"
+                      alt="Credit Card"></div>
                   <span>Credit Card</span>
                 </div>
                 <div class="payment-method" onclick="selectPayment(this,'Zelle')">
-                  <div class="payment-icon" style="background:#6d1ed4;color:#fff;font-size:14px">Z</div>
+                  <div class="payment-icon"><img
+                      src="https://staging-merchant.vlinkpay.com/assets/images/sell-EGift/payment/zelle.png"
+                      alt="Zelle"></div>
                   <span>Zelle</span>
                 </div>
                 <div class="payment-method" onclick="selectPayment(this,'Venmo')">
-                  <div class="payment-icon" style="background:#008CFF;color:#fff;font-size:13px">V</div>
+                  <div class="payment-icon"><img
+                      src="https://staging-merchant.vlinkpay.com/assets/images/sell-EGift/payment/venmo.png"
+                      alt="Venmo"></div>
                   <span>Venmo</span>
                 </div>
                 <div class="payment-method" onclick="selectPayment(this,'VlinkPay')">
-                  <div class="payment-icon" style="background:var(--c-primary-low)">
-                    <iconify-icon icon="solar:wallet-bold-duotone" width="18"
-                      style="color:var(--c-primary)"></iconify-icon>
-                  </div>
+                  <div class="payment-icon"><img
+                      src="https://staging-merchant.vlinkpay.com/assets/images/sell-EGift/payment/vlinkpay.png"
+                      alt="VlinkPay"></div>
                   <span>VlinkPay</span>
                 </div>
               </div>
@@ -2702,38 +3126,34 @@ Please present this card before payment.</textarea>
       if (!input.files[0]) return;
       const reader = new FileReader();
       reader.onload = e => {
-        const logo = document.querySelector('.card-logo-box');
-        if (logo) logo.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:contain;border-radius:4px">`;
+        const logo = document.getElementById('cardLogoBox');
+        if (logo) logo.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:contain;border-radius:8px">`;
       };
       reader.readAsDataURL(input.files[0]);
     }
-    /* ── LOGO LIBRARY ── */
-    const LOGO_LIBRARY = [
-      {
-        id: 1, name: 'Jade Jade Premier Prem...', date: 'Mar 12, 2026',
-        src: 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" rx="20" fill="#0d3d2e"/><circle cx="100" cy="100" r="70" fill="none" stroke="#c9a84c" stroke-width="4"/><circle cx="100" cy="100" r="60" fill="none" stroke="#c9a84c" stroke-width="1.5"/><text x="100" y="85" text-anchor="middle" font-family="serif" font-size="18" font-weight="bold" fill="#c9a84c">JADE</text><text x="100" y="108" text-anchor="middle" font-family="serif" font-size="18" font-weight="bold" fill="#c9a84c">JADE</text><text x="100" y="128" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#c9a84c">LUXURY NAIL SPA</text></svg>`)
-      },
-      {
-        id: 2, name: 'Jade Jade', date: 'Mar 12, 2026',
-        src: 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" rx="20" fill="#0d3d2e"/><circle cx="100" cy="95" r="65" fill="none" stroke="#c9a84c" stroke-width="3"/><text x="100" y="82" text-anchor="middle" font-family="serif" font-size="20" fill="#c9a84c">Jade</text><text x="100" y="108" text-anchor="middle" font-family="serif" font-size="20" fill="#c9a84c">Jade</text><text x="100" y="128" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#c9a84c">LUXURY NAIL SPA</text></svg>`)
-      },
-      {
-        id: 3, name: 'Jade Jade', date: 'Mar 12, 2026',
-        src: 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" rx="20" fill="#143d2e"/><circle cx="100" cy="95" r="62" fill="none" stroke="#d4a843" stroke-width="4"/><circle cx="100" cy="95" r="54" fill="none" stroke="#d4a843" stroke-width="1"/><text x="100" y="80" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#d4a843">Jade</text><text x="100" y="106" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#d4a843">Jade</text><text x="100" y="124" text-anchor="middle" font-size="8" fill="#d4a843">LUXURY NAIL SPA</text></svg>`)
-      },
-      {
-        id: 4, name: 'Jade Jade', date: 'Mar 12, 2026',
-        src: 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" rx="20" fill="#0f3628"/><circle cx="100" cy="92" r="60" fill="none" stroke="#c9a84c" stroke-width="3.5"/><text x="100" y="78" text-anchor="middle" font-family="serif" font-size="17" fill="#c9a84c">Jade</text><text x="100" y="100" text-anchor="middle" font-family="serif" font-size="17" fill="#c9a84c">Jade</text><text x="100" y="118" text-anchor="middle" font-size="7.5" fill="#c9a84c">LUXURY NAIL SPA</text></svg>`)
-      },
-      {
-        id: 5, name: 'Jade Jade', date: 'Mar 12, 2026',
-        src: 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" rx="20" fill="#0a2e20"/><circle cx="100" cy="94" r="63" fill="none" stroke="#d4a843" stroke-width="4"/><text x="100" y="80" text-anchor="middle" font-family="serif" font-size="19" font-style="italic" fill="#d4a843">Jade</text><text x="100" y="104" text-anchor="middle" font-family="serif" font-size="19" font-style="italic" fill="#d4a843">Jade</text><text x="100" y="122" text-anchor="middle" font-size="8" fill="#d4a843">LUXURY NAIL SPA</text></svg>`)
-      },
-      {
-        id: 6, name: 'Jade Jade', date: 'Mar 12, 2026',
-        src: 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" rx="20" fill="#112e22"/><circle cx="100" cy="93" r="61" fill="none" stroke="#c9a84c" stroke-width="3"/><circle cx="100" cy="93" r="52" fill="none" stroke="#c9a84c" stroke-width="1"/><text x="100" y="79" text-anchor="middle" font-family="serif" font-size="18" fill="#c9a84c">Jade</text><text x="100" y="103" text-anchor="middle" font-family="serif" font-size="18" fill="#c9a84c">Jade</text><text x="100" y="121" text-anchor="middle" font-size="8" fill="#c9a84c">LUXURY NAIL SPA</text></svg>`)
-      },
+    /* ── LOGO LIBRARY ── (chỉ hiển thị logo có hình thật từ Simple Icons CDN) */
+    const SI = (slug) => `https://cdn.simpleicons.org/${slug}`;
+    const LOGO_LIBRARY_BRANDS = [
+      { id: 1, name: 'Apple', date: 'Mar 12, 2026', src: SI('apple') },
+      { id: 2, name: 'Nike', date: 'Mar 11, 2026', src: SI('nike') },
+      { id: 3, name: 'Starbucks', date: 'Mar 10, 2026', src: SI('starbucks') },
+      { id: 4, name: 'Adidas', date: 'Mar 9, 2026', src: SI('adidas') },
+      { id: 5, name: 'Amazon', date: 'Mar 8, 2026', src: SI('amazon') },
+      { id: 6, name: 'Google', date: 'Mar 7, 2026', src: SI('google') },
+      { id: 7, name: 'Microsoft', date: 'Mar 6, 2026', src: SI('microsoft') },
+      { id: 8, name: 'Samsung', date: 'Mar 5, 2026', src: SI('samsung') },
+      { id: 9, name: 'Netflix', date: 'Mar 4, 2026', src: SI('netflix') },
+      { id: 10, name: 'Spotify', date: 'Mar 3, 2026', src: SI('spotify') },
+      { id: 11, name: 'Tesla', date: 'Mar 2, 2026', src: SI('tesla') },
+      { id: 12, name: 'Coca-Cola', date: 'Mar 1, 2026', src: SI('coca-cola') },
+      { id: 13, name: 'McDonald\'s', date: 'Feb 28, 2026', src: SI('mcdonalds') },
+      { id: 14, name: 'Disney', date: 'Feb 27, 2026', src: SI('disney') },
+      { id: 15, name: 'Chanel', date: 'Feb 26, 2026', src: SI('chanel') },
+      { id: 16, name: 'BMW', date: 'Feb 25, 2026', src: SI('bmw') },
+      { id: 17, name: 'Sony', date: 'Feb 24, 2026', src: SI('sony') },
     ];
+    // Shuffle and use as LOGO_LIBRARY (max 12, random order each load)
+    const LOGO_LIBRARY = [...LOGO_LIBRARY_BRANDS].sort(() => Math.random() - 0.5).slice(0, 12);
 
     let selectedLibraryLogo = null;
 
@@ -2746,6 +3166,13 @@ Please present this card before payment.</textarea>
       document.getElementById('libraryModal').classList.remove('open');
       selectedLibraryLogo = null;
     }
+    function updateLibraryCount() {
+      const grid = document.getElementById('libraryGrid');
+      const count = document.getElementById('libraryCount');
+      if (!grid || !count) return;
+      const visible = grid.querySelectorAll('.lib-card:not(.lib-card-hidden)').length;
+      count.textContent = `(${visible} logos)`;
+    }
     function renderLogoLibrary() {
       const grid = document.getElementById('libraryGrid');
       const count = document.getElementById('libraryCount');
@@ -2753,7 +3180,7 @@ Please present this card before payment.</textarea>
       grid.innerHTML = LOGO_LIBRARY.map(logo => `
         <div class="lib-card" id="libcard-${logo.id}">
           <div class="lib-card-img-wrap">
-            <img src="${logo.src}" class="lib-card-img" alt="${logo.name}" />
+            <img src="${logo.src}" class="lib-card-img" alt="${logo.name}" onerror="var c=this.closest('.lib-card');if(c){c.classList.add('lib-card-hidden');c.style.display='none';updateLibraryCount();}" onload="updateLibraryCount()" />
             <div class="lib-card-overlay">
               <button class="lib-btn-del" onclick="deleteLibraryLogo(${logo.id})" title="Delete">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
@@ -2770,6 +3197,18 @@ Please present this card before payment.</textarea>
           <div class="lib-card-info">
             <div class="lib-card-name">${logo.name}</div>
             <div class="lib-card-date">${logo.date}</div>
+          </div>
+          <div class="lib-card-actions-mobile">
+            <button class="lib-btn-del" onclick="deleteLibraryLogo(${logo.id})" title="Delete">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+            <button class="lib-btn-view" onclick="viewLibraryLogo(${logo.id})" title="Preview">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+            <button class="lib-btn-use" onclick="useLibraryLogo(${logo.id})">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Use
+            </button>
           </div>
         </div>
       `).join('');
@@ -2789,8 +3228,8 @@ Please present this card before payment.</textarea>
     function useLibraryLogo(id) {
       const logo = LOGO_LIBRARY.find(l => l.id === id);
       if (!logo) return;
-      const logoBox = document.querySelector('.card-logo-box');
-      if (logoBox) logoBox.innerHTML = `<img src="${logo.src}" style="width:100%;height:100%;object-fit:contain;border-radius:4px">`;
+      const logoBox = document.getElementById('cardLogoBox');
+      if (logoBox) logoBox.innerHTML = `<img src="${logo.src}" style="width:100%;height:100%;object-fit:contain;border-radius:8px">`;
       closeLogoLibrary();
       document.getElementById('logoPreviewModal').classList.remove('open');
       window.showCopyToast && window.showCopyToast('Logo applied!');
@@ -2803,6 +3242,8 @@ Please present this card before payment.</textarea>
       if (idx !== -1) LOGO_LIBRARY.splice(idx, 1);
       renderLogoLibrary();
     }
+    const AI_LOGO_MOCK = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="240" height="260" viewBox="0 0 240 260"><defs><linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#d4af37"/><stop offset="100%" style="stop-color:#c9a84c"/></linearGradient></defs><circle cx="120" cy="108" r="90" fill="#0d3d2e" stroke="url(#gold)" stroke-width="5"/><circle cx="120" cy="108" r="78" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.5"/><text x="120" y="78" text-anchor="middle" font-family="Georgia,serif" font-size="24" font-weight="bold" fill="#c9a84c">JADE</text><path d="M95 100 Q100 95 108 98 L130 98 Q138 95 145 100 L148 135 Q145 150 120 155 Q95 150 92 135 Z" fill="#e8d5b7" stroke="#c9a84c" stroke-width="1" opacity="0.95"/><rect x="112" y="118" width="16" height="22" rx="3" fill="#f5f5dc" stroke="#c9a84c" stroke-width="1"/><rect x="115" y="122" width="5" height="8" rx="1" fill="#87ceeb"/><rect x="118" y="108" width="4" height="12" rx="2" fill="#0d3d2e"/><text x="120" y="168" text-anchor="middle" font-family="Georgia,serif" font-size="24" font-weight="bold" fill="#c9a84c">JADE</text><path d="M70 182 Q120 172 170 182" fill="none" stroke="#c9a84c" stroke-width="2"/><rect x="82" y="175" width="76" height="24" rx="4" fill="#0d3d2e" stroke="#c9a84c" stroke-width="1.5"/><text x="120" y="192" text-anchor="middle" font-size="12" font-weight="700" fill="#c9a84c" letter-spacing="3">NAIL SPA</text></svg>`);
+
     function generateAiLogo() {
       const ta = document.getElementById('aiDescription');
       if (!ta.value.trim()) {
@@ -2817,7 +3258,24 @@ Please present this card before payment.</textarea>
       setTimeout(() => {
         btn.innerHTML = '<iconify-icon icon="solar:magic-stick-bold-duotone" width="18"></iconify-icon> Generate Logo with AI';
         btn.disabled = false;
+        openAiLogoModal();
       }, 2500);
+    }
+
+    function openAiLogoModal() {
+      const display = document.getElementById('aiLogoDisplay');
+      if (display) display.innerHTML = `<img src="${AI_LOGO_MOCK}" alt="AI Generated Logo">`;
+      document.getElementById('aiLogoModal').classList.add('open');
+      lucide.createIcons();
+    }
+    function closeAiLogoModal() {
+      document.getElementById('aiLogoModal').classList.remove('open');
+    }
+    function useAiGeneratedLogo() {
+      const logoBox = document.getElementById('cardLogoBox');
+      if (logoBox) logoBox.innerHTML = `<img src="${AI_LOGO_MOCK}" style="width:100%;height:100%;object-fit:contain;border-radius:8px" alt="Logo">`;
+      closeAiLogoModal();
+      window.showCopyToast && window.showCopyToast('Logo applied!');
     }
 
     /* ──────────────────────────────────────────────
@@ -2833,6 +3291,22 @@ Please present this card before payment.</textarea>
       bizInfo.phone = num ? `${dial} ${num}` : '';
       bizInfo.email = document.getElementById('bizEmail').value;
       bizInfo.website = document.getElementById('bizWebsite').value;
+
+      // Live update card front preview
+      const cardTitle = document.getElementById('previewCardTitle');
+      const cardSlogan = document.getElementById('previewSlogan');
+      if (cardTitle && bizInfo.brandName) cardTitle.textContent = bizInfo.brandName.toUpperCase();
+      if (cardSlogan) cardSlogan.textContent = (bizInfo.slogan || 'YOUR SLOGAN HERE').toUpperCase();
+
+      // Live update card back contact info
+      const cbName = document.getElementById('cbMerchantName');
+      const cbPhone = document.getElementById('cbPhone');
+      const cbEmail = document.getElementById('cbEmail');
+      const cbWebsite = document.getElementById('cbWebsite');
+      if (cbName) cbName.textContent = bizInfo.brandName || '[MERCHANT NAME]';
+      if (cbPhone) cbPhone.textContent = bizInfo.phone || '+ 1 (777) 777-7777';
+      if (cbEmail) cbEmail.textContent = bizInfo.email || 'merchant@example.com';
+      if (cbWebsite) cbWebsite.textContent = bizInfo.website || 'www.merchant.com';
     }
 
     function saveBizInfo() {
@@ -2849,17 +3323,83 @@ Please present this card before payment.</textarea>
       'E-Gift Card': '🎁', 'Membership': '👑', 'Prepaid Card': '💳',
       'Discount': '🏷️', 'Promotion': '🔥',
     };
+    // Map typeId → display label for bottom-right of card
+    const CARD_TYPE_LABELS = {
+      '0': 'GIFT CARD',
+      '1': 'PROMOTION',
+      '2': 'MEMBERSHIP',
+      '3': 'DISCOUNT',
+      '4': 'PREPAID CARD',
+      '5': 'CRYPTO CARD'
+    };
+    // Whether to show the value badge top-right
+    const CARD_SHOW_VALUE = { '0': true, '1': true, '3': true, '4': true };
+    // Whether to show VALID THRU row
+    const CARD_SHOW_EXPIRY = { '1': true, '2': true, '3': true };
+
+    function updateCardValueBadge() {
+      const badgeEl = document.getElementById('cfValueBadge');
+      if (!badgeEl) return;
+      const typeId = currentTypeId;
+      if (!CARD_SHOW_VALUE[typeId]) { badgeEl.style.display = 'none'; return; }
+      // Find active preset or custom input value
+      let val = '';
+      if (typeId === '3') {
+        // Discount: X% OFF
+        const activeBtn = document.querySelector('#discountGroup .preset-btn.active');
+        const customInput = document.querySelector('#discountGroup .custom-input-row input');
+        val = activeBtn ? activeBtn.textContent.trim() : (customInput && customInput.value ? customInput.value + '% OFF' : '');
+        if (!val) val = '% OFF';
+      } else if (typeId === '1') {
+        // Promotion: check mode (amount or discount)
+        const activeMode = document.querySelector('#promotionGroup .preset-btn.active[onclick*="setPromoMode"]');
+        const isDiscount = document.querySelector('#promoDiscountPreset') && document.querySelector('#promoDiscountPreset').style.display !== 'none';
+        const activeBtn = isDiscount
+          ? document.querySelector('#promoDiscountPreset .preset-btn.active')
+          : document.querySelector('#promoAmountPreset .preset-btn.active');
+        const customInput = isDiscount
+          ? document.querySelector('#promoDiscountPreset .custom-input-row input')
+          : document.querySelector('#promoAmountPreset .custom-input-row input');
+        val = activeBtn ? activeBtn.textContent.trim() : (customInput && customInput.value ? (isDiscount ? customInput.value + '% OFF' : '$' + customInput.value) : '');
+        if (!val) val = '$—';
+      } else {
+        // E-Gift Card or Prepaid: $X
+        const activeBtn = document.querySelector('#valueGroup .preset-btn.active');
+        const customInput = document.querySelector('#valueGroup .custom-input-row input');
+        val = activeBtn ? activeBtn.textContent.trim() : (customInput && customInput.value ? '$' + customInput.value : '');
+        if (!val) val = '$—';
+      }
+      badgeEl.textContent = val;
+      badgeEl.style.display = '';
+    }
+
+    let currentTypeId = '0';
+
     function selectCardType(el, name, typeId) {
       if (el.classList.contains('disabled')) return;
       document.querySelectorAll('.card-type-item').forEach(i => i.classList.remove('active'));
       el.classList.add('active');
       currentCardType = name;
+      currentTypeId = typeId;
 
-      // Update preview card title & badge
-      document.getElementById('previewCardTitle').textContent = name;
-      const badge = document.getElementById('cardTypeBadge');
-      if (badge) badge.textContent = name;
-      const logoBox = document.querySelector('.card-logo-box');
+      // Update preview card title
+      const cardTitle = document.getElementById('previewCardTitle');
+      const headerTitle = document.getElementById('previewCardHeaderTitle');
+      if (cardTitle) cardTitle.textContent = name.toUpperCase();
+      if (headerTitle) headerTitle.textContent = name;
+
+      // Update bottom-right type label
+      const typeLabel = document.getElementById('cardTypeBadge');
+      if (typeLabel) typeLabel.textContent = CARD_TYPE_LABELS[typeId] || name.toUpperCase();
+
+      // Update value badge (top-right)
+      updateCardValueBadge();
+
+      // Show/hide VALID THRU
+      const expiryRow = document.getElementById('cfExpiryRow');
+      if (expiryRow) expiryRow.style.display = CARD_SHOW_EXPIRY[typeId] ? 'flex' : 'none';
+
+      const logoBox = document.getElementById('cardLogoBox');
       if (logoBox && !logoBox.querySelector('img')) {
         logoBox.textContent = CARD_TYPE_ICONS[name] || '💳';
       }
@@ -2895,35 +3435,53 @@ Please present this card before payment.</textarea>
 
       // Membership-specific fields
       const birthdayField = document.getElementById('birthdayField');
-      const lblEmail = document.getElementById('lblHolderEmail');
-      const emailRequired = document.getElementById('emailRequired');
       const termsActions = document.getElementById('termsActions');
       const isMembership = typeId === '2';
 
       // Birthday: only for Membership
       if (birthdayField) birthdayField.style.display = isMembership ? '' : 'none';
 
-      // Email label: "Member Email (optional)" vs "Holder Email *"
-      if (lblEmail) lblEmail.innerHTML = isMembership
-        ? 'Member Email <span style="font-weight:400;color:var(--c-text-3)">(optional)</span>'
-        : 'Holder Email <span id="emailRequired" style="color:#ff5630">*</span>';
+      // Email placeholder: changes based on card type
+      const emailInput = document.getElementById('holderEmail');
+      if (emailInput) emailInput.placeholder = isMembership
+        ? 'Enter member email (optional)'
+        : 'Enter email address';
 
-      // T&C load/save buttons: hidden for Membership
-      if (termsActions) termsActions.style.display = isMembership ? 'none' : '';
+      // T&C load/save buttons: always visible regardless of card type
+      if (termsActions) termsActions.style.display = '';
     }
 
     /* ──────────────────────────────────────────────
        RANK SELECTION
     ────────────────────────────────────────────── */
+    function updateCardHolder(name) {
+      const el = document.getElementById('previewHolderName');
+      if (el) el.textContent = name ? name.toUpperCase() : 'CARD HOLDER';
+    }
+
+    function updateCardRank(rankText) {
+      const el = document.getElementById('previewRank');
+      if (el) el.textContent = rankText ? rankText.toUpperCase() : '';
+    }
+
     function toggleRank(btn) {
       const wasActive = btn.classList.contains('active');
       document.querySelectorAll('.rank-pill').forEach(p => p.classList.remove('active'));
-      if (!wasActive) btn.classList.add('active');
+      if (!wasActive) {
+        btn.classList.add('active');
+        updateCardRank(btn.textContent.trim());
+      } else {
+        updateCardRank('');
+      }
     }
     function clearRankSelection() {
       document.querySelectorAll('.rank-pill').forEach(p => p.classList.remove('active'));
+      updateCardRank('');
     }
-    function setCustomRank(val) { /* set form.rank = val */ }
+    function setCustomRank(val) {
+      clearRankSelection();
+      updateCardRank(val);
+    }
 
     /* ──────────────────────────────────────────────
        PRESET SELECTION
@@ -2932,15 +3490,18 @@ Please present this card before payment.</textarea>
       btn.closest('.preset-row').querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       btn.closest('.preset-row').querySelectorAll('input').forEach(i => i.value = '');
+      updateCardValueBadge();
     }
     function clearPresets(group) {
       event.target.closest('.preset-row').querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      updateCardValueBadge();
     }
     function setPromoMode(btn, mode) {
       btn.closest('.step-body').querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       document.getElementById('promoAmountPreset').style.display = mode === 'amount' ? '' : 'none';
       document.getElementById('promoDiscountPreset').style.display = mode === 'discount' ? '' : 'none';
+      updateCardValueBadge();
     }
 
     /* ──────────────────────────────────────────────
@@ -3021,37 +3582,79 @@ Please present this card before payment.</textarea>
       const sel = document.getElementById('expirationSelect');
       const wrap = document.getElementById('customDateWrap');
       if (wrap) wrap.style.display = sel.value === 'custom' ? '' : 'none';
+      // Sync to card front VALID THRU
+      const expiryDateEl = document.getElementById('cfExpiryDate');
+      if (!expiryDateEl) return;
+      if (sel.value === 'custom') {
+        const customInput = document.getElementById('customDate');
+        expiryDateEl.textContent = (customInput && customInput.value) ? customInput.value : '—';
+      } else if (sel.value) {
+        const days = parseInt(sel.value);
+        const d = new Date();
+        d.setDate(d.getDate() + days);
+        expiryDateEl.textContent = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).replace(',', '');
+      } else {
+        expiryDateEl.textContent = '—';
+      }
     }
     // Set today as min date for custom expiry
     document.addEventListener('DOMContentLoaded', () => {
-      const today = new Date().toISOString().split('T')[0];
-      const cd = document.getElementById('customDate');
-      if (cd) cd.min = today;
+      // ── Flatpickr: Custom Expiry Date ──
+      flatpickr('#customDate', {
+        dateFormat: 'M j, Y',
+        minDate: 'today',
+        disableMobile: true,
+        allowInput: false,
+        onChange(selectedDates, dateStr) {
+          const el = document.getElementById('cfExpiryDate');
+          if (el) el.textContent = dateStr || '—';
+        }
+      });
+
+      // ── Flatpickr: Birthday (no min date) ──
+      flatpickr('#holderBirthday', {
+        dateFormat: 'M j, Y',
+        maxDate: 'today',
+        disableMobile: true,
+        allowInput: false,
+      });
+
+      // Init card front for default card type (E-Gift Card, typeId=0)
+      updateCardValueBadge();
+
       // Init AI prompt list with default category
       renderAiPrompts();
       // Init membership benefit select
       initMbBenefitSelect();
-      // On mobile: collapse Business Information by default
-      if (window.innerWidth <= 767) {
-        const biWrap = document.getElementById('business-info');
-        const biHdr = document.getElementById('hdr-bizinfo');
-        if (biWrap) biWrap.classList.remove('open');
-        if (biHdr) biHdr.classList.remove('open');
-      } else {
-        const biWrap = document.getElementById('business-info');
-        const biHdr = document.getElementById('hdr-bizinfo');
-        if (biWrap) biWrap.classList.add('open');
-        if (biHdr) biHdr.classList.add('open');
-      }
+      // On mobile: collapse Design Collection, Brand Identity, Business Information by default
+      const isMobile = window.innerWidth <= 767;
+      const mobileCollapseIds = [
+        { wrap: 'design-collection', hdr: 'hdr-design' },
+        { wrap: 'brand-identity', hdr: 'hdr-brand' },
+        { wrap: 'business-info', hdr: 'hdr-bizinfo' }
+      ];
+      mobileCollapseIds.forEach(({ wrap, hdr }) => {
+        const w = document.getElementById(wrap);
+        const h = document.getElementById(hdr);
+        if (w) w.classList.toggle('open', !isMobile);
+        if (h) h.classList.toggle('open', !isMobile);
+      });
     });
 
     /* ──────────────────────────────────────────────
        TERMS
     ────────────────────────────────────────────── */
+    function syncTermsToCard() {
+      const ta = document.getElementById('termsTextarea');
+      const cb = document.getElementById('cbMerchantTC');
+      if (ta && cb) cb.textContent = ta.value || '{{Terms & Conditions của Merchant tự nhập khi tạo card}}';
+    }
+
     function addTerm(text) {
       const ta = document.getElementById('termsTextarea');
       if (!ta) return;
       ta.value = ta.value ? ta.value + '\n' + text : text;
+      syncTermsToCard();
     }
     /* ── T&C TEMPLATES STORE (in-memory) ── */
     let tcTemplates = [
@@ -3177,6 +3780,7 @@ Please present this card before payment.</textarea>
     document.getElementById('saveTermsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSaveTerms(); });
     document.getElementById('libraryModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLogoLibrary(); });
     document.getElementById('logoPreviewModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLogoPreview(); });
+    document.getElementById('aiLogoModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAiLogoModal(); });
   </script>
 
   <!-- ═══ LOGO LIBRARY MODAL ═══ -->
@@ -3198,6 +3802,25 @@ Please present this card before payment.</textarea>
         </button>
       </div>
       <div class="lib-grid" id="libraryGrid"></div>
+    </div>
+  </div>
+
+  <!-- ═══ AI GENERATED LOGO MODAL ═══ -->
+  <div class="lib-overlay" id="aiLogoModal">
+    <div class="ai-logo-modal">
+      <div class="ai-logo-modal-head">
+        <span class="ai-logo-modal-title">AI Generated Logo</span>
+        <button class="lib-close-btn" onclick="closeAiLogoModal()">
+          <i data-lucide="x" style="width:20px;height:20px;"></i>
+        </button>
+      </div>
+      <div class="ai-logo-modal-body">
+        <div class="ai-logo-display" id="aiLogoDisplay"></div>
+      </div>
+      <div class="ai-logo-modal-foot">
+        <button class="ai-logo-btn-cancel" onclick="closeAiLogoModal()">Cancel</button>
+        <button class="ai-logo-btn-use" onclick="useAiGeneratedLogo()">Use this logo</button>
+      </div>
     </div>
   </div>
 
@@ -3366,15 +3989,15 @@ Please present this card before payment.</textarea>
 
     .lib-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(4, minmax(90px, 1fr));
+      gap: 28px;
       padding: 20px 24px 24px;
       overflow-y: auto;
     }
 
     /* Library card */
     .lib-card {
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
       border: 1.5px solid #e8edf2;
       background: #fff;
@@ -3397,11 +4020,17 @@ Please present this card before payment.</textarea>
       background: #f4f6f8;
       aspect-ratio: 1;
       overflow: hidden;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .lib-card-img {
-      width: 100%;
-      height: 100%;
+      width: 70%;
+      height: 70%;
+      max-width: 48px;
+      max-height: 48px;
       object-fit: contain;
       display: block;
       transition: opacity 0.2s;
@@ -3414,7 +4043,7 @@ Please present this card before payment.</textarea>
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       opacity: 0;
       transition: opacity 0.2s;
     }
@@ -3424,9 +4053,9 @@ Please present this card before payment.</textarea>
     }
 
     .lib-btn-del {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       background: #fff;
       border: none;
       cursor: pointer;
@@ -3442,9 +4071,9 @@ Please present this card before payment.</textarea>
     }
 
     .lib-btn-view {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       background: #fff;
       border: none;
       cursor: pointer;
@@ -3481,22 +4110,26 @@ Please present this card before payment.</textarea>
     }
 
     .lib-card-info {
-      padding: 10px 12px 12px;
+      padding: 8px 10px 10px;
     }
 
     .lib-card-name {
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 700;
       color: #212b36;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
 
     .lib-card-date {
-      font-size: 12px;
+      font-size: 10px;
       color: #919eab;
+    }
+
+    .lib-card-actions-mobile {
+      display: none;
     }
 
     /* Logo Preview modal */
@@ -3550,11 +4183,158 @@ Please present this card before payment.</textarea>
       background: #007a52;
     }
 
+    /* AI Generated Logo modal */
+    .ai-logo-modal {
+      background: #fff;
+      width: 100%;
+      max-width: 480px;
+      border-radius: 20px;
+      position: relative;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.2);
+      padding: 0;
+      animation: libModalIn .22s ease-out;
+      margin: 16px;
+    }
+
+    .ai-logo-modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .ai-logo-modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #161c24;
+    }
+
+    .ai-logo-modal-body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 280px;
+      padding: 32px 24px;
+    }
+
+    .ai-logo-display {
+      width: 200px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ai-logo-display img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .ai-logo-modal-foot {
+      display: flex;
+      gap: 12px;
+      padding: 20px 24px 24px;
+      justify-content: center;
+    }
+
+    .ai-logo-btn-cancel {
+      padding: 12px 24px;
+      border-radius: 10px;
+      background: #fff;
+      color: #637381;
+      border: 1px solid #dfe3e8;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: 0.15s;
+    }
+
+    .ai-logo-btn-cancel:hover {
+      background: #f4f6f8;
+      color: #212b36;
+      border-color: #919eab;
+    }
+
+    .ai-logo-btn-use {
+      padding: 12px 28px;
+      border-radius: 10px;
+      background: var(--c-primary, #00a76f);
+      color: #fff;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: 0.15s;
+      box-shadow: 0 4px 14px rgba(0, 167, 111, 0.25);
+    }
+
+    .ai-logo-btn-use:hover {
+      background: #007a52;
+    }
+
+    @media (max-width: 767px) {
+      .lib-card-overlay {
+        display: none;
+      }
+
+      .lib-card-actions-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 8px 10px 10px;
+        border-top: 1px solid #e8edf2;
+      }
+
+      .lib-card-actions-mobile .lib-btn-del,
+      .lib-card-actions-mobile .lib-btn-view,
+      .lib-card-actions-mobile .lib-btn-use {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+        padding: 0 8px;
+      }
+
+      .lib-card-actions-mobile .lib-btn-use {
+        width: auto;
+        height: 28px;
+      }
+    }
+
     @media (max-width: 640px) {
       .lib-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        gap: 20px;
         padding: 14px;
+      }
+
+      .lib-card {
+        max-width: none;
+      }
+
+      .lib-card-info {
+        padding: 10px 12px 12px;
+      }
+
+      .lib-card-name {
+        font-size: 12px;
+      }
+
+      .lib-card-date {
+        font-size: 11px;
+      }
+
+      .lib-card-img {
+        max-width: 64px;
+        max-height: 64px;
+      }
+
+      .lib-card-actions-mobile {
+        padding: 10px 12px 12px;
       }
 
       .lib-modal {

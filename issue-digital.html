@@ -374,6 +374,13 @@
       line-height: 1.4;
     }
 
+    .cb-benefits {
+      margin-top: 4px;
+      font-size: 6.5px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.4;
+    }
+
     .cb-contact {
       flex-shrink: 0;
       padding: 0;
@@ -2352,6 +2359,9 @@
                       <div class="cb-merchant-tc" id="cbMerchantTC">
                         {{Terms &amp; Conditions của Merchant tự nhập khi tạo card}}
                       </div>
+                      <div class="cb-benefits" id="cbBenefitsLine" style="display:none;">
+                        <!-- Filled dynamically when Membership + benefits -->
+                      </div>
                     </div>
 
                   </div>
@@ -3569,6 +3579,7 @@ Please present this card before payment.</textarea>
       if (termsActions) termsActions.style.display = '';
 
       renumberSteps();
+      updateCardBenefitsLine();
     }
 
     function renumberSteps() {
@@ -3720,6 +3731,7 @@ Please present this card before payment.</textarea>
       if (area) area.classList.toggle('is-empty', ids.length === 0);
       if (ids.length === 0) {
         row.innerHTML = '<div class="mb-empty-hint" id="mbEmptyHint">No benefits selected yet</div>';
+        updateCardBenefitsLine();
         return;
       }
       row.innerHTML = ids.map(id => {
@@ -3737,6 +3749,38 @@ Please present this card before payment.</textarea>
               oninput="mbSelected['${id}']=this.value">
           </div>`;
       }).join('');
+      updateCardBenefitsLine();
+    }
+
+    function updateCardBenefitsLine() {
+      const lineEl = document.getElementById('cbBenefitsLine');
+      if (!lineEl) return;
+      const isMembership = currentTypeId === '2';
+      const ids = Object.keys(mbSelected || {});
+      if (!isMembership || ids.length === 0) {
+        lineEl.style.display = 'none';
+        lineEl.textContent = '';
+        return;
+      }
+      const parts = ids.map(id => {
+        const b = MB_BENEFITS.find(x => x.id === id);
+        if (!b) return '';
+        const rawVal = (mbSelected[id] || '').toString().trim();
+        if (!rawVal) return b.name;
+        // Format like \"$20 Monthly Credit\" or \"5% Cashback\"
+        return b.unit === '$'
+          ? `$${rawVal} ${b.name}`
+          : b.unit === '%'
+            ? `${rawVal}% ${b.name}`
+            : `${rawVal} ${b.name}`;
+      }).filter(Boolean);
+      if (parts.length === 0) {
+        lineEl.style.display = 'none';
+        lineEl.textContent = '';
+        return;
+      }
+      lineEl.textContent = 'Benefits: ' + parts.join(' · ');
+      lineEl.style.display = '';
     }
 
     /* ──────────────────────────────────────────────

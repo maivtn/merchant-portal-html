@@ -963,7 +963,7 @@
           if (c.key === 'createdDate' || c.key === 'updatedDate') return `<td style="color:#637381">${fmtDate(r[c.key])}</td>`;
           if (c.key === 'actions') {
             const handler = activeTab === 'package'
-              ? `onclick="window.location.href='membership-package-details.html'"`
+              ? `onclick="window.location.href='membership-package-details.html?id=${encodeURIComponent(r.id)}&status=${encodeURIComponent(r.status)}&saleStatus=${encodeURIComponent(r.saleStatus)}'"`
               : `onclick="openViewBenefitModal('${r.id}')"`;
             return `<td class="col-actions"><button class="btn-eye" title="View detail" ${handler}><i data-lucide="eye"></i></button></td>`;
           }
@@ -1038,7 +1038,7 @@
             </div>
             <div class="m-divider"></div>
             <div class="m-actions">
-              <button class="btn-view-m" onclick="window.location.href='membership-package-details.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
+              <button class="btn-view-m" onclick="window.location.href='membership-package-details.html?id=${encodeURIComponent(r.id)}&status=${encodeURIComponent(r.status)}&saleStatus=${encodeURIComponent(r.saleStatus)}'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
             </div>
           </div>`).join('');
       }

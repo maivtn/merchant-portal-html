@@ -111,7 +111,6 @@
       box-shadow: var(--shadow-card);
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
       gap: 0;
     }
@@ -285,16 +284,16 @@
     }
 
     .badge-draft {
-      display: inline-flex;
       align-items: center;
       padding: 3px 10px;
       border-radius: 6px;
-      border: 1.5px solid #919eab;
       color: #637381;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.4px;
       background: #f4f6f8;
+      width: auto;
+      flex: auto;
     }
 
     .badge-approved {
@@ -324,6 +323,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      align-items: flex-start;
     }
 
     .info-pkg-name {
@@ -382,7 +382,7 @@
     }
 
     .info-row-value.highlight {
-      color: var(--c-primary);
+      color: #EA580C;
     }
 
     .info-row-edit {
@@ -392,6 +392,10 @@
       font-size: 13px;
       font-weight: 500;
       color: #2563eb;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.16);
       cursor: pointer;
       text-decoration: none;
       background: none;
@@ -401,13 +405,12 @@
     }
 
     .info-row-edit:hover {
-      text-decoration: underline;
+      background: rgba(37, 99, 235, 0.16);
     }
 
     /* ─── SALE STATUS TOGGLES (below card) ─── */
     .mem-toggles {
       width: 100%;
-      max-width: 320px;
       padding: 20px;
       display: flex;
       flex-direction: column;
@@ -437,22 +440,22 @@
 
     .mem-pill {
       font-size: 11px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 20px;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 6px;
+      text-transform: none;
+      letter-spacing: 0.4px;
       flex-shrink: 0;
     }
 
     .mem-pill.active {
-      background: var(--c-primary);
-      color: #fff;
+      background: #d8fbde;
+      color: #007b55;
     }
 
     .mem-pill.inactive {
-      background: #e2e8f0;
-      color: var(--c-text-3);
+      background: #f4f6f8;
+      color: #637381;
     }
 
     .mem-switch {
@@ -727,11 +730,14 @@
     .section-title .section-chevron {
       flex-shrink: 0;
       color: var(--c-text-3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       transition: transform 0.2s;
     }
 
     .section-card.collapsed .section-chevron {
-      transform: rotate(-90deg);
+      transform: rotate(180deg);
     }
 
     .section-card.collapsed .section-body {
@@ -778,7 +784,7 @@
 
     .benefit-item-value {
       font-size: 20px;
-      font-weight: 800;
+      font-weight: 600;
       color: var(--c-primary);
       line-height: 1.1;
     }
@@ -818,7 +824,6 @@
       }
 
       .overview-left {
-        padding: 28px 20px;
         order: 1;
       }
 
@@ -842,11 +847,11 @@
       }
     }
 
-    /* Mobile: single column, tighter spacing */
+    /* Mobile: tighter spacing, keep header in one row */
     @media (max-width: 767px) {
       .page-header-row {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        align-items: center;
         margin-bottom: 16px;
         gap: 12px;
       }
@@ -861,9 +866,14 @@
       }
 
       .btn-edit {
-        width: 100%;
+        width: auto;
         justify-content: center;
-        min-height: 44px;
+        min-height: 40px;
+        padding-inline: 10px;
+      }
+
+      .btn-edit-text {
+        display: none;
       }
 
       .overview-card {
@@ -1081,7 +1091,7 @@
             <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
           </a>
           <div>
-            <div class="page-title">Membership Package Details</div>
+            <div class="page-title">Package Details</div>
             <div class="breadcrumbs" style="margin-top:4px">
               <a href="#">Settings</a>
               <span class="breadcrumbs-dot"></span>
@@ -1092,8 +1102,8 @@
           </div>
         </div>
         <a href="create-membership-package.html" class="btn-edit">
-          <i data-lucide="pencil" style="width:15px;height:15px;"></i>
-          Edit Package
+          <i data-lucide="pencil" class="btn-edit-icon" style="width:15px;height:15px;"></i>
+          <span class="btn-edit-text">Edit Package</span>
         </a>
       </div>
     </div>
@@ -1109,14 +1119,14 @@
             <div class="pkg-icon-circle">₿</div>
             <div class="pkg-name-preview">SILVER</div>
             <div class="pkg-price-preview"><sup>$</sup>99<span class="period"> /yr</span></div>
-            <div class="pkg-benefits-count">5 BENEFITS</div>
+            <div class="pkg-benefits-count">2 BENEFITS</div>
             <div class="pkg-divider"></div>
             <div class="pkg-benefit-list">
               <div class="pkg-benefit-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
-                Monthly Credit: $25/month
+                Monthly Credit: $25
               </div>
               <div class="pkg-benefit-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -1128,20 +1138,9 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
-                Birthday Gift: $50 voucher
+                Birthday Voucher Gift: $50
               </div>
-              <div class="pkg-benefit-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                Free Shipping: Unlimited
-              </div>
-              <div class="pkg-benefit-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                Early Access: New products 48h
-              </div>
+
             </div>
           </div>
         </div>
@@ -1170,7 +1169,7 @@
         <div class="overview-right-header">
           <div class="info-name-block">
             <span class="info-pkg-name">SILVER</span>
-            <span class="badge-approved">APPROVED</span>
+            <span class="badge-approved" id="status">APPROVED</span>
           </div>
           <div class="price-block">
             <div class="price-label">PRICE</div>
@@ -1227,7 +1226,7 @@
               <div class="benefit-item-icon" style="background:#c8fae5;color:#00a76f;">$</div>
               <span class="benefit-item-name">Monthly Credit</span>
             </div>
-            <div class="benefit-item-value">$25/month</div>
+            <div class="benefit-item-value">$25</div>
             <div class="benefit-item-used">Used times: 0</div>
           </div>
           <div class="benefit-item-card">
@@ -1254,9 +1253,9 @@
                   <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
                 </svg>
               </div>
-              <span class="benefit-item-name">Birthday Gift</span>
+              <span class="benefit-item-name">Birthday Voucher Gift </span>
             </div>
-            <div class="benefit-item-value">$50 voucher</div>
+            <div class="benefit-item-value">$50 </div>
             <div class="benefit-item-used">Used times: 0</div>
           </div>
         </div>
@@ -1330,14 +1329,22 @@
       el.classList.toggle('on');
       var row = el.closest('.mem-toggle-row');
       var pill = row ? row.querySelector('.mem-pill') : null;
-      if (pill) {
-        if (el.classList.contains('on')) {
-          pill.textContent = el.id === 'mostPopularSwitch' ? 'ON' : 'ACTIVE';
-          pill.classList.remove('inactive'); pill.classList.add('active');
-        } else {
-          pill.textContent = el.id === 'mostPopularSwitch' ? 'OFF' : 'INACTIVE';
-          pill.classList.remove('active'); pill.classList.add('inactive');
-        }
+
+      if (!pill) return;
+
+      var isMostPopular = el.id === 'mostPopularSwitch';
+      var isOn = el.classList.contains('on');
+
+      if (isMostPopular) {
+        // Most Popular: ON / OFF
+        pill.textContent = isOn ? 'ON' : 'OFF';
+        pill.classList.toggle('inactive', !isOn);
+        pill.classList.toggle('active', isOn);
+      } else {
+        // Sale Status pill: ACTIVE / INACTIVE (does not control header edit anymore)
+        pill.textContent = isOn ? 'ACTIVE' : 'INACTIVE';
+        pill.classList.toggle('inactive', !isOn);
+        pill.classList.toggle('active', isOn);
       }
     }
     function openEditDiscountModal() {
@@ -1349,14 +1356,67 @@
     }
     function saveDiscountAndClose() {
       var val = document.getElementById('modalNewDiscount').value;
-      // could update page discount display here
+      if (val === '' || isNaN(val)) {
+        alert('Please enter a valid discount between 0 and 100.');
+        return;
+      }
+      var num = parseFloat(val);
+      if (num < 0 || num > 100) {
+        alert('Please enter a discount between 0 and 100.');
+        return;
+      }
+      // Update main page discount display
+      var mainDiscountEl = document.querySelector('.info-row-value.highlight');
+      if (mainDiscountEl) {
+        mainDiscountEl.textContent = num + '%';
+      }
+      // Update modal current discount pill
+      var pill = document.getElementById('modalCurrentDiscount');
+      if (pill) {
+        pill.textContent = num + '%';
+      }
       closeEditDiscountModal();
+      alert('Discount has been updated successfully.');
     }
     function toggleSection(sectionId) {
       document.getElementById(sectionId).classList.toggle('collapsed');
     }
     document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
+      // Restore status from query params when navigated from Benefits Setup
+      var params = new URLSearchParams(window.location.search || '');
+      var status = (params.get('status') || '').toUpperCase();
+      var saleStatus = (params.get('saleStatus') || '').toUpperCase();
+
+      // 1) Workflow status badge + Edit button
+      var headerBtn = document.querySelector('.page-header .btn-edit');
+      var statusBadge = document.querySelector('.info-name-block .badge-approved, .info-name-block .badge-draft');
+      if (statusBadge) {
+        if (status === 'APPROVED' || status === 'ACTIVE') {
+          statusBadge.className = 'badge-approved';
+          statusBadge.textContent = 'APPROVED';
+          if (headerBtn) headerBtn.style.display = 'none';
+        } else if (status === 'DRAFT') {
+          statusBadge.className = 'badge-draft';
+          statusBadge.textContent = 'DRAFT';
+          if (headerBtn) headerBtn.style.display = '';
+        }
+      }
+
+      // 2) Sale status pill + switch (does NOT affect edit button)
+      if (saleStatus) {
+        var saleSwitch = document.getElementById('saleStatusSwitch');
+        var salePill = document.getElementById('saleStatusPill');
+        var isSaleActive = saleStatus === 'ACTIVE';
+        if (saleSwitch) {
+          saleSwitch.classList.toggle('on', isSaleActive);
+        }
+        if (salePill) {
+          salePill.textContent = isSaleActive ? 'ACTIVE' : 'INACTIVE';
+          salePill.classList.toggle('active', isSaleActive);
+          salePill.classList.toggle('inactive', !isSaleActive);
+        }
+      }
     });
   </script>
 </body>

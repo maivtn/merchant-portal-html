@@ -1438,7 +1438,7 @@
           </div>
         </div>
 
-        <div class="field-root locked-field">
+        <div class="field-root locked-field card-lock-hidden">
           <label class="field-label">Card Locked</label>
           <div class="field-container">
             <select id="lockedFilter" class="field-input field-select" onchange="applyFilters()">
@@ -1452,16 +1452,18 @@
 
         <div class="field-root date-field">
           <label class="field-label">Created From</label>
-          <div class="field-container">
+          <div class="field-container flatpickr-clear-wrap">
             <input type="text" id="fromDate" class="field-input" placeholder="Pick a date" readonly>
+            <button type="button" class="date-clear" id="fromDateClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
         </div>
 
         <div class="field-root date-field">
           <label class="field-label">To</label>
-          <div class="field-container">
+          <div class="field-container flatpickr-clear-wrap">
             <input type="text" id="toDate" class="field-input" placeholder="Pick a date" readonly>
+            <button type="button" class="date-clear" id="toDateClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
         </div>
@@ -1508,7 +1510,7 @@
                 <div class="th-inner"><span class="th-text">Card Number</span><span id="sort-cardNumber"
                     class="th-sort-icon"></span></div>
               </th>
-              <th class="sortable" style="min-width:110px;" onclick="sortTable('cardLocked')">
+              <th class="sortable card-lock-hidden" style="min-width:110px;" onclick="sortTable('cardLocked')">
                 <div class="th-inner"><span class="th-text">Card Locked</span><span id="sort-cardLocked"
                     class="th-sort-icon"></span></div>
               </th>
@@ -1712,7 +1714,7 @@
         </div>
       </div>
 
-      <div class="mobile-filter-field">
+      <div class="mobile-filter-field card-lock-hidden">
         <label class="mobile-filter-label">Card Locked</label>
         <div class="field-root" style="width:100%;">
           <div class="field-container">
@@ -1729,15 +1731,17 @@
       <div class="mobile-date-row">
         <div class="field-root date-field" style="width:100%;">
           <label class="field-label">Created From</label>
-          <div class="field-container">
+          <div class="field-container flatpickr-clear-wrap">
             <input type="text" id="mobileFromDate" class="field-input" placeholder="Pick a date" readonly>
+            <button type="button" class="date-clear" id="mobileFromDateClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
         </div>
         <div class="field-root date-field" style="width:100%;">
           <label class="field-label">To</label>
-          <div class="field-container">
+          <div class="field-container flatpickr-clear-wrap">
             <input type="text" id="mobileToDate" class="field-input" placeholder="Pick a date" readonly>
+            <button type="button" class="date-clear" id="mobileToDateClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
         </div>
@@ -2102,7 +2106,7 @@
             <td>${productStatusBadge(p.productStatus)}</td>
             <td>${salesStatusBadge(p.salesStatus)}</td>
             <td>${p.cardNumber === '—' ? '<span class="td-dash">—</span>' : `<span class="td-mono">${p.cardNumber}</span>`}</td>
-            <td>${cardLockedBadge(p.cardLocked)}</td>
+            <td class="card-lock-hidden">${cardLockedBadge(p.cardLocked)}</td>
             <td class="td-amount">${p.amountDisplay}</td>
             <td class="td-secondary">${p.sold === '—' ? '<span class="td-dash">—</span>' : p.sold}</td>
             <td class="td-secondary">${p.available === '—' ? '<span class="td-dash">—</span>' : p.available}</td>
@@ -2138,7 +2142,7 @@
           `;
           if (p.salesStatus !== '—') infoItems += `<div class="info-field"><div class="info-field-label">Sales Status</div><div class="info-field-value">${salesStatusBadge(p.salesStatus)}</div></div>`;
           if (p.cardNumber !== '—') infoItems += `<div class="info-field"><div class="info-field-label">Card Number</div><div class="info-field-value" style="font-family:monospace;font-size:12px;">${p.cardNumber}</div></div>`;
-          if (p.cardLocked !== '—') infoItems += `<div class="info-field"><div class="info-field-label">Card Locked</div><div class="info-field-value">${cardLockedBadge(p.cardLocked)}</div></div>`;
+          if (p.cardLocked !== '—') infoItems += `<div class="info-field card-lock-hidden"><div class="info-field-label">Card Locked</div><div class="info-field-value">${cardLockedBadge(p.cardLocked)}</div></div>`;
           if (p.campaignName !== '—') infoItems += `<div class="info-field"><div class="info-field-label">Campaign</div><div class="info-field-value">${p.campaignName}</div></div>`;
           if (p.sold !== '—') infoItems += `<div class="info-field"><div class="info-field-label">Sold / Available</div><div class="info-field-value">${p.sold} / ${p.available}</div></div>`;
 
@@ -2257,6 +2261,8 @@
       document.getElementById('mobileLockedFilter').value = tempLockedFilter;
       document.getElementById('mobileFromDate').value = tempFromDate;
       document.getElementById('mobileToDate').value = tempToDate;
+      document.getElementById('mobileFromDateClear').classList.toggle('visible', !!tempFromDate);
+      document.getElementById('mobileToDateClear').classList.toggle('visible', !!tempToDate);
       document.getElementById('mobileFilterModal').classList.add('open');
     }
     function closeMobileFilter() {
@@ -2265,8 +2271,12 @@
     function resetMobileFilter() {
       document.getElementById('mobileStatusFilter').value = '';
       document.getElementById('mobileLockedFilter').value = '';
-      document.getElementById('mobileFromDate').value = '';
-      document.getElementById('mobileToDate').value = '';
+      const mFrom = document.getElementById('mobileFromDate');
+      const mTo = document.getElementById('mobileToDate');
+      if (mFrom._flatpickr) mFrom._flatpickr.clear();
+      if (mTo._flatpickr) mTo._flatpickr.clear();
+      document.getElementById('mobileFromDateClear').classList.remove('visible');
+      document.getElementById('mobileToDateClear').classList.remove('visible');
     }
     function applyMobileFilter() {
       statusFilter = document.getElementById('mobileStatusFilter').value;
@@ -2314,30 +2324,48 @@
 
       // Init Flatpickr for Created date range (desktop)
       if (window.flatpickr) {
-        flatpickr('#fromDate', {
+        const fpFrom = flatpickr('#fromDate', {
           dateFormat: 'Y-m-d',
           allowInput: false,
           disableMobile: true,
-          onChange: applyFilters
+          onChange(selectedDates, dateStr) {
+            document.getElementById('fromDate').value = dateStr;
+            document.getElementById('fromDateClear').classList.toggle('visible', !!dateStr);
+            applyFilters();
+          }
         });
-        flatpickr('#toDate', {
+        const fpTo = flatpickr('#toDate', {
           dateFormat: 'Y-m-d',
           allowInput: false,
           disableMobile: true,
-          onChange: applyFilters
+          onChange(selectedDates, dateStr) {
+            document.getElementById('toDate').value = dateStr;
+            document.getElementById('toDateClear').classList.toggle('visible', !!dateStr);
+            applyFilters();
+          }
         });
-
-        // Mobile modal date pickers
-        flatpickr('#mobileFromDate', {
+        const fpMFrom = flatpickr('#mobileFromDate', {
           dateFormat: 'Y-m-d',
           allowInput: false,
-          disableMobile: true
+          disableMobile: true,
+          onChange(selectedDates, dateStr) {
+            document.getElementById('mobileFromDate').value = dateStr;
+            document.getElementById('mobileFromDateClear').classList.toggle('visible', !!dateStr);
+          }
         });
-        flatpickr('#mobileToDate', {
+        const fpMTo = flatpickr('#mobileToDate', {
           dateFormat: 'Y-m-d',
           allowInput: false,
-          disableMobile: true
+          disableMobile: true,
+          onChange(selectedDates, dateStr) {
+            document.getElementById('mobileToDate').value = dateStr;
+            document.getElementById('mobileToDateClear').classList.toggle('visible', !!dateStr);
+          }
         });
+        document.getElementById('fromDateClear').addEventListener('click', function() { fpFrom.clear(); this.classList.remove('visible'); applyFilters(); });
+        document.getElementById('toDateClear').addEventListener('click', function() { fpTo.clear(); this.classList.remove('visible'); applyFilters(); });
+        document.getElementById('mobileFromDateClear').addEventListener('click', function() { fpMFrom.clear(); this.classList.remove('visible'); });
+        document.getElementById('mobileToDateClear').addEventListener('click', function() { fpMTo.clear(); this.classList.remove('visible'); });
       }
 
       updateCategoryChips('all');

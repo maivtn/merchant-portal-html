@@ -3059,10 +3059,11 @@
                 </div>
                 <!-- Birthday: only for Membership -->
                 <div class="form-field" id="birthdayField" style="display:none;">
-                  <div class="date-input-wrap">
+                  <div class="date-input-wrap flatpickr-clear-wrap">
                     <i data-lucide="calendar" class="date-input-icon"></i>
                     <input type="text" class="input-minimal fp-input date-has-icon" id="holderBirthday"
                       placeholder="Birthday (optional)" readonly>
+                    <button type="button" class="date-clear" id="holderBirthdayClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                   </div>
                 </div>
               </div>
@@ -3090,10 +3091,11 @@
                   <option value="custom">Custom Date</option>
                 </select>
                 <span id="customDateWrap" style="display:none;">
-                  <div class="date-input-wrap" style="width:190px;flex-shrink:0;">
+                  <div class="date-input-wrap flatpickr-clear-wrap" style="width:190px;flex-shrink:0;">
                     <i data-lucide="calendar" class="date-input-icon"></i>
                     <input type="text" class="input-minimal fp-input date-has-icon" id="customDate"
                       placeholder="Pick a date" readonly>
+                    <button type="button" class="date-clear" id="customDateClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                   </div>
                 </span>
               </div>
@@ -4054,6 +4056,7 @@ Please present this card before payment.</textarea>
     ];
 
     const selectedAssets = {}; // { BTC: '50', ETH: '100', ... }
+    let cryptoTomSelect = null; // Tom Select instance for crypto assets
 
     function updateAssetAmount(id, val) {
       selectedAssets[id] = val;
@@ -4063,6 +4066,7 @@ Please present this card before payment.</textarea>
       delete selectedAssets[id];
       const pill = document.querySelector('.crypto-pill[data-asset="' + id + '"]');
       if (pill) pill.classList.remove('active');
+      if (cryptoTomSelect) cryptoTomSelect.removeItem(id);
       renderSelectedAssets();
     }
 
@@ -4107,6 +4111,7 @@ Please present this card before payment.</textarea>
     function initCryptoSelect() {
       const sel = document.getElementById('cryptoAssetsSelect');
       if (!sel) return;
+      if (cryptoTomSelect) { cryptoTomSelect.destroy(); cryptoTomSelect = null; }
       sel.innerHTML = '';
       CRYPTO_ASSETS.forEach(a => {
         const opt = document.createElement('option');
@@ -4116,7 +4121,7 @@ Please present this card before payment.</textarea>
         sel.appendChild(opt);
       });
       const assetMap = Object.fromEntries(CRYPTO_ASSETS.map(a => [a.id, a]));
-      new TomSelect('#cryptoAssetsSelect', {
+      cryptoTomSelect = new TomSelect('#cryptoAssetsSelect', {
         plugins: {
           checkbox_options: {},
           dropdown_header: { title: 'Select Assets' }
@@ -4361,23 +4366,39 @@ Please present this card before payment.</textarea>
     // Set today as min date for custom expiry
     document.addEventListener('DOMContentLoaded', () => {
       // ── Flatpickr: Custom Expiry Date ──
-      flatpickr('#customDate', {
+      const fpCustom = flatpickr('#customDate', {
         dateFormat: 'M j, Y',
         minDate: 'today',
         disableMobile: true,
         allowInput: false,
         onChange(selectedDates, dateStr) {
+          document.getElementById('customDate').value = dateStr;
+          document.getElementById('customDateClear').classList.toggle('visible', !!dateStr);
           const el = document.getElementById('cfExpiryDate');
           if (el) el.textContent = dateStr || '—';
         }
       });
+      document.getElementById('customDateClear').addEventListener('click', function() {
+        fpCustom.clear();
+        this.classList.remove('visible');
+        const el = document.getElementById('cfExpiryDate');
+        if (el) el.textContent = '—';
+      });
 
       // ── Flatpickr: Birthday (no min date) ──
-      flatpickr('#holderBirthday', {
+      const fpBirthday = flatpickr('#holderBirthday', {
         dateFormat: 'M j, Y',
         maxDate: 'today',
         disableMobile: true,
         allowInput: false,
+        onChange(selectedDates, dateStr) {
+          document.getElementById('holderBirthday').value = dateStr;
+          document.getElementById('holderBirthdayClear').classList.toggle('visible', !!dateStr);
+        }
+      });
+      document.getElementById('holderBirthdayClear').addEventListener('click', function() {
+        fpBirthday.clear();
+        this.classList.remove('visible');
       });
 
       // Init card front for default card type (E-Gift Card, typeId=0)

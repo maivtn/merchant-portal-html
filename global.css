@@ -957,7 +957,7 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
 
   /* ── Toolbar: stack filter items vertically ── */
   .table-toolbar {
-    flex-direction: column !important;
+    /* flex-direction: column !important; */
     align-items: stretch !important;
     padding: 12px 16px !important;
     gap: 10px !important;
@@ -1511,4 +1511,61 @@ td.col-actions .action-btns {
   border: 1px solid var(--grey-300);
   display: flex;
   align-items: center;
+}
+.flatpickr-current-month {
+  padding-top: 2px;
+}
+
+/* Flatpickr date input: clear button (show when value selected) */
+.flatpickr-clear-wrap {
+  position: relative;
+}
+.flatpickr-clear-wrap .field-input,
+.flatpickr-clear-wrap .date-input,
+.flatpickr-clear-wrap .filter-date-input,
+.flatpickr-clear-wrap .input-minimal {
+  padding-right: 72px;
+}
+.flatpickr-clear-wrap.flatpickr-clear-single .field-input,
+.flatpickr-clear-wrap.flatpickr-clear-single .date-input,
+.flatpickr-clear-wrap.flatpickr-clear-single .filter-date-input,
+.flatpickr-clear-wrap.flatpickr-clear-single .form-control {
+  padding-right: 40px;
+}
+.date-clear {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #919eab;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: color 0.15s, background 0.15s;
+}
+.date-clear.visible {
+  display: inline-flex;
+}
+.date-clear:hover {
+  color: #637381;
+  background: rgba(145, 158, 171, 0.08);
+}
+.date-clear svg {
+  width: 14px;
+  height: 14px;
+}
+.flatpickr-clear-wrap.flatpickr-clear-single .date-clear {
+  right: 8px;
+}
+
+/* Hide Card Lock feature (project-wide) */
+.card-lock-hidden {
+  display: none !important;
 }

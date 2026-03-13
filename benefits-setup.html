@@ -2,17 +2,17 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Benefits Setup - VLINKPAY</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="global.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Benefits Setup - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="global.css">
   <script src="global.js" defer></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-    <style>
+  <style>
     /* ── Icon reset ──────────────────────────────────── */
     i[data-lucide],
     svg[data-lucide] {
@@ -68,15 +68,15 @@
 
     /* ── Main card ───────────────────────────────────── */
     .main-card {
-            background: #fff;
-            border-radius: 16px;
+      background: #fff;
+      border-radius: 16px;
       box-shadow: 0 0 2px 0 rgb(145 158 171/.2), 0 12px 24px -4px rgb(145 158 171/.12);
-            overflow: hidden;
-        }
+      overflow: hidden;
+    }
 
     /* ── Tab Bar ─────────────────────────────────────── */
     .tab-bar {
-            display: flex;
+      display: flex;
       padding: 0 24px;
       border-bottom: 1px solid #f4f6f8;
     }
@@ -112,7 +112,7 @@
     .toolbar {
       padding: 20px 24px;
       display: flex;
-            align-items: center;
+      align-items: center;
       gap: 12px;
       border-bottom: 1px dashed rgb(145 158 171/.3);
       flex-wrap: wrap;
@@ -196,24 +196,24 @@
 
     /* ── Table ───────────────────────────────────────── */
     .table-scroll {
-            width: 100%;
-            overflow-x: auto;
-        }
+      width: 100%;
+      overflow-x: auto;
+    }
 
     .data-table {
-            width: 100%;
-            border-collapse: collapse;
+      width: 100%;
+      border-collapse: collapse;
       min-width: 900px;
     }
 
     .data-table th {
       background: #f9fafb;
       padding: 14px 16px;
-            font-size: 14px;
-            font-weight: 600;
+      font-size: 14px;
+      font-weight: 600;
       color: #637381;
       text-align: left;
-            white-space: nowrap;
+      white-space: nowrap;
       cursor: pointer;
       user-select: none;
       border-bottom: 1px solid #f4f6f8;
@@ -238,10 +238,10 @@
     .data-table td {
       padding: 14px 16px;
       border-top: 1px dashed rgb(145 158 171/.24);
-            font-size: 14px;
+      font-size: 14px;
       color: #212b36;
-            white-space: nowrap;
-        }
+      white-space: nowrap;
+    }
 
     .data-table tr:hover td {
       background: #f9fafb;
@@ -256,12 +256,12 @@
 
     /* Benefit icon cell */
     .b-icon {
-            width: 40px;
-            height: 40px;
+      width: 40px;
+      height: 40px;
       border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .b-icon svg {
@@ -269,29 +269,42 @@
       height: 20px;
     }
 
-    /* Eye button */
-    .btn-eye {
+    /* Action buttons (match product-list.html) */
+    .action-btns {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .action-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
-      border: 1px solid #dfe3e8;
-      border-radius: 6px;
-      background: transparent;
-      color: #00a76f;
       cursor: pointer;
-      transition: .2s;
+      border: none;
+      transition: background 0.15s, color 0.15s;
+      font-family: inherit;
+      flex-shrink: 0;
+      text-decoration: none;
+      box-sizing: border-box;
     }
 
-    .btn-eye:hover {
-      background: #f0fdf7;
-      border-color: #00a76f;
+    .action-btn-view {
+      background: rgba(0, 167, 111, 0.08);
+      color: #00a76f;
     }
 
-    .btn-eye svg {
-      width: 18px;
-      height: 18px;
+    .action-btn-view:hover {
+      background: rgba(0, 167, 111, 0.18);
+    }
+
+    .action-btn svg {
+      width: 16px;
+      height: 16px;
     }
 
     /* Empty state */
@@ -372,20 +385,20 @@
 
     .m-actions {
       display: flex;
-            align-items: center;
-            justify-content: center;
+      align-items: center;
+      justify-content: center;
       gap: 10px;
-        }
+    }
 
     /* Toggle switch */
     .toggle-wrap {
-            display: flex;
+      display: flex;
       align-items: center;
       gap: 8px;
     }
 
     .toggle {
-            position: relative;
+      position: relative;
       width: 36px;
       height: 20px;
       flex-shrink: 0;
@@ -399,7 +412,7 @@
     }
 
     .toggle-track {
-            position: absolute;
+      position: absolute;
       inset: 0;
       border-radius: 10px;
       background: #ff5630;
@@ -483,9 +496,9 @@
       padding: 4px 10px;
       border-radius: 20px;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 500;
       letter-spacing: 0.3px;
-      text-transform: uppercase;
+      text-transform: capitalize;
     }
 
     .status-badge-pill.status-active {
@@ -500,8 +513,8 @@
 
     /* Mobile View button */
     .btn-view-m {
-            display: flex;
-            align-items: center;
+      display: flex;
+      align-items: center;
       gap: 6px;
       padding: 6px 12px;
       border: 1px solid #dfe3e8;
@@ -536,7 +549,7 @@
 
     .m-pkg-name {
       font-size: 15px;
-            font-weight: 700;
+      font-weight: 700;
       color: #212b36;
     }
 
@@ -574,7 +587,7 @@
       height: 32px;
       border: 1px solid #dfe3e8;
       border-radius: 6px;
-            font-size: 13px;
+      font-size: 13px;
       font-family: inherit;
       color: #212b36;
       padding: 0 24px 0 8px;
@@ -596,10 +609,10 @@
       border: 1px solid #dfe3e8;
       border-radius: 6px;
       background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
       color: #637381;
       transition: .2s;
     }
@@ -626,7 +639,7 @@
     .modal-overlay {
       display: none;
       position: fixed;
-            inset: 0;
+      inset: 0;
       background: rgba(0, 0, 0, .5);
       z-index: 1000;
       align-items: center;
@@ -644,14 +657,14 @@
       max-width: 600px;
       max-height: 95vh;
       overflow-y: auto;
-            border-radius: 16px;
+      border-radius: 16px;
       box-shadow: 0 24px 48px -8px rgba(0, 0, 0, .2);
       animation: modalIn .25s ease-out;
     }
 
     @keyframes modalIn {
       from {
-            opacity: 0;
+        opacity: 0;
         transform: scale(.95);
       }
 
@@ -747,7 +760,7 @@
     }
 
     .icon-btn:hover {
-            transform: scale(1.05);
+      transform: scale(1.05);
       box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
     }
 
@@ -761,16 +774,16 @@
     }
 
     .icon-upload-btn {
-            aspect-ratio: 1;
-            border-radius: 12px;
+      aspect-ratio: 1;
+      border-radius: 12px;
       border: 2px dashed #dfe3e8;
       background: #f9fafb;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       gap: 4px;
-            cursor: pointer;
+      cursor: pointer;
       transition: .2s;
       width: 100%;
       padding: 0;
@@ -790,7 +803,7 @@
 
     .icon-upload-btn span {
       font-size: 11px;
-            font-weight: 500;
+      font-weight: 500;
       color: #637381;
     }
 
@@ -807,28 +820,28 @@
     }
 
     .upload-preview-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       border-radius: 12px;
       display: block;
       border: 2px solid #00a76f;
-        }
+    }
 
     .upload-remove-btn {
-            position: absolute;
+      position: absolute;
       top: -9px;
       right: -9px;
       width: 22px;
       height: 22px;
-            background: #fff;
+      background: #fff;
       border: 1.5px solid #dfe3e8;
-            border-radius: 50%;
+      border-radius: 50%;
       padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
       z-index: 3;
       box-shadow: 0 1px 6px rgba(0, 0, 0, .18);
       transition: background .15s, border-color .15s;
@@ -873,17 +886,17 @@
 
     .form-input,
     .form-select {
-            width: 100%;
+      width: 100%;
       height: 44px;
       padding: 0 14px;
       border: 1px solid #dfe3e8;
-            border-radius: 8px;
-            font-size: 14px;
+      border-radius: 8px;
+      font-size: 14px;
       font-family: inherit;
       color: #212b36;
       outline: none;
       transition: all .2s;
-            background: #fff;
+      background: #fff;
       box-sizing: border-box;
     }
 
@@ -925,18 +938,18 @@
     }
 
     .chips-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
 
     .suggestion-chip {
       padding: 6px 12px;
-            border-radius: 6px;
+      border-radius: 6px;
       border: 1px solid #dfe3e8;
-            background: #fff;
+      background: #fff;
       font-size: 13px;
-            font-weight: 500;
+      font-weight: 500;
       color: #637381;
       cursor: pointer;
       transition: .2s;
@@ -968,12 +981,12 @@
       flex: 1;
       height: 44px;
       border: 1px solid #dfe3e8;
-            border-radius: 8px;
-            background: #fff;
-            font-size: 14px;
-            font-weight: 600;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 600;
       color: #212b36;
-            cursor: pointer;
+      cursor: pointer;
       font-family: inherit;
       transition: .2s;
     }
@@ -986,14 +999,14 @@
     .btn-create-submit {
       flex: 1;
       height: 44px;
-            border: none;
-            border-radius: 8px;
+      border: none;
+      border-radius: 8px;
       background: #00a76f;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 600;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
       font-family: inherit;
-            cursor: pointer;
+      cursor: pointer;
       transition: .2s;
     }
 
@@ -1046,8 +1059,8 @@
 
       /* Modal: center on mobile */
       .modal-overlay {
-            align-items: center;
-            justify-content: center;
+        align-items: center;
+        justify-content: center;
         padding: 16px;
       }
 
@@ -1085,8 +1098,8 @@
       }
 
       .btn-create .btn-text {
-            display: none;
-        }
+        display: none;
+      }
 
       .btn-create {
         padding: 0 14px;
@@ -1101,175 +1114,175 @@
       .search-wrap {
         flex: 1;
       }
-        }
-    </style>
+    }
+  </style>
 </head>
 
 <body>
-    <aside class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-logo">
       <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLinkPay" />
-            </div>
+    </div>
     <div class="sidebar-content">
-            <div class="user-card">
+      <div class="user-card">
         <div class="avatar"><iconify-icon icon="solar:user-bold" width="24"></iconify-icon></div>
-                <div class="user-info">
+        <div class="user-info">
           <div style="font-weight:600;font-size:14px;color:var(--grey-900)">Carlota Monteiro</div>
           <div style="font-size:13px;color:var(--grey-600)">Admin</div>
-                </div>
-            </div>
+        </div>
+      </div>
 
-            <div class="nav-section-title">OVERVIEW</div>
-            <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
-                <span>Homepage</span>
-            </a>
-            <a href="dashboard.html" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
-                <span>Dashboard</span>
-            </a>
+      <div class="nav-section-title">OVERVIEW</div>
+      <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
+        <span>Homepage</span>
+      </a>
+      <a href="dashboard.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
+        <span>Dashboard</span>
+      </a>
 
-            <div class="nav-section-title">GIFT CARD CENTER</div>
-            <a href="#" class="nav-item">
+      <div class="nav-section-title">GIFT CARD CENTER</div>
+      <a href="#" class="nav-item">
         <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone" width="26"></iconify-icon></div>
         <span>Gift &amp; Voucher Management</span>
         <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
       </a>
-            <div class="submenu">
-                <a href="my-purchase.html" class="sub-item"><span class="dot"></span>My Purchase</a>
-                <a href="#" class="sub-item"><span class="dot"></span>Merchant Map</a>
-                <a href="product-list.html" class="sub-item"><span class="dot"></span>Product Management</a>
-                <a href="digital-gifts-management.html" class="sub-item"><span class="dot"></span>VlinkPay Store</a>
+      <div class="submenu">
+        <a href="my-purchase.html" class="sub-item"><span class="dot"></span>My Purchase</a>
+        <a href="#" class="sub-item"><span class="dot"></span>Merchant Map</a>
+        <a href="product-list.html" class="sub-item"><span class="dot"></span>Product Management</a>
+        <a href="digital-gifts-management.html" class="sub-item"><span class="dot"></span>VlinkPay Store</a>
         <a href="cancelled-cards.html" class="sub-item"><span class="dot"></span>Cancelled Cards</a>
       </div> <a href="crypto-card-list.html" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
-                <span>Crypto Card Management</span>
-            </a>
+        <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
+        <span>Crypto Card Management</span>
+      </a>
 
-            <a href="marketing-tools.html" class="nav-item">
+      <a href="marketing-tools.html" class="nav-item">
         <div class="nav-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon></div>
-                <span>Marketing Tools</span>
-            </a>
-            <a href="#" class="nav-item">
+        <span>Marketing Tools</span>
+      </a>
+      <a href="#" class="nav-item">
         <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone" width="24"></iconify-icon>
-                </div>
-                <span>Payment Acceptance</span>
+        </div>
+        <span>Payment Acceptance</span>
         <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
-            </a>
-            <div class="submenu">
+      </a>
+      <div class="submenu">
         <a href="gift-card-payment.html" class="sub-item"><span class="dot"></span>Pay with Gift Card</a>
         <a href="crypto-payment.html" class="sub-item"><span class="dot"></span>Pay with Crypto</a>
-            </div>
+      </div>
       <a href="#" class="nav-item parent-active">
-                <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
-                <span>Settings</span>
+        <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+        <span>Settings</span>
         <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
-            </a>
-            <div class="submenu">
+      </a>
+      <div class="submenu">
         <a href="merchant-payment-setup.html" class="sub-item"><span class="dot"></span>Merchant Payment Setup</a>
-                <a href="benefits-setup.html" class="sub-item active"><span class="dot"></span>Benefits Setup</a>
-            </div>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
-                <span>Report</span>
+        <a href="benefits-setup.html" class="sub-item active"><span class="dot"></span>Benefits Setup</a>
+      </div>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
+        <span>Report</span>
         <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
-            </a>
-            <div class="submenu">
-                <a href="sales-order-list.html" class="sub-item"><span class="dot"></span>Sales Orders</a>
+      </a>
+      <div class="submenu">
+        <a href="sales-order-list.html" class="sub-item"><span class="dot"></span>Sales Orders</a>
         <a href="card-transaction-history-merchant.html" class="sub-item"><span class="dot"></span>Redeem History</a>
-                <a href="membership-report.html" class="sub-item"><span class="dot"></span>Membership Report</a>
-            </div>
-            <div class="nav-section-title">APPS</div>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
-                <span>Notifications</span>
-                <span class="badge-outlined">32+</span>
-            </a>
-            <a href="#" class="nav-item">
+        <a href="membership-report.html" class="sub-item"><span class="dot"></span>Membership Report</a>
+      </div>
+      <div class="nav-section-title">APPS</div>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
+        <span>Notifications</span>
+        <span class="badge-outlined">32+</span>
+      </a>
+      <a href="#" class="nav-item">
         <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon></div>
-                <span>AI Assistant</span>
-            </a>
-        </div>
-    </aside>
+        <span>AI Assistant</span>
+      </a>
+    </div>
+  </aside>
 
-    <header class="top-header">
+  <header class="top-header">
     <div class="header-left">
       <button class="hamburger hamburger-btn" id="hamburgerBtn"
         aria-label="Toggle menu"><span></span><span></span><span></span></button>
     </div>
     <div class="header-right">
-        <div class="header-info">Jan 14, 2026 10:05:32 AM (UTC)</div>
-        <div class="header-icons">
+      <div class="header-info">Jan 14, 2026 10:05:32 AM (UTC)</div>
+      <div class="header-icons">
         <div class="header-icon-btn"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
-            </div>
-        </div>
-    </header>
+      </div>
+    </div>
+  </header>
 
-    <main class="main">
-        <div class="page-header">
+  <main class="main">
+    <div class="page-header">
       <div class="page-header-row">
         <h1 class="page-title" style="margin:0">Benefits Setup</h1>
         <button class="btn-create" id="btnCreate" onclick="handleCreateBtn()">
           <i data-lucide="plus"></i>
           <span class="btn-text" id="btnCreateText">Create Benefit</span>
-                </button>
-            </div>
+        </button>
+      </div>
       <div class="breadcrumbs" style="margin-top:8px">
         <a href="dashboard.html">Dashboard</a>
-                <span class="breadcrumbs-dot"></span>
+        <span class="breadcrumbs-dot"></span>
         <span style="color:#212b36;font-weight:500">Benefits Setup</span>
-            </div>
-        </div>
+      </div>
+    </div>
 
     <div class="main-card">
       <!-- Tabs -->
       <div class="tab-bar">
         <button class="tab-btn active" id="tab-benefit" onclick="switchTab('benefit')">Benefit List</button>
         <button class="tab-btn" id="tab-package" onclick="switchTab('package')">Membership Package</button>
-            </div>
+      </div>
 
       <!-- Toolbar -->
       <div class="toolbar">
         <div class="search-wrap">
           <i data-lucide="search"></i>
           <input type="text" class="search-input" id="searchInput" placeholder="Benefit ID/Name" oninput="onSearch()" />
-                            </div>
+        </div>
         <div class="status-wrap">
           <span class="status-label">Status</span>
           <select class="status-select" id="statusFilter" onchange="onFilter()">
-                                    <option value="">All Statuses</option>
+            <option value="">All Statuses</option>
             <option value="ACTIVE">ACTIVE</option>
             <option value="INACTIVE">INACTIVE</option>
-                                </select>
-                        </div>
-                    </div>
+          </select>
+        </div>
+      </div>
 
       <!-- Desktop Table -->
       <div class="table-scroll">
         <table class="data-table">
           <thead id="tableHead"></thead>
           <tbody id="tableBody"></tbody>
-                        </table>
-                    </div>
+        </table>
+      </div>
 
       <!-- Mobile Cards -->
       <div class="mobile-list" id="mobileList"></div>
 
       <!-- Pagination -->
-                    <div class="pagination">
+      <div class="pagination">
         <div class="pag-rows">
-                            <span>Rows per page:</span>
+          <span>Rows per page:</span>
           <select class="pag-select" id="rowsPerPage" onchange="changeRows()">
             <option value="5" selected>5</option>
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                            </select>
-                        </div>
+            <option value="10">10</option>
+            <option value="25">25</option>
+          </select>
+        </div>
         <div class="pag-info" id="pagInfo">0–0 of 0</div>
         <button class="pag-btn" id="btnPrev" onclick="prevPage()" disabled><i data-lucide="chevron-left"></i></button>
         <button class="pag-btn" id="btnNext" onclick="nextPage()" disabled><i data-lucide="chevron-right"></i></button>
-                        </div>
-                    </div>
+      </div>
+    </div>
   </main>
 
   <!-- ═══════════════════════════════════════════════════
@@ -1281,9 +1294,9 @@
         <div>
           <div class="modal-title">Benefit Detail</div>
           <div class="modal-desc">Detailed information about this benefit</div>
-                </div>
+        </div>
         <button class="modal-close" onclick="closeViewBenefitModal()"><i data-lucide="x"></i></button>
-            </div>
+      </div>
       <div class="modal-body" style="padding:24px;">
         <!-- Icon + Name header -->
         <div
@@ -1292,7 +1305,7 @@
           <div>
             <div id="vbName" style="font-size:17px;font-weight:700;color:#161c24;"></div>
             <div id="vbId" style="font-size:12px;color:#919eab;margin-top:2px;"></div>
-                            </div>
+          </div>
           <div style="margin-left:auto;display:flex;flex-direction:row;align-items:flex-end;gap:6px; ">
             <div style="display:flex;align-items:center;gap:10px;">
               <label class="toggle status-toggle">
@@ -1300,43 +1313,43 @@
                 <div class="toggle-track"></div>
                 <div class="toggle-thumb"></div>
               </label>
-                        </div>
+            </div>
             <div id="vbStatus"></div>
-                            </div>
-                        </div>
+          </div>
+        </div>
         <!-- Detail rows -->
         <div style="display:flex;flex-direction:column;gap:0;">
           <div
             style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
             <span style="font-size:13px;color:#637381;font-weight:500;">Benefit Unit</span>
             <span id="vbUnit" style="font-size:13px;color:#212b36;font-weight:600;"></span>
-                            </div>
+          </div>
           <div
             style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
             <span style="font-size:13px;color:#637381;font-weight:500;">Rollover Type</span>
             <span id="vbRollover" style="font-size:13px;color:#212b36;font-weight:600;"></span>
-                        </div>
+          </div>
           <div
             style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
             <span style="font-size:13px;color:#637381;font-weight:500;">Cycle</span>
             <span id="vbCycle" style="font-size:13px;color:#212b36;font-weight:600;"></span>
-                    </div>
+          </div>
           <div
             style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
             <span style="font-size:13px;color:#637381;font-weight:500;">Created By</span>
             <span id="vbCreatedBy" style="font-size:13px;color:#212b36;"></span>
-                    </div>
+          </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;">
             <span style="font-size:13px;color:#637381;font-weight:500;">Created Date</span>
             <span id="vbCreatedDate" style="font-size:13px;color:#212b36;"></span>
-                        </div>
-                        </div>
-                    </div>
+          </div>
+        </div>
+      </div>
       <div class="modal-foot" style="justify-content:flex-end;">
         <button class="btn-cancel" onclick="closeViewBenefitModal()">Close</button>
-                </div>
-            </div>
-        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════════════════════
        CREATE BENEFIT MODAL
@@ -1347,9 +1360,9 @@
         <div>
           <div class="modal-title" id="modalTitle">Create New Benefit</div>
           <div class="modal-desc">Fill in the required information to create a new benefit</div>
-            </div>
+        </div>
         <button class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></button>
-            </div>
+      </div>
 
       <!-- Hidden file input for icon upload -->
       <input type="file" id="iconFileInput" accept="image/*" style="display:none" onchange="handleIconUpload(this)">
@@ -1361,10 +1374,10 @@
           <div class="section-desc">Select a preset icon or upload your own image</div>
           <div class="icon-grid" id="iconGrid"></div>
           <div class="icon-error" id="iconError">Please select or upload an icon</div>
-                </div>
+        </div>
 
         <!-- Benefit Name -->
-                <div class="form-group">
+        <div class="form-group">
           <label class="form-label">Benefit Name <span class="req">*</span></label>
           <input type="text" class="form-input" id="benefitName" placeholder="Enter benefit name"
             oninput="clearError('nameError')" />
@@ -1375,32 +1388,32 @@
             <button class="suggestion-chip" onclick="fillName('Cashback')">Cashback</button>
             <button class="suggestion-chip" onclick="fillName('Gift')">Gift</button>
             <button class="suggestion-chip" onclick="fillName('Birthday')">Birthday</button>
-                    </div>
-                </div>
+          </div>
+        </div>
 
         <!-- Benefit Unit -->
-                <div class="form-group">
+        <div class="form-group">
           <label class="form-label">Benefit Unit <span class="req">*</span></label>
           <select class="form-select" id="benefitUnit" onchange="clearError('unitError')">
             <option value="" disabled selected>Select benefit unit</option>
             <option value="USD ($)">USD ($)</option>
             <option value="Percentage (%)">Percentage (%)</option>
             <option value="Points">Points</option>
-                    </select>
+          </select>
           <div class="form-error" id="unitError">Benefit unit is required</div>
-                </div>
+        </div>
 
         <!-- Rollover Type + Cycle -->
         <div class="form-grid-2">
           <div class="form-group">
-                        <label class="form-label">Rollover Type</label>
+            <label class="form-label">Rollover Type</label>
             <select class="form-select" id="rolloverType">
               <option value="" selected>Select rollover type</option>
               <option value="Monthly">Monthly</option>
               <option value="Yearly">Yearly</option>
               <option value="Never">Never</option>
-                        </select>
-                    </div>
+            </select>
+          </div>
           <div class="form-group">
             <label class="form-label">Cycle</label>
             <select class="form-select" id="cycleField">
@@ -1409,20 +1422,20 @@
               <option value="Weekly">Weekly</option>
               <option value="Monthly">Monthly</option>
               <option value="Yearly">Yearly</option>
-                        </select>
-                        </div>
-                    </div>
-                </div>
+            </select>
+          </div>
+        </div>
+      </div>
 
       <div class="modal-foot">
         <button class="btn-cancel" onclick="closeModal()">Cancel</button>
         <button class="btn-create-submit" onclick="submitCreate()">Create</button>
-                </div>
-        </div>
+      </div>
     </div>
+  </div>
 
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-    <script>
+  <script>
     /* ═══════════════════════════════════════════════════════
        MOCK DATA
     ═══════════════════════════════════════════════════════ */
@@ -1630,10 +1643,11 @@
           if (c.key === 'saleStatus') return `<td>${badgeHtml(r.saleStatus, 'sale')}</td>`;
           if (c.key === 'createdDate' || c.key === 'updatedDate') return `<td style="color:#637381">${fmtDate(r[c.key])}</td>`;
           if (c.key === 'actions') {
-            const handler = activeTab === 'package'
-              ? `onclick="window.location.href='membership-package-details.html?id=${encodeURIComponent(r.id)}&status=${encodeURIComponent(r.status)}&saleStatus=${encodeURIComponent(r.saleStatus)}'"`
-              : `onclick="openViewBenefitModal('${r.id}')"`;
-            return `<td class="col-actions"><button class="btn-eye" title="View detail" ${handler}><i data-lucide="eye"></i></button></td>`;
+            const eyeSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+            const viewBtn = activeTab === 'package'
+              ? `<a href="membership-package-details.html?id=${encodeURIComponent(r.id)}&status=${encodeURIComponent(r.status)}&saleStatus=${encodeURIComponent(r.saleStatus)}" class="action-btn action-btn-view" title="View">${eyeSvg}</a>`
+              : `<button type="button" class="action-btn action-btn-view" title="View" onclick="openViewBenefitModal('${r.id}')">${eyeSvg}</button>`;
+            return `<td class="col-actions"><div class="action-btns">${viewBtn}</div></td>`;
           }
           return `<td>${r[c.key] ?? '—'}</td>`;
         }).join('')}</tr>`).join('');
@@ -1825,9 +1839,9 @@
 
     function handleIconUpload(input) {
       const file = input.files && input.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function (e) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
         uploadedIconDataUrl = e.target.result;
         // Deselect any preset icon
         selectedIcon = null;
@@ -1849,9 +1863,9 @@
         }
         // Reset file input so same file can be re-uploaded
         input.value = '';
-            };
-            reader.readAsDataURL(file);
-        }
+      };
+      reader.readAsDataURL(file);
+    }
 
     function removeUploadedIcon() {
       uploadedIconDataUrl = null;
@@ -1942,7 +1956,7 @@
 
     /* Init */
     document.addEventListener('DOMContentLoaded', () => { render(); lucide.createIcons(); });
-    </script>
+  </script>
 </body>
 
 </html>

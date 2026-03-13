@@ -2365,6 +2365,10 @@
         margin-top: 16px;
       }
 
+      .panel-card {
+        margin-bottom: 12px;
+      }
+
       .panel-card-body {
         padding: 16px;
       }
@@ -2374,7 +2378,7 @@
       }
 
       .step-header {
-        padding: 14px 16px;
+        padding: 8px 12px;
         flex-wrap: wrap;
       }
 
@@ -2388,8 +2392,12 @@
       }
 
       .panel-card-header {
-        padding: 14px 16px;
+        padding: 8px 12px;
         flex-wrap: wrap;
+      }
+
+      .panel-card-header .header-title {
+        font-size: 11px;
       }
 
       .panel-card-header .header-actions {
@@ -2413,7 +2421,7 @@
       .card-type-item {
         min-width: calc(33.333% - 8px);
         flex: 1 1 calc(33.333% - 8px);
-        padding: 10px 8px;
+        padding: 4px 8px;
       }
 
       .card-type-item span {
@@ -3063,7 +3071,13 @@
                     <i data-lucide="calendar" class="date-input-icon"></i>
                     <input type="text" class="input-minimal fp-input date-has-icon" id="holderBirthday"
                       placeholder="Birthday (optional)" readonly>
-                    <button type="button" class="date-clear" id="holderBirthdayClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                    <button type="button" class="date-clear" id="holderBirthdayClear" aria-label="Clear date"
+                      title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg></button>
                   </div>
                 </div>
               </div>
@@ -3095,7 +3109,13 @@
                     <i data-lucide="calendar" class="date-input-icon"></i>
                     <input type="text" class="input-minimal fp-input date-has-icon" id="customDate"
                       placeholder="Pick a date" readonly>
-                    <button type="button" class="date-clear" id="customDateClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                    <button type="button" class="date-clear" id="customDateClear" aria-label="Clear date"
+                      title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg></button>
                   </div>
                 </span>
               </div>
@@ -4378,7 +4398,7 @@ Please present this card before payment.</textarea>
           if (el) el.textContent = dateStr || '—';
         }
       });
-      document.getElementById('customDateClear').addEventListener('click', function() {
+      document.getElementById('customDateClear').addEventListener('click', function () {
         fpCustom.clear();
         this.classList.remove('visible');
         const el = document.getElementById('cfExpiryDate');
@@ -4396,7 +4416,7 @@ Please present this card before payment.</textarea>
           document.getElementById('holderBirthdayClear').classList.toggle('visible', !!dateStr);
         }
       });
-      document.getElementById('holderBirthdayClear').addEventListener('click', function() {
+      document.getElementById('holderBirthdayClear').addEventListener('click', function () {
         fpBirthday.clear();
         this.classList.remove('visible');
       });

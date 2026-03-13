@@ -848,7 +848,7 @@
           </div>
           <div class="address-wrapper">
             <span class="address-text">TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQ</span>
-            <div class="copy-btn">
+            <div class="copy-btn" onclick="copyAddress(this)" title="Copy address">
               <iconify-icon icon="solar:copy-bold-duotone" width="18"></iconify-icon>
             </div>
           </div>
@@ -923,7 +923,7 @@
               <div style="font-size: 13px; font-weight: 700; color: var(--grey-900); margin-bottom: 4px;">Address</div>
               <div class="address-wrapper" style="padding: 8px; margin-bottom: 0;">
                 <span class="address-text" style="font-size: 11px;">TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQ</span>
-                <div class="copy-btn">
+                <div class="copy-btn" onclick="copyAddress(this)" title="Copy address">
                   <iconify-icon icon="solar:copy-bold-duotone" width="16"></iconify-icon>
                 </div>
               </div>
@@ -1124,6 +1124,13 @@
       if (event.target.classList.contains('modal-overlay')) {
         closeModal(event.target.id);
       }
+    }
+
+    // Copy wallet address
+    function copyAddress(btn) {
+      const wrapper = btn.closest('.address-wrapper');
+      const text = wrapper ? wrapper.querySelector('.address-text').textContent.trim() : '';
+      window.copyToClipboard(text, 'Address copied!');
     }
   </script>
 </body>

@@ -9,465 +9,1379 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <!-- Flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <link rel="stylesheet" href="global.css">
   <script src="global.js" defer></script>
   <style>
-    .layout-grid {
+    /* ═══════════════════════════════════════════════════════
+       DESIGN TOKENS
+    ═══════════════════════════════════════════════════════ */
+    :root {
+      --c-primary: #00A76F;
+      --c-primary-low: rgba(0, 167, 111, 0.08);
+      --c-primary-border: rgba(0, 167, 111, 0.28);
+      --c-border: #e2e8f0;
+      --c-surface: #ffffff;
+      --c-surface-subtle: #f8fafc;
+      --c-text-1: #212B36;
+      --c-text-2: #454F5B;
+      --c-text-3: #637381;
+      --radius-xs: 6px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --transition-base: 0.2s ease;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════════════════════ */
+    .create-card-layout {
       display: grid;
-      grid-template-columns: 480px 1fr;
-      gap: 32px;
+      grid-template-columns: 360px 1fr;
+      gap: 28px;
       align-items: start;
-      margin-top: 40px;
+      margin-top: 28px;
     }
 
-    .header-section {
-      margin-bottom: 24px;
-    }
-
-    .header-row {
+    /* ═══════════════════════════════════════════════════════
+       PAGE HEADER ROW
+    ═══════════════════════════════════════════════════════ */
+    .page-header-row {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
 
-    .btn-back-circle {
-      width: 40px;
-      height: 40px;
+    .page-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-back {
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--grey-900);
+      color: var(--c-text-2);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition-base);
       text-decoration: none;
-      transition: 0.2s;
     }
 
-    .btn-back-circle:hover {
-      background-color: var(--grey-200);
+    .btn-back:hover {
+      background: var(--c-border);
+      color: var(--c-text-1);
     }
 
-    /* Card Preview Styles */
-    .preview-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: var(--shadow-z1);
-      position: sticky;
-      top: 96px;
+    .btn-save-draft {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--c-border);
+      background: var(--c-surface);
+      color: var(--c-text-2);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-base);
+      font-family: inherit;
     }
 
-    .digital-card {
-      width: 100%;
-      aspect-ratio: 1.6 / 1;
-      background: linear-gradient(135deg, #4481eb 0%, #04befe 100%);
-      border-radius: 16px;
-      padding: 24px;
-      color: #fff;
+    .btn-save-draft:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+      background: var(--c-primary-low);
+    }
+
+    .required-note {
+      font-size: 12px;
+      color: #ff5630;
+      font-weight: 500;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       PANEL CARDS (Left)
+    ═══════════════════════════════════════════════════════ */
+    .panel-card {
+      background: var(--c-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 0 2px rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .panel-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .panel-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--c-border);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .panel-card-header.no-collapse {
+      cursor: default;
+    }
+
+    .panel-card-header .header-icon {
+      color: var(--c-primary);
+      display: flex;
+      align-items: center;
+    }
+
+    .panel-card-header .header-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--c-text-1);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex: 1;
+    }
+
+    .panel-card-header .chevron {
+      color: var(--c-text-3);
+      transition: transform var(--transition-base);
+      display: flex;
+      align-items: center;
+    }
+
+    .panel-card-header.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    .panel-card-body {
+      padding: 20px;
+    }
+
+    /* ─── Collapsible ─── */
+    .collapse-wrap {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.25s ease;
+      opacity: 0;
+    }
+
+    .collapse-wrap.open {
+      max-height: 2000px;
+      opacity: 1;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       CARD PREVIEW (3D FLIP)
+    ═══════════════════════════════════════════════════════ */
+    .card-flip-container {
+      perspective: 1200px;
+      margin-bottom: 16px;
+    }
+
+    .card-inner {
       position: relative;
+      width: 100%;
+      aspect-ratio: 1.586 / 1;
+      transform-style: preserve-3d;
+      transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .card-inner.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-lg);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      overflow: hidden;
+    }
+
+    .card-front {
+      background: linear-gradient(135deg, #1E293B 0%, #3B4A5A 100%);
+      padding: 24px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+      color: #fff;
+      box-shadow: 0 16px 32px rgba(30, 41, 59, 0.3);
     }
 
-    .card-logo-container {
+    .card-back {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      transform: rotateY(180deg);
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-stripe {
+      background: #222;
+      height: 44px;
+      margin-top: 24px;
+    }
+
+    .card-back-info {
+      padding: 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-cvv-row {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .card-logo-box {
-      width: 48px;
-      height: 48px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
+    .card-cvv-strip {
+      flex: 1;
+      height: 36px;
+      background: #fff;
+      border-radius: 4px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      overflow: hidden;
+      justify-content: flex-end;
+      padding: 0 12px;
     }
 
-    .card-header-info {
-      flex: 1;
+    .card-cvv-strip span {
+      color: #333;
+      font-weight: 700;
+      font-size: 14px;
     }
 
-    .card-balance-box {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      padding: 8px 16px;
-      text-align: center;
-    }
-
-    .card-number {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      margin: 24px 0;
-    }
-
-    .card-footer {
+    .card-top {
       display: flex;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 16px;
-      align-items: flex-end;
+      align-items: center;
       justify-content: space-between;
     }
 
-    .vlink-logo-small {
-      height: 20px;
-      filter: brightness(0) invert(1);
+    .card-logo-box {
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .card-chip {
+      width: 36px;
+      height: 26px;
+      background: linear-gradient(135deg, #e8c97e, #f0d990);
+      border-radius: 4px;
+    }
+
+    .card-number-display {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      margin: 14px 0;
+      opacity: 0.9;
+    }
+
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .card-holder-name {
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0.9;
+      text-transform: uppercase;
+    }
+
+    .card-expiry {
+      font-size: 11px;
+      opacity: 0.7;
+    }
+
+    .card-type-badge {
+      font-size: 9px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
 
     .flip-btn {
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      margin: 16px auto;
       padding: 8px 16px;
       border-radius: 20px;
-      background: rgba(0, 167, 111, 0.08);
-      color: var(--primary-main);
+      background: var(--c-primary-low);
+      color: var(--c-primary);
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       border: none;
+      transition: var(--transition-base);
+      font-family: inherit;
     }
 
-    .section-title-sm {
-      font-size: 12px;
+    .flip-btn:hover {
+      background: rgba(0, 167, 111, 0.14);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       DESIGN COLLECTION
+    ═══════════════════════════════════════════════════════ */
+    .section-label {
+      font-size: 11px;
       font-weight: 700;
-      color: var(--grey-600);
+      color: var(--c-text-3);
       text-transform: uppercase;
-      margin-bottom: 16px;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .color-dots {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      margin-bottom: 16px;
     }
 
     .color-dot {
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       border-radius: 6px;
       cursor: pointer;
-      border: 2px solid transparent;
-    }
-
-    .color-dot.active {
-      border-color: var(--primary-main);
-      box-shadow: 0 0 0 2px #fff inset;
-    }
-
-    .upload-box {
-      border: 1px dashed var(--grey-300);
-      border-radius: 12px;
-      padding: 24px;
-      text-align: center;
-      cursor: pointer;
-      background: var(--grey-100);
-      transition: 0.2s;
+      border: 2.5px solid transparent;
+      transition: var(--transition-base);
       position: relative;
     }
 
-    .upload-box:hover {
-      background: var(--grey-200);
+    .color-dot:hover {
+      transform: scale(1.15);
     }
 
-    .btn-upload-label {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      padding: 6px 12px;
-      background: #fff;
-      border: 1px solid var(--grey-300);
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
+    .color-dot.active {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 2px #fff inset;
+    }
+
+    .color-dot.color-picker-btn {
+      background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
       display: flex;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
+    }
+
+    .color-picker-btn input[type="color"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Advanced text colors */
+    .adv-accordion-trigger {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      cursor: pointer;
+      padding: 8px 0;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      width: 100%;
+      border-top: 1px dashed var(--c-border);
+    }
+
+    .adv-accordion-trigger:hover {
+      color: var(--c-text-1);
+    }
+
+    .adv-accordion-body {
+      padding: 12px 0 0;
+    }
+
+    .text-color-group {
+      margin-bottom: 14px;
+    }
+
+    .text-color-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-text-2);
+      margin-bottom: 8px;
+    }
+
+    .text-color-dots {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .text-color-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: var(--transition-base);
+    }
+
+    .text-color-dot:hover {
+      transform: scale(1.15);
+    }
+
+    .text-color-dot.active {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 2px #fff inset;
+    }
+
+    .text-color-dot.auto-dot {
+      background: linear-gradient(135deg, #fff 50%, #000 50%);
+      border-color: var(--c-border);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       BRAND IDENTITY
+    ═══════════════════════════════════════════════════════ */
+    .panel-card-header .header-actions {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+      margin-right: 4px;
+    }
+
+    .btn-panel-action {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--c-border);
+      background: var(--c-surface);
+      color: var(--c-text-2);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-base);
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .btn-panel-action:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+    }
+
+    .style-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .style-tag {
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: var(--c-surface-subtle);
+      border: 1px solid var(--c-border);
+      color: var(--c-text-2);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-base);
+      font-family: inherit;
+    }
+
+    .style-tag:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+    }
+
+    .style-tag.active {
+      background: var(--c-text-1);
+      border-color: var(--c-text-1);
+      color: #fff;
+    }
+
+    .ai-textarea-wrap {
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      background: var(--c-surface);
+      margin-bottom: 10px;
+      transition: border-color var(--transition-base);
+    }
+
+    .ai-textarea-wrap:focus-within {
+      border-color: var(--c-primary);
+    }
+
+    .ai-textarea-wrap textarea {
+      width: 100%;
+      border: none;
+      background: transparent;
+      resize: none;
+      min-height: 72px;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--c-text-1);
+      line-height: 1.6;
+      outline: none;
+    }
+
+    .ai-textarea-wrap textarea::placeholder {
+      color: var(--c-text-3);
+    }
+
+    /* ─── AI PROMPTS ─── */
+    .ai-prompts-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+      margin-bottom: 8px;
+    }
+
+    .ai-prompts-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--c-text-3);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .ai-prompts-label span {
+      color: var(--c-primary);
+    }
+
+    .ai-category-select {
+      padding: 5px 28px 5px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-xs);
+      background: var(--c-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 8px center;
+      appearance: none;
+      color: var(--c-text-2);
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: inherit;
+      max-width: 170px;
+    }
+
+    .ai-category-select:focus {
+      border-color: var(--c-primary);
+    }
+
+    .ai-prompts-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--c-border) transparent;
+    }
+
+    .ai-prompts-list::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .ai-prompts-list::-webkit-scrollbar-thumb {
+      background: var(--c-border);
+      border-radius: 4px;
+    }
+
+    .ai-prompt-badge {
+      padding: 7px 10px;
+      border-radius: var(--radius-xs);
+      border: 1.5px solid var(--c-border);
+      background: var(--c-surface-subtle);
+      font-size: 11px;
+      color: var(--c-text-2);
+      cursor: pointer;
+      transition: var(--transition-base);
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: inherit;
+      line-height: 1.3;
+    }
+
+    .ai-prompt-badge:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+      background: var(--c-primary-low);
     }
 
     .btn-ai-gen {
       width: 100%;
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1.5px solid var(--primary-main);
-      color: var(--primary-main);
-      background: #fff;
+      padding: 11px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--c-primary);
+      color: var(--c-primary);
+      background: var(--c-surface);
+      font-size: 13px;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       cursor: pointer;
-      transition: 0.2s;
+      transition: var(--transition-base);
+      font-family: inherit;
+      margin-top: 10px;
     }
 
     .btn-ai-gen:hover {
-      background: rgba(0, 167, 111, 0.04);
+      background: var(--c-primary-low);
     }
 
-    .brand-tags {
+    /* ─── CARD 4: BUSINESS INFORMATION ─── */
+    .biz-list {
       display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .brand-tag {
-      padding: 6px 12px;
-      border-radius: 8px;
-      background: var(--grey-200);
-      color: var(--grey-700);
+    .biz-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .biz-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 96px;
+      flex-shrink: 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-text-3);
+    }
+
+    .biz-input {
+      flex: 1;
+      height: 40px;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      background: var(--c-surface);
+      font-size: 13px;
+      color: var(--c-text-1);
+      font-family: inherit;
+      padding: 0 12px;
+      outline: none;
+      transition: border-color var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .biz-input::placeholder {
+      color: #b0b8c1;
+    }
+
+    .biz-input:focus {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px rgba(0, 171, 85, 0.10);
+    }
+
+    /* Phone combo */
+    .biz-phone-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      height: 40px;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      background: var(--c-surface);
+      overflow: hidden;
+      transition: border-color var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .biz-phone-wrap:focus-within {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px rgba(0, 171, 85, 0.10);
+    }
+
+    .biz-dial-select {
+      height: 100%;
+      border: none;
+      outline: none;
+      background: var(--c-surface-subtle);
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--c-text-1);
+      font-weight: 600;
+      padding: 0 8px 0 10px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      min-width: 76px;
+    }
+
+    .biz-phone-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--c-border);
+      flex-shrink: 0;
+    }
+
+    .biz-phone-input {
+      flex: 1;
+      height: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--c-text-1);
+      padding: 0 12px;
+    }
+
+    .biz-phone-input::placeholder {
+      color: #b0b8c1;
+    }
+
+    .btn-biz-save {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 28px;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--c-primary);
+      font-size: 13px;
+      font-weight: 600;
+      border: 1.5px solid var(--c-primary);
+      cursor: pointer;
+      transition: var(--transition-base);
+      font-family: inherit;
+    }
+
+    .btn-biz-save:hover {
+      background: var(--c-primary-low);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       STEP CARDS (Right)
+    ═══════════════════════════════════════════════════════ */
+    .step-card {
+      background: var(--c-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 0 2px rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .step-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      user-select: none;
+      transition: background var(--transition-base);
+    }
+
+    .step-header:hover {
+      background: var(--c-surface-subtle);
+    }
+
+    .step-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--c-primary-low);
+      color: var(--c-primary);
       font-size: 12px;
       font-weight: 700;
-      cursor: pointer;
-      border: none;
-      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
-    .brand-tag.active {
-      background: var(--grey-800);
+    .step-badge.done {
+      background: var(--c-primary);
       color: #fff;
     }
 
-    /* Form Column Styles */
-    .form-section {
-      background: #fff;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: var(--shadow-z1);
-    }
-
-    .step-container {
-      margin-bottom: 24px;
-    }
-
-    .step-title {
-      font-size: 16px;
+    .step-title-text {
+      flex: 1;
+      font-size: 14px;
       font-weight: 700;
-      color: var(--grey-900);
-      margin-bottom: 12px;
-      display: block;
+      color: var(--c-text-1);
     }
 
-    .product-line-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .product-line-item {
-      border: 1.5px solid var(--grey-300);
-      border-radius: 12px;
-      padding: 12px;
-      cursor: pointer;
-      transition: 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      justify-content: center;
-    }
-
-    .product-line-item .icon-box {
-      color: var(--grey-600);
-      display: flex;
-      align-items: center;
-    }
-
-    .product-line-item span {
+    .step-title-text .step-required {
+      color: #ff5630;
       font-size: 13px;
+      margin-left: 2px;
+    }
+
+    .step-chevron {
+      color: var(--c-text-3);
+      transition: transform var(--transition-base);
+      display: flex;
+      align-items: center;
+    }
+
+    .step-header.open .step-chevron {
+      transform: rotate(180deg);
+    }
+
+    .step-body {
+      padding: 0 20px 20px;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       STEP 1 — CARD TYPE GRID
+    ═══════════════════════════════════════════════════════ */
+    .card-type-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .card-type-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 16px;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      background: var(--c-surface);
+      min-width: 80px;
+    }
+
+    .card-type-item:hover {
+      border-color: rgba(0, 167, 111, 0.4);
+      background: var(--c-primary-low);
+    }
+
+    .card-type-item.active {
+      border-color: var(--c-primary);
+      background: var(--c-primary-low);
+      box-shadow: 0 0 0 3px rgba(0, 167, 111, 0.12);
+    }
+
+    .card-type-item.disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      filter: grayscale(0.3);
+    }
+
+    .card-type-item.disabled:hover {
+      border-color: var(--c-border);
+      background: var(--c-surface);
+    }
+
+    .card-type-icon {
+      color: var(--c-text-3);
+      display: flex;
+      align-items: center;
+    }
+
+    .card-type-item.active .card-type-icon {
+      color: var(--c-primary);
+    }
+
+    .card-type-item span {
+      font-size: 11px;
       font-weight: 700;
-      color: var(--grey-800);
+      color: var(--c-text-2);
       white-space: nowrap;
     }
 
-    .product-line-item:hover {
-      border-color: var(--grey-400);
+    .card-type-item.active span {
+      color: var(--c-primary);
     }
 
-    .product-line-item.active {
-      border-color: var(--primary-main);
+    /* Rank grid */
+    .rank-section-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-text-3);
+      margin-bottom: 10px;
     }
 
-    .product-line-item.active .icon-box {
-      color: var(--primary-main);
+    .rank-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    .tier-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .tier-item {
-      border: 1px solid var(--grey-200);
-      border-radius: 8px;
-      padding: 10px;
-      text-align: center;
-      font-size: 13px;
+    .rank-pill {
+      padding: 7px 14px;
+      border-radius: 20px;
+      border: 1.5px solid var(--c-border);
+      background: var(--c-surface);
+      font-size: 12px;
       font-weight: 700;
-      color: var(--grey-800);
+      color: var(--c-text-2);
       cursor: pointer;
-      background: #fff;
+      transition: all var(--transition-base);
+      font-family: inherit;
     }
 
-    .tier-item.active {
-      border-color: var(--primary-main);
-      color: var(--primary-main);
-      background: #fff;
-      border-width: 1.5px;
+    .rank-pill:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
     }
 
-    .form-control-minimal {
+    .rank-pill.active {
+      border-color: var(--c-primary);
+      background: var(--c-primary-low);
+      color: var(--c-primary);
+    }
+
+    .rank-pill-custom {
+      display: flex;
+      align-items: center;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1.5px solid var(--c-border);
+      background: var(--c-surface);
+      transition: border-color var(--transition-base);
+    }
+
+    .rank-pill-custom:focus-within {
+      border-color: var(--c-primary);
+    }
+
+    .rank-pill-custom input {
+      width: 80px;
+      border: none;
+      outline: none;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--c-text-1);
+      background: transparent;
+    }
+
+    .rank-pill-custom input::placeholder {
+      color: var(--c-text-3);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       STEP 2 — CUSTOMER DETAILS
+    ═══════════════════════════════════════════════════════ */
+    .form-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .customer-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+    }
+
+    .customer-row .form-field {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .form-field {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .field-label-sm {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-text-2);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .input-minimal {
       width: 100%;
-      padding: 12px 16px;
-      border: 1px solid var(--grey-300);
-      border-radius: 8px;
+      padding: 10px 14px;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-sm);
       font-size: 14px;
       font-family: inherit;
-      transition: 0.2s;
+      color: var(--c-text-1);
+      background: var(--c-surface);
+      transition: border-color var(--transition-base);
+      box-sizing: border-box;
     }
 
-    .form-control-minimal:focus {
-      border-color: var(--grey-900);
+    .input-minimal:focus {
+      border-color: var(--c-text-1);
       outline: none;
+    }
+
+    .input-minimal::placeholder {
+      color: var(--c-text-3);
     }
 
     .select-minimal {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M7.41 8.58L12 13.17l4.59-4.59L18 10l-6 6-6-6 1.41-1.41z'/%3E%3C/svg%3E");
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23637381' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 12px center;
-      appearance: none;
+      padding-right: 36px;
       cursor: pointer;
     }
 
-    .amount-grid {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-
-    .amount-btn {
-      padding: 10px 24px;
-      border: 1.5px solid var(--grey-300);
-      border-radius: 8px;
-      background: #fff;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.2s;
-      color: var(--grey-800);
-    }
-
-    .amount-btn.active {
-      border-color: var(--primary-main);
-      color: var(--primary-main);
-    }
-
-    .amount-btn-custom {
+    /* ═══════════════════════════════════════════════════════
+       STEP 3 — EXPIRY ROW */
+    .expiry-row {
       display: flex;
       align-items: center;
-      border: 1px solid var(--grey-300);
-      border-radius: 8px;
-      padding: 0 12px;
-      height: 42px;
-      background: #fff;
+      gap: 10px;
+      flex-wrap: nowrap;
     }
 
-    .amount-btn-custom span {
-      color: var(--grey-500);
-      margin-right: 8px;
-      font-weight: 600;
+    .expiry-select {
+      flex: 0 0 auto;
+      min-width: 160px;
+      max-width: 200px;
     }
 
-    .amount-btn-custom input {
-      border: none;
-      width: 60px;
-      outline: none;
+    @media (max-width: 767px) {
+      .expiry-row {
+        flex-wrap: wrap;
+      }
+
+      .expiry-select {
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .expiry-row #customDateWrap input {
+        width: 100%;
+      }
+    }
+
+    /* STEP 3/4/5 — PRESET PILLS
+    ═══════════════════════════════════════════════════════ */
+    .preset-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .preset-btn {
+      padding: 9px 20px;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      background: var(--c-surface);
       font-size: 14px;
+      font-weight: 700;
+      color: var(--c-text-2);
+      cursor: pointer;
+      transition: all var(--transition-base);
       font-family: inherit;
-      font-weight: 600;
     }
 
-    .form-group-custom {
-      margin-top: 24px;
+    .preset-btn:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
     }
 
-    .label-custom {
-      display: block;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--grey-800);
-      margin-bottom: 12px;
+    .preset-btn.active {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+      background: var(--c-primary-low);
+      box-shadow: 0 0 0 3px rgba(0, 167, 111, 0.1);
     }
 
-    .choice-grid {
+    .custom-input-row {
       display: flex;
-      gap: 12px;
-      margin-bottom: 12px;
+      align-items: center;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      padding: 0 12px;
+      height: 42px;
+      background: var(--c-surface);
+      transition: border-color var(--transition-base);
+    }
+
+    .custom-input-row:focus-within {
+      border-color: var(--c-primary);
+    }
+
+    .custom-input-row .symbol {
+      color: var(--c-text-3);
+      margin-right: 6px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .custom-input-row input {
+      border: none;
+      outline: none;
+      width: 70px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--c-text-1);
+      background: transparent;
+    }
+
+    /* Membership benefits grid */
+    /* ─── MEMBERSHIP BENEFITS ─── */
+    .mb-select-wrap {
+      position: relative;
+    }
+
+    .mb-select {
+      width: 100%;
+      height: 42px;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      background: var(--c-surface);
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--c-text-1);
+      padding: 0 36px 0 12px;
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      outline: none;
+      transition: border-color var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .mb-select:focus {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px rgba(0, 171, 85, 0.10);
+    }
+
+    .mb-select-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--c-text-3);
+    }
+
+    .mb-selected-area {
+      background: var(--c-surface-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-top: 10px;
+    }
+
+    .mb-selected-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .mb-cards-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .mb-card {
+      background: var(--c-surface);
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      min-width: 130px;
+      flex: 1 1 130px;
+      position: relative;
+    }
+
+    .mb-card-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .mb-card-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .mb-card-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-text-2);
+    }
+
+    .mb-card-remove {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: none;
+      background: #fee2e2;
+      color: #ef4444;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .mb-card-remove:hover {
+      background: #fca5a5;
+    }
+
+    .mb-value-input {
+      width: 100%;
+      height: 32px;
+      border: 1.5px solid var(--c-border);
+      border-radius: 6px;
+      padding: 0 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--c-text-1);
+      background: var(--c-surface);
+      outline: none;
+      transition: border-color var(--transition-base);
+    }
+
+    .mb-value-input:focus {
+      border-color: var(--c-primary);
+    }
+
+    .mb-empty-hint {
+      font-size: 12px;
+      color: var(--c-text-3);
+      text-align: center;
+      padding: 8px 0 4px;
+    }
+
+    @media (max-width: 767px) {
+      .mb-cards-row {
+        gap: 8px;
+      }
+
+      .mb-card {
+        min-width: calc(50% - 4px);
+        flex: 1 1 calc(50% - 4px);
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       STEP 6 — TERMS
+    ═══════════════════════════════════════════════════════ */
+    .terms-actions {
+      display: flex;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
-    .choice-btn {
-      padding: 10px 24px;
-      border: 1.5px solid var(--grey-300);
-      border-radius: 8px;
-      background: #fff;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.2s;
-      color: var(--grey-800);
+    /* Desktop: live inside step-header, no bottom margin */
+    .terms-actions-header {
+      margin-left: auto;
+      margin-bottom: 0;
     }
 
-    .choice-btn.active {
-      border-color: var(--primary-main);
-      color: var(--primary-main);
-    }
-
-    .input-with-symbol {
+    .btn-terms {
       display: flex;
       align-items: center;
-      border: 1px solid var(--grey-300);
-      border-radius: 8px;
-      padding: 0 12px;
-      background: #fff;
-      height: 42px;
+      gap: 5px;
+      padding: 7px 14px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--c-border);
+      background: var(--c-surface);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-text-2);
+      cursor: pointer;
+      transition: var(--transition-base);
+      font-family: inherit;
     }
 
-    .input-with-symbol span {
-      color: var(--grey-500);
-      margin-right: 8px;
-      font-weight: 600;
-    }
-
-    .input-with-symbol input {
-      border: none;
-      width: 60px;
-      outline: none;
-      font-size: 14px;
-      font-weight: 600;
+    .btn-terms:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
     }
 
     .terms-box {
-      border: 1px solid var(--grey-200);
-      border-radius: 12px;
-      padding: 16px;
-      margin-top: 12px;
-      background: #fff;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      background: var(--c-surface);
+      transition: border-color var(--transition-base);
+    }
+
+    .terms-box:focus-within {
+      border-color: var(--c-primary);
     }
 
     .terms-textarea {
@@ -477,157 +1391,356 @@
       min-height: 100px;
       font-family: inherit;
       font-size: 13px;
-      color: var(--grey-500);
-      line-height: 1.6;
+      color: var(--c-text-2);
+      line-height: 1.7;
       outline: none;
       background: transparent;
+    }
+
+    .suggested-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin: 14px 0 8px;
     }
 
     .suggested-terms {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
+      gap: 6px;
     }
 
     .term-chip {
       padding: 6px 12px;
-      border-radius: 8px;
-      background: var(--grey-200);
-      color: var(--grey-700);
+      border-radius: var(--radius-xs);
+      background: var(--c-surface-subtle);
+      border: 1px solid var(--c-border);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
+      color: var(--c-text-2);
       cursor: pointer;
+      transition: all var(--transition-base);
       display: flex;
       align-items: center;
       gap: 4px;
+      max-width: calc(50% - 3px);
     }
 
+    .term-chip:hover {
+      border-color: var(--c-primary);
+      color: var(--c-primary);
+      background: var(--c-primary-low);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       STEP 7 — PAYMENT
+    ═══════════════════════════════════════════════════════ */
     .payment-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
     }
 
     .payment-method {
-      border: 1.5px solid var(--grey-200);
-      border-radius: 12px;
-      padding: 12px 8px;
+      flex: 0 0 auto;
+      min-width: 80px;
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
       text-align: center;
       cursor: pointer;
-      transition: 0.2s;
+      transition: all var(--transition-base);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      background: #fff;
+      flex-direction: column;
+      background: var(--c-surface);
     }
 
-    .payment-method img {
-      height: 20px;
-      object-fit: contain;
-    }
-
-    .payment-method span {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--grey-800);
-      white-space: nowrap;
+    .payment-method:hover {
+      border-color: var(--c-primary);
+      background: var(--c-primary-low);
+      box-shadow: 0 0 0 3px rgba(0, 167, 111, 0.08);
     }
 
     .payment-method.active {
-      border-color: var(--primary-main);
+      border-color: var(--c-primary);
+      background: var(--c-primary-low);
+      box-shadow: 0 0 0 3px rgba(0, 167, 111, 0.12);
+    }
+
+    .payment-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--c-surface-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--c-text-2);
+    }
+
+    .payment-method.active .payment-icon {
+      background: #fff;
+    }
+
+    .payment-method span {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c-text-2);
+      white-space: nowrap;
+    }
+
+    .payment-method.active span {
+      color: var(--c-primary);
+    }
+
+    .fee-divider {
+      height: 1px;
+      background: var(--c-border);
+      margin: 4px 0 16px;
     }
 
     .fee-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 0;
-      border-top: 1px solid var(--grey-200);
-      margin-top: 16px;
+      padding: 4px 0;
     }
 
     .fee-label {
       font-size: 14px;
-      font-weight: 600;
-      color: var(--grey-700);
+      font-weight: 500;
+      color: var(--c-text-2);
     }
 
     .fee-value {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
-      color: var(--grey-900);
+      color: var(--c-text-1);
     }
 
-    .btn-confirm {
+    .fee-free {
+      color: var(--c-primary);
+    }
+
+    /* Confirm button (desktop) */
+    .btn-confirm-desktop {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       width: auto;
-      min-width: 200px;
-      margin: 32px auto 0;
-      display: block;
-      padding: 16px 40px;
-      border-radius: 12px;
-      background: var(--primary-main);
+      min-width: 280px;
+      margin: 0 auto;
+      padding: 14px 32px;
+      border-radius: var(--radius-md);
+      background: var(--c-primary);
       color: #fff;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       border: none;
       cursor: pointer;
-      box-shadow: 0 8px 16px 0 rgba(0, 167, 111, 0.24);
-      transition: 0.2s;
+      box-shadow: 0 8px 16px rgba(0, 167, 111, 0.28);
+      transition: all var(--transition-base);
+      font-family: inherit;
+      margin-top: 20px;
     }
 
-    .btn-confirm:hover {
-      background: var(--primary-dark);
+    .btn-confirm-desktop:hover {
+      background: #007B4F;
       transform: translateY(-1px);
+      box-shadow: 0 12px 20px rgba(0, 167, 111, 0.32);
     }
 
-    .checkbox-container {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--grey-900);
+    /* Mobile confirm bar */
+    .confirm-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--c-border);
+      padding: 12px 16px;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+      z-index: 100;
+    }
+
+    .confirm-bar button {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      background: var(--c-primary);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
       cursor: pointer;
-      margin-top: 24px;
+      font-family: inherit;
+      box-shadow: 0 8px 16px rgba(0, 167, 111, 0.28);
     }
 
-    .checkbox-container input {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--primary-main);
-    }
-
-    /* ── Responsive ────────────────────────────────────── */
-    @media (max-width: 1023px) {
-      .layout-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-        margin-top: 24px;
+    /* ═══════════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════════ */
+    @media (max-width: 1199px) {
+      .create-card-layout {
+        grid-template-columns: 320px 1fr;
+        gap: 20px;
       }
-      .preview-card {
-        position: static;
+    }
+
+    @media (max-width: 1023px) {
+      .create-card-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .left-panel {
+        order: 0;
+      }
+
+      .right-panel {
+        order: 1;
       }
     }
 
     @media (max-width: 767px) {
-      .form-section {
-        padding: 20px 16px;
+      .create-card-layout {
+        gap: 16px;
+        margin-top: 16px;
       }
-      .preview-card {
+
+      .panel-card-body {
         padding: 16px;
       }
-      .product-line-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
+
+      .step-body {
+        padding: 0 16px 16px;
       }
+
+      .step-header {
+        padding: 14px 16px;
+        flex-wrap: wrap;
+      }
+
+      /* On mobile: terms buttons drop below the title row */
+      .terms-actions-header {
+        order: 3;
+        width: 100%;
+        margin-left: 0;
+        margin-top: 8px;
+        padding-bottom: 4px;
+      }
+
+      .panel-card-header {
+        padding: 14px 16px;
+        flex-wrap: wrap;
+      }
+
+      .panel-card-header .header-actions {
+        order: 3;
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 8px;
+        padding-bottom: 2px;
+      }
+
+      .panel-card-header .chevron {
+        order: 2;
+        margin-left: auto;
+      }
+
+      .card-type-grid {
+        gap: 6px;
+      }
+
+      .card-type-item {
+        min-width: calc(33.333% - 8px);
+        flex: 1 1 calc(33.333% - 8px);
+        padding: 10px 8px;
+      }
+
+      .card-type-item span {
+        font-size: 10px;
+      }
+
       .payment-grid {
+        display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 8px;
       }
-      .step-grid-2col {
-        grid-template-columns: 1fr !important;
+
+      .payment-method {
+        flex: unset;
+        min-width: unset;
+        padding: 12px 6px;
+      }
+
+      .payment-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+      }
+
+      .payment-method span {
+        font-size: 11px;
+      }
+
+      .confirm-bar {
+        display: block;
+      }
+
+      .btn-confirm-desktop {
+        display: none;
+      }
+
+      .preset-btn {
+        padding: 8px 14px;
+        font-size: 13px;
+      }
+
+      .form-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .customer-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .form-field {
+        min-width: 0;
+      }
+
+      .page-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .btn-panel-action {
+        flex: 1;
+        justify-content: center;
+      }
+
+      .term-chip {
+        max-width: 100%;
+      }
+
+      .main {
+        padding-bottom: 80px;
       }
     }
   </style>
@@ -637,102 +1750,19 @@
   <aside class="sidebar">
     <div class="sidebar-content">
       <div class="logo">
-        <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLINKPAY" class="sidebar-logo" />
+        <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLINKPAY"
+          class="sidebar-logo" />
       </div>
-
       <div class="user-card">
         <div class="avatar">
           <iconify-icon icon="solar:user-bold" width="24"></iconify-icon>
         </div>
         <div class="user-info">
-          <div style="font-weight: 600; font-size: 14px; color: var(--grey-900);">Carlota Monteiro</div>
-          <div style="font-size: 13px; color: var(--grey-600);">Admin</div>
+          <div style="font-weight:600;font-size:14px;color:var(--grey-900)">Carlota Monteiro</div>
+          <div style="font-size:13px;color:var(--grey-600)">Admin</div>
         </div>
       </div>
-
-      <div class="nav-section-title">OVERVIEW</div>
-
-      <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
-        <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
-        <span>Homepage</span>
-      </a>
-
-      <a href="dashboard.html" class="nav-item">
-        <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
-        <span>Dashboard</span>
-      </a>
-
-      <div class="nav-section-title">GIFT CARD CENTER</div>
-
-      <a href="#" class="nav-item parent-active">
-        <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone" width="26"></iconify-icon></div>
-        <span>Gift & Voucher Management</span>
-        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
-      </a>
-
-      <div class="submenu">
-        <a href="my-purchase.html" class="sub-item "><span class="dot"></span>My Purchase</a>
-        <a href="#" class="sub-item "><span class="dot"></span>Merchant Map</a>
-        <a href="product-list.html" class="sub-item active"><span class="dot"></span>Product Management</a>
-
-        <a href="digital-gifts-management.html" class="sub-item "><span class="dot"></span>VlinkPay Store</a>
-        <a href="cancelled-cards.html" class="sub-item"><span class="dot"></span>Cancelled Cards</a>
-      </div>
-
-      <a href="crypto-card-list.html" class="nav-item">
-        <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
-        <span>Crypto Card Management</span>
-      </a>
-
-      <a href="marketing-tools.html" class="nav-item">
-        <div class="nav-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon></div>
-        <span>Marketing Tools</span>
-      </a>
-
-      <a href="#" class="nav-item ">
-        <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone" width="24"></iconify-icon>
-        </div>
-        <span>Payment Acceptance</span>
-        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
-      </a>
-      <div class="submenu">
-        <a href="gift-card-payment.html" class="sub-item "><span class="dot"></span>Pay with Gift Card</a>
-        <a href="crypto-payment.html" class="sub-item "><span class="dot"></span>Pay with Crypto</a>
-      </div>
-
-      <a href="#" class="nav-item ">
-        <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
-        <span>Settings</span>
-        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
-      </a>
-      <div class="submenu">
-        <a href="merchant-payment-setup.html" class="sub-item "><span class="dot"></span>Merchant Payment Setup</a>
-        <a href="benefits-setup.html" class="sub-item "><span class="dot"></span>Benefits Setup</a>
-      </div>
-
-      <a href="#" class="nav-item ">
-        <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
-        <span>Report</span>
-        <iconify-icon icon="eva:chevron-down-fill" style="margin-left: auto; width: 16px;"></iconify-icon>
-      </a>
-      <div class="submenu">
-        <a href="sales-order-list.html" class="sub-item "><span class="dot"></span>Sales Orders</a>
-        <a href="card-transaction-history-merchant.html" class="sub-item "><span class="dot"></span>Redeem History</a>
-        <a href="membership-report.html" class="sub-item"><span class="dot"></span>Membership Report</a>
-      </div>
-
-      <div class="nav-section-title">APPS</div>
-
-      <a href="#" class="nav-item">
-        <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
-        <span>Notifications</span>
-        <span class="badge-outlined">32+</span>
-      </a>
-
-      <a href="#" class="nav-item">
-        <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon></div>
-        <span>AI Assistant</span>
-      </a>
+      <nav id="sidebarNav"></nav>
     </div>
   </aside>
 
@@ -746,316 +1776,2047 @@
   </header>
 
   <main class="main">
+    <!-- Page Header -->
     <div class="page-header">
-      <h1 class="page-title">Issue Digital</h1>
-      <div class="breadcrumbs">
-        <a href="#">Gift & Voucher Management</a>
-        <span class="breadcrumbs-dot"></span>
-        <a href="product-list.html">Product Management</a>
-        <span class="breadcrumbs-dot"></span>
-        <span style="color: var(--grey-900); font-weight: 500;">Issue Digital</span>
+      <div class="page-header-row">
+        <div class="page-header-left">
+          <a href="product-list.html" class="btn-back" title="Back">
+            <i data-lucide="arrow-left" style="width:18px;height:18px;"></i>
+          </a>
+          <h1 class="page-title" style="margin:0;">Issue Digital</h1>
+        </div>
+        <button class="btn-save-draft" onclick="saveDraft()">
+          <i data-lucide="save" style="width:16px;height:16px;"></i>
+          <span>Save for Later</span>
+        </button>
       </div>
     </div>
 
-    <div class="layout-grid">
-      <!-- Left Column: Preview -->
-      <div class="preview-column">
-        <div class="preview-card" style="padding: 0; background: transparent; box-shadow: none;">
-          <div class="digital-card"
-            style="background: #F4F6F8; display: flex; align-items: center; justify-content: center; border-radius: 12px; box-shadow: none; border: none; padding: 0;">
-            <img src="https://i.ibb.co/zhLyjvt0/IMG.png" width="100%" alt="">
+    <div class="create-card-layout">
+      <!-- ══════════════════ LEFT PANEL ══════════════════ -->
+      <div class="left-panel">
+
+        <!-- Card 1: Card Preview (always open) -->
+        <div class="panel-card">
+          <div class="panel-card-header no-collapse">
+            <div class="header-icon">
+              <iconify-icon icon="solar:card-bold-duotone" width="18"></iconify-icon>
+            </div>
+            <span class="header-title" id="previewCardTitle">E-Gift Card</span>
+            <button class="flip-btn" onclick="flipCard(event)"
+              style="width:auto;padding:5px 12px;font-size:11px;margin:0;">
+              <iconify-icon icon="solar:refresh-bold" width="14"></iconify-icon>
+              TAP TO FLIP
+            </button>
           </div>
-
-          <button class="flip-btn">
-            <iconify-icon icon="solar:refresh-outline" width="16"></iconify-icon>
-            TAB TO FLIP CARD
-          </button>
-
-          <div class="preview-card" style="margin-top: 16px;">
-            <div class="design-collection">
-              <div class="section-title-sm">
-                DESIGN COLLECTION
-              </div>
-              <div class="color-dots">
-                <div class="color-dot" style="background: #FF5630;"></div>
-                <div class="color-dot" style="background: #5BE49B;"></div>
-                <div class="color-dot active" style="background: #3366FF;"></div>
-                <div class="color-dot" style="background: #7A4F01;"></div>
-                <div class="color-dot" style="background: #004B50;"></div>
-                <div class="color-dot" style="background: #212B36;"></div>
-                <div class="color-dot" style="background: #8E33FF;"></div>
-                <div class="color-dot" style="background: #AE8E5F;"></div>
-                <div class="color-dot" style="background: #161C24;"></div>
-                <div class="color-dot" style="background: linear-gradient(135deg, #4481eb 0%, #04befe 100%);"></div>
+          <div class="panel-card-body">
+            <!-- 3D Card Flip -->
+            <div class="card-flip-container">
+              <div class="card-inner" id="cardInner" onclick="flipCard(event)">
+                <!-- FRONT -->
+                <div class="card-face card-front" id="cardFront">
+                  <div class="card-top">
+                    <div class="card-logo-box">🎁</div>
+                    <div class="card-chip"></div>
+                  </div>
+                  <div class="card-number-display">8888 &nbsp;****&nbsp; ****&nbsp; 1234</div>
+                  <div class="card-bottom">
+                    <div>
+                      <div class="card-expiry">VALID THRU</div>
+                      <div style="font-size:13px;font-weight:700;opacity:0.9">12/28</div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;">
+                      <div class="card-type-badge" id="cardTypeBadge">E-Gift Card</div>
+                      <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg"
+                        style="height:16px;filter:brightness(0) invert(1);opacity:0.8" alt="">
+                    </div>
+                  </div>
+                </div>
+                <!-- BACK -->
+                <div class="card-face card-back">
+                  <div class="card-stripe"></div>
+                  <div class="card-back-info">
+                    <div class="card-cvv-row">
+                      <div class="card-cvv-strip"><span>***</span></div>
+                      <div style="font-size:11px;color:rgba(255,255,255,0.6)">CVV</div>
+                    </div>
+                    <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:12px;line-height:1.5">
+                      This card is the property of VLINKPAY. Use of this card is subject to the cardholder agreement.
+                    </div>
+                    <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+                      <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg"
+                        style="height:16px;filter:brightness(0) invert(1);opacity:0.6" alt="">
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="preview-card" style="margin-top: 24px;">
-            <div class="brand-identity">
-              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
-                <div class="section-title-sm" style="margin-bottom: 0;">
-                  BRAND IDENTITY
+        <!-- Card 2: Design Collection (collapsible) -->
+        <div class="panel-card">
+          <div class="panel-card-header open" id="hdr-design" onclick="toggleSection('design-collection','hdr-design')">
+            <div class="header-icon"><iconify-icon icon="solar:palette-bold-duotone" width="18"></iconify-icon></div>
+            <span class="header-title">Design Collection</span>
+            <div class="chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+          </div>
+          <div class="collapse-wrap open" id="design-collection">
+            <div class="panel-card-body">
+              <div class="section-label">
+                <iconify-icon icon="solar:color-filter-bold-duotone" width="14"></iconify-icon>
+                Preset Colors
+              </div>
+              <div class="color-dots">
+                <div class="color-dot active" style="background:#1E293B" onclick="selectColor(this,'#1E293B')"
+                  title="Slate Dark"></div>
+                <div class="color-dot" style="background:#064E3B" onclick="selectColor(this,'#064E3B')"
+                  title="Emerald Dark"></div>
+                <div class="color-dot" style="background:#7F1D1D" onclick="selectColor(this,'#7F1D1D')"
+                  title="Red Dark"></div>
+                <div class="color-dot" style="background:#4C1D95" onclick="selectColor(this,'#4C1D95')"
+                  title="Violet Dark"></div>
+                <div class="color-dot" style="background:#3B82F6" onclick="selectColor(this,'#3B82F6')" title="Blue">
                 </div>
-                <button class="btn-contained"
-                  style="padding: 6px 12px; font-size: 12px; background: transparent; border: 1.5px solid var(--primary-main); color: var(--primary-main); box-shadow: none; display: flex; align-items: center; gap: 4px;">
-                  <iconify-icon icon="solar:gallery-upload-bold" width="16"></iconify-icon>
-                  Upload Logo
-                </button>
+                <div class="color-dot" style="background:#10B981" onclick="selectColor(this,'#10B981')" title="Green">
+                </div>
+                <div class="color-dot" style="background:#F59E0B" onclick="selectColor(this,'#F59E0B')" title="Amber">
+                </div>
+                <div class="color-dot" style="background:#EC4899" onclick="selectColor(this,'#EC4899')" title="Pink">
+                </div>
+                <div class="color-dot" style="background:#06B6D4" onclick="selectColor(this,'#06B6D4')" title="Cyan">
+                </div>
+                <div class="color-dot" style="background:#8B5CF6" onclick="selectColor(this,'#8B5CF6')" title="Purple">
+                </div>
+                <div class="color-dot" style="background:#FFD84D" onclick="selectColor(this,'#FFD84D')" title="Yellow">
+                </div>
+                <div class="color-dot" style="background:#DBCD43" onclick="selectColor(this,'#DBCD43')" title="Gold">
+                </div>
+                <div class="color-dot color-picker-btn" title="Custom color">
+                  <input type="color"
+                    onchange="selectColor(this.parentElement, this.value); this.parentElement.style.background=this.value;" />
+                </div>
               </div>
 
-              <div class="brand-tags">
-                <button class="brand-tag active">Luxury Gold</button>
-                <button class="brand-tag">Minimalist</button>
-                <button class="brand-tag">Vintage Badge</button>
+              <!-- Advanced Text Colors Accordion -->
+              <button class="adv-accordion-trigger" onclick="toggleSection('adv-text-colors','hdr-adv')">
+                <iconify-icon icon="solar:text-bold-duotone" width="14"></iconify-icon>
+                CUSTOM TEXT COLOR (ADVANCED)
+                <i data-lucide="chevron-down" id="hdr-adv-chevron"
+                  style="width:14px;height:14px;margin-left:auto;transition:transform 0.2s;"></i>
+              </button>
+              <div class="collapse-wrap" id="adv-text-colors">
+                <div class="adv-accordion-body">
+                  <!-- Brand Name & Slogan -->
+                  <div class="text-color-group">
+                    <div class="text-color-label">Brand Name &amp; Slogan</div>
+                    <div class="text-color-dots">
+                      <div class="text-color-dot auto-dot active" title="Auto"
+                        onclick="selectTextColor(this,'brand','auto')"></div>
+                      <div class="text-color-dot" style="background:#3B82F6"
+                        onclick="selectTextColor(this,'brand','#3B82F6')" title="Blue"></div>
+                      <div class="text-color-dot" style="background:#CA8A04"
+                        onclick="selectTextColor(this,'brand','#CA8A04')" title="Gold"></div>
+                      <div class="text-color-dot" style="background:#FFFFFF;border:1px solid #ddd"
+                        onclick="selectTextColor(this,'brand','#FFFFFF')" title="White"></div>
+                      <div class="text-color-dot" style="background:#000000"
+                        onclick="selectTextColor(this,'brand','#000000')" title="Black"></div>
+                    </div>
+                  </div>
+                  <!-- Card Holder -->
+                  <div class="text-color-group">
+                    <div class="text-color-label">Card Holder</div>
+                    <div class="text-color-dots">
+                      <div class="text-color-dot auto-dot active" title="Auto"
+                        onclick="selectTextColor(this,'holder','auto')"></div>
+                      <div class="text-color-dot" style="background:#3B82F6"
+                        onclick="selectTextColor(this,'holder','#3B82F6')"></div>
+                      <div class="text-color-dot" style="background:#CA8A04"
+                        onclick="selectTextColor(this,'holder','#CA8A04')"></div>
+                      <div class="text-color-dot" style="background:#FFFFFF;border:1px solid #ddd"
+                        onclick="selectTextColor(this,'holder','#FFFFFF')"></div>
+                      <div class="text-color-dot" style="background:#000000"
+                        onclick="selectTextColor(this,'holder','#000000')"></div>
+                    </div>
+                  </div>
+                  <!-- Amount/Value -->
+                  <div class="text-color-group">
+                    <div class="text-color-label">Amount / Value</div>
+                    <div class="text-color-dots">
+                      <div class="text-color-dot auto-dot active" title="Auto"
+                        onclick="selectTextColor(this,'amount','auto')"></div>
+                      <div class="text-color-dot" style="background:#3B82F6"
+                        onclick="selectTextColor(this,'amount','#3B82F6')"></div>
+                      <div class="text-color-dot" style="background:#CA8A04"
+                        onclick="selectTextColor(this,'amount','#CA8A04')"></div>
+                      <div class="text-color-dot" style="background:#FFFFFF;border:1px solid #ddd"
+                        onclick="selectTextColor(this,'amount','#FFFFFF')"></div>
+                      <div class="text-color-dot" style="background:#000000"
+                        onclick="selectTextColor(this,'amount','#000000')"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-
+        <!-- Card 3: Brand Identity (collapsible) -->
+        <div class="panel-card">
+          <div class="panel-card-header open" id="hdr-brand" onclick="toggleSection('brand-identity','hdr-brand')">
+            <div class="header-icon"><iconify-icon icon="solar:shield-star-bold-duotone" width="18"></iconify-icon>
+            </div>
+            <span class="header-title">Brand Identity</span>
+            <div class="header-actions" onclick="event.stopPropagation()">
+              <button class="btn-panel-action" onclick="openLogoLibrary()">
+                <i data-lucide="library" style="width:13px;height:13px;"></i>Library
+              </button>
+              <label class="btn-panel-action" style="cursor:pointer">
+                <i data-lucide="upload" style="width:13px;height:13px;"></i>Upload
+                <input type="file" accept="image/*" style="display:none" onchange="onLogoUpload(this)">
+              </label>
+            </div>
+            <div class="chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+          </div>
+          <div class="collapse-wrap open" id="brand-identity">
+            <div class="panel-card-body">
+              <div class="section-label" style="margin-bottom:10px;">Style Tags</div>
+              <div class="style-tags" id="styleTags">
+                <button class="style-tag active" onclick="toggleStyleTag(this)">Luxury Gold</button>
+                <button class="style-tag" onclick="toggleStyleTag(this)">Minimalist</button>
+                <button class="style-tag" onclick="toggleStyleTag(this)">Vintage Badge</button>
+                <button class="style-tag" onclick="toggleStyleTag(this)">Playful</button>
+                <button class="style-tag" onclick="toggleStyleTag(this)">Modern – Tech</button>
+                <button class="style-tag" onclick="toggleStyleTag(this)">Pastel</button>
+                <button class="style-tag" onclick="toggleStyleTag(this)">Neon</button>
+                <button class="style-tag" onclick="toggleStyleTag(this)">Vibrant</button>
               </div>
 
-              <div class="upload-box"
-                style="padding: 12px; background: #fff; border: 1px solid var(--grey-200); text-align: left;">
-                <textarea placeholder="Describe your logo idea"
-                  style="width: 100%; border: none; background: transparent; resize: none; min-height: 80px; font-family: inherit; font-size: 14px; outline: none; padding: 8px;"></textarea>
+              <div class="section-label" style="margin-bottom:8px;">AI Logo Description</div>
+              <div class="ai-textarea-wrap">
+                <textarea id="aiDescription" rows="3"
+                  placeholder="Describe your logo idea (e.g. elegant spa brand, gold & black theme, minimalist style)..."></textarea>
               </div>
 
-              <button class="btn-ai-gen">
-                <iconify-icon icon="solar:magic-stick-bold-duotone" width="20"></iconify-icon>
+              <!-- Suggested Descriptions -->
+              <div class="ai-prompts-header">
+                <div class="ai-prompts-label">SUGGESTED DESCRIPTIONS for <span id="categoryLabel">Nail Spa &amp; Nail
+                    Salon</span></div>
+                <select class="ai-category-select" id="categorySelect" onchange="onCategorySelect(this.value)">
+                  <option value="1" selected>Nail Spa &amp; Nail Salon</option>
+                  <option value="2">Beauty, Fashion &amp; Lifestyle</option>
+                  <option value="3">Retail &amp; Consumer Services</option>
+                  <option value="4">Hospitality &amp; Food Services</option>
+                  <option value="5">Financial &amp; Fintech Services</option>
+                  <option value="6">Technology &amp; Digital Products</option>
+                  <option value="7">Health, Wellness &amp; Medical</option>
+                  <option value="8">Real Estate &amp; Property Services</option>
+                  <option value="9">Travel, Tourism &amp; Experiences</option>
+                  <option value="10">Entertainment, Media &amp; Creative</option>
+                </select>
+              </div>
+              <div class="ai-prompts-list" id="aiPromptsList"></div>
+
+              <button class="btn-ai-gen" onclick="generateAiLogo()">
+                <iconify-icon icon="solar:magic-stick-bold-duotone" width="18"></iconify-icon>
                 Generate Logo with AI
               </button>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Right Column: Form -->
-      <div class="form-column">
-        <div class="form-section">
-          <div class="step-container">
-            <div class="step-title">Step 1: Select Product Line</div>
-            <div class="product-line-grid">
-              <div class="product-line-item active">
-                <div class="icon-box"><iconify-icon icon="solar:gift-bold-duotone" width="24"></iconify-icon></div>
-                <span>E-Gift Card</span>
+        <!-- Card 4: Business Information (collapsible) -->
+        <div class="panel-card">
+          <div class="panel-card-header" id="hdr-bizinfo" onclick="toggleSection('business-info','hdr-bizinfo')">
+            <div class="header-icon"><i data-lucide="building-2" style="width:16px;height:16px;"></i></div>
+            <span class="header-title">Business Information</span>
+            <div class="chevron" style="margin-left:auto;"><i data-lucide="chevron-down"
+                style="width:16px;height:16px;"></i></div>
+          </div>
+          <div class="collapse-wrap" id="business-info">
+            <div class="panel-card-body">
+              <div class="biz-list">
+                <!-- Brand Name -->
+                <div class="biz-row">
+                  <div class="biz-label">
+                    <i data-lucide="store" style="width:14px;height:14px;color:var(--c-primary)"></i>
+                    <span>Brand Name</span>
+                  </div>
+                  <input type="text" class="biz-input" id="bizBrandName" placeholder="e.g. VLinkPay"
+                    oninput="onBizInfoChange()">
+                </div>
+                <!-- Slogan -->
+                <div class="biz-row">
+                  <div class="biz-label">
+                    <i data-lucide="message-square-quote" style="width:14px;height:14px;color:var(--c-primary)"></i>
+                    <span>Slogan</span>
+                  </div>
+                  <input type="text" class="biz-input" id="bizSlogan" placeholder="e.g. Pay Smarter, Live Better"
+                    oninput="onBizInfoChange()">
+                </div>
+                <!-- Phone -->
+                <div class="biz-row">
+                  <div class="biz-label">
+                    <i data-lucide="phone" style="width:14px;height:14px;color:var(--c-primary)"></i>
+                    <span>Phone</span>
+                  </div>
+                  <div class="biz-phone-wrap">
+                    <select class="biz-dial-select" id="bizDialCode" onchange="onBizInfoChange()">
+                      <option value="+1">+1</option>
+                      <option value="+44">+44</option>
+                      <option value="+61">+61</option>
+                      <option value="+33">+33</option>
+                      <option value="+49">+49</option>
+                      <option value="+81">+81</option>
+                      <option value="+82">+82</option>
+                      <option value="+84">+84</option>
+                      <option value="+86">+86</option>
+                      <option value="+91">+91</option>
+                      <option value="+65">+65</option>
+                      <option value="+60">+60</option>
+                      <option value="+66">+66</option>
+                      <option value="+62">+62</option>
+                      <option value="+63">+63</option>
+                      <option value="+852">+852</option>
+                      <option value="+886">+886</option>
+                      <option value="+971">+971</option>
+                      <option value="+966">+966</option>
+                      <option value="+55">+55</option>
+                      <option value="+52">+52</option>
+                      <option value="+7">+7</option>
+                    </select>
+                    <div class="biz-phone-divider"></div>
+                    <input type="tel" class="biz-phone-input" id="bizPhone" placeholder="Phone Number"
+                      oninput="onBizInfoChange()">
+                  </div>
+                </div>
+                <!-- Email -->
+                <div class="biz-row">
+                  <div class="biz-label">
+                    <i data-lucide="mail" style="width:14px;height:14px;color:var(--c-primary)"></i>
+                    <span>Email</span>
+                  </div>
+                  <input type="email" class="biz-input" id="bizEmail" placeholder="e.g. hello@brand.com"
+                    oninput="onBizInfoChange()">
+                </div>
+                <!-- Website -->
+                <div class="biz-row">
+                  <div class="biz-label">
+                    <i data-lucide="globe" style="width:14px;height:14px;color:var(--c-primary)"></i>
+                    <span>Website</span>
+                  </div>
+                  <input type="url" class="biz-input" id="bizWebsite" placeholder="e.g. https://www.brand.com"
+                    oninput="onBizInfoChange()">
+                </div>
               </div>
-              <div class="product-line-item">
-                <div class="icon-box"><iconify-icon icon="solar:card-2-bold-duotone" width="24"></iconify-icon></div>
-                <span>Prepaid Card</span>
+              <div style="display:flex;justify-content:center;margin-top:14px;">
+                <button class="btn-biz-save" onclick="saveBizInfo()">
+                  <i data-lucide="save" style="width:14px;height:14px;"></i>
+                  Save
+                </button>
               </div>
-              <div class="product-line-item">
-                <div class="icon-box"><iconify-icon icon="solar:tag-bold-duotone" width="24"></iconify-icon></div>
-                <span>Discount</span>
-              </div>
-              <div class="product-line-item">
-                <div class="icon-box"><iconify-icon icon="solar:fire-bold-duotone" width="24"></iconify-icon></div>
-                <span>Promotion</span>
-              </div>
-              <div class="product-line-item">
-                <div class="icon-box"><iconify-icon icon="solar:crown-minimalistic-bold-duotone"
-                    width="24"></iconify-icon></div>
-                <span>Membership</span>
-              </div>
-            </div>
-
-            <div class="tier-grid">
-              <div class="tier-item">STARTER ($10)</div>
-              <div class="tier-item">BRONZE ($25)</div>
-              <div class="tier-item">SILVER ($50)</div>
-              <div class="tier-item">GOLD ($100)</div>
-              <div class="tier-item active">PLATINUM ($200)</div>
-              <div class="tier-item">ELITE ($500)</div>
             </div>
           </div>
+        </div><!-- /Card 4 -->
 
-          <div class="step-container">
-            <div class="step-title">Step 2: Details & Expiration</div>
-            <div class="step-grid-2col" style="display: grid; grid-template-columns: 1fr 300px; gap: 12px; align-items: start;">
-              <input type="text" class="form-control-minimal" placeholder="Customer Name / Card Tier">
-              <div style="display: flex; flex-direction: column; gap: 12px;">
-                <select class="form-control-minimal select-minimal" id="expiration-select"
-                  onchange="toggleCustomDate()">
-                  <option>Select an expiration date</option>
-                  <option>30 Days</option>
-                  <option>90 Days</option>
-                  <option>180 Days</option>
-                  <option value="custom">Select date</option>
+      </div><!-- /left-panel -->
+
+      <!-- ══════════════════ RIGHT PANEL ══════════════════ -->
+      <div class="right-panel">
+        <p class="required-note">
+          * required fields
+        </p>
+
+        <!-- STEP 1: Select Product Line -->
+        <div class="step-card">
+          <div class="step-header open" id="shdr-1" onclick="toggleStep(1)">
+            <div class="step-badge" id="sbadge-1">1</div>
+            <div class="step-title-text">
+              Select Product Line <span class="step-required">*</span>
+            </div>
+            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+          </div>
+          <div class="collapse-wrap open" id="scollapse-1">
+            <div class="step-body">
+              <div class="card-type-grid" id="cardTypeGrid">
+                <div class="card-type-item active" onclick="selectCardType(this,'E-Gift Card','0')">
+                  <div class="card-type-icon"><iconify-icon icon="solar:gift-bold-duotone" width="24"></iconify-icon>
+                  </div>
+                  <span>E-Gift Card</span>
+                </div>
+                <div class="card-type-item" onclick="selectCardType(this,'Membership','2')">
+                  <div class="card-type-icon"><iconify-icon icon="solar:crown-minimalistic-bold-duotone"
+                      width="24"></iconify-icon></div>
+                  <span>Membership</span>
+                </div>
+                <div class="card-type-item disabled" title="Coming soon">
+                  <div class="card-type-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon>
+                  </div>
+                  <span>Crypto Card</span>
+                </div>
+                <div class="card-type-item" onclick="selectCardType(this,'Prepaid Card','4')">
+                  <div class="card-type-icon"><iconify-icon icon="solar:card-2-bold-duotone" width="24"></iconify-icon>
+                  </div>
+                  <span>Prepaid Card</span>
+                </div>
+                <div class="card-type-item" onclick="selectCardType(this,'Discount','3')">
+                  <div class="card-type-icon"><iconify-icon icon="solar:tag-bold-duotone" width="24"></iconify-icon>
+                  </div>
+                  <span>Discount</span>
+                </div>
+                <div class="card-type-item" onclick="selectCardType(this,'Promotion','1')">
+                  <div class="card-type-icon"><iconify-icon icon="solar:fire-bold-duotone" width="24"></iconify-icon>
+                  </div>
+                  <span>Promotion</span>
+                </div>
+
+              </div>
+
+              <!-- Rank Grid (hidden for PrepaidCard) -->
+              <div id="rankSection">
+                <div class="rank-section-label">Select Rank <span
+                    style="color:var(--c-text-3);font-weight:400">(optional)</span></div>
+                <div class="rank-grid" id="rankGrid">
+                  <button class="rank-pill" onclick="toggleRank(this)">STARTER</button>
+                  <button class="rank-pill" onclick="toggleRank(this)">BRONZE</button>
+                  <button class="rank-pill" onclick="toggleRank(this)">SILVER</button>
+                  <button class="rank-pill" onclick="toggleRank(this)">GOLD</button>
+                  <button class="rank-pill active" onclick="toggleRank(this)">PLATINUM</button>
+                  <button class="rank-pill" onclick="toggleRank(this)">ELITE</button>
+                  <div class="rank-pill-custom">
+                    <input type="text" placeholder="Custom" oninput="setCustomRank(this.value)"
+                      onfocus="clearRankSelection()">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: Customer Details -->
+        <div class="step-card">
+          <div class="step-header open" id="shdr-2" onclick="toggleStep(2)">
+            <div class="step-badge" id="sbadge-2">2</div>
+            <div class="step-title-text">Customer Details</div>
+            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+          </div>
+          <div class="collapse-wrap open" id="scollapse-2">
+            <div class="step-body">
+              <div class="customer-row">
+                <!-- Name: always visible -->
+                <div class="form-field">
+                  <label class="field-label-sm" id="lblHolderName">Holder Name</label>
+                  <input type="text" class="input-minimal" placeholder="e.g. John Doe" id="holderName">
+                </div>
+                <!-- Email: label changes for Membership -->
+                <div class="form-field" id="emailFieldWrap">
+                  <label class="field-label-sm" id="lblHolderEmail">
+                    Holder Email <span id="emailRequired" style="color:#ff5630">*</span>
+                  </label>
+                  <input type="email" class="input-minimal" placeholder="email@example.com" id="holderEmail">
+                </div>
+                <!-- Birthday: only for Membership -->
+                <div class="form-field" id="birthdayField" style="display:none;">
+                  <label class="field-label-sm">
+                    Birthday
+                    <span style="font-weight:400;color:var(--c-text-3)">(optional)</span>
+                  </label>
+                  <input type="text" class="input-minimal fp-input" id="holderBirthday" placeholder="Pick a date" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Expiration Date -->
+        <div class="step-card" id="step3Card">
+          <div class="step-header open" id="shdr-3" onclick="toggleStep(3)">
+            <div class="step-badge" id="sbadge-3">3</div>
+            <div class="step-title-text">
+              Expiration Date <span class="step-required">*</span>
+            </div>
+            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+          </div>
+          <div class="collapse-wrap open" id="scollapse-3">
+            <div class="step-body">
+              <div class="expiry-row">
+                <select class="input-minimal select-minimal expiry-select" id="expirationSelect"
+                  onchange="onExpirationChange()">
+                  <option value="">None (No expiry)</option>
+                  <option value="30">30 Days</option>
+                  <option value="60">60 Days</option>
+                  <option value="custom">Custom Date</option>
                 </select>
-
+                <span id="customDateWrap" style="display:none;">
+                  <input type="text" class="input-minimal fp-input" id="customDate"
+                    placeholder="Pick a date" readonly style="width:180px;flex-shrink:0;">
+                </span>
               </div>
             </div>
-            <div class="field-root date-field" id="custom-date-wrap" style="display: none; margin-top: 12px; width: 100%;">
-              <label class="field-label">Custom Expiry Date</label>
-              <div class="field-container">
-                <input type="date" class="field-input" id="custom-date-input">
-                <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="20"></iconify-icon>
-              </div>
-            </div>
-
           </div>
+        </div>
 
-          <div class="step-container">
-            <div id="amount-group">
-              <div class="step-title">Step 3: Amount (Denomination)</div>
-              <div class="amount-grid">
-                <button class="amount-btn active">$50</button>
-                <button class="amount-btn">$100</button>
-                <button class="amount-btn">$200</button>
-                <button class="amount-btn">$500</button>
-                <div class="amount-btn-custom">
-                  <span>$</span>
-                  <input type="text" placeholder="Custom">
+        <!-- STEP 4: Value / Discount / Benefits -->
+        <div class="step-card">
+          <div class="step-header open" id="shdr-4" onclick="toggleStep(4)">
+            <div class="step-badge" id="sbadge-4">4</div>
+            <div class="step-title-text" id="step4Title">
+              Value / Denomination <span class="step-required">*</span>
+            </div>
+            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+          </div>
+          <div class="collapse-wrap open" id="scollapse-4">
+            <div class="step-body">
+              <!-- Gift Card / Prepaid (default) -->
+              <div id="valueGroup">
+                <div class="preset-row">
+                  <button class="preset-btn active" onclick="selectPreset(this,'amount')">$50</button>
+                  <button class="preset-btn" onclick="selectPreset(this,'amount')">$100</button>
+                  <button class="preset-btn" onclick="selectPreset(this,'amount')">$250</button>
+                  <button class="preset-btn" onclick="selectPreset(this,'amount')">$500</button>
+                  <div class="custom-input-row">
+                    <span class="symbol">$</span>
+                    <input type="text" placeholder="Custom" oninput="clearPresets('amount')">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Discount Group -->
+              <div id="discountGroup" style="display:none;">
+                <div class="preset-row">
+                  <button class="preset-btn active" onclick="selectPreset(this,'discount')">5%</button>
+                  <button class="preset-btn" onclick="selectPreset(this,'discount')">10%</button>
+                  <button class="preset-btn" onclick="selectPreset(this,'discount')">15%</button>
+                  <button class="preset-btn" onclick="selectPreset(this,'discount')">20%</button>
+                  <div class="custom-input-row">
+                    <span class="symbol">%</span>
+                    <input type="text" placeholder="Custom" oninput="clearPresets('discount')">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Promotion: Toggle Amount/Discount -->
+              <div id="promotionGroup" style="display:none;">
+                <div style="display:flex;gap:8px;margin-bottom:14px;">
+                  <button class="preset-btn active" onclick="setPromoMode(this,'amount')">By Amount</button>
+                  <button class="preset-btn" onclick="setPromoMode(this,'discount')">By Discount</button>
+                </div>
+                <div id="promoAmountPreset">
+                  <div class="preset-row">
+                    <button class="preset-btn active" onclick="selectPreset(this,'promoAmount')">$50</button>
+                    <button class="preset-btn" onclick="selectPreset(this,'promoAmount')">$100</button>
+                    <button class="preset-btn" onclick="selectPreset(this,'promoAmount')">$250</button>
+                    <div class="custom-input-row"><span class="symbol">$</span><input type="text" placeholder="Custom">
+                    </div>
+                  </div>
+                </div>
+                <div id="promoDiscountPreset" style="display:none;">
+                  <div class="preset-row">
+                    <button class="preset-btn active" onclick="selectPreset(this,'promoDisc')">5%</button>
+                    <button class="preset-btn" onclick="selectPreset(this,'promoDisc')">10%</button>
+                    <button class="preset-btn" onclick="selectPreset(this,'promoDisc')">15%</button>
+                    <div class="custom-input-row"><span class="symbol">%</span><input type="text" placeholder="Custom">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Membership Benefits: Select + Cards -->
+              <div id="membershipBenefits" style="display:none;">
+                <div class="mb-select-wrap">
+                  <select class="mb-select" id="mbBenefitSelect" onchange="onMbBenefitSelect(this)">
+                    <option value="">Select Benefit</option>
+                  </select>
+                  <span class="mb-select-icon"><i data-lucide="chevron-down" style="width:15px;height:15px;"></i></span>
+                </div>
+                <div class="mb-selected-area" id="mbSelectedArea">
+                  <div class="mb-selected-label">Selected Benefits</div>
+                  <div class="mb-cards-row" id="mbCardsRow">
+                    <div class="mb-empty-hint" id="mbEmptyHint">No benefits selected yet</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="step-container">
-            <div id="discount-group" style="display: none;">
-              <label class="step-title"><span id="step3">Step 3:</span> Discount Value</label>
-              <div class="choice-grid">
-                <button class="choice-btn active">5%</button>
-                <button class="choice-btn">10%</button>
-                <button class="choice-btn">15%</button>
-                <button class="choice-btn">20%</button>
-                <div class="input-with-symbol">
-                  <span>%</span>
-                  <input type="text" placeholder="Custom">
+        <!-- STEP 5: Purchase Price -->
+        <div class="step-card" id="step5Card">
+          <div class="step-header open" id="shdr-5" onclick="toggleStep(5)">
+            <div class="step-badge" id="sbadge-5">5</div>
+            <div class="step-title-text">
+              Purchase Price <span class="step-required">*</span>
+            </div>
+            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+          </div>
+          <div class="collapse-wrap open" id="scollapse-5">
+            <div class="step-body">
+              <div class="preset-row">
+                <button class="preset-btn active" onclick="selectPreset(this,'price')">$50</button>
+                <button class="preset-btn" onclick="selectPreset(this,'price')">$100</button>
+                <button class="preset-btn" onclick="selectPreset(this,'price')">$250</button>
+                <button class="preset-btn" onclick="selectPreset(this,'price')">$500</button>
+                <div class="custom-input-row">
+                  <span class="symbol">$</span>
+                  <input type="text" placeholder="Custom" id="customPrice" oninput="clearPresets('price')">
                 </div>
               </div>
             </div>
+          </div>
+        </div>
 
-            <label class="checkbox-container">
-              <input type="checkbox" checked>
-              Terms and conditions
-            </label>
-
-            <div class="terms-box">
-              <textarea class="terms-textarea">Valid for services only. Not applicable to products.
+        <!-- STEP 6: Terms & Conditions -->
+        <div class="step-card">
+          <div class="step-header open" id="shdr-6" onclick="toggleStep(6)">
+            <div class="step-badge" id="sbadge-6">6</div>
+            <div class="step-title-text">Terms &amp; Conditions</div>
+            <!-- Terms actions: desktop — in header; mobile — in body -->
+            <div class="terms-actions terms-actions-header" id="termsActions" onclick="event.stopPropagation()">
+              <button class="btn-terms" onclick="loadTerms()">
+                <i data-lucide="folder-open" style="width:13px;height:13px;"></i>
+                Load Terms
+              </button>
+              <button class="btn-terms" onclick="saveTerms()">
+                <i data-lucide="save" style="width:13px;height:13px;"></i>
+                Save Terms
+              </button>
+            </div>
+            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+          </div>
+          <div class="collapse-wrap open" id="scollapse-6">
+            <div class="step-body">
+              <div class="terms-box">
+                <textarea class="terms-textarea" id="termsTextarea" rows="5"
+                  placeholder="Enter terms and conditions...">Valid for services only. Not applicable to products.
 No cash value.
 Valid for one-time use per invoice.
 Please present this card before payment.</textarea>
-            </div>
-
-            <div
-              style="font-size: 11px; font-weight: 700; color: var(--grey-500); margin-top: 16px; margin-bottom: 8px;">
-              SUGGESTED TERMS:</div>
-            <div class="suggested-terms">
-              <div class="term-chip">+ Applies to...</div>
-              <div class="term-chip">+ Has no cash value...</div>
-              <div class="term-chip">+ Please present...</div>
-              <div class="term-chip">+ One-time use only</div>
-            </div>
-          </div>
-
-          <div class="step-container">
-            <div class="step-title">Step 4: Payment Method</div>
-            <div class="payment-grid">
-              <div class="payment-method active">
-                <img src="http://localhost:4200/assets/images/sell-EGift/payment/cash.png" alt="">
-                <span>Cash</span>
               </div>
-              <div class="payment-method">
-                <img src="http://localhost:4200/assets/images/sell-EGift/payment/credit.png" alt="">
-                <span>Credit Card</span>
-              </div>
-              <div class="payment-method">
-                <img src="http://localhost:4200/assets/images/sell-EGift/payment/zelle.png" alt="">
-                <span>Zelle</span>
-              </div>
-              <div class="payment-method">
-                <img src="http://localhost:4200/assets/images/sell-EGift/payment/venmo.png" alt="">
-                <span>Venmo</span>
-              </div>
-              <div class="payment-method">
-                <img src="http://localhost:4200/assets/images/sell-EGift/payment/vlinkpay.png" alt="">
-                <span>VLINKPAY</span>
+              <div class="suggested-label">SUGGESTED TERMS</div>
+              <div class="suggested-terms">
+                <div class="term-chip" onclick="addTerm('Valid for services only. Not applicable to products.')">
+                  <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
+                  Valid for services only...
+                </div>
+                <div class="term-chip" onclick="addTerm('No cash value.')">
+                  <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
+                  No cash value
+                </div>
+                <div class="term-chip" onclick="addTerm('Valid for one-time use per invoice.')">
+                  <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
+                  One-time use only
+                </div>
+                <div class="term-chip" onclick="addTerm('Please present this card before payment.')">
+                  <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
+                  Present before payment
+                </div>
               </div>
             </div>
           </div>
-
-          <div class="fee-row" style="border-top: none; padding-bottom: 20px;">
-            <span class="fee-label">Platform Service Fee (1.5%)</span>
-            <span class="fee-value">$0.75</span>
-          </div>
-
-          <button class="btn-confirm"
-            style="border-radius: 10px; background: #00A76F; font-size: 16px; box-shadow: 0 8px 16px 0 rgba(0, 167, 111, 0.24);">Confirm
-            Issuance</button>
         </div>
-      </div>
-    </div>
+
+        <!-- STEP 7: Payment Method -->
+        <div class="step-card">
+          <div class="step-header open" id="shdr-7" onclick="toggleStep(7)">
+            <div class="step-badge" id="sbadge-7">7</div>
+            <div class="step-title-text">
+              Payment Method <span class="step-required">*</span>
+            </div>
+            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+          </div>
+          <div class="collapse-wrap open" id="scollapse-7">
+            <div class="step-body">
+              <div class="payment-grid">
+                <div class="payment-method" onclick="selectPayment(this,'Gift')">
+                  <div class="payment-icon">🎁</div>
+                  <span>Gift</span>
+                </div>
+                <div class="payment-method active" onclick="selectPayment(this,'Cash')">
+                  <div class="payment-icon">💵</div>
+                  <span>Cash</span>
+                </div>
+                <div class="payment-method" onclick="selectPayment(this,'Credit')">
+                  <div class="payment-icon" style="background:var(--c-surface-subtle)">
+                    <iconify-icon icon="solar:card-bold-duotone" width="18"
+                      style="color:var(--c-text-2)"></iconify-icon>
+                  </div>
+                  <span>Credit Card</span>
+                </div>
+                <div class="payment-method" onclick="selectPayment(this,'Zelle')">
+                  <div class="payment-icon" style="background:#6d1ed4;color:#fff;font-size:14px">Z</div>
+                  <span>Zelle</span>
+                </div>
+                <div class="payment-method" onclick="selectPayment(this,'Venmo')">
+                  <div class="payment-icon" style="background:#008CFF;color:#fff;font-size:13px">V</div>
+                  <span>Venmo</span>
+                </div>
+                <div class="payment-method" onclick="selectPayment(this,'VlinkPay')">
+                  <div class="payment-icon" style="background:var(--c-primary-low)">
+                    <iconify-icon icon="solar:wallet-bold-duotone" width="18"
+                      style="color:var(--c-primary)"></iconify-icon>
+                  </div>
+                  <span>VlinkPay</span>
+                </div>
+              </div>
+
+              <div class="fee-divider"></div>
+              <div class="fee-row">
+                <span class="fee-label">Platform Service Fee (1.5%)</span>
+                <span class="fee-value" id="feeDisplay">$0.75</span>
+              </div>
+
+              <!-- Desktop confirm -->
+              <button class="btn-confirm-desktop" onclick="confirmIssuance()">
+                <iconify-icon icon="solar:check-circle-bold-duotone" width="20"></iconify-icon>
+                Confirm Issuance
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /right-panel -->
+    </div><!-- /create-card-layout -->
   </main>
 
+  <!-- Mobile Bottom Bar -->
+  <div class="confirm-bar">
+    <button onclick="confirmIssuance()">
+      <iconify-icon icon="solar:check-circle-bold-duotone" width="20"></iconify-icon>
+      Confirm Issuance
+    </button>
+  </div>
+
   <script>
-    // Handle Product Line selection
-    document.querySelectorAll('.product-line-item').forEach(item => {
-      item.addEventListener('click', () => {
-        document.querySelectorAll('.product-line-item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
+    lucide.createIcons();
 
-        const discountGroup = document.getElementById('discount-group');
-        const amountGroup = document.getElementById('amount-group');
-        const step3 = document.getElementById('step3');
+    /* ──────────────────────────────────────────────
+       CURRENT STATE
+    ────────────────────────────────────────────── */
+    let currentCardType = 'E-Gift Card';
+    let isFlipped = false;
 
-
-        if (item.innerText.includes('E-Gift Card')) {
-          if (discountGroup) discountGroup.style.display = 'none';
-          if (amountGroup) amountGroup.style.display = 'block';
-        }
-        if (item.innerText.includes('Discount') || item.innerText.includes('Membership')) {
-          if (discountGroup) discountGroup.style.display = 'block';
-          if (amountGroup) amountGroup.style.display = 'none';
-          if (step3) step3.style.display = 'inline-block';
-        } else {
-          if (discountGroup) discountGroup.style.display = 'block';
-          if (amountGroup) amountGroup.style.display = 'block';
-          if (step3) step3.style.display = 'none';
-          // Toggle label between Discount and Cashback
-        }
-      });
-    });
-
-    // Handle Amount selection
-    document.querySelectorAll('.amount-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
-
-    // Handle Choice button selection (Discount / Cashback)
-    document.querySelectorAll('.choice-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      });
-    });
-
-    // Handle Tier selection
-    document.querySelectorAll('.tier-item').forEach(item => {
-      item.addEventListener('click', () => {
-        document.querySelectorAll('.tier-item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-      });
-    });
-
-    // Handle Payment Method selection
-    document.querySelectorAll('.payment-method').forEach(item => {
-      item.addEventListener('click', () => {
-        document.querySelectorAll('.payment-method').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-      });
-    });
-
-    function toggleCustomDate() {
-      const select = document.getElementById('expiration-select');
-      const dateWrap = document.getElementById('custom-date-wrap');
-      if (select.value === 'custom') {
-        dateWrap.style.display = 'block';
-      } else {
-        dateWrap.style.display = 'none';
+    /* ──────────────────────────────────────────────
+       COLLAPSIBLE SECTIONS
+    ────────────────────────────────────────────── */
+    function toggleSection(sectionId, headerId) {
+      const body = document.getElementById(sectionId);
+      const hdr = headerId ? document.getElementById(headerId) : null;
+      if (!body) return;
+      const opening = !body.classList.contains('open');
+      body.classList.toggle('open', opening);
+      if (hdr) hdr.classList.toggle('open', opening);
+      // Rotate inline chevron for adv section
+      const ch = document.getElementById('hdr-adv-chevron');
+      if (sectionId === 'adv-text-colors' && ch) {
+        ch.style.transform = opening ? 'rotate(180deg)' : '';
       }
     }
+
+    function toggleStep(n) {
+      const body = document.getElementById('scollapse-' + n);
+      const hdr = document.getElementById('shdr-' + n);
+      if (!body) return;
+      const opening = !body.classList.contains('open');
+      body.classList.toggle('open', opening);
+      hdr.classList.toggle('open', opening);
+    }
+
+    /* ──────────────────────────────────────────────
+       3D CARD FLIP
+    ────────────────────────────────────────────── */
+    function flipCard(e) {
+      if (e) e.stopPropagation();
+      isFlipped = !isFlipped;
+      document.getElementById('cardInner').classList.toggle('flipped', isFlipped);
+    }
+
+    /* ──────────────────────────────────────────────
+       COLOR SELECTION
+    ────────────────────────────────────────────── */
+    function selectColor(dot, color) {
+      document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+      updateCardColor(color);
+    }
+    function updateCardColor(color) {
+      const front = document.getElementById('cardFront');
+      if (front) front.style.background = color;
+    }
+
+    function selectTextColor(dot, group, color) {
+      dot.closest('.text-color-dots').querySelectorAll('.text-color-dot').forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+    }
+
+    /* ──────────────────────────────────────────────
+       BRAND IDENTITY
+    ────────────────────────────────────────────── */
+
+    /* ── Prompt data: 10 categories × 6 prompts ── */
+    const AI_PROMPTS = {
+      1: {
+        label: 'Nail Spa & Nail Salon', prompts: [
+          'Design a luxury nail spa logo for a professional and high-end nail salon with gold accents',
+          'Create a premium nail salon brand logo with a modern and professional identity',
+          'Develop a high-class nail spa logo that reflects relaxation, beauty, and professionalism',
+          'Design a modern luxury nail salon logo that balances femininity and professionalism',
+          'Create an exclusive nail spa logo that communicates quality, hygiene, and premium care',
+          'Design a premium nail salon logo suitable for storefront signage and appointment apps',
+        ]
+      },
+      2: {
+        label: 'Beauty, Fashion & Lifestyle', prompts: [
+          'Create an elegant beauty brand logo with a chic and sophisticated aesthetic',
+          'Design a fashion-forward lifestyle brand logo with clean, minimal lines',
+          'Develop a luxury cosmetics logo that conveys glamour, style, and exclusivity',
+          'Create a modern beauty studio logo using pastel tones and organic shapes',
+          'Design a high-end fashion label logo with bold typography and a minimalist crest',
+          'Build a lifestyle brand identity that blends wellness, fashion, and aspirational living',
+        ]
+      },
+      3: {
+        label: 'Retail & Consumer Services', prompts: [
+          'Design a friendly retail store logo that feels approachable and trustworthy',
+          'Create a modern consumer services logo with bold, clean typography',
+          'Develop a versatile brand mark for a multi-category retail shop',
+          'Design a vibrant logo for a local retail brand with community-first values',
+          'Create a premium logo for a boutique consumer goods store with artisan feel',
+          'Build a clean, scalable brand identity for a regional retail chain',
+        ]
+      },
+      4: {
+        label: 'Hospitality & Food Services', prompts: [
+          'Design a warm, inviting restaurant logo with artisan and farm-to-table vibes',
+          'Create a bold, memorable café logo with coffee-inspired iconography',
+          'Develop a luxury hotel brand identity that conveys elegance and comfort',
+          'Design a modern food truck logo that is fun, energetic, and crave-worthy',
+          'Create a sophisticated fine-dining logo with a timeless and refined aesthetic',
+          'Build a playful bakery logo that evokes warmth, sweetness, and craftsmanship',
+        ]
+      },
+      5: {
+        label: 'Financial & Fintech Services', prompts: [
+          'Design a trustworthy fintech logo with a sleek, modern digital-first feel',
+          'Create a professional financial services brand mark that conveys stability',
+          'Develop a bold crypto/blockchain company logo that feels innovative and secure',
+          'Design a clean digital banking logo using geometric shapes and blue tones',
+          'Create a modern wealth management logo that balances trust and aspiration',
+          'Build a fintech startup identity that blends speed, security, and innovation',
+        ]
+      },
+      6: {
+        label: 'Technology & Digital Products', prompts: [
+          'Design a cutting-edge tech company logo with a futuristic and digital aesthetic',
+          'Create a SaaS product logo that is clean, memorable, and scalable',
+          'Develop a bold software startup logo using abstract geometry and gradient',
+          'Design a minimalist AI-company logo that communicates intelligence and clarity',
+          'Create a cybersecurity brand identity that projects strength and reliability',
+          'Build a modern developer-tools logo that resonates with engineering teams',
+        ]
+      },
+      7: {
+        label: 'Health, Wellness & Medical', prompts: [
+          'Design a calming wellness center logo with natural, organic visual language',
+          'Create a professional medical clinic logo that projects care and confidence',
+          'Develop a modern fitness brand logo that motivates and energizes',
+          'Design a holistic health brand identity using nature-inspired colors and symbols',
+          'Create a clean pharmacy logo with a trustworthy and approachable tone',
+          'Build a mental health platform logo that communicates warmth and safety',
+        ]
+      },
+      8: {
+        label: 'Real Estate & Property Services', prompts: [
+          'Design a premium real estate brand logo with architectural and luxury cues',
+          'Create a modern property management logo that inspires trust and authority',
+          'Develop a friendly home-buying platform logo with welcoming, warm aesthetics',
+          'Design a bold commercial real estate logo using strong geometry and navy tones',
+          'Create an upscale residential development brand mark with refined elegance',
+          'Build a real estate investment firm identity that communicates growth and stability',
+        ]
+      },
+      9: {
+        label: 'Travel, Tourism & Experiences', prompts: [
+          'Design a vibrant travel agency logo that evokes adventure and wanderlust',
+          'Create a sleek airline or aviation brand identity with a global feel',
+          'Develop a luxury tourism brand mark using globe-inspired iconography',
+          'Design a boutique travel experience logo that feels curated and exclusive',
+          'Create an adventure tourism brand logo that is bold, outdoor, and energetic',
+          'Build a destination travel brand identity with sun, sea, and discovery vibes',
+        ]
+      },
+      10: {
+        label: 'Entertainment, Media & Creative', prompts: [
+          'Design a dynamic entertainment brand logo with bold, expressive typography',
+          'Create a modern media company logo that feels fresh, digital, and creative',
+          'Develop a music streaming platform mark with rhythm-inspired visual elements',
+          'Design a film production company logo with cinematic depth and drama',
+          'Create a creative agency logo that balances wit, craft, and innovation',
+          'Build a gaming or esports brand identity that is powerful, vibrant, and iconic',
+        ]
+      },
+    };
+
+    let currentCategory = 1;
+
+    function renderAiPrompts() {
+      const list = document.getElementById('aiPromptsList');
+      const cat = AI_PROMPTS[currentCategory];
+      if (!list || !cat) return;
+      list.innerHTML = cat.prompts.map(p =>
+        `<button class="ai-prompt-badge" onclick="useAiPrompt(this)" title="${p}">${p}</button>`
+      ).join('');
+    }
+
+    function onCategorySelect(val) {
+      currentCategory = parseInt(val);
+      const cat = AI_PROMPTS[currentCategory];
+      const lbl = document.getElementById('categoryLabel');
+      if (lbl && cat) lbl.textContent = cat.label;
+      renderAiPrompts();
+    }
+
+    function useAiPrompt(btn) {
+      const ta = document.getElementById('aiDescription');
+      if (ta) {
+        ta.value = btn.title || btn.textContent.trim();
+        ta.focus();
+        ta.style.borderColor = 'var(--c-primary)';
+        setTimeout(() => { ta.style.borderColor = ''; }, 1200);
+      }
+    }
+
+    function toggleStyleTag(btn) {
+      btn.classList.toggle('active');
+      updateAiDescription();
+    }
+    function updateAiDescription() {
+      const activeTags = [...document.querySelectorAll('.style-tag.active')].map(b => b.textContent.trim());
+      const ta = document.getElementById('aiDescription');
+      if (ta && !ta.value) {
+        ta.placeholder = activeTags.length > 0
+          ? 'Style: ' + activeTags.join(', ') + '. Describe your logo idea...'
+          : 'Describe your logo idea (e.g. elegant spa brand, gold & black theme, minimalist style)...';
+      }
+    }
+    function onLogoUpload(input) {
+      if (!input.files[0]) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const logo = document.querySelector('.card-logo-box');
+        if (logo) logo.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:contain;border-radius:4px">`;
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+    /* ── LOGO LIBRARY ── */
+    const LOGO_LIBRARY = [
+      {
+        id: 1, name: 'Jade Jade Premier Prem...', date: 'Mar 12, 2026',
+        src: 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" rx="20" fill="#0d3d2e"/><circle cx="100" cy="100" r="70" fill="none" stroke="#c9a84c" stroke-width="4"/><circle cx="100" cy="100" r="60" fill="none" stroke="#c9a84c" stroke-width="1.5"/><text x="100" y="85" text-anchor="middle" font-family="serif" font-size="18" font-weight="bold" fill="#c9a84c">JADE</text><text x="100" y="108" text-anchor="middle" font-family="serif" font-size="18" font-weight="bold" fill="#c9a84c">JADE</text><text x="100" y="128" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#c9a84c">LUXURY NAIL SPA</text></svg>`)
+      },
+      {
+        id: 2, name: 'Jade Jade', date: 'Mar 12, 2026',
+        src: 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" rx="20" fill="#0d3d2e"/><circle cx="100" cy="95" r="65" fill="none" stroke="#c9a84c" stroke-width="3"/><text x="100" y="82" text-anchor="middle" font-family="serif" font-size="20" fill="#c9a84c">Jade</text><text x="100" y="108" text-anchor="middle" font-family="serif" font-size="20" fill="#c9a84c">Jade</text><text x="100" y="128" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#c9a84c">LUXURY NAIL SPA</text></svg>`)
+      },
+      {
+        id: 3, name: 'Jade Jade', date: 'Mar 12, 2026',
+        src: 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" rx="20" fill="#143d2e"/><circle cx="100" cy="95" r="62" fill="none" stroke="#d4a843" stroke-width="4"/><circle cx="100" cy="95" r="54" fill="none" stroke="#d4a843" stroke-width="1"/><text x="100" y="80" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#d4a843">Jade</text><text x="100" y="106" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#d4a843">Jade</text><text x="100" y="124" text-anchor="middle" font-size="8" fill="#d4a843">LUXURY NAIL SPA</text></svg>`)
+      },
+      {
+        id: 4, name: 'Jade Jade', date: 'Mar 12, 2026',
+        src: 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" rx="20" fill="#0f3628"/><circle cx="100" cy="92" r="60" fill="none" stroke="#c9a84c" stroke-width="3.5"/><text x="100" y="78" text-anchor="middle" font-family="serif" font-size="17" fill="#c9a84c">Jade</text><text x="100" y="100" text-anchor="middle" font-family="serif" font-size="17" fill="#c9a84c">Jade</text><text x="100" y="118" text-anchor="middle" font-size="7.5" fill="#c9a84c">LUXURY NAIL SPA</text></svg>`)
+      },
+      {
+        id: 5, name: 'Jade Jade', date: 'Mar 12, 2026',
+        src: 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" rx="20" fill="#0a2e20"/><circle cx="100" cy="94" r="63" fill="none" stroke="#d4a843" stroke-width="4"/><text x="100" y="80" text-anchor="middle" font-family="serif" font-size="19" font-style="italic" fill="#d4a843">Jade</text><text x="100" y="104" text-anchor="middle" font-family="serif" font-size="19" font-style="italic" fill="#d4a843">Jade</text><text x="100" y="122" text-anchor="middle" font-size="8" fill="#d4a843">LUXURY NAIL SPA</text></svg>`)
+      },
+      {
+        id: 6, name: 'Jade Jade', date: 'Mar 12, 2026',
+        src: 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" rx="20" fill="#112e22"/><circle cx="100" cy="93" r="61" fill="none" stroke="#c9a84c" stroke-width="3"/><circle cx="100" cy="93" r="52" fill="none" stroke="#c9a84c" stroke-width="1"/><text x="100" y="79" text-anchor="middle" font-family="serif" font-size="18" fill="#c9a84c">Jade</text><text x="100" y="103" text-anchor="middle" font-family="serif" font-size="18" fill="#c9a84c">Jade</text><text x="100" y="121" text-anchor="middle" font-size="8" fill="#c9a84c">LUXURY NAIL SPA</text></svg>`)
+      },
+    ];
+
+    let selectedLibraryLogo = null;
+
+    function openLogoLibrary() {
+      renderLogoLibrary();
+      document.getElementById('libraryModal').classList.add('open');
+      lucide.createIcons();
+    }
+    function closeLogoLibrary() {
+      document.getElementById('libraryModal').classList.remove('open');
+      selectedLibraryLogo = null;
+    }
+    function renderLogoLibrary() {
+      const grid = document.getElementById('libraryGrid');
+      const count = document.getElementById('libraryCount');
+      if (count) count.textContent = `(${LOGO_LIBRARY.length} logos)`;
+      grid.innerHTML = LOGO_LIBRARY.map(logo => `
+        <div class="lib-card" id="libcard-${logo.id}">
+          <div class="lib-card-img-wrap">
+            <img src="${logo.src}" class="lib-card-img" alt="${logo.name}" />
+            <div class="lib-card-overlay">
+              <button class="lib-btn-del" onclick="deleteLibraryLogo(${logo.id})" title="Delete">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+              </button>
+              <button class="lib-btn-view" onclick="viewLibraryLogo(${logo.id})" title="Preview">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+              <button class="lib-btn-use" onclick="useLibraryLogo(${logo.id})">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Use
+              </button>
+            </div>
+          </div>
+          <div class="lib-card-info">
+            <div class="lib-card-name">${logo.name}</div>
+            <div class="lib-card-date">${logo.date}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+    function viewLibraryLogo(id) {
+      const logo = LOGO_LIBRARY.find(l => l.id === id);
+      if (!logo) return;
+      selectedLibraryLogo = logo;
+      document.getElementById('previewLogoImg').src = logo.src;
+      document.getElementById('libraryModal').classList.remove('open');
+      document.getElementById('logoPreviewModal').classList.add('open');
+    }
+    function closeLogoPreview() {
+      document.getElementById('logoPreviewModal').classList.remove('open');
+      document.getElementById('libraryModal').classList.add('open');
+    }
+    function useLibraryLogo(id) {
+      const logo = LOGO_LIBRARY.find(l => l.id === id);
+      if (!logo) return;
+      const logoBox = document.querySelector('.card-logo-box');
+      if (logoBox) logoBox.innerHTML = `<img src="${logo.src}" style="width:100%;height:100%;object-fit:contain;border-radius:4px">`;
+      closeLogoLibrary();
+      document.getElementById('logoPreviewModal').classList.remove('open');
+      window.showCopyToast && window.showCopyToast('Logo applied!');
+    }
+    function useSelectedLogoPreview() {
+      if (selectedLibraryLogo) useLibraryLogo(selectedLibraryLogo.id);
+    }
+    function deleteLibraryLogo(id) {
+      const idx = LOGO_LIBRARY.findIndex(l => l.id === id);
+      if (idx !== -1) LOGO_LIBRARY.splice(idx, 1);
+      renderLogoLibrary();
+    }
+    function generateAiLogo() {
+      const ta = document.getElementById('aiDescription');
+      if (!ta.value.trim()) {
+        ta.style.borderColor = '#ff5630';
+        ta.focus();
+        setTimeout(() => { ta.style.borderColor = ''; }, 2000);
+        return;
+      }
+      const btn = document.querySelector('.btn-ai-gen');
+      btn.innerHTML = '<iconify-icon icon="solar:refresh-bold" width="18" style="animation:spin 1s linear infinite"></iconify-icon> Generating...';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.innerHTML = '<iconify-icon icon="solar:magic-stick-bold-duotone" width="18"></iconify-icon> Generate Logo with AI';
+        btn.disabled = false;
+      }, 2500);
+    }
+
+    /* ──────────────────────────────────────────────
+       CARD 4: BUSINESS INFORMATION
+    ────────────────────────────────────────────── */
+    const bizInfo = { brandName: '', slogan: '', phone: '', email: '', website: '' };
+
+    function onBizInfoChange() {
+      bizInfo.brandName = document.getElementById('bizBrandName').value;
+      bizInfo.slogan = document.getElementById('bizSlogan').value;
+      const dial = document.getElementById('bizDialCode')?.value || '';
+      const num = document.getElementById('bizPhone')?.value || '';
+      bizInfo.phone = num ? `${dial} ${num}` : '';
+      bizInfo.email = document.getElementById('bizEmail').value;
+      bizInfo.website = document.getElementById('bizWebsite').value;
+    }
+
+    function saveBizInfo() {
+      onBizInfoChange();
+      if (window.showCopyToast) {
+        window.showCopyToast('Business information saved!');
+      }
+    }
+
+    /* ──────────────────────────────────────────────
+       CARD TYPE SELECTION
+    ────────────────────────────────────────────── */
+    const CARD_TYPE_ICONS = {
+      'E-Gift Card': '🎁', 'Membership': '👑', 'Prepaid Card': '💳',
+      'Discount': '🏷️', 'Promotion': '🔥',
+    };
+    function selectCardType(el, name, typeId) {
+      if (el.classList.contains('disabled')) return;
+      document.querySelectorAll('.card-type-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      currentCardType = name;
+
+      // Update preview card title & badge
+      document.getElementById('previewCardTitle').textContent = name;
+      const badge = document.getElementById('cardTypeBadge');
+      if (badge) badge.textContent = name;
+      const logoBox = document.querySelector('.card-logo-box');
+      if (logoBox && !logoBox.querySelector('img')) {
+        logoBox.textContent = CARD_TYPE_ICONS[name] || '💳';
+      }
+
+      // Show/hide rank
+      const rankSection = document.getElementById('rankSection');
+      if (rankSection) rankSection.style.display = typeId === '4' ? 'none' : '';
+
+      // Show/hide Step 3 (Expiration — hidden for GiftCard & PrepaidCard)
+      const step3 = document.getElementById('step3Card');
+      if (step3) step3.style.display = (typeId === '0' || typeId === '4') ? 'none' : '';
+
+      // Show/hide step 5 (Purchase Price — for Membership & Discount)
+      const step5 = document.getElementById('step5Card');
+      if (step5) step5.style.display = (typeId === '2' || typeId === '3') ? '' : 'none';
+
+      // Update Step 4 content
+      const vg = document.getElementById('valueGroup');
+      const dg = document.getElementById('discountGroup');
+      const pg = document.getElementById('promotionGroup');
+      const mb = document.getElementById('membershipBenefits');
+      const s4t = document.getElementById('step4Title');
+      [vg, dg, pg, mb].forEach(el => el && (el.style.display = 'none'));
+      if (typeId === '0' || typeId === '4') {
+        vg.style.display = ''; s4t.innerHTML = 'Value / Denomination <span class="step-required">*</span>';
+      } else if (typeId === '3') {
+        dg.style.display = ''; s4t.innerHTML = 'Discount Value <span class="step-required">*</span>';
+      } else if (typeId === '1') {
+        pg.style.display = ''; s4t.innerHTML = 'Promotion Value <span class="step-required">*</span>';
+      } else if (typeId === '2') {
+        mb.style.display = ''; s4t.innerHTML = 'Membership Benefits <span class="step-required">*</span>';
+      }
+
+      // Membership-specific fields
+      const birthdayField = document.getElementById('birthdayField');
+      const lblEmail = document.getElementById('lblHolderEmail');
+      const emailRequired = document.getElementById('emailRequired');
+      const termsActions = document.getElementById('termsActions');
+      const isMembership = typeId === '2';
+
+      // Birthday: only for Membership
+      if (birthdayField) birthdayField.style.display = isMembership ? '' : 'none';
+
+      // Email label: "Member Email (optional)" vs "Holder Email *"
+      if (lblEmail) lblEmail.innerHTML = isMembership
+        ? 'Member Email <span style="font-weight:400;color:var(--c-text-3)">(optional)</span>'
+        : 'Holder Email <span id="emailRequired" style="color:#ff5630">*</span>';
+
+      // T&C load/save buttons: hidden for Membership
+      if (termsActions) termsActions.style.display = isMembership ? 'none' : '';
+    }
+
+    /* ──────────────────────────────────────────────
+       RANK SELECTION
+    ────────────────────────────────────────────── */
+    function toggleRank(btn) {
+      const wasActive = btn.classList.contains('active');
+      document.querySelectorAll('.rank-pill').forEach(p => p.classList.remove('active'));
+      if (!wasActive) btn.classList.add('active');
+    }
+    function clearRankSelection() {
+      document.querySelectorAll('.rank-pill').forEach(p => p.classList.remove('active'));
+    }
+    function setCustomRank(val) { /* set form.rank = val */ }
+
+    /* ──────────────────────────────────────────────
+       PRESET SELECTION
+    ────────────────────────────────────────────── */
+    function selectPreset(btn, group) {
+      btn.closest('.preset-row').querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      btn.closest('.preset-row').querySelectorAll('input').forEach(i => i.value = '');
+    }
+    function clearPresets(group) {
+      event.target.closest('.preset-row').querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    }
+    function setPromoMode(btn, mode) {
+      btn.closest('.step-body').querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('promoAmountPreset').style.display = mode === 'amount' ? '' : 'none';
+      document.getElementById('promoDiscountPreset').style.display = mode === 'discount' ? '' : 'none';
+    }
+
+    /* ──────────────────────────────────────────────
+       BENEFIT TOGGLE
+    ────────────────────────────────────────────── */
+    /* ──────────────────────────────────────────────
+       MEMBERSHIP BENEFITS — SELECT + CARDS
+    ────────────────────────────────────────────── */
+    const MB_BENEFITS = [
+      { id: 'monthly_credit', name: 'Monthly Credit', unit: '$', icon: '$', iconBg: '#d1fae5', iconColor: '#059669' },
+      { id: 'cashback', name: 'Cashback', unit: '%', icon: '↩', iconBg: '#ede9fe', iconColor: '#7c3aed' },
+      { id: 'discount', name: 'Discount', unit: '%', icon: '%', iconBg: '#fee2e2', iconColor: '#ef4444' },
+      { id: 'birthday_gift', name: 'Birthday Gift', unit: '$', icon: '🎂', iconBg: '#fef3c7', iconColor: '#d97706' },
+      { id: 'group_discount', name: 'Group Discount', unit: '%', icon: '%', iconBg: '#dbeafe', iconColor: '#2563eb' },
+      { id: 'free_lounge', name: 'Free Lounge', unit: 'x', icon: '☕', iconBg: '#f0fdf4', iconColor: '#16a34a' },
+    ];
+    let mbSelected = {}; // { id: value }
+
+    function initMbBenefitSelect() {
+      const sel = document.getElementById('mbBenefitSelect');
+      if (!sel) return;
+      sel.innerHTML = '<option value="">Select Benefit</option>';
+      MB_BENEFITS.forEach(b => {
+        const opt = document.createElement('option');
+        opt.value = b.id;
+        opt.textContent = `${b.name} (${b.unit})`;
+        sel.appendChild(opt);
+      });
+      renderMbCards();
+    }
+
+    function onMbBenefitSelect(sel) {
+      const id = sel.value;
+      if (!id) return;
+      if (!mbSelected[id]) {
+        mbSelected[id] = '';
+        renderMbCards();
+      }
+      sel.value = ''; // reset dropdown
+      lucide.createIcons();
+    }
+
+    function removeMbBenefit(id) {
+      delete mbSelected[id];
+      renderMbCards();
+    }
+
+    function renderMbCards() {
+      const row = document.getElementById('mbCardsRow');
+      const hint = document.getElementById('mbEmptyHint');
+      if (!row) return;
+      const ids = Object.keys(mbSelected);
+      if (ids.length === 0) {
+        row.innerHTML = '<div class="mb-empty-hint" id="mbEmptyHint">No benefits selected yet</div>';
+        return;
+      }
+      row.innerHTML = ids.map(id => {
+        const b = MB_BENEFITS.find(x => x.id === id);
+        if (!b) return '';
+        return `
+          <div class="mb-card" id="mbcard-${id}">
+            <button class="mb-card-remove" onclick="removeMbBenefit('${id}')" title="Remove">✕</button>
+            <div class="mb-card-header">
+              <div class="mb-card-icon" style="background:${b.iconBg};color:${b.iconColor}">${b.icon}</div>
+              <span class="mb-card-name">${b.name} (${b.unit})</span>
+            </div>
+            <input type="text" class="mb-value-input" placeholder="Enter value"
+              value="${mbSelected[id]}"
+              oninput="mbSelected['${id}']=this.value">
+          </div>`;
+      }).join('');
+    }
+
+    /* ──────────────────────────────────────────────
+       EXPIRATION
+    ────────────────────────────────────────────── */
+    function onExpirationChange() {
+      const sel = document.getElementById('expirationSelect');
+      const wrap = document.getElementById('customDateWrap');
+      if (wrap) wrap.style.display = sel.value === 'custom' ? '' : 'none';
+    }
+    // Set today as min date for custom expiry
+    document.addEventListener('DOMContentLoaded', () => {
+      const today = new Date().toISOString().split('T')[0];
+      const cd = document.getElementById('customDate');
+      if (cd) cd.min = today;
+      // Init AI prompt list with default category
+      renderAiPrompts();
+      // Init membership benefit select
+      initMbBenefitSelect();
+      // On mobile: collapse Business Information by default
+      if (window.innerWidth <= 767) {
+        const biWrap = document.getElementById('business-info');
+        const biHdr = document.getElementById('hdr-bizinfo');
+        if (biWrap) biWrap.classList.remove('open');
+        if (biHdr) biHdr.classList.remove('open');
+      } else {
+        const biWrap = document.getElementById('business-info');
+        const biHdr = document.getElementById('hdr-bizinfo');
+        if (biWrap) biWrap.classList.add('open');
+        if (biHdr) biHdr.classList.add('open');
+      }
+    });
+
+    /* ──────────────────────────────────────────────
+       TERMS
+    ────────────────────────────────────────────── */
+    function addTerm(text) {
+      const ta = document.getElementById('termsTextarea');
+      if (!ta) return;
+      ta.value = ta.value ? ta.value + '\n' + text : text;
+    }
+    /* ── T&C TEMPLATES STORE (in-memory) ── */
+    let tcTemplates = [
+      {
+        id: 1, name: 'Silver Membership T&Cs', date: new Date('2025-06-12T17:06:00'),
+        content: 'Valid for services only. Not applicable to products.\nNo cash value.\nValid for one-time use per invoice.\nPlease present this card before payment.'
+      },
+      {
+        id: 2, name: 'Gold Membership T&Cs', date: new Date('2025-06-12T09:00:00'),
+        content: 'Valid for Gold members only.\nBenefits are non-transferable.\nPresent your membership card for all transactions.\nCashback credited within 5 business days.'
+      },
+    ];
+    let nextTcId = 3;
+
+    /* ── LOAD TERMS (T&C Templates modal) ── */
+    function loadTerms() {
+      renderTcList();
+      document.getElementById('loadTermsModal').classList.add('open');
+      lucide.createIcons();
+    }
+    function closeLoadTerms() {
+      document.getElementById('loadTermsModal').classList.remove('open');
+    }
+    function renderTcList() {
+      const list = document.getElementById('tcTemplateList');
+      if (!tcTemplates.length) {
+        list.innerHTML = '<div style="text-align:center;padding:24px;color:#919eab;font-size:13px;">No saved templates yet.</div>';
+        return;
+      }
+      list.innerHTML = tcTemplates.map(t => `
+        <div class="tc-item" id="tcitem-${t.id}">
+          <div class="tc-item-info">
+            <div class="tc-item-name">${t.name}</div>
+            <div class="tc-item-date">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              ${fmtTcDate(t.date)}
+            </div>
+          </div>
+          <div class="tc-item-actions">
+            <button class="btn-tc-select" onclick="selectTcTemplate(${t.id})">Select</button>
+            <button class="btn-tc-delete" onclick="deleteTcTemplate(${t.id})" title="Delete">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+    function selectTcTemplate(id) {
+      const t = tcTemplates.find(x => x.id === id);
+      if (!t) return;
+      document.getElementById('termsTextarea').value = t.content;
+      closeLoadTerms();
+    }
+    function deleteTcTemplate(id) {
+      tcTemplates = tcTemplates.filter(x => x.id !== id);
+      renderTcList();
+    }
+    function fmtTcDate(d) {
+      return d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
+    }
+
+    /* ── SAVE TERMS (Save as Template modal) ── */
+    function saveTerms() {
+      const ta = document.getElementById('termsTextarea');
+      if (!ta || !ta.value.trim()) {
+        window.showCopyToast && window.showCopyToast('Please enter terms first.');
+        return;
+      }
+      document.getElementById('tcSaveNameInput').value = '';
+      document.getElementById('saveTermsModal').classList.add('open');
+      setTimeout(() => document.getElementById('tcSaveNameInput').focus(), 80);
+      lucide.createIcons();
+    }
+    function closeSaveTerms() {
+      document.getElementById('saveTermsModal').classList.remove('open');
+    }
+    function confirmSaveTc() {
+      const name = document.getElementById('tcSaveNameInput').value.trim();
+      if (!name) {
+        document.getElementById('tcSaveNameInput').style.borderColor = '#ff5630';
+        document.getElementById('tcSaveNameInput').focus();
+        setTimeout(() => { document.getElementById('tcSaveNameInput').style.borderColor = ''; }, 1500);
+        return;
+      }
+      const content = document.getElementById('termsTextarea').value.trim();
+      tcTemplates.unshift({ id: nextTcId++, name, date: new Date(), content });
+      closeSaveTerms();
+      window.showCopyToast && window.showCopyToast('Template saved!');
+    }
+
+    /* ──────────────────────────────────────────────
+       PAYMENT METHOD
+    ────────────────────────────────────────────── */
+    function selectPayment(el, method) {
+      document.querySelectorAll('.payment-method').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    /* ──────────────────────────────────────────────
+       CONFIRM ISSUANCE
+    ────────────────────────────────────────────── */
+    function confirmIssuance() {
+      const email = document.getElementById('holderEmail');
+      if (email && email.style.display !== 'none' && !email.value.trim()) {
+        email.style.borderColor = '#ff5630';
+        email.focus();
+        setTimeout(() => { email.style.borderColor = ''; }, 2000);
+        return;
+      }
+      alert('✅ Confirm Issuance — API call would happen here');
+    }
+    function saveDraft() { alert('💾 Saved as Draft'); }
+
+    /* ──────────────────────────────────────────────
+       SPIN ANIMATION
+    ────────────────────────────────────────────── */
+    const style = document.createElement('style');
+    style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+    document.head.appendChild(style);
+
+    /* ── Close modals on backdrop click ── */
+    document.getElementById('loadTermsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLoadTerms(); });
+    document.getElementById('saveTermsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSaveTerms(); });
+    document.getElementById('libraryModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLogoLibrary(); });
+    document.getElementById('logoPreviewModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLogoPreview(); });
   </script>
+
+  <!-- ═══ LOGO LIBRARY MODAL ═══ -->
+  <div class="lib-overlay" id="libraryModal">
+    <div class="lib-modal">
+      <div class="lib-modal-head">
+        <div class="lib-modal-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="3" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <polyline points="21 15 16 10 5 21" />
+          </svg>
+        </div>
+        <span class="lib-modal-title">Library <span id="libraryCount" style="font-weight:500;color:#919eab;">(0
+            logos)</span></span>
+        <button class="lib-close-btn" onclick="closeLogoLibrary()">
+          <i data-lucide="x" style="width:20px;height:20px;"></i>
+        </button>
+      </div>
+      <div class="lib-grid" id="libraryGrid"></div>
+    </div>
+  </div>
+
+  <!-- ═══ LOGO PREVIEW MODAL ═══ -->
+  <div class="lib-overlay" id="logoPreviewModal">
+    <div class="lib-preview-modal">
+      <button class="lib-close-btn" style="position:absolute;top:16px;right:16px;" onclick="closeLogoPreview()">
+        <i data-lucide="x" style="width:20px;height:20px;"></i>
+      </button>
+      <div class="lib-preview-body">
+        <img id="previewLogoImg" src="" alt="Logo preview" class="lib-preview-img" />
+      </div>
+      <div class="lib-preview-foot">
+        <button class="lib-btn-use-preview" onclick="useSelectedLogoPreview()">Use this logo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ LOAD TERMS MODAL ═══ -->
+  <div class="tc-modal-overlay" id="loadTermsModal">
+    <div class="tc-modal-box">
+      <div class="tc-modal-head">
+        <div class="tc-modal-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            <bookmark x="9" y="6" width="6" height="8" />
+            <path d="M9 6l3 3 3-3" />
+          </svg>
+        </div>
+        <div>
+          <div class="tc-modal-title">T&amp;C templates</div>
+        </div>
+        <button class="tc-modal-close" onclick="closeLoadTerms()">
+          <i data-lucide="x" style="width:16px;height:16px;"></i>
+        </button>
+      </div>
+      <div class="tc-template-list" id="tcTemplateList"></div>
+    </div>
+  </div>
+
+  <!-- ═══ SAVE TERMS MODAL ═══ -->
+  <div class="tc-modal-overlay" id="saveTermsModal">
+    <div class="tc-modal-box">
+      <div class="tc-modal-head">
+        <div class="tc-modal-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            <path d="M9 6l3 3 3-3" />
+          </svg>
+        </div>
+        <div>
+          <div class="tc-modal-title">Save T&amp;C as Template</div>
+          <div class="tc-modal-subtitle">Name it for later reuse</div>
+        </div>
+        <button class="tc-modal-close" onclick="closeSaveTerms()">
+          <i data-lucide="x" style="width:16px;height:16px;"></i>
+        </button>
+      </div>
+      <div style="margin-top:20px;">
+        <label class="tc-field-label">Name</label>
+        <input type="text" class="tc-name-input" id="tcSaveNameInput" placeholder="e.g. Silver Membership T&Cs"
+          onkeydown="if(event.key==='Enter')confirmSaveTc()" />
+      </div>
+      <div class="tc-modal-foot">
+        <button class="tc-btn-cancel" onclick="closeSaveTerms()">Cancel</button>
+        <button class="tc-btn-save" onclick="confirmSaveTc()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* ═══ LOGO LIBRARY MODAL ═══ */
+    .lib-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .lib-overlay.open {
+      display: flex;
+    }
+
+    /* Library grid modal */
+    .lib-modal {
+      background: #fff;
+      width: 100%;
+      max-width: 780px;
+      max-height: 90vh;
+      border-radius: 20px;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      animation: libModalIn .22s ease-out;
+      margin: 16px;
+      overflow: hidden;
+    }
+
+    @keyframes libModalIn {
+      from {
+        opacity: 0;
+        transform: scale(.96) translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .lib-modal-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 24px 18px;
+      border-bottom: 1px solid #f0f0f0;
+      flex-shrink: 0;
+    }
+
+    .lib-modal-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(0, 167, 111, 0.1);
+      color: #00a76f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .lib-modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #212b36;
+      flex: 1;
+    }
+
+    .lib-close-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #919eab;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.15s;
+      flex-shrink: 0;
+    }
+
+    .lib-close-btn:hover {
+      background: #f4f6f8;
+      color: #212b36;
+    }
+
+    .lib-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding: 20px 24px 24px;
+      overflow-y: auto;
+    }
+
+    /* Library card */
+    .lib-card {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1.5px solid #e8edf2;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .lib-card:hover {
+      border-color: #c0cdd6;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .lib-card.selected {
+      border-color: #00a76f;
+      box-shadow: 0 0 0 3px rgba(0, 167, 111, 0.15);
+    }
+
+    .lib-card-img-wrap {
+      position: relative;
+      background: #f4f6f8;
+      aspect-ratio: 1;
+      overflow: hidden;
+    }
+
+    .lib-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      transition: opacity 0.2s;
+    }
+
+    .lib-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.38);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .lib-card:hover .lib-card-overlay {
+      opacity: 1;
+    }
+
+    .lib-btn-del {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ff5630;
+      transition: 0.15s;
+    }
+
+    .lib-btn-del:hover {
+      background: #ffe4dc;
+    }
+
+    .lib-btn-view {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #212b36;
+      transition: 0.15s;
+    }
+
+    .lib-btn-view:hover {
+      background: #f0fdf7;
+      color: #00a76f;
+    }
+
+    .lib-btn-use {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: #00a76f;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      transition: 0.15s;
+      font-family: inherit;
+    }
+
+    .lib-btn-use:hover {
+      background: #007a52;
+    }
+
+    .lib-card-info {
+      padding: 10px 12px 12px;
+    }
+
+    .lib-card-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #212b36;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 3px;
+    }
+
+    .lib-card-date {
+      font-size: 12px;
+      color: #919eab;
+    }
+
+    /* Logo Preview modal */
+    .lib-preview-modal {
+      background: #fff;
+      width: 100%;
+      max-width: 440px;
+      border-radius: 20px;
+      position: relative;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.2);
+      padding: 52px 32px 32px;
+      animation: libModalIn .22s ease-out;
+      margin: 16px;
+    }
+
+    .lib-preview-body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+      padding: 16px 0 24px;
+    }
+
+    .lib-preview-img {
+      max-width: 100%;
+      max-height: 280px;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    .lib-preview-foot {
+      display: flex;
+      justify-content: center;
+    }
+
+    .lib-btn-use-preview {
+      padding: 13px 48px;
+      border-radius: 14px;
+      background: #00a76f;
+      color: #fff;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: 0.15s;
+      box-shadow: 0 6px 20px rgba(0, 167, 111, 0.3);
+    }
+
+    .lib-btn-use-preview:hover {
+      background: #007a52;
+    }
+
+    @media (max-width: 640px) {
+      .lib-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 14px;
+      }
+
+      .lib-modal {
+        border-radius: 16px;
+      }
+    }
+
+    /* ═══ T&C MODAL STYLES ═══ */
+    .tc-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .tc-modal-overlay.open {
+      display: flex;
+    }
+
+    .tc-modal-box {
+      background: #fff;
+      width: 100%;
+      max-width: 480px;
+      border-radius: 20px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+      padding: 28px 28px 24px;
+      animation: tcModalIn .22s ease-out;
+      margin: 16px;
+    }
+
+    @keyframes tcModalIn {
+      from {
+        opacity: 0;
+        transform: scale(.96) translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .tc-modal-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .tc-modal-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(0, 167, 111, 0.1);
+      color: #00a76f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .tc-modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #212b36;
+      line-height: 1.2;
+    }
+
+    .tc-modal-subtitle {
+      font-size: 13px;
+      color: #637381;
+      margin-top: 3px;
+    }
+
+    .tc-modal-close {
+      margin-left: auto;
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #919eab;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.15s;
+    }
+
+    .tc-modal-close:hover {
+      background: #f4f6f8;
+      color: #212b36;
+    }
+
+    /* Template list */
+    .tc-template-list {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 340px;
+      overflow-y: auto;
+    }
+
+    .tc-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1.5px solid #e2e8f0;
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .tc-item:hover {
+      border-color: #b0c4c4;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .tc-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .tc-item-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #212b36;
+      margin-bottom: 4px;
+    }
+
+    .tc-item-date {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #919eab;
+    }
+
+    .tc-item-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 16px;
+      flex-shrink: 0;
+    }
+
+    .btn-tc-select {
+      padding: 7px 18px;
+      border-radius: 10px;
+      border: 1.5px solid #00a76f;
+      background: rgba(0, 167, 111, 0.08);
+      color: #00a76f;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s;
+      font-family: inherit;
+    }
+
+    .btn-tc-select:hover {
+      background: rgba(0, 167, 111, 0.16);
+    }
+
+    .btn-tc-delete {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255, 86, 48, 0.1);
+      color: #ff5630;
+      cursor: pointer;
+      transition: 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-tc-delete:hover {
+      background: rgba(255, 86, 48, 0.18);
+    }
+
+    /* Save form */
+    .tc-field-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #212b36;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .tc-name-input {
+      width: 100%;
+      padding: 13px 16px;
+      border-radius: 12px;
+      border: 1.5px solid #e2e8f0;
+      font-size: 14px;
+      color: #212b36;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+      background: #fff;
+      box-sizing: border-box;
+    }
+
+    .tc-name-input:focus {
+      border-color: #00a76f;
+      box-shadow: 0 0 0 3px rgba(0, 167, 111, 0.1);
+    }
+
+    .tc-name-input::placeholder {
+      color: #b0bac5;
+    }
+
+    .tc-modal-foot {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .tc-btn-cancel {
+      padding: 11px 36px;
+      border-radius: 12px;
+      border: 1.5px solid #e2e8f0;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      color: #454f5b;
+      cursor: pointer;
+      transition: 0.15s;
+      font-family: inherit;
+    }
+
+    .tc-btn-cancel:hover {
+      border-color: #919eab;
+      background: #f4f6f8;
+    }
+
+    .tc-btn-save {
+      padding: 11px 36px;
+      border-radius: 12px;
+      border: none;
+      background: #00a76f;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s;
+      font-family: inherit;
+      box-shadow: 0 6px 16px rgba(0, 167, 111, 0.3);
+    }
+
+    .tc-btn-save:hover {
+      background: #007a52;
+    }
+  </style>
 </body>
 
 </html>

@@ -922,6 +922,47 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
 }
 
 /* ═══════════════════════════════════════════════════════
+   COPY TOAST
+═══════════════════════════════════════════════════════ */
+#copy-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #212B36;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+#copy-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+#copy-toast .toast-check {
+  width: 16px; height: 16px;
+  background: #00A76F;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+#copy-toast .toast-check svg {
+  width: 10px; height: 10px;
+  stroke: #fff; stroke-width: 2.5;
+  fill: none;
+}
+
+/* ═══════════════════════════════════════════════════════
    ACTION COLUMN — always right-aligned
 ═══════════════════════════════════════════════════════ */
 .col-actions,

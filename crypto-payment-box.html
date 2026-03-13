@@ -949,6 +949,13 @@
         closeModal(event.target.id);
       }
     }
+
+    // Copy wallet address
+    function copyAddress(btn) {
+      const wrapper = btn.closest('.address-wrapper');
+      const text = wrapper ? wrapper.querySelector('.address-text').textContent.trim() : '';
+      window.copyToClipboard(text, 'Address copied!');
+    }
   </script>
 </body>
 

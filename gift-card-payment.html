@@ -195,12 +195,17 @@
 
     .input-suffix {
       position: absolute;
-      right: 14px;
+      right: 10px;
+      z-index: 2;
       color: var(--primary-main);
       cursor: pointer;
       display: flex;
       align-items: center;
+      padding: 6px 8px;
+      border-radius: 8px;
+      transition: background 0.15s;
     }
+    .input-suffix:hover { background: rgba(0,167,111,0.08); }
 
     .minimal-input {
       width: 100%;
@@ -616,7 +621,13 @@
               placeholder="Enter card number or scan..."
               oninput="ecdClearError()" />
             <div class="input-suffix" onclick="ecdSimulateScan()" title="Scan QR">
-              <iconify-icon icon="solar:qr-code-scan-bold-duotone" width="26" style="color:var(--primary-main)"></iconify-icon>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-main)">
+                <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+                <rect x="7" y="7" width="3" height="3" rx="0.5"/>
+                <rect x="14" y="7" width="3" height="3" rx="0.5"/>
+                <rect x="7" y="14" width="3" height="3" rx="0.5"/>
+                <path d="M14 14h1M14 17h1M17 14h1M17 17h1"/>
+              </svg>
             </div>
           </div>
           <div id="ecdCardError" class="sgc-error" style="display:none">Please enter a card number</div>
@@ -634,7 +645,13 @@
           <div class="input-wrapper">
             <input type="text" class="minimal-input sgc-qr-input" id="ecdCardDisplay" readonly />
             <div class="input-suffix">
-              <iconify-icon icon="solar:qr-code-scan-bold-duotone" width="26" style="color:var(--primary-main)"></iconify-icon>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-main)">
+                <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+                <rect x="7" y="7" width="3" height="3" rx="0.5"/>
+                <rect x="14" y="7" width="3" height="3" rx="0.5"/>
+                <rect x="7" y="14" width="3" height="3" rx="0.5"/>
+                <path d="M14 14h1M14 17h1M17 14h1M17 17h1"/>
+              </svg>
             </div>
           </div>
         </div>
@@ -867,7 +884,13 @@
               placeholder="Enter or scan QR code"
               oninput="sgcClearError()" />
             <div class="input-suffix" onclick="sgcSimulateScan()" title="Scan QR">
-              <iconify-icon icon="solar:qr-code-scan-bold-duotone" width="26" style="color:var(--primary-main)"></iconify-icon>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-main)">
+                <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+                <rect x="7" y="7" width="3" height="3" rx="0.5"/>
+                <rect x="14" y="7" width="3" height="3" rx="0.5"/>
+                <rect x="7" y="14" width="3" height="3" rx="0.5"/>
+                <path d="M14 14h1M14 17h1M17 14h1M17 17h1"/>
+              </svg>
             </div>
           </div>
           <div id="sgcQrError" class="sgc-error" style="display:none">Please enter or scan the QR code</div>
@@ -884,7 +907,13 @@
           <div class="input-wrapper">
             <input type="text" class="minimal-input sgc-qr-input" id="sgcQrDisplay" readonly />
             <div class="input-suffix">
-              <iconify-icon icon="solar:qr-code-scan-bold-duotone" width="26" style="color:var(--primary-main)"></iconify-icon>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-main)">
+                <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+                <rect x="7" y="7" width="3" height="3" rx="0.5"/>
+                <rect x="14" y="7" width="3" height="3" rx="0.5"/>
+                <rect x="7" y="14" width="3" height="3" rx="0.5"/>
+                <path d="M14 14h1M14 17h1M17 14h1M17 17h1"/>
+              </svg>
             </div>
           </div>
         </div>
@@ -921,7 +950,10 @@
       color: var(--grey-900);
       margin-bottom: 10px;
     }
-    .sgc-qr-input { padding-right: 52px !important; }
+    .sgc-qr-input {
+      padding-left: 14px !important;
+      padding-right: 56px !important;
+    }
     .sgc-error {
       font-size: 12px;
       color: #ff5630;

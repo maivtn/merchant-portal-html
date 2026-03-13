@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Membership Package Details (Approved) - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="global.css">
+  <script src="global.js" defer></script>
+  <style>
+    :root {
+      --c-primary: #00A76F;
+      --c-primary-low: rgba(0,167,111,0.08);
+      --c-border: #e2e8f0;
+      --c-surface: #ffffff;
+      --c-bg: #f4f6f8;
+      --c-text-1: #212B36;
+      --c-text-2: #454F5B;
+      --c-text-3: #637381;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-card: 0 0 2px rgba(145,158,171,0.2), 0 12px 24px -4px rgba(145,158,171,0.12);
+    }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header-row {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px; margin-bottom: 24px;
+    }
+    .page-header-left { display: flex; align-items: center; gap: 10px; }
+    .btn-back {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--c-text-2); background: transparent;
+      border: none; cursor: pointer; transition: 0.2s;
+      text-decoration: none; flex-shrink: 0;
+    }
+    .btn-back:hover { background: var(--c-border); color: var(--c-text-1); }
+    .page-title { font-size: 22px; font-weight: 700; color: var(--c-text-1); line-height: 1.2; }
+    .btn-edit {
+      display: flex; align-items: center; gap: 6px;
+      padding: 9px 18px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--c-primary); background: var(--c-surface);
+      color: var(--c-primary); font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: 0.2s; font-family: inherit; text-decoration: none;
+    }
+    .btn-edit:hover { background: var(--c-primary-low); }
+
+    /* ─── MAIN OVERVIEW CARD ─── */
+    .overview-card {
+      background: var(--c-surface); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      display: grid; grid-template-columns: 320px 1fr;
+      overflow: hidden; margin-bottom: 20px;
+    }
+    .overview-left {
+      padding: 24px 20px;
+      background: var(--c-bg);
+      display: flex; flex-direction: column; align-items: center;
+      gap: 0;
+    }
+    .overview-right {
+      padding: 28px 32px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+
+    /* ─── MEMBERSHIP CARD ─── */
+    .mem-card {
+      width: 100%; max-width: 260px;
+      border-radius: 20px; padding: 20px 18px 18px;
+      position: relative; min-height: 195px;
+      display: flex; flex-direction: column; align-items: center;
+      background: linear-gradient(135deg, #1a1f2e 0%, #2d3148 50%, #1e2235 100%);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+      color: #fff; overflow: hidden;
+    }
+    .mem-card::after {
+      content: ''; position: absolute; top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(255,255,255,0.05), transparent);
+      border-radius: 50%;
+    }
+    .mem-card > * { position: relative; z-index: 1; }
+    .mem-badge-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      width: 100%; margin-bottom: 10px;
+    }
+    .mem-save-badge {
+      background: #ff9500; color: #fff; font-size: 9px; font-weight: 700;
+      padding: 3px 8px; border-radius: 6px; letter-spacing: 0.4px; text-transform: uppercase;
+    }
+    .mem-popular-badge {
+      background: rgba(255,255,255,0.15); color: #fff;
+      font-size: 9px; font-weight: 600; padding: 3px 9px;
+      border-radius: 20px; border: 1px solid rgba(255,255,255,0.25);
+    }
+    .mem-icon-circle {
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 2px solid rgba(255,165,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 8px; background: rgba(255,165,0,0.1); color: #ffad33;
+    }
+    .mem-name { font-size: 20px; font-weight: 800; letter-spacing: 2.5px; color: #f5a623; text-align: center; margin-bottom: 2px; }
+    .mem-price { font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 1px; }
+    .mem-price sup { font-size: 12px; font-weight: 600; vertical-align: super; }
+    .mem-price .period { font-size: 12px; font-weight: 400; opacity: 0.65; }
+    .mem-count { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5; margin-bottom: 12px; }
+    .mem-benefits-list { width: 100%; display: flex; flex-direction: column; gap: 4px; }
+    .mem-benefit-item { display: flex; align-items: center; gap: 6px; font-size: 11px; opacity: 0.82; }
+    .mem-benefit-item svg { flex-shrink: 0; color: var(--c-primary); }
+
+    /* ─── TOGGLE CONTROLS (below card) ─── */
+    .card-controls {
+      width: 100%; max-width: 260px; margin-top: 16px;
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .ctrl-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0; border-bottom: 1px solid var(--c-border);
+    }
+    .ctrl-row:last-child { border-bottom: none; }
+    .ctrl-label { font-size: 12px; font-weight: 600; color: var(--c-text-2); }
+    .ctrl-right { display: flex; align-items: center; gap: 7px; }
+    .ctrl-status { font-size: 11px; font-weight: 700; }
+    .ctrl-status.active { color: var(--c-primary); }
+    .ctrl-status.on { color: var(--c-primary); }
+
+    /* ─── TOGGLE SWITCH ─── */
+    .toggle-sw { position: relative; width: 36px; height: 20px; display: inline-block; }
+    .toggle-sw input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute; inset: 0; background: #dde1e6;
+      border-radius: 20px; cursor: pointer; transition: .25s;
+    }
+    .toggle-track:before {
+      content: ''; position: absolute;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: #fff; left: 3px; top: 3px; transition: .25s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .toggle-sw input:checked + .toggle-track { background: var(--c-primary); }
+    .toggle-sw input:checked + .toggle-track:before { transform: translateX(16px); }
+
+    /* ─── RIGHT INFO ─── */
+    .info-name-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .info-pkg-name { font-size: 26px; font-weight: 800; color: var(--c-text-1); }
+    .badge-approved {
+      display: inline-flex; align-items: center;
+      padding: 3px 10px; border-radius: 6px;
+      background: rgba(0,167,111,0.12); color: var(--c-primary);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.4px;
+    }
+    .price-header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--c-border); }
+    .price-label { font-size: 10px; font-weight: 700; color: var(--c-text-3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+    .price-amount { font-size: 32px; font-weight: 800; color: var(--c-primary); line-height: 1; }
+    .info-rows { display: flex; flex-direction: column; gap: 0; }
+    .info-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 11px 0; border-bottom: 1px solid var(--c-border);
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-row-label { font-size: 13px; color: var(--c-text-3); font-weight: 400; }
+    .info-row-value { font-size: 13px; color: var(--c-text-1); font-weight: 700; text-align: right; }
+    .info-row-value.highlight { color: var(--c-primary); }
+
+    /* ─── INLINE EDIT LINK ─── */
+    .btn-inline-edit {
+      display: inline-flex; align-items: center; gap: 3px;
+      font-size: 12px; font-weight: 600; color: var(--c-primary);
+      background: none; border: none; cursor: pointer;
+      padding: 2px 6px; border-radius: 4px; transition: 0.15s;
+      font-family: inherit; margin-left: 8px;
+    }
+    .btn-inline-edit:hover { background: var(--c-primary-low); }
+
+    /* ─── SECTION CARD ─── */
+    .section-card {
+      background: var(--c-surface); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card); padding: 24px 28px; margin-bottom: 20px;
+    }
+    .section-card:last-child { margin-bottom: 0; }
+    .section-title {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 15px; font-weight: 700; color: var(--c-text-1); margin-bottom: 18px;
+    }
+    .section-title svg { color: var(--c-text-3); }
+
+    /* ─── BENEFIT CARDS ─── */
+    .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .benefit-item-card { background: var(--c-bg); border-radius: var(--radius-md); padding: 14px 16px; }
+    .benefit-item-hd { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; }
+    .benefit-item-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .benefit-item-name { font-size: 13px; font-weight: 600; color: var(--c-text-1); }
+    .benefit-item-value { font-size: 20px; font-weight: 800; color: var(--c-primary); line-height: 1.1; }
+    .benefit-item-unit { font-size: 11px; color: var(--c-text-3); font-weight: 500; margin-left: 3px; }
+
+    /* ─── TERMS ─── */
+    .terms-text { font-size: 13px; line-height: 1.75; color: var(--c-text-2); }
+
+    /* ─── EDIT DISCOUNT MODAL ─── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45); z-index: 1000;
+      align-items: center; justify-content: center;
+      backdrop-filter: blur(3px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #fff; width: 100%; max-width: 380px;
+      border-radius: 16px;
+      box-shadow: 0 24px 48px -8px rgba(0,0,0,0.22);
+      animation: modalIn .22s ease-out;
+      padding: 24px;
+    }
+    @keyframes modalIn { from { opacity:0; transform:scale(.96) translateY(8px); } to { opacity:1; transform:scale(1) translateY(0); } }
+    .modal-head {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 18px;
+    }
+    .modal-title { font-size: 16px; font-weight: 700; color: var(--c-text-1); }
+    .modal-subtitle { font-size: 12px; color: var(--c-text-3); margin-top: 2px; }
+    .modal-close-btn {
+      width: 30px; height: 30px; border-radius: 8px; border: none;
+      background: transparent; color: var(--c-text-3); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: 0.15s; flex-shrink: 0;
+    }
+    .modal-close-btn:hover { background: var(--c-bg); color: var(--c-text-1); }
+    .modal-field { margin-bottom: 16px; }
+    .modal-field-label { font-size: 12px; font-weight: 600; color: var(--c-text-2); margin-bottom: 6px; }
+    .current-discount-box {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px; border-radius: var(--radius-sm);
+      border: 1.5px solid rgba(0,167,111,0.3); background: rgba(0,167,111,0.06);
+    }
+    .current-discount-box .cd-label { font-size: 13px; color: var(--c-text-2); font-weight: 500; }
+    .current-discount-box .cd-value {
+      font-size: 14px; font-weight: 700; color: var(--c-primary);
+      background: rgba(0,167,111,0.15); padding: 2px 10px; border-radius: 6px;
+    }
+    .discount-input-wrap {
+      display: flex; align-items: center;
+      border: 1.5px solid var(--c-border); border-radius: var(--radius-sm);
+      overflow: hidden; background: #fff; transition: border-color 0.2s;
+    }
+    .discount-input-wrap:focus-within { border-color: var(--c-primary); box-shadow: 0 0 0 3px var(--c-primary-low); }
+    .discount-input {
+      flex: 1; border: none; outline: none; padding: 10px 14px;
+      font-size: 14px; color: var(--c-text-1); font-family: inherit;
+    }
+    .discount-suffix {
+      padding: 10px 12px; background: var(--c-bg); font-size: 13px;
+      font-weight: 600; color: var(--c-text-3); border-left: 1px solid var(--c-border);
+    }
+    .modal-hint { font-size: 11px; color: var(--c-text-3); margin-top: 5px; }
+    .modal-foot {
+      display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;
+    }
+    .btn-cancel-modal {
+      padding: 8px 20px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--c-border); background: #fff;
+      font-size: 13px; font-weight: 600; color: var(--c-text-2);
+      cursor: pointer; transition: 0.15s; font-family: inherit;
+    }
+    .btn-cancel-modal:hover { border-color: var(--c-text-2); background: var(--c-bg); }
+    .btn-save-changes {
+      padding: 8px 20px; border-radius: var(--radius-sm);
+      border: none; background: var(--c-primary); color: #fff;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      transition: 0.15s; font-family: inherit;
+      box-shadow: 0 4px 12px rgba(0,167,111,0.28);
+    }
+    .btn-save-changes:hover { background: #007a52; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1023px) {
+      .overview-card { grid-template-columns: 1fr; }
+      .overview-left { padding: 24px; align-items: center; }
+      .card-controls { max-width: 100%; }
+      .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 767px) {
+      .page-title { font-size: 17px; }
+      .overview-right { padding: 20px 18px; }
+      .benefits-grid { grid-template-columns: 1fr; }
+      .info-pkg-name { font-size: 20px; }
+      .price-amount { font-size: 24px; }
+      .section-card { padding: 18px; }
+      .modal-box { margin: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLinkPay" />
+      </div>
+      <div class="sidebar-content"></div>
+    </aside>
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div class="header-left">
+          <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+        <div class="header-right">
+          <div class="header-avatar">A</div>
+        </div>
+      </header>
+      <main class="main-content">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header-row">
+          <div class="page-header-left">
+            <a href="benefits-setup.html" class="btn-back" title="Back">
+              <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
+            </a>
+            <div>
+              <div class="page-title">Membership Package Details</div>
+              <div class="breadcrumbs" style="margin-top:4px">
+                <a href="#">Settings</a>
+                <span class="breadcrumbs-dot"></span>
+                <a href="benefits-setup.html">Benefits Setup</a>
+                <span class="breadcrumbs-dot"></span>
+                <span style="color:#212b36;font-weight:500">Benefit Package Details</span>
+              </div>
+            </div>
+          </div>
+          <a href="create-membership-package.html" class="btn-edit">
+            <i data-lucide="pencil" style="width:15px;height:15px;"></i>
+            Edit Package
+          </a>
+        </div>
+
+        <!-- OVERVIEW CARD -->
+        <div class="overview-card">
+
+          <!-- Left: Card Preview + Toggles -->
+          <div class="overview-left">
+            <div class="mem-card">
+              <div class="mem-badge-row">
+                <span class="mem-save-badge" id="saveBadge">SAVE 10%</span>
+                <span class="mem-popular-badge" id="popularBadge">Most Popular</span>
+              </div>
+              <div class="mem-icon-circle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+                  <path d="M9.5 8h3a2 2 0 0 1 0 4h-3V8zM9.5 12h3.5a2 2 0 0 1 0 4H9.5v-4z"/>
+                  <line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/>
+                </svg>
+              </div>
+              <div class="mem-name">SILVER</div>
+              <div class="mem-price"><sup>$</sup>99<span class="period"> /yr</span></div>
+              <div class="mem-count">3 BENEFITS</div>
+              <div class="mem-benefits-list">
+                <div class="mem-benefit-item">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  Monthly Credit: 25
+                </div>
+                <div class="mem-benefit-item">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  Cashback: 12
+                </div>
+                <div class="mem-benefit-item">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  Birthday Gift: $50 Voucher
+                </div>
+              </div>
+            </div>
+
+            <!-- Toggles below the card -->
+            <div class="card-controls">
+              <div class="ctrl-row">
+                <span class="ctrl-label">Sale Status</span>
+                <div class="ctrl-right">
+                  <span class="ctrl-status active" id="saleStatusLabel">ACTIVE</span>
+                  <label class="toggle-sw">
+                    <input type="checkbox" id="saleToggle" checked onchange="onSaleToggle(this)" />
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="ctrl-row">
+                <span class="ctrl-label">Mark as Most Popular</span>
+                <div class="ctrl-right">
+                  <span class="ctrl-status on" id="popularLabel">ON</span>
+                  <label class="toggle-sw">
+                    <input type="checkbox" id="popularToggle" checked onchange="onPopularToggle(this)" />
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Package Info -->
+          <div class="overview-right">
+            <div class="info-name-row">
+              <span class="info-pkg-name">SILVER</span>
+              <span class="badge-approved">APPROVED</span>
+            </div>
+            <div class="price-header">
+              <div class="price-label">Price</div>
+              <div class="price-amount">$99</div>
+            </div>
+            <div class="info-rows">
+              <div class="info-row">
+                <span class="info-row-label">Package ID</span>
+                <span class="info-row-value">PKG001</span>
+              </div>
+              <div class="info-row">
+                <span class="info-row-label">Price</span>
+                <span class="info-row-value">$99</span>
+              </div>
+              <div class="info-row">
+                <span class="info-row-label">Billing Cycle</span>
+                <span class="info-row-value">365 Days</span>
+              </div>
+              <div class="info-row">
+                <span class="info-row-label">% Discount</span>
+                <span class="info-row-value">
+                  <span class="highlight" id="discountDisplay">10%</span>
+                  <button class="btn-inline-edit" onclick="openDiscountModal()">
+                    <i data-lucide="pencil" style="width:12px;height:12px;"></i> Edit
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BENEFITS SECTION -->
+        <div class="section-card">
+          <div class="section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/>
+              <line x1="12" y1="22" x2="12" y2="7"/>
+              <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+              <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+            </svg>
+            Benefits
+          </div>
+          <div class="benefits-grid">
+            <div class="benefit-item-card">
+              <div class="benefit-item-hd">
+                <div class="benefit-item-icon" style="background:#c8fae5;color:#00a76f;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <span class="benefit-item-name">Monthly Credit</span>
+              </div>
+              <div class="benefit-item-value">$25<span class="benefit-item-unit">/month</span></div>
+            </div>
+            <div class="benefit-item-card">
+              <div class="benefit-item-hd">
+                <div class="benefit-item-icon" style="background:#c8fae5;color:#00a76f;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                </div>
+                <span class="benefit-item-name">Cashback</span>
+              </div>
+              <div class="benefit-item-value">12%<span class="benefit-item-unit">on purchases</span></div>
+            </div>
+            <div class="benefit-item-card">
+              <div class="benefit-item-hd">
+                <div class="benefit-item-icon" style="background:#e0d4ff;color:#7c3aed;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/>
+                    <line x1="12" y1="22" x2="12" y2="7"/>
+                    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+                    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+                  </svg>
+                </div>
+                <span class="benefit-item-name">Birthday Gift</span>
+              </div>
+              <div class="benefit-item-value">$50<span class="benefit-item-unit">voucher</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TERMS & CONDITIONS -->
+        <div class="section-card">
+          <div class="section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            Package Terms &amp; Conditions
+          </div>
+          <p class="terms-text">
+            1. This SILVER Package is valid for one year from the enrollment date.
+            2. Members enjoy exclusive benefits including monthly credits, cashback, and birthday gifts.
+            3. Package benefits cannot be transferred or exchanged for cash.
+            4. Please present your membership card or digital ID for all transactions.
+            5. Cashback and credits will be automatically applied to your VLINKPAY wallet.
+            6. Package auto-renews annually unless cancelled 30 days prior to expiration.
+          </p>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- EDIT DISCOUNT MODAL -->
+  <div class="modal-overlay" id="discountModal">
+    <div class="modal-box" role="dialog" aria-labelledby="discountModalTitle">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title" id="discountModalTitle">Edit Discount</div>
+          <div class="modal-subtitle">SILVER Package &mdash; PKG001</div>
+        </div>
+        <button class="modal-close-btn" onclick="closeDiscountModal()" aria-label="Close">
+          <i data-lucide="x" style="width:16px;height:16px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-field">
+        <div class="modal-field-label">Current Discount</div>
+        <div class="current-discount-box">
+          <span class="cd-label">Current value</span>
+          <span class="cd-value" id="currentDiscountDisplay">10%</span>
+        </div>
+      </div>
+
+      <div class="modal-field">
+        <div class="modal-field-label">New Discount (%)</div>
+        <div class="discount-input-wrap">
+          <input type="number" class="discount-input" id="newDiscountInput"
+            min="0" max="100" placeholder="0" value="10" />
+          <span class="discount-suffix">%</span>
+        </div>
+        <div class="modal-hint">Enter a value between 0 and 100.</div>
+      </div>
+
+      <div class="modal-foot">
+        <button class="btn-cancel-modal" onclick="closeDiscountModal()">Cancel</button>
+        <button class="btn-save-changes" onclick="saveDiscount()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── State ── */
+    let currentDiscount = 10;
+
+    /* ── Init ── */
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+    });
+
+    /* ── Sale Status Toggle ── */
+    function onSaleToggle(cb) {
+      const label = document.getElementById('saleStatusLabel');
+      label.textContent = cb.checked ? 'ACTIVE' : 'INACTIVE';
+      label.style.color = cb.checked ? 'var(--c-primary)' : '#637381';
+    }
+
+    /* ── Most Popular Toggle ── */
+    function onPopularToggle(cb) {
+      const label   = document.getElementById('popularLabel');
+      const badge   = document.getElementById('popularBadge');
+      label.textContent = cb.checked ? 'ON' : 'OFF';
+      label.style.color = cb.checked ? 'var(--c-primary)' : '#637381';
+      badge.style.display = cb.checked ? '' : 'none';
+    }
+
+    /* ── Edit Discount Modal ── */
+    function openDiscountModal() {
+      document.getElementById('newDiscountInput').value = currentDiscount;
+      document.getElementById('currentDiscountDisplay').textContent = currentDiscount + '%';
+      document.getElementById('discountModal').classList.add('open');
+      lucide.createIcons();
+      setTimeout(() => document.getElementById('newDiscountInput').focus(), 50);
+    }
+
+    function closeDiscountModal() {
+      document.getElementById('discountModal').classList.remove('open');
+    }
+
+    function saveDiscount() {
+      const val = parseInt(document.getElementById('newDiscountInput').value);
+      if (isNaN(val) || val < 0 || val > 100) {
+        document.getElementById('newDiscountInput').style.borderColor = '#ff5630';
+        return;
+      }
+      currentDiscount = val;
+
+      // Update discount display in info row
+      document.getElementById('discountDisplay').textContent = val + '%';
+
+      // Update save badge on card
+      const badge = document.getElementById('saveBadge');
+      if (val > 0) {
+        badge.textContent = 'SAVE ' + val + '%';
+        badge.style.display = '';
+      } else {
+        badge.style.display = 'none';
+      }
+
+      closeDiscountModal();
+      window.showCopyToast && window.showCopyToast('Discount updated!');
+    }
+
+    /* ── Close modal on backdrop click ── */
+    document.getElementById('discountModal').addEventListener('click', function(e) {
+      if (e.target === this) closeDiscountModal();
+    });
+
+    /* ── Clear error on input ── */
+    document.getElementById('newDiscountInput').addEventListener('input', function() {
+      this.style.borderColor = '';
+    });
+  </script>
+</body>
+</html>

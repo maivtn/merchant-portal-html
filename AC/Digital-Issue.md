@@ -139,10 +139,11 @@
 |-------|-------|------|----------|
 | `0` | E-Gift Card | `gift-card.svg` | ❌ |
 | `2` | Membership | `membership.svg` | ❌ |
+| `5` | **Crypto Card** | `PrepaidCard.svg` | ✅ (tạm disabled) |
 | `4` | Prepaid Card | `PrepaidCard.svg` | ❌ |
 | `3` | Discount | `discount.svg` | ❌ |
 | `1` | Promotion | `discount.svg` | ❌ |
-| `5` | **Crypto Card** | `PrepaidCard.svg` | ✅ (tạm disabled) |
+
 
 **Rank Grid** (`.rank-grid`): ẩn khi `cardType = PrepaidCard`; cách card type `mt-5` (20px)
 - Layout: `flex flex-wrap`, `width: auto`, gap `16px` desktop / `6px` (≤768px)

@@ -61,7 +61,7 @@
       icon: 'solar:settings-bold-duotone', iconWidth: 24,
       children: [
         { label: 'Merchant Payment Setup', href: 'merchant-payment-setup.html' },
-        { label: 'Benefits Setup',         href: 'benefits-setup.html', relatedPages: ['benefit-package-details.html', 'benefit-package-view.html', 'benefit-package-view-active.html'] },
+        { label: 'Benefits Setup',         href: 'benefits-setup.html', relatedPages: ['benefit-package-details.html', 'benefit-package-view.html', 'benefit-package-view-active.html', 'create-membership-package.html', 'membership-package-details.html', 'membership-package-details-approved.html'] },
       ]
     },
     {
@@ -350,6 +350,54 @@
 
   window.fmtDate     = fmtDate;
   window.fmtDateTime = fmtDateTime;
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COPY TO CLIPBOARD + TOAST
+  // ═══════════════════════════════════════════════════════════════════════════
+  var _toastTimer = null;
+
+  function showCopyToast(label) {
+    label = label || 'Copied to clipboard!';
+    var toast = document.getElementById('copy-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'copy-toast';
+      toast.innerHTML =
+        '<span class="toast-check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>' +
+        '<span id="copy-toast-msg"></span>';
+      document.body.appendChild(toast);
+    }
+    document.getElementById('copy-toast-msg').textContent = label;
+    toast.classList.add('show');
+    if (_toastTimer) clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2200);
+  }
+
+  function copyToClipboard(text, label) {
+    text = String(text || '').trim();
+    if (!text) return;
+    var msg = label || 'Copied to clipboard!';
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () {
+        showCopyToast(msg);
+      }).catch(function () { _fallbackCopy(text, msg); });
+    } else {
+      _fallbackCopy(text, msg);
+    }
+  }
+
+  function _fallbackCopy(text, msg) {
+    var el = document.createElement('textarea');
+    el.value = text;
+    el.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+    document.body.appendChild(el);
+    el.focus(); el.select();
+    try { document.execCommand('copy'); showCopyToast(msg); } catch (e) {}
+    document.body.removeChild(el);
+  }
+
+  window.showCopyToast  = showCopyToast;
+  window.copyToClipboard = copyToClipboard;
 
   // Expose to global scope
   window.toggleSidebar  = toggleSidebar;

@@ -410,9 +410,100 @@
       font-size: 14px;
       font-weight: 700;
       color: var(--grey-900);
-      margin-bottom: 16px;
       cursor: pointer;
     }
+
+    .btn-tc-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--grey-300);
+      background: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--grey-700);
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-family: inherit;
+    }
+    .btn-tc-action:hover {
+      border-color: var(--primary-main);
+      color: var(--primary-main);
+    }
+    .btn-tc-save {
+      border-color: var(--primary-main);
+      color: var(--primary-main);
+    }
+    .btn-tc-save:hover {
+      background: rgba(0,167,111,0.08);
+    }
+
+    /* T&C modal */
+    .tc-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .tc-overlay.open { display: flex; }
+    .tc-box {
+      background: #fff;
+      border-radius: 16px;
+      width: 480px;
+      max-width: 95vw;
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    }
+    .tc-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .tc-box-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--grey-900);
+    }
+    .tc-box-close {
+      background: none; border: none;
+      cursor: pointer; color: var(--grey-500);
+      display: flex; align-items: center; padding: 4px;
+      border-radius: 6px;
+    }
+    .tc-box-close:hover { background: #f4f6f8; }
+    .tc-list { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; margin-bottom: 16px; }
+    .tc-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px; border: 1.5px solid var(--grey-200);
+      border-radius: 10px; cursor: pointer; transition: 0.2s;
+    }
+    .tc-item:hover { border-color: var(--primary-main); background: rgba(0,167,111,0.04); }
+    .tc-item-name { font-size: 13px; font-weight: 600; color: var(--grey-800); }
+    .tc-item-date { font-size: 11px; color: var(--grey-500); margin-top: 2px; }
+    .tc-item-use { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--primary-main); white-space: nowrap; }
+    .tc-save-input {
+      width: 100%; height: 40px;
+      border: 1.5px solid var(--grey-300); border-radius: 8px;
+      padding: 0 12px; font-size: 13px; font-family: inherit;
+      outline: none; margin-bottom: 12px;
+    }
+    .tc-save-input:focus { border-color: var(--primary-main); }
+    .tc-btn-row { display: flex; gap: 8px; justify-content: flex-end; }
+    .tc-btn {
+      padding: 9px 20px; border-radius: 8px;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      transition: 0.2s;
+    }
+    .tc-btn-cancel { background: #f4f6f8; border: none; color: var(--grey-700); }
+    .tc-btn-cancel:hover { background: #e8ecef; }
+    .tc-btn-confirm { background: var(--primary-main); border: none; color: #fff; }
+    .tc-btn-confirm:hover { background: #00875a; }
 
     .checkbox-row input {
       width: 20px;
@@ -726,10 +817,22 @@
           </div>
 
           <div class="form-group-custom">
-            <label class="checkbox-row">
-              <input type="checkbox" checked>
-              Terms and conditions
-            </label>
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+              <label class="checkbox-row" style="margin:0;">
+                <input type="checkbox" checked>
+                Terms and conditions
+              </label>
+              <div style="display:flex;gap:8px;" id="tcActions">
+                <button class="btn-tc-action" onclick="loadTCCard()">
+                  <i data-lucide="folder-open" style="width:13px;height:13px;"></i>
+                  Load Terms
+                </button>
+                <button class="btn-tc-action btn-tc-save" onclick="saveTCCard()">
+                  <i data-lucide="save" style="width:13px;height:13px;"></i>
+                  Save Terms
+                </button>
+              </div>
+            </div>
 
             <div class="rich-text-editor">
               <div class="editor-toolbar">
@@ -823,6 +926,101 @@
         tag.classList.add('active');
       });
     });
+  </script>
+
+  <!-- Load Terms Modal -->
+  <div class="tc-overlay" id="tcLoadModal" onclick="if(event.target===this)closeTCLoad()">
+    <div class="tc-box">
+      <div class="tc-box-header">
+        <span class="tc-box-title">T&amp;C Templates</span>
+        <button class="tc-box-close" onclick="closeTCLoad()">
+          <i data-lucide="x" style="width:18px;height:18px;"></i>
+        </button>
+      </div>
+      <div class="tc-list" id="tcLoadList"></div>
+    </div>
+  </div>
+
+  <!-- Save Terms Modal -->
+  <div class="tc-overlay" id="tcSaveModal" onclick="if(event.target===this)closeTCSave()">
+    <div class="tc-box">
+      <div class="tc-box-header">
+        <span class="tc-box-title">Save T&amp;C as Template</span>
+        <button class="tc-box-close" onclick="closeTCSave()">
+          <i data-lucide="x" style="width:18px;height:18px;"></i>
+        </button>
+      </div>
+      <input type="text" class="tc-save-input" id="tcSaveName" placeholder="Template name (e.g. Silver Membership T&Cs)">
+      <div class="tc-btn-row">
+        <button class="tc-btn tc-btn-cancel" onclick="closeTCSave()">Cancel</button>
+        <button class="tc-btn tc-btn-confirm" onclick="confirmSaveTCCard()">
+          <i data-lucide="save" style="width:13px;height:13px;margin-right:4px;"></i>Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── T&C TEMPLATES (issue-card) ── */
+    let icTcTemplates = [
+      { id:1, name:'Standard Terms', date:'Mar 10, 2026',
+        content:'Valid for services only. Not applicable to products.\nNo cash value.\nValid for one-time use per invoice.\nPlease present this card before payment.' },
+      { id:2, name:'Membership Terms', date:'Mar 08, 2026',
+        content:'Valid for Gold members only.\nBenefits are non-transferable.\nPresent your membership card for all transactions.\nCashback credited within 5 business days.' },
+    ];
+    let icNextTcId = 3;
+
+    function getEditorContent() {
+      const ed = document.querySelector('.editor-content');
+      return ed ? ed.innerText.trim() : '';
+    }
+    function setEditorContent(text) {
+      const ed = document.querySelector('.editor-content');
+      if (ed) ed.innerText = text;
+    }
+
+    function loadTCCard() {
+      const list = document.getElementById('tcLoadList');
+      list.innerHTML = icTcTemplates.length === 0
+        ? '<p style="color:#637381;font-size:13px;text-align:center;padding:12px">No templates saved yet.</p>'
+        : icTcTemplates.map(t => `
+          <div class="tc-item" onclick="useTCTemplate(${t.id})">
+            <div>
+              <div class="tc-item-name">${t.name}</div>
+              <div class="tc-item-date">${t.date}</div>
+            </div>
+            <span class="tc-item-use">Use</span>
+          </div>`).join('');
+      document.getElementById('tcLoadModal').classList.add('open');
+      lucide.createIcons();
+    }
+    function closeTCLoad() {
+      document.getElementById('tcLoadModal').classList.remove('open');
+    }
+    function useTCTemplate(id) {
+      const t = icTcTemplates.find(x => x.id === id);
+      if (t) setEditorContent(t.content);
+      closeTCLoad();
+    }
+
+    function saveTCCard() {
+      const content = getEditorContent();
+      if (!content) { alert('Please enter terms content first.'); return; }
+      document.getElementById('tcSaveName').value = '';
+      document.getElementById('tcSaveModal').classList.add('open');
+      setTimeout(() => document.getElementById('tcSaveName').focus(), 100);
+      lucide.createIcons();
+    }
+    function closeTCSave() {
+      document.getElementById('tcSaveModal').classList.remove('open');
+    }
+    function confirmSaveTCCard() {
+      const name = document.getElementById('tcSaveName').value.trim();
+      if (!name) { document.getElementById('tcSaveName').focus(); return; }
+      icTcTemplates.push({ id: icNextTcId++, name, date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}), content: getEditorContent() });
+      closeTCSave();
+      if (window.showCopyToast) window.showCopyToast('Template saved!');
+    }
   </script>
 </body>
 

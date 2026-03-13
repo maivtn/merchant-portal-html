@@ -490,7 +490,7 @@
     <div class="page-header">
       <div class="page-header-row">
         <h1 class="page-title" style="margin:0">Benefits Setup</h1>
-        <button class="btn-create" id="btnCreate" onclick="openModal()">
+        <button class="btn-create" id="btnCreate" onclick="handleCreateBtn()">
           <i data-lucide="plus"></i>
           <span class="btn-text" id="btnCreateText">Create Benefit</span>
         </button>
@@ -552,6 +552,58 @@
       </div>
     </div>
   </main>
+
+  <!-- ═══════════════════════════════════════════════════
+       VIEW BENEFIT DETAIL MODAL
+  ═══════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="viewBenefitModal">
+    <div class="modal-box" style="max-width:480px;" role="dialog">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title">Benefit Detail</div>
+          <div class="modal-desc">Detailed information about this benefit</div>
+        </div>
+        <button class="modal-close" onclick="closeViewBenefitModal()"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body" style="padding:24px;">
+        <!-- Icon + Name header -->
+        <div style="display:flex;align-items:center;gap:16px;padding:16px;background:#f9fafb;border-radius:12px;margin-bottom:20px;">
+          <div id="vbIcon"></div>
+          <div>
+            <div id="vbName" style="font-size:17px;font-weight:700;color:#161c24;"></div>
+            <div id="vbId" style="font-size:12px;color:#919eab;margin-top:2px;"></div>
+          </div>
+          <div style="margin-left:auto;" id="vbStatus"></div>
+        </div>
+        <!-- Detail rows -->
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
+            <span style="font-size:13px;color:#637381;font-weight:500;">Benefit Unit</span>
+            <span id="vbUnit" style="font-size:13px;color:#212b36;font-weight:600;"></span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
+            <span style="font-size:13px;color:#637381;font-weight:500;">Rollover Type</span>
+            <span id="vbRollover" style="font-size:13px;color:#212b36;font-weight:600;"></span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
+            <span style="font-size:13px;color:#637381;font-weight:500;">Cycle</span>
+            <span id="vbCycle" style="font-size:13px;color:#212b36;font-weight:600;"></span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
+            <span style="font-size:13px;color:#637381;font-weight:500;">Created By</span>
+            <span id="vbCreatedBy" style="font-size:13px;color:#212b36;"></span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;">
+            <span style="font-size:13px;color:#637381;font-weight:500;">Created Date</span>
+            <span id="vbCreatedDate" style="font-size:13px;color:#212b36;"></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot" style="justify-content:flex-end;">
+        <button class="btn-cancel" onclick="closeViewBenefitModal()">Close</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════════════════════
        CREATE BENEFIT MODAL
@@ -641,18 +693,18 @@
        MOCK DATA
     ═══════════════════════════════════════════════════════ */
     const BENEFITS = [
-      { id:'BEN001', name:'Discount',         unit:'Percentage (%)', iconIdx:2,  status:'ACTIVE',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-01-10' },
-      { id:'BEN002', name:'Cashback',          unit:'USD ($)',         iconIdx:0,  status:'ACTIVE',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-01-15' },
-      { id:'BEN003', name:'Birthday Bonus',    unit:'Points',         iconIdx:3,  status:'ACTIVE',   createdBy:'manager@vlinkpay.com',  createdDate:'2025-02-01' },
-      { id:'BEN004', name:'Free Gift',         unit:'USD ($)',         iconIdx:7,  status:'INACTIVE', createdBy:'admin@vlinkpay.com',    createdDate:'2025-02-10' },
-      { id:'BEN005', name:'Loyalty Points',    unit:'Points',         iconIdx:4,  status:'ACTIVE',   createdBy:'manager@vlinkpay.com',  createdDate:'2025-02-20' },
-      { id:'BEN006', name:'VIP Lounge',        unit:'Percentage (%)', iconIdx:5,  status:'ACTIVE',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-03-01' },
-      { id:'BEN007', name:'Referral Reward',   unit:'USD ($)',         iconIdx:6,  status:'INACTIVE', createdBy:'ops@vlinkpay.com',      createdDate:'2025-03-05' },
-      { id:'BEN008', name:'Early Access',      unit:'Points',         iconIdx:1,  status:'ACTIVE',   createdBy:'product@vlinkpay.com',  createdDate:'2025-03-10' },
-      { id:'BEN009', name:'Welcome Bonus',     unit:'USD ($)',         iconIdx:8,  status:'ACTIVE',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-03-15' },
-      { id:'BEN010', name:'Anniversary Gift',  unit:'Points',         iconIdx:3,  status:'ACTIVE',   createdBy:'manager@vlinkpay.com',  createdDate:'2025-03-20' },
-      { id:'BEN011', name:'Flash Discount',    unit:'Percentage (%)', iconIdx:2,  status:'INACTIVE', createdBy:'marketing@vlinkpay.com',createdDate:'2025-04-01' },
-      { id:'BEN012', name:'Membership Perk',   unit:'USD ($)',         iconIdx:0,  status:'ACTIVE',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-04-05' },
+      { id:'BEN001', name:'Discount',         unit:'Percentage (%)', iconIdx:2,  status:'ACTIVE',   rolloverType:'Never',   cycle:'Monthly',  createdBy:'admin@vlinkpay.com',    createdDate:'2025-01-10' },
+      { id:'BEN002', name:'Cashback',          unit:'USD ($)',         iconIdx:0,  status:'ACTIVE',   rolloverType:'Monthly', cycle:'Monthly',  createdBy:'admin@vlinkpay.com',    createdDate:'2025-01-15' },
+      { id:'BEN003', name:'Birthday Bonus',    unit:'Points',         iconIdx:3,  status:'ACTIVE',   rolloverType:'Never',   cycle:'Yearly',   createdBy:'manager@vlinkpay.com',  createdDate:'2025-02-01' },
+      { id:'BEN004', name:'Free Gift',         unit:'USD ($)',         iconIdx:7,  status:'INACTIVE', rolloverType:'Never',   cycle:'Yearly',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-02-10' },
+      { id:'BEN005', name:'Loyalty Points',    unit:'Points',         iconIdx:4,  status:'ACTIVE',   rolloverType:'Yearly',  cycle:'Monthly',  createdBy:'manager@vlinkpay.com',  createdDate:'2025-02-20' },
+      { id:'BEN006', name:'VIP Lounge',        unit:'Percentage (%)', iconIdx:5,  status:'ACTIVE',   rolloverType:'Monthly', cycle:'Weekly',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-03-01' },
+      { id:'BEN007', name:'Referral Reward',   unit:'USD ($)',         iconIdx:6,  status:'INACTIVE', rolloverType:'Never',   cycle:'Monthly',  createdBy:'ops@vlinkpay.com',      createdDate:'2025-03-05' },
+      { id:'BEN008', name:'Early Access',      unit:'Points',         iconIdx:1,  status:'ACTIVE',   rolloverType:'Never',   cycle:'Daily',    createdBy:'product@vlinkpay.com',  createdDate:'2025-03-10' },
+      { id:'BEN009', name:'Welcome Bonus',     unit:'USD ($)',         iconIdx:8,  status:'ACTIVE',   rolloverType:'Never',   cycle:'Yearly',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-03-15' },
+      { id:'BEN010', name:'Anniversary Gift',  unit:'Points',         iconIdx:3,  status:'ACTIVE',   rolloverType:'Yearly',  cycle:'Yearly',   createdBy:'manager@vlinkpay.com',  createdDate:'2025-03-20' },
+      { id:'BEN011', name:'Flash Discount',    unit:'Percentage (%)', iconIdx:2,  status:'INACTIVE', rolloverType:'Monthly', cycle:'Weekly',   createdBy:'marketing@vlinkpay.com',createdDate:'2025-04-01' },
+      { id:'BEN012', name:'Membership Perk',   unit:'USD ($)',         iconIdx:0,  status:'ACTIVE',   rolloverType:'Never',   cycle:'Monthly',  createdBy:'admin@vlinkpay.com',    createdDate:'2025-04-05' },
     ];
 
     const PACKAGES = [
@@ -832,7 +884,12 @@
           if (c.key === 'status') return `<td>${badgeHtml(r.status, activeTab==='benefit'?'benefit':'pkg')}</td>`;
           if (c.key === 'saleStatus') return `<td>${badgeHtml(r.saleStatus,'sale')}</td>`;
           if (c.key === 'createdDate' || c.key === 'updatedDate') return `<td style="color:#637381">${fmtDate(r[c.key])}</td>`;
-          if (c.key === 'actions') return `<td class="col-actions"><button class="btn-eye" title="View detail"><i data-lucide="eye"></i></button></td>`;
+          if (c.key === 'actions') {
+            const handler = activeTab === 'package'
+              ? `onclick="window.location.href='membership-package-details.html'"`
+              : `onclick="openViewBenefitModal('${r.id}')"`;
+            return `<td class="col-actions"><button class="btn-eye" title="View detail" ${handler}><i data-lucide="eye"></i></button></td>`;
+          }
           return `<td>${r[c.key]??'—'}</td>`;
         }).join('')}</tr>`).join('');
       }
@@ -879,10 +936,11 @@
                 <div class="toggle-thumb"></div>
               </label>
               ${badgeHtml(r.status,'benefit')}
-              <button class="btn-view-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
+              <button class="btn-view-m" onclick="openViewBenefitModal('${r.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
             </div>
           </div>`).join('');
       } else {
+        // Packages — View goes to detail page
         list.innerHTML = rows.map(r => `
           <div class="m-card">
             <div class="m-pkg-header">
@@ -903,7 +961,7 @@
             </div>
             <div class="m-divider"></div>
             <div class="m-actions">
-              <button class="btn-view-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
+              <button class="btn-view-m" onclick="window.location.href='membership-package-details.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
             </div>
           </div>`).join('');
       }
@@ -952,6 +1010,31 @@
       const b = BENEFITS.find(r=>r.id===id);
       if (b) { b.status = el.checked ? 'ACTIVE' : 'INACTIVE'; render(); }
     }
+
+    /* ═══════════════════════════════════════════════════════
+       VIEW BENEFIT DETAIL MODAL
+    ═══════════════════════════════════════════════════════ */
+    function openViewBenefitModal(id) {
+      const b = BENEFITS.find(r => r.id === id);
+      if (!b) return;
+      document.getElementById('vbIcon').innerHTML        = benefitIconHtml(b.iconIdx, b.iconDataUrl);
+      document.getElementById('vbName').textContent      = b.name;
+      document.getElementById('vbId').textContent        = b.id;
+      document.getElementById('vbStatus').innerHTML      = badgeHtml(b.status, 'benefit');
+      document.getElementById('vbUnit').textContent      = b.unit      || '—';
+      document.getElementById('vbRollover').textContent  = b.rolloverType || '—';
+      document.getElementById('vbCycle').textContent     = b.cycle     || '—';
+      document.getElementById('vbCreatedBy').textContent = b.createdBy;
+      document.getElementById('vbCreatedDate').textContent = fmtDate(b.createdDate);
+      document.getElementById('viewBenefitModal').classList.add('open');
+      lucide.createIcons();
+    }
+    function closeViewBenefitModal() {
+      document.getElementById('viewBenefitModal').classList.remove('open');
+    }
+    document.getElementById('viewBenefitModal').addEventListener('click', e => {
+      if (e.target === document.getElementById('viewBenefitModal')) closeViewBenefitModal();
+    });
 
     /* ═══════════════════════════════════════════════════════
        MODAL
@@ -1040,6 +1123,14 @@
     }
 
     function clearError(id) { document.getElementById(id).style.display='none'; }
+
+    function handleCreateBtn() {
+      if (activeTab === 'package') {
+        window.location.href = 'create-membership-package.html';
+      } else {
+        openModal();
+      }
+    }
 
     function openModal() {
       buildIconGrid();

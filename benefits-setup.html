@@ -2,118 +2,251 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Benefits Setup - VLINKPAY</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="global.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Benefits Setup - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="global.css">
   <script src="global.js" defer></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-    <style>
+  <style>
     /* ── Icon reset ──────────────────────────────────── */
-    i[data-lucide], svg[data-lucide] {
-      display: inline-flex; align-items: center; justify-content: center;
-      vertical-align: middle; flex-shrink: 0;
+    i[data-lucide],
+    svg[data-lucide] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      flex-shrink: 0;
     }
 
     /* ── Page header row ─────────────────────────────── */
     .page-header-row {
-      display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
       margin-bottom: 4px;
     }
+
     .btn-create {
-      display: flex; align-items: center; gap: 6px;
-      padding: 0 20px; height: 44px;
-      background: #00a76f; color: #fff;
-      border: none; border-radius: 8px;
-      font-size: 14px; font-weight: 600; font-family: inherit;
-      cursor: pointer; white-space: nowrap; flex-shrink: 0;
-      box-shadow: 0 8px 16px 0 rgba(0,167,111,.24);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 20px;
+      height: 44px;
+      background: #00a76f;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-shadow: 0 8px 16px 0 rgba(0, 167, 111, .24);
       transition: all .2s;
     }
-    .btn-create:hover { background: #007b55; box-shadow: 0 12px 24px 0 rgba(0,167,111,.3); }
-    .btn-create svg  { width: 18px; height: 18px; }
-    .btn-create .btn-text { display: inline; }
+
+    .btn-create:hover {
+      background: #007b55;
+      box-shadow: 0 12px 24px 0 rgba(0, 167, 111, .3);
+    }
+
+    .btn-create svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .btn-create .btn-text {
+      display: inline;
+    }
 
     /* ── Main card ───────────────────────────────────── */
     .main-card {
-      background: #fff; border-radius: 16px;
+      background: #fff;
+      border-radius: 16px;
       box-shadow: 0 0 2px 0 rgb(145 158 171/.2), 0 12px 24px -4px rgb(145 158 171/.12);
-            overflow: hidden;
-        }
+      overflow: hidden;
+    }
 
     /* ── Tab Bar ─────────────────────────────────────── */
     .tab-bar {
-      display: flex; padding: 0 24px;
+      display: flex;
+      padding: 0 24px;
       border-bottom: 1px solid #f4f6f8;
     }
+
     .tab-btn {
-      padding: 14px 4px; margin-right: 28px; margin-bottom: -1px;
-      background: none; border: none; border-bottom: 2px solid transparent;
-      font-size: 14px; font-weight: 400; color: #637381;
-      cursor: pointer; transition: color .15s, border-color .15s;
-      white-space: nowrap; font-family: inherit; user-select: none;
+      padding: 14px 4px;
+      margin-right: 28px;
+      margin-bottom: -1px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      font-size: 14px;
+      font-weight: 400;
+      color: #637381;
+      cursor: pointer;
+      transition: color .15s, border-color .15s;
+      white-space: nowrap;
+      font-family: inherit;
+      user-select: none;
     }
-    .tab-btn:hover { color: #212b36; }
-    .tab-btn.active { color: #212b36; font-weight: 600; border-bottom-color: #212b36; }
+
+    .tab-btn:hover {
+      color: #212b36;
+    }
+
+    .tab-btn.active {
+      color: #212b36;
+      font-weight: 600;
+      border-bottom-color: #212b36;
+    }
 
     /* ── Toolbar ─────────────────────────────────────── */
     .toolbar {
-      padding: 20px 24px; display: flex; align-items: center;
-      gap: 12px; border-bottom: 1px dashed rgb(145 158 171/.3);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px dashed rgb(145 158 171/.3);
       flex-wrap: wrap;
     }
-    .search-wrap {
-      position: relative; display: flex; align-items: center;
-      width: 240px; flex-shrink: 0;
-    }
-    .search-wrap svg { position: absolute; left: 11px; color: #919eab; width: 16px; height: 16px; pointer-events: none; }
-    .search-input {
-      width: 100%; height: 40px; padding: 0 12px 0 34px;
-      border: 1px solid #dfe3e8; border-radius: 8px;
-      font-size: 13px; font-family: inherit; color: #212b36;
-      outline: none; transition: border-color .2s;
-    }
-    .search-input::placeholder { color: #919eab; }
-    .search-input:focus { border-color: #212b36; }
 
-    .status-wrap { position: relative; flex-shrink: 0; }
-    .status-label {
-      position: absolute; top: -8px; left: 10px;
-      font-size: 11px; font-weight: 600; color: #637381;
-      background: #fff; padding: 0 4px; z-index: 2; pointer-events: none;
+    .search-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 240px;
+      flex-shrink: 0;
     }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 11px;
+      color: #919eab;
+      width: 16px;
+      height: 16px;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 40px;
+      padding: 0 12px 0 34px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #212b36;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .search-input::placeholder {
+      color: #919eab;
+    }
+
+    .search-input:focus {
+      border-color: #212b36;
+    }
+
+    .status-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .status-label {
+      position: absolute;
+      top: -8px;
+      left: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #637381;
+      background: #fff;
+      padding: 0 4px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
     .status-select {
-      width: 160px; height: 40px;
+      width: 160px;
+      height: 40px;
       padding: 0 32px 0 12px;
-      border: 1px solid #dfe3e8; border-radius: 8px;
-      font-size: 13px; font-family: inherit; color: #212b36;
-      outline: none; cursor: pointer; appearance: none;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #212b36;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
       background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center #fff;
       transition: border-color .2s;
     }
-    .status-select:focus { border-color: #212b36; }
+
+    .status-select:focus {
+      border-color: #212b36;
+    }
 
     /* ── Table ───────────────────────────────────────── */
-    .table-scroll { width: 100%; overflow-x: auto; }
-    .data-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
     .data-table th {
-      background: #f9fafb; padding: 14px 16px;
-      font-size: 14px; font-weight: 600; color: #637381;
-      text-align: left; white-space: nowrap;
-      cursor: pointer; user-select: none;
+      background: #f9fafb;
+      padding: 14px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #637381;
+      text-align: left;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
       border-bottom: 1px solid #f4f6f8;
     }
-    .data-table th.no-sort { cursor: default; }
-    .th-inner { display: inline-flex; align-items: center; gap: 4px; }
-    .sort-ic { width: 14px; height: 14px; color: #00a76f; }
-    .data-table td {
-      padding: 14px 16px; border-top: 1px dashed rgb(145 158 171/.24);
-      font-size: 14px; color: #212b36; white-space: nowrap;
+
+    .data-table th.no-sort {
+      cursor: default;
     }
-    .data-table tr:hover td { background: #f9fafb; }
+
+    .th-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sort-ic {
+      width: 14px;
+      height: 14px;
+      color: #00a76f;
+    }
+
+    .data-table td {
+      padding: 14px 16px;
+      border-top: 1px dashed rgb(145 158 171/.24);
+      font-size: 14px;
+      color: #212b36;
+      white-space: nowrap;
+    }
+
+    .data-table tr:hover td {
+      background: #f9fafb;
+    }
+
     /* col-actions (ref: product-list.html) */
     .data-table th.col-actions,
     .data-table td.col-actions {
@@ -123,70 +256,185 @@
 
     /* Benefit icon cell */
     .b-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .b-icon svg { width: 20px; height: 20px; }
+
+    .b-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
     /* Eye button */
     .btn-eye {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 32px; height: 32px;
-      border: 1px solid #dfe3e8; border-radius: 6px;
-      background: transparent; color: #00a76f; cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid #dfe3e8;
+      border-radius: 6px;
+      background: transparent;
+      color: #00a76f;
+      cursor: pointer;
       transition: .2s;
     }
-    .btn-eye:hover { background: #f0fdf7; border-color: #00a76f; }
-    .btn-eye svg { width: 18px; height: 18px; }
+
+    .btn-eye:hover {
+      background: #f0fdf7;
+      border-color: #00a76f;
+    }
+
+    .btn-eye svg {
+      width: 18px;
+      height: 18px;
+    }
 
     /* Empty state */
-    .empty-state { text-align: center; padding: 40px 16px; color: #919eab; font-size: 14px; }
+    .empty-state {
+      text-align: center;
+      padding: 40px 16px;
+      color: #919eab;
+      font-size: 14px;
+    }
 
     /* ── Mobile card list ────────────────────────────── */
-    .mobile-list { display: none; padding: 12px 16px; }
+    .mobile-list {
+      display: none;
+      padding: 12px 16px;
+    }
 
     .m-card {
-      background: #fff; border: 1px solid #f4f6f8; border-radius: 12px;
-      box-shadow: 0 1px 2px 0 rgba(145,158,171,.08);
-      padding: 16px; margin-bottom: 12px;
+      background: #fff;
+      border: 1px solid #f4f6f8;
+      border-radius: 12px;
+      box-shadow: 0 1px 2px 0 rgba(145, 158, 171, .08);
+      padding: 16px;
+      margin-bottom: 12px;
     }
-    .m-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-    .m-card-titles { flex: 1; }
-    .m-card-name { font-size: 15px; font-weight: 700; color: #212b36; }
-    .m-card-id   { font-size: 13px; color: #637381; margin-top: 2px; }
-    .m-divider   { border-top: 1px dashed rgb(145 158 171/.24); margin: 12px 0; }
-    .m-rows      { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
-    .m-row       { display: flex; justify-content: space-between; align-items: center; }
-    .m-label     { font-size: 12px; color: #637381; }
-    .m-value     { font-size: 13px; color: #212b36; font-weight: 500; text-align: right; }
-    .m-actions   { display: flex; align-items: center; gap: 10px; }
+
+    .m-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .m-card-titles {
+      flex: 1;
+    }
+
+    .m-card-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #212b36;
+    }
+
+    .m-card-id {
+      font-size: 13px;
+      color: #637381;
+      margin-top: 2px;
+    }
+
+    .m-divider {
+      border-top: 1px dashed rgb(145 158 171/.24);
+      margin: 12px 0;
+    }
+
+    .m-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .m-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .m-label {
+      font-size: 12px;
+      color: #637381;
+    }
+
+    .m-value {
+      font-size: 13px;
+      color: #212b36;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .m-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
     /* Toggle switch */
-    .toggle-wrap { display: flex; align-items: center; gap: 8px; }
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .toggle {
-      position: relative; width: 36px; height: 20px; flex-shrink: 0; cursor: pointer;
+      position: relative;
+      width: 36px;
+      height: 20px;
+      flex-shrink: 0;
+      cursor: pointer;
     }
-    .toggle input { opacity: 0; width: 0; height: 0; }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
     .toggle-track {
-      position: absolute; inset: 0; border-radius: 10px;
-      background: #ff5630; transition: background .2s;
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      background: #ff5630;
+      transition: background .2s;
     }
-    .toggle input:checked ~ .toggle-track { background: #00a76f; }
+
+    .toggle input:checked~.toggle-track {
+      background: #00a76f;
+    }
+
     .toggle-thumb {
-      position: absolute; top: 2px; left: 2px;
-      width: 16px; height: 16px; border-radius: 50%;
-      background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2);
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
       transition: left .2s;
     }
-    .toggle input:checked ~ .toggle-thumb { left: 18px; }
+
+    .toggle input:checked~.toggle-thumb {
+      left: 18px;
+    }
 
     /* Status switch (green when ON, grey when OFF) — Benefit List */
     .toggle.status-toggle .toggle-track {
       background: #e5e7eb;
     }
-    .toggle.status-toggle input:checked ~ .toggle-track {
+
+    .toggle.status-toggle input:checked~.toggle-track {
       background: #16a34a;
     }
-    .toggle.status-toggle input:checked ~ .toggle-thumb {
+
+    .toggle.status-toggle input:checked~.toggle-thumb {
       left: 18px;
     }
 
@@ -196,19 +444,23 @@
       align-items: center;
       gap: 10px;
     }
+
     .status-cell .toggle {
       width: 40px;
       height: 22px;
       flex-shrink: 0;
     }
+
     .status-cell .toggle-track {
       border-radius: 11px;
       background: #e5e7eb;
       transition: background 0.2s;
     }
-    .status-cell .toggle input:checked ~ .toggle-track {
+
+    .status-cell .toggle input:checked~.toggle-track {
       background: #16a34a;
     }
+
     .status-cell .toggle-thumb {
       top: 2px;
       left: 2px;
@@ -216,12 +468,14 @@
       height: 18px;
       border-radius: 50%;
       background: #fff;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
       transition: left 0.2s;
     }
-    .status-cell .toggle input:checked ~ .toggle-thumb {
+
+    .status-cell .toggle input:checked~.toggle-thumb {
       left: 20px;
     }
+
     .status-badge-pill {
       display: inline-flex;
       align-items: center;
@@ -232,10 +486,12 @@
       letter-spacing: 0.3px;
       text-transform: uppercase;
     }
+
     .status-badge-pill.status-active {
       background: #d1fae5;
       color: #065f46;
     }
+
     .status-badge-pill.status-inactive {
       background: #f3f4f6;
       color: #6b7280;
@@ -243,385 +499,776 @@
 
     /* Mobile View button */
     .btn-view-m {
-      display: flex; align-items: center; gap: 6px;
-      padding: 6px 12px; border: 1px solid #dfe3e8; border-radius: 6px;
-      background: transparent; color: #00a76f;
-      font-size: 13px; font-weight: 500; font-family: inherit;
-      cursor: pointer; transition: .2s; margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border: 1px solid #dfe3e8;
+      border-radius: 6px;
+      background: transparent;
+      color: #00a76f;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: .2s;
+      margin-left: auto;
     }
-    .btn-view-m:hover { background: #f0fdf7; border-color: #00a76f; }
-    .btn-view-m svg { width: 16px; height: 16px; }
+
+    .btn-view-m:hover {
+      background: #f0fdf7;
+      border-color: #00a76f;
+    }
+
+    .btn-view-m svg {
+      width: 16px;
+      height: 16px;
+    }
 
     /* Package mobile: price header */
-    .m-pkg-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
-    .m-pkg-name  { font-size: 15px; font-weight: 700; color: #212b36; }
-    .m-pkg-price { font-size: 18px; font-weight: 700; color: #00a76f; }
-    .m-pkg-id    { font-size: 13px; color: #637381; margin-bottom: 12px; }
+    .m-pkg-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+
+    .m-pkg-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #212b36;
+    }
+
+    .m-pkg-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: #00a76f;
+    }
+
+    .m-pkg-id {
+      font-size: 13px;
+      color: #637381;
+      margin-bottom: 12px;
+    }
 
     /* ── Pagination ──────────────────────────────────── */
     .pagination {
-      display: flex; align-items: center; gap: 8px;
-      padding: 16px 20px; border-top: 1px dashed rgb(145 158 171/.24);
-            flex-wrap: wrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 20px;
+      border-top: 1px dashed rgb(145 158 171/.24);
+      flex-wrap: wrap;
     }
-    .pag-rows { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #637381; }
+
+    .pag-rows {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #637381;
+    }
+
     .pag-select {
-      height: 32px; border: 1px solid #dfe3e8; border-radius: 6px;
-      font-size: 13px; font-family: inherit; color: #212b36;
-      padding: 0 24px 0 8px; outline: none; cursor: pointer; appearance: none;
+      height: 32px;
+      border: 1px solid #dfe3e8;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #212b36;
+      padding: 0 24px 0 8px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
       background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center;
     }
-    .pag-info { margin-left: auto; font-size: 13px; color: #637381; }
-    .pag-btn {
-      width: 32px; height: 32px;
-      border: 1px solid #dfe3e8; border-radius: 6px;
-      background: #fff; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; color: #637381; transition: .2s;
+
+    .pag-info {
+      margin-left: auto;
+      font-size: 13px;
+      color: #637381;
     }
-    .pag-btn:hover:not(:disabled) { border-color: #212b36; color: #212b36; }
-    .pag-btn:disabled { cursor: not-allowed; color: #c4cdd5; border-color: #f4f6f8; }
-    .pag-btn svg { width: 18px; height: 18px; }
+
+    .pag-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #dfe3e8;
+      border-radius: 6px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #637381;
+      transition: .2s;
+    }
+
+    .pag-btn:hover:not(:disabled) {
+      border-color: #212b36;
+      color: #212b36;
+    }
+
+    .pag-btn:disabled {
+      cursor: not-allowed;
+      color: #c4cdd5;
+      border-color: #f4f6f8;
+    }
+
+    .pag-btn svg {
+      width: 18px;
+      height: 18px;
+    }
 
     /* ═══════════════════════════════════════════════════
        CREATE BENEFIT MODAL
     ══════════════════════════════════════════════════ */
     .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,.5); z-index: 1000;
-      align-items: center; justify-content: center;
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
       backdrop-filter: blur(4px);
     }
-    .modal-overlay.open { display: flex; }
+
+    .modal-overlay.open {
+      display: flex;
+    }
 
     .modal-box {
-      background: #fff; width: 100%; max-width: 600px;
-      max-height: 95vh; overflow-y: auto;
+      background: #fff;
+      width: 100%;
+      max-width: 600px;
+      max-height: 95vh;
+      overflow-y: auto;
       border-radius: 16px;
-      box-shadow: 0 24px 48px -8px rgba(0,0,0,.2);
+      box-shadow: 0 24px 48px -8px rgba(0, 0, 0, .2);
       animation: modalIn .25s ease-out;
     }
-    @keyframes modalIn { from { opacity: 0; transform: scale(.95); } to { opacity: 1; transform: scale(1); } }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
 
     .modal-head {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      padding: 24px; border-bottom: 1px solid #f4f6f8;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 24px;
+      border-bottom: 1px solid #f4f6f8;
     }
-    .modal-title { font-size: 24px; font-weight: 700; color: #161c24; }
-    .modal-desc  { font-size: 14px; color: #637381; margin-top: 4px; }
-    .modal-close {
-      width: 32px; height: 32px; border: none; border-radius: 8px;
-      background: transparent; color: #637381; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: .2s; flex-shrink: 0;
-    }
-    .modal-close:hover { background: #f4f6f8; color: #212b36; }
-    .modal-close svg { width: 20px; height: 20px; }
 
-    .modal-body { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+    .modal-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #161c24;
+    }
+
+    .modal-desc {
+      font-size: 14px;
+      color: #637381;
+      margin-top: 4px;
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: #637381;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: .2s;
+      flex-shrink: 0;
+    }
+
+    .modal-close:hover {
+      background: #f4f6f8;
+      color: #212b36;
+    }
+
+    .modal-close svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .modal-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
 
     /* Icon grid */
-    .section-label { font-size: 14px; font-weight: 600; color: #212b36; margin-bottom: 4px; }
-    .section-desc  { font-size: 13px; color: #637381; margin-bottom: 12px; }
+    .section-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #212b36;
+      margin-bottom: 4px;
+    }
+
+    .section-desc {
+      font-size: 13px;
+      color: #637381;
+      margin-bottom: 12px;
+    }
 
     .icon-grid {
-      display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
     }
+
     .icon-btn {
-      aspect-ratio: 1; border-radius: 12px; border: 2px solid transparent;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: all .2s; background: none; padding: 0;
+      aspect-ratio: 1;
+      border-radius: 12px;
+      border: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all .2s;
+      background: none;
+      padding: 0;
     }
-    .icon-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,.12); }
-    .icon-btn.selected { border-color: #00a76f; }
-    .icon-btn svg { width: 28px; height: 28px; }
+
+    .icon-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+    }
+
+    .icon-btn.selected {
+      border-color: #00a76f;
+    }
+
+    .icon-btn svg {
+      width: 28px;
+      height: 28px;
+    }
 
     .icon-upload-btn {
-      aspect-ratio: 1; border-radius: 12px;
-      border: 2px dashed #dfe3e8; background: #f9fafb;
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 4px; cursor: pointer; transition: .2s;
-      width: 100%; padding: 0; box-sizing: border-box;
-    }
-    .icon-upload-btn:hover { border-color: #919eab; background: #f4f6f8; }
-    .icon-upload-btn svg { width: 20px; height: 20px; color: #637381; }
-    .icon-upload-btn span { font-size: 11px; font-weight: 500; color: #637381; }
-
-    /* Upload preview cell */
-    .icon-upload-wrap { position: relative; aspect-ratio: 1; }
-    .upload-preview-box {
-      position: relative; width: 100%; height: 100%;
-    }
-    .upload-preview-box img {
-      width: 100%; height: 100%; object-fit: cover;
-      border-radius: 12px; display: block;
-      border: 2px solid #00a76f;
-    }
-    .upload-remove-btn {
-      position: absolute; top: -9px; right: -9px;
-      width: 22px; height: 22px;
-      background: #fff; border: 1.5px solid #dfe3e8;
-      border-radius: 50%; padding: 0;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 3;
-      box-shadow: 0 1px 6px rgba(0,0,0,.18);
-      transition: background .15s, border-color .15s;
-    }
-    .upload-remove-btn:hover { background: #ff5630; border-color: #ff5630; color: #fff; }
-    .upload-remove-btn svg { width: 11px; height: 11px; pointer-events: none; }
-
-    .icon-error { color: #ff5630; font-size: 12px; margin-top: 4px; display: none; }
-
-    /* Form fields */
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-label {
-      font-size: 14px; font-weight: 600; color: #212b36;
-    }
-    .form-label .req { color: #ff5630; margin-left: 2px; }
-    .form-input, .form-select {
-      width: 100%; height: 44px; padding: 0 14px;
-      border: 1px solid #dfe3e8; border-radius: 8px;
-      font-size: 14px; font-family: inherit; color: #212b36;
-      outline: none; transition: all .2s; background: #fff;
+      aspect-ratio: 1;
+      border-radius: 12px;
+      border: 2px dashed #dfe3e8;
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: .2s;
+      width: 100%;
+      padding: 0;
       box-sizing: border-box;
     }
-    .form-input::placeholder { color: #919eab; }
-    .form-input:focus, .form-select:focus {
-      border-color: #212b36; box-shadow: 0 0 0 3px rgba(33,43,54,.08);
+
+    .icon-upload-btn:hover {
+      border-color: #919eab;
+      background: #f4f6f8;
     }
+
+    .icon-upload-btn svg {
+      width: 20px;
+      height: 20px;
+      color: #637381;
+    }
+
+    .icon-upload-btn span {
+      font-size: 11px;
+      font-weight: 500;
+      color: #637381;
+    }
+
+    /* Upload preview cell */
+    .icon-upload-wrap {
+      position: relative;
+      aspect-ratio: 1;
+    }
+
+    .upload-preview-box {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .upload-preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+      border: 2px solid #00a76f;
+    }
+
+    .upload-remove-btn {
+      position: absolute;
+      top: -9px;
+      right: -9px;
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border: 1.5px solid #dfe3e8;
+      border-radius: 50%;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 3;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, .18);
+      transition: background .15s, border-color .15s;
+    }
+
+    .upload-remove-btn:hover {
+      background: #ff5630;
+      border-color: #ff5630;
+      color: #fff;
+    }
+
+    .upload-remove-btn svg {
+      width: 11px;
+      height: 11px;
+      pointer-events: none;
+    }
+
+    .icon-error {
+      color: #ff5630;
+      font-size: 12px;
+      margin-top: 4px;
+      display: none;
+    }
+
+    /* Form fields */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #212b36;
+    }
+
+    .form-label .req {
+      color: #ff5630;
+      margin-left: 2px;
+    }
+
+    .form-input,
     .form-select {
-      padding-right: 40px; appearance: none; cursor: pointer;
+      width: 100%;
+      height: 44px;
+      padding: 0 14px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #212b36;
+      outline: none;
+      transition: all .2s;
+      background: #fff;
+      box-sizing: border-box;
+    }
+
+    .form-input::placeholder {
+      color: #919eab;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      border-color: #212b36;
+      box-shadow: 0 0 0 3px rgba(33, 43, 54, .08);
+    }
+
+    .form-select {
+      padding-right: 40px;
+      appearance: none;
+      cursor: pointer;
       background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 14px center #fff;
     }
-    .form-select:invalid, .form-select option[value=""] { color: #919eab; }
-    .form-error { color: #ff5630; font-size: 12px; display: none; }
+
+    .form-select:invalid,
+    .form-select option[value=""] {
+      color: #919eab;
+    }
+
+    .form-error {
+      color: #ff5630;
+      font-size: 12px;
+      display: none;
+    }
 
     /* Suggestions */
-    .suggestions-label { font-size: 12px; font-weight: 500; color: #637381; margin-top: 8px; margin-bottom: 6px; }
-    .chips-row { display: flex; flex-wrap: wrap; gap: 8px; }
-    .suggestion-chip {
-      padding: 6px 12px; border-radius: 6px;
-      border: 1px solid #dfe3e8; background: #fff;
-      font-size: 13px; font-weight: 500; color: #637381;
-      cursor: pointer; transition: .2s; font-family: inherit;
+    .suggestions-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #637381;
+      margin-top: 8px;
+      margin-bottom: 6px;
     }
-    .suggestion-chip:hover { border-color: #00a76f; background: #f0fdf7; color: #00a76f; }
+
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .suggestion-chip {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #dfe3e8;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      color: #637381;
+      cursor: pointer;
+      transition: .2s;
+      font-family: inherit;
+    }
+
+    .suggestion-chip:hover {
+      border-color: #00a76f;
+      background: #f0fdf7;
+      color: #00a76f;
+    }
 
     /* 2-col grid for Rollover + Cycle */
-    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
 
     /* Modal footer */
     .modal-foot {
-      display: flex; gap: 12px; padding: 24px;
+      display: flex;
+      gap: 12px;
+      padding: 24px;
       border-top: 1px solid #f4f6f8;
     }
+
     .btn-cancel {
-      flex: 1; height: 44px; border: 1px solid #dfe3e8; border-radius: 8px;
-      background: #fff; font-size: 14px; font-weight: 600;
-      color: #212b36; cursor: pointer; font-family: inherit; transition: .2s;
+      flex: 1;
+      height: 44px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      color: #212b36;
+      cursor: pointer;
+      font-family: inherit;
+      transition: .2s;
     }
-    .btn-cancel:hover { background: #f9fafb; border-color: #919eab; }
+
+    .btn-cancel:hover {
+      background: #f9fafb;
+      border-color: #919eab;
+    }
+
     .btn-create-submit {
-      flex: 1; height: 44px; border: none; border-radius: 8px;
-      background: #00a76f; color: #fff;
-      font-size: 14px; font-weight: 600; font-family: inherit;
-      cursor: pointer; transition: .2s;
+      flex: 1;
+      height: 44px;
+      border: none;
+      border-radius: 8px;
+      background: #00a76f;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: .2s;
     }
-    .btn-create-submit:hover { background: #007b55; box-shadow: 0 4px 12px rgba(0,167,111,.24); }
+
+    .btn-create-submit:hover {
+      background: #007b55;
+      box-shadow: 0 4px 12px rgba(0, 167, 111, .24);
+    }
 
     /* ── Responsive ──────────────────────────────────── */
     @media (max-width: 767px) {
-      .tab-btn { font-size: 12px; margin-right: 16px; padding: 12px 4px; }
-      .tab-bar { padding: 0 16px; }
-      .toolbar { padding: 12px 16px; gap: 8px; }
-      .search-wrap { width: 100%; flex: 1; }
-      .status-wrap .status-select { width: 128px; }
-      .table-scroll { display: none; }
-      .mobile-list { display: block; }
-      .pagination { padding: 12px 16px; }
-      .pag-rows span { display: none; }
+      .tab-btn {
+        font-size: 12px;
+        margin-right: 16px;
+        padding: 12px 4px;
+      }
+
+      .tab-bar {
+        padding: 0 16px;
+      }
+
+      .toolbar {
+        padding: 12px 16px;
+        gap: 8px;
+      }
+
+      .search-wrap {
+        width: 100%;
+        flex: 1;
+      }
+
+      .status-wrap .status-select {
+        width: 128px;
+      }
+
+      .table-scroll {
+        display: none;
+      }
+
+      .mobile-list {
+        display: block;
+      }
+
+      .pagination {
+        padding: 12px 16px;
+      }
+
+      .pag-rows span {
+        display: none;
+      }
+
       /* Modal: center on mobile */
-      .modal-overlay { align-items: center; justify-content: center; padding: 16px; }
-      .modal-box { border-radius: 16px; max-height: calc(100vh - 32px); animation: modalIn .25s ease-out; }
-      .modal-head { padding: 16px; }
-      .modal-title { font-size: 20px; }
-      .modal-desc { font-size: 12px; }
-      .modal-body { padding: 16px; gap: 16px; }
-      .modal-foot { padding: 16px; gap: 8px; }
-      .icon-grid { grid-template-columns: repeat(5, 1fr); gap: 8px; }
-      .btn-create .btn-text { display: none; }
-      .btn-create { padding: 0 14px; }
+      .modal-overlay {
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+
+      .modal-box {
+        border-radius: 16px;
+        max-height: calc(100vh - 32px);
+        animation: modalIn .25s ease-out;
+      }
+
+      .modal-head {
+        padding: 16px;
+      }
+
+      .modal-title {
+        font-size: 20px;
+      }
+
+      .modal-desc {
+        font-size: 12px;
+      }
+
+      .modal-body {
+        padding: 16px;
+        gap: 16px;
+      }
+
+      .modal-foot {
+        padding: 16px;
+        gap: 8px;
+      }
+
+      .icon-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+      }
+
+      .btn-create .btn-text {
+        display: none;
+      }
+
+      .btn-create {
+        padding: 0 14px;
+      }
     }
 
     @media (min-width: 768px) and (max-width: 1023px) {
-      .toolbar { flex-wrap: wrap; }
-      .search-wrap { flex: 1; }
-        }
-    </style>
+      .toolbar {
+        flex-wrap: wrap;
+      }
+
+      .search-wrap {
+        flex: 1;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <aside class="sidebar">
-        <div class="sidebar-logo">
-            <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLinkPay" />
-        </div>
-        <div class="sidebar-content">
-            <div class="user-card">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLinkPay" />
+    </div>
+    <div class="sidebar-content">
+      <div class="user-card">
         <div class="avatar"><iconify-icon icon="solar:user-bold" width="24"></iconify-icon></div>
-                <div class="user-info">
+        <div class="user-info">
           <div style="font-weight:600;font-size:14px;color:var(--grey-900)">Carlota Monteiro</div>
           <div style="font-size:13px;color:var(--grey-600)">Admin</div>
-                </div>
-            </div>
+        </div>
+      </div>
 
-            <div class="nav-section-title">OVERVIEW</div>
-            <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
-                <span>Homepage</span>
-            </a>
-            <a href="dashboard.html" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
-                <span>Dashboard</span>
-            </a>
+      <div class="nav-section-title">OVERVIEW</div>
+      <a href="https://p2pexchangeatmvlinkpay.tiiny.site" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:home-2-bold-duotone" width="24"></iconify-icon></div>
+        <span>Homepage</span>
+      </a>
+      <a href="dashboard.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:widget-bold-duotone" width="24"></iconify-icon></div>
+        <span>Dashboard</span>
+      </a>
 
-            <div class="nav-section-title">GIFT CARD CENTER</div>
-            <a href="#" class="nav-item">
+      <div class="nav-section-title">GIFT CARD CENTER</div>
+      <a href="#" class="nav-item">
         <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone" width="26"></iconify-icon></div>
         <span>Gift &amp; Voucher Management</span>
         <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
       </a>
-            <div class="submenu">
-                <a href="my-purchase.html" class="sub-item"><span class="dot"></span>My Purchase</a>
-                <a href="#" class="sub-item"><span class="dot"></span>Merchant Map</a>
-                <a href="product-list.html" class="sub-item"><span class="dot"></span>Product Management</a>
-                <a href="digital-gifts-management.html" class="sub-item"><span class="dot"></span>VlinkPay Store</a>
+      <div class="submenu">
+        <a href="my-purchase.html" class="sub-item"><span class="dot"></span>My Purchase</a>
+        <a href="#" class="sub-item"><span class="dot"></span>Merchant Map</a>
+        <a href="product-list.html" class="sub-item"><span class="dot"></span>Product Management</a>
+        <a href="digital-gifts-management.html" class="sub-item"><span class="dot"></span>VlinkPay Store</a>
         <a href="cancelled-cards.html" class="sub-item"><span class="dot"></span>Cancelled Cards</a>
-      </div>      <a href="crypto-card-list.html" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
-                <span>Crypto Card Management</span>
-            </a>
+      </div> <a href="crypto-card-list.html" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
+        <span>Crypto Card Management</span>
+      </a>
 
-            <a href="marketing-tools.html" class="nav-item">
+      <a href="marketing-tools.html" class="nav-item">
         <div class="nav-icon"><iconify-icon icon="solar:chart-square-bold-duotone" width="24"></iconify-icon></div>
-                <span>Marketing Tools</span>
-            </a>
-            <a href="#" class="nav-item">
-        <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone" width="24"></iconify-icon></div>
-                <span>Payment Acceptance</span>
+        <span>Marketing Tools</span>
+      </a>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone" width="24"></iconify-icon>
+        </div>
+        <span>Payment Acceptance</span>
         <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
-            </a>
-            <div class="submenu">
+      </a>
+      <div class="submenu">
         <a href="gift-card-payment.html" class="sub-item"><span class="dot"></span>Pay with Gift Card</a>
         <a href="crypto-payment.html" class="sub-item"><span class="dot"></span>Pay with Crypto</a>
-            </div>
+      </div>
       <a href="#" class="nav-item parent-active">
-                <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
-                <span>Settings</span>
+        <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+        <span>Settings</span>
         <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
-            </a>
-            <div class="submenu">
+      </a>
+      <div class="submenu">
         <a href="merchant-payment-setup.html" class="sub-item"><span class="dot"></span>Merchant Payment Setup</a>
-                <a href="benefits-setup.html" class="sub-item active"><span class="dot"></span>Benefits Setup</a>
-            </div>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
-                <span>Report</span>
+        <a href="benefits-setup.html" class="sub-item active"><span class="dot"></span>Benefits Setup</a>
+      </div>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
+        <span>Report</span>
         <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
-            </a>
-            <div class="submenu">
-                <a href="sales-order-list.html" class="sub-item"><span class="dot"></span>Sales Orders</a>
+      </a>
+      <div class="submenu">
+        <a href="sales-order-list.html" class="sub-item"><span class="dot"></span>Sales Orders</a>
         <a href="card-transaction-history-merchant.html" class="sub-item"><span class="dot"></span>Redeem History</a>
-                <a href="membership-report.html" class="sub-item"><span class="dot"></span>Membership Report</a>
-            </div>
-            <div class="nav-section-title">APPS</div>
-            <a href="#" class="nav-item">
-                <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
-                <span>Notifications</span>
-                <span class="badge-outlined">32+</span>
-            </a>
-            <a href="#" class="nav-item">
+        <a href="membership-report.html" class="sub-item"><span class="dot"></span>Membership Report</a>
+      </div>
+      <div class="nav-section-title">APPS</div>
+      <a href="#" class="nav-item">
+        <div class="nav-icon"><iconify-icon icon="solar:letter-bold-duotone" width="24"></iconify-icon></div>
+        <span>Notifications</span>
+        <span class="badge-outlined">32+</span>
+      </a>
+      <a href="#" class="nav-item">
         <div class="nav-icon"><iconify-icon icon="solar:chat-round-dots-bold-duotone" width="24"></iconify-icon></div>
-                <span>AI Assistant</span>
-            </a>
-        </div>
-    </aside>
+        <span>AI Assistant</span>
+      </a>
+    </div>
+  </aside>
 
-    <header class="top-header">
-        <div class="header-left">
-            <button class="hamburger hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
-        </div>
-        <div class="header-right">
-            <div class="header-info">Jan 14, 2026 10:05:32 AM (UTC)</div>
-            <div class="header-icons">
-                <div class="header-icon-btn"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
-            </div>
-        </div>
-    </header>
+  <header class="top-header">
+    <div class="header-left">
+      <button class="hamburger hamburger-btn" id="hamburgerBtn"
+        aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="header-right">
+      <div class="header-info">Jan 14, 2026 10:05:32 AM (UTC)</div>
+      <div class="header-icons">
+        <div class="header-icon-btn"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
+      </div>
+    </div>
+  </header>
 
-    <main class="main">
-        <div class="page-header">
+  <main class="main">
+    <div class="page-header">
       <div class="page-header-row">
         <h1 class="page-title" style="margin:0">Benefits Setup</h1>
         <button class="btn-create" id="btnCreate" onclick="handleCreateBtn()">
           <i data-lucide="plus"></i>
           <span class="btn-text" id="btnCreateText">Create Benefit</span>
-                </button>
-            </div>
+        </button>
+      </div>
       <div class="breadcrumbs" style="margin-top:8px">
         <a href="dashboard.html">Dashboard</a>
-                <span class="breadcrumbs-dot"></span>
+        <span class="breadcrumbs-dot"></span>
         <span style="color:#212b36;font-weight:500">Benefits Setup</span>
-            </div>
-        </div>
+      </div>
+    </div>
 
     <div class="main-card">
       <!-- Tabs -->
       <div class="tab-bar">
         <button class="tab-btn active" id="tab-benefit" onclick="switchTab('benefit')">Benefit List</button>
         <button class="tab-btn" id="tab-package" onclick="switchTab('package')">Membership Package</button>
-            </div>
+      </div>
 
       <!-- Toolbar -->
       <div class="toolbar">
         <div class="search-wrap">
           <i data-lucide="search"></i>
           <input type="text" class="search-input" id="searchInput" placeholder="Benefit ID/Name" oninput="onSearch()" />
-                            </div>
+        </div>
         <div class="status-wrap">
           <span class="status-label">Status</span>
           <select class="status-select" id="statusFilter" onchange="onFilter()">
-                                    <option value="">All Statuses</option>
+            <option value="">All Statuses</option>
             <option value="ACTIVE">ACTIVE</option>
             <option value="INACTIVE">INACTIVE</option>
-                                </select>
-                        </div>
-                    </div>
+          </select>
+        </div>
+      </div>
 
       <!-- Desktop Table -->
       <div class="table-scroll">
         <table class="data-table">
           <thead id="tableHead"></thead>
           <tbody id="tableBody"></tbody>
-                        </table>
-                    </div>
+        </table>
+      </div>
 
       <!-- Mobile Cards -->
       <div class="mobile-list" id="mobileList"></div>
 
       <!-- Pagination -->
-                    <div class="pagination">
+      <div class="pagination">
         <div class="pag-rows">
-                            <span>Rows per page:</span>
+          <span>Rows per page:</span>
           <select class="pag-select" id="rowsPerPage" onchange="changeRows()">
             <option value="5" selected>5</option>
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                            </select>
-                        </div>
+            <option value="10">10</option>
+            <option value="25">25</option>
+          </select>
+        </div>
         <div class="pag-info" id="pagInfo">0–0 of 0</div>
         <button class="pag-btn" id="btnPrev" onclick="prevPage()" disabled><i data-lucide="chevron-left"></i></button>
         <button class="pag-btn" id="btnNext" onclick="nextPage()" disabled><i data-lucide="chevron-right"></i></button>
-                        </div>
-                    </div>
+      </div>
+    </div>
   </main>
 
   <!-- ═══════════════════════════════════════════════════
@@ -633,48 +1280,62 @@
         <div>
           <div class="modal-title">Benefit Detail</div>
           <div class="modal-desc">Detailed information about this benefit</div>
-                            </div>
+        </div>
         <button class="modal-close" onclick="closeViewBenefitModal()"><i data-lucide="x"></i></button>
-                        </div>
+      </div>
       <div class="modal-body" style="padding:24px;">
         <!-- Icon + Name header -->
-        <div style="display:flex;align-items:center;gap:16px;padding:16px;background:#f9fafb;border-radius:12px;margin-bottom:20px;">
+        <div
+          style="display:flex;align-items:center;gap:16px;padding:16px;background:#f9fafb;border-radius:12px;margin-bottom:20px;">
           <div id="vbIcon"></div>
           <div>
             <div id="vbName" style="font-size:17px;font-weight:700;color:#161c24;"></div>
             <div id="vbId" style="font-size:12px;color:#919eab;margin-top:2px;"></div>
-                            </div>
-          <div style="margin-left:auto;" id="vbStatus"></div>
-                        </div>
+          </div>
+          <div style="margin-left:auto;display:flex;flex-direction:row;align-items:flex-end;gap:6px; ">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <label class="toggle status-toggle">
+                <input type="checkbox" id="vbStatusToggle" />
+                <div class="toggle-track"></div>
+                <div class="toggle-thumb"></div>
+              </label>
+            </div>
+            <div id="vbStatus"></div>
+          </div>
+        </div>
         <!-- Detail rows -->
         <div style="display:flex;flex-direction:column;gap:0;">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
+          <div
+            style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
             <span style="font-size:13px;color:#637381;font-weight:500;">Benefit Unit</span>
             <span id="vbUnit" style="font-size:13px;color:#212b36;font-weight:600;"></span>
-                            </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
+          </div>
+          <div
+            style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
             <span style="font-size:13px;color:#637381;font-weight:500;">Rollover Type</span>
             <span id="vbRollover" style="font-size:13px;color:#212b36;font-weight:600;"></span>
-                        </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
+          </div>
+          <div
+            style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
             <span style="font-size:13px;color:#637381;font-weight:500;">Cycle</span>
             <span id="vbCycle" style="font-size:13px;color:#212b36;font-weight:600;"></span>
-                    </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
+          </div>
+          <div
+            style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
             <span style="font-size:13px;color:#637381;font-weight:500;">Created By</span>
             <span id="vbCreatedBy" style="font-size:13px;color:#212b36;"></span>
-                    </div>
+          </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;">
             <span style="font-size:13px;color:#637381;font-weight:500;">Created Date</span>
             <span id="vbCreatedDate" style="font-size:13px;color:#212b36;"></span>
-                        </div>
-                        </div>
-                    </div>
+          </div>
+        </div>
+      </div>
       <div class="modal-foot" style="justify-content:flex-end;">
         <button class="btn-cancel" onclick="closeViewBenefitModal()">Close</button>
-                </div>
-            </div>
-        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════════════════════
        CREATE BENEFIT MODAL
@@ -685,9 +1346,9 @@
         <div>
           <div class="modal-title" id="modalTitle">Create New Benefit</div>
           <div class="modal-desc">Fill in the required information to create a new benefit</div>
-            </div>
+        </div>
         <button class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></button>
-            </div>
+      </div>
 
       <!-- Hidden file input for icon upload -->
       <input type="file" id="iconFileInput" accept="image/*" style="display:none" onchange="handleIconUpload(this)">
@@ -699,12 +1360,13 @@
           <div class="section-desc">Select a preset icon or upload your own image</div>
           <div class="icon-grid" id="iconGrid"></div>
           <div class="icon-error" id="iconError">Please select or upload an icon</div>
-                </div>
+        </div>
 
         <!-- Benefit Name -->
-                <div class="form-group">
+        <div class="form-group">
           <label class="form-label">Benefit Name <span class="req">*</span></label>
-          <input type="text" class="form-input" id="benefitName" placeholder="Enter benefit name" oninput="clearError('nameError')" />
+          <input type="text" class="form-input" id="benefitName" placeholder="Enter benefit name"
+            oninput="clearError('nameError')" />
           <div class="form-error" id="nameError">Benefit name is required</div>
           <div class="suggestions-label">Suggestions</div>
           <div class="chips-row">
@@ -712,32 +1374,32 @@
             <button class="suggestion-chip" onclick="fillName('Cashback')">Cashback</button>
             <button class="suggestion-chip" onclick="fillName('Gift')">Gift</button>
             <button class="suggestion-chip" onclick="fillName('Birthday')">Birthday</button>
-                    </div>
-                </div>
+          </div>
+        </div>
 
         <!-- Benefit Unit -->
-                <div class="form-group">
+        <div class="form-group">
           <label class="form-label">Benefit Unit <span class="req">*</span></label>
           <select class="form-select" id="benefitUnit" onchange="clearError('unitError')">
             <option value="" disabled selected>Select benefit unit</option>
             <option value="USD ($)">USD ($)</option>
             <option value="Percentage (%)">Percentage (%)</option>
             <option value="Points">Points</option>
-                    </select>
+          </select>
           <div class="form-error" id="unitError">Benefit unit is required</div>
-                </div>
+        </div>
 
         <!-- Rollover Type + Cycle -->
         <div class="form-grid-2">
           <div class="form-group">
-                        <label class="form-label">Rollover Type</label>
+            <label class="form-label">Rollover Type</label>
             <select class="form-select" id="rolloverType">
               <option value="" selected>Select rollover type</option>
               <option value="Monthly">Monthly</option>
               <option value="Yearly">Yearly</option>
               <option value="Never">Never</option>
-                        </select>
-                    </div>
+            </select>
+          </div>
           <div class="form-group">
             <label class="form-label">Cycle</label>
             <select class="form-select" id="cycleField">
@@ -746,59 +1408,59 @@
               <option value="Weekly">Weekly</option>
               <option value="Monthly">Monthly</option>
               <option value="Yearly">Yearly</option>
-                        </select>
-                        </div>
-                    </div>
-                </div>
+            </select>
+          </div>
+        </div>
+      </div>
 
       <div class="modal-foot">
         <button class="btn-cancel" onclick="closeModal()">Cancel</button>
         <button class="btn-create-submit" onclick="submitCreate()">Create</button>
-                </div>
-        </div>
+      </div>
     </div>
+  </div>
 
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-    <script>
+  <script>
     /* ═══════════════════════════════════════════════════════
        MOCK DATA
     ═══════════════════════════════════════════════════════ */
     const BENEFITS = [
-      { id:'BEN001', name:'Discount',         unit:'Percentage (%)', iconIdx:2,  status:'ACTIVE',   rolloverType:'Never',   cycle:'Monthly',  createdBy:'admin@vlinkpay.com',    createdDate:'2025-01-10' },
-      { id:'BEN002', name:'Cashback',          unit:'USD ($)',         iconIdx:0,  status:'ACTIVE',   rolloverType:'Monthly', cycle:'Monthly',  createdBy:'admin@vlinkpay.com',    createdDate:'2025-01-15' },
-      { id:'BEN003', name:'Birthday Bonus',    unit:'Points',         iconIdx:3,  status:'ACTIVE',   rolloverType:'Never',   cycle:'Yearly',   createdBy:'manager@vlinkpay.com',  createdDate:'2025-02-01' },
-      { id:'BEN004', name:'Free Gift',         unit:'USD ($)',         iconIdx:7,  status:'INACTIVE', rolloverType:'Never',   cycle:'Yearly',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-02-10' },
-      { id:'BEN005', name:'Loyalty Points',    unit:'Points',         iconIdx:4,  status:'ACTIVE',   rolloverType:'Yearly',  cycle:'Monthly',  createdBy:'manager@vlinkpay.com',  createdDate:'2025-02-20' },
-      { id:'BEN006', name:'VIP Lounge',        unit:'Percentage (%)', iconIdx:5,  status:'ACTIVE',   rolloverType:'Monthly', cycle:'Weekly',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-03-01' },
-      { id:'BEN007', name:'Referral Reward',   unit:'USD ($)',         iconIdx:6,  status:'INACTIVE', rolloverType:'Never',   cycle:'Monthly',  createdBy:'ops@vlinkpay.com',      createdDate:'2025-03-05' },
-      { id:'BEN008', name:'Early Access',      unit:'Points',         iconIdx:1,  status:'ACTIVE',   rolloverType:'Never',   cycle:'Daily',    createdBy:'product@vlinkpay.com',  createdDate:'2025-03-10' },
-      { id:'BEN009', name:'Welcome Bonus',     unit:'USD ($)',         iconIdx:8,  status:'ACTIVE',   rolloverType:'Never',   cycle:'Yearly',   createdBy:'admin@vlinkpay.com',    createdDate:'2025-03-15' },
-      { id:'BEN010', name:'Anniversary Gift',  unit:'Points',         iconIdx:3,  status:'ACTIVE',   rolloverType:'Yearly',  cycle:'Yearly',   createdBy:'manager@vlinkpay.com',  createdDate:'2025-03-20' },
-      { id:'BEN011', name:'Flash Discount',    unit:'Percentage (%)', iconIdx:2,  status:'INACTIVE', rolloverType:'Monthly', cycle:'Weekly',   createdBy:'marketing@vlinkpay.com',createdDate:'2025-04-01' },
-      { id:'BEN012', name:'Membership Perk',   unit:'USD ($)',         iconIdx:0,  status:'ACTIVE',   rolloverType:'Never',   cycle:'Monthly',  createdBy:'admin@vlinkpay.com',    createdDate:'2025-04-05' },
+      { id: 'BEN001', name: 'Discount', unit: 'Percentage (%)', iconIdx: 2, status: 'ACTIVE', rolloverType: 'Never', cycle: 'Monthly', createdBy: 'admin@vlinkpay.com', createdDate: '2025-01-10' },
+      { id: 'BEN002', name: 'Cashback', unit: 'USD ($)', iconIdx: 0, status: 'ACTIVE', rolloverType: 'Monthly', cycle: 'Monthly', createdBy: 'admin@vlinkpay.com', createdDate: '2025-01-15' },
+      { id: 'BEN003', name: 'Birthday Bonus', unit: 'Points', iconIdx: 3, status: 'ACTIVE', rolloverType: 'Never', cycle: 'Yearly', createdBy: 'manager@vlinkpay.com', createdDate: '2025-02-01' },
+      { id: 'BEN004', name: 'Free Gift', unit: 'USD ($)', iconIdx: 7, status: 'INACTIVE', rolloverType: 'Never', cycle: 'Yearly', createdBy: 'admin@vlinkpay.com', createdDate: '2025-02-10' },
+      { id: 'BEN005', name: 'Loyalty Points', unit: 'Points', iconIdx: 4, status: 'ACTIVE', rolloverType: 'Yearly', cycle: 'Monthly', createdBy: 'manager@vlinkpay.com', createdDate: '2025-02-20' },
+      { id: 'BEN006', name: 'VIP Lounge', unit: 'Percentage (%)', iconIdx: 5, status: 'ACTIVE', rolloverType: 'Monthly', cycle: 'Weekly', createdBy: 'admin@vlinkpay.com', createdDate: '2025-03-01' },
+      { id: 'BEN007', name: 'Referral Reward', unit: 'USD ($)', iconIdx: 6, status: 'INACTIVE', rolloverType: 'Never', cycle: 'Monthly', createdBy: 'ops@vlinkpay.com', createdDate: '2025-03-05' },
+      { id: 'BEN008', name: 'Early Access', unit: 'Points', iconIdx: 1, status: 'ACTIVE', rolloverType: 'Never', cycle: 'Daily', createdBy: 'product@vlinkpay.com', createdDate: '2025-03-10' },
+      { id: 'BEN009', name: 'Welcome Bonus', unit: 'USD ($)', iconIdx: 8, status: 'ACTIVE', rolloverType: 'Never', cycle: 'Yearly', createdBy: 'admin@vlinkpay.com', createdDate: '2025-03-15' },
+      { id: 'BEN010', name: 'Anniversary Gift', unit: 'Points', iconIdx: 3, status: 'ACTIVE', rolloverType: 'Yearly', cycle: 'Yearly', createdBy: 'manager@vlinkpay.com', createdDate: '2025-03-20' },
+      { id: 'BEN011', name: 'Flash Discount', unit: 'Percentage (%)', iconIdx: 2, status: 'INACTIVE', rolloverType: 'Monthly', cycle: 'Weekly', createdBy: 'marketing@vlinkpay.com', createdDate: '2025-04-01' },
+      { id: 'BEN012', name: 'Membership Perk', unit: 'USD ($)', iconIdx: 0, status: 'ACTIVE', rolloverType: 'Never', cycle: 'Monthly', createdBy: 'admin@vlinkpay.com', createdDate: '2025-04-05' },
     ];
 
     const PACKAGES = [
-      { id:'PKG001', name:'SILVER',   price:'$150',   currency:'USD', billingCycle:'Yearly',    benefitCount:3,  status:'APPROVED', saleStatus:'ACTIVE',   createdBy:'admin@vlinkpay.com',   createdDate:'2025-01-10', updatedDate:'2025-02-01' },
-      { id:'PKG002', name:'GOLD',     price:'$500',   currency:'USD', billingCycle:'Yearly',    benefitCount:7,  status:'APPROVED', saleStatus:'ACTIVE',   createdBy:'admin@vlinkpay.com',   createdDate:'2025-01-15', updatedDate:'2025-02-10' },
-      { id:'PKG003', name:'PLATINUM', price:'$1,200', currency:'USD', billingCycle:'Yearly',    benefitCount:12, status:'APPROVED', saleStatus:'ACTIVE',   createdBy:'manager@vlinkpay.com', createdDate:'2025-02-01', updatedDate:'2025-03-01' },
-      { id:'PKG004', name:'BRONZE',   price:'$50',    currency:'USD', billingCycle:'Monthly',   benefitCount:2,  status:'PENDING',  saleStatus:'INACTIVE', createdBy:'admin@vlinkpay.com',   createdDate:'2025-03-01', updatedDate:'2025-03-05' },
-      { id:'PKG005', name:'DIAMOND',  price:'$2,000', currency:'USD', billingCycle:'Yearly',    benefitCount:15, status:'DRAFT',    saleStatus:'INACTIVE', createdBy:'product@vlinkpay.com', createdDate:'2025-03-10', updatedDate:'2025-03-12' },
-      { id:'PKG006', name:'STARTER',  price:'$30',    currency:'USD', billingCycle:'Monthly',   benefitCount:1,  status:'REJECTED', saleStatus:'INACTIVE', createdBy:'ops@vlinkpay.com',     createdDate:'2025-04-01', updatedDate:'2025-04-03' },
-      { id:'PKG007', name:'CORPORATE',price:'$5,000', currency:'USD', billingCycle:'Yearly',    benefitCount:20, status:'PENDING',  saleStatus:'INACTIVE', createdBy:'admin@vlinkpay.com',   createdDate:'2025-04-05', updatedDate:'2025-04-05' },
+      { id: 'PKG001', name: 'SILVER', price: '$150', currency: 'USD', billingCycle: 'Yearly', benefitCount: 3, status: 'APPROVED', saleStatus: 'ACTIVE', createdBy: 'admin@vlinkpay.com', createdDate: '2025-01-10', updatedDate: '2025-02-01' },
+      { id: 'PKG002', name: 'GOLD', price: '$500', currency: 'USD', billingCycle: 'Yearly', benefitCount: 7, status: 'APPROVED', saleStatus: 'ACTIVE', createdBy: 'admin@vlinkpay.com', createdDate: '2025-01-15', updatedDate: '2025-02-10' },
+      { id: 'PKG003', name: 'PLATINUM', price: '$1,200', currency: 'USD', billingCycle: 'Yearly', benefitCount: 12, status: 'APPROVED', saleStatus: 'ACTIVE', createdBy: 'manager@vlinkpay.com', createdDate: '2025-02-01', updatedDate: '2025-03-01' },
+      { id: 'PKG004', name: 'BRONZE', price: '$50', currency: 'USD', billingCycle: 'Monthly', benefitCount: 2, status: 'PENDING', saleStatus: 'INACTIVE', createdBy: 'admin@vlinkpay.com', createdDate: '2025-03-01', updatedDate: '2025-03-05' },
+      { id: 'PKG005', name: 'DIAMOND', price: '$2,000', currency: 'USD', billingCycle: 'Yearly', benefitCount: 15, status: 'DRAFT', saleStatus: 'INACTIVE', createdBy: 'product@vlinkpay.com', createdDate: '2025-03-10', updatedDate: '2025-03-12' },
+      { id: 'PKG006', name: 'STARTER', price: '$30', currency: 'USD', billingCycle: 'Monthly', benefitCount: 1, status: 'REJECTED', saleStatus: 'INACTIVE', createdBy: 'ops@vlinkpay.com', createdDate: '2025-04-01', updatedDate: '2025-04-03' },
+      { id: 'PKG007', name: 'CORPORATE', price: '$5,000', currency: 'USD', billingCycle: 'Yearly', benefitCount: 20, status: 'PENDING', saleStatus: 'INACTIVE', createdBy: 'admin@vlinkpay.com', createdDate: '2025-04-05', updatedDate: '2025-04-05' },
     ];
 
     /* ── Icon presets ── */
     const ICONS = [
-      { el:'dollar-sign',   bg:'#c8fae5', color:'#00a76f' },
-      { el:'refresh-cw',    bg:'#c8fae5', color:'#00a76f' },
-      { el:'percent',       bg:'#ffe4cc', color:'#cc5500' },
-      { el:'cake',          bg:'#e0d4ff', color:'#7c3aed' },
-      { el:'users',         bg:'#fff9cc', color:'#b8860b' },
-      { el:'sofa',          bg:'#ffd4d4', color:'#d32f2f' },
-      { el:'tag',           bg:'#fff9cc', color:'#b8860b' },
-      { el:'gift',          bg:'#ffd4d4', color:'#d32f2f' },
-      { el:'gift',          bg:'#e0d4ff', color:'#7c3aed' },
+      { el: 'dollar-sign', bg: '#c8fae5', color: '#00a76f' },
+      { el: 'refresh-cw', bg: '#c8fae5', color: '#00a76f' },
+      { el: 'percent', bg: '#ffe4cc', color: '#cc5500' },
+      { el: 'cake', bg: '#e0d4ff', color: '#7c3aed' },
+      { el: 'users', bg: '#fff9cc', color: '#b8860b' },
+      { el: 'sofa', bg: '#ffd4d4', color: '#d32f2f' },
+      { el: 'tag', bg: '#fff9cc', color: '#b8860b' },
+      { el: 'gift', bg: '#ffd4d4', color: '#d32f2f' },
+      { el: 'gift', bg: '#e0d4ff', color: '#7c3aed' },
     ];
 
     function benefitIconHtml(idx, dataUrl) {
@@ -817,13 +1479,13 @@
     function iconPath(name) {
       const paths = {
         'dollar-sign': '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
-        'refresh-cw':  '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>',
-        'percent':     '<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
-        'cake':        '<path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v2"/><path d="M12 8v2"/><path d="M17 8v2"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/>',
-        'users':       '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
-        'sofa':        '<path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z"/><path d="M4 18v2"/><path d="M20 18v2"/><path d="M12 4v9"/>',
-        'tag':         '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>',
-        'gift':        '<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>',
+        'refresh-cw': '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>',
+        'percent': '<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
+        'cake': '<path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v2"/><path d="M12 8v2"/><path d="M17 8v2"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/>',
+        'users': '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+        'sofa': '<path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z"/><path d="M4 18v2"/><path d="M20 18v2"/><path d="M12 4v9"/>',
+        'tag': '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>',
+        'gift': '<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>',
       };
       return paths[name] || '';
     }
@@ -831,47 +1493,47 @@
     /* ═══════════════════════════════════════════════════════
        STATE
     ═══════════════════════════════════════════════════════ */
-    let activeTab   = 'benefit';
+    let activeTab = 'benefit';
     let searchQuery = '';
-    let statusFilter= '';
-    let sortCol     = '';
-    let sortDir     = 'asc';
+    let statusFilter = '';
+    let sortCol = '';
+    let sortDir = 'asc';
     let currentPage = 1;
     let rowsPerPage = 5;
 
     /* ── Column defs ── */
     const BENEFIT_COLS = [
-      { key:'icon',        label:'Icon',         sort:false },
-      { key:'id',          label:'Benefit ID',   sort:true  },
-      { key:'name',        label:'Benefit Name', sort:true  },
-      { key:'unit',        label:'Benefit Unit', sort:true  },
-      { key:'status',      label:'Status',       sort:true  },
-      { key:'createdBy',   label:'Created By',   sort:true  },
-      { key:'createdDate', label:'Created Date', sort:true  },
-      { key:'actions',     label:'Actions',      sort:false },
+      { key: 'icon', label: 'Icon', sort: false },
+      { key: 'id', label: 'Benefit ID', sort: true },
+      { key: 'name', label: 'Benefit Name', sort: true },
+      { key: 'unit', label: 'Benefit Unit', sort: true },
+      { key: 'status', label: 'Status', sort: true },
+      { key: 'createdBy', label: 'Created By', sort: true },
+      { key: 'createdDate', label: 'Created Date', sort: true },
+      { key: 'actions', label: 'Actions', sort: false },
     ];
     const PACKAGE_COLS = [
-      { key:'id',          label:'Package ID',        sort:true },
-      { key:'name',        label:'Package Name',      sort:true },
-      { key:'price',       label:'Price',             sort:true },
-      { key:'currency',    label:'Currency',          sort:true },
-      { key:'billingCycle',label:'Billing Cycle',     sort:true },
-      { key:'benefitCount',label:'Benefit Count',     sort:true },
-      { key:'status',      label:'Status',            sort:true },
-      { key:'saleStatus',  label:'Sale Status',       sort:true },
-      { key:'createdBy',   label:'Created By',        sort:true },
-      { key:'createdDate', label:'Created Date',      sort:true },
-      { key:'updatedDate', label:'Last Updated Date', sort:true },
-      { key:'actions',     label:'Actions',           sort:false},
+      { key: 'id', label: 'Package ID', sort: true },
+      { key: 'name', label: 'Package Name', sort: true },
+      { key: 'price', label: 'Price', sort: true },
+      { key: 'currency', label: 'Currency', sort: true },
+      { key: 'billingCycle', label: 'Billing Cycle', sort: true },
+      { key: 'benefitCount', label: 'Benefit Count', sort: true },
+      { key: 'status', label: 'Status', sort: true },
+      { key: 'saleStatus', label: 'Sale Status', sort: true },
+      { key: 'createdBy', label: 'Created By', sort: true },
+      { key: 'createdDate', label: 'Created Date', sort: true },
+      { key: 'updatedDate', label: 'Last Updated Date', sort: true },
+      { key: 'actions', label: 'Actions', sort: false },
     ];
 
     /* ── Helpers ── */
     function fmtDate(iso) {
       if (!iso) return '—';
-      return new Date(iso+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'2-digit',year:'numeric'});
+      return new Date(iso + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
     }
     function parseVal(v) {
-      const n = parseFloat(String(v).replace(/[$,%]/g,'').replace(/,/g,''));
+      const n = parseFloat(String(v).replace(/[$,%]/g, '').replace(/,/g, ''));
       return isNaN(n) ? v : n;
     }
     function svgSort(dir) {
@@ -879,7 +1541,7 @@
         ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sort-ic"><polyline points="18 15 12 9 6 15"/></svg>`
         : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="sort-ic"><polyline points="6 9 12 15 18 9"/></svg>`;
     }
-    function badgeHtml(val, type='benefit') {
+    function badgeHtml(val, type = 'benefit') {
       if (type === 'benefit') {
         const cls = val === 'ACTIVE' ? 'badge-active' : 'badge-inactive';
         return `<span class="badge ${cls}">${val}</span>`;
@@ -888,8 +1550,8 @@
         const cls = val === 'ACTIVE' ? 'badge-active' : 'badge-inactive';
         return `<span class="badge ${cls}">${val}</span>`;
       }
-      const map = { APPROVED:'badge-approved', PENDING:'badge-pending', REJECTED:'badge-rejected', DRAFT:'badge-draft' };
-      return `<span class="badge ${map[val]||'badge-draft'}">${val}</span>`;
+      const map = { APPROVED: 'badge-approved', PENDING: 'badge-pending', REJECTED: 'badge-rejected', DRAFT: 'badge-draft' };
+      return `<span class="badge ${map[val] || 'badge-draft'}">${val}</span>`;
     }
 
     /* ═══════════════════════════════════════════════════════
@@ -897,7 +1559,7 @@
     ═══════════════════════════════════════════════════════ */
     function getFiltered() {
       const src = activeTab === 'benefit' ? BENEFITS : PACKAGES;
-      const q   = searchQuery.toLowerCase();
+      const q = searchQuery.toLowerCase();
       return src.filter(r => {
         if (q) {
           const searchable = activeTab === 'benefit'
@@ -915,13 +1577,13 @@
 
     function getSorted(data) {
       if (!sortCol) return data;
-      return [...data].sort((a,b) => {
+      return [...data].sort((a, b) => {
         let av = a[sortCol], bv = b[sortCol];
-        if (sortCol === 'createdDate' || sortCol === 'updatedDate') { av = av||''; bv = bv||''; }
+        if (sortCol === 'createdDate' || sortCol === 'updatedDate') { av = av || ''; bv = bv || ''; }
         else { av = parseVal(av); bv = parseVal(bv); }
         let cmp = typeof av === 'number' && typeof bv === 'number'
           ? av - bv
-          : String(av).localeCompare(String(bv), undefined, {numeric:true, sensitivity:'base'});
+          : String(av).localeCompare(String(bv), undefined, { numeric: true, sensitivity: 'base' });
         return sortDir === 'asc' ? cmp : -cmp;
       });
     }
@@ -930,18 +1592,18 @@
        RENDER
     ═══════════════════════════════════════════════════════ */
     function render() {
-      const cols     = activeTab === 'benefit' ? BENEFIT_COLS : PACKAGE_COLS;
+      const cols = activeTab === 'benefit' ? BENEFIT_COLS : PACKAGE_COLS;
       const filtered = getSorted(getFiltered());
-      const total    = filtered.length;
-      const pages    = Math.max(1, Math.ceil(total / rowsPerPage));
+      const total = filtered.length;
+      const pages = Math.max(1, Math.ceil(total / rowsPerPage));
       if (currentPage > pages) currentPage = pages;
-      const start = (currentPage-1)*rowsPerPage;
-      const rows  = filtered.slice(start, start+rowsPerPage);
+      const start = (currentPage - 1) * rowsPerPage;
+      const rows = filtered.slice(start, start + rowsPerPage);
 
       /* HEAD */
-      document.getElementById('tableHead').innerHTML = `<tr>${cols.map(c=>`
-        <th class="${c.sort?'':'no-sort'}${c.key==='actions'?' col-actions':''}" ${c.sort?`onclick="sortBy('${c.key}')"`:''}><span class="th-inner">
-          ${c.label}${sortCol===c.key ? svgSort(sortDir):''}
+      document.getElementById('tableHead').innerHTML = `<tr>${cols.map(c => `
+        <th class="${c.sort ? '' : 'no-sort'}${c.key === 'actions' ? ' col-actions' : ''}" ${c.sort ? `onclick="sortBy('${c.key}')"` : ''}><span class="th-inner">
+          ${c.label}${sortCol === c.key ? svgSort(sortDir) : ''}
         </span></th>`).join('')}</tr>`;
 
       /* BODY */
@@ -959,7 +1621,7 @@
             }
             return `<td>${badgeHtml(r.status, 'pkg')}</td>`;
           }
-          if (c.key === 'saleStatus') return `<td>${badgeHtml(r.saleStatus,'sale')}</td>`;
+          if (c.key === 'saleStatus') return `<td>${badgeHtml(r.saleStatus, 'sale')}</td>`;
           if (c.key === 'createdDate' || c.key === 'updatedDate') return `<td style="color:#637381">${fmtDate(r[c.key])}</td>`;
           if (c.key === 'actions') {
             const handler = activeTab === 'package'
@@ -967,14 +1629,14 @@
               : `onclick="openViewBenefitModal('${r.id}')"`;
             return `<td class="col-actions"><button class="btn-eye" title="View detail" ${handler}><i data-lucide="eye"></i></button></td>`;
           }
-          return `<td>${r[c.key]??'—'}</td>`;
+          return `<td>${r[c.key] ?? '—'}</td>`;
         }).join('')}</tr>`).join('');
       }
 
       renderMobile(rows);
 
       /* PAGINATION */
-      const s = total===0?0:start+1, e=Math.min(start+rowsPerPage,total);
+      const s = total === 0 ? 0 : start + 1, e = Math.min(start + rowsPerPage, total);
       document.getElementById('pagInfo').textContent = `${s}–${e} of ${total}`;
       document.getElementById('btnPrev').disabled = currentPage <= 1;
       document.getElementById('btnNext').disabled = currentPage >= pages;
@@ -1008,11 +1670,11 @@
             <div class="m-divider"></div>
             <div class="m-actions">
               <label class="toggle status-toggle">
-                <input type="checkbox" ${r.status==='ACTIVE'?'checked':''} onchange="toggleStatus('${r.id}', this)" />
+                <input type="checkbox" ${r.status === 'ACTIVE' ? 'checked' : ''} onchange="toggleStatus('${r.id}', this)" />
                 <div class="toggle-track"></div>
                 <div class="toggle-thumb"></div>
               </label>
-              <span class="status-badge-pill status-${r.status==='ACTIVE'?'active':'inactive'}">${r.status}</span>
+              <span class="status-badge-pill status-${r.status === 'ACTIVE' ? 'active' : 'inactive'}">${r.status}</span>
               <button class="btn-view-m" onclick="openViewBenefitModal('${r.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
             </div>
           </div>`).join('');
@@ -1030,8 +1692,8 @@
               <div class="m-row"><span class="m-label">Currency:</span><span class="m-value">${r.currency}</span></div>
               <div class="m-row"><span class="m-label">Billing Cycle:</span><span class="m-value">${r.billingCycle}</span></div>
               <div class="m-row"><span class="m-label">Benefits:</span><span class="m-value">${r.benefitCount}</span></div>
-              <div class="m-row"><span class="m-label">Status:</span><span class="m-value">${badgeHtml(r.status,'pkg')}</span></div>
-              <div class="m-row"><span class="m-label">Sale Status:</span><span class="m-value">${badgeHtml(r.saleStatus,'sale')}</span></div>
+              <div class="m-row"><span class="m-label">Status:</span><span class="m-value">${badgeHtml(r.status, 'pkg')}</span></div>
+              <div class="m-row"><span class="m-label">Sale Status:</span><span class="m-value">${badgeHtml(r.saleStatus, 'sale')}</span></div>
               <div class="m-row"><span class="m-label">Created By:</span><span class="m-value">${r.createdBy}</span></div>
               <div class="m-row"><span class="m-label">Created Date:</span><span class="m-value">${fmtDate(r.createdDate)}</span></div>
               <div class="m-row"><span class="m-label">Last Updated:</span><span class="m-value">${fmtDate(r.updatedDate)}</span></div>
@@ -1048,20 +1710,20 @@
        EVENTS
     ═══════════════════════════════════════════════════════ */
     function switchTab(tab) {
-      activeTab    = tab;
-      searchQuery  = '';
+      activeTab = tab;
+      searchQuery = '';
       statusFilter = '';
-      sortCol      = '';
-      currentPage  = 1;
-      document.getElementById('searchInput').value   = '';
-      document.getElementById('statusFilter').value  = '';
+      sortCol = '';
+      currentPage = 1;
+      document.getElementById('searchInput').value = '';
+      document.getElementById('statusFilter').value = '';
 
-      document.getElementById('tab-benefit').classList.toggle('active', tab==='benefit');
-      document.getElementById('tab-package').classList.toggle('active', tab==='package');
+      document.getElementById('tab-benefit').classList.toggle('active', tab === 'benefit');
+      document.getElementById('tab-package').classList.toggle('active', tab === 'package');
 
       // Update search placeholder + status options
       const si = document.getElementById('searchInput');
-      si.placeholder = tab==='benefit' ? 'Benefit ID/Name' : 'Search by Package ID or Name';
+      si.placeholder = tab === 'benefit' ? 'Benefit ID/Name' : 'Search by Package ID or Name';
 
       const sf = document.getElementById('statusFilter');
       if (tab === 'benefit') {
@@ -1071,20 +1733,20 @@
       }
 
       // Update Create button text
-      document.getElementById('btnCreateText').textContent = tab==='benefit' ? 'Create Benefit' : 'Create Membership Package';
+      document.getElementById('btnCreateText').textContent = tab === 'benefit' ? 'Create Benefit' : 'Create Membership Package';
 
       render();
     }
 
-    function onSearch()  { searchQuery = document.getElementById('searchInput').value; currentPage=1; render(); }
-    function onFilter()  { statusFilter = document.getElementById('statusFilter').value; currentPage=1; render(); }
-    function sortBy(col) { if(sortCol===col) sortDir=sortDir==='asc'?'desc':'asc'; else{sortCol=col;sortDir='asc';} render(); }
-    function changeRows(){ rowsPerPage=parseInt(document.getElementById('rowsPerPage').value); currentPage=1; render(); }
-    function prevPage()  { if(currentPage>1){currentPage--;render();} }
-    function nextPage()  { const p=Math.ceil(getFiltered().length/rowsPerPage); if(currentPage<p){currentPage++;render();} }
+    function onSearch() { searchQuery = document.getElementById('searchInput').value; currentPage = 1; render(); }
+    function onFilter() { statusFilter = document.getElementById('statusFilter').value; currentPage = 1; render(); }
+    function sortBy(col) { if (sortCol === col) sortDir = sortDir === 'asc' ? 'desc' : 'asc'; else { sortCol = col; sortDir = 'asc'; } render(); }
+    function changeRows() { rowsPerPage = parseInt(document.getElementById('rowsPerPage').value); currentPage = 1; render(); }
+    function prevPage() { if (currentPage > 1) { currentPage--; render(); } }
+    function nextPage() { const p = Math.ceil(getFiltered().length / rowsPerPage); if (currentPage < p) { currentPage++; render(); } }
 
     function toggleStatus(id, el) {
-      const b = BENEFITS.find(r=>r.id===id);
+      const b = BENEFITS.find(r => r.id === id);
       if (b) { b.status = el.checked ? 'ACTIVE' : 'INACTIVE'; render(); }
     }
 
@@ -1094,15 +1756,28 @@
     function openViewBenefitModal(id) {
       const b = BENEFITS.find(r => r.id === id);
       if (!b) return;
-      document.getElementById('vbIcon').innerHTML        = benefitIconHtml(b.iconIdx, b.iconDataUrl);
-      document.getElementById('vbName').textContent      = b.name;
-      document.getElementById('vbId').textContent        = b.id;
-      document.getElementById('vbStatus').innerHTML      = badgeHtml(b.status, 'benefit');
-      document.getElementById('vbUnit').textContent      = b.unit      || '—';
-      document.getElementById('vbRollover').textContent  = b.rolloverType || '—';
-      document.getElementById('vbCycle').textContent     = b.cycle     || '—';
+      document.getElementById('vbIcon').innerHTML = benefitIconHtml(b.iconIdx, b.iconDataUrl);
+      document.getElementById('vbName').textContent = b.name;
+      document.getElementById('vbId').textContent = b.id;
+      document.getElementById('vbStatus').innerHTML = badgeHtml(b.status, 'benefit');
+      document.getElementById('vbUnit').textContent = b.unit || '—';
+      document.getElementById('vbRollover').textContent = b.rolloverType || '—';
+      document.getElementById('vbCycle').textContent = b.cycle || '—';
       document.getElementById('vbCreatedBy').textContent = b.createdBy;
       document.getElementById('vbCreatedDate').textContent = fmtDate(b.createdDate);
+
+      // Init toggle based on current status
+      const toggle = document.getElementById('vbStatusToggle');
+      if (toggle) {
+        toggle.checked = b.status === 'ACTIVE';
+        toggle.onchange = () => {
+          const isActive = toggle.checked;
+          b.status = isActive ? 'ACTIVE' : 'INACTIVE';
+          document.getElementById('vbStatus').innerHTML = badgeHtml(b.status, 'benefit');
+          render();
+        };
+      }
+
       document.getElementById('viewBenefitModal').classList.add('open');
       lucide.createIcons();
     }
@@ -1116,7 +1791,7 @@
     /* ═══════════════════════════════════════════════════════
        MODAL
     ═══════════════════════════════════════════════════════ */
-    let selectedIcon       = null;
+    let selectedIcon = null;
     let uploadedIconDataUrl = null;
 
     const UPLOAD_BTN_HTML = `
@@ -1132,7 +1807,7 @@
 
     function buildIconGrid() {
       const grid = document.getElementById('iconGrid');
-      grid.innerHTML = ICONS.map((ic,i) => `
+      grid.innerHTML = ICONS.map((ic, i) => `
         <button class="icon-btn" style="background:${ic.bg};color:${ic.color}" onclick="selectIcon(${i})" id="icon-btn-${i}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">${iconPath(ic.el)}</svg>
         </button>`).join('') + UPLOAD_BTN_HTML;
@@ -1144,9 +1819,9 @@
 
     function handleIconUpload(input) {
       const file = input.files && input.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function (e) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
         uploadedIconDataUrl = e.target.result;
         // Deselect any preset icon
         selectedIcon = null;
@@ -1168,9 +1843,9 @@
         }
         // Reset file input so same file can be re-uploaded
         input.value = '';
-            };
-            reader.readAsDataURL(file);
-        }
+      };
+      reader.readAsDataURL(file);
+    }
 
     function removeUploadedIcon() {
       uploadedIconDataUrl = null;
@@ -1190,7 +1865,7 @@
       // Clear any uploaded image when a preset is selected
       uploadedIconDataUrl = null;
       removeUploadedIcon();
-      document.querySelectorAll('.icon-btn').forEach((b,idx)=>b.classList.toggle('selected', idx===i));
+      document.querySelectorAll('.icon-btn').forEach((b, idx) => b.classList.toggle('selected', idx === i));
       document.getElementById('iconError').style.display = 'none';
     }
 
@@ -1199,7 +1874,7 @@
       clearError('nameError');
     }
 
-    function clearError(id) { document.getElementById(id).style.display='none'; }
+    function clearError(id) { document.getElementById(id).style.display = 'none'; }
 
     function handleCreateBtn() {
       if (activeTab === 'package') {
@@ -1226,26 +1901,26 @@
       document.getElementById('benefitUnit').value = '';
       document.getElementById('rolloverType').value = '';
       document.getElementById('cycleField').value = '';
-      document.querySelectorAll('.icon-btn').forEach(b=>b.classList.remove('selected'));
-      ['iconError','nameError','unitError'].forEach(id=>{ document.getElementById(id).style.display='none'; });
+      document.querySelectorAll('.icon-btn').forEach(b => b.classList.remove('selected'));
+      ['iconError', 'nameError', 'unitError'].forEach(id => { document.getElementById(id).style.display = 'none'; });
     }
 
     function submitCreate() {
       let valid = true;
-      if (selectedIcon === null && !uploadedIconDataUrl) { document.getElementById('iconError').style.display='block'; valid=false; }
+      if (selectedIcon === null && !uploadedIconDataUrl) { document.getElementById('iconError').style.display = 'block'; valid = false; }
       const name = document.getElementById('benefitName').value.trim();
-      if (!name) { document.getElementById('nameError').style.display='block'; valid=false; }
+      if (!name) { document.getElementById('nameError').style.display = 'block'; valid = false; }
       const unit = document.getElementById('benefitUnit').value;
-      if (!unit) { document.getElementById('unitError').style.display='block'; valid=false; }
+      if (!unit) { document.getElementById('unitError').style.display = 'block'; valid = false; }
       if (!valid) return;
 
-      const newId = 'BEN' + String(BENEFITS.length+1).padStart(3,'0');
+      const newId = 'BEN' + String(BENEFITS.length + 1).padStart(3, '0');
       BENEFITS.push({
         id: newId, name, unit,
         iconIdx: selectedIcon,
         iconDataUrl: uploadedIconDataUrl || null,
         status: 'ACTIVE', createdBy: 'admin@vlinkpay.com',
-        createdDate: new Date().toISOString().slice(0,10)
+        createdDate: new Date().toISOString().slice(0, 10)
       });
 
       closeModal();
@@ -1257,10 +1932,11 @@
       if (e.target === e.currentTarget) closeModal();
     });
 
-    document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
     /* Init */
     document.addEventListener('DOMContentLoaded', () => { render(); lucide.createIcons(); });
-    </script>
+  </script>
 </body>
+
 </html>

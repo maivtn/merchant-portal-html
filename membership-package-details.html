@@ -1115,7 +1115,7 @@
         <div class="pkg-card-wrap">
           <div class="pkg-card">
             <span class="pkg-save-badge">SAVE 10%</span>
-            <span class="pkg-popular-badge">Most Popular</span>
+            <span class="pkg-popular-badge" id="previewPopularBadge" style="display:none;">Most Popular</span>
             <div class="pkg-icon-circle">₿</div>
             <div class="pkg-name-preview">SILVER</div>
             <div class="pkg-price-preview"><sup>$</sup>99<span class="period"> /yr</span></div>
@@ -1156,9 +1156,9 @@
           <div class="mem-toggle-row">
             <div class="mem-toggle-left">
               <span class="mem-toggle-label">Mark as Most Popular</span>
-              <span class="mem-pill active" id="mostPopularPill">ON</span>
+              <span class="mem-pill inactive" id="mostPopularPill">OFF</span>
             </div>
-            <div class="mem-switch on" id="mostPopularSwitch" onclick="toggleMemSwitch(this)" aria-label="Most popular">
+            <div class="mem-switch" id="mostPopularSwitch" onclick="toggleMemSwitch(this)" aria-label="Most popular">
             </div>
           </div>
         </div>
@@ -1336,10 +1336,14 @@
       var isOn = el.classList.contains('on');
 
       if (isMostPopular) {
-        // Most Popular: ON / OFF
+        // Most Popular: ON / OFF + preview badge
         pill.textContent = isOn ? 'ON' : 'OFF';
         pill.classList.toggle('inactive', !isOn);
         pill.classList.toggle('active', isOn);
+        var previewBadge = document.getElementById('previewPopularBadge');
+        if (previewBadge) {
+          previewBadge.style.display = isOn ? 'inline-flex' : 'none';
+        }
       } else {
         // Sale Status pill: ACTIVE / INACTIVE (does not control header edit anymore)
         pill.textContent = isOn ? 'ACTIVE' : 'INACTIVE';

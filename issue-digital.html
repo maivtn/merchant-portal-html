@@ -14,6 +14,9 @@
   <!-- Flatpickr -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <!-- Tom Select (benefit dropdown with icon + checkbox) -->
+  <link href="https://cdn.jsdelivr.net/npm/tom-select@2.5.2/dist/css/tom-select.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.5.2/dist/js/tom-select.complete.min.js"></script>
   <link rel="stylesheet" href="global.css">
   <script src="global.js" defer></script>
   <style>
@@ -1527,14 +1530,13 @@
 
     .mb-select {
       width: 100%;
-      height: 42px;
-      border: 1.5px solid var(--c-border);
+      border: 0;
+      padding: 0;
       border-radius: var(--radius-sm);
       background: var(--c-surface);
       font-size: 13px;
       font-family: inherit;
       color: var(--c-text-1);
-      padding: 0 36px 0 12px;
       appearance: none;
       -webkit-appearance: none;
       cursor: pointer;
@@ -1547,13 +1549,45 @@
       box-shadow: 0 0 0 3px rgba(0, 171, 85, 0.10);
     }
 
-    .mb-select-icon {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-      color: var(--c-text-3);
+    /* Tom Select overrides for mb benefit dropdown */
+    .mb-select-wrap .ts-wrapper {
+      font-family: 'Poppins', sans-serif;
+    }
+    .mb-select-wrap .ts-control {
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-sm);
+      min-height: 42px;
+      padding: 0 10px;
+    }
+    .mb-select-wrap .ts-control:focus-within {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px rgba(0, 171, 85, 0.10);
+    }
+    .mb-select-wrap .ts-dropdown .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+    }
+    .mb-select-wrap .ts-dropdown .tomselect-checkbox {
+      flex-shrink: 0;
+      margin-right: 4px;
+    }
+    .mb-select-wrap .ts-dropdown .mb-opt-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .mb-select-wrap .ts-dropdown .mb-opt-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-text-1);
     }
 
     .mb-selected-area {
@@ -1573,8 +1607,8 @@
     }
 
     .mb-cards-row {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
     }
 
@@ -1583,8 +1617,7 @@
       border: 1.5px solid var(--c-border);
       border-radius: var(--radius-sm);
       padding: 10px 12px;
-      min-width: 130px;
-      flex: 1 1 130px;
+      min-width: 0;
       position: relative;
     }
 
@@ -1663,12 +1696,8 @@
 
     @media (max-width: 767px) {
       .mb-cards-row {
+        grid-template-columns: 1fr;
         gap: 8px;
-      }
-
-      .mb-card {
-        min-width: 100%;
-        flex: 1 1 100%;
       }
     }
 
@@ -2093,8 +2122,20 @@
         justify-content: center;
       }
 
+      .suggested-terms {
+        gap: 5px;
+      }
+
       .term-chip {
         max-width: 100%;
+        padding: 5px 10px;
+        font-size: 11px;
+        gap: 3px;
+      }
+
+      .term-chip i {
+        width: 10px !important;
+        height: 10px !important;
       }
 
       .main {
@@ -2742,10 +2783,7 @@
               <!-- Membership Benefits: Select + Cards -->
               <div id="membershipBenefits" style="display:none;">
                 <div class="mb-select-wrap">
-                  <select class="mb-select" id="mbBenefitSelect" onchange="onMbBenefitSelect(this)">
-                    <option value="">Select Benefit</option>
-                  </select>
-                  <span class="mb-select-icon"><i data-lucide="chevron-down" style="width:15px;height:15px;"></i></span>
+                  <select class="mb-select" id="mbBenefitSelect" multiple placeholder="Select Benefit"></select>
                 </div>
                 <div class="mb-selected-area" id="mbSelectedArea">
                   <div class="mb-selected-label">Selected Benefits</div>
@@ -3449,6 +3487,20 @@ Please present this card before payment.</textarea>
 
       // T&C load/save buttons: always visible regardless of card type
       if (termsActions) termsActions.style.display = '';
+
+      renumberSteps();
+    }
+
+    function renumberSteps() {
+      const cards = document.querySelectorAll('.right-panel .step-card');
+      let n = 1;
+      cards.forEach(card => {
+        const isVisible = card.style.display !== 'none';
+        const badge = card.querySelector('.step-badge');
+        if (badge) {
+          badge.textContent = isVisible ? String(n++) : badge.textContent;
+        }
+      });
     }
 
     /* ──────────────────────────────────────────────
@@ -3519,33 +3571,60 @@ Please present this card before payment.</textarea>
       { id: 'free_lounge', name: 'Free Lounge', unit: 'x', icon: '☕', iconBg: '#f0fdf4', iconColor: '#16a34a' },
     ];
     let mbSelected = {}; // { id: value }
+    let mbTomSelect = null;
 
     function initMbBenefitSelect() {
       const sel = document.getElementById('mbBenefitSelect');
       if (!sel) return;
-      sel.innerHTML = '<option value="">Select Benefit</option>';
+      if (mbTomSelect) { mbTomSelect.destroy(); mbTomSelect = null; }
+      sel.innerHTML = '';
       MB_BENEFITS.forEach(b => {
         const opt = document.createElement('option');
         opt.value = b.id;
         opt.textContent = `${b.name} (${b.unit})`;
+        opt.dataset.icon = b.icon;
+        opt.dataset.iconBg = b.iconBg;
+        opt.dataset.iconColor = b.iconColor;
         sel.appendChild(opt);
+      });
+      const benefitMap = Object.fromEntries(MB_BENEFITS.map(b => [b.id, b]));
+      mbTomSelect = new TomSelect('#mbBenefitSelect', {
+        plugins: { checkbox_options: {} },
+        placeholder: 'Select Benefit',
+        maxItems: null,
+        dropdownParent: 'body',
+        render: {
+          option: function (data, escape) {
+            const b = benefitMap[data.value];
+            if (!b) return escape(data.text);
+            return '<div class="option">' +
+              '<span class="mb-opt-icon" style="background:' + escape(b.iconBg) + ';color:' + escape(b.iconColor) + '">' + escape(b.icon) + '</span>' +
+              '<span class="mb-opt-text">' + escape(b.name) + ' (' + escape(b.unit) + ')</span>' +
+              '</div>';
+          },
+          item: function (data, escape) {
+            const b = benefitMap[data.value];
+            if (!b) return escape(data.text);
+            return '<div class="item">' +
+              '<span class="mb-opt-icon" style="background:' + escape(b.iconBg) + ';color:' + escape(b.iconColor) + '">' + escape(b.icon) + '</span>' +
+              escape(b.name) + ' (' + escape(b.unit) + ')' +
+              '</div>';
+          }
+        },
+        onChange: function (values) {
+          const prev = Object.keys(mbSelected);
+          const next = values || [];
+          next.forEach(id => { if (!mbSelected[id]) mbSelected[id] = ''; });
+          prev.forEach(id => { if (!next.includes(id)) delete mbSelected[id]; });
+          renderMbCards();
+        }
       });
       renderMbCards();
     }
 
-    function onMbBenefitSelect(sel) {
-      const id = sel.value;
-      if (!id) return;
-      if (!mbSelected[id]) {
-        mbSelected[id] = '';
-        renderMbCards();
-      }
-      sel.value = ''; // reset dropdown
-      lucide.createIcons();
-    }
-
     function removeMbBenefit(id) {
       delete mbSelected[id];
+      if (mbTomSelect) mbTomSelect.removeItem(id);
       renderMbCards();
     }
 
@@ -3626,6 +3705,12 @@ Please present this card before payment.</textarea>
       renderAiPrompts();
       // Init membership benefit select
       initMbBenefitSelect();
+      // Init step visibility for default card type (E-Gift Card)
+      const step3 = document.getElementById('step3Card');
+      const step5 = document.getElementById('step5Card');
+      if (step3) step3.style.display = (currentTypeId === '0' || currentTypeId === '4') ? 'none' : '';
+      if (step5) step5.style.display = (currentTypeId === '2' || currentTypeId === '3') ? '' : 'none';
+      renumberSteps();
       // On mobile: collapse Design Collection, Brand Identity, Business Information by default
       const isMobile = window.innerWidth <= 767;
       const mobileCollapseIds = [
@@ -3993,6 +4078,8 @@ Please present this card before payment.</textarea>
       gap: 28px;
       padding: 20px 24px 24px;
       overflow-y: auto;
+      flex: 1;
+      min-height: 0;
     }
 
     /* Library card */
@@ -4003,6 +4090,8 @@ Please present this card before payment.</textarea>
       background: #fff;
       cursor: pointer;
       transition: border-color 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
     }
 
     .lib-card:hover {
@@ -4024,6 +4113,7 @@ Please present this card before payment.</textarea>
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
     .lib-card-img {
@@ -4111,6 +4201,7 @@ Please present this card before payment.</textarea>
 
     .lib-card-info {
       padding: 8px 10px 10px;
+      flex-shrink: 0;
     }
 
     .lib-card-name {
@@ -4130,6 +4221,7 @@ Please present this card before payment.</textarea>
 
     .lib-card-actions-mobile {
       display: none;
+      flex-shrink: 0;
     }
 
     /* Logo Preview modal */
@@ -4281,8 +4373,12 @@ Please present this card before payment.</textarea>
         display: none;
       }
 
+      .lib-card-info {
+        display: block;
+      }
+
       .lib-card-actions-mobile {
-        display: flex;
+        display: flex !important;
         align-items: center;
         justify-content: center;
         gap: 6px;
@@ -4314,6 +4410,7 @@ Please present this card before payment.</textarea>
 
       .lib-card {
         max-width: none;
+        width: 100%;
       }
 
       .lib-card-info {

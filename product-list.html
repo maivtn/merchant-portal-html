@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="global.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="global.js" defer></script>
   <style>
     /* Lucide icon sizing helpers — target both <i> before and <svg> after createIcons() */
@@ -172,6 +174,14 @@
 
     .filter-bar .locked-field {
       width: 170px;
+    }
+
+    .filter-bar-mobile .field-container {
+      height: 36px;
+    }
+
+    .filter-bar-mobile .field-input {
+      height: 100%;
     }
 
     .filter-btn-mobile {
@@ -504,25 +514,31 @@
         flex-wrap: wrap;
         justify-content: center;
       }
+
       .pagination-rows-label {
         font-size: 12px;
         gap: 6px;
       }
+
       .pagination-select {
         padding: 6px 24px 6px 8px;
         font-size: 12px;
         min-height: 32px;
       }
+
       .pagination-select-chevron {
         right: 6px;
       }
+
       .pagination-info {
         font-size: 12px;
       }
+
       .pagination-btn {
         width: 36px;
         height: 36px;
       }
+
       .pagination-btn i {
         width: 18px !important;
         height: 18px !important;
@@ -763,17 +779,20 @@
     .cancel-success-modal {
       text-align: center;
     }
+
     .cancel-success-icon {
       margin-bottom: 16px;
       display: flex;
       justify-content: center;
     }
+
     .cancel-success-text {
       font-size: 16px;
       font-weight: 600;
       color: #212b36;
       margin: 0 0 20px;
     }
+
     .btn-ok-success {
       width: 100%;
       height: 44px;
@@ -786,6 +805,7 @@
       cursor: pointer;
       transition: background 0.15s;
     }
+
     .btn-ok-success:hover {
       background: #008f4a;
     }
@@ -995,7 +1015,7 @@
       }
 
       .issue-modal-desc {
-      font-size: 13px;
+        font-size: 13px;
       }
 
       .option-card {
@@ -1043,7 +1063,7 @@
       height: 100%;
       background: rgba(0, 0, 0, 0.3);
       display: none;
-      align-items: flex-end;
+      align-items: center;
       z-index: 1001;
     }
 
@@ -1054,7 +1074,7 @@
     .mobile-filter-sheet {
       background: white;
       width: 100%;
-      border-radius: 16px 16px 0 0;
+      border-radius: 16px;
       padding: 24px 20px;
       max-height: 85vh;
       overflow-y: auto;
@@ -1323,7 +1343,8 @@
 
   <header class="top-header">
     <div class="header-left">
-      <button class="hamburger hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <button class="hamburger hamburger-btn" id="hamburgerBtn"
+        aria-label="Toggle menu"><span></span><span></span><span></span></button>
     </div>
     <div class="header-right">
       <div class="header-info">Jan 14, 2026 10:05:53 AM (UTC)</div>
@@ -1347,15 +1368,15 @@
           </button>
           <button class="btn-issue-mobile" onclick="openIssueCardModal()">
             <i data-lucide="plus" style="width:20px;height:20px;"></i>
-        </button>
-      </div>
+          </button>
+        </div>
       </div>
       <div class="breadcrumb-desktop" style="margin-top: 6px;">
         <span style="font-size: 13px; color: #637381;">Gift &amp; Voucher</span>
         <span style="font-size: 13px; color: #637381; margin: 0 6px;">•</span>
         <span style="font-size: 13px; color: #637381;">Product Management</span>
-    </div>
       </div>
+    </div>
 
     <!-- Main Card -->
     <div class="main-card">
@@ -1366,87 +1387,87 @@
         <button class="platform-tab" data-platform="VLINKPAY Platform"
           onclick="setPlatformTab('VLINKPAY Platform', this)">VLINKPAY Platform</button>
         <button class="platform-tab" data-platform="Store" onclick="setPlatformTab('Store', this)">Store</button>
-            </div>
+      </div>
 
       <!-- Category Chips -->
       <div class="category-chips" id="categoryChips">
         <!-- chips injected by JS based on active platform tab -->
-          </div>
+      </div>
 
       <!-- Desktop Filter Bar -->
       <div class="filter-bar">
         <div class="field-root search-field">
           <label class="field-label">Search</label>
-              <div class="field-container">
+          <div class="field-container">
             <i data-lucide="search" style="width:16px;height:16px;"></i>
             <input type="text" id="searchInput" class="field-input" placeholder="Product ID / Name / Card Number"
               oninput="applyFilters()">
-              </div>
-            </div>
+          </div>
+        </div>
 
         <div class="field-root status-field">
-              <label class="field-label">Product Status</label>
-              <div class="field-container">
+          <label class="field-label">Product Status</label>
+          <div class="field-container">
             <select id="statusFilter" class="field-input field-select" onchange="applyFilters()">
-                  <option value="">All Statuses</option>
+              <option value="">All Statuses</option>
               <option value="AWAITING APPROVAL">AWAITING APPROVAL</option>
               <option value="APPROVED">APPROVED</option>
               <option value="CANCELLED">CANCELLED</option>
               <option value="EXPIRED">EXPIRED</option>
-                </select>
+            </select>
             <i data-lucide="chevron-down" class="field-chevron" style="width:16px;height:16px;"></i>
-              </div>
-            </div>
+          </div>
+        </div>
 
         <div class="field-root locked-field">
           <label class="field-label">Card Locked</label>
-              <div class="field-container">
+          <div class="field-container">
             <select id="lockedFilter" class="field-input field-select" onchange="applyFilters()">
-                  <option value="">All Statuses</option>
+              <option value="">All Statuses</option>
               <option value="LOCKED">LOCKED</option>
               <option value="UNLOCKED">UNLOCKED</option>
-                </select>
+            </select>
             <i data-lucide="chevron-down" class="field-chevron" style="width:16px;height:16px;"></i>
-            </div>
           </div>
+        </div>
 
         <div class="field-root date-field">
           <label class="field-label">Created From</label>
-              <div class="field-container">
-            <input type="date" id="fromDate" class="field-input" onchange="applyFilters()">
+          <div class="field-container">
+            <input type="text" id="fromDate" class="field-input" placeholder="Pick a date" readonly>
             <i data-lucide="calendar" style="width:16px;height:16px;"></i>
-              </div>
-            </div>
+          </div>
+        </div>
 
         <div class="field-root date-field">
           <label class="field-label">To</label>
-              <div class="field-container">
-            <input type="date" id="toDate" class="field-input" onchange="applyFilters()">
+          <div class="field-container">
+            <input type="text" id="toDate" class="field-input" placeholder="Pick a date" readonly>
             <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
-              </div>
-            </div>
+        </div>
+      </div>
 
       <!-- Mobile Filter Bar -->
       <div class="filter-bar-mobile">
         <div class="field-root search-field" style="flex:1;">
-              <div class="field-container">
+          <div class="field-container">
             <i data-lucide="search" style="width:16px;height:16px;"></i>
             <input type="text" id="searchInputMobile" class="field-input" placeholder="Product ID / Name / Card Number"
               oninput="syncMobileSearch()">
-              </div>
-            </div>
+          </div>
+        </div>
         <button class="filter-btn-mobile" onclick="openMobileFilter()">
           <i data-lucide="sliders-horizontal" style="width:16px;height:16px;"></i>
           Filter
         </button>
-          </div>
+      </div>
 
       <!-- Desktop Table -->
       <div class="table-wrapper" id="tableWrapper">
         <table class="data-table" id="dataTable">
-              <thead>
-                <tr>
+          <thead>
+            <tr>
               <th class="col-issue-mode" style="min-width:160px;">Issue Mode</th>
               <th class="sortable" style="min-width:120px;" onclick="sortTable('id')">
                 <div class="th-inner"><span class="th-text">Product ID</span><span id="sort-id"
@@ -1509,12 +1530,12 @@
                     class="th-sort-icon"></span></div>
               </th>
               <th class="col-actions">Actions</th>
-                </tr>
-              </thead>
+            </tr>
+          </thead>
           <tbody id="tableBody"></tbody>
-            </table>
+        </table>
         <div id="tableEmpty" class="empty-state" style="display:none;">No products found</div>
-          </div>
+      </div>
 
       <!-- Mobile Cards -->
       <div id="mobileCards" class="mobile-cards"></div>
@@ -1528,21 +1549,21 @@
             <select id="rowsPerPage" class="pagination-select" onchange="setRowsPerPage()">
               <option value="5">5</option>
               <option value="10" selected>10</option>
-                <option value="25">25</option>
-              </select>
+              <option value="25">25</option>
+            </select>
             <i data-lucide="chevron-down" class="pagination-select-chevron" style="width:14px;height:14px;"></i>
-            </div>
+          </div>
         </div>
         <div id="paginationInfo" class="pagination-info">0–0 of 0</div>
-            <div class="pagination-arrows">
+        <div class="pagination-arrows">
           <button id="prevBtn" class="pagination-btn" onclick="prevPage()" disabled>
             <i data-lucide="chevron-left" style="width:20px;height:20px;"></i>
           </button>
           <button id="nextBtn" class="pagination-btn" onclick="nextPage()" disabled>
             <i data-lucide="chevron-right" style="width:20px;height:20px;"></i>
           </button>
+        </div>
       </div>
-    </div>
 
     </div>
   </main>
@@ -1565,7 +1586,7 @@
         <div class="card-info-row">
           <span class="card-info-label">Product Name</span>
           <span id="cancelProductName" class="card-info-value"></span>
-      </div>
+        </div>
       </div>
       <label class="reason-label">Reason for Cancellation</label>
       <textarea id="cancelReason" class="reason-textarea" rows="4"
@@ -1575,7 +1596,7 @@
         <button class="btn-confirm-cancel" onclick="confirmCancel()">Confirm Cancel</button>
       </div>
     </div>
-      </div>
+  </div>
 
   <!-- Cancel Success Modal (shown after card is cancelled) -->
   <div id="cancelSuccessModal" class="overlay" onclick="handleOverlayClick(event, 'cancelSuccessModal')">
@@ -1690,14 +1711,14 @@
         <div class="field-root date-field" style="width:100%;">
           <label class="field-label">Created From</label>
           <div class="field-container">
-            <input type="date" id="mobileFromDate" class="field-input">
+            <input type="text" id="mobileFromDate" class="field-input" placeholder="Pick a date" readonly>
             <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
         </div>
         <div class="field-root date-field" style="width:100%;">
           <label class="field-label">To</label>
           <div class="field-container">
-            <input type="date" id="mobileToDate" class="field-input">
+            <input type="text" id="mobileToDate" class="field-input" placeholder="Pick a date" readonly>
             <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
         </div>
@@ -2237,14 +2258,43 @@
     });
 
     // ===== Copy Link =====
-      function copyProductLink(productUrl, productId) {
-        const fullUrl = window.location.origin + window.location.pathname.replace('product-list.html', productUrl);
+    function copyProductLink(productUrl, productId) {
+      const fullUrl = window.location.origin + window.location.pathname.replace('product-list.html', productUrl);
       window.copyToClipboard(fullUrl, 'Product link copied!');
     }
 
     // ===== Init =====
     document.addEventListener('DOMContentLoaded', function () {
       lucide.createIcons();
+
+      // Init Flatpickr for Created date range (desktop)
+      if (window.flatpickr) {
+        flatpickr('#fromDate', {
+          dateFormat: 'Y-m-d',
+          allowInput: false,
+          disableMobile: true,
+          onChange: applyFilters
+        });
+        flatpickr('#toDate', {
+          dateFormat: 'Y-m-d',
+          allowInput: false,
+          disableMobile: true,
+          onChange: applyFilters
+        });
+
+        // Mobile modal date pickers
+        flatpickr('#mobileFromDate', {
+          dateFormat: 'Y-m-d',
+          allowInput: false,
+          disableMobile: true
+        });
+        flatpickr('#mobileToDate', {
+          dateFormat: 'Y-m-d',
+          allowInput: false,
+          disableMobile: true
+        });
+      }
+
       updateCategoryChips('all');
       render();
     });

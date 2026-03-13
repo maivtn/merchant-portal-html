@@ -10,8 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="global.css">
-  <script src="global.js" defer></script>
+    <script src="global.js" defer></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
         .table-card {
             background: #fff;
@@ -57,7 +59,7 @@
 
         .field-input {
             width: 100%;
-            height: 48px;
+            height: 40px;
             padding: 0 12px;
             border: 1px solid var(--grey-300);
             border-radius: 8px;
@@ -110,6 +112,7 @@
             color: var(--grey-800);
             white-space: nowrap;
         }
+
         .section-header {
             display: flex;
             align-items: center;
@@ -181,16 +184,19 @@
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
             }
+
             .cancelled-tab-btn {
                 white-space: nowrap;
                 flex-shrink: 0;
             }
+
             .table-toolbar {
                 flex-direction: column !important;
                 align-items: stretch !important;
                 padding: 12px 16px !important;
                 gap: 10px !important;
             }
+
             .field-root {
                 flex-shrink: 1 !important;
                 min-width: 0 !important;
@@ -203,7 +209,10 @@
                 flex-wrap: wrap !important;
                 gap: 10px !important;
             }
-            .field-root { flex-shrink: 1 !important; }
+
+            .field-root {
+                flex-shrink: 1 !important;
+            }
         }
     </style>
 </head>
@@ -212,7 +221,8 @@
     <aside class="sidebar">
         <div class="sidebar-content">
             <div class="logo">
-                <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLINKPAY" class="sidebar-logo" />
+                <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg"
+                    alt="VLINKPAY" class="sidebar-logo" />
             </div>
 
             <div class="user-card">
@@ -251,7 +261,7 @@
                 <a href="#" class="sub-item "><span class="dot"></span>Merchant Map</a>
                 <a href="product-list.html" class="sub-item "><span class="dot"></span>Product Management</a>
                 <a href="digital-gifts-management.html" class="sub-item "><span class="dot"></span>VlinkPay Store</a>
-        <a href="cancelled-cards.html" class="sub-item"><span class="dot"></span>Cancelled Cards</a>
+                <a href="cancelled-cards.html" class="sub-item"><span class="dot"></span>Cancelled Cards</a>
             </div>
 
             <a href="crypto-card-list.html" class="nav-item">
@@ -357,7 +367,7 @@
                 <div class="field-root date-field">
                     <label class="field-label">Start date</label>
                     <div class="field-container">
-                        <input type="text" class="field-input" id="cancelStartDate" placeholder="Pick date">
+                        <input type="text" class="field-input" id="cancelStartDate" placeholder="Pick a date" readonly>
                         <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
                     </div>
                 </div>
@@ -365,7 +375,7 @@
                 <div class="field-root date-field">
                     <label class="field-label">End date</label>
                     <div class="field-container">
-                        <input type="text" class="field-input" id="cancelEndDate" placeholder="Pick date">
+                        <input type="text" class="field-input" id="cancelEndDate" placeholder="Pick a date" readonly>
                         <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
                     </div>
                 </div>
@@ -610,13 +620,30 @@
             if (search) {
                 search.addEventListener('input', filterCancelledTables);
             }
-            const startDateInput = document.getElementById('cancelStartDate');
-            if (startDateInput) {
-                startDateInput.addEventListener('change', filterCancelledTables);
-            }
-            const endDateInput = document.getElementById('cancelEndDate');
-            if (endDateInput) {
-                endDateInput.addEventListener('change', filterCancelledTables);
+
+            // Init Flatpickr for cancel date range
+            if (window.flatpickr) {
+                flatpickr('#cancelStartDate', {
+                    dateFormat: 'Y-m-d',
+                    allowInput: false,
+                    disableMobile: true,
+                    onChange: filterCancelledTables
+                });
+                flatpickr('#cancelEndDate', {
+                    dateFormat: 'Y-m-d',
+                    allowInput: false,
+                    disableMobile: true,
+                    onChange: filterCancelledTables
+                });
+            } else {
+                const startDateInput = document.getElementById('cancelStartDate');
+                if (startDateInput) {
+                    startDateInput.addEventListener('change', filterCancelledTables);
+                }
+                const endDateInput = document.getElementById('cancelEndDate');
+                if (endDateInput) {
+                    endDateInput.addEventListener('change', filterCancelledTables);
+                }
             }
         });
     </script>

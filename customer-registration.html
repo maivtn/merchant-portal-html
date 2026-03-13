@@ -14,8 +14,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    <!-- Iconify -->
+    <!-- Flatpickr (date picker) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Iconify + Lucide (for Design Collection icons) -->
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
     <style>
         :root {
@@ -84,6 +89,15 @@
             transition: all 0.2s;
         }
 
+        .form-select {
+            padding-right: 2.25rem;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2364748b'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.6rem center;
+            background-size: 1rem;
+            appearance: none;
+        }
+
         .form-control:focus,
         .form-select:focus {
             border-color: var(--primary);
@@ -102,6 +116,19 @@
 
         .input-group .form-control {
             border-left: none;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .input-group .phone-dial-select {
+            width: auto;
+            min-width: 72px;
+            max-width: 80px;
+            border-radius: 8px 0 0 8px;
+            border-right: none;
+            padding-right: 1.5rem;
+        }
+
+        .input-group .phone-dial-select+.form-control {
             border-radius: 0 8px 8px 0;
         }
 
@@ -294,9 +321,13 @@
                 margin-bottom: 6px !important;
             }
 
-            .form-control,
-            .form-select {
+            .form-control {
                 padding: 10px 12px !important;
+            }
+
+            .form-select {
+                padding: 10px 12px 10px 12px !important;
+                padding-right: 2.25rem !important;
             }
 
             .digital-card-info {
@@ -395,8 +426,176 @@
             align-items: center;
         }
 
+        .panel-card-header.open .chevron {
+            transform: rotate(180deg);
+        }
+
         .panel-card-body {
             padding: 16px;
+        }
+
+        /* Collapsible (Design Collection) */
+        .collapse-wrap {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, opacity 0.25s ease;
+            opacity: 0;
+        }
+
+        .collapse-wrap.open {
+            max-height: 2000px;
+            opacity: 1;
+        }
+
+        /* Design Collection */
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-2);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .color-dots {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .color-dot {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2.5px solid transparent;
+            transition: transform 0.2s, border-color 0.2s;
+            position: relative;
+        }
+
+        .color-dot:hover {
+            transform: scale(1.15);
+        }
+
+        .color-dot.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px #fff inset;
+        }
+
+        .color-dot.color-picker-btn {
+            background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .color-picker-btn .pick-color-icon,
+        .text-color-picker-btn .pick-color-icon {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            color: #fff;
+            filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.9));
+            z-index: 1;
+        }
+
+        .color-picker-btn input[type="color"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .adv-accordion-trigger {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-2);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            cursor: pointer;
+            padding: 8px 0;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            width: 100%;
+            border-top: 1px dashed var(--border);
+        }
+
+        .adv-accordion-trigger:hover {
+            color: var(--text-1);
+        }
+
+        .adv-accordion-body {
+            padding: 12px 0 0;
+        }
+
+        .text-color-group {
+            margin-bottom: 14px;
+        }
+
+        .text-color-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-1);
+            margin-bottom: 8px;
+        }
+
+        .text-color-dots {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .text-color-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .text-color-dot:hover {
+            transform: scale(1.15);
+        }
+
+        .text-color-dot.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px #fff inset;
+        }
+
+        .text-color-dot.auto-dot {
+            background: linear-gradient(135deg, #fff 50%, #000 50%);
+            border-color: var(--border);
+        }
+
+        .text-color-dot.text-color-picker-btn {
+            background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
+            position: relative;
+        }
+
+        .text-color-dot.text-color-picker-btn input[type="color"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
         }
 
         .card-flip-container {
@@ -476,6 +675,7 @@
             gap: 10px;
             padding: 10px 14px;
             overflow: hidden;
+            align-items: start;
         }
 
         .cb-main {
@@ -509,11 +709,10 @@
 
         .cb-contact {
             flex-shrink: 0;
-            padding: 10px 14px 14px;
+            padding: 0;
             display: flex;
             flex-direction: column;
             gap: 3px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .cb-contact-title {
@@ -851,97 +1050,10 @@
                                 <span class="input-group-text">
                                     <iconify-icon icon="solar:letter-bold" width="18"></iconify-icon>
                                 </span>
-                                <input type="email" class="form-control" placeholder="customer@gmail.com" required>
+                                <input type="email" class="form-control" placeholder="Email address" required>
                             </div>
                         </div>
 
-                        <!-- Section 02: Identity Verification -->
-                        <div class="section-header mt-5">
-                            <iconify-icon icon="solar:user-check-bold" width="24"></iconify-icon>
-                            <h5>02. Identity Verification</h5>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label">
-                                    Full Name <span class="required">*</span>
-                                </label>
-                                <input type="text" class="form-control" placeholder="Brian Nguyen" required>
-                            </div>
-
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label">
-                                    Phone Number <span class="required">*</span>
-                                    <iconify-icon icon="solar:info-circle-linear" width="16"
-                                        class="info-icon"></iconify-icon>
-                                </label>
-                                <div class="input-group">
-                                    <span class="input-group-text">+1</span>
-                                    <input type="tel" class="form-control" placeholder="832 799 3583" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label">
-                                    Date of Birth <span class="required">*</span>
-                                    <iconify-icon icon="solar:info-circle-linear" width="16"
-                                        class="info-icon"></iconify-icon>
-                                </label>
-                                <input type="date" class="form-control" required>
-                            </div>
-
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label">Gender</label>
-                                <select class="form-select">
-                                    <option value="male" selected>Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Section 03: Contact Address -->
-                        <div class="section-header mt-5">
-                            <iconify-icon icon="solar:map-point-bold" width="24"></iconify-icon>
-                            <h5>03. Contact Address</h5>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-8 mb-4">
-                                <label class="form-label">
-                                    Street Address <span class="required">*</span>
-                                    <iconify-icon icon="solar:info-circle-linear" width="16"
-                                        class="info-icon"></iconify-icon>
-                                </label>
-                                <input type="text" class="form-control" placeholder="17922 Daffy Patch" required>
-                            </div>
-
-                            <div class="col-md-4 mb-4">
-                                <label class="form-label">Apt/Suite</label>
-                                <input type="text" class="form-control" placeholder="Unit 101">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-5 mb-4">
-                                <label class="form-label">City</label>
-                                <input type="text" class="form-control" placeholder="Richmond">
-                            </div>
-
-                            <div class="col-md-3 mb-4">
-                                <label class="form-label">State</label>
-                                <input type="text" class="form-control" placeholder="TX">
-                            </div>
-
-                            <div class="col-md-4 mb-4">
-                                <label class="form-label">Zip Code</label>
-                                <input type="text" class="form-control" placeholder="77407">
-                            </div>
-                        </div>
-
-                        <!-- Section 04: Digital Membership Card -->
                         <div class="digital-card-info">
                             <ul>
                                 <li>Username and password will be sent to your email.</li>
@@ -950,6 +1062,13 @@
                             </ul>
                         </div>
 
+
+
+                        <!-- Section 02: Identity Verification -->
+                        <div class="section-header mt-3">
+                            <iconify-icon icon="solar:user-check-bold" width="24"></iconify-icon>
+                            <h5>02. Identity Verification</h5>
+                        </div>
                         <!-- Card Preview (membership type) -->
                         <div class="panel-card">
                             <div class="panel-card-header no-collapse">
@@ -967,7 +1086,7 @@
                                 <div class="card-flip-container">
                                     <div class="card-inner" id="cardInner" onclick="flipCard(event)">
                                         <!-- FRONT (membership) -->
-                                        <div class="card-face card-front">
+                                        <div class="card-face card-front" id="cardFront">
                                             <div class="cf-top">
                                                 <div class="cf-logo-wrap">
                                                     <div class="card-logo-box">🎁</div>
@@ -1005,7 +1124,7 @@
                                             </div>
                                         </div>
                                         <!-- BACK -->
-                                        <div class="card-face card-back">
+                                        <div class="card-face card-back" style="padding-top: 8px;">
                                             <div class="cb-stripe">
                                                 <span class="cb-pin-label">PIN</span>
                                                 <span class="cb-pin-dots">●●●</span>
@@ -1028,38 +1147,287 @@
                                                     <div class="cb-merchant-tc">Terms &amp; Conditions của Merchant tự
                                                         nhập khi tạo card</div>
                                                 </div>
+
+                                            </div>
+                                            <!-- Contact (bottom of card) -->
+                                            <div class="cb-contact-container"
+                                                style="display: flex; flex-direction: row; gap: 10px; justify-content: space-between; padding: 10px 14px;">
+                                                <div class="cb-contact">
+                                                    <div class="cb-contact-title">For help, contact <span
+                                                            id="cbMerchantName">[MERCHANT
+                                                            NAME]</span>:</div>
+                                                    <div class="cb-contact-row">
+                                                        <i data-lucide="phone" class="cb-contact-icon"></i>
+                                                        <span id="cbPhone">+ 1 (777) 777-7777</span>
+                                                    </div>
+                                                    <div class="cb-contact-row">
+                                                        <i data-lucide="mail" class="cb-contact-icon"></i>
+                                                        <span id="cbEmail">merchant@example.com</span>
+                                                    </div>
+                                                    <div class="cb-contact-row">
+                                                        <i data-lucide="globe" class="cb-contact-icon"></i>
+                                                        <span id="cbWebsite">www.merchant.com</span>
+                                                    </div>
+                                                    <div class="cb-contact-row">
+                                                        <i data-lucide="shield-check" class="cb-contact-icon"></i>
+                                                        <span>Verify card at www.vlinkpay.com/check-balance</span>
+                                                    </div>
+                                                </div>
+                                                <!-- QR code -->
                                                 <div class="cb-qr-col">
                                                     <div class="cb-qr-box"></div>
                                                     <div class="cb-scan-label">SCAN TO PAY</div>
                                                 </div>
                                             </div>
-                                            <div class="cb-contact">
-                                                <div class="cb-contact-title">For help, contact <span>[MERCHANT
-                                                        NAME]</span>:</div>
-                                                <div class="cb-contact-row">
-                                                    <iconify-icon icon="solar:phone-bold" width="10" height="10"
-                                                        class="cb-contact-icon"></iconify-icon>
-                                                    <span>+ 1 (777) 777-7777</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Design Collection (from issue-digital.html) -->
+                        <div class="panel-card">
+                            <div class="panel-card-header" id="hdr-design"
+                                onclick="toggleSection('design-collection','hdr-design')">
+                                <div class="header-icon"><i data-lucide="palette" style="width:16px;height:16px;"></i>
+                                </div>
+                                <span class="header-title">Design Collection</span>
+                                <div class="chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i>
+                                </div>
+                            </div>
+                            <div class="collapse-wrap" id="design-collection">
+                                <div class="panel-card-body">
+                                    <div class="section-label">
+                                        <iconify-icon icon="solar:color-filter-bold-duotone" width="14"></iconify-icon>
+                                        Preset Colors
+                                    </div>
+                                    <div class="color-dots">
+                                        <div class="color-dot active" style="background:#1E293B"
+                                            onclick="selectColor(this,'#1E293B')" title="Slate Dark"></div>
+                                        <div class="color-dot" style="background:#064E3B"
+                                            onclick="selectColor(this,'#064E3B')" title="Emerald Dark"></div>
+                                        <div class="color-dot" style="background:#7F1D1D"
+                                            onclick="selectColor(this,'#7F1D1D')" title="Red Dark"></div>
+                                        <div class="color-dot" style="background:#4C1D95"
+                                            onclick="selectColor(this,'#4C1D95')" title="Violet Dark"></div>
+                                        <div class="color-dot" style="background:#3B82F6"
+                                            onclick="selectColor(this,'#3B82F6')" title="Blue">
+                                        </div>
+                                        <div class="color-dot" style="background:#10B981"
+                                            onclick="selectColor(this,'#10B981')" title="Green">
+                                        </div>
+                                        <div class="color-dot" style="background:#F59E0B"
+                                            onclick="selectColor(this,'#F59E0B')" title="Amber">
+                                        </div>
+                                        <div class="color-dot" style="background:#EC4899"
+                                            onclick="selectColor(this,'#EC4899')" title="Pink">
+                                        </div>
+                                        <div class="color-dot" style="background:#06B6D4"
+                                            onclick="selectColor(this,'#06B6D4')" title="Cyan">
+                                        </div>
+                                        <div class="color-dot" style="background:#8B5CF6"
+                                            onclick="selectColor(this,'#8B5CF6')" title="Purple">
+                                        </div>
+                                        <div class="color-dot" style="background:#FFD84D"
+                                            onclick="selectColor(this,'#FFD84D')" title="Yellow">
+                                        </div>
+                                        <div class="color-dot" style="background:#DBCD43"
+                                            onclick="selectColor(this,'#DBCD43')" title="Gold">
+                                        </div>
+                                        <div class="color-dot color-picker-btn" title="Custom color">
+                                            <iconify-icon class="pick-color-icon" icon="mdi:eyedropper"
+                                                width="12"></iconify-icon>
+                                            <input type="color"
+                                                onchange="selectColor(this.parentElement, this.value); this.parentElement.style.background=this.value;" />
+                                        </div>
+                                    </div>
+                                    <button class="adv-accordion-trigger"
+                                        onclick="toggleSection('adv-text-colors','hdr-adv')">
+                                        <iconify-icon icon="solar:text-bold-duotone" width="14"></iconify-icon>
+                                        CUSTOM TEXT COLOR (ADVANCED)
+                                        <i data-lucide="chevron-down" id="hdr-adv-chevron"
+                                            style="width:14px;height:14px;margin-left:auto;transition:transform 0.2s;"></i>
+                                    </button>
+                                    <div class="collapse-wrap" id="adv-text-colors">
+                                        <div class="adv-accordion-body">
+                                            <div class="text-color-group">
+                                                <div class="text-color-label">Brand Name &amp; Slogan</div>
+                                                <div class="text-color-dots">
+                                                    <div class="text-color-dot auto-dot active" title="Auto"
+                                                        onclick="selectTextColor(this,'brand','auto')"></div>
+                                                    <div class="text-color-dot" style="background:#3B82F6"
+                                                        onclick="selectTextColor(this,'brand','#3B82F6')" title="Blue">
+                                                    </div>
+                                                    <div class="text-color-dot" style="background:#CA8A04"
+                                                        onclick="selectTextColor(this,'brand','#CA8A04')" title="Gold">
+                                                    </div>
+                                                    <div class="text-color-dot"
+                                                        style="background:#FFFFFF;border:1px solid #ddd"
+                                                        onclick="selectTextColor(this,'brand','#FFFFFF')" title="White">
+                                                    </div>
+                                                    <div class="text-color-dot" style="background:#000000"
+                                                        onclick="selectTextColor(this,'brand','#000000')" title="Black">
+                                                    </div>
+                                                    <div class="text-color-dot text-color-picker-btn" title="Custom">
+                                                        <iconify-icon class="pick-color-icon" icon="mdi:eyedropper"
+                                                            width="10"></iconify-icon>
+                                                        <input type="color"
+                                                            onchange="selectTextColor(this.parentElement,'brand',this.value); this.parentElement.style.background=this.value;" />
+                                                    </div>
                                                 </div>
-                                                <div class="cb-contact-row">
-                                                    <iconify-icon icon="solar:letter-bold" width="10" height="10"
-                                                        class="cb-contact-icon"></iconify-icon>
-                                                    <span>merchant@example.com</span>
+                                            </div>
+                                            <div class="text-color-group">
+                                                <div class="text-color-label">Card Holder</div>
+                                                <div class="text-color-dots">
+                                                    <div class="text-color-dot auto-dot active" title="Auto"
+                                                        onclick="selectTextColor(this,'holder','auto')"></div>
+                                                    <div class="text-color-dot" style="background:#3B82F6"
+                                                        onclick="selectTextColor(this,'holder','#3B82F6')"></div>
+                                                    <div class="text-color-dot" style="background:#CA8A04"
+                                                        onclick="selectTextColor(this,'holder','#CA8A04')"></div>
+                                                    <div class="text-color-dot"
+                                                        style="background:#FFFFFF;border:1px solid #ddd"
+                                                        onclick="selectTextColor(this,'holder','#FFFFFF')"></div>
+                                                    <div class="text-color-dot" style="background:#000000"
+                                                        onclick="selectTextColor(this,'holder','#000000')"></div>
+                                                    <div class="text-color-dot text-color-picker-btn" title="Custom">
+                                                        <iconify-icon class="pick-color-icon" icon="mdi:eyedropper"
+                                                            width="10"></iconify-icon>
+                                                        <input type="color"
+                                                            onchange="selectTextColor(this.parentElement,'holder',this.value); this.parentElement.style.background=this.value;" />
+                                                    </div>
                                                 </div>
-                                                <div class="cb-contact-row">
-                                                    <iconify-icon icon="solar:globe-bold" width="10" height="10"
-                                                        class="cb-contact-icon"></iconify-icon>
-                                                    <span>www.merchant.com</span>
-                                                </div>
-                                                <div class="cb-contact-row">
-                                                    <iconify-icon icon="solar:shield-check-bold" width="10" height="10"
-                                                        class="cb-contact-icon"></iconify-icon>
-                                                    <span>Verify card at www.vlinkpay.com/check-balance</span>
+                                            </div>
+                                            <div class="text-color-group">
+                                                <div class="text-color-label">Amount / Value</div>
+                                                <div class="text-color-dots">
+                                                    <div class="text-color-dot auto-dot active" title="Auto"
+                                                        onclick="selectTextColor(this,'amount','auto')"></div>
+                                                    <div class="text-color-dot" style="background:#3B82F6"
+                                                        onclick="selectTextColor(this,'amount','#3B82F6')"></div>
+                                                    <div class="text-color-dot" style="background:#CA8A04"
+                                                        onclick="selectTextColor(this,'amount','#CA8A04')"></div>
+                                                    <div class="text-color-dot"
+                                                        style="background:#FFFFFF;border:1px solid #ddd"
+                                                        onclick="selectTextColor(this,'amount','#FFFFFF')"></div>
+                                                    <div class="text-color-dot" style="background:#000000"
+                                                        onclick="selectTextColor(this,'amount','#000000')"></div>
+                                                    <div class="text-color-dot text-color-picker-btn" title="Custom">
+                                                        <iconify-icon class="pick-color-icon" icon="mdi:eyedropper"
+                                                            width="10"></iconify-icon>
+                                                        <input type="color"
+                                                            onchange="selectTextColor(this.parentElement,'amount',this.value); this.parentElement.style.background=this.value;" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    Full Name <span class="required">*</span>
+                                </label>
+                                <input type="text" class="form-control" placeholder="Full name" required>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    Phone Number <span class="required">*</span>
+                                    <iconify-icon icon="solar:info-circle-linear" width="16"
+                                        class="info-icon"></iconify-icon>
+                                </label>
+                                <div class="input-group">
+                                    <select class="form-select phone-dial-select" id="phoneDialCode"
+                                        aria-label="Dial code">
+                                        <option value="+1" selected>+1</option>
+                                        <option value="+84">+84</option>
+                                        <option value="+44">+44</option>
+                                        <option value="+81">+81</option>
+                                        <option value="+86">+86</option>
+                                        <option value="+61">+61</option>
+                                        <option value="+65">+65</option>
+                                        <option value="+82">+82</option>
+                                        <option value="+66">+66</option>
+                                        <option value="+60">+60</option>
+                                        <option value="+63">+63</option>
+                                        <option value="+62">+62</option>
+                                        <option value="+91">+91</option>
+                                        <option value="+33">+33</option>
+                                        <option value="+49">+49</option>
+                                    </select>
+                                    <input type="tel" id="phoneNumber" class="form-control" placeholder="Phone number"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    Date of Birth <span class="required">*</span>
+                                    <iconify-icon icon="solar:info-circle-linear" width="16"
+                                        class="info-icon"></iconify-icon>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <iconify-icon icon="solar:calendar-bold-duotone" width="18"></iconify-icon>
+                                    </span>
+                                    <input type="text" id="dobInput" class="form-control" placeholder="Pick a date"
+                                        required readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">Gender</label>
+                                <select class="form-select">
+                                    <option value="" selected disabled>Select gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Section 03: Contact Address -->
+                        <div class="section-header mt-3">
+                            <iconify-icon icon="solar:map-point-bold" width="24"></iconify-icon>
+                            <h5>03. Contact Address</h5>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8 mb-4">
+                                <label class="form-label">
+                                    Street Address <span class="required">*</span>
+                                    <iconify-icon icon="solar:info-circle-linear" width="16"
+                                        class="info-icon"></iconify-icon>
+                                </label>
+                                <input type="text" class="form-control" placeholder="Street address" required>
+                            </div>
+
+                            <div class="col-md-4 mb-4">
+                                <label class="form-label">Apt/Suite</label>
+                                <input type="text" class="form-control" placeholder="Apt, suite (optional)">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-5 mb-4">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-control" placeholder="City">
+                            </div>
+
+                            <div class="col-md-3 mb-4">
+                                <label class="form-label">State</label>
+                                <input type="text" class="form-control" placeholder="State">
+                            </div>
+
+                            <div class="col-md-4 mb-4">
+                                <label class="form-label">Zip Code</label>
+                                <input type="text" class="form-control" placeholder="Zip code">
                             </div>
                         </div>
 
@@ -1072,12 +1440,14 @@
                             <div class="row">
                                 <div class="col-md-6 mb-4">
                                     <label class="form-label">Login Username</label>
-                                    <input type="text" class="form-control" value="------" readonly>
+                                    <input type="text" class="form-control" placeholder="Will be sent to your email"
+                                        readonly>
                                 </div>
 
                                 <div class="col-md-6 mb-4">
                                     <label class="form-label">Default Password</label>
-                                    <input type="password" class="form-control" value="******" readonly>
+                                    <input type="password" class="form-control" placeholder="Will be sent to your email"
+                                        readonly>
                                 </div>
                             </div>
 
@@ -1106,9 +1476,7 @@
                         <!-- Submit Button -->
                         <div class="btn-submit-wrap">
                             <button type="submit" class="btn-submit">
-                                <iconify-icon icon="solar:check-circle-bold" width="20"
-                                    style="vertical-align: middle;"></iconify-icon>
-                                Register Member
+                                Continue to payment
                             </button>
                         </div>
                     </div>
@@ -1121,6 +1489,74 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        // Design Collection (from issue-digital.html)
+        function toggleSection(sectionId, headerId) {
+            var body = document.getElementById(sectionId);
+            var hdr = headerId ? document.getElementById(headerId) : null;
+            if (!body) return;
+            var opening = !body.classList.contains('open');
+            body.classList.toggle('open', opening);
+            if (hdr) hdr.classList.toggle('open', opening);
+            var ch = document.getElementById('hdr-adv-chevron');
+            if (sectionId === 'adv-text-colors' && ch) ch.style.transform = opening ? 'rotate(180deg)' : '';
+        }
+        function selectColor(dot, color) {
+            document.querySelectorAll('.color-dot').forEach(function (d) { d.classList.remove('active'); });
+            dot.classList.add('active');
+            var front = document.getElementById('cardFront');
+            if (front) front.style.background = color;
+            updateCardTextContrast(color);
+        }
+
+        function updateCardTextContrast(hex) {
+            if (!hex) return;
+            // Normalize hex (#rgb or #rrggbb)
+            var c = hex.replace('#', '');
+            if (c.length === 3) {
+                c = c.split('').map(function (ch) { return ch + ch; }).join('');
+            }
+            if (c.length !== 6) return;
+            var r = parseInt(c.substr(0, 2), 16) / 255;
+            var g = parseInt(c.substr(2, 2), 16) / 255;
+            var b = parseInt(c.substr(4, 2), 16) / 255;
+            var sr = r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4);
+            var sg = g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4);
+            var sb = b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4);
+            var luminance = 0.2126 * sr + 0.7152 * sg + 0.0722 * sb;
+            var primary = luminance < 0.45 ? '#F9FAFB' : '#0F172A';   // main text
+            var secondary = luminance < 0.45 ? '#E5E7EB' : '#6B7280'; // helper text
+
+            var brand = document.querySelector('.cf-brand-name');
+            var slogan = document.querySelector('.cf-slogan');
+            var number = document.querySelector('.cf-number');
+            var holder = document.querySelector('.cf-holder-name');
+            var rank = document.querySelector('.cf-holder-rank');
+            var typeLabel = document.querySelector('.cf-type-label');
+            var expiryLabel = document.querySelector('.cf-expiry-label');
+            var expiryDate = document.querySelector('.cf-expiry-date');
+
+            [brand, number, holder, rank, typeLabel].forEach(function (el) {
+                if (el) el.style.color = primary;
+            });
+            [slogan, expiryLabel, expiryDate].forEach(function (el) {
+                if (el) el.style.color = secondary;
+            });
+        }
+        function selectTextColor(dot, group, color) {
+            var parent = dot.closest('.text-color-dots');
+            if (parent) parent.querySelectorAll('.text-color-dot').forEach(function (d) { d.classList.remove('active'); });
+            dot.classList.add('active');
+        }
+        function flipCard(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var inner = document.getElementById('cardInner');
+            if (inner) inner.classList.toggle('flipped');
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        });
+
         // Form validation
         document.querySelector('.btn-submit').addEventListener('click', function (e) {
             e.preventDefault();
@@ -1133,6 +1569,15 @@
 
             // Add your form submission logic here
             alert('Registration successful! Welcome to VLINKPAY.');
+        });
+
+        // Date of Birth picker (Flatpickr)
+        flatpickr('#dobInput', {
+            dateFormat: 'Y-m-d',
+            maxDate: 'today',
+            allowInput: false,
+            disableMobile: true,
+            altInput: false,
         });
 
         // Phone number formatting

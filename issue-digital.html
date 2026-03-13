@@ -342,6 +342,7 @@
       gap: 10px;
       padding: 10px 14px;
       overflow: hidden;
+      align-items: start;
     }
 
     .cb-main {
@@ -375,11 +376,10 @@
 
     .cb-contact {
       flex-shrink: 0;
-      padding: 10px 14px 14px;
+      padding: 0;
       display: flex;
       flex-direction: column;
       gap: 3px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .cb-contact-title {
@@ -745,6 +745,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+    }
+
+    .color-picker-btn .pick-color-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      color: #fff;
+      filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.9));
+      z-index: 1;
     }
 
     .color-picker-btn input[type="color"] {
@@ -754,6 +767,7 @@
       cursor: pointer;
       width: 100%;
       height: 100%;
+      z-index: 2;
     }
 
     /* Advanced text colors */
@@ -1553,26 +1567,31 @@
     .mb-select-wrap .ts-wrapper {
       font-family: 'Poppins', sans-serif;
     }
+
     .mb-select-wrap .ts-control {
       border: 1px solid var(--c-border);
       border-radius: var(--radius-sm);
       min-height: 42px;
       padding: 0 10px;
     }
+
     .mb-select-wrap .ts-control:focus-within {
       border-color: var(--c-primary);
       box-shadow: 0 0 0 3px rgba(0, 171, 85, 0.10);
     }
+
     .mb-select-wrap .ts-dropdown .option {
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 10px 12px;
     }
+
     .mb-select-wrap .ts-dropdown .tomselect-checkbox {
       flex-shrink: 0;
       margin-right: 4px;
     }
+
     .mb-select-wrap .ts-dropdown .mb-opt-icon {
       width: 28px;
       height: 28px;
@@ -1584,6 +1603,7 @@
       font-weight: 700;
       flex-shrink: 0;
     }
+
     .mb-select-wrap .ts-dropdown .mb-opt-text {
       font-size: 13px;
       font-weight: 600;
@@ -1596,6 +1616,7 @@
       border-bottom: 1px solid var(--c-border);
       background: var(--c-surface-subtle);
     }
+
     .ts-dropdown .dropdown-header-title {
       display: flex;
       align-items: center;
@@ -1603,12 +1624,14 @@
       gap: 8px;
       width: 100%;
     }
+
     .ts-dropdown .dropdown-header-label {
       flex: 1;
       font-size: 12px;
       font-weight: 700;
       color: var(--c-text-2);
     }
+
     .ts-dropdown .dropdown-header-close {
       flex-shrink: 0;
       width: 28px;
@@ -1625,6 +1648,7 @@
       text-decoration: none;
       transition: background 0.15s, color 0.15s;
     }
+
     .ts-dropdown .dropdown-header-close:hover {
       background: var(--c-surface);
       color: var(--c-text-1);
@@ -1635,6 +1659,10 @@
       border-radius: var(--radius-sm);
       padding: 12px;
       margin-top: 10px;
+    }
+
+    .mb-selected-area.is-empty {
+      display: none;
     }
 
     .mb-selected-label {
@@ -2207,7 +2235,8 @@
 
   <header class="top-header">
     <div class="header-left">
-      <button class="hamburger hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <button class="hamburger hamburger-btn" id="hamburgerBtn"
+        aria-label="Toggle menu"><span></span><span></span><span></span></button>
     </div>
     <div class="header-right">
       <div class="header-info">Jan 14, 2026 10:05:53 AM (UTC)</div>
@@ -2302,7 +2331,7 @@
                   </div>
                 </div>
                 <!-- BACK -->
-                <div class="card-face card-back">
+                <div class="card-face card-back" style="padding-top: 8px;">
                   <!-- PIN stripe -->
                   <div class="cb-stripe">
                     <span class="cb-pin-label">PIN</span>
@@ -2324,33 +2353,38 @@
                         {{Terms &amp; Conditions của Merchant tự nhập khi tạo card}}
                       </div>
                     </div>
+
+                  </div>
+                  <!-- Contact (bottom of card) -->
+                  <div class="cb-contact-container"
+                    style="display: flex; flex-direction: row; gap: 10px; justify-content: space-between; padding: 10px 14px;">
+                    <div class="cb-contact">
+                      <div class="cb-contact-title">For help, contact <span id="cbMerchantName">[MERCHANT
+                          NAME]</span>:</div>
+                      <div class="cb-contact-row">
+                        <i data-lucide="phone" class="cb-contact-icon"></i>
+                        <span id="cbPhone">+ 1 (777) 777-7777</span>
+                      </div>
+                      <div class="cb-contact-row">
+                        <i data-lucide="mail" class="cb-contact-icon"></i>
+                        <span id="cbEmail">merchant@example.com</span>
+                      </div>
+                      <div class="cb-contact-row">
+                        <i data-lucide="globe" class="cb-contact-icon"></i>
+                        <span id="cbWebsite">www.merchant.com</span>
+                      </div>
+                      <div class="cb-contact-row">
+                        <i data-lucide="shield-check" class="cb-contact-icon"></i>
+                        <span>Verify card at www.vlinkpay.com/check-balance</span>
+                      </div>
+                    </div>
                     <!-- QR code -->
                     <div class="cb-qr-col">
                       <div class="cb-qr-box"></div>
                       <div class="cb-scan-label">SCAN TO PAY</div>
                     </div>
                   </div>
-                  <!-- Contact (bottom of card) -->
-                  <div class="cb-contact">
-                    <div class="cb-contact-title">For help, contact <span id="cbMerchantName">[MERCHANT
-                        NAME]</span>:</div>
-                    <div class="cb-contact-row">
-                      <i data-lucide="phone" class="cb-contact-icon"></i>
-                      <span id="cbPhone">+ 1 (777) 777-7777</span>
-                    </div>
-                    <div class="cb-contact-row">
-                      <i data-lucide="mail" class="cb-contact-icon"></i>
-                      <span id="cbEmail">merchant@example.com</span>
-                    </div>
-                    <div class="cb-contact-row">
-                      <i data-lucide="globe" class="cb-contact-icon"></i>
-                      <span id="cbWebsite">www.merchant.com</span>
-                    </div>
-                    <div class="cb-contact-row">
-                      <i data-lucide="shield-check" class="cb-contact-icon"></i>
-                      <span>Verify card at www.vlinkpay.com/check-balance</span>
-                    </div>
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -2396,6 +2430,7 @@
                 <div class="color-dot" style="background:#DBCD43" onclick="selectColor(this,'#DBCD43')" title="Gold">
                 </div>
                 <div class="color-dot color-picker-btn" title="Custom color">
+                  <iconify-icon class="pick-color-icon" icon="mdi:eyedropper" width="12"></iconify-icon>
                   <input type="color"
                     onchange="selectColor(this.parentElement, this.value); this.parentElement.style.background=this.value;" />
                 </div>
@@ -2830,7 +2865,7 @@
                 <div class="mb-select-wrap">
                   <select class="mb-select" id="mbBenefitSelect" multiple placeholder="Select Benefit"></select>
                 </div>
-                <div class="mb-selected-area" id="mbSelectedArea">
+                <div class="mb-selected-area is-empty" id="mbSelectedArea">
                   <div class="mb-selected-label">Selected Benefits</div>
                   <div class="mb-cards-row" id="mbCardsRow">
                     <div class="mb-empty-hint" id="mbEmptyHint">No benefits selected yet</div>
@@ -3679,8 +3714,10 @@ Please present this card before payment.</textarea>
     function renderMbCards() {
       const row = document.getElementById('mbCardsRow');
       const hint = document.getElementById('mbEmptyHint');
+      const area = document.getElementById('mbSelectedArea');
       if (!row) return;
       const ids = Object.keys(mbSelected);
+      if (area) area.classList.toggle('is-empty', ids.length === 0);
       if (ids.length === 0) {
         row.innerHTML = '<div class="mb-empty-hint" id="mbEmptyHint">No benefits selected yet</div>';
         return;

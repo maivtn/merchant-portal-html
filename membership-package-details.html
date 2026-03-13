@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Membership Package Details - VLINKPAY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap"
+    rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   <link rel="stylesheet" href="global.css">
@@ -14,7 +17,7 @@
   <style>
     :root {
       --c-primary: #00A76F;
-      --c-primary-low: rgba(0,167,111,0.08);
+      --c-primary-low: rgba(0, 167, 111, 0.08);
       --c-border: #e2e8f0;
       --c-surface: #ffffff;
       --c-bg: #f4f6f8;
@@ -24,49 +27,103 @@
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
-      --shadow-card: 0 0 2px rgba(145,158,171,0.2), 0 12px 24px -4px rgba(145,158,171,0.12);
+      --shadow-card: 0 0 2px rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12);
     }
 
     /* ─── PAGE HEADER ─── */
     .page-header-row {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      flex-wrap: wrap; gap: 12px; margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
     }
-    .page-header-left { display: flex; align-items: center; gap: 10px; }
-    .btn-back {
-      width: 36px; height: 36px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--c-text-2); background: transparent;
-      border: none; cursor: pointer; transition: 0.2s;
-      text-decoration: none; flex-shrink: 0;
-    }
-    .btn-back:hover { background: var(--c-border); color: var(--c-text-1); }
-    .page-title { font-size: 22px; font-weight: 700; color: var(--c-text-1); line-height: 1.2; }
-    .btn-edit {
-      display: flex; align-items: center; gap: 6px;
-      padding: 9px 18px; border-radius: var(--radius-sm);
-      border: 1.5px solid var(--c-primary); background: var(--c-surface);
-      color: var(--c-primary); font-size: 13px; font-weight: 600;
-      cursor: pointer; transition: 0.2s; font-family: inherit; text-decoration: none;
-    }
-    .btn-edit:hover { background: var(--c-primary-low); }
 
-    /* ─── MAIN OVERVIEW CARD ─── */
+    .page-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-back {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--c-text-2);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .btn-back:hover {
+      background: var(--c-border);
+      color: var(--c-text-1);
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--c-text-1);
+      line-height: 1.2;
+    }
+
+    .btn-edit {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--c-primary);
+      background: var(--c-surface);
+      color: var(--c-primary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .btn-edit:hover {
+      background: var(--c-primary-low);
+    }
+
+    /* ─── MAIN OVERVIEW (two separate cards with gap and shadow) ─── */
     .overview-card {
-      background: var(--c-surface); border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-card);
-      display: grid; grid-template-columns: 320px 1fr;
-      overflow: hidden; margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 28px;
+      margin-bottom: 24px;
+      align-items: start;
     }
+
     .overview-left {
-      padding: 28px 24px;
-      background: var(--c-bg);
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 0;
+      padding: 0;
+      background: var(--c-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
     }
+
     .overview-right {
       padding: 28px 32px;
-      display: flex; flex-direction: column; justify-content: center;
+      background: var(--c-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     /* ─── MEMBERSHIP CARD (same as create-membership-package pkg-card) ─── */
@@ -77,6 +134,7 @@
       align-items: center;
       gap: 0;
     }
+
     .pkg-card {
       box-sizing: border-box;
       width: 292px;
@@ -94,7 +152,12 @@
       color: #fff;
       overflow: hidden;
     }
-    .pkg-card > * { position: relative; z-index: 1; }
+
+    .pkg-card>* {
+      position: relative;
+      z-index: 1;
+    }
+
     .pkg-save-badge {
       position: absolute;
       top: 0;
@@ -109,6 +172,7 @@
       padding: 4px 12px;
       border-radius: 16px 0 24px 0;
     }
+
     .pkg-popular-badge {
       position: absolute;
       top: 0;
@@ -121,6 +185,7 @@
       padding: 4px 12px;
       border-radius: 0 0 12px 12px;
     }
+
     .pkg-icon-circle {
       width: 56px;
       height: 56px;
@@ -135,6 +200,7 @@
       margin-top: 40px;
       background: transparent;
     }
+
     .pkg-name-preview {
       font-family: 'Playfair Display', serif;
       font-size: 22px;
@@ -146,6 +212,7 @@
       color: var(--pkg-accent-color, #F7931A);
       text-transform: uppercase;
     }
+
     .pkg-price-preview {
       font-size: 32px;
       font-weight: 700;
@@ -153,8 +220,20 @@
       color: #fff;
       margin-bottom: 4px;
     }
-    .pkg-price-preview sup { font-size: 32px; font-weight: 700; vertical-align: baseline; }
-    .pkg-price-preview .period { font-size: 13px; font-weight: 400; color: #99a1af; vertical-align: baseline; }
+
+    .pkg-price-preview sup {
+      font-size: 32px;
+      font-weight: 700;
+      vertical-align: baseline;
+    }
+
+    .pkg-price-preview .period {
+      font-size: 13px;
+      font-weight: 400;
+      color: #99a1af;
+      vertical-align: baseline;
+    }
+
     .pkg-benefits-count {
       font-size: 12px;
       color: #6a7282;
@@ -163,12 +242,14 @@
       text-align: center;
       margin-bottom: 16px;
     }
+
     .pkg-divider {
       height: 1px;
       width: 100%;
       margin: 0 0 16px;
       background: linear-gradient(90deg, transparent 0%, rgba(247, 147, 26, 0.25) 50%, transparent 100%);
     }
+
     .pkg-benefit-list {
       width: 100%;
       display: flex;
@@ -177,6 +258,7 @@
       max-height: 180px;
       overflow-y: auto;
     }
+
     .pkg-benefit-item {
       display: flex;
       align-items: flex-start;
@@ -185,6 +267,7 @@
       line-height: 20.4px;
       color: #d1d5dc;
     }
+
     .pkg-benefit-item svg {
       flex-shrink: 0;
       width: 14px;
@@ -195,226 +278,568 @@
 
     /* ─── RIGHT INFO ─── */
     .info-name-row {
-      display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
     }
-    .info-pkg-name { font-size: 26px; font-weight: 800; color: var(--c-text-1); }
+
     .badge-draft {
-      display: inline-flex; align-items: center;
-      padding: 3px 10px; border-radius: 6px;
-      border: 1.5px solid #919eab; color: #637381;
-      font-size: 11px; font-weight: 600; letter-spacing: 0.4px;
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 6px;
+      border: 1.5px solid #919eab;
+      color: #637381;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
       background: #f4f6f8;
     }
+
     .badge-approved {
-      display: inline-flex; align-items: center;
-      padding: 3px 10px; border-radius: 6px;
-      background: rgba(0,167,111,0.12); color: #007b55;
-      font-size: 11px; font-weight: 600; letter-spacing: 0.4px;
-      border: 1px solid rgba(0,167,111,0.3);
+      display: inline-flex;
+      align-items: center;
+      align-self: flex-start;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: #00a76f;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
     }
-    .overview-right-inner {
-      display: flex; justify-content: space-between; align-items: flex-start; gap: 24px;
-      width: 100%; flex-wrap: wrap;
+
+    .overview-right-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--c-border);
     }
-    .overview-right-info { flex: 1; min-width: 0; }
-    .price-header {
-      margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--c-border);
+
+    .info-name-block {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
-    .price-header-right {
-      text-align: right; flex-shrink: 0;
+
+    .info-pkg-name {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--c-text-1);
+      margin: 0;
+      line-height: 1.2;
     }
+
+    .price-block {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
     .price-label {
-      font-size: 10px; font-weight: 700; color: var(--c-text-3);
-      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--c-text-3);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
     }
+
     .price-amount {
-      font-size: 32px; font-weight: 800; color: var(--c-primary); line-height: 1;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--c-primary);
+      line-height: 1;
     }
-    .info-rows { display: flex; flex-direction: column; gap: 0; }
+
+    .info-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
     .info-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 11px 0; border-bottom: 1px solid var(--c-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 0;
     }
-    .info-row:last-child { border-bottom: none; }
-    .info-row-label { font-size: 13px; color: var(--c-text-3); font-weight: 400; }
-    .info-row-value { font-size: 13px; color: var(--c-text-1); font-weight: 700; text-align: right; }
-    .info-row-value.highlight { color: var(--c-primary); }
+
+    .info-row-label {
+      font-size: 13px;
+      color: var(--c-text-3);
+      font-weight: 400;
+    }
+
+    .info-row-value {
+      font-size: 13px;
+      color: var(--c-text-1);
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .info-row-value.highlight {
+      color: var(--c-primary);
+    }
+
     .info-row-edit {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 13px; font-weight: 500; color: #2563eb;
-      cursor: pointer; text-decoration: none; background: none; border: none;
-      font-family: inherit; padding: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #2563eb;
+      cursor: pointer;
+      text-decoration: none;
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 0;
     }
-    .info-row-edit:hover { text-decoration: underline; }
+
+    .info-row-edit:hover {
+      text-decoration: underline;
+    }
 
     /* ─── SALE STATUS TOGGLES (below card) ─── */
     .mem-toggles {
-      width: 100%; max-width: 260px; margin-top: 16px;
-      display: flex; flex-direction: column; gap: 12px;
+      width: 100%;
+      max-width: 320px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
+
     .mem-toggle-row {
-      display: flex; align-items: center; justify-content: space-between;
-      font-size: 12px; color: var(--c-text-2); font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
-    .mem-toggle-right {
-      display: flex; align-items: center; gap: 8px;
+
+    .mem-toggle-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
     }
+
+    .mem-toggle-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--c-text-1);
+    }
+
     .mem-pill {
-      font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
-      min-width: 52px; text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      flex-shrink: 0;
     }
+
     .mem-pill.active {
-      background: var(--c-primary); color: #fff;
+      background: var(--c-primary);
+      color: #fff;
     }
+
     .mem-pill.inactive {
-      background: #e2e8f0; color: var(--c-text-3);
+      background: #e2e8f0;
+      color: var(--c-text-3);
     }
+
     .mem-switch {
-      width: 40px; height: 22px; border-radius: 11px;
-      background: #e2e8f0; position: relative; cursor: pointer;
-      transition: background 0.2s; flex-shrink: 0;
+      width: 44px;
+      height: 24px;
+      border-radius: 12px;
+      background: #e2e8f0;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s;
+      flex-shrink: 0;
     }
-    .mem-switch.on { background: var(--c-primary); }
+
+    .mem-switch.on {
+      background: var(--c-primary);
+    }
+
     .mem-switch::after {
-      content: ''; position: absolute;
-      width: 18px; height: 18px; border-radius: 50%;
-      background: #fff; top: 2px; left: 2px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      top: 2px;
+      left: 2px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
       transition: transform 0.2s;
     }
-    .mem-switch.on::after { transform: translateX(18px); }
 
-    /* ─── EDIT DISCOUNT MODAL ─── */
+    .mem-switch.on::after {
+      transform: translateX(20px);
+    }
+
+    /* ─── EDIT DISCOUNT MODAL (Minimals UI style) ─── */
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.4);
-      display: none; align-items: center; justify-content: center;
-      z-index: 1000; padding: 20px;
-    }
-    .modal-backdrop.show { display: flex; }
-    .modal-box {
-      background: var(--c-surface); border-radius: var(--radius-lg);
-      box-shadow: 0 24px 48px rgba(0,0,0,0.15);
-      width: 100%; max-width: 420px;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.48);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
       padding: 24px;
+      backdrop-filter: blur(2px);
     }
+
+    .modal-backdrop.show {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.16), 0 0 1px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 400px;
+      padding: 32px 24px 24px;
+      transition: box-shadow 0.2s ease;
+    }
+
     .modal-header {
-      display: flex; justify-content: space-between; align-items: flex-start;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      padding-right: 8px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #161c24;
+      margin: 0;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+
+    .modal-subtitle {
+      font-size: 13px;
+      color: #919eab;
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: transparent;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #637381;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .modal-close:hover {
+      background: rgba(99, 115, 129, 0.08);
+      color: #212b36;
+    }
+
+    .modal-body {
+      margin-bottom: 28px;
+    }
+
+    .modal-row {
       margin-bottom: 20px;
     }
-    .modal-title { font-size: 18px; font-weight: 700; color: var(--c-text-1); margin: 0; }
-    .modal-subtitle { font-size: 13px; color: var(--c-text-3); margin-top: 4px; }
-    .modal-close {
-      width: 32px; height: 32px; border: none; background: transparent;
-      border-radius: 8px; cursor: pointer; color: var(--c-text-3);
-      display: flex; align-items: center; justify-content: center;
+
+    .modal-row:last-child {
+      margin-bottom: 0;
     }
-    .modal-close:hover { background: var(--c-border); color: var(--c-text-1); }
-    .modal-body { margin-bottom: 24px; }
-    .modal-row {
-      margin-bottom: 16px;
+
+    .modal-row-inline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: #f4f6f8;
+      padding: 12px 14px;
+      border-radius: 8px;
     }
-    .modal-row:last-child { margin-bottom: 0; }
+
     .modal-label {
-      display: block; font-size: 13px; font-weight: 500; color: var(--c-text-2);
-      margin-bottom: 6px;
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #637381;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
     }
-    .modal-field-readonly {
-      font-size: 14px; color: var(--c-text-1); font-weight: 600;
+
+    .modal-row-inline .modal-label {
+      margin-bottom: 0;
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 13px;
     }
+
     .modal-discount-pill {
-      display: inline-block; padding: 4px 10px; border-radius: 6px;
-      background: #fef2f2; color: #b91c1c; font-size: 14px; font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: rgba(234, 88, 12, 0.08);
+      color: #ea580c;
+      font-size: 14px;
+      font-weight: 600;
     }
+
     .modal-input-wrap {
-      display: flex; align-items: center; gap: 8px;
+      display: flex;
+      align-items: stretch;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
+
+    .modal-input-wrap:focus-within {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 2px rgba(0, 167, 111, 0.16);
+    }
+
     .modal-input-wrap input {
-      width: 80px; padding: 10px 12px;
-      border: 1px solid var(--c-border); border-radius: var(--radius-sm);
-      font-size: 14px; font-family: inherit;
+      width: 72px;
+      padding: 10px 14px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      font-family: inherit;
+      background: transparent;
     }
-    .modal-input-wrap .suffix { font-size: 14px; color: var(--c-text-3); }
+
+    .modal-input-wrap input::placeholder {
+      color: #919eab;
+    }
+
+    .modal-input-wrap .suffix {
+      padding: 0 14px;
+      font-size: 14px;
+      color: #919eab;
+      display: flex;
+      align-items: center;
+      border-left: 1px solid #e2e8f0;
+    }
+
     .modal-hint {
-      font-size: 12px; color: var(--c-text-3); margin-top: 6px;
+      font-size: 12px;
+      color: #919eab;
+      margin-top: 8px;
+      line-height: 1.5;
     }
+
     .modal-actions {
-      display: flex; justify-content: flex-end; gap: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding-top: 8px;
     }
+
     .modal-btn {
-      padding: 10px 20px; border-radius: var(--radius-sm);
-      font-size: 14px; font-weight: 600; font-family: inherit;
-      cursor: pointer; border: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
     }
+
     .modal-btn-cancel {
-      background: #e2e8f0; color: var(--c-text-2);
+      background: #fff;
+      color: #637381;
+      border: 1px solid #dfe3e8;
     }
-    .modal-btn-cancel:hover { background: #cbd5e1; }
+
+    .modal-btn-cancel:hover {
+      background: #f4f6f8;
+      border-color: #c4cdd5;
+      color: #212b36;
+    }
+
     .modal-btn-save {
-      background: var(--c-primary); color: #fff;
+      background: var(--c-primary);
+      color: #fff;
+      border: none;
+      box-shadow: 0 8px 16px rgba(0, 167, 111, 0.24);
     }
-    .modal-btn-save:hover { background: #007b55; }
+
+    .modal-btn-save:hover {
+      background: #007b55;
+      box-shadow: 0 8px 20px rgba(0, 167, 111, 0.32);
+    }
 
     /* ─── SECTION CARD (collapsible) ─── */
     .section-card {
-      background: var(--c-surface); border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-card); padding: 24px 28px;
+      background: var(--c-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 24px 28px;
       margin-bottom: 20px;
     }
-    .section-card:last-child { margin-bottom: 0; }
-    .section-title {
-      display: flex; align-items: center; justify-content: space-between; gap: 9px;
-      font-size: 15px; font-weight: 700; color: var(--c-text-1);
-      margin-bottom: 18px; cursor: pointer; user-select: none;
+
+    .section-card:last-child {
+      margin-bottom: 0;
     }
-    .section-title svg { color: var(--c-text-3); }
-    .section-title .section-chevron { flex-shrink: 0; color: var(--c-text-3); transition: transform 0.2s; }
-    .section-card.collapsed .section-chevron { transform: rotate(-90deg); }
-    .section-card.collapsed .section-body { display: none; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 9px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--c-text-1);
+      margin-bottom: 18px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .section-title svg {
+      color: var(--c-text-3);
+    }
+
+    .section-title .section-chevron {
+      flex-shrink: 0;
+      color: var(--c-text-3);
+      transition: transform 0.2s;
+    }
+
+    .section-card.collapsed .section-chevron {
+      transform: rotate(-90deg);
+    }
+
+    .section-card.collapsed .section-body {
+      display: none;
+    }
 
     /* ─── BENEFIT CARDS ─── */
     .benefits-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
     }
+
     .benefit-item-card {
-      background: var(--c-bg); border-radius: var(--radius-md);
+      background: var(--c-bg);
+      border-radius: var(--radius-md);
       padding: 14px 16px;
     }
+
     .benefit-item-hd {
-      display: flex; align-items: center; gap: 7px; margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 6px;
     }
+
     .benefit-item-icon {
-      width: 28px; height: 28px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-      font-size: 14px; font-weight: 700;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 14px;
+      font-weight: 700;
     }
-    .benefit-item-name { font-size: 13px; font-weight: 600; color: var(--c-text-1); }
+
+    .benefit-item-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-text-1);
+    }
+
     .benefit-item-value {
-      font-size: 20px; font-weight: 800; color: var(--c-primary);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--c-primary);
       line-height: 1.1;
     }
-    .benefit-item-unit { font-size: 11px; color: var(--c-text-3); font-weight: 500; margin-left: 3px; }
+
+    .benefit-item-used {
+      font-size: 12px;
+      color: var(--c-text-3);
+      font-weight: 500;
+      margin-top: 6px;
+    }
+
+    .benefit-item-unit {
+      font-size: 11px;
+      color: var(--c-text-3);
+      font-weight: 500;
+      margin-left: 3px;
+    }
 
     /* ─── TERMS ─── */
     .terms-text {
-      font-size: 13px; line-height: 1.75; color: var(--c-text-2);
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--c-text-2);
     }
 
     /* ─── RESPONSIVE ─── */
     /* Tablet and below: stack overview, 2-col benefits */
     @media (max-width: 1024px) {
-      .page-header-row { margin-bottom: 20px; gap: 16px; }
+      .page-header-row {
+        margin-bottom: 20px;
+        gap: 16px;
+      }
+
       .overview-card {
         grid-template-columns: 1fr;
-        gap: 0;
+        gap: 20px;
       }
+
       .overview-left {
         padding: 28px 20px;
         order: 1;
       }
-      .overview-right { padding: 24px 20px 28px; order: 2; }
-      .pkg-card { max-width: 280px; margin: 0 auto; }
-      .benefits-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      .section-card { padding: 22px 20px; }
+
+      .overview-right {
+        padding: 24px 20px 28px;
+        order: 2;
+      }
+
+      .pkg-card {
+        max-width: 280px;
+        margin: 0 auto;
+      }
+
+      .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .section-card {
+        padding: 22px 20px;
+      }
     }
 
     /* Mobile: single column, tighter spacing */
@@ -425,65 +850,189 @@
         margin-bottom: 16px;
         gap: 12px;
       }
-      .page-header-left { flex-wrap: wrap; }
-      .page-title { font-size: 18px; line-height: 1.3; }
+
+      .page-header-left {
+        flex-wrap: wrap;
+      }
+
+      .page-title {
+        font-size: 18px;
+        line-height: 1.3;
+      }
+
       .btn-edit {
         width: 100%;
         justify-content: center;
         min-height: 44px;
       }
-      .overview-card { margin-bottom: 16px; }
-      .overview-left { padding: 20px 16px; }
-      .overview-right { padding: 18px 16px 22px; }
+
+      .overview-card {
+        margin-bottom: 16px;
+      }
+
+      .overview-left {}
+
+      .overview-right {
+        padding: 18px 16px 22px;
+      }
+
       .pkg-card {
         max-width: 100%;
         min-height: 320px;
         padding: 20px 16px;
       }
-      .pkg-name-preview { font-size: 18px; letter-spacing: 1.5px; }
-      .pkg-price-preview { font-size: 26px; }
-      .pkg-benefits-count { font-size: 11px; margin-bottom: 12px; }
-      .pkg-benefit-item { font-size: 12px; }
-      .info-name-row { flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
-      .info-pkg-name { font-size: 20px; }
-      .price-header { margin-bottom: 16px; padding-bottom: 12px; }
-      .price-amount { font-size: 26px; }
+
+      .pkg-name-preview {
+        font-size: 18px;
+        letter-spacing: 1.5px;
+      }
+
+      .pkg-price-preview {
+        font-size: 26px;
+      }
+
+      .pkg-benefits-count {
+        font-size: 11px;
+        margin-bottom: 12px;
+      }
+
+      .pkg-benefit-item {
+        font-size: 12px;
+      }
+
+      .info-name-row {
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .info-pkg-name {
+        font-size: 20px;
+      }
+
+      .price-header {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+      }
+
+      .price-amount {
+        font-size: 26px;
+      }
+
       .info-row {
         padding: 10px 0;
         flex-wrap: wrap;
         gap: 4px;
       }
-      .info-row-label { min-width: 0; flex: 1; }
-      .info-row-value { text-align: right; word-break: break-word; }
-      .benefits-grid { grid-template-columns: 1fr; gap: 10px; }
-      .benefit-item-card { padding: 12px 14px; }
-      .benefit-item-value { font-size: 18px; }
-      .section-card { padding: 16px 14px; margin-bottom: 16px; }
-      .section-title { font-size: 14px; margin-bottom: 14px; }
-      .terms-text { font-size: 12px; line-height: 1.7; }
+
+      .info-row-label {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .info-row-value {
+        text-align: right;
+        word-break: break-word;
+      }
+
+      .benefits-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .benefit-item-card {
+        padding: 12px 14px;
+      }
+
+      .benefit-item-value {
+        font-size: 18px;
+      }
+
+      .section-card {
+        padding: 16px 14px;
+        margin-bottom: 16px;
+      }
+
+      .section-title {
+        font-size: 14px;
+        margin-bottom: 14px;
+      }
+
+      .terms-text {
+        font-size: 12px;
+        line-height: 1.7;
+      }
     }
 
     /* Small phones: minimal padding, touch-friendly */
     @media (max-width: 480px) {
-      .page-title { font-size: 17px; }
-      .overview-left { padding: 16px 12px; }
-      .overview-right { padding: 14px 12px 18px; }
+      .page-title {
+        font-size: 17px;
+      }
+
+      .overview-left {}
+
+      .overview-right {
+        padding: 14px 12px 18px;
+      }
+
       .pkg-card {
         min-height: 300px;
         padding: 16px 12px;
       }
-      .pkg-icon-circle { width: 48px; height: 48px; font-size: 24px; margin-top: 24px; }
-      .pkg-name-preview { font-size: 16px; }
-      .pkg-price-preview { font-size: 22px; }
-      .pkg-price-preview sup { font-size: 22px; }
-      .pkg-price-preview .period { font-size: 11px; }
-      .info-pkg-name { font-size: 18px; }
-      .price-amount { font-size: 22px; }
-      .section-card { padding: 14px 12px; margin-bottom: 12px; }
-      .section-title { font-size: 13px; margin-bottom: 12px; }
-      .benefit-item-card { padding: 12px; }
-      .benefit-item-name { font-size: 12px; }
-      .benefit-item-value { font-size: 16px; }
+
+      .pkg-icon-circle {
+        width: 48px;
+        height: 48px;
+        font-size: 24px;
+        margin-top: 24px;
+      }
+
+      .pkg-name-preview {
+        font-size: 16px;
+      }
+
+      .pkg-price-preview {
+        font-size: 22px;
+      }
+
+      .pkg-price-preview sup {
+        font-size: 22px;
+      }
+
+      .pkg-price-preview .period {
+        font-size: 11px;
+      }
+
+      .info-pkg-name {
+        font-size: 18px;
+      }
+
+      .price-amount {
+        font-size: 22px;
+      }
+
+      .section-card {
+        padding: 14px 12px;
+        margin-bottom: 12px;
+      }
+
+      .section-title {
+        font-size: 13px;
+        margin-bottom: 12px;
+      }
+
+      .benefit-item-card {
+        padding: 12px;
+      }
+
+      .benefit-item-name {
+        font-size: 12px;
+      }
+
+      .benefit-item-value {
+        font-size: 16px;
+      }
     }
 
     /* Prevent horizontal scroll and overflow */
@@ -493,6 +1042,7 @@
     .pkg-card {
       box-sizing: border-box;
     }
+
     .info-row-value,
     .terms-text,
     .benefit-item-value {
@@ -501,6 +1051,7 @@
     }
   </style>
 </head>
+
 <body>
   <aside class="sidebar">
     <div class="sidebar-logo">
@@ -511,7 +1062,8 @@
 
   <header class="top-header">
     <div class="header-left">
-      <button class="hamburger hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <button class="hamburger hamburger-btn" id="hamburgerBtn"
+        aria-label="Toggle menu"><span></span><span></span><span></span></button>
     </div>
     <div class="header-right">
       <div class="header-info">Jan 14, 2026 10:05:53 AM (UTC)</div>
@@ -524,204 +1076,220 @@
   <main class="main">
     <div class="page-header">
       <div class="page-header-row">
-          <div class="page-header-left">
-            <a href="benefits-setup.html" class="btn-back" title="Back">
-              <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
-            </a>
-            <div>
-              <div class="page-title">Membership Package Details</div>
-              <div class="breadcrumbs" style="margin-top:4px">
-                <a href="#">Settings</a>
-                <span class="breadcrumbs-dot"></span>
-                <a href="benefits-setup.html">Benefits Setup</a>
-                <span class="breadcrumbs-dot"></span>
-                <span style="color:#212b36;font-weight:500">Benefit Package Details</span>
-              </div>
+        <div class="page-header-left">
+          <a href="benefits-setup.html" class="btn-back" title="Back">
+            <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
+          </a>
+          <div>
+            <div class="page-title">Membership Package Details</div>
+            <div class="breadcrumbs" style="margin-top:4px">
+              <a href="#">Settings</a>
+              <span class="breadcrumbs-dot"></span>
+              <a href="benefits-setup.html">Benefits Setup</a>
+              <span class="breadcrumbs-dot"></span>
+              <span style="color:#212b36;font-weight:500">Benefit Package Details</span>
             </div>
           </div>
-          <a href="create-membership-package.html" class="btn-edit">
-            <i data-lucide="pencil" style="width:15px;height:15px;"></i>
-            Edit Package
-          </a>
+        </div>
+        <a href="create-membership-package.html" class="btn-edit">
+          <i data-lucide="pencil" style="width:15px;height:15px;"></i>
+          Edit Package
+        </a>
       </div>
     </div>
 
     <!-- OVERVIEW CARD -->
-        <div class="overview-card">
-          <!-- Left: Card Preview -->
-          <div class="overview-left">
-            <div class="pkg-card-wrap">
-              <div class="pkg-card">
-                <span class="pkg-save-badge">SAVE 10%</span>
-                <span class="pkg-popular-badge">Most Popular</span>
-                <div class="pkg-icon-circle">₿</div>
-                <div class="pkg-name-preview">SILVER</div>
-                <div class="pkg-price-preview"><sup>$</sup>99<span class="period"> /yr</span></div>
-                <div class="pkg-benefits-count">5 BENEFITS</div>
-                <div class="pkg-divider"></div>
-                <div class="pkg-benefit-list">
-                  <div class="pkg-benefit-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                    Monthly Credit: $25/month
-                  </div>
-                  <div class="pkg-benefit-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                    Cashback: 12%
-                  </div>
-                  <div class="pkg-benefit-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                    Birthday Gift: $50 voucher
-                  </div>
-                  <div class="pkg-benefit-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                    Free Shipping: Unlimited
-                  </div>
-                  <div class="pkg-benefit-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                    Early Access: New products 48h
-                  </div>
-                </div>
+    <div class="overview-card">
+      <!-- Left: Card Preview -->
+      <div class="overview-left">
+        <div class="pkg-card-wrap">
+          <div class="pkg-card">
+            <span class="pkg-save-badge">SAVE 10%</span>
+            <span class="pkg-popular-badge">Most Popular</span>
+            <div class="pkg-icon-circle">₿</div>
+            <div class="pkg-name-preview">SILVER</div>
+            <div class="pkg-price-preview"><sup>$</sup>99<span class="period"> /yr</span></div>
+            <div class="pkg-benefits-count">5 BENEFITS</div>
+            <div class="pkg-divider"></div>
+            <div class="pkg-benefit-list">
+              <div class="pkg-benefit-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Monthly Credit: $25/month
               </div>
-            </div>
-            <div class="mem-toggles">
-              <div class="mem-toggle-row">
-                <span>Sale Status</span>
-                <div class="mem-toggle-right">
-                  <span class="mem-pill active">ACTIVE</span>
-                  <div class="mem-switch on" id="saleStatusSwitch" onclick="toggleMemSwitch(this)" aria-label="Sale status"></div>
-                </div>
+              <div class="pkg-benefit-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Cashback: 12%
               </div>
-              <div class="mem-toggle-row">
-                <span>Mark as Most Popular</span>
-                <div class="mem-toggle-right">
-                  <span class="mem-pill active">ON</span>
-                  <div class="mem-switch on" id="mostPopularSwitch" onclick="toggleMemSwitch(this)" aria-label="Most popular"></div>
-                </div>
+              <div class="pkg-benefit-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Birthday Gift: $50 voucher
               </div>
-            </div>
-          </div>
-
-          <!-- Right: Package Info -->
-          <div class="overview-right">
-            <div class="overview-right-inner">
-              <div class="overview-right-info">
-                <div class="info-name-row">
-                  <span class="info-pkg-name">SILVER</span>
-                  <span class="badge-approved">APPROVED</span>
-                </div>
-                <div class="info-rows">
-                  <div class="info-row">
-                    <span class="info-row-label">Package ID</span>
-                    <span class="info-row-value">PKG001</span>
-                  </div>
-                  <div class="info-row">
-                    <span class="info-row-label">Price</span>
-                    <span class="info-row-value">$99</span>
-                  </div>
-                  <div class="info-row">
-                    <span class="info-row-label">Billing Cycle</span>
-                    <span class="info-row-value">365 Days</span>
-                  </div>
-                  <div class="info-row">
-                    <span class="info-row-label">% Discount</span>
-                    <span style="display:inline-flex;align-items:center;gap:6px;">
-                      <span class="info-row-value highlight">10%</span>
-                      <button type="button" class="info-row-edit" id="editDiscountBtn" onclick="openEditDiscountModal()">
-                        <i data-lucide="pencil" style="width:14px;height:14px;"></i>
-                        Edit
-                      </button>
-                    </span>
-                  </div>
-                </div>
+              <div class="pkg-benefit-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Free Shipping: Unlimited
               </div>
-              <div class="price-header-right price-header">
-                <div class="price-label">PRICE</div>
-                <div class="price-amount">$99</div>
+              <div class="pkg-benefit-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Early Access: New products 48h
               </div>
             </div>
           </div>
         </div>
+        <div class="mem-toggles">
+          <div class="mem-toggle-row">
+            <div class="mem-toggle-left">
+              <span class="mem-toggle-label">Sale Status</span>
+              <span class="mem-pill active" id="saleStatusPill">ACTIVE</span>
+            </div>
+            <div class="mem-switch on" id="saleStatusSwitch" onclick="toggleMemSwitch(this)" aria-label="Sale status">
+            </div>
+          </div>
+          <div class="mem-toggle-row">
+            <div class="mem-toggle-left">
+              <span class="mem-toggle-label">Mark as Most Popular</span>
+              <span class="mem-pill active" id="mostPopularPill">ON</span>
+            </div>
+            <div class="mem-switch on" id="mostPopularSwitch" onclick="toggleMemSwitch(this)" aria-label="Most popular">
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <!-- BENEFITS SECTION -->
-        <div class="section-card" id="sectionBenefits">
-          <div class="section-title" onclick="toggleSection('sectionBenefits')">
-            <span style="display:flex;align-items:center;gap:9px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/>
-                <line x1="12" y1="22" x2="12" y2="7"/>
-                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
-                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
-              </svg>
-              Benefits
+      <!-- Right: Package Info -->
+      <div class="overview-right">
+        <div class="overview-right-header">
+          <div class="info-name-block">
+            <span class="info-pkg-name">SILVER</span>
+            <span class="badge-approved">APPROVED</span>
+          </div>
+          <div class="price-block">
+            <div class="price-label">PRICE</div>
+            <div class="price-amount">$99</div>
+          </div>
+        </div>
+        <div class="info-rows">
+          <div class="info-row">
+            <span class="info-row-label">Package ID</span>
+            <span class="info-row-value">PKG001</span>
+          </div>
+          <div class="info-row">
+            <span class="info-row-label">Price</span>
+            <span class="info-row-value">$99</span>
+          </div>
+          <div class="info-row">
+            <span class="info-row-label">Billing Cycle</span>
+            <span class="info-row-value">365 Days</span>
+          </div>
+          <div class="info-row">
+            <span class="info-row-label">% Discount</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;">
+              <span class="info-row-value highlight">10%</span>
+              <button type="button" class="info-row-edit" id="editDiscountBtn" onclick="openEditDiscountModal()">
+                <i data-lucide="pencil" style="width:14px;height:14px;"></i>
+                Edit
+              </button>
             </span>
-            <i data-lucide="chevron-up" class="section-chevron" style="width:20px;height:20px;"></i>
-          </div>
-          <div class="section-body">
-          <div class="benefits-grid">
-            <div class="benefit-item-card">
-              <div class="benefit-item-hd">
-                <div class="benefit-item-icon" style="background:#c8fae5;color:#00a76f;">$</div>
-                <span class="benefit-item-name">Monthly Credit</span>
-              </div>
-              <div class="benefit-item-value">$25/month</div>
-            </div>
-            <div class="benefit-item-card">
-              <div class="benefit-item-hd">
-                <div class="benefit-item-icon" style="background:#c8fae5;color:#00a76f;">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <polyline points="23 4 23 10 17 10"/>
-                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-                  </svg>
-                </div>
-                <span class="benefit-item-name">Cashback</span>
-              </div>
-              <div class="benefit-item-value">12%</div>
-            </div>
-            <div class="benefit-item-card">
-              <div class="benefit-item-hd">
-                <div class="benefit-item-icon" style="background:#e0d4ff;color:#7c3aed;">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <polyline points="20 12 20 22 4 22 4 12"/>
-                    <rect x="2" y="7" width="20" height="5"/>
-                    <line x1="12" y1="22" x2="12" y2="7"/>
-                    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
-                    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
-                  </svg>
-                </div>
-                <span class="benefit-item-name">Birthday Gift</span>
-              </div>
-              <div class="benefit-item-value">$50 voucher</div>
-            </div>
-          </div>
           </div>
         </div>
+      </div>
+    </div>
 
-        <!-- TERMS & CONDITIONS -->
-        <div class="section-card" id="sectionTerms">
-          <div class="section-title" onclick="toggleSection('sectionTerms')">
-            <span style="display:flex;align-items:center;gap:9px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14 2 14 8 20 8"/>
-                <line x1="16" y1="13" x2="8" y2="13"/>
-                <line x1="16" y1="17" x2="8" y2="17"/>
-                <polyline points="10 9 9 9 8 9"/>
-              </svg>
-              Package Terms &amp; Conditions
-            </span>
-            <i data-lucide="chevron-up" class="section-chevron" style="width:20px;height:20px;"></i>
+    <!-- BENEFITS SECTION -->
+    <div class="section-card" id="sectionBenefits">
+      <div class="section-title" onclick="toggleSection('sectionBenefits')">
+        <span style="display:flex;align-items:center;gap:9px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 12 20 22 4 22 4 12" />
+            <rect x="2" y="7" width="20" height="5" />
+            <line x1="12" y1="22" x2="12" y2="7" />
+            <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+            <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+          </svg>
+          Benefits
+        </span>
+        <i data-lucide="chevron-up" class="section-chevron" style="width:20px;height:20px;"></i>
+      </div>
+      <div class="section-body">
+        <div class="benefits-grid">
+          <div class="benefit-item-card">
+            <div class="benefit-item-hd">
+              <div class="benefit-item-icon" style="background:#c8fae5;color:#00a76f;">$</div>
+              <span class="benefit-item-name">Monthly Credit</span>
+            </div>
+            <div class="benefit-item-value">$25/month</div>
+            <div class="benefit-item-used">Used times: 0</div>
           </div>
-          <div class="section-body">
-          <p class="terms-text">
-            1. This SILVER Package is valid for one year from the enrollment date.
-            2. Members enjoy exclusive benefits including monthly credits, cashback, and birthday gifts.
-            3. Package benefits cannot be transferred or exchanged for cash.
-            4. Please present your membership card or digital ID for all transactions.
-            5. Cashback and credits will be automatically applied to your VLINKPAY wallet.
-            6. Package auto-renews annually unless cancelled 30 days prior to expiration.
-          </p>
+          <div class="benefit-item-card">
+            <div class="benefit-item-hd">
+              <div class="benefit-item-icon" style="background:#c8fae5;color:#00a76f;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="23 4 23 10 17 10" />
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                </svg>
+              </div>
+              <span class="benefit-item-name">Cashback</span>
+            </div>
+            <div class="benefit-item-value">12%</div>
+            <div class="benefit-item-used">Used times: 0</div>
+          </div>
+          <div class="benefit-item-card">
+            <div class="benefit-item-hd">
+              <div class="benefit-item-icon" style="background:#e0d4ff;color:#7c3aed;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="20 12 20 22 4 22 4 12" />
+                  <rect x="2" y="7" width="20" height="5" />
+                  <line x1="12" y1="22" x2="12" y2="7" />
+                  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+                </svg>
+              </div>
+              <span class="benefit-item-name">Birthday Gift</span>
+            </div>
+            <div class="benefit-item-value">$50 voucher</div>
+            <div class="benefit-item-used">Used times: 0</div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- TERMS & CONDITIONS -->
+    <div class="section-card" id="sectionTerms">
+      <div class="section-title" onclick="toggleSection('sectionTerms')">
+        <span style="display:flex;align-items:center;gap:9px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+          Package Terms &amp; Conditions
+        </span>
+        <i data-lucide="chevron-up" class="section-chevron" style="width:20px;height:20px;"></i>
+      </div>
+      <div class="section-body">
+        <p class="terms-text">
+          1. This SILVER Package is valid for one year from the enrollment date.
+          2. Members enjoy exclusive benefits including monthly credits, cashback, and birthday gifts.
+          3. Package benefits cannot be transferred or exchanged for cash.
+          4. Please present your membership card or digital ID for all transactions.
+          5. Cashback and credits will be automatically applied to your VLINKPAY wallet.
+          6. Package auto-renews annually unless cancelled 30 days prior to expiration.
+        </p>
+      </div>
+    </div>
 
     <!-- Edit Discount Modal -->
     <div class="modal-backdrop" id="editDiscountModal" onclick="if(event.target===this) closeEditDiscountModal()">
@@ -729,24 +1297,21 @@
         <div class="modal-header">
           <div>
             <h2 class="modal-title">Edit Discount</h2>
-            <p class="modal-subtitle">SILVER Package - PKG001</p>
+            <p class="modal-subtitle">SILVER Package · PKG001</p>
           </div>
           <button type="button" class="modal-close" onclick="closeEditDiscountModal()" aria-label="Close">
             <i data-lucide="x" style="width:20px;height:20px;"></i>
           </button>
         </div>
         <div class="modal-body">
-          <div class="modal-row">
+          <div class="modal-row modal-row-inline">
             <label class="modal-label">Current Discount</label>
-            <div class="modal-field-readonly">
-              <span class="modal-discount-pill" id="modalCurrentDiscount">10%</span>
-            </div>
+            <span class="modal-discount-pill" id="modalCurrentDiscount">10%</span>
           </div>
           <div class="modal-row">
             <label class="modal-label">New Discount (%)</label>
-            <div class="modal-input-wrap">
+            <div class="modal-input-wrap d-flex">
               <input type="number" id="modalNewDiscount" min="0" max="100" value="10" placeholder="0" />
-              <span class="suffix">%</span>
             </div>
             <p class="modal-hint">Enter a value between 0 and 100.</p>
           </div>
@@ -763,7 +1328,8 @@
   <script>
     function toggleMemSwitch(el) {
       el.classList.toggle('on');
-      var pill = el.previousElementSibling;
+      var row = el.closest('.mem-toggle-row');
+      var pill = row ? row.querySelector('.mem-pill') : null;
       if (pill) {
         if (el.classList.contains('on')) {
           pill.textContent = el.id === 'mostPopularSwitch' ? 'ON' : 'ACTIVE';
@@ -794,4 +1360,5 @@
     });
   </script>
 </body>
+
 </html>

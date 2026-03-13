@@ -44,16 +44,19 @@
       gap: 12px;
       padding: 0 24px;
     }
+
     .top-header .header-left {
       display: none;
       align-items: center;
       flex-shrink: 0;
     }
+
     .top-header .header-right {
       display: flex;
       align-items: center;
       margin-left: auto;
     }
+
     .header-avatar {
       width: 40px;
       height: 40px;
@@ -66,6 +69,7 @@
       font-size: 14px;
       font-weight: 600;
     }
+
     /* Hamburger: 3-line icon, shown only when .hamburger-btn is displayed (global @1023px) */
     .hamburger,
     .hamburger-btn {
@@ -84,11 +88,13 @@
       color: var(--c-text-2);
       transition: background 0.15s, color 0.15s;
     }
+
     .hamburger:hover,
     .hamburger-btn:hover {
       background: var(--c-border);
       color: var(--c-text-1);
     }
+
     .hamburger span,
     .hamburger-btn span {
       display: block;
@@ -97,13 +103,22 @@
       border-radius: 1px;
       background: currentColor;
     }
+
     @media (max-width: 1023px) {
-      .top-header .header-left { display: flex; }
+      .top-header .header-left {
+        display: flex;
+      }
+
       .hamburger,
-      .hamburger-btn { display: flex; }
+      .hamburger-btn {
+        display: flex;
+      }
     }
+
     @media (max-width: 767px) {
-      .top-header { padding: 0 12px 0 16px; }
+      .top-header {
+        padding: 0 12px 0 16px;
+      }
     }
 
     /* ─── LAYOUT ─── */
@@ -678,9 +693,6 @@
     }
 
     .terms-box {
-      border: 1.5px solid var(--c-border);
-      border-radius: var(--radius-md);
-      padding: 14px;
       background: var(--c-surface);
       transition: border-color 0.2s;
     }
@@ -1104,6 +1116,16 @@
       cursor: pointer;
       border: 2px solid #e2e8f0;
       transition: transform 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .color-picker-dot .pick-color-icon {
+      pointer-events: none;
+      color: #fff;
+      filter: drop-shadow(0 0 1px rgba(0,0,0,0.9));
     }
 
     .color-picker-dot:hover {
@@ -1488,6 +1510,7 @@
       padding: 12px;
       margin-top: 10px;
     }
+
     .mb-selected-area.is-empty {
       display: none;
     }
@@ -2536,7 +2559,7 @@ Please present this card before payment.</textarea>
           style="background:${c.bg};" title="Color ${i + 1}"
           onclick="selectCardColor(${i}, this)"></div>
       `).join('') + `
-        <div class="color-picker-dot" title="Custom color" onclick="document.getElementById('customCardColor').click()"></div>
+        <div class="color-picker-dot" title="Custom color" onclick="document.getElementById('customCardColor').click()"><iconify-icon class="pick-color-icon" icon="mdi:eyedropper" width="12"></iconify-icon></div>
         <input type="color" id="customCardColor" class="hidden-color" value="#1a1f2e" onchange="applyCustomCardColor(this.value)">
       `;
     }
@@ -2972,9 +2995,100 @@ Please present this card before payment.</textarea>
       };
       reader.readAsDataURL(input.files[0]);
     }
+    /* ── LOGO LIBRARY (same as issue-digital.html) ── */
+    const SI = (slug) => `https://cdn.simpleicons.org/${slug}`;
+    const LOGO_LIBRARY_BRANDS = [
+      { id: 1, name: 'Apple', date: 'Mar 12, 2026', src: SI('apple') },
+      { id: 2, name: 'Nike', date: 'Mar 11, 2026', src: SI('nike') },
+      { id: 3, name: 'Starbucks', date: 'Mar 10, 2026', src: SI('starbucks') },
+      { id: 4, name: 'Adidas', date: 'Mar 9, 2026', src: SI('adidas') },
+      { id: 5, name: 'Amazon', date: 'Mar 8, 2026', src: SI('amazon') },
+      { id: 6, name: 'Google', date: 'Mar 7, 2026', src: SI('google') },
+      { id: 7, name: 'Microsoft', date: 'Mar 6, 2026', src: SI('microsoft') },
+      { id: 8, name: 'Samsung', date: 'Mar 5, 2026', src: SI('samsung') },
+      { id: 9, name: 'Netflix', date: 'Mar 4, 2026', src: SI('netflix') },
+      { id: 10, name: 'Spotify', date: 'Mar 3, 2026', src: SI('spotify') },
+      { id: 11, name: 'Tesla', date: 'Mar 2, 2026', src: SI('tesla') },
+      { id: 12, name: 'Coca-Cola', date: 'Mar 1, 2026', src: SI('coca-cola') },
+      { id: 13, name: 'McDonald\'s', date: 'Feb 28, 2026', src: SI('mcdonalds') },
+      { id: 14, name: 'Disney', date: 'Feb 27, 2026', src: SI('disney') },
+      { id: 15, name: 'Chanel', date: 'Feb 26, 2026', src: SI('chanel') },
+      { id: 16, name: 'BMW', date: 'Feb 25, 2026', src: SI('bmw') },
+      { id: 17, name: 'Sony', date: 'Feb 24, 2026', src: SI('sony') },
+    ];
+    const LOGO_LIBRARY = [...LOGO_LIBRARY_BRANDS].sort(() => Math.random() - 0.5).slice(0, 12);
+    let selectedLibraryLogo = null;
+
     function openLogoLibrary() {
-      window.showCopyToast && window.showCopyToast('Logo library — coming soon');
+      renderLogoLibrary();
+      document.getElementById('libraryModal').classList.add('open');
+      lucide.createIcons();
     }
+    function closeLogoLibrary() {
+      document.getElementById('libraryModal').classList.remove('open');
+      selectedLibraryLogo = null;
+    }
+    function updateLibraryCount() {
+      const grid = document.getElementById('libraryGrid');
+      const count = document.getElementById('libraryCount');
+      if (!grid || !count) return;
+      const visible = grid.querySelectorAll('.lib-card:not(.lib-card-hidden)').length;
+      count.textContent = `(${visible} logos)`;
+    }
+    function renderLogoLibrary() {
+      const grid = document.getElementById('libraryGrid');
+      const count = document.getElementById('libraryCount');
+      if (count) count.textContent = `(${LOGO_LIBRARY.length} logos)`;
+      if (!grid) return;
+      grid.innerHTML = LOGO_LIBRARY.map(logo => `
+        <div class="lib-card" id="libcard-${logo.id}">
+          <div class="lib-card-img-wrap">
+            <img src="${logo.src}" class="lib-card-img" alt="${logo.name}" onerror="var c=this.closest('.lib-card');if(c){c.classList.add('lib-card-hidden');c.style.display='none';updateLibraryCount();}" onload="updateLibraryCount()" />
+            <div class="lib-card-overlay">
+              <button class="lib-btn-del" onclick="deleteLibraryLogo(${logo.id})" title="Delete"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+              <button class="lib-btn-view" onclick="viewLibraryLogo(${logo.id})" title="Preview"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+              <button class="lib-btn-use" onclick="useLibraryLogo(${logo.id})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Use</button>
+            </div>
+          </div>
+          <div class="lib-card-info">
+            <div class="lib-card-name">${logo.name}</div>
+            <div class="lib-card-date">${logo.date}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+    function viewLibraryLogo(id) {
+      const logo = LOGO_LIBRARY.find(l => l.id === id);
+      if (!logo) return;
+      selectedLibraryLogo = logo;
+      document.getElementById('previewLogoImg').src = logo.src;
+      document.getElementById('libraryModal').classList.remove('open');
+      document.getElementById('logoPreviewModal').classList.add('open');
+    }
+    function closeLogoPreview() {
+      document.getElementById('logoPreviewModal').classList.remove('open');
+      document.getElementById('libraryModal').classList.add('open');
+    }
+    function useLibraryLogo(id) {
+      const logo = LOGO_LIBRARY.find(l => l.id === id);
+      if (!logo) return;
+      const logoBox = document.getElementById('pkgIconCircle');
+      if (logoBox) logoBox.innerHTML = `<img src="${logo.src}" style="width:100%;height:100%;object-fit:contain;border-radius:8px" alt="">`;
+      closeLogoLibrary();
+      document.getElementById('logoPreviewModal').classList.remove('open');
+      window.showCopyToast && window.showCopyToast('Logo applied!');
+    }
+    function useSelectedLogoPreview() {
+      if (selectedLibraryLogo) useLibraryLogo(selectedLibraryLogo.id);
+    }
+    function deleteLibraryLogo(id) {
+      const idx = LOGO_LIBRARY.findIndex(l => l.id === id);
+      if (idx !== -1) LOGO_LIBRARY.splice(idx, 1);
+      renderLogoLibrary();
+    }
+
+    const AI_LOGO_MOCK = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="240" height="260" viewBox="0 0 240 260"><defs><linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#d4af37"/><stop offset="100%" style="stop-color:#c9a84c"/></linearGradient></defs><circle cx="120" cy="108" r="90" fill="#0d3d2e" stroke="url(#gold)" stroke-width="5"/><circle cx="120" cy="108" r="78" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.5"/><text x="120" y="78" text-anchor="middle" font-family="Georgia,serif" font-size="24" font-weight="bold" fill="#c9a84c">JADE</text><path d="M95 100 Q100 95 108 98 L130 98 Q138 95 145 100 L148 135 Q145 150 120 155 Q95 150 92 135 Z" fill="#e8d5b7" stroke="#c9a84c" stroke-width="1" opacity="0.95"/><rect x="112" y="118" width="16" height="22" rx="3" fill="#f5f5dc" stroke="#c9a84c" stroke-width="1"/><rect x="115" y="122" width="5" height="8" rx="1" fill="#87ceeb"/><rect x="118" y="108" width="4" height="12" rx="2" fill="#0d3d2e"/><text x="120" y="168" text-anchor="middle" font-family="Georgia,serif" font-size="24" font-weight="bold" fill="#c9a84c">JADE</text><path d="M70 182 Q120 172 170 182" fill="none" stroke="#c9a84c" stroke-width="2"/><rect x="82" y="175" width="76" height="24" rx="4" fill="#0d3d2e" stroke="#c9a84c" stroke-width="1.5"/><text x="120" y="192" text-anchor="middle" font-size="12" font-weight="700" fill="#c9a84c" letter-spacing="3">NAIL SPA</text></svg>`);
+
     function generateAiLogo() {
       const ta = document.getElementById('aiDescription');
       if (!ta || !ta.value.trim()) {
@@ -2982,11 +3096,26 @@ Please present this card before payment.</textarea>
         return;
       }
       const btn = document.querySelector('.btn-ai-gen');
-      if (btn) { btn.innerHTML = '<iconify-icon icon="solar:refresh-bold" width="18"></iconify-icon> Generating...'; btn.disabled = true; }
+      if (btn) { btn.innerHTML = '<iconify-icon icon="solar:refresh-bold" width="18" style="animation:spin 1s linear infinite"></iconify-icon> Generating...'; btn.disabled = true; }
       setTimeout(() => {
         if (btn) { btn.innerHTML = '<iconify-icon icon="solar:magic-stick-bold-duotone" width="18"></iconify-icon> Generate Logo with AI'; btn.disabled = false; }
-        window.showCopyToast && window.showCopyToast('Logo generated (preview coming soon)');
-      }, 1500);
+        openAiLogoModal();
+      }, 2500);
+    }
+    function openAiLogoModal() {
+      const display = document.getElementById('aiLogoDisplay');
+      if (display) display.innerHTML = `<img src="${AI_LOGO_MOCK}" alt="AI Generated Logo">`;
+      document.getElementById('aiLogoModal').classList.add('open');
+      lucide.createIcons();
+    }
+    function closeAiLogoModal() {
+      document.getElementById('aiLogoModal').classList.remove('open');
+    }
+    function useAiGeneratedLogo() {
+      const logoBox = document.getElementById('pkgIconCircle');
+      if (logoBox) logoBox.innerHTML = `<img src="${AI_LOGO_MOCK}" style="width:100%;height:100%;object-fit:contain;border-radius:8px" alt="">`;
+      closeAiLogoModal();
+      window.showCopyToast && window.showCopyToast('Logo applied!');
     }
 
     /* ═══════════════════════════════════════════════════════
@@ -3038,6 +3167,9 @@ Please present this card before payment.</textarea>
 
     document.getElementById('loadTermsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLoadTerms(); });
     document.getElementById('saveTermsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSaveTerms(); });
+    document.getElementById('libraryModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLogoLibrary(); });
+    document.getElementById('logoPreviewModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLogoPreview(); });
+    document.getElementById('aiLogoModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAiLogoModal(); });
   </script>
 
   <!-- Load Terms modal (from issue-digital.html) -->
@@ -3092,6 +3224,97 @@ Please present this card before payment.</textarea>
       </div>
     </div>
   </div>
+
+  <!-- Logo Library Modal (from issue-digital.html) -->
+  <div class="lib-overlay" id="libraryModal">
+    <div class="lib-modal">
+      <div class="lib-modal-head">
+        <div class="lib-modal-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <span class="lib-modal-title">Library <span id="libraryCount" style="font-weight:500;color:#919eab;">(0 logos)</span></span>
+        <button class="lib-close-btn" onclick="closeLogoLibrary()"><i data-lucide="x" style="width:20px;height:20px;"></i></button>
+      </div>
+      <div class="lib-grid" id="libraryGrid"></div>
+    </div>
+  </div>
+
+  <!-- AI Generated Logo Modal -->
+  <div class="lib-overlay" id="aiLogoModal">
+    <div class="ai-logo-modal">
+      <div class="ai-logo-modal-head">
+        <span class="ai-logo-modal-title">AI Generated Logo</span>
+        <button class="lib-close-btn" onclick="closeAiLogoModal()"><i data-lucide="x" style="width:20px;height:20px;"></i></button>
+      </div>
+      <div class="ai-logo-modal-body">
+        <div class="ai-logo-display" id="aiLogoDisplay"></div>
+      </div>
+      <div class="ai-logo-modal-foot">
+        <button class="ai-logo-btn-cancel" onclick="closeAiLogoModal()">Cancel</button>
+        <button class="ai-logo-btn-use" onclick="useAiGeneratedLogo()">Use this logo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logo Preview Modal -->
+  <div class="lib-overlay" id="logoPreviewModal">
+    <div class="lib-preview-modal">
+      <button class="lib-close-btn" style="position:absolute;top:16px;right:16px;" onclick="closeLogoPreview()"><i data-lucide="x" style="width:20px;height:20px;"></i></button>
+      <div class="lib-preview-body">
+        <img id="previewLogoImg" src="" alt="Logo preview" class="lib-preview-img" />
+      </div>
+      <div class="lib-preview-foot">
+        <button class="lib-btn-use-preview" onclick="useSelectedLogoPreview()">Use this logo</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Logo Library & AI modals (from issue-digital.html) */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .lib-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+    .lib-overlay.open { display: flex; }
+    .lib-modal { background: #fff; width: 100%; max-width: 780px; max-height: 90vh; border-radius: 20px; box-shadow: 0 32px 80px rgba(0,0,0,0.2); display: flex; flex-direction: column; animation: libModalIn .22s ease-out; margin: 16px; overflow: hidden; }
+    @keyframes libModalIn { from { opacity: 0; transform: scale(.96) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .lib-modal-head { display: flex; align-items: center; gap: 12px; padding: 20px 24px 18px; border-bottom: 1px solid #f0f0f0; flex-shrink: 0; }
+    .lib-modal-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(0,167,111,0.1); color: #00a76f; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .lib-modal-title { font-size: 18px; font-weight: 700; color: #212b36; flex: 1; }
+    .lib-close-btn { width: 34px; height: 34px; border-radius: 8px; border: none; background: transparent; color: #919eab; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.15s; flex-shrink: 0; }
+    .lib-close-btn:hover { background: #f4f6f8; color: #212b36; }
+    .lib-grid { display: grid; grid-template-columns: repeat(4, minmax(90px, 1fr)); gap: 28px; padding: 20px 24px 24px; overflow-y: auto; flex: 1; min-height: 0; }
+    .lib-card { border-radius: 12px; overflow: hidden; border: 1.5px solid #e8edf2; background: #fff; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+    .lib-card:hover { border-color: #c0cdd6; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .lib-card-img-wrap { position: relative; background: #f4f6f8; aspect-ratio: 1; overflow: hidden; padding: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .lib-card-img { width: 70%; height: 70%; max-width: 48px; max-height: 48px; object-fit: contain; display: block; }
+    .lib-card-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.38); display: flex; align-items: center; justify-content: center; gap: 6px; opacity: 0; transition: opacity 0.2s; }
+    .lib-card:hover .lib-card-overlay { opacity: 1; }
+    .lib-btn-del { width: 32px; height: 32px; border-radius: 8px; background: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #ff5630; transition: 0.15s; }
+    .lib-btn-del:hover { background: #ffe4dc; }
+    .lib-btn-view { width: 32px; height: 32px; border-radius: 8px; background: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #212b36; transition: 0.15s; }
+    .lib-btn-view:hover { background: #f0fdf7; color: #00a76f; }
+    .lib-btn-use { display: flex; align-items: center; gap: 5px; padding: 8px 14px; border-radius: 10px; background: #00a76f; border: none; cursor: pointer; color: #fff; font-size: 13px; font-weight: 700; transition: 0.15s; font-family: inherit; }
+    .lib-btn-use:hover { background: #007a52; }
+    .lib-card-info { padding: 8px 10px 10px; flex-shrink: 0; }
+    .lib-card-name { font-size: 11px; font-weight: 700; color: #212b36; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+    .lib-card-date { font-size: 10px; color: #919eab; }
+    .lib-preview-modal { background: #fff; width: 100%; max-width: 440px; border-radius: 20px; position: relative; box-shadow: 0 32px 80px rgba(0,0,0,0.2); padding: 52px 32px 32px; animation: libModalIn .22s ease-out; margin: 16px; }
+    .lib-preview-body { display: flex; align-items: center; justify-content: center; min-height: 260px; padding: 16px 0 24px; }
+    .lib-preview-img { max-width: 100%; max-height: 280px; object-fit: contain; border-radius: 12px; }
+    .lib-preview-foot { display: flex; justify-content: center; }
+    .lib-btn-use-preview { padding: 13px 48px; border-radius: 14px; background: #00a76f; color: #fff; border: none; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; transition: 0.15s; box-shadow: 0 6px 20px rgba(0,167,111,0.3); }
+    .lib-btn-use-preview:hover { background: #007a52; }
+    .ai-logo-modal { background: #fff; width: 100%; max-width: 480px; border-radius: 20px; position: relative; box-shadow: 0 32px 80px rgba(0,0,0,0.2); padding: 0; animation: libModalIn .22s ease-out; margin: 16px; }
+    .ai-logo-modal-head { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid #f0f0f0; }
+    .ai-logo-modal-title { font-size: 18px; font-weight: 700; color: #161c24; }
+    .ai-logo-modal-body { display: flex; align-items: center; justify-content: center; min-height: 280px; padding: 32px 24px; }
+    .ai-logo-display { width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; }
+    .ai-logo-display img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .ai-logo-modal-foot { display: flex; gap: 12px; padding: 20px 24px 24px; justify-content: center; }
+    .ai-logo-btn-cancel { padding: 12px 24px; border-radius: 10px; background: #fff; color: #637381; border: 1px solid #dfe3e8; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: 0.15s; }
+    .ai-logo-btn-cancel:hover { background: #f4f6f8; }
+    .ai-logo-btn-use { padding: 12px 24px; border-radius: 10px; background: #00a76f; color: #fff; border: none; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: 0.15s; }
+    .ai-logo-btn-use:hover { background: #007a52; }
+  </style>
 </body>
 
 </html>

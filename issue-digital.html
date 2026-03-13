@@ -976,6 +976,7 @@
     .crypto-asset-available {
       font-size: 11px;
       color: #6b7280;
+      font-weight: 500;
     }
 
     .crypto-amount {
@@ -1129,9 +1130,9 @@
     }
 
     .style-tag.active {
-      background: var(--c-text-1);
-      border-color: var(--c-text-1);
-      color: #fff;
+      background: rgba(37, 99, 235, 0.08);
+      border-color: rgba(37, 99, 235, 0.18);
+      color: var(--c-primary);
     }
 
     .ai-textarea-wrap {
@@ -2085,7 +2086,7 @@
       background: var(--c-surface-subtle);
       border: 1px solid var(--c-border);
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 400;
       color: var(--c-text-2);
       cursor: pointer;
       transition: all var(--transition-base);
@@ -2924,7 +2925,7 @@
                   <span>Membership</span>
                 </div>
                 <div class="card-type-item" onclick="selectCardType(this,'Crypto Card','5')">
-                  <div class="card-type-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon>
+                  <div class="card-type-icon"><iconify-icon icon="solar:card-bold-duotone" width="24"></iconify-icon>
                   </div>
                   <span>Crypto Card</span>
                 </div>
@@ -3076,8 +3077,8 @@
                 </button>
               </div>
 
-              <div class="crypto-selected-card" id="cryptoSelectedCard" style="display:none;">
-                <div class="crypto-selected-header">
+              <div class="crypto-selected-card">
+                <div class="crypto-selected-header" id="cryptoSelectedCard" style="display:none;">
                   <span>Selected Assets</span>
                   <span>Enter Amount</span>
                 </div>
@@ -3923,7 +3924,14 @@ Please present this card before payment.</textarea>
     ────────────────────────────────────────────── */
     function updateCardHolder(name) {
       const el = document.getElementById('previewHolderName');
-      if (el) el.textContent = name ? name.toUpperCase() : 'CARD HOLDER';
+      if (!el) return;
+      if (name && name.trim() !== '') {
+        el.style.visibility = 'visible';
+        el.textContent = name.toUpperCase();
+      } else {
+        el.style.visibility = 'hidden';
+        el.textContent = '';
+      }
     }
 
     function updateCardRank(rankText) {
@@ -4005,12 +4013,14 @@ Please present this card before payment.</textarea>
 
     function renderSelectedAssets() {
       const body = document.getElementById('cryptoSelectedBody');
-      if (!body) return;
+      const card = document.getElementById('cryptoSelectedCard');
+      if (!body || !card) return;
       const ids = Object.keys(selectedAssets);
       if (!ids.length) {
-        body.innerHTML = '<div class="crypto-empty-hint">Click to select cryptos, then enter amount for each</div>';
+        card.style.display = 'none';
         return;
       }
+      card.style.display = '';
       body.innerHTML = ids.map(id => {
         const a = CRYPTO_ASSETS.find(x => x.id === id) || { name: id, iconUrl: '', available: 0 };
         const val = selectedAssets[id] || '';

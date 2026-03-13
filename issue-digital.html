@@ -1590,6 +1590,46 @@
       color: var(--c-text-1);
     }
 
+    /* Dropdown header with close button (dropdownParent: body) */
+    .ts-dropdown .dropdown-header {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--c-border);
+      background: var(--c-surface-subtle);
+    }
+    .ts-dropdown .dropdown-header-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+    }
+    .ts-dropdown .dropdown-header-label {
+      flex: 1;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c-text-2);
+    }
+    .ts-dropdown .dropdown-header-close {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--c-text-3);
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .ts-dropdown .dropdown-header-close:hover {
+      background: var(--c-surface);
+      color: var(--c-text-1);
+    }
+
     .mb-selected-area {
       background: var(--c-surface-subtle);
       border-radius: var(--radius-sm);
@@ -3589,7 +3629,10 @@ Please present this card before payment.</textarea>
       });
       const benefitMap = Object.fromEntries(MB_BENEFITS.map(b => [b.id, b]));
       mbTomSelect = new TomSelect('#mbBenefitSelect', {
-        plugins: { checkbox_options: {} },
+        plugins: {
+          checkbox_options: {},
+          dropdown_header: { title: 'Select Benefit' }
+        },
         placeholder: 'Select Benefit',
         maxItems: null,
         dropdownParent: 'body',

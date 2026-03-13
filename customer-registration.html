@@ -21,16 +21,16 @@
         body {
             font-family: 'Poppins', sans-serif;
             background: #f5f5f5;
-            padding: 40px 0;
+            padding: 20px 0;
         }
 
         .section-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid #e0e0e0;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         .section-header iconify-icon {
@@ -50,7 +50,7 @@
             font-size: 13px;
             font-weight: 600;
             color: #333;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .form-label .required {
@@ -62,7 +62,7 @@
         .form-select {
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 12px 16px;
+            padding: 10px 14px;
             font-size: 14px;
             transition: all 0.2s;
         }
@@ -87,12 +87,36 @@
             border-radius: 0 8px 8px 0;
         }
 
+        .digital-card-info {
+            background: #e8f5e9;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #2e7d32;
+        }
+
+        .digital-card-info ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .digital-card-info li {
+            margin-bottom: 6px;
+        }
+
+        .digital-card-info li:last-child {
+            margin-bottom: 0;
+        }
+
+        .digital-card-info strong {
+            font-weight: 700;
+        }
+
         .digital-card-section {
-            background: linear-gradient(135deg, #1a1f3a 0%, #2d3561 100%);
-            border-radius: 16px;
-            padding: 32px;
-            color: #fff;
-            margin-top: 32px;
+            display: none;
+            /* Ẩn section Digital Membership Card */
         }
 
         .digital-card-section .section-header {
@@ -129,9 +153,9 @@
         .card-note {
             background: rgba(91, 111, 237, 0.2);
             border-left: 3px solid #5B6FED;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 8px;
-            margin-top: 20px;
+            margin-top: 14px;
         }
 
         .card-note p {
@@ -145,8 +169,8 @@
             background: #fff;
             border: 1px solid #e0e0e0;
             border-radius: 12px;
-            padding: 20px;
-            margin-top: 32px;
+            padding: 16px;
+            margin-top: 20px;
         }
 
         .terms-checkbox .form-check-label {
@@ -173,7 +197,7 @@
             padding: 14px 32px;
             font-size: 15px;
             font-weight: 600;
-            width: 100%;
+            width: auto;
             margin-top: 24px;
             transition: all 0.2s;
         }
@@ -184,25 +208,600 @@
             box-shadow: 0 8px 16px rgba(91, 111, 237, 0.3);
         }
 
+        .btn-submit-wrap {
+            display: flex;
+            justify-content: center;
+        }
+
         .info-icon {
             color: #999;
             cursor: help;
             margin-left: 4px;
         }
-    
-    /* ─── Responsive: Mobile (max-width: 767px) ─── */
-    @media (max-width: 767px) {
-      body { padding: 16px 0 !important; }
-      .card-body { padding: 20px !important; }
-      .section-header h5 { font-size: 13px !important; }
-    }
+
+        /* Desktop: reduce spacing */
+        .card-body {
+            padding: 20px 24px;
+        }
+
+        .section-header.mt-5 {
+            margin-top: 18px;
+        }
+
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+
+        /* ─── Responsive: Mobile (max-width: 767px) ─── */
+        @media (max-width: 767px) {
+            body {
+                padding: 12px 0 !important;
+            }
+
+            .container {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .card-body {
+                padding: 16px !important;
+            }
+
+            .section-header {
+                margin-bottom: 16px !important;
+                padding-bottom: 8px !important;
+            }
+
+            .section-header.mt-5 {
+                margin-top: 20px !important;
+            }
+
+            .section-header h5 {
+                font-size: 13px !important;
+            }
+
+            .mb-4 {
+                margin-bottom: 12px !important;
+            }
+
+            .form-label {
+                margin-bottom: 6px !important;
+            }
+
+            .form-control,
+            .form-select {
+                padding: 10px 12px !important;
+            }
+
+            .digital-card-info {
+                padding: 12px 14px !important;
+                margin-bottom: 12px !important;
+                font-size: 12px !important;
+            }
+
+            .digital-card-section {
+                padding: 20px !important;
+            }
+
+            .card-note {
+                padding: 10px 12px !important;
+                margin-top: 14px !important;
+            }
+
+            .terms-checkbox {
+                padding: 14px !important;
+                margin-top: 20px !important;
+            }
+
+            .card-body {
+                padding-bottom: 100px !important;
+            }
+
+            .btn-submit-wrap {
+                position: fixed !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                padding: 12px 16px !important;
+                background: #fff !important;
+                z-index: 100;
+                box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+            }
+
+            .btn-submit-wrap .btn-submit {
+                margin: 0 !important;
+                padding: 14px 24px !important;
+                width: 100%;
+            }
+
+            .btn-submit:hover {
+                transform: none !important;
+            }
+        }
+
+        /* ─── Card Preview Panel (from issue-digital) ─── */
+        .panel-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 2px rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12);
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .panel-card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .panel-card-header.no-collapse {
+            cursor: default;
+        }
+
+        .panel-card-header .header-icon {
+            color: #5B6FED;
+            display: flex;
+            align-items: center;
+        }
+
+        .panel-card-header .header-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex: 1;
+        }
+
+        .panel-card-header .chevron {
+            color: #666;
+            transition: transform 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .panel-card-body {
+            padding: 16px;
+        }
+
+        .card-flip-container {
+            perspective: 1200px;
+            margin-bottom: 0;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1.586 / 1;
+            transform-style: preserve-3d;
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            overflow: hidden;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #0d4a34 0%, #1a6644 60%, #0f5c40 100%);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #fff;
+            box-shadow: 0 16px 32px rgba(13, 74, 52, 0.35);
+        }
+
+        .card-back {
+            background: #0d3b2e;
+            transform: rotateY(180deg);
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .cb-stripe {
+            background: #111;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 16px;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .cb-pin-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 2px;
+        }
+
+        .cb-pin-dots {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 3px;
+        }
+
+        .cb-body {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+            padding: 10px 14px;
+            overflow: hidden;
+        }
+
+        .cb-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+        }
+
+        .cb-section-title {
+            font-size: 9px;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cb-terms-text {
+            font-size: 6.5px;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.5;
+        }
+
+        .cb-merchant-tc {
+            font-size: 6.5px;
+            color: rgba(255, 255, 255, 0.45);
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .cb-contact {
+            flex-shrink: 0;
+            padding: 10px 14px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .cb-contact-title {
+            font-size: 7.5px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .cb-contact-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 7.5px;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .cb-contact-icon {
+            width: 10px;
+            height: 10px;
+            flex-shrink: 0;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .cb-qr-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .cb-qr-box {
+            width: 68px;
+            height: 68px;
+            background: #fff;
+            border-radius: 6px;
+        }
+
+        .cb-scan-label {
+            font-size: 7px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .cf-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .cf-logo-wrap {
+            flex-shrink: 0;
+        }
+
+        .card-logo-box {
+            width: 52px;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+        }
+
+        .card-logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .cf-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .cf-brand-name {
+            font-size: 17px;
+            font-weight: 800;
+            color: #f0d57a;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1.2;
+            font-style: italic;
+        }
+
+        .cf-slogan {
+            font-size: 9px;
+            font-weight: 600;
+            color: rgba(240, 213, 122, 0.75);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cf-mid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .cf-number {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            margin: 0;
+        }
+
+        .cf-num-group {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .cf-bottom {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .cf-value-badge {
+            margin-left: auto;
+            flex-shrink: 0;
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            padding: 5px 14px;
+            border-radius: 10px;
+            backdrop-filter: blur(4px);
+        }
+
+        .cf-expiry-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .cf-expiry-label {
+            font-size: 9px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.55);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .cf-expiry-date {
+            font-size: 13px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 0.5px;
+        }
+
+        .cf-holder {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: nowrap;
+        }
+
+        .cf-holder-name {
+            font-size: 18px;
+            font-weight: 800;
+            font-style: italic;
+            color: #f0d57a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        .cf-holder-rank {
+            font-size: 15px;
+            font-weight: 700;
+            font-style: italic;
+            color: rgba(240, 213, 122, 0.75);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cf-right-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .cf-type-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .cf-vlinkpay-pill {
+            background: #fff;
+            border-radius: 20px;
+            padding: 5px 12px 6px 12px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 767px) {
+            .card-front {
+                padding: 14px;
+            }
+
+            .cf-top {
+                gap: 8px;
+            }
+
+            .card-logo-box {
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+                border-radius: 8px;
+            }
+
+            .cf-brand-name {
+                font-size: 12px;
+                letter-spacing: 1px;
+            }
+
+            .cf-slogan {
+                font-size: 7px;
+                letter-spacing: 1px;
+            }
+
+            .cf-value-badge {
+                font-size: 11px;
+                padding: 3px 10px;
+                border-radius: 8px;
+            }
+
+            .cf-number {
+                gap: 8px;
+            }
+
+            .cf-num-group {
+                font-size: 8px;
+                letter-spacing: 2px;
+            }
+
+            .cf-mid {
+                gap: 4px;
+            }
+
+            .cf-expiry-label {
+                font-size: 7px;
+            }
+
+            .cf-expiry-date {
+                font-size: 10px;
+            }
+
+            .cf-holder {
+                gap: 6px;
+            }
+
+            .cf-holder-name {
+                font-size: 12px;
+            }
+
+            .cf-holder-rank {
+                font-size: 10px;
+            }
+
+            .cf-type-label {
+                font-size: 7px;
+            }
+
+            .cf-vlinkpay-pill {
+                padding: 3px 8px 4px 8px;
+                border-radius: 14px;
+            }
+
+            .cf-vlinkpay-pill img {
+                height: 12px;
+            }
+        }
+
+        .flip-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(91, 111, 237, 0.15);
+            color: #5B6FED;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s ease;
+        }
+
+        .flip-btn:hover {
+            background: rgba(91, 111, 237, 0.25);
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="col-lg-6">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4 p-md-5">
                         <!-- Section 01: Account Identification -->
@@ -312,6 +911,127 @@
                         </div>
 
                         <!-- Section 04: Digital Membership Card -->
+                        <div class="digital-card-info">
+                            <ul>
+                                <li>Username and password will be sent to your email.</li>
+                                <li>You can show the QR code or provide your <strong>Email/Phone</strong> at the counter
+                                    for check-in without needing a physical <strong>card</strong>.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Card Preview (membership type) -->
+                        <div class="panel-card">
+                            <div class="panel-card-header no-collapse">
+                                <div class="header-icon">
+                                    <iconify-icon icon="solar:card-bold-duotone" width="18"></iconify-icon>
+                                </div>
+                                <span class="header-title">Card Preview</span>
+                                <button class="flip-btn" onclick="flipCard(event)"
+                                    style="width:auto;padding:5px 12px;font-size:11px;margin:0;">
+                                    <iconify-icon icon="solar:refresh-bold" width="14"></iconify-icon>
+                                    TAP TO FLIP
+                                </button>
+                            </div>
+                            <div class="panel-card-body">
+                                <div class="card-flip-container">
+                                    <div class="card-inner" id="cardInner" onclick="flipCard(event)">
+                                        <!-- FRONT (membership) -->
+                                        <div class="card-face card-front">
+                                            <div class="cf-top">
+                                                <div class="cf-logo-wrap">
+                                                    <div class="card-logo-box">🎁</div>
+                                                </div>
+                                                <div class="cf-brand">
+                                                    <div class="cf-brand-name">MEMBERSHIP</div>
+                                                    <div class="cf-slogan">LUXURY BEAUTY INNOVATION</div>
+                                                </div>
+                                                <div class="cf-value-badge" style="display:none;">$50</div>
+                                            </div>
+                                            <div class="cf-mid">
+                                                <div class="cf-number">
+                                                    <span class="cf-num-group">●●●●</span>
+                                                    <span class="cf-num-group">●●●●</span>
+                                                    <span class="cf-num-group">●●●●</span>
+                                                    <span class="cf-num-group">●●●●</span>
+                                                </div>
+                                                <div class="cf-expiry-row" style="display:none;">
+                                                    <span class="cf-expiry-label">VALID THRU</span>
+                                                    <span class="cf-expiry-date">—</span>
+                                                </div>
+                                            </div>
+                                            <div class="cf-bottom">
+                                                <div class="cf-holder">
+                                                    <span class="cf-holder-name">CARD HOLDER</span>
+                                                    <span class="cf-holder-rank">PLATINUM</span>
+                                                </div>
+                                                <div class="cf-right-col">
+                                                    <div class="cf-type-label">MEMBERSHIP</div>
+                                                    <div class="cf-vlinkpay-pill">
+                                                        <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg"
+                                                            style="height:16px;" alt="VLinkPay">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- BACK -->
+                                        <div class="card-face card-back">
+                                            <div class="cb-stripe">
+                                                <span class="cb-pin-label">PIN</span>
+                                                <span class="cb-pin-dots">●●●</span>
+                                            </div>
+                                            <div class="cb-body">
+                                                <div class="cb-main">
+                                                    <div class="cb-section-title">TERMS &amp; CONDITIONS:</div>
+                                                    <div class="cb-terms-text">
+                                                        This card is issued by [MERCHANT NAME] for use in the merchant's
+                                                        program.
+                                                        VLINKPAY provides technology services only and is not the issuer
+                                                        of this card.
+                                                        The merchant is responsible for card fulfillment, customer
+                                                        support, refunds,
+                                                        disputes, and program terms. Not a credit or debit card. No
+                                                        interest, no overdraft.
+                                                        No cash access and no ATM withdrawals. Void if copied or
+                                                        altered.
+                                                    </div>
+                                                    <div class="cb-merchant-tc">Terms &amp; Conditions của Merchant tự
+                                                        nhập khi tạo card</div>
+                                                </div>
+                                                <div class="cb-qr-col">
+                                                    <div class="cb-qr-box"></div>
+                                                    <div class="cb-scan-label">SCAN TO PAY</div>
+                                                </div>
+                                            </div>
+                                            <div class="cb-contact">
+                                                <div class="cb-contact-title">For help, contact <span>[MERCHANT
+                                                        NAME]</span>:</div>
+                                                <div class="cb-contact-row">
+                                                    <iconify-icon icon="solar:phone-bold" width="10" height="10"
+                                                        class="cb-contact-icon"></iconify-icon>
+                                                    <span>+ 1 (777) 777-7777</span>
+                                                </div>
+                                                <div class="cb-contact-row">
+                                                    <iconify-icon icon="solar:letter-bold" width="10" height="10"
+                                                        class="cb-contact-icon"></iconify-icon>
+                                                    <span>merchant@example.com</span>
+                                                </div>
+                                                <div class="cb-contact-row">
+                                                    <iconify-icon icon="solar:globe-bold" width="10" height="10"
+                                                        class="cb-contact-icon"></iconify-icon>
+                                                    <span>www.merchant.com</span>
+                                                </div>
+                                                <div class="cb-contact-row">
+                                                    <iconify-icon icon="solar:shield-check-bold" width="10" height="10"
+                                                        class="cb-contact-icon"></iconify-icon>
+                                                    <span>Verify card at www.vlinkpay.com/check-balance</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="digital-card-section">
                             <div class="section-header">
                                 <iconify-icon icon="solar:card-bold" width="24"></iconify-icon>
@@ -353,11 +1073,13 @@
                         </div>
 
                         <!-- Submit Button -->
-                        <button type="submit" class="btn-submit">
-                            <iconify-icon icon="solar:check-circle-bold" width="20"
-                                style="vertical-align: middle;"></iconify-icon>
-                            Register Member
-                        </button>
+                        <div class="btn-submit-wrap">
+                            <button type="submit" class="btn-submit">
+                                <iconify-icon icon="solar:check-circle-bold" width="20"
+                                    style="vertical-align: middle;"></iconify-icon>
+                                Register Member
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

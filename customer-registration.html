@@ -18,9 +18,24 @@
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
     <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-light: rgba(99, 102, 241, 0.08);
+            --primary-ring: rgba(99, 102, 241, 0.25);
+            --text-1: #1e293b;
+            --text-2: #64748b;
+            --text-3: #94a3b8;
+            --border: #e2e8f0;
+            --bg-body: #f8fafc;
+            --bg-input: #f8fafc;
+            --success-bg: #ecfdf5;
+            --success-text: #059669;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
-            background: #f5f5f5;
+            background: var(--bg-body);
             padding: 20px 0;
         }
 
@@ -30,18 +45,18 @@
             gap: 10px;
             margin-bottom: 16px;
             padding-bottom: 8px;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid var(--border);
         }
 
         .section-header iconify-icon {
-            color: #5B6FED;
+            color: var(--primary);
         }
 
         .section-header h5 {
             margin: 0;
             font-size: 15px;
             font-weight: 700;
-            color: #5B6FED;
+            color: var(--primary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -49,36 +64,39 @@
         .form-label {
             font-size: 13px;
             font-weight: 600;
-            color: #333;
+            color: var(--text-1);
             margin-bottom: 6px;
         }
 
         .form-label .required {
-            color: #dc3545;
+            color: #ef4444;
             margin-left: 2px;
         }
 
         .form-control,
         .form-select {
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border);
             border-radius: 8px;
             padding: 10px 14px;
             font-size: 14px;
+            color: var(--text-1);
+            background: #fff;
             transition: all 0.2s;
         }
 
         .form-control:focus,
         .form-select:focus {
-            border-color: #5B6FED;
-            box-shadow: 0 0 0 3px rgba(91, 111, 237, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-ring);
+            outline: none;
         }
 
         .input-group-text {
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
             border-right: none;
             border-radius: 8px 0 0 8px;
-            color: #666;
+            color: var(--text-2);
             font-weight: 600;
         }
 
@@ -88,13 +106,14 @@
         }
 
         .digital-card-info {
-            background: #e8f5e9;
+            background: var(--success-bg);
             border-radius: 12px;
             padding: 12px 16px;
             margin-bottom: 12px;
             font-size: 13px;
             line-height: 1.6;
-            color: #2e7d32;
+            color: var(--success-text);
+            border: 1px solid rgba(5, 150, 105, 0.2);
         }
 
         .digital-card-info ul {
@@ -151,8 +170,8 @@
         }
 
         .card-note {
-            background: rgba(91, 111, 237, 0.2);
-            border-left: 3px solid #5B6FED;
+            background: var(--primary-light);
+            border-left: 3px solid var(--primary);
             padding: 10px 14px;
             border-radius: 8px;
             margin-top: 14px;
@@ -162,12 +181,12 @@
             margin: 0;
             font-size: 12px;
             line-height: 1.6;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--text-1);
         }
 
         .terms-checkbox {
             background: #fff;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 16px;
             margin-top: 20px;
@@ -175,37 +194,39 @@
 
         .terms-checkbox .form-check-label {
             font-size: 13px;
-            color: #666;
+            color: var(--text-2);
             line-height: 1.6;
         }
 
         .terms-checkbox a {
-            color: #5B6FED;
+            color: var(--primary);
             text-decoration: none;
             font-weight: 600;
         }
 
         .terms-checkbox a:hover {
+            color: var(--primary-hover);
             text-decoration: underline;
         }
 
         .btn-submit {
-            background: #5B6FED;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
             color: #fff;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 14px 32px;
             font-size: 15px;
             font-weight: 600;
             width: auto;
             margin-top: 24px;
             transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
         }
 
         .btn-submit:hover {
-            background: #4a5ed9;
+            background: linear-gradient(135deg, var(--primary-hover) 0%, #4338ca 100%);
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(91, 111, 237, 0.3);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
         }
 
         .btn-submit-wrap {
@@ -214,9 +235,14 @@
         }
 
         .info-icon {
-            color: #999;
+            color: var(--text-3);
             cursor: help;
             margin-left: 4px;
+        }
+
+        .card {
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         /* Desktop: reduce spacing */
@@ -293,6 +319,10 @@
                 margin-top: 20px !important;
             }
 
+            .terms-checkbox .form-check-label {
+                font-size: 11px !important;
+            }
+
             .card-body {
                 padding-bottom: 100px !important;
             }
@@ -323,7 +353,8 @@
         .panel-card {
             background: #fff;
             border-radius: 12px;
-            box-shadow: 0 0 2px rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             margin-bottom: 12px;
         }
@@ -333,7 +364,7 @@
             align-items: center;
             gap: 8px;
             padding: 12px 16px;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid var(--border);
             cursor: pointer;
             user-select: none;
         }
@@ -343,7 +374,7 @@
         }
 
         .panel-card-header .header-icon {
-            color: #5B6FED;
+            color: var(--primary);
             display: flex;
             align-items: center;
         }
@@ -351,14 +382,14 @@
         .panel-card-header .header-title {
             font-size: 13px;
             font-weight: 700;
-            color: #333;
+            color: var(--text-1);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             flex: 1;
         }
 
         .panel-card-header .chevron {
-            color: #666;
+            color: var(--text-2);
             transition: transform 0.2s ease;
             display: flex;
             align-items: center;
@@ -783,8 +814,8 @@
             gap: 8px;
             padding: 8px 16px;
             border-radius: 20px;
-            background: rgba(91, 111, 237, 0.15);
-            color: #5B6FED;
+            background: var(--primary-light);
+            color: var(--primary);
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
@@ -793,7 +824,7 @@
         }
 
         .flip-btn:hover {
-            background: rgba(91, 111, 237, 0.25);
+            background: rgba(99, 102, 241, 0.18);
         }
     </style>
 </head>

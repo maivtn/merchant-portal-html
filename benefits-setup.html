@@ -1017,6 +1017,7 @@
       align-items: center;
       gap: 6px;
     }
+
     .label-tooltip {
       display: inline-flex;
       align-items: center;
@@ -1024,10 +1025,13 @@
       color: #637381;
       cursor: help;
       vertical-align: middle;
+      flex-shrink: 0;
     }
+
     .label-tooltip:hover {
       color: #00a76f;
     }
+
     .label-tooltip iconify-icon {
       display: block;
     }
@@ -1156,6 +1160,12 @@
       font-size: 13px;
       color: #637381;
       font-weight: 500;
+    }
+
+    .vb-detail-label-with-tip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .vb-detail-value {
@@ -1481,11 +1491,20 @@
             <span id="vbUnit" class="vb-detail-value"></span>
           </div>
           <div class="vb-detail-row">
-            <span class="vb-detail-label">Rollover Type</span>
+            <span class="vb-detail-label vb-detail-label-with-tip">
+              Rollover Type
+              <span class="label-tooltip"
+                title="Reset: Any unused balance or usage count will expire at the end of the cycle, and the system will restore the original allocated amount for the new cycle. Rollover: Any unused balance or usage count will be carried forward and added to the next cycle."
+                aria-label="More info">
+                <iconify-icon icon="mdi:information-outline" width="14" height="14"></iconify-icon>
+              </span>
+            </span>
             <span id="vbRollover" class="vb-detail-value"></span>
           </div>
           <div class="vb-detail-row">
-            <span class="vb-detail-label">Cycle</span>
+            <span class="vb-detail-label vb-detail-label-with-tip">
+              Cycle
+            </span>
             <span id="vbCycle" class="vb-detail-value"></span>
           </div>
           <div class="vb-detail-row">
@@ -1561,29 +1580,27 @@
           <div class="form-group">
             <label class="form-label form-label-with-tip">
               Rollover Type
-              <span class="label-tooltip" title="When unused benefits can roll over: Monthly, Yearly, or Never." aria-label="More info">
+              <span class="label-tooltip"
+                title="Reset: Any unused balance or usage count will expire at the end of the cycle, and the system will restore the original allocated amount for the new cycle. Rollover: Any unused balance or usage count will be carried forward and added to the next cycle."
+                aria-label="More info">
                 <iconify-icon icon="mdi:information-outline" width="16" height="16"></iconify-icon>
               </span>
             </label>
             <select class="form-select" id="rolloverType">
               <option value="" selected>Select rollover type</option>
-              <option value="Monthly">Monthly</option>
-              <option value="Yearly">Yearly</option>
-              <option value="Never">Never</option>
+              <option value="Reset">Reset</option>
+              <option value="Rollover">Rollover</option>
             </select>
           </div>
           <div class="form-group">
             <label class="form-label form-label-with-tip">
               Cycle
-              <span class="label-tooltip" title="How often the benefit resets or is calculated (e.g. Daily, Weekly, Monthly, Yearly)." aria-label="More info">
-                <iconify-icon icon="mdi:information-outline" width="16" height="16"></iconify-icon>
-              </span>
             </label>
             <select class="form-select" id="cycleField" disabled>
               <option value="" selected>Select cycle</option>
               <option value="Daily">Daily</option>
-              <option value="Weekly">Weekly</option>
               <option value="Monthly">Monthly</option>
+              <option value="Quarterly">Quarterly</option>
               <option value="Yearly">Yearly</option>
             </select>
           </div>

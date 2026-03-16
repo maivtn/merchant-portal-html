@@ -1117,52 +1117,54 @@
       padding-top: 4px;
     }
 
+    /* Design Collection color-dots (from issue-digital.html) */
     .color-dot {
       width: 26px;
       height: 26px;
       border-radius: 50%;
       cursor: pointer;
       border: 2.5px solid transparent;
-      transition: 0.15s;
+      transition: var(--transition-base);
       position: relative;
     }
 
-    .color-dot.active,
     .color-dot:hover {
-      border-color: rgba(0, 0, 0, 0.25);
-      transform: scale(1.1);
+      transform: scale(1.15);
     }
 
-    .color-dot.active::after {
-      content: '';
-      position: absolute;
-      inset: 4px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.5);
+    .color-dot.active {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 2px #fff inset;
     }
 
-    .color-picker-dot {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
-      cursor: pointer;
-      border: 2px solid #e2e8f0;
-      transition: transform 0.15s;
+    .color-dot.color-picker-btn {
+      background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
     }
 
-    .color-picker-dot .pick-color-icon {
+    .color-picker-btn .pick-color-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       pointer-events: none;
       color: #fff;
       filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.9));
+      z-index: 1;
     }
 
-    .color-picker-dot:hover {
-      transform: scale(1.1);
+    .color-picker-btn input[type="color"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
     }
 
     input.hidden-color {
@@ -2200,7 +2202,29 @@
                   <iconify-icon icon="solar:color-filter-bold-duotone" width="14"></iconify-icon>
                   Preset Colors
                 </div>
-                <div class="color-dots" id="colorSwatches"><!-- filled by JS --></div>
+                <div class="color-dots" id="colorSwatches">
+                  <div class="color-dot active" style="background:#1E293B" onclick="selectColor(this,'#1E293B')"
+                    title="Slate Dark"></div>
+                  <div class="color-dot" style="background:#064E3B" onclick="selectColor(this,'#064E3B')"
+                    title="Emerald Dark"></div>
+                  <div class="color-dot" style="background:#7F1D1D" onclick="selectColor(this,'#7F1D1D')"
+                    title="Red Dark"></div>
+                  <div class="color-dot" style="background:#4C1D95" onclick="selectColor(this,'#4C1D95')"
+                    title="Violet Dark"></div>
+                  <div class="color-dot" style="background:#3B82F6" onclick="selectColor(this,'#3B82F6')" title="Blue"></div>
+                  <div class="color-dot" style="background:#10B981" onclick="selectColor(this,'#10B981')" title="Green"></div>
+                  <div class="color-dot" style="background:#F59E0B" onclick="selectColor(this,'#F59E0B')" title="Amber"></div>
+                  <div class="color-dot" style="background:#EC4899" onclick="selectColor(this,'#EC4899')" title="Pink"></div>
+                  <div class="color-dot" style="background:#06B6D4" onclick="selectColor(this,'#06B6D4')" title="Cyan"></div>
+                  <div class="color-dot" style="background:#8B5CF6" onclick="selectColor(this,'#8B5CF6')" title="Purple"></div>
+                  <div class="color-dot" style="background:#FFD84D" onclick="selectColor(this,'#FFD84D')" title="Yellow"></div>
+                  <div class="color-dot" style="background:#DBCD43" onclick="selectColor(this,'#DBCD43')" title="Gold"></div>
+                  <div class="color-dot color-picker-btn" title="Custom color">
+                    <iconify-icon class="pick-color-icon" icon="mdi:eyedropper" width="12"></iconify-icon>
+                    <input type="color"
+                      onchange="selectColor(this.parentElement, this.value); this.parentElement.style.background=this.value;" />
+                  </div>
+                </div>
                 <button class="adv-accordion-trigger" onclick="toggleSection('textColorBody','textColorChev')">
                   <iconify-icon icon="solar:text-bold-duotone" width="14"></iconify-icon>
                   Custom Text Color (Advanced)
@@ -2623,7 +2647,7 @@ Please present this card before payment.</textarea>
       discount: null,
       period: 365,
       selectedBenefits: [],   // [{id, name, unit, value, iconBg, iconColor}]
-      cardBg: DESIGN_COLORS[9].bg,
+      cardBg: '#1E293B',
       textColors: { name: 'auto', price: 'auto', other: 'auto' },
       isMostPopular: false,
     };
@@ -2634,10 +2658,9 @@ Please present this card before payment.</textarea>
     document.addEventListener('DOMContentLoaded', () => {
       const card = document.getElementById('pkgCard');
       if (card) {
-        card.style.setProperty('--pkg-brand-color', DESIGN_COLORS[9].card);
+        card.style.setProperty('--pkg-brand-color', state.cardBg);
         card.style.setProperty('--pkg-accent-color', '#F7931A');
       }
-      buildColorSwatches();
       initMbBenefitSelect();
       renderAiPrompts();
       updatePreview();
@@ -2652,16 +2675,14 @@ Please present this card before payment.</textarea>
       syncMobileActionsVisibility();
     });
 
-    function buildColorSwatches() {
-      const wrap = document.getElementById('colorSwatches');
-      wrap.innerHTML = DESIGN_COLORS.map((c, i) => `
-        <div class="color-dot ${i === 9 ? 'active' : ''}"
-          style="background:${c.bg};" title="Color ${i + 1}"
-          onclick="selectCardColor(${i}, this)"></div>
-      `).join('') + `
-        <div class="color-picker-dot" title="Custom color" onclick="document.getElementById('customCardColor').click()"><iconify-icon class="pick-color-icon" icon="mdi:eyedropper" width="12"></iconify-icon></div>
-        <input type="color" id="customCardColor" class="hidden-color" value="#1a1f2e" onchange="applyCustomCardColor(this.value)">
-      `;
+    function selectColor(dot, color) {
+      document.querySelectorAll('#colorSwatches .color-dot').forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+      state.cardBg = color;
+      const card = document.getElementById('pkgCard');
+      if (card) card.style.setProperty('--pkg-brand-color', color);
+      resetTextColorsToAuto();
+      updatePreview();
     }
 
     let mbTomSelect = null;
@@ -2842,20 +2863,6 @@ Please present this card before payment.</textarea>
       const b = parseInt(h.slice(4, 6), 16) / 255;
       const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
       return luminance > 0.5 ? '#161c24' : '#fff';
-    }
-    function selectCardColor(idx, el) {
-      document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
-      if (el) el.classList.add('active');
-      state.cardBg = DESIGN_COLORS[idx].bg;
-      const card = document.getElementById('pkgCard');
-      card.style.setProperty('--pkg-brand-color', DESIGN_COLORS[idx].card);
-      resetTextColorsToAuto();
-    }
-    function applyCustomCardColor(hex) {
-      document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
-      state.cardBg = hex;
-      document.getElementById('pkgCard').style.setProperty('--pkg-brand-color', hex);
-      resetTextColorsToAuto();
     }
     function resetTextColorsToAuto() {
       state.textColors = { name: 'auto', price: 'auto', other: 'auto' };

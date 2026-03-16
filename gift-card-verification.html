@@ -10,8 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="global.css">
-  <script src="global.js" defer></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <script src="global.js" defer></script>
   <style>
     body {
       background: #e9f1ff;
@@ -388,6 +393,2120 @@
       margin: 0 auto;
       line-height: 1.5;
     }
+
+    /* Card info preview (from crypto-card-details-owner) */
+    .details-card-modal {
+      padding: 20px;
+    }
+
+    .product-main-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 1.3fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .product-visual-column,
+    .product-info-column {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: var(--shadow-z1);
+      padding: 20px;
+    }
+
+    .product-visual-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .product-card-visual-large {
+      width: 100%;
+    }
+
+    .card-preview-flip {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1.6 / 1;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.12), 0 0 2px 0 rgba(0, 0, 0, 0.2);
+      background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+      cursor: pointer;
+    }
+
+    .card-preview-face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+    }
+
+    .card-preview-face.back {
+      opacity: 0;
+    }
+
+    .card-preview-flip.flipped .card-preview-face.front {
+      opacity: 0;
+    }
+
+    .card-preview-flip.flipped .card-preview-face.back {
+      opacity: 1;
+    }
+
+    .card-preview-flip img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-preview-label {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      color: #e5e7eb;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .details-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      gap: 12px;
+    }
+
+    .product-info-header h1 {
+      font-size: 18px;
+      margin: 0;
+      color: #161c24;
+    }
+
+    .price-tag {
+      text-align: right;
+    }
+
+    .price-tag .label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #919eab;
+      margin-bottom: 4px;
+    }
+
+    .price-tag .amount {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .grid-info {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 24px;
+      font-size: 13px;
+    }
+
+    .info-item .info-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #919eab;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .info-item .info-value {
+      color: #111827;
+      font-weight: 500;
+    }
+
+    @media (max-width: 767px) {
+      .product-main-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <style>
+    .details-card {
+      margin: 0 auto;
+    }
+
+    /* Two-column layout */
+    .product-main-layout {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .product-visual-column,
+    .product-info-column {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: var(--shadow-z1);
+      padding: 32px;
+    }
+
+    .product-visual-column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .product-card-visual-large {
+      width: 100%;
+    }
+
+    .card-preview-flip {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1.6 / 1;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.12), 0 0 2px 0 rgba(0, 0, 0, 0.2);
+      background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+      cursor: pointer;
+    }
+
+    .card-preview-face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+    }
+
+    .card-preview-face.back {
+      opacity: 0;
+    }
+
+    .card-preview-flip.flipped .card-preview-face.front {
+      opacity: 0;
+    }
+
+    .card-preview-flip.flipped .card-preview-face.back {
+      opacity: 1;
+    }
+
+    .card-preview-flip img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-preview-label {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      color: #e5e7eb;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .crypto-card-icon {
+      font-size: 80px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Back button (from membership-package-details) */
+    .btn-back {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--grey-600);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .btn-back:hover {
+      background: var(--grey-200);
+      color: var(--grey-900);
+    }
+
+    .btn-back i[data-lucide],
+    .btn-back svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .details-header {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed var(--grey-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .product-info-header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 4px;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .price-tag {
+      text-align: right;
+    }
+
+    .price-tag .amount {
+      display: block;
+      color: var(--primary-main);
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .price-tag .label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--grey-500);
+      text-transform: uppercase;
+    }
+
+    .grid-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 6px 0;
+    }
+
+    .info-label {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--grey-600);
+    }
+
+    .info-value {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--grey-900);
+      text-align: right;
+    }
+
+    .crypto-list-section {
+      margin-top: 32px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: var(--shadow-z1);
+      padding: 24px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--grey-800);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .crypto-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .crypto-table th {
+      background: var(--grey-100);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 600;
+      color: #637381;
+      text-transform: capitalize;
+      border-bottom: 1px solid var(--grey-300);
+    }
+
+    .crypto-table th.assets-col-balance,
+    .crypto-table th.assets-col-amount,
+    .crypto-table th.assets-col-price {
+      text-align: right;
+    }
+
+    .crypto-table td {
+      padding: 16px;
+      font-size: 14px;
+      color: var(--grey-800);
+      border-bottom: 1px solid var(--grey-200);
+    }
+
+    .crypto-table tbody tr:hover {
+      background: var(--grey-50);
+    }
+
+    .assets-table-wrap {
+      overflow-x: auto;
+    }
+
+    .assets-table th {
+      white-space: nowrap;
+    }
+
+    .asset-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .asset-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .asset-name {
+      font-weight: 600;
+      color: var(--grey-900);
+    }
+
+    .asset-balance-mobile {
+      font-weight: 700;
+      color: var(--grey-900);
+      font-size: 14px;
+      display: none;
+    }
+
+    .asset-amount-mobile {
+      font-size: 13px;
+      color: var(--grey-600);
+      display: none;
+    }
+
+    .asset-symbol {
+      font-size: 12px;
+      color: var(--grey-500);
+    }
+
+    .assets-cell-balance,
+    .assets-cell-amount,
+    .assets-cell-price {
+      text-align: right;
+      font-weight: 600;
+    }
+
+    .asset-price {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 900px) {
+      .assets-table thead {
+        display: table-header-group;
+      }
+
+      .assets-table th.assets-col-balance,
+      .assets-table th.assets-col-amount {
+        display: none;
+      }
+
+      .assets-table td.assets-cell-balance,
+      .assets-table td.assets-cell-amount {
+        display: none;
+      }
+
+      .asset-balance-mobile,
+      .asset-amount-mobile {
+        display: block;
+      }
+
+      .assets-table td.assets-cell-asset,
+      .assets-table td.assets-cell-price {
+        display: table-cell;
+      }
+
+      .assets-table td.assets-cell-price {
+        text-align: right;
+        vertical-align: middle;
+      }
+    }
+
+    .crypto-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--grey-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .crypto-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .term-section {
+      margin-top: 32px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: var(--shadow-z1);
+      padding: 24px;
+    }
+
+    .term-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--grey-800);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .term-content {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--grey-600);
+    }
+
+    /* Collapse chevron: always visible, down = open, up = collapsed */
+    .section-chevron,
+    .term-chevron {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    /* Expanded (default): chevron down. Collapsed: chevron up */
+    .crypto-list-section.collapsed .section-chevron,
+    .term-section.collapsed .term-chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Collapse content: works on all viewports */
+    .crypto-list-section .section-title,
+    .term-section .term-title {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .crypto-list-section .assets-table-wrap {
+      overflow: hidden;
+      transition: max-height 0.25s ease-out;
+      max-height: 800px;
+    }
+
+    .crypto-list-section.collapsed .assets-table-wrap {
+      max-height: 0 !important;
+      overflow: hidden;
+    }
+
+    .term-section .term-content {
+      overflow: hidden;
+      transition: max-height 0.25s ease-out;
+      max-height: 600px;
+    }
+
+    .term-section.collapsed .term-content {
+      max-height: 0 !important;
+      overflow: hidden;
+    }
+
+    @media (max-width: 767px) {
+      .crypto-list-section {
+        margin-top: 20px;
+        padding: 12px 16px;
+        border-radius: 12px;
+      }
+
+      .crypto-list-section .section-title {
+        font-size: 14px;
+        margin-bottom: 0;
+        cursor: pointer;
+        padding: 4px 0;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .crypto-list-section .assets-table-wrap {
+        overflow: hidden;
+        transition: max-height 0.25s ease-out;
+        max-height: 800px;
+      }
+
+      .crypto-list-section.collapsed .assets-table-wrap {
+        max-height: 0 !important;
+        overflow: hidden;
+      }
+
+      .crypto-list-section .crypto-table th,
+      .crypto-list-section .crypto-table td {
+        padding: 10px 12px;
+        font-size: 12px;
+      }
+
+      .crypto-list-section .asset-main {
+        gap: 8px;
+      }
+
+      .crypto-list-section .crypto-icon {
+        width: 28px;
+        height: 28px;
+      }
+
+      .crypto-list-section .asset-name {
+        font-size: 13px;
+      }
+
+      .term-section {
+        margin-top: 20px;
+        padding: 12px 16px;
+        border-radius: 12px;
+      }
+
+      .term-section .term-title {
+        font-size: 14px;
+        margin-bottom: 0;
+        cursor: pointer;
+        padding: 4px 0;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .term-section .term-content {
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 0;
+        overflow: hidden;
+        transition: max-height 0.25s ease-out;
+        max-height: 600px;
+      }
+
+      .term-section.collapsed .term-content {
+        max-height: 0 !important;
+        overflow: hidden;
+        opacity: 0;
+      }
+    }
+
+    .switch-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      background: transparent;
+      border-radius: 0;
+      padding-bottom: 0;
+    }
+
+    .switch-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--grey-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 20px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(145, 158, 171, 0.48);
+      transition: 0.4s;
+      border-radius: 20px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    input:checked+.slider {
+      background-color: #00A76F;
+    }
+
+    input:checked+.slider:before {
+      transform: translateX(20px);
+    }
+
+    .btn-action {
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      transition: 0.2s;
+    }
+
+    .btn-outlined-primary {
+      border: 1.5px solid var(--primary-main);
+      background: #fff;
+      color: var(--primary-main);
+    }
+
+    .btn-outlined-primary:hover {
+      border-color: var(--primary-dark);
+      color: #fff;
+      background: var(--primary-main);
+    }
+
+    .btn-warning,
+    .btn-edit,
+    #btnSendSMS,
+    #btnSendEmail,
+    .am-button--print {
+      display: none !important;
+    }
+
+    .am-button.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+
+    .am-button.disabled:hover {
+      transform: none;
+    }
+
+    .am-button.disabled:hover .am-button-icon {
+      transform: none;
+    }
+
+    .am-button--qrcode .am-button-icon {
+      box-shadow: 0px 4px 6px 0px #fae8ff, 0px 2px 4px 0px #fae8ff;
+      background-image: linear-gradient(135deg, #fae8ff 0%, #fdf2f8 100%);
+    }
+
+    /* QR Code Modal (from issue-digital-membership-details) */
+    .qr-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(33, 43, 54, 0.8);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qr-modal-overlay.active {
+      display: flex;
+    }
+
+    /* Modal styles copied from crypto-payment.html */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(22, 28, 36, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-content {
+      background: #fff;
+      width: 100%;
+      max-width: 480px;
+      border-radius: 24px;
+      padding: 0;
+      position: relative;
+      box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--grey-900);
+    }
+
+    .modal-body {
+      padding: 0 24px 32px;
+    }
+
+    .close-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      color: var(--grey-500);
+      transition: 0.2s;
+    }
+
+    .close-btn:hover {
+      background: var(--grey-100);
+      color: var(--grey-900);
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey-600);
+      margin-bottom: 8px;
+    }
+
+    .icon-select {
+      position: relative;
+      user-select: none;
+    }
+
+    .icon-select-trigger {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      height: 48px;
+      padding: 0 14px;
+      border: 1px solid var(--grey-300);
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .coin-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-size: 0;
+      /* hide text, use image instead */
+      background-color: #f4f6f8;
+    }
+
+    .coin-icon::before {
+      content: "";
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      display: block;
+    }
+
+    .coin-btc::before {
+      background-image: url("https://s2.coinmarketcap.com/static/img/coins/64x64/1.png");
+    }
+
+    .coin-eth::before {
+      background-image: url("https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png");
+    }
+
+    .coin-usdt::before {
+      background-image: url("https://s2.coinmarketcap.com/static/img/coins/64x64/825.png");
+    }
+
+    .coin-vrc::before {
+      background-image: url("vrc20.png");
+    }
+
+    .icon-select-text {
+      flex: 1;
+      color: var(--grey-900);
+    }
+
+    .icon-select-chevron {
+      width: 16px;
+      height: 16px;
+      color: var(--grey-500);
+    }
+
+    .icon-select-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-radius: 12px;
+      margin-top: 4px;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
+      z-index: 10;
+      padding: 6px 0;
+      display: none;
+    }
+
+    .icon-select.open .icon-select-dropdown {
+      display: block;
+    }
+
+    .icon-select-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      font-size: 14px;
+      color: var(--grey-800);
+      cursor: pointer;
+    }
+
+    .icon-select-option:hover {
+      background: #F4F6F8;
+    }
+
+    .icon-select-option.selected {
+      background: #E8F5E9;
+      color: #007867;
+    }
+
+    /* QR / Result (copied from crypto-payment.html) */
+    .result-container {
+      background: #f0fdf7;
+      border: 1px solid rgba(0, 167, 111, 0.14);
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 8px;
+      box-shadow: 0 4px 20px -4px rgba(0, 167, 111, 0.12), 0 1px 4px rgba(0, 0, 0, .06);
+    }
+
+    .note-box {
+      font-size: 11px;
+      color: var(--grey-500);
+      text-align: left;
+      line-height: 1.6;
+    }
+
+    .note-box b {
+      color: var(--grey-700);
+    }
+
+    .copy-btn {
+      color: var(--primary-main);
+      cursor: pointer;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0, 167, 111, 0.08);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* Change PIN modal */
+    .change-pin-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .change-pin-input {
+      width: 100%;
+      height: 44px;
+      padding: 0 12px;
+      border-radius: 10px;
+      border: 1px solid var(--grey-300);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: 0.2s;
+      box-sizing: border-box;
+    }
+
+    .change-pin-input:focus {
+      border-color: var(--primary-main);
+      box-shadow: 0 0 0 2px rgba(0, 167, 111, 0.08);
+    }
+
+    .pin-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .pin-input-wrapper .change-pin-input {
+      padding-right: 40px;
+    }
+
+    .change-pin-footer {
+      margin-top: 12px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-secondary {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--grey-300);
+      background: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      min-width: 110px;
+      text-align: center;
+    }
+
+    .btn-primary-rounded {
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: 1px solid var(--primary-main);
+      background: var(--primary-main);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      min-width: 130px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 167, 111, 0.24);
+    }
+
+    .pin-eye-btn {
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+      color: var(--grey-600);
+      display: inline-flex;
+      align-items: center;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .qr-modal-content {
+      background: #fff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: var(--shadow-z24, 0 24px 48px rgba(0, 0, 0, 0.16));
+      animation: qrModalSlideIn 0.3s ease-out;
+      text-align: center;
+    }
+
+    @keyframes qrModalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .qr-modal-header {
+      padding: 24px 24px 0;
+    }
+
+    .qr-modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 4px;
+    }
+
+    .qr-modal-subtitle {
+      font-size: 13px;
+      color: var(--grey-600);
+    }
+
+    .qr-modal-body {
+      padding: 24px;
+    }
+
+    .qr-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      color: var(--grey-600);
+    }
+
+    .qr-modal-footer {
+      padding: 0 24px 24px;
+    }
+
+    .qr-modal-placeholder {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 16px;
+      background: #fff;
+      border: 2px solid var(--grey-200);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .modal-btn-cancel {
+      border: 1px solid #dfe3e8;
+      background: #fff;
+      color: #212b36;
+    }
+
+    .modal-btn-cancel:hover {
+      background: var(--grey-100);
+    }
+
+    .tabs-container {
+      margin-top: 24px;
+      max-width: 100%;
+      width: 1200px;
+    }
+
+    /* Tabs (from product-list platform-tabs) */
+    .tabs-header {
+      display: flex;
+      gap: 40px;
+      border-bottom: 1px solid #f4f6f8;
+      background: #fff;
+      padding: 0 24px;
+      margin-bottom: 24px;
+    }
+
+    .tab-item {
+      padding: 16px 0;
+      font-size: 14px;
+      font-weight: 500;
+      color: #637381;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.15s;
+      white-space: nowrap;
+      border: none;
+      background: none;
+      font-family: inherit;
+    }
+
+    .tab-item:hover {
+      color: #212b36;
+    }
+
+    .tab-item.active {
+      color: #161c24;
+      font-weight: 700;
+    }
+
+    .tab-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #161c24;
+    }
+
+    @media (max-width: 767px) {
+      .tabs-header {
+        gap: 24px;
+        padding: 0 16px;
+      }
+
+      .tab-item {
+        font-size: 12px;
+      }
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Filter bar (Redeem History – from product-list) */
+    .filter-bar {
+      display: flex;
+      gap: 16px;
+      padding: 20px 24px;
+      border-bottom: 1px dashed rgba(145, 158, 171, 0.24);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .filter-bar .search-field {
+      width: 280px;
+    }
+
+    .filter-bar .date-field {
+      width: 180px;
+    }
+
+    /* Redeem search: no label, icon left */
+    .redeem-search-wrap .field-container {
+      position: relative;
+    }
+
+    .redeem-search-wrap .field-icon-left {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--grey-500);
+      pointer-events: none;
+    }
+
+    .redeem-search-wrap .field-input {
+      padding-left: 40px;
+    }
+
+    /* Redeem History: mobile filter button (hidden on desktop) */
+    .redeem-btn-filter {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      height: 40px;
+      padding: 0 14px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      color: #212b36;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .redeem-btn-filter iconify-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Redeem History: filter modal (mobile, ref cancelled-cards) */
+    .redeem-filter-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .redeem-filter-overlay.open {
+      display: flex;
+    }
+
+    .redeem-filter-modal {
+      background: #fff;
+      width: 100%;
+      max-width: 400px;
+      border-radius: 16px;
+      max-height: 85vh;
+      overflow-y: auto;
+      animation: redeemModalFadeIn 0.25s ease-out;
+    }
+
+    @keyframes redeemModalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .redeem-filter-modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      border-bottom: 1px solid #f4f6f8;
+    }
+
+    .redeem-filter-modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #161c24;
+    }
+
+    .redeem-filter-close {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #637381;
+    }
+
+    .redeem-filter-modal-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .redeem-filter-modal-body .date-field {
+      width: 100%;
+    }
+
+    .redeem-filter-modal-foot {
+      display: flex;
+      gap: 8px;
+      padding: 16px;
+      border-top: 1px solid #f4f6f8;
+    }
+
+    .redeem-btn-reset {
+      flex: 1;
+      height: 40px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      color: #212b36;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .redeem-btn-apply {
+      flex: 1;
+      height: 40px;
+      border: none;
+      border-radius: 8px;
+      background: var(--primary-main);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* Product History Styles */
+    .table-toolbar {
+      display: flex;
+      gap: 16px;
+      padding: 20px 24px;
+      background: #fff;
+      border-bottom: 1px solid var(--grey-200);
+    }
+
+    /* Product History: search icon left (same as redeem) */
+    #product-history .product-history-search-wrap .field-container {
+      position: relative;
+    }
+
+    #product-history .product-history-search-wrap .field-icon-left {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--grey-500);
+      pointer-events: none;
+    }
+
+    #product-history .product-history-search-wrap .field-input {
+      padding-left: 40px;
+    }
+
+    /* Product History: mobile filter button (hidden on desktop) */
+    #product-history .product-history-btn-filter {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      height: 40px;
+      padding: 0 14px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      color: #212b36;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    #product-history .product-history-btn-filter iconify-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Product History: mobile cards (same pattern as redeem) */
+    #product-history .product-history-mobile-cards {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    #product-history .product-history-card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #f4f6f8;
+      box-shadow: 0 1px 4px rgba(145, 158, 171, 0.12);
+      padding: 16px;
+    }
+
+    #product-history .product-history-card .product-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    #product-history .product-history-card .product-card-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #212b36;
+    }
+
+    #product-history .product-history-card .product-card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    #product-history .product-history-card .info-field {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+    }
+
+    #product-history .product-history-card .info-field-label {
+      font-size: 11px;
+      color: #919eab;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    #product-history .product-history-card .info-field-value {
+      font-size: 13px;
+      color: #212b36;
+      text-align: right;
+    }
+
+    .field-root {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field-label {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--grey-600);
+    }
+
+    .field-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 10px 40px 10px 12px;
+      border: 1px solid var(--grey-300);
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .field-input:focus {
+      border-color: var(--primary-main);
+    }
+
+    .field-select {
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .field-chevron {
+      position: absolute;
+      right: 12px;
+      pointer-events: none;
+      color: var(--grey-500);
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .table-container table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1000px;
+    }
+
+    .table-container th {
+      background: var(--grey-100);
+      padding: 16px 24px;
+      text-align: left;
+      font-size: 14px;
+      color: var(--grey-600);
+      font-weight: 600;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+
+    .table-container td {
+      padding: 16px 24px;
+      border-top: 1px dashed var(--grey-300);
+      font-size: 14px;
+      color: var(--grey-800);
+      white-space: nowrap;
+    }
+
+    .user-reference {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .user-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--grey-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--grey-600);
+    }
+
+    /* Pagination (from benefits-setup) */
+    .pagination {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 20px;
+      border-top: 1px dashed rgba(145, 158, 171, 0.24);
+      flex-wrap: wrap;
+      background: #fff;
+    }
+
+    .pag-rows {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #637381;
+    }
+
+    .pag-select {
+      height: 32px;
+      border: 1px solid #dfe3e8;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #212b36;
+      padding: 0 24px 0 8px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center;
+    }
+
+    .pag-info {
+      margin-left: auto;
+      font-size: 13px;
+      color: #637381;
+    }
+
+    .pag-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #dfe3e8;
+      border-radius: 6px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #637381;
+      transition: 0.2s;
+    }
+
+    .pag-btn:hover:not(:disabled) {
+      border-color: #212b36;
+      color: #212b36;
+    }
+
+    .pag-btn:disabled {
+      cursor: not-allowed;
+      color: #c4cdd5;
+      border-color: #f4f6f8;
+    }
+
+    .pag-btn iconify-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Redeem History: mobile cards (from product-list) */
+    #redeem-history .redeem-mobile-cards {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    #redeem-history .redeem-product-card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #f4f6f8;
+      box-shadow: 0 1px 4px rgba(145, 158, 171, 0.12);
+      padding: 16px;
+    }
+
+    #redeem-history .product-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2px;
+    }
+
+    #redeem-history .product-card-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #212b36;
+    }
+
+    #redeem-history .product-card-amount {
+      font-size: 15px;
+      font-weight: 700;
+      color: #007b55;
+      white-space: nowrap;
+      margin-left: 8px;
+    }
+
+    #redeem-history .product-card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    #redeem-history .info-field {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+    }
+
+    #redeem-history .info-field-label {
+      font-size: 11px;
+      color: #919eab;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    #redeem-history .info-field-value {
+      font-size: 13px;
+      color: #212b36;
+      text-align: right;
+    }
+
+    /* Reload Modal */
+    .reload-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(22, 28, 36, 0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1200;
+    }
+
+    .reload-modal {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: var(--shadow-z24, 0 24px 48px rgba(0, 0, 0, 0.16));
+      width: 420px;
+      max-width: 90vw;
+      padding: 24px 24px 20px;
+    }
+
+    .reload-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .reload-modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--grey-900);
+    }
+
+    .reload-modal-close {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 50%;
+    }
+
+    .reload-modal-body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .reload-field-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey-700);
+      margin-bottom: 4px;
+    }
+
+    .reload-field-input,
+    .reload-field-select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--grey-300);
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s;
+      font-family: inherit;
+    }
+
+    .reload-field-input:focus,
+    .reload-field-select:focus {
+      border-color: var(--primary-main);
+    }
+
+    .reload-select-with-icon {
+      position: relative;
+    }
+
+    .reload-select-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    .reload-select-with-icon.has-icon .reload-field-select {
+      padding-left: 40px;
+    }
+
+    .reload-amount-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .reload-amount-input {
+      flex: 1;
+    }
+
+    .reload-amount-unit {
+      width: 120px;
+    }
+
+    .reload-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .btn-text {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--grey-600);
+      cursor: pointer;
+    }
+
+    .reload-summary {
+      margin-top: 4px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--grey-200);
+      background: var(--grey-50);
+    }
+
+    .reload-summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 13px;
+      padding: 4px 0;
+    }
+
+    .reload-summary-label {
+      color: var(--grey-500);
+      font-weight: 500;
+    }
+
+    .reload-summary-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey-900);
+    }
+
+    /* Rate value should use normal font weight */
+    #reloadRate {
+      font-weight: 400;
+    }
+
+    .reload-summary-value-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+    }
+
+    .reload-summary-subvalue {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--grey-500);
+    }
+
+    /* ─── Responsive: iPad (max-width: 1023px) ─── */
+    @media (max-width: 1023px) {
+      .page-title {
+        font-size: 20px !important;
+      }
+
+      .product-main-layout {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+      }
+
+      .product-visual-column,
+      .product-info-column {
+        padding: 24px !important;
+      }
+
+      .details-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+
+
+      .table-wrap,
+      .table-responsive,
+      .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    @media (max-width: 767px) {
+      #redeem-history .table-container {
+        display: none;
+      }
+
+      #redeem-history .redeem-mobile-cards {
+        display: flex;
+      }
+
+      #redeem-history .filter-bar {
+        padding: 10px 16px;
+        gap: 8px;
+        flex-wrap: nowrap;
+      }
+
+      #redeem-history .filter-bar .search-field {
+        flex: 1;
+        min-width: 0;
+      }
+
+      #redeem-history .filter-bar .date-field {
+        display: none;
+      }
+
+      .redeem-btn-filter {
+        display: flex;
+      }
+    }
+
+    /* ─── Responsive: Mobile (max-width: 767px) ─── */
+    @media (max-width: 767px) {
+      .page-title {
+        font-size: 18px !important;
+      }
+
+      .product-main-layout {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+      }
+
+      .product-visual-column,
+      .product-info-column {
+        padding: 14px !important;
+        border-radius: 14px !important;
+      }
+
+      .details-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .product-info-header h1 {
+        font-size: 16px !important;
+      }
+
+      .price-tag .amount {
+        font-size: 20px;
+      }
+
+      .grid-info {
+        gap: 12px !important;
+      }
+
+      .info-item {
+        padding: 0px 0 !important;
+      }
+
+      .info-label {
+        font-size: 12px;
+      }
+
+      .info-value {
+        font-size: 12px;
+      }
+
+      .table-toolbar {
+        padding: 12px 16px !important;
+        gap: 8px !important;
+      }
+
+
+
+      #product-history .table-toolbar .field-root {
+        margin-bottom: 0;
+        align-items: center;
+      }
+
+      #product-history .table-toolbar {
+        flex-wrap: nowrap;
+      }
+
+      #product-history .table-toolbar .product-history-search-wrap {}
+
+      #product-history .table-toolbar .product-history-search-wrap .field-container {
+        height: 40px;
+      }
+
+      #product-history .table-toolbar .product-history-search-wrap .field-input {
+        height: 40px;
+        box-sizing: border-box;
+      }
+
+      #product-history .table-toolbar .product-history-action-field {
+        width: 130px;
+        min-width: 130px;
+        flex-shrink: 0;
+      }
+
+      #product-history .table-toolbar .product-history-action-field .field-label {
+        display: none;
+      }
+
+      #product-history .table-toolbar .product-history-action-field .field-container {
+        height: 40px;
+      }
+
+      #product-history .table-toolbar .product-history-action-field .field-input {
+        height: 40px;
+        box-sizing: border-box;
+      }
+
+      #product-history .product-history-btn-filter {
+        display: none;
+      }
+
+      #product-history .table-container {
+        display: none;
+      }
+
+      #product-history .product-history-mobile-cards {
+        display: flex;
+      }
+
+      .table-wrap,
+      .table-responsive,
+      .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .pag-bar,
+      .pagination-bar {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px !important;
+      }
+
+      .pagination {
+        padding: 12px 16px;
+      }
+
+      .pag-rows span {
+        display: none;
+      }
+    }
+
+    /* SweetAlert2 OTP input responsive */
+    .swal2-popup .swal2-input {
+      max-width: 260px;
+      box-sizing: border-box;
+      font-size: 16px;
+      text-align: center;
+      letter-spacing: 4px;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 480px) {
+      .swal2-popup {
+        width: min(90vw, 360px) !important;
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .swal2-popup .swal2-input {
+        max-width: 100%;
+      }
+    }
   </style>
 </head>
 
@@ -445,7 +2564,774 @@
           </div>
         </div>
 
-        <button class="btn-primary" type="button">View card</button>
+        <button class="btn-primary" type="button" onclick="openCardInfoModal()">View card</button>
+      </div>
+      <div id="cardinfo" style="display: none;">
+        <div class="tabs-container">
+          <div class="tabs-header">
+            <div class="tab-item active" onclick="switchTab('card-info')">Card Info</div>
+            <div class="tab-item" onclick="switchTab('redeem-history')">Redeem History</div>
+            <div class="tab-item" onclick="switchTab('product-history')">Product History</div>
+          </div>
+
+          <!-- Tab: Card Info -->
+          <div id="card-info" class="tab-content active">
+            <div class="details-card">
+              <div class="action-buttons">
+                <div class="am-menu" style="width: 100%;">
+                  <div class="am-button am-button--download">
+                    <div class="am-button-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path
+                          d="M15.7792 11.621L15.2209 8.581C14.9792 7.26766 14.8584 6.611 14.3809 6.22266C13.9034 5.83433 13.2167 5.8335 11.8442 5.8335H8.15591C6.78341 5.8335 6.09758 5.8335 5.61925 6.22266C5.14175 6.611 5.02091 7.26766 4.77925 8.581L4.22091 11.621C3.72091 14.3468 3.47008 15.7102 4.24091 16.6043C5.01175 17.5002 6.43675 17.5002 9.28508 17.5002H10.7151C13.5634 17.5002 14.9884 17.5002 15.7592 16.6052C16.5301 15.7102 16.2801 14.3468 15.7792 11.6218V11.621Z"
+                          stroke="#009689" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M9.99984 8.75V14.1667M7.9165 12.5L9.99984 14.5833L12.0832 12.5" stroke="#009689"
+                          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path
+                          d="M17.4998 9.16667C17.6286 9.10243 17.7453 9.01645 17.8448 8.9125C18.3332 8.4075 18.3332 7.59167 18.3332 5.96C18.3332 4.32833 18.3332 3.51333 17.8448 3.00667C17.3565 2.5 16.5715 2.5 14.9998 2.5H4.99984C3.42817 2.5 2.64317 2.5 2.15484 3.00667C1.6665 3.51333 1.6665 4.32917 1.6665 5.96C1.6665 7.59083 1.6665 8.40667 2.15484 8.9125C2.25484 9.01694 2.36984 9.10167 2.49984 9.16667"
+                          stroke="#009689" stroke-width="1.5" stroke-linecap="round" />
+                      </svg>
+                    </div>
+                    <div class="am-button-label">Withdraw</div>
+                  </div>
+                  <div class="am-button am-button--qrcode" onclick="openQrModal()">
+                    <div class="am-button-icon">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" preserveAspectRatio="none">
+                        <g id="Icon">
+                          <path
+                            d="M5.83333 2.5H3.33333C2.8731 2.5 2.5 2.8731 2.5 3.33333V5.83333C2.5 6.29357 2.8731 6.66667 3.33333 6.66667H5.83333C6.29357 6.66667 6.66667 6.29357 6.66667 5.83333V3.33333C6.66667 2.8731 6.29357 2.5 5.83333 2.5Z"
+                            stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                          <path
+                            d="M16.6667 2.5H14.1667C13.7064 2.5 13.3333 2.8731 13.3333 3.33333V5.83333C13.3333 6.29357 13.7064 6.66667 14.1667 6.66667H16.6667C17.1269 6.66667 17.5 6.29357 17.5 5.83333V3.33333C17.5 2.8731 17.1269 2.5 16.6667 2.5Z"
+                            stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                          <path
+                            d="M5.83333 13.3333H3.33333C2.8731 13.3333 2.5 13.7064 2.5 14.1667V16.6667C2.5 17.1269 2.8731 17.5 3.33333 17.5H5.83333C6.29357 17.5 6.66667 17.1269 6.66667 16.6667V14.1667C6.66667 13.7064 6.29357 13.3333 5.83333 13.3333Z"
+                            stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                          <path
+                            d="M17.5 13.3333H15C14.558 13.3333 14.134 13.5089 13.8215 13.8215C13.5089 14.134 13.3333 14.558 13.3333 15V17.5"
+                            stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                          <path d="M17.5 17.5V17.5083" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.5" />
+                          <path
+                            d="M10 5.83333V8.33333C10 8.77536 9.82441 9.19928 9.51184 9.51184C9.19928 9.82441 8.77536 10 8.33333 10H5.83333"
+                            stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                          <path d="M2.5 10H2.50833" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.5" />
+                          <path d="M10 2.5H10.0083" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.5" />
+                          <path d="M10 13.3333V13.3417" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.5" />
+                          <path d="M13.3333 10H14.1667" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.5" />
+                          <path d="M17.5 10V10.0083" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.5" />
+                          <path d="M10 17.5V16.6667" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.5" />
+                        </g>
+                      </svg>
+                    </div>
+                    <div class="am-button-label">View QR</div>
+                  </div>
+                  <div class="am-button am-button--reload" id="btnReload" onclick="openModal('modal-show-wallet')">
+                    <div class="am-button-icon">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" preserveAspectRatio="none">
+                        <g id="Icon">
+                          <path
+                            d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5"
+                            stroke="#155DFC" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                          <path d="M5.83333 8.33333L10 12.5L14.1667 8.33333" stroke="#155DFC" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="1.5" />
+                          <path d="M10 12.5V2.5" stroke="#155DFC" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.5" />
+                        </g>
+                      </svg>
+                    </div>
+                    <div class="am-button-label">Receive</div>
+                  </div>
+                  <!-- <div class="am-button am-button--edit" id="btnEdit">
+                                        <div class="am-button-icon">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                preserveAspectRatio="none">
+                                                <g clip-path="url(#clip0_am_edit)" id="Icon">
+                                                    <path
+                                                        d="M17.645 5.67667C18.0856 5.23619 18.3332 4.63872 18.3332 4.01571C18.3333 3.3927 18.0859 2.79517 17.6454 2.35458C17.2049 1.91399 16.6075 1.66643 15.9845 1.66635C15.3614 1.66627 14.7639 1.91369 14.3233 2.35417L3.20167 13.4783C3.00818 13.6713 2.86509 13.9088 2.785 14.17L1.68417 17.7967C1.66263 17.8687 1.661 17.9453 1.67946 18.0182C1.69792 18.0911 1.73577 18.1577 1.789 18.2108C1.84223 18.264 1.90885 18.3017 1.9818 18.3201C2.05475 18.3384 2.1313 18.3367 2.20333 18.315L5.83083 17.215C6.09181 17.1356 6.32931 16.9934 6.5225 16.8008L17.645 5.67667Z"
+                                                        stroke="#4F39F6" stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="1.5" />
+                                                    <path d="M12.5 4.16667L15.8333 7.5" stroke="#4F39F6" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="1.5" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_am_edit">
+                                                        <rect fill="white" width="20" height="20" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </div>
+                                        <div class="am-button-label">Edit</div>
+                                    </div> -->
+                </div>
+              </div>
+
+              <div class="product-main-layout">
+                <!-- Left Column: Visual & Actions -->
+                <div class="product-visual-column">
+                  <div class="product-card-visual-large">
+                    <div class="card-preview-flip" id="cryptoPreviewFlip" onclick="toggleCryptoPreviewFlip()">
+                      <div class="card-preview-face front">
+                        <img src="cryptocard-front.png" alt="Crypto Card Front">
+                      </div>
+                      <div class="card-preview-face back">
+                        <img src="cryptocard-back.png" alt="Crypto Card Back">
+                      </div>
+                      <div class="card-preview-label">
+                        <iconify-icon icon="solar:refresh-bold" width="14"></iconify-icon>
+                        Tap to flip
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="switch-wrapper">
+                    <span class="switch-label">
+                      Card Locked
+                      <span id="card-locked-badge" class="status-badge status-active"
+                        style="text-transform: capitalize;">Unlocked</span>
+                    </span>
+                    <label class="switch">
+                      <input type="checkbox"
+                        onchange="updateToggleStatus(this, 'card-locked-badge', 'Locked', 'Unlocked')">
+                      <span class="slider"></span>
+                    </label>
+
+                  </div>
+                </div>
+
+
+                <!-- Right Column: Information -->
+                <div class="product-info-column">
+                  <div class="details-header">
+                    <div class="product-info-header">
+                      <h1>Crypto card</h1>
+                      <!-- <span id="cryptoStatusBadge" class="status-badge status-completed"
+                                                style="margin-top: 4px; text-transform: capitalize;">Unlocked</span> -->
+                    </div>
+                    <div class="price-tag">
+                      <span class="label" style="letter-spacing: 0.08em;">BALANCE</span>
+                      <span class="amount">$200</span>
+                    </div>
+                  </div>
+
+                  <div class="grid-info">
+                    <div class="info-item">
+                      <span class="info-label">Card Number</span>
+                      <span class="info-value" style="font-family: monospace;">
+                        <span id="ownerCardNumberMasked">1234 **** **** 1234</span>
+                        <span id="ownerCardNumberFull" style="display:none;">1234 5678 9012
+                          3456</span>
+                        <button type="button" id="toggleOwnerCardNumber"
+                          style="border:none;background:none;padding:0;margin-left:6px;cursor:pointer;vertical-align:middle;">
+                          <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+                        </button>
+                      </span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">PIN
+                        <button type="button" onclick="document.getElementById('modal-change-pin').style.display='flex'"
+                          style="border:none;background:none;padding:0;margin-left:4px;cursor:pointer;color:var(--primary-main);font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
+                          <iconify-icon icon="solar:key-bold" width="14"></iconify-icon>
+                          <span>Change PIN</span>
+                        </button>
+                      </span>
+
+                      <span class="info-value">
+                        <span id="ownerPinMasked">****</span>
+                        <span id="ownerPinFull" style="display:none;">1234</span>
+                        <button type="button" id="toggleOwnerPin"
+                          style="border:none;background:none;padding:0;margin-left:6px;cursor:pointer;vertical-align:middle;">
+                          <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+                        </button>
+                      </span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Card Holder Name</span>
+                      <span class="info-value">CARLOTA MONTEIRO</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Phone Number</span>
+                      <span class="info-value">+1 (408) 555-1234</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Email</span>
+                      <span class="info-value">carlota.monteiro@vlinkpay.com</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Issued Date</span>
+                      <span class="info-value">Jun 15, 2024</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Received Via</span>
+                      <span class="info-value">SMS</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Phone Number</span>
+                      <span class="info-value">+1 (408) 555-1234</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Assets Section -->
+              <div class="crypto-list-section" id="sectionCryptoList">
+                <div class="section-title" onclick="toggleSection('sectionCryptoList')" role="button" tabindex="0"
+                  aria-expanded="true" aria-controls="cryptoListBody">
+                  <span
+                    style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:999px;margin-right:4px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 5.25C12.4142 5.25 12.75 5.58579 12.75 6V6.31673C14.3804 6.60867 15.75 7.83361 15.75 9.5C15.75 9.91421 15.4142 10.25 15 10.25C14.5858 10.25 14.25 9.91421 14.25 9.5C14.25 8.65573 13.3765 7.75 12 7.75C10.6235 7.75 9.75 8.65573 9.75 9.5C9.75 10.3443 10.6235 11.25 12 11.25C13.9372 11.25 15.75 12.5828 15.75 14.5C15.75 16.1664 14.3804 17.3913 12.75 17.6833V18C12.75 18.4142 12.4142 18.75 12 18.75C11.5858 18.75 11.25 18.4142 11.25 18V17.6833C9.61957 17.3913 8.25 16.1664 8.25 14.5C8.25 14.0858 8.58579 13.75 9 13.75C9.41421 13.75 9.75 14.0858 9.75 14.5C9.75 15.3443 10.6235 16.25 12 16.25C13.3765 16.25 14.25 15.3443 14.25 14.5C14.25 13.6557 13.3765 12.75 12 12.75C10.0628 12.75 8.25 11.4172 8.25 9.5C8.25 7.83361 9.61957 6.60867 11.25 6.31673V6C11.25 5.58579 11.5858 5.25 12 5.25Z"
+                        fill="#666666" />
+                    </svg>
+                  </span>
+                  Assets
+                  <svg class="section-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+
+                <div class="assets-table-wrap">
+                  <table class="crypto-table assets-table">
+                    <thead>
+                      <tr>
+                        <th class="assets-col-asset">Assets</th>
+                        <th class="assets-col-balance">Balance</th>
+                        <th class="assets-col-amount">Amount</th>
+                        <th class="assets-col-price">Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="assets-cell-asset">
+                          <div class="asset-main">
+                            <div class="crypto-icon"><img
+                                src="https://s2.coinmarketcap.com/static/img/coins/64x64/1.png" alt="BTC"></div>
+                            <div class="asset-text">
+                              <div class="asset-name">Bitcoin</div>
+                              <div class="asset-balance-mobile">0.0003593 BTC</div>
+                              <div class="asset-amount-mobile">$25</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="assets-cell-balance">
+                          <div class="asset-balance">0.0003593</div>
+                        </td>
+                        <td class="assets-cell-amount">
+                          <div class="asset-amount">$25</div>
+                        </td>
+                        <td class="assets-cell-price">
+                          <div class="asset-price">$69,583.615</div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="assets-cell-asset">
+                          <div class="asset-main">
+                            <div class="crypto-icon"><img
+                                src="https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png" alt="ETH"></div>
+                            <div class="asset-text">
+                              <div class="asset-name">Ethereum</div>
+                              <div class="asset-balance-mobile">0.01214 ETH</div>
+                              <div class="asset-amount-mobile">$25</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="assets-cell-balance">
+                          <div class="asset-balance">0.01214</div>
+                        </td>
+                        <td class="assets-cell-amount">
+                          <div class="asset-amount">$25</div>
+                        </td>
+                        <td class="assets-cell-price">
+                          <div class="asset-price">$2,059.61</div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Terms & Conditions Section -->
+              <div class="term-section collapsed" id="sectionTerm">
+                <div class="term-title" onclick="toggleSection('sectionTerm')" role="button" tabindex="0"
+                  aria-expanded="false" aria-controls="termContent">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="color: var(--grey-600); flex-shrink: 0;">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
+                  </svg>
+                  Terms & Conditions
+                  <svg class="term-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+                <div class="term-content" id="termContent">
+                  1. This Crypto Card can be used for cryptocurrency transactions and payments.<br>
+                  2. Transfer fees apply based on the amount and network conditions.<br>
+                  3. Platform fees may be waived for membership accounts.<br>
+                  4. All transactions are subject to blockchain confirmation.<br>
+                  5. Please keep your PIN secure and do not share it with anyone.<br>
+                  6. The card can be locked/unlocked at any time through your account settings.
+                </div>
+              </div>
+              <!-- How to Use Section -->
+              <div class="term-section collapsed" id="sectionHowToUse">
+                <div class="term-title" onclick="toggleSection('sectionHowToUse')" role="button" tabindex="0"
+                  aria-expanded="false" aria-controls="howToUseContent">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="color: var(--grey-600); flex-shrink: 0;">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M10 10.5a2 2 0 0 1 4 0c0 2-2 2-2 4" />
+                    <line x1="12" y1="17" x2="12" y2="17" />
+                  </svg>
+                  How to Use
+                  <svg class="term-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+                <div class="term-content" id="howToUseContent">
+                  1. Present this Crypto Card at participating merchants or online checkout pages that support
+                  VLINKPAY Crypto Cards.<br>
+                  2. Merchant scans your card QR or enters the full card number and PIN to verify balance.<br>
+                  3. Confirm the payment amount before authorizing the transaction.<br>
+                  4. Remaining balance (if any) will stay on the card for future use until expiry.<br>
+                  5. You can view full card details and transaction history in your VLINKPAY account.
+                </div>
+              </div>
+              <!-- Applicable Stores Section -->
+              <div class="term-section collapsed" id="sectionStores">
+                <div class="term-title" onclick="toggleSection('sectionStores')" role="button" tabindex="0"
+                  aria-expanded="false" aria-controls="storesContent">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <g clip-path="url(#clip0_987_8732)">
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M4.33708 0.729493C4.0046 0.729482 3.72229 0.729473 3.48901 0.753594C3.24062 0.779276 3.01106 0.835043 2.79419 0.969075C2.57732 1.10311 2.42478 1.28349 2.29073 1.49417C2.16482 1.69205 2.03859 1.94454 1.88991 2.24193L1.88028 2.26117C1.87461 2.27252 1.86944 2.2841 1.86477 2.29589L1.046 4.36564C0.948571 4.61192 0.840606 4.91916 0.809034 5.23357C0.77674 5.55516 0.821058 5.92357 1.07303 6.2431C1.36605 6.61467 1.8217 6.85449 2.33313 6.85449C2.7928 6.85449 3.20732 6.66115 3.4998 6.35135C3.79227 6.66115 4.20679 6.85449 4.66646 6.85449C5.12614 6.85449 5.54066 6.66115 5.83313 6.35135C6.1256 6.66115 6.54012 6.85449 6.9998 6.85449C7.45947 6.85449 7.87399 6.66115 8.16646 6.35135C8.45894 6.66115 8.87345 6.85449 9.33313 6.85449C9.7928 6.85449 10.2073 6.66115 10.4998 6.35135C10.7923 6.66115 11.2068 6.85449 11.6665 6.85449C12.1779 6.85449 12.6336 6.61467 12.9266 6.2431C13.1786 5.92357 13.2229 5.55516 13.1906 5.23357C13.159 4.91917 13.0511 4.61192 12.9536 4.36564L12.1349 2.29589C12.1302 2.2841 12.125 2.27252 12.1194 2.26117L12.1098 2.24196C11.9611 1.94456 11.8348 1.69205 11.7089 1.49417C11.5749 1.28349 11.4223 1.10311 11.2054 0.969075C10.9886 0.835043 10.759 0.779276 10.5106 0.753594C10.2773 0.729473 9.99506 0.729482 9.66258 0.729493H4.33708ZM4.66646 5.97949C4.26375 5.97949 3.9373 5.65303 3.9373 5.25033C3.9373 5.0087 3.74142 4.81283 3.4998 4.81283C3.25817 4.81283 3.0623 5.0087 3.0623 5.25033C3.0623 5.65303 2.73584 5.97949 2.33313 5.97949C2.10099 5.97949 1.89434 5.87151 1.7601 5.70128C1.69365 5.61701 1.66151 5.50171 1.67966 5.321C1.69852 5.13309 1.7679 4.91943 1.85964 4.68752L2.67142 2.63547C2.82759 2.32318 2.93195 2.11636 3.02896 1.9639C3.12228 1.81723 3.18915 1.7536 3.25421 1.71339C3.31927 1.67318 3.40608 1.64183 3.579 1.62395C3.76199 1.60503 3.99879 1.60449 4.35859 1.60449H9.64105C10.0009 1.60449 10.2376 1.60503 10.4206 1.62395C10.5936 1.64183 10.6804 1.67318 10.7454 1.71339C10.8105 1.7536 10.8774 1.81723 10.9707 1.9639C11.0677 2.11636 11.1721 2.32318 11.3282 2.63547L12.14 4.68751C12.2317 4.91943 12.3011 5.13309 12.32 5.32099C12.3381 5.50171 12.306 5.617 12.2395 5.70127C12.1053 5.8715 11.8986 5.97949 11.6665 5.97949C11.2638 5.97949 10.9373 5.65303 10.9373 5.25033C10.9373 5.0087 10.7414 4.81283 10.4998 4.81283C10.2582 4.81283 10.0623 5.0087 10.0623 5.25033C10.0623 5.65303 9.73584 5.97949 9.33313 5.97949C8.93042 5.97949 8.60396 5.65303 8.60396 5.25033C8.60396 5.0087 8.40809 4.81283 8.16646 4.81283C7.92484 4.81283 7.72896 5.0087 7.72896 5.25033C7.72896 5.65303 7.4025 5.97949 6.9998 5.97949C6.59709 5.97949 6.27063 5.65303 6.27063 5.25033C6.27063 5.0087 6.07475 4.81283 5.83313 4.81283C5.5915 4.81283 5.39563 5.0087 5.39563 5.25033C5.39563 5.65303 5.06917 5.97949 4.66646 5.97949Z"
+                        fill="#212B36" />
+                      <path
+                        d="M11.5207 8.75033C11.5207 8.5087 11.3248 8.31283 11.0832 8.31283C10.8416 8.31283 10.6457 8.5087 10.6457 8.75033V12.3962H3.35401V8.75033C3.35401 8.5087 3.15814 8.31283 2.91651 8.31283C2.67489 8.31283 2.47901 8.5087 2.47901 8.75033V12.3962H1.74985C1.50822 12.3962 1.31235 12.592 1.31235 12.8337C1.31235 13.0753 1.50822 13.2712 1.74985 13.2712H12.2498C12.4915 13.2712 12.6873 13.0753 12.6873 12.8337C12.6873 12.592 12.4915 12.3962 12.2498 12.3962H11.5207V8.75033Z"
+                        fill="#212B36" />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_987_8732">
+                        <rect width="14" height="14" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  Applicable Stores
+                  <svg class="term-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+                <div class="term-content" id="storesContent">
+                  • Tech Haven Store (Online &amp; In-store)<br>
+                  • Beauty Spa Center<br>
+                  • Luxury Nail Spa<br>
+                  • Partner merchants that display the VLINKPAY or Crypto Card acceptance mark.<br>
+                  For full and updated list of applicable stores, please check your VLINKPAY portal or contact
+                  our
+                  support team.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab: Redeem History -->
+          <div id="redeem-history" class="tab-content">
+            <div
+              style="background: #fff; border-radius: 16px; box-shadow: var(--shadow-z1); overflow: hidden; border: 1px solid var(--grey-200);">
+              <div class="filter-bar">
+                <div class="field-root search-field redeem-search-wrap">
+                  <div class="field-container">
+                    <iconify-icon icon="solar:magnifer-linear" class="field-icon-left"
+                      style="cursor: default;"></iconify-icon>
+                    <input type="text" id="redeemSearchInput" class="field-input"
+                      placeholder="Transaction ID / Card Number..." oninput="applyRedeemFilters()">
+                  </div>
+                </div>
+                <div class="field-root date-field">
+                  <label class="field-label">From date</label>
+                  <div class="field-container flatpickr-clear-wrap">
+                    <input type="text" id="redeemFromDate" class="field-input" placeholder="Pick a date" readonly>
+                    <button type="button" class="date-clear" id="redeemFromDateClear" aria-label="Clear date"
+                      title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg></button>
+                    <iconify-icon icon="solar:calendar-minimalistic-linear" class="field-chevron"
+                      style="width:16px;height:16px;"></iconify-icon>
+                  </div>
+                </div>
+                <div class="field-root date-field">
+                  <label class="field-label">To date</label>
+                  <div class="field-container flatpickr-clear-wrap">
+                    <input type="text" id="redeemToDate" class="field-input" placeholder="Pick a date" readonly>
+                    <button type="button" class="date-clear" id="redeemToDateClear" aria-label="Clear date"
+                      title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg></button>
+                    <iconify-icon icon="solar:calendar-minimalistic-linear" class="field-chevron"
+                      style="width:16px;height:16px;"></iconify-icon>
+                  </div>
+                </div>
+                <button type="button" class="redeem-btn-filter" onclick="openRedeemFilterModal()">
+                  <iconify-icon icon="solar:filter-linear"></iconify-icon>
+                  Filter
+                </button>
+              </div>
+
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Transaction ID</th>
+                      <th>Card Number</th>
+                      <th>Transaction Type</th>
+                      <th>Amount</th>
+                      <th>Currency</th>
+                      <th>Crypto Amount</th>
+                      <th>Crypto Balance</th>
+                      <th>Transaction Date</th>
+                      <th>Transaction Status</th>
+                      <th>Description</th>
+                      <th>Failure Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-weight: 600;">#TXN-88001</td>
+                      <td style="font-family: monospace;">8829 **** **** 3456</td>
+                      <td>Redeem</td>
+                      <td>$50.00</td>
+                      <td>USD</td>
+                      <td>0.0012 BTC</td>
+                      <td>0.0088 BTC</td>
+                      <td>Jan 25, 2026 03:15 PM</td>
+                      <td><span class="status-pill status-approved">Completed</span></td>
+                      <td>Card reload</td>
+                      <td>—</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: 600;">#TXN-88002</td>
+                      <td style="font-family: monospace;">8829 **** **** 3456</td>
+                      <td>Redeem</td>
+                      <td>$30.00</td>
+                      <td>USD</td>
+                      <td>0.0008 BTC</td>
+                      <td>0.0100 BTC</td>
+                      <td>Jan 20, 2026 11:20 AM</td>
+                      <td><span class="status-pill status-approved">Completed</span></td>
+                      <td>Payment</td>
+                      <td>—</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight: 600;">#TXN-88003</td>
+                      <td style="font-family: monospace;">8829 **** **** 3456</td>
+                      <td>Redeem</td>
+                      <td>$20.00</td>
+                      <td>USD</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>Jan 18, 2026 02:45 PM</td>
+                      <td><span class="status-pill status-cancelled">Failed</span></td>
+                      <td>Declined</td>
+                      <td>Insufficient balance</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Redeem History: mobile cards (product-list style) -->
+              <div class="redeem-mobile-cards" id="redeemHistoryMobileCards">
+                <div class="redeem-product-card product-card" data-transaction-id="TXN-88001" data-date="2026-01-25">
+                  <div class="product-card-header">
+                    <span class="product-card-name">#TXN-88001</span>
+                    <span class="product-card-amount">$50.00</span>
+                  </div>
+                  <div class="product-card-header" style="margin-bottom:0;">
+                    <span class="status-pill status-approved">Completed</span>
+                  </div>
+                  <div class="product-card-info">
+                    <div class="info-field"><span class="info-field-label">Card Number</span><span
+                        class="info-field-value" style="font-family:monospace;">8829 **** ****
+                        3456</span></div>
+                    <div class="info-field"><span class="info-field-label">Transaction Type</span><span
+                        class="info-field-value">Redeem</span></div>
+                    <div class="info-field"><span class="info-field-label">Currency</span><span
+                        class="info-field-value">USD</span></div>
+                    <div class="info-field"><span class="info-field-label">Crypto Amount</span><span
+                        class="info-field-value">0.0012 BTC</span></div>
+                    <div class="info-field"><span class="info-field-label">Transaction Date</span><span
+                        class="info-field-value">Jan 25, 2026 03:15 PM</span></div>
+                    <div class="info-field"><span class="info-field-label">Description</span><span
+                        class="info-field-value">Card
+                        reload</span></div>
+                  </div>
+                </div>
+                <div class="redeem-product-card product-card" data-transaction-id="TXN-88002" data-date="2026-01-20">
+                  <div class="product-card-header">
+                    <span class="product-card-name">#TXN-88002</span>
+                    <span class="product-card-amount">$30.00</span>
+                  </div>
+                  <div class="product-card-header" style="margin-bottom:0;">
+                    <span class="status-pill status-approved">Completed</span>
+                  </div>
+                  <div class="product-card-info">
+                    <div class="info-field"><span class="info-field-label">Card Number</span><span
+                        class="info-field-value" style="font-family:monospace;">8829 **** ****
+                        3456</span></div>
+                    <div class="info-field"><span class="info-field-label">Transaction Type</span><span
+                        class="info-field-value">Redeem</span></div>
+                    <div class="info-field"><span class="info-field-label">Currency</span><span
+                        class="info-field-value">USD</span></div>
+                    <div class="info-field"><span class="info-field-label">Crypto Amount</span><span
+                        class="info-field-value">0.0008 BTC</span></div>
+                    <div class="info-field"><span class="info-field-label">Transaction Date</span><span
+                        class="info-field-value">Jan 20, 2026 11:20 AM</span></div>
+                    <div class="info-field"><span class="info-field-label">Description</span><span
+                        class="info-field-value">Payment</span></div>
+                  </div>
+                </div>
+                <div class="redeem-product-card product-card" data-transaction-id="TXN-88003" data-date="2026-01-18">
+                  <div class="product-card-header">
+                    <span class="product-card-name">#TXN-88003</span>
+                    <span class="product-card-amount">$20.00</span>
+                  </div>
+                  <div class="product-card-header" style="margin-bottom:0;">
+                    <span class="status-pill status-cancelled">Failed</span>
+                  </div>
+                  <div class="product-card-info">
+                    <div class="info-field"><span class="info-field-label">Card Number</span><span
+                        class="info-field-value" style="font-family:monospace;">8829 **** ****
+                        3456</span></div>
+                    <div class="info-field"><span class="info-field-label">Transaction Type</span><span
+                        class="info-field-value">Redeem</span></div>
+                    <div class="info-field"><span class="info-field-label">Transaction Date</span><span
+                        class="info-field-value">Jan 18, 2026 02:45 PM</span></div>
+                    <div class="info-field"><span class="info-field-label">Description</span><span
+                        class="info-field-value">Declined</span></div>
+                    <div class="info-field"><span class="info-field-label">Failure Reason</span><span
+                        class="info-field-value" style="color:var(--grey-700);">Insufficient
+                        balance</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pagination">
+                <div class="pag-rows">
+                  <span>Rows per page:</span>
+                  <select class="pag-select">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select>
+                </div>
+                <div class="pag-info">1–3 of 3</div>
+                <button type="button" class="pag-btn" disabled>
+                  <iconify-icon icon="eva:chevron-left-fill" width="18"></iconify-icon>
+                </button>
+                <button type="button" class="pag-btn">
+                  <iconify-icon icon="eva:chevron-right-fill" width="18"></iconify-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab: Product History -->
+          <div id="product-history" class="tab-content">
+            <div
+              style="background: #fff; border-radius: 16px; box-shadow: var(--shadow-z1); overflow: hidden; border: 1px solid var(--grey-200);">
+              <div class="table-toolbar">
+                <div class="field-root product-history-search-wrap" style="width: 260px;">
+                  <div class="field-container">
+                    <iconify-icon icon="solar:magnifer-linear" class="field-icon-left"
+                      style="cursor: default;"></iconify-icon>
+                    <input type="text" class="field-input" placeholder="Search logs...">
+                  </div>
+                </div>
+
+                <div class="product-history-action-field" style="width: 130px;">
+                  <label class="field-label">Action</label>
+                  <div class="field-container">
+                    <select class="field-input field-select">
+                      <option value="">All Actions</option>
+                      <option value="created">Created</option>
+                      <option value="updated">Updated</option>
+                      <option value="change-pin">Đổi mã PIN</option>
+                    </select>
+                    <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
+                  </div>
+                </div>
+              </div>
+
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Action</th>
+                      <th>Changed Fields</th>
+                      <th>Old Value</th>
+                      <th>New Value</th>
+                      <th>Updated At</th>
+                      <th>Updated By</th>
+                      <th>Remark</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="card-lock-hidden">
+                      <td><span class="status-pill status-updated">Updated</span></td>
+                      <td style="font-weight: 500; color: var(--grey-900);">Card Lock</td>
+                      <td>Locked</td>
+                      <td><span style="color: #00A76F; font-weight: 600;">Unlocked</span></td>
+                      <td>Jan 22, 2026 10:30:42</td>
+                      <td>
+                        <div class="user-reference">
+                          <div class="user-avatar">CM</div>
+                          <span>carlota.monteiro@vlinkpay.com</span>
+                        </div>
+                      </td>
+                      <td>User requested unlock</td>
+                    </tr>
+                    <tr class="card-lock-hidden">
+                      <td><span class="status-pill status-updated">Updated</span></td>
+                      <td style="font-weight: 500; color: var(--grey-900);">Card Lock</td>
+                      <td>Unlocked</td>
+                      <td><span style="color: #FF5630; font-weight: 600;">Locked</span></td>
+                      <td>Jan 20, 2026 02:15:05</td>
+                      <td>
+                        <div class="user-reference">
+                          <div class="user-avatar"
+                            style="background: var(--primary-lighter); color: var(--primary-dark);">
+                            S</div>
+                          <span>System</span>
+                        </div>
+                      </td>
+                      <td>Security measure</td>
+                    </tr>
+                    <tr>
+                      <td><span class="status-pill status-created">Created</span></td>
+                      <td style="font-weight: 500; color: var(--grey-900);">-</td>
+                      <td>-</td>
+                      <td>New Product Record</td>
+                      <td>Jan 15, 2026 09:30:00</td>
+                      <td>
+                        <div class="user-reference">
+                          <div class="user-avatar">CM</div>
+                          <span>carlota.monteiro@vlinkpay.com</span>
+                        </div>
+                      </td>
+                      <td>Initial card creation</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Product History: mobile cards -->
+              <div class="product-history-mobile-cards">
+                <div class="product-history-card">
+                  <div class="product-card-header">
+                    <span class="product-card-name">Updated</span>
+                  </div>
+                  <div class="product-card-info">
+                    <div class="info-field"><span class="info-field-label">Changed Fields</span><span
+                        class="info-field-value">Card Lock</span></div>
+                    <div class="info-field"><span class="info-field-label">Old Value</span><span
+                        class="info-field-value">Locked</span></div>
+                    <div class="info-field"><span class="info-field-label">New Value</span><span
+                        class="info-field-value" style="color:#00A76F;font-weight:600;">Unlocked</span>
+                    </div>
+                    <div class="info-field"><span class="info-field-label">Updated At</span><span
+                        class="info-field-value">Jan
+                        22, 2026 10:30:42</span></div>
+                    <div class="info-field"><span class="info-field-label">Updated By</span><span
+                        class="info-field-value">carlota.monteiro@vlinkpay.com</span></div>
+                    <div class="info-field"><span class="info-field-label">Remark</span><span
+                        class="info-field-value">User
+                        requested unlock</span></div>
+                  </div>
+                </div>
+                <div class="product-history-card">
+                  <div class="product-card-header">
+                    <span class="product-card-name">Updated</span>
+                  </div>
+                  <div class="product-card-info">
+                    <div class="info-field"><span class="info-field-label">Changed Fields</span><span
+                        class="info-field-value">Card Lock</span></div>
+                    <div class="info-field"><span class="info-field-label">Old Value</span><span
+                        class="info-field-value">Unlocked</span></div>
+                    <div class="info-field"><span class="info-field-label">New Value</span><span
+                        class="info-field-value" style="color:#FF5630;font-weight:600;">Locked</span>
+                    </div>
+                    <div class="info-field"><span class="info-field-label">Updated At</span><span
+                        class="info-field-value">Jan
+                        20, 2026 02:15:05</span></div>
+                    <div class="info-field"><span class="info-field-label">Updated By</span><span
+                        class="info-field-value">System</span></div>
+                    <div class="info-field"><span class="info-field-label">Remark</span><span
+                        class="info-field-value">Security
+                        measure</span></div>
+                  </div>
+                </div>
+                <div class="product-history-card">
+                  <div class="product-card-header">
+                    <span class="product-card-name">Created</span>
+                  </div>
+                  <div class="product-card-info">
+                    <div class="info-field"><span class="info-field-label">Changed Fields</span><span
+                        class="info-field-value">-</span></div>
+                    <div class="info-field"><span class="info-field-label">New Value</span><span
+                        class="info-field-value">New
+                        Product Record</span></div>
+                    <div class="info-field"><span class="info-field-label">Updated At</span><span
+                        class="info-field-value">Jan
+                        15, 2026 09:30:00</span></div>
+                    <div class="info-field"><span class="info-field-label">Updated By</span><span
+                        class="info-field-value">carlota.monteiro@vlinkpay.com</span></div>
+                    <div class="info-field"><span class="info-field-label">Remark</span><span
+                        class="info-field-value">Initial
+                        card creation</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pagination">
+                <div class="pag-rows">
+                  <span>Rows per page:</span>
+                  <select class="pag-select">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select>
+                </div>
+                <div class="pag-info">1–4 of 4</div>
+                <button type="button" class="pag-btn">
+                  <iconify-icon icon="eva:chevron-left-fill" width="18"></iconify-icon>
+                </button>
+                <button type="button" class="pag-btn">
+                  <iconify-icon icon="eva:chevron-right-fill" width="18"></iconify-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <footer class="public-footer">
@@ -461,6 +3347,76 @@
         </div>
       </footer>
     </main>
+  </div>
+  <!-- ── Modal: Card Info (preview from crypto-card-details-owner) ───────── -->
+  <div id="modal-card-info" class="modal-overlay">
+    <div class="modal-content" style="max-width:960px;">
+      <div class="modal-header">
+        <span class="modal-title">Card Info</span>
+        <button class="close-btn" type="button" onclick="closeModal('modal-card-info')">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="details-card-modal">
+          <div class="product-main-layout">
+            <div class="product-visual-column">
+              <div class="product-card-visual-large">
+                <div class="card-preview-flip" id="previewFlipGift" onclick="togglePreviewFlip('previewFlipGift')">
+                  <div class="card-preview-face front">
+                    <img src="cryptocard-front.png" alt="Crypto Card Front">
+                  </div>
+                  <div class="card-preview-face back">
+                    <img src="cryptocard-back.png" alt="Crypto Card Back">
+                  </div>
+                  <div class="card-preview-label">
+                    <iconify-icon icon="solar:refresh-bold" width="14"></iconify-icon>
+                    Tap to flip
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="product-info-column">
+              <div class="details-header">
+                <div class="product-info-header">
+                  <h1>Crypto card</h1>
+                </div>
+                <div class="price-tag">
+                  <span class="label">BALANCE</span>
+                  <span class="amount">$200.00</span>
+                </div>
+              </div>
+              <div class="grid-info">
+                <div class="info-item">
+                  <span class="info-label">Card Number</span>
+                  <span class="info-value" id="infoCardNumber">1234 **** **** 1234</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">PIN</span>
+                  <span class="info-value" id="infoPin">••••</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Card Holder Name</span>
+                  <span class="info-value">CARLOTA MONTEIRO</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Email</span>
+                  <span class="info-value">carlota.monteiro@vlinkpay.com</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Issued Date</span>
+                  <span class="info-value">Jun 15, 2024</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Status</span>
+                  <span class="info-value">Active</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <!-- ── Modal: Scan QR ────────────────────────────────── -->
   <div id="modal-scan-qr" class="modal-overlay">
@@ -479,6 +3435,211 @@
               style="opacity: 0.1; color: var(--grey-900);"></iconify-icon>
           </div>
           <div class="scanner-text">Position the QR code within the frame to scan automatically</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Code Modal (from issue-digital-membership-details) -->
+  <div id="qrModal" class="qr-modal-overlay" onclick="if(event.target===this) closeQrModal()">
+    <div class="qr-modal-content" style="position: relative;" onclick="event.stopPropagation()">
+      <div class="qr-modal-header">
+        <h2 class="qr-modal-title">Crypto Card QR Code</h2>
+        <p class="qr-modal-subtitle">Scan to view card details</p>
+        <button type="button" class="qr-modal-close" onclick="closeQrModal()" aria-label="Close">
+          <iconify-icon icon="solar:close-circle-bold" width="24"></iconify-icon>
+        </button>
+      </div>
+      <div class="qr-modal-body">
+        <div id="qrCodePlaceholder" class="qr-modal-placeholder">
+          <iconify-icon icon="solar:qr-code-bold" width="120" height="120"
+            style="color: var(--grey-400);"></iconify-icon>
+        </div>
+        <p style="font-size: 13px; color: var(--grey-600);">Card: 8829 **** **** 3456</p>
+      </div>
+      <div class="qr-modal-footer">
+        <button type="button" class="modal-btn modal-btn-cancel" onclick="closeQrModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Redeem History: Filter Modal (mobile) -->
+  <div class="redeem-filter-overlay" id="redeemFilterOverlay" onclick="handleRedeemFilterOverlayClick(event)">
+    <div class="redeem-filter-modal" onclick="event.stopPropagation()">
+      <div class="redeem-filter-modal-head">
+        <span class="redeem-filter-modal-title">Filter</span>
+        <button type="button" class="redeem-filter-close" onclick="closeRedeemFilterModal()">
+          <iconify-icon icon="eva:close-fill" width="18"></iconify-icon>
+        </button>
+      </div>
+      <div class="redeem-filter-modal-body">
+        <div class="field-root date-field">
+          <label class="field-label">From date</label>
+          <div class="field-container flatpickr-clear-wrap">
+            <input type="text" id="redeemMDateFrom" class="field-input" placeholder="Pick a date" readonly>
+            <button type="button" class="date-clear" id="redeemMDateFromClear" aria-label="Clear date"
+              title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg></button>
+            <iconify-icon icon="solar:calendar-minimalistic-linear" class="field-chevron"
+              style="width:16px;height:16px;"></iconify-icon>
+          </div>
+        </div>
+        <div class="field-root date-field">
+          <label class="field-label">To date</label>
+          <div class="field-container flatpickr-clear-wrap">
+            <input type="text" id="redeemMDateTo" class="field-input" placeholder="Pick a date" readonly>
+            <button type="button" class="date-clear" id="redeemMDateToClear" aria-label="Clear date" title="Clear"><svg
+                xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg></button>
+            <iconify-icon icon="solar:calendar-minimalistic-linear" class="field-chevron"
+              style="width:16px;height:16px;"></iconify-icon>
+          </div>
+        </div>
+      </div>
+      <div class="redeem-filter-modal-foot">
+        <button type="button" class="redeem-btn-reset" onclick="resetRedeemMobileFilter()">Reset</button>
+        <button type="button" class="redeem-btn-apply" onclick="applyRedeemMobileFilter()">Apply</button>
+      </div>
+    </div>
+  </div>
+  <!-- Change PIN Modal -->
+  <div id="modal-change-pin" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">Change PIN</span>
+        <div class="close-btn" onclick="closeModal('modal-change-pin')">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </div>
+      </div>
+      <div class="modal-body">
+        <form class="change-pin-form" onsubmit="event.preventDefault(); saveChangePin();">
+          <div class="form-group">
+            <label class="form-label">Current PIN</label>
+            <div class="pin-input-wrapper">
+              <input type="password" maxlength="6" class="change-pin-input" id="currentPinInput"
+                placeholder="Enter current PIN">
+              <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('currentPinInput', this)">
+                <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">New PIN</label>
+            <div class="pin-input-wrapper">
+              <input type="password" maxlength="6" class="change-pin-input" id="newPinInput"
+                placeholder="Enter new PIN">
+              <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('newPinInput', this)">
+                <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm New PIN</label>
+            <div class="pin-input-wrapper">
+              <input type="password" maxlength="6" class="change-pin-input" id="confirmNewPinInput"
+                placeholder="Confirm New PIN">
+              <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('confirmNewPinInput', this)">
+                <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+              </button>
+            </div>
+          </div>
+          <div class="change-pin-footer">
+            <button type="button" class="btn-secondary" onclick="closeModal('modal-change-pin')">Cancel</button>
+            <button type="submit" class="btn-primary-rounded">Confirm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Receive Modal (copied from crypto-payment.html) -->
+  <div id="modal-show-wallet" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">Receive</span>
+        <div class="close-btn" onclick="closeModal('modal-show-wallet')">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </div>
+
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Assets</label>
+          <div class="icon-select" id="assetSelect2">
+            <div class="icon-select-trigger" onclick="toggleIconSelect('assetSelect2')">
+              <div class="coin-icon coin-btc">₿</div>
+              <span class="icon-select-text">Bitcoin (BTC)</span>
+              <svg class="icon-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+            <div class="icon-select-dropdown">
+              <div class="icon-select-option selected"
+                onclick="pickOption('assetSelect2',this,'coin-btc','₿','Bitcoin (BTC)')">
+                <div class="coin-icon coin-btc">₿</div>Bitcoin (BTC)
+              </div>
+              <div class="icon-select-option" onclick="pickOption('assetSelect2',this,'coin-eth','Ξ','Ethereum (ETH)')">
+                <div class="coin-icon coin-eth">Ξ</div>Ethereum (ETH)
+              </div>
+              <div class="icon-select-option" onclick="pickOption('assetSelect2',this,'coin-usdt','₮','Tether (USDT)')">
+                <div class="coin-icon coin-usdt">₮</div>Tether (USDT)
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Network</label>
+          <div class="icon-select" id="networkSelect2">
+            <div class="icon-select-trigger" onclick="toggleIconSelect('networkSelect2')">
+              <div class="coin-icon coin-vrc">V</div>
+              <span class="icon-select-text">Vlinkpay (VRC20)</span>
+              <svg class="icon-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+            <div class="icon-select-dropdown">
+              <div class="icon-select-option selected"
+                onclick="pickOption('networkSelect2',this,'coin-vrc','V','Vlinkpay (VRC20)')">
+                <div class="coin-icon coin-vrc">V</div>Vlinkpay (VRC20)
+              </div>
+              <div class="icon-select-option"
+                onclick="pickOption('networkSelect2',this,'coin-eth','Ξ','Ethereum (ERC20)')">
+                <div class="coin-icon coin-eth">Ξ</div>Ethereum (ERC20)
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="result-container" style="padding: 16px;">
+          <div style="display: flex; gap: 12px; align-items: flex-start;">
+            <div class="qr-box" style="width: 100px; height: 100px; margin: 0; padding: 8px; flex-shrink: 0;">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=84x84&data=TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQ"
+                alt="QR">
+            </div>
+            <div style="flex: 1; text-align: left;">
+              <div style="font-size: 13px; font-weight: 700; color: var(--grey-900); margin-bottom: 4px;">
+                Address</div>
+              <div class="address-wrapper"
+                style="padding: 0px; margin-bottom: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
+                <span class="address-text" style="font-size: 11px;">TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQ</span>
+                <div class="copy-btn" onclick="copyAddress(this)" title="Copy address">
+                  <iconify-icon icon="solar:copy-bold-duotone" width="16"></iconify-icon>
+                  <span>Copy</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="note-box" style="margin-top: 16px;">
+          <b>Note:</b><br>
+          BTC Minimum Top-up: 0.0000001 BTC. Top-up below this amount will not be processed or recovered.<br>
+          Important: Transfer only the correct cryptocurrency to the specified address. Incorrect transfers
+          are
+          irreversible.
         </div>
       </div>
     </div>
@@ -516,6 +3677,30 @@
       }
     }
 
+    function openCardInfoModal() {
+      const cardInput = document.getElementById('card-number-input');
+      const pinInput = document.getElementById('pinInput');
+      const cardVal = (cardInput?.value || '').trim();
+      const pinVal = (pinInput?.value || '').trim();
+      if (!cardVal || !pinVal) {
+        alert('Please enter Card Number and PIN.');
+        return;
+      }
+      const infoCard = document.getElementById('infoCardNumber');
+      const infoPin = document.getElementById('infoPin');
+      if (infoCard) infoCard.textContent = cardVal;
+      if (infoPin) infoPin.textContent = '••••';
+      const cardinfo = document.getElementById('cardinfo');
+      if (cardinfo) cardinfo.style.display = 'block';
+
+    }
+
+    function togglePreviewFlip(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.toggle('flipped');
+    }
+
     function closeModal(id) {
       const el = document.getElementById(id);
       if (!el) return;
@@ -523,5 +3708,599 @@
     }
   </script>
 </body>
+<script>
+  function updateToggleStatus(checkbox, badgeId, checkedText, uncheckedText) {
+    const badge = document.getElementById(badgeId);
+    if (checkbox.checked) {
+      badge.textContent = checkedText;
+      badge.classList.remove('status-active');
+      badge.classList.add('status-draft');
+    } else {
+      badge.textContent = uncheckedText;
+      badge.classList.remove('status-draft');
+      badge.classList.add('status-active');
+    }
+  }
+
+  function applyRedeemFilters() {
+    var search = (document.getElementById('redeemSearchInput') || {}).value || '';
+    var fromStr = (document.getElementById('redeemFromDate') || {}).value || '';
+    var toStr = (document.getElementById('redeemToDate') || {}).value || '';
+    var fromTs = fromStr ? new Date(fromStr).getTime() : null;
+    var toTs = toStr ? new Date(toStr + 'T23:59:59').getTime() : null;
+    var q = search.toLowerCase().trim();
+
+    var rows = document.querySelectorAll('#redeem-history .table-container tbody tr');
+    rows.forEach(function (tr) {
+      var text = (tr.textContent || '').toLowerCase();
+      var matchSearch = !q || text.indexOf(q) !== -1;
+      var dateCell = tr.cells[7];
+      var cellTs = dateCell ? parseRedeemDateCell(dateCell.textContent) : null;
+      var matchFrom = !fromTs || (cellTs && cellTs >= fromTs);
+      var matchTo = !toTs || (cellTs && cellTs <= toTs);
+      tr.style.display = (matchSearch && matchFrom && matchTo) ? '' : 'none';
+    });
+
+    var cards = document.querySelectorAll('#redeem-history .redeem-mobile-cards .redeem-product-card');
+    cards.forEach(function (card) {
+      var text = (card.textContent || '').toLowerCase();
+      var matchSearch = !q || text.indexOf(q) !== -1;
+      var dateStr = card.getAttribute('data-date');
+      var cellTs = dateStr ? new Date(dateStr).getTime() : null;
+      var matchFrom = !fromTs || (cellTs && cellTs >= fromTs);
+      var matchTo = !toTs || (cellTs && cellTs <= toTs);
+      card.style.display = (matchSearch && matchFrom && matchTo) ? '' : 'none';
+    });
+  }
+  function parseRedeemDateCell(str) {
+    if (!str || !str.trim()) return null;
+    var d = new Date(str.trim());
+    return isNaN(d.getTime()) ? null : d.getTime();
+  }
+
+  function openRedeemFilterModal() {
+    var fromEl = document.getElementById('redeemFromDate');
+    var toEl = document.getElementById('redeemToDate');
+    var mFrom = document.getElementById('redeemMDateFrom');
+    var mTo = document.getElementById('redeemMDateTo');
+    var r1 = document.getElementById('redeemMDateFromClear');
+    var r2 = document.getElementById('redeemMDateToClear');
+    if (mFrom) mFrom.value = (fromEl && fromEl.value) ? fromEl.value : '';
+    if (mTo) mTo.value = (toEl && toEl.value) ? toEl.value : '';
+    if (r1) r1.classList.toggle('visible', !!(mFrom && mFrom.value));
+    if (r2) r2.classList.toggle('visible', !!(mTo && mTo.value));
+    document.getElementById('redeemFilterOverlay').classList.add('open');
+  }
+  function closeRedeemFilterModal() {
+    document.getElementById('redeemFilterOverlay').classList.remove('open');
+  }
+  function handleRedeemFilterOverlayClick(e) {
+    if (e.target === e.currentTarget) closeRedeemFilterModal();
+  }
+  function resetRedeemMobileFilter() {
+    var mFrom = document.getElementById('redeemMDateFrom');
+    var mTo = document.getElementById('redeemMDateTo');
+    var fromEl = document.getElementById('redeemFromDate');
+    var toEl = document.getElementById('redeemToDate');
+    if (mFrom) mFrom.value = '';
+    if (mTo) mTo.value = '';
+    if (fromEl) fromEl.value = '';
+    if (toEl) toEl.value = '';
+    if (window.fpRedeemMFrom && window.fpRedeemMFrom.clear) window.fpRedeemMFrom.clear();
+    if (window.fpRedeemMTo && window.fpRedeemMTo.clear) window.fpRedeemMTo.clear();
+    if (window.fpRedeemFrom && window.fpRedeemFrom.clear) window.fpRedeemFrom.clear();
+    if (window.fpRedeemTo && window.fpRedeemTo.clear) window.fpRedeemTo.clear();
+    var c1 = document.getElementById('redeemMDateFromClear');
+    var c2 = document.getElementById('redeemMDateToClear');
+    var c3 = document.getElementById('redeemFromDateClear');
+    var c4 = document.getElementById('redeemToDateClear');
+    if (c1) c1.classList.remove('visible');
+    if (c2) c2.classList.remove('visible');
+    if (c3) c3.classList.remove('visible');
+    if (c4) c4.classList.remove('visible');
+    closeRedeemFilterModal();
+    applyRedeemFilters();
+  }
+  function applyRedeemMobileFilter() {
+    var mFrom = document.getElementById('redeemMDateFrom');
+    var mTo = document.getElementById('redeemMDateTo');
+    var fromEl = document.getElementById('redeemFromDate');
+    var toEl = document.getElementById('redeemToDate');
+    var c3 = document.getElementById('redeemFromDateClear');
+    var c4 = document.getElementById('redeemToDateClear');
+    if (mFrom && fromEl) fromEl.value = mFrom.value || '';
+    if (mTo && toEl) toEl.value = mTo.value || '';
+    if (c3) c3.classList.toggle('visible', !!(fromEl && fromEl.value));
+    if (c4) c4.classList.toggle('visible', !!(toEl && toEl.value));
+    closeRedeemFilterModal();
+    applyRedeemFilters();
+  }
+
+  function toggleSection(sectionId) {
+    var section = document.getElementById(sectionId);
+    if (!section) return;
+    section.classList.toggle('collapsed');
+    var title = section.querySelector('.section-title, .term-title');
+    if (title) {
+      var expanded = !section.classList.contains('collapsed');
+      title.setAttribute('aria-expanded', expanded);
+    }
+  }
+  window.toggleSection = toggleSection;
+
+  function openProductHistoryFilterModal() {
+    // Placeholder: Product History filter modal (e.g. Action filter) can be added here
+  }
+
+  function switchTab(tabId) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(tab => {
+      tab.classList.remove('active');
+    });
+
+    // Remove active class from all tab items
+    document.querySelectorAll('.tab-item').forEach(item => {
+      item.classList.remove('active');
+    });
+
+    // Show selected tab content
+    document.getElementById(tabId).classList.add('active');
+
+    // Add active class to clicked tab item
+    event.target.classList.add('active');
+  }
+
+  function toggleCryptoPreviewFlip() {
+    const el = document.getElementById('cryptoPreviewFlip');
+    if (!el) return;
+    el.classList.toggle('flipped');
+  }
+
+  function openQrModal() {
+    const el = document.getElementById('qrModal');
+    if (el) el.classList.add('active');
+  }
+  function closeQrModal() {
+    const el = document.getElementById('qrModal');
+    if (el) el.classList.remove('active');
+  }
+
+  // Icon select + modal helpers copied from crypto-payment.html
+  function toggleIconSelect(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.icon-select.open').forEach(e => e.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  function pickOption(selectId, optionEl, coinClass, symbol, label) {
+    const el = document.getElementById(selectId);
+    if (!el) return;
+    const trigger = el.querySelector('.icon-select-trigger');
+    const icon = trigger.querySelector('.coin-icon');
+    icon.className = 'coin-icon ' + coinClass;
+    icon.textContent = symbol;
+    trigger.querySelector('.icon-select-text').textContent = label;
+    el.querySelectorAll('.icon-select-option').forEach(o => o.classList.remove('selected'));
+    optionEl.classList.add('selected');
+    el.classList.remove('open');
+  }
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.icon-select')) {
+      document.querySelectorAll('.icon-select.open').forEach(el => el.classList.remove('open'));
+    }
+  });
+
+  function openModal(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = 'flex';
+  }
+
+  function closeModal(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  }
+
+  window.onclick = function (event) {
+    if (event.target.classList && event.target.classList.contains('modal-overlay')) {
+      closeModal(event.target.id);
+    }
+  };
+
+  function copyAddress(btn) {
+    const wrapper = btn.closest('.address-wrapper');
+    const text = wrapper ? wrapper.querySelector('.address-text').textContent.trim() : '';
+    if (window.copyToClipboard) {
+      window.copyToClipboard(text, 'Address copied!');
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).catch(() => { });
+    }
+  }
+
+  function saveChangePin() {
+    var currentPin = (document.getElementById('currentPinInput') || {}).value || '';
+    var newPin = (document.getElementById('newPinInput') || {}).value || '';
+    var confirmPin = (document.getElementById('confirmNewPinInput') || {}).value || '';
+    if (!currentPin || !newPin || !confirmPin) {
+      alert('Please fill in all PIN fields.');
+      return;
+    }
+    if (newPin !== confirmPin) {
+      alert('New PIN and confirmation do not match.');
+      return;
+    }
+
+    if (typeof Swal === 'undefined') {
+      // Fallback if SweetAlert2 is not loaded
+      alert('PIN changed successfully (demo).');
+      closeModal('modal-change-pin');
+      return;
+    }
+
+    Swal.fire({
+      title: 'Enter OTP',
+      text: 'We sent a 4-digit code to your email.',
+      input: 'text',
+      inputAttributes: {
+        maxlength: 4,
+        inputmode: 'numeric',
+        autocomplete: 'one-time-code'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Verify',
+      cancelButtonText: 'Cancel',
+      allowOutsideClick: () => !Swal.isLoading(),
+      preConfirm: function (value) {
+        if (!/^[0-9]{4}$/.test((value || '').trim())) {
+          Swal.showValidationMessage('Please enter a valid 4-digit OTP.');
+          return false;
+        }
+        return value.trim();
+      }
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        // TODO: verify OTP with backend here
+        Swal.fire({
+          icon: 'success',
+          title: 'PIN updated',
+          text: 'Your PIN has been changed successfully.',
+          showConfirmButton: false
+        });
+        closeModal('modal-change-pin');
+      }
+    });
+  }
+
+  function togglePinVisibility(inputId, btn) {
+    var input = document.getElementById(inputId);
+    if (!input) return;
+    var icon = btn.querySelector('iconify-icon');
+    var isHidden = input.type === 'password';
+    input.type = isHidden ? 'text' : 'password';
+    if (icon) {
+      icon.setAttribute('icon', isHidden ? 'solar:eye-closed-outline' : 'solar:eye-bold');
+    }
+  }
+
+  // Owner view: toggle mask for card number & PIN
+  (function () {
+    var btnCard = document.getElementById('toggleOwnerCardNumber');
+    var maskedCard = document.getElementById('ownerCardNumberMasked');
+    var fullCard = document.getElementById('ownerCardNumberFull');
+    var btnPin = document.getElementById('toggleOwnerPin');
+    var maskedPin = document.getElementById('ownerPinMasked');
+    var fullPin = document.getElementById('ownerPinFull');
+
+    function setupToggle(btn, maskedEl, fullEl) {
+      if (!btn || !maskedEl || !fullEl) return;
+      btn.addEventListener('click', function () {
+        var iconEl = btn.querySelector('iconify-icon');
+        var showingFull = fullEl.style.display !== 'none';
+        if (showingFull) {
+          fullEl.style.display = 'none';
+          maskedEl.style.display = '';
+          if (iconEl) iconEl.setAttribute('icon', 'solar:eye-bold');
+        } else {
+          fullEl.style.display = '';
+          maskedEl.style.display = 'none';
+          if (iconEl) iconEl.setAttribute('icon', 'solar:eye-closed-outline');
+        }
+      });
+    }
+
+    setupToggle(btnCard, maskedCard, fullCard);
+    setupToggle(btnPin, maskedPin, fullPin);
+  })();
+
+  function confirmReload() {
+    const asset = (document.getElementById('reloadAsset') || {}).value;
+    const amount = (document.getElementById('reloadAmount') || {}).value;
+    if (!asset || !amount) {
+      alert('Please select asset and enter amount.');
+      return;
+    }
+    // Placeholder for real reload logic
+    console.log('Reload asset', asset, 'amount', amount);
+    closeReloadModal();
+  }
+
+  function updateAssetIcon() {
+    const assetSelect = document.getElementById('reloadAsset');
+    const iconEl = document.getElementById('reloadAssetIcon');
+    const wrapper = document.getElementById('reloadAssetWrapper');
+    if (!assetSelect || !iconEl || !wrapper) return;
+
+    const value = assetSelect.value;
+    if (!value) {
+      // No asset selected: hide icon
+      iconEl.style.display = 'none';
+      wrapper.classList.remove('has-icon');
+      return;
+    }
+
+    iconEl.style.display = 'block';
+    wrapper.classList.add('has-icon');
+    if (value === 'BTC') {
+      iconEl.src = ICONS.BTC;
+    } else if (value === 'ETH') {
+      iconEl.src = ICONS.ETH;
+    } else {
+      iconEl.src = ICONS.USD;
+    }
+  }
+
+  function updateAmountUnitIcon() {
+    const unitSelect = document.getElementById('reloadAmountUnit');
+    const iconEl = document.getElementById('reloadAmountUnitIcon');
+    if (!unitSelect || !iconEl) return;
+
+    const value = unitSelect.value || 'USD';
+    if (value === 'BTC') {
+      iconEl.src = ICONS.BTC;
+    } else if (value === 'ETH') {
+      iconEl.src = ICONS.ETH;
+    } else {
+      iconEl.src = ICONS.USD;
+    }
+  }
+
+  function syncAmountUnitOptions(selectedAsset) {
+    const amountUnitEl = document.getElementById('reloadAmountUnit');
+    if (!amountUnitEl) return;
+
+    const previousValue = amountUnitEl.value;
+
+    // Clear existing options
+    amountUnitEl.innerHTML = '';
+
+    // USD is always available
+    const usdOption = document.createElement('option');
+    usdOption.value = 'USD';
+    usdOption.textContent = 'USD';
+    amountUnitEl.appendChild(usdOption);
+
+    if (selectedAsset === 'BTC') {
+      const btcOption = document.createElement('option');
+      btcOption.value = 'BTC';
+      btcOption.textContent = 'BTC';
+      amountUnitEl.appendChild(btcOption);
+    } else if (selectedAsset === 'ETH') {
+      const ethOption = document.createElement('option');
+      ethOption.value = 'ETH';
+      ethOption.textContent = 'ETH';
+      amountUnitEl.appendChild(ethOption);
+    } else {
+      // No asset selected: keep only USD
+    }
+
+    // Try to preserve previous selection if still valid, otherwise default to USD
+    if (previousValue && Array.from(amountUnitEl.options).some(opt => opt.value === previousValue)) {
+      amountUnitEl.value = previousValue;
+    } else {
+      amountUnitEl.value = 'USD';
+    }
+
+    updateAmountUnitIcon();
+  }
+
+  function updateReloadSummary() {
+    const assetEl = document.getElementById('reloadAsset');
+    const amountEl = document.getElementById('reloadAmount');
+    const amountUnitEl = document.getElementById('reloadAmountUnit');
+    const currentQtyEl = document.getElementById('reloadCurrentQty');
+    const currentUsdEl = document.getElementById('reloadCurrentUsd');
+    const afterQtyEl = document.getElementById('reloadAfterQty');
+    const afterUsdEl = document.getElementById('reloadAfterUsd');
+    const rateEl = document.getElementById('reloadRate');
+
+    if (!assetEl || !amountEl || !amountUnitEl || !currentQtyEl || !currentUsdEl || !afterQtyEl || !afterUsdEl || !rateEl) return;
+
+    const asset = assetEl.value;
+    const rawAmount = amountEl.value;
+    const amountUnit = amountUnitEl.value || 'USD';
+
+    if (!asset) {
+      currentQtyEl.textContent = '-';
+      currentUsdEl.textContent = '-';
+      afterQtyEl.textContent = '-';
+      afterUsdEl.textContent = '-';
+      rateEl.textContent = '-';
+      return;
+    }
+
+    const current = assetBalances[asset] || 0;
+    const rate = assetRates[asset] || 0;
+
+    // Ensure amount unit options match selected asset
+    syncAmountUnitOptions(asset);
+
+    if (!rate) {
+      rateEl.textContent = '-';
+    } else {
+      rateEl.textContent = '1 ' + asset + ' = $' + rate.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
+
+    const inputAmount = parseFloat(rawAmount || '0') || 0;
+    let usdAmount = 0;
+    let deltaCoins = 0;
+
+    if (amountUnit === 'USD') {
+      usdAmount = inputAmount;
+      deltaCoins = rate > 0 ? (usdAmount / rate) : 0;
+    } else {
+      // Amount entered directly in crypto units
+      deltaCoins = inputAmount;
+      usdAmount = deltaCoins * rate;
+    }
+    const after = current + deltaCoins;
+
+    const currentUsd = current * rate;
+    const afterUsd = after * rate;
+
+    currentQtyEl.textContent = current.toFixed(8) + ' ' + asset;
+    currentUsdEl.textContent = '$' + currentUsd.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    afterQtyEl.textContent = after.toFixed(8) + ' ' + asset;
+    afterUsdEl.textContent = '$' + afterUsd.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    const params = new URLSearchParams(window.location.search);
+    const statusParam = params.get('status');
+    if (statusParam) {
+      const badge = document.getElementById('cryptoStatusBadge');
+      if (badge) {
+        badge.textContent = statusParam;
+        badge.classList.remove('status-active', 'status-draft', 'status-cancelled');
+        if (statusParam.toUpperCase() === 'APPROVED') {
+          badge.classList.add('status-active');
+        } else if (statusParam.toUpperCase() === 'DRAFT' || statusParam.toUpperCase() === 'AWAITING APPROVAL') {
+          badge.classList.add('status-draft');
+        } else if (statusParam.toUpperCase() === 'EXPIRED' || statusParam.toUpperCase() === 'CANCELLED') {
+          badge.classList.add('status-cancelled');
+        } else {
+          badge.classList.add('status-draft');
+        }
+      }
+    }
+    if (statusParam && statusParam.toUpperCase() === 'DRAFT') {
+      const reloadBtn = document.getElementById('btnReload');
+      if (reloadBtn) reloadBtn.style.display = 'none';
+      const smsBtn = document.getElementById('btnSendSms');
+      const emailBtn = document.getElementById('btnSendEmail');
+      if (smsBtn) smsBtn.classList.add('disabled');
+      if (emailBtn) emailBtn.classList.add('disabled');
+    }
+    if (statusParam && statusParam.toUpperCase() === 'APPROVED') {
+      const editBtn = document.getElementById('btnEdit');
+      if (editBtn) editBtn.style.display = 'none';
+    }
+    const assetSelect = document.getElementById('reloadAsset');
+    const amountInput = document.getElementById('reloadAmount');
+    const amountUnitSelect = document.getElementById('reloadAmountUnit');
+    if (assetSelect) {
+      assetSelect.addEventListener('change', function () {
+        syncAmountUnitOptions(assetSelect.value || '');
+        updateAssetIcon();
+        updateReloadSummary();
+      });
+    }
+    if (amountInput) {
+      amountInput.addEventListener('input', updateReloadSummary);
+    }
+    if (amountUnitSelect) {
+      amountUnitSelect.addEventListener('change', function () {
+        updateAmountUnitIcon();
+        updateReloadSummary();
+      });
+    }
+
+    // Initial icon state
+    updateAssetIcon();
+    updateAmountUnitIcon();
+
+    // Redeem History: Flatpickr for from/to date and clear buttons
+    if (window.flatpickr) {
+      var redeemFrom = document.getElementById('redeemFromDate');
+      var redeemTo = document.getElementById('redeemToDate');
+      var redeemFromClear = document.getElementById('redeemFromDateClear');
+      var redeemToClear = document.getElementById('redeemToDateClear');
+      if (redeemFrom && redeemTo) {
+        var fpRedeemFrom = flatpickr(redeemFrom, {
+          dateFormat: 'Y-m-d',
+          allowInput: false,
+          disableMobile: true,
+          onChange: function (selectedDates, dateStr) {
+            redeemFrom.value = dateStr;
+            if (redeemFromClear) redeemFromClear.classList.toggle('visible', !!dateStr);
+            applyRedeemFilters();
+          }
+        });
+        var fpRedeemTo = flatpickr(redeemTo, {
+          dateFormat: 'Y-m-d',
+          allowInput: false,
+          disableMobile: true,
+          onChange: function (selectedDates, dateStr) {
+            redeemTo.value = dateStr;
+            if (redeemToClear) redeemToClear.classList.toggle('visible', !!dateStr);
+            applyRedeemFilters();
+          }
+        });
+        window.fpRedeemFrom = fpRedeemFrom;
+        window.fpRedeemTo = fpRedeemTo;
+        if (redeemFromClear) redeemFromClear.addEventListener('click', function () { fpRedeemFrom.clear(); this.classList.remove('visible'); applyRedeemFilters(); });
+        if (redeemToClear) redeemToClear.addEventListener('click', function () { fpRedeemTo.clear(); this.classList.remove('visible'); applyRedeemFilters(); });
+      }
+      var redeemMFrom = document.getElementById('redeemMDateFrom');
+      var redeemMTo = document.getElementById('redeemMDateTo');
+      var redeemMFromClear = document.getElementById('redeemMDateFromClear');
+      var redeemMToClear = document.getElementById('redeemMDateToClear');
+      if (redeemMFrom && redeemMTo) {
+        var fpRedeemMFrom = flatpickr(redeemMFrom, {
+          dateFormat: 'Y-m-d',
+          allowInput: false,
+          disableMobile: true,
+          onChange: function (selectedDates, dateStr) {
+            redeemMFrom.value = dateStr;
+            if (redeemMFromClear) redeemMFromClear.classList.toggle('visible', !!dateStr);
+          }
+        });
+        var fpRedeemMTo = flatpickr(redeemMTo, {
+          dateFormat: 'Y-m-d',
+          allowInput: false,
+          disableMobile: true,
+          onChange: function (selectedDates, dateStr) {
+            redeemMTo.value = dateStr;
+            if (redeemMToClear) redeemMToClear.classList.toggle('visible', !!dateStr);
+          }
+        });
+        window.fpRedeemMFrom = fpRedeemMFrom;
+        window.fpRedeemMTo = fpRedeemMTo;
+        if (redeemMFromClear) redeemMFromClear.addEventListener('click', function () { fpRedeemMFrom.clear(); this.classList.remove('visible'); });
+        if (redeemMToClear) redeemMToClear.addEventListener('click', function () { fpRedeemMTo.clear(); this.classList.remove('visible'); });
+      }
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        var overlay = document.getElementById('redeemFilterOverlay');
+        if (overlay && overlay.classList.contains('open')) closeRedeemFilterModal();
+        var qrModal = document.getElementById('qrModal');
+        if (qrModal && qrModal.classList.contains('active')) closeQrModal();
+      }
+    });
+  });
+</script>
 
 </html>

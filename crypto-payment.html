@@ -304,7 +304,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: 0;
       font-weight: 700;
       color: #fff;
       flex-shrink: 0;
@@ -312,23 +312,40 @@
     }
 
     .coin-btc {
-      background: #f7931a;
+      background-color: #f7931a;
+      background-image: url('https://s2.coinmarketcap.com/static/img/coins/64x64/1.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
     .coin-eth {
-      background: #627eea;
+      background-color: #627eea;
+      background-image: url('https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
     .coin-usdt {
-      background: #26a17b;
+      background-color: #26a17b;
+      background-image: url('https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/USDT.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
     .coin-vrc {
-      background: #00a76f;
+      background-color: #00a76f;
+      background-image: url('vrc20.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
     .coin-btcnet {
       background: #f7931a;
+      font-size: 14px;
     }
 
     .input-prefix {
@@ -529,6 +546,60 @@
       color: var(--grey-700);
     }
 
+    /* Mini assets table inside Pay with Crypto Card modal */
+    .assets-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .assets-table th {
+      background: #f4f6f8;
+      padding: 6px 8px;
+      text-align: left;
+      font-weight: 600;
+      color: #637381;
+      border-bottom: 1px solid #e5e7eb;
+      white-space: nowrap;
+    }
+
+    .assets-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #f1f3f5;
+      vertical-align: middle;
+    }
+
+    .assets-table .asset-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .assets-table .asset-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #212b36;
+    }
+
+    .assets-table .asset-price {
+      font-weight: 600;
+      color: #212b36;
+    }
+
+    .assets-table .crypto-icon img {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+    }
+
+    /* Show only Assets & Price columns */
+    .assets-table th.assets-col-balance,
+    .assets-table th.assets-col-amount,
+    .assets-table td.assets-cell-balance,
+    .assets-table td.assets-cell-amount {
+      display: none;
+    }
+
     /* ── Card Preview ──────────────────────────────────── */
     .card-preview {
       display: flex;
@@ -546,8 +617,8 @@
 
     .info-row {
       display: flex;
-      justify-content: space-between;
       margin-bottom: 8px;
+      gap: 12px
     }
 
     .info-row:last-child {
@@ -1083,57 +1154,157 @@
         <!-- Step 1: Enter Card Number -->
         <div id="card-number-section">
           <div class="form-group">
+            <label class="form-label">Amount</label>
+            <div class="input-wrapper">
+              <span class="modal-input-icon">$</span>
+              <input type="number" class="minimal-input" placeholder="0.00" id="payment-amount-initial">
+            </div>
+          </div>
+          <div class="form-group">
             <label class="form-label">Card Number</label>
             <div class="input-wrapper">
               <iconify-icon icon="solar:card-bold-duotone" class="input-icon"></iconify-icon>
               <input type="text" class="minimal-input" placeholder="Enter card number or scan..." id="card-number-input"
                 onkeypress="handleCardNumberEnter(event)">
               <div class="input-suffix" onclick="openModal('modal-scan-qr')">
-                <iconify-icon icon="solar:qr-code-bold-duotone" width="24"></iconify-icon>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-main)">
+                  <path
+                    d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" />
+                  <rect x="7" y="7" width="3" height="3" rx="0.5" />
+                  <rect x="14" y="7" width="3" height="3" rx="0.5" />
+                  <rect x="7" y="14" width="3" height="3" rx="0.5" />
+                  <path d="M14 14h1M14 17h1M17 14h1M17 17h1" />
+                </svg>
               </div>
             </div>
           </div>
-          <button class="btn-submit" onclick="validateCard()">Confirm Payment</button>
+          <button class="btn-submit" onclick="validateCard()" id="card-step-button">Continue</button>
         </div>
 
         <!-- Step 2: Payment Details -->
         <div id="payment-details-section" style="display: none;">
           <div class="form-group">
+            <div class="form-group">
+              <label class="form-label">Amount</label>
+              <div class="input-wrapper">
+                <span class="modal-input-icon">$</span>
+                <input type="number" class="minimal-input" placeholder="0.00" id="payment-amount-input">
+              </div>
+            </div>
+
             <label class="form-label">Card Number</label>
             <div class="input-wrapper">
               <iconify-icon icon="solar:card-bold-duotone" class="input-icon"></iconify-icon>
-              <input type="text" class="minimal-input" id="card-number-display" readonly>
-              <div class="input-suffix" onclick="editCardNumber()">
-                <iconify-icon icon="solar:pen-bold-duotone" width="20"></iconify-icon>
+              <input type="text" class="minimal-input" id="card-number-display">
+              <div class="input-suffix" onclick="openModal('modal-scan-qr')">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-main)">
+                  <path
+                    d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" />
+                  <rect x="7" y="7" width="3" height="3" rx="0.5" />
+                  <rect x="14" y="7" width="3" height="3" rx="0.5" />
+                  <rect x="7" y="14" width="3" height="3" rx="0.5" />
+                  <path d="M14 14h1M14 17h1M17 14h1M17 17h1" />
+                </svg>
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Amount</label>
-            <div class="input-wrapper">
-              <span class="modal-input-icon">$</span>
-              <input type="number" class="minimal-input" placeholder="0.00" id="payment-amount-input">
+            <label class="form-label">Choose Assets <span style="color:#ff5630">*</span></label>
+            <div class="icon-select" id="assetSelectCard">
+              <div class="icon-select-trigger" onclick="toggleIconSelect('assetSelectCard')">
+                <div class="coin-icon coin-btc"></div>
+                <span class="icon-select-text">Bitcoin (BTC)</span>
+                <svg class="icon-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
+              <div class="icon-select-dropdown">
+                <div class="icon-select-option selected"
+                  onclick="pickOption('assetSelectCard',this,'coin-btc','','Bitcoin (BTC)')">
+                  <div class="coin-icon coin-btc"></div>Bitcoin (BTC)
+                </div>
+                <div class="icon-select-option"
+                  onclick="pickOption('assetSelectCard',this,'coin-eth','','Ethereum (ETH)')">
+                  <div class="coin-icon coin-eth"></div>Ethereum (ETH)
+                </div>
+                <div class="icon-select-option"
+                  onclick="pickOption('assetSelectCard',this,'coin-usdt','','Tether (USDT)')">
+                  <div class="coin-icon coin-usdt"></div>Tether (USDT)
+                </div>
+              </div>
             </div>
           </div>
+
+
           <div class="card-preview">
-            <img src="https://i.ibb.co/tMr10Cyz/download-7.png" alt="Crypto Card Preview"
+            <img src="cryptocard-front.png" alt="Crypto Card Preview"
               style="width: 200px; height: 125px; border-radius: 16px; object-fit: cover; flex-shrink: 0;">
-            <div class="card-info">
-              <div class="info-row">
-                <span class="info-label">Current Balance:</span>
-                <span class="info-value">$40.00</span>
+            <div style="flex:1; display:flex; flex-direction:column; gap:12px;">
+              <div class="card-info">
+                <div class="info-row">
+                  <span class="info-label">Current Balance:</span>
+                  <span class="info-value">$40.00</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Times Used:</span>
+                  <span class="info-value">1</span>
+                </div>
               </div>
-              <div class="info-row">
-                <span class="info-label">Times Used:</span>
-                <span class="info-value">1</span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">Expiration:</span>
-                <span class="info-value">Mar 17, 2026</span>
-              </div>
+
+
             </div>
           </div>
-          <button class="btn-submit" onclick="processCardPayment()">Confirm Payment</button>
+          <!-- Mini assets table (from owner details) -->
+          <div class="assets-table-wrap"
+            style="max-height:180px;overflow:auto;border-radius:12px;border:1px solid var(--grey-200);background:#fff;">
+            <table class="crypto-table assets-table" style="min-width:100%;">
+              <thead>
+                <tr>
+                  <th class="assets-col-asset">Assets</th>
+                  <th class="assets-col-price">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="assets-cell-asset">
+                    <div class="asset-main">
+                      <div class="crypto-icon">
+                        <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/1.png" alt="BTC">
+                      </div>
+                      <div class="asset-text">
+                        <div class="asset-name">Bitcoin</div>
+                        <div class="asset-balance-mobile">0.0003593 BTC</div>
+                        <div class="asset-amount-mobile">$25</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="assets-cell-price">
+                    <div class="asset-price">$69,583.615</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="assets-cell-asset">
+                    <div class="asset-main">
+                      <div class="crypto-icon">
+                        <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png" alt="ETH">
+                      </div>
+                      <div class="asset-text">
+                        <div class="asset-name">Ethereum</div>
+                        <div class="asset-balance-mobile">0.01214 ETH</div>
+                        <div class="asset-amount-mobile">$25</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="assets-cell-price">
+                    <div class="asset-price">$2,059.61</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <button class="btn-submit" onclick="processCardPayment()">Payment</button>
         </div>
       </div>
     </div>
@@ -1152,7 +1323,7 @@
         <div class="scanner-container">
           <div class="scanner-frame">
             <div class="scanner-line"></div>
-            <iconify-icon icon="solar:camera-bold-duotone" width="64"
+            <iconify-icon icon="solar:qr-code-bold-duotone" width="120"
               style="opacity: 0.1; color: var(--grey-900);"></iconify-icon>
           </div>
           <div class="scanner-text">Position the QR code within the frame to scan automatically</div>
@@ -1161,6 +1332,8 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script>
     /* ── Icon Select logic ───────────────────────────── */
     function toggleIconSelect(id) {
@@ -1192,7 +1365,20 @@
     });
 
     function openModal(id) {
-      document.getElementById(id).style.display = 'flex';
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.display = 'flex';
+
+      // Simulate scan: after 2s, close scan modal and fill card number back in main modal
+      if (id === 'modal-scan-qr') {
+        setTimeout(() => {
+          closeModal('modal-scan-qr');
+          const cardInput = document.getElementById('card-number-input');
+          if (cardInput) {
+            cardInput.value = '8888 1234 5678 1234';
+          }
+        }, 2000);
+      }
     }
 
     function closeModal(id) {
@@ -1225,12 +1411,20 @@
       document.getElementById('card-number-display').value = cardNumber;
       document.getElementById('card-number-section').style.display = 'none';
       document.getElementById('payment-details-section').style.display = 'block';
+      const stepBtn = document.getElementById('card-step-button');
+      if (stepBtn) stepBtn.textContent = 'Confirm Payment';
+      const amtDetails = document.getElementById('payment-amount-input');
+      const amtInitial = document.getElementById('payment-amount-initial');
+      if (amtDetails && amtInitial) amtDetails.value = amtInitial.value;
     }
 
     function editCardNumber() {
       document.getElementById('card-number-section').style.display = 'block';
       document.getElementById('payment-details-section').style.display = 'none';
-      document.getElementById('payment-amount-input').value = '';
+      const amtInitial = document.getElementById('payment-amount-initial');
+      const amtDetails = document.getElementById('payment-amount-input');
+      if (amtInitial) amtInitial.value = '';
+      if (amtDetails) amtDetails.value = '';
     }
 
     function processCardPayment() {
@@ -1239,9 +1433,73 @@
         alert('Please enter a valid payment amount');
         return;
       }
-      alert(`Processing payment of $${parseFloat(amount).toFixed(2)} with crypto card...\nPayment successful!`);
-      closeModal('modal-crypto-card');
-      resetCardForm();
+      if (typeof Swal === 'undefined') {
+        alert(`Processing payment of $${parseFloat(amount).toFixed(2)} with crypto card...\nPayment successful!`);
+        closeModal('modal-crypto-card');
+        resetCardForm();
+        return;
+      }
+      Swal.fire({
+        title: 'Enter PIN',
+        allowOutsideClick: false,
+        html: `
+          <div
+            style="margin-top: 8px; display: flex; align-items: center; justify-content: center; padding: 6px 10px; ">
+            <div
+              style="position: relative; display: flex; align-items: center; justify-content: center; width: 220px; max-width: 100%;">
+              <input id="swal-pin-input" type="password" maxlength="6"
+                style="width: 100%; padding: 10px 40px 10px 16px; font-size: 16px; border-radius: 8px; border: 1px solid #d0d5dd; outline: none; text-align: center; letter-spacing: 4px; background: #ffffff;">
+              <button type="button" id="swal-pin-toggle"
+                style="position: absolute; right: 12px; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius:8px; background: transparent; border: none; cursor: pointer; color: #6b7280;">
+                <i data-lucide="eye" style="width:18px;height:18px;"></i>
+              </button>
+            </div>
+          </div>
+        `,
+        focusConfirm: false,
+        didOpen: () => {
+          const input = document.getElementById('swal-pin-input');
+          const toggle = document.getElementById('swal-pin-toggle');
+          if (input) input.focus();
+          // render Lucide icon for the first time
+          if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+          }
+          if (toggle && input) {
+            toggle.addEventListener('click', () => {
+              const isHidden = input.type === 'password';
+              input.type = isHidden ? 'text' : 'password';
+              const iconEl = toggle.querySelector('[data-lucide]');
+              if (iconEl) {
+                iconEl.setAttribute('data-lucide', isHidden ? 'eye-off' : 'eye');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+              }
+            });
+          }
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Confirm Payment',
+        cancelButtonText: 'Cancel',
+        preConfirm: () => {
+          const pin = document.getElementById('swal-pin-input').value;
+          if (!pin) {
+            Swal.showValidationMessage('Please enter PIN');
+            return false;
+          }
+          return pin;
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Payment successful',
+            text: `Processing payment of $${parseFloat(amount).toFixed(2)} with crypto card completed.`
+          }).then(() => {
+            closeModal('modal-crypto-card');
+            resetCardForm();
+          });
+        }
+      });
     }
 
     function resetCardForm() {
@@ -1250,12 +1508,6 @@
       });
       document.getElementById('card-number-section').style.display = 'block';
       document.getElementById('payment-details-section').style.display = 'none';
-    }
-
-    window.onclick = function (event) {
-      if (event.target.classList.contains('modal-overlay')) {
-        closeModal(event.target.id);
-      }
     }
 
     // Copy wallet address

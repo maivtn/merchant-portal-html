@@ -10,7 +10,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="global.css">
-  <link rel="stylesheet" href="https://unpkg.com/tippy.js@5/dist/tippy.css">
   <script src="global.js" defer></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
@@ -1012,7 +1011,7 @@
       }
     }
 
-    /* Label with tooltip icon */
+    /* Label with tooltip icon (pure CSS tooltip) */
     .form-label-with-tip {
       display: inline-flex;
       align-items: center;
@@ -1020,6 +1019,7 @@
     }
 
     .label-tooltip {
+      position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -1035,6 +1035,45 @@
 
     .label-tooltip iconify-icon {
       display: block;
+    }
+
+    /* Tooltip bubble: shown on hover, no JS */
+    .label-tooltip-bubble {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: calc(100% + 8px);
+      z-index: 10000;
+      max-width: 420px;
+      min-width: 200px;
+      padding: 10px 12px;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #fff;
+      font-weight: 400;
+      background: #1e293b;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      white-space: normal;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.15s ease, visibility 0.15s ease;
+      pointer-events: none;
+    }
+
+    .label-tooltip:hover .label-tooltip-bubble {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .label-tooltip-bubble::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -6px;
+      border: 6px solid transparent;
+      border-top-color: #1e293b;
     }
 
     /* 2-col grid for Rollover + Cycle */
@@ -1461,7 +1500,7 @@
     <div class="modal-box" role="dialog">
       <div class="modal-head">
         <div>
-          <div class="modal-title">Benefit Detail</div>
+          <div class="modal-title">Benefit Details</div>
           <div class="modal-desc">Detailed information about this benefit</div>
         </div>
         <button class="modal-close" onclick="closeViewBenefitModal()"><i data-lucide="x"></i></button>
@@ -1494,11 +1533,6 @@
           <div class="vb-detail-row">
             <span class="vb-detail-label vb-detail-label-with-tip">
               Rollover Type
-              <span class="label-tooltip"
-                data-tippy-content="Reset: Any unused balance or usage count will expire at the end of the cycle, and the system will restore the original allocated amount for the new cycle. Rollover: Any unused balance or usage count will be carried forward and added to the next cycle."
-                aria-label="More info">
-                <iconify-icon icon="mdi:information-outline" width="14" height="14"></iconify-icon>
-              </span>
             </span>
             <span id="vbRollover" class="vb-detail-value"></span>
           </div>
@@ -1581,10 +1615,11 @@
           <div class="form-group">
             <label class="form-label form-label-with-tip">
               Rollover Type
-              <span class="label-tooltip"
-                data-tippy-content="Reset: Any unused balance or usage count will expire at the end of the cycle, and the system will restore the original allocated amount for the new cycle. Rollover: Any unused balance or usage count will be carried forward and added to the next cycle."
-                aria-label="More info">
+              <span class="label-tooltip" aria-label="More info">
                 <iconify-icon icon="mdi:information-outline" width="16" height="16"></iconify-icon>
+                <span class="label-tooltip-bubble">Reset: Any unused balance or usage count will expire at the end of
+                  the cycle, and the system will restore the original allocated amount for the new cycle. Rollover: Any
+                  unused balance or usage count will be carried forward and added to the next cycle.</span>
               </span>
             </label>
             <select class="form-select" id="rolloverType">
@@ -1615,7 +1650,6 @@
     </div>
   </div>
 
-  <script src="https://unpkg.com/tippy.js@5/dist/tippy-bundle.umd.min.js"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   <script>
     /* ═══════════════════════════════════════════════════════
@@ -2147,17 +2181,8 @@
 
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    /* Init tooltips (Tippy.js) for .label-tooltip */
-    function initTooltips() {
-      if (typeof tippy === 'undefined') return;
-      document.querySelectorAll('.label-tooltip').forEach(el => {
-        const content = el.getAttribute('data-tippy-content');
-        if (content) tippy(el, { content, maxWidth: 380, delay: [100, 0], placement: 'top' });
-      });
-    }
-
     /* Init */
-    document.addEventListener('DOMContentLoaded', () => { render(); lucide.createIcons(); initTooltips(); });
+    document.addEventListener('DOMContentLoaded', () => { render(); lucide.createIcons(); });
   </script>
 </body>
 

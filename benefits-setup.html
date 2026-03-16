@@ -23,6 +23,37 @@
       flex-shrink: 0;
     }
 
+    /* ── Page title & breadcrumbs ───────────────────── */
+    .page-title {
+      margin: 0;
+    }
+
+    .breadcrumbs {
+      margin-top: 8px;
+    }
+
+    .breadcrumbs-current {
+      color: #212b36;
+      font-weight: 500;
+    }
+
+    /* ── Sidebar user card ────────────────────────── */
+    .user-card .user-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--grey-900);
+    }
+
+    .user-card .user-role {
+      font-size: 13px;
+      color: var(--grey-600);
+    }
+
+    .nav-item .nav-chevron {
+      margin-left: auto;
+      width: 16px;
+    }
+
     /* ── Page header row ─────────────────────────────── */
     .page-header-row {
       display: flex;
@@ -966,6 +997,17 @@
       .suggestion-chip {
         font-size: 11px;
       }
+
+      .vb-header-row {
+        flex-wrap: wrap;
+      }
+
+      .vb-status-wrap {
+        width: 100%;
+        margin-left: 0 !important;
+        margin-top: 10px;
+        flex-basis: 100%;
+      }
     }
 
     /* 2-col grid for Rollover + Cycle */
@@ -1019,6 +1061,94 @@
     .btn-create-submit:hover {
       background: #007b55;
       box-shadow: 0 4px 12px rgba(0, 167, 111, .24);
+    }
+
+    /* ── View Benefit Modal ──────────────────────── */
+    #viewBenefitModal .modal-box {
+      max-width: 480px;
+    }
+
+    #viewBenefitModal .modal-body {
+      padding: 24px;
+    }
+
+    #viewBenefitModal .modal-foot {
+      justify-content: flex-end;
+    }
+
+    .vb-header-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: #f9fafb;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .vb-status-wrap {
+      margin-left: auto;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .vb-toggle-inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #vbName {
+      font-size: 17px;
+      font-weight: 700;
+      color: #161c24;
+    }
+
+    #vbId {
+      font-size: 12px;
+      color: #919eab;
+      margin-top: 2px;
+    }
+
+    .vb-detail-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .vb-detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 0;
+      border-bottom: 1px solid #f4f6f8;
+    }
+
+    .vb-detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .vb-detail-label {
+      font-size: 13px;
+      color: #637381;
+      font-weight: 500;
+    }
+
+    .vb-detail-value {
+      font-size: 13px;
+      color: #212b36;
+      font-weight: 600;
+    }
+
+    #vbCreatedBy,
+    #vbCreatedDate {
+      font-weight: 400;
+    }
+
+    .hidden-input {
+      display: none;
     }
 
     /* ── Responsive ──────────────────────────────────── */
@@ -1133,8 +1263,8 @@
       <div class="user-card">
         <div class="avatar"><iconify-icon icon="solar:user-bold" width="24"></iconify-icon></div>
         <div class="user-info">
-          <div style="font-weight:600;font-size:14px;color:var(--grey-900)">Carlota Monteiro</div>
-          <div style="font-size:13px;color:var(--grey-600)">Admin</div>
+          <div class="user-name">Carlota Monteiro</div>
+          <div class="user-role">Admin</div>
         </div>
       </div>
 
@@ -1152,7 +1282,7 @@
       <a href="#" class="nav-item">
         <div class="nav-icon"><iconify-icon icon="solar:folder-with-files-bold-duotone" width="26"></iconify-icon></div>
         <span>Gift &amp; Voucher Management</span>
-        <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
+        <iconify-icon icon="eva:chevron-down-fill" class="nav-chevron"></iconify-icon>
       </a>
       <div class="submenu">
         <a href="my-purchase.html" class="sub-item"><span class="dot"></span>My Purchase</a>
@@ -1173,7 +1303,7 @@
         <div class="nav-icon"><iconify-icon icon="solar:dollar-minimalistic-bold-duotone" width="24"></iconify-icon>
         </div>
         <span>Payment Acceptance</span>
-        <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
+        <iconify-icon icon="eva:chevron-down-fill" class="nav-chevron"></iconify-icon>
       </a>
       <div class="submenu">
         <a href="gift-card-payment.html" class="sub-item"><span class="dot"></span>Pay with Gift Card</a>
@@ -1182,7 +1312,7 @@
       <a href="#" class="nav-item parent-active">
         <div class="nav-icon"><iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon></div>
         <span>Settings</span>
-        <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
+        <iconify-icon icon="eva:chevron-down-fill" class="nav-chevron"></iconify-icon>
       </a>
       <div class="submenu">
         <a href="merchant-payment-setup.html" class="sub-item"><span class="dot"></span>Merchant Payment Setup</a>
@@ -1191,7 +1321,7 @@
       <a href="#" class="nav-item">
         <div class="nav-icon"><iconify-icon icon="solar:chart-bold-duotone" width="24"></iconify-icon></div>
         <span>Report</span>
-        <iconify-icon icon="eva:chevron-down-fill" style="margin-left:auto;width:16px"></iconify-icon>
+        <iconify-icon icon="eva:chevron-down-fill" class="nav-chevron"></iconify-icon>
       </a>
       <div class="submenu">
         <a href="sales-order-list.html" class="sub-item"><span class="dot"></span>Sales Orders</a>
@@ -1227,16 +1357,16 @@
   <main class="main">
     <div class="page-header">
       <div class="page-header-row">
-        <h1 class="page-title" style="margin:0">Benefits Setup</h1>
+        <h1 class="page-title">Benefits Setup</h1>
         <button class="btn-create" id="btnCreate" onclick="handleCreateBtn()">
           <i data-lucide="plus"></i>
           <span class="btn-text" id="btnCreateText">Create Benefit</span>
         </button>
       </div>
-      <div class="breadcrumbs" style="margin-top:8px">
+      <div class="breadcrumbs">
         <a href="dashboard.html">Dashboard</a>
         <span class="breadcrumbs-dot"></span>
-        <span style="color:#212b36;font-weight:500">Benefits Setup</span>
+        <span class="breadcrumbs-current">Benefits Setup</span>
       </div>
     </div>
 
@@ -1295,7 +1425,7 @@
        VIEW BENEFIT DETAIL MODAL
   ═══════════════════════════════════════════════════ -->
   <div class="modal-overlay" id="viewBenefitModal">
-    <div class="modal-box" style="max-width:480px;" role="dialog">
+    <div class="modal-box" role="dialog">
       <div class="modal-head">
         <div>
           <div class="modal-title">Benefit Detail</div>
@@ -1303,17 +1433,16 @@
         </div>
         <button class="modal-close" onclick="closeViewBenefitModal()"><i data-lucide="x"></i></button>
       </div>
-      <div class="modal-body" style="padding:24px;">
+      <div class="modal-body">
         <!-- Icon + Name header -->
-        <div
-          style="display:flex;align-items:center;gap:16px;padding:16px;background:#f9fafb;border-radius:12px;margin-bottom:20px;">
+        <div class="vb-header-row">
           <div id="vbIcon"></div>
           <div>
-            <div id="vbName" style="font-size:17px;font-weight:700;color:#161c24;"></div>
-            <div id="vbId" style="font-size:12px;color:#919eab;margin-top:2px;"></div>
+            <div id="vbName"></div>
+            <div id="vbId"></div>
           </div>
-          <div style="margin-left:auto;display:flex;flex-direction:row;align-items:flex-end;gap:6px; ">
-            <div style="display:flex;align-items:center;gap:10px;">
+          <div class="vb-status-wrap">
+            <div class="vb-toggle-inner">
               <label class="toggle status-toggle">
                 <input type="checkbox" id="vbStatusToggle" />
                 <div class="toggle-track"></div>
@@ -1324,34 +1453,30 @@
           </div>
         </div>
         <!-- Detail rows -->
-        <div style="display:flex;flex-direction:column;gap:0;">
-          <div
-            style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
-            <span style="font-size:13px;color:#637381;font-weight:500;">Benefit Unit</span>
-            <span id="vbUnit" style="font-size:13px;color:#212b36;font-weight:600;"></span>
+        <div class="vb-detail-list">
+          <div class="vb-detail-row">
+            <span class="vb-detail-label">Benefit Unit</span>
+            <span id="vbUnit" class="vb-detail-value"></span>
           </div>
-          <div
-            style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
-            <span style="font-size:13px;color:#637381;font-weight:500;">Rollover Type</span>
-            <span id="vbRollover" style="font-size:13px;color:#212b36;font-weight:600;"></span>
+          <div class="vb-detail-row">
+            <span class="vb-detail-label">Rollover Type</span>
+            <span id="vbRollover" class="vb-detail-value"></span>
           </div>
-          <div
-            style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
-            <span style="font-size:13px;color:#637381;font-weight:500;">Cycle</span>
-            <span id="vbCycle" style="font-size:13px;color:#212b36;font-weight:600;"></span>
+          <div class="vb-detail-row">
+            <span class="vb-detail-label">Cycle</span>
+            <span id="vbCycle" class="vb-detail-value"></span>
           </div>
-          <div
-            style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #f4f6f8;">
-            <span style="font-size:13px;color:#637381;font-weight:500;">Created By</span>
-            <span id="vbCreatedBy" style="font-size:13px;color:#212b36;"></span>
+          <div class="vb-detail-row">
+            <span class="vb-detail-label">Created By</span>
+            <span id="vbCreatedBy" class="vb-detail-value"></span>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;">
-            <span style="font-size:13px;color:#637381;font-weight:500;">Created Date</span>
-            <span id="vbCreatedDate" style="font-size:13px;color:#212b36;"></span>
+          <div class="vb-detail-row">
+            <span class="vb-detail-label">Created Date</span>
+            <span id="vbCreatedDate" class="vb-detail-value"></span>
           </div>
         </div>
       </div>
-      <div class="modal-foot" style="justify-content:flex-end;">
+      <div class="modal-foot">
         <button class="btn-cancel" onclick="closeViewBenefitModal()">Close</button>
       </div>
     </div>
@@ -1371,7 +1496,7 @@
       </div>
 
       <!-- Hidden file input for icon upload -->
-      <input type="file" id="iconFileInput" accept="image/*" style="display:none" onchange="handleIconUpload(this)">
+      <input type="file" id="iconFileInput" accept="image/*" class="hidden-input" onchange="handleIconUpload(this)">
 
       <div class="modal-body">
         <!-- Icon selection -->

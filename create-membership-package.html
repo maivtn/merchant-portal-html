@@ -1792,8 +1792,8 @@
       }
 
       .left-col {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 8px;
       }
 
@@ -2211,14 +2211,22 @@
                     title="Red Dark"></div>
                   <div class="color-dot" style="background:#4C1D95" onclick="selectColor(this,'#4C1D95')"
                     title="Violet Dark"></div>
-                  <div class="color-dot" style="background:#3B82F6" onclick="selectColor(this,'#3B82F6')" title="Blue"></div>
-                  <div class="color-dot" style="background:#10B981" onclick="selectColor(this,'#10B981')" title="Green"></div>
-                  <div class="color-dot" style="background:#F59E0B" onclick="selectColor(this,'#F59E0B')" title="Amber"></div>
-                  <div class="color-dot" style="background:#EC4899" onclick="selectColor(this,'#EC4899')" title="Pink"></div>
-                  <div class="color-dot" style="background:#06B6D4" onclick="selectColor(this,'#06B6D4')" title="Cyan"></div>
-                  <div class="color-dot" style="background:#8B5CF6" onclick="selectColor(this,'#8B5CF6')" title="Purple"></div>
-                  <div class="color-dot" style="background:#FFD84D" onclick="selectColor(this,'#FFD84D')" title="Yellow"></div>
-                  <div class="color-dot" style="background:#DBCD43" onclick="selectColor(this,'#DBCD43')" title="Gold"></div>
+                  <div class="color-dot" style="background:#3B82F6" onclick="selectColor(this,'#3B82F6')" title="Blue">
+                  </div>
+                  <div class="color-dot" style="background:#10B981" onclick="selectColor(this,'#10B981')" title="Green">
+                  </div>
+                  <div class="color-dot" style="background:#F59E0B" onclick="selectColor(this,'#F59E0B')" title="Amber">
+                  </div>
+                  <div class="color-dot" style="background:#EC4899" onclick="selectColor(this,'#EC4899')" title="Pink">
+                  </div>
+                  <div class="color-dot" style="background:#06B6D4" onclick="selectColor(this,'#06B6D4')" title="Cyan">
+                  </div>
+                  <div class="color-dot" style="background:#8B5CF6" onclick="selectColor(this,'#8B5CF6')"
+                    title="Purple"></div>
+                  <div class="color-dot" style="background:#FFD84D" onclick="selectColor(this,'#FFD84D')"
+                    title="Yellow"></div>
+                  <div class="color-dot" style="background:#DBCD43" onclick="selectColor(this,'#DBCD43')" title="Gold">
+                  </div>
                   <div class="color-dot color-picker-btn" title="Custom color">
                     <iconify-icon class="pick-color-icon" icon="mdi:eyedropper" width="12"></iconify-icon>
                     <input type="color"
@@ -3320,11 +3328,14 @@ Please present this card before payment.</textarea>
       setTimeout(() => { window.location.href = 'benefits-setup.html'; }, 1200);
     }
 
-    document.getElementById('loadTermsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLoadTerms(); });
-    document.getElementById('saveTermsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSaveTerms(); });
-    document.getElementById('libraryModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLogoLibrary(); });
-    document.getElementById('logoPreviewModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLogoPreview(); });
-    document.getElementById('aiLogoModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAiLogoModal(); });
+    document.addEventListener('DOMContentLoaded', () => {
+      const byId = id => document.getElementById(id);
+      byId('loadTermsModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeLoadTerms(); });
+      byId('saveTermsModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeSaveTerms(); });
+      byId('libraryModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeLogoLibrary(); });
+      byId('logoPreviewModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeLogoPreview(); });
+      byId('aiLogoModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeAiLogoModal(); });
+    });
   </script>
 
   <!-- Load Terms modal (from issue-digital.html) -->

@@ -131,6 +131,21 @@
             background: rgba(0, 167, 111, 0.18);
         }
 
+        .crypto-create-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            background: var(--primary-main);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 16px rgba(0, 167, 111, 0.24);
+        }
+
         /* Ẩn cột Redeemed By, Last Redeemed At */
         th.col-redeemed-by,
         td.col-redeemed-by,
@@ -155,6 +170,16 @@
             gap: 6px;
             font-size: 13px;
             color: #637381;
+        }
+
+        @media (max-width: 767px) {
+            .crypto-create-btn {
+                padding: 8px 10px;
+            }
+
+            .crypto-create-label {
+                display: none;
+            }
         }
 
         .pag-select {
@@ -641,13 +666,19 @@
     </header>
 
     <main class="main">
-        <div class="page-header">
-            <h1 class="page-title" style="margin: 0;">Crypto Card Management</h1>
-            <div class="breadcrumbs" style="margin-top: 8px;">
-                <a href="#">Crypto Card Management</a>
-                <span class="breadcrumbs-dot"></span>
-                <span style="color: var(--grey-900); font-weight: 500;">Card List</span>
+        <div class="page-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1 class="page-title" style="margin: 0;">Crypto Card Management</h1>
+                <div class="breadcrumbs" style="margin-top: 8px;">
+                    <a href="#">Crypto Card Management</a>
+                    <span class="breadcrumbs-dot"></span>
+                    <span style="color: var(--grey-900); font-weight: 500;">Card List</span>
+                </div>
             </div>
+            <a href="issue-digital.html?type=crypto-card" class="crypto-create-btn" style="text-decoration: none;">
+                <i data-lucide="plus" style="width:20px;height:20px;"></i>
+                <span class="crypto-create-label">Create</span>
+            </a>
         </div>
 
         <div class="table-card">

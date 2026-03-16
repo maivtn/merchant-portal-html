@@ -17,6 +17,7 @@
   <!-- Tom Select (benefit dropdown with icon + checkbox) -->
   <link href="https://cdn.jsdelivr.net/npm/tom-select@2.5.2/dist/css/tom-select.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/tom-select@2.5.2/dist/js/tom-select.complete.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="global.css">
   <script src="global.js" defer></script>
   <style>
@@ -73,7 +74,8 @@
     }
 
     .date-input-icon {
-      display: none; /* Ẩn icon calendar phía trước, chỉ giữ icon phía sau */
+      display: none;
+      /* Ẩn icon calendar phía trước, chỉ giữ icon phía sau */
     }
 
     .date-input-icon-end {
@@ -3400,9 +3402,7 @@ Please present this card before payment.</textarea>
 
               <!-- Desktop confirm -->
               <button class="btn-confirm-desktop" onclick="confirmIssuance()">
-                <iconify-icon icon="solar:check-circle-bold-duotone" width="20"
-                  style="position: relative; top: 1px;"></iconify-icon>
-                Confirm Issuance
+                <span id="confirmIssuanceLabelDesktop">Confirm Issuance</span>
               </button>
             </div>
           </div>
@@ -3415,9 +3415,7 @@ Please present this card before payment.</textarea>
   <!-- Mobile Bottom Bar -->
   <div class="confirm-bar">
     <button onclick="confirmIssuance()">
-      <iconify-icon icon="solar:check-circle-bold-duotone" width="20"
-        style="position: relative; top: 4px;"></iconify-icon>
-      Confirm Issuance
+      <span id="confirmIssuanceLabelMobile">Confirm Issuance</span>
     </button>
   </div>
 
@@ -4014,6 +4012,14 @@ Please present this card before payment.</textarea>
 
       renumberSteps();
       updateCardBenefitsLine();
+
+      // Update confirm button label for Crypto Card
+      const desktopLabel = document.getElementById('confirmIssuanceLabelDesktop');
+      const mobileLabel = document.getElementById('confirmIssuanceLabelMobile');
+      const isCryptoType = typeId === '5';
+      const text = isCryptoType ? 'Create' : 'Confirm Issuance';
+      if (desktopLabel) desktopLabel.textContent = text;
+      if (mobileLabel) mobileLabel.textContent = text;
     }
 
     function renumberSteps() {
@@ -4333,7 +4339,7 @@ Please present this card before payment.</textarea>
       if (!birthdayInput || !birthdayField || birthdayField.style.display === 'none') return;
       const ids = mbTomSelect ? (mbTomSelect.getValue() || []) : Object.keys(mbSelected || {});
       const hasBirthdayGift = ids.includes('birthday_gift');
-      birthdayInput.placeholder = hasBirthdayGift ? 'Birthday *' : 'Birthday (optional)';
+      birthdayInput.placeholder = hasBirthdayGift ? 'Birthday (required)' : 'Birthday (optional)';
       birthdayField.classList.toggle('field-required', hasBirthdayGift);
     }
 
@@ -4458,7 +4464,15 @@ Please present this card before payment.</textarea>
         this.classList.remove('visible');
       });
 
-      // Init card front for default card type (E-Gift Card, typeId=0)
+      // Detect type from query string (e.g. ?type=crypto-card)
+      const params = new URLSearchParams(window.location.search);
+      const typeParam = (params.get('type') || '').toLowerCase();
+      if (typeParam === 'crypto-card') {
+        const cryptoItem = document.querySelector('.card-type-item:nth-child(3)');
+        if (cryptoItem) selectCardType(cryptoItem, 'Crypto Card', '5');
+      }
+
+      // Init card front for current card type (default E-Gift Card unless overridden by query)
       updateCardValueBadge();
       // Init card brand name from default business info
       onBizInfoChange();
@@ -4469,10 +4483,12 @@ Please present this card before payment.</textarea>
       initMbBenefitSelect();
       // Init crypto assets select (Tom Select)
       initCryptoSelect();
-      // Init step visibility for default card type (E-Gift Card)
+      // Init step visibility for current card type
       const step3 = document.getElementById('step3Card');
       const step5 = document.getElementById('step5Card');
-      if (step3) step3.style.display = (currentTypeId === '0' || currentTypeId === '4') ? 'none' : '';
+      // Hide Step 3 (Expiration Date) for GiftCard, PrepaidCard, and Crypto Card
+      if (step3) step3.style.display = (currentTypeId === '0' || currentTypeId === '4' || currentTypeId === '5') ? 'none' : '';
+      // Show Step 5 (Purchase Price) only for Membership & Discount
       if (step5) step5.style.display = (currentTypeId === '2' || currentTypeId === '3') ? '' : 'none';
       renumberSteps();
       // On mobile: collapse Design Collection, Brand Identity, Business Information by default
@@ -4641,13 +4657,83 @@ Please present this card before payment.</textarea>
           return v && !isNaN(parseFloat(v)) && parseFloat(v) > 0;
         });
         if (!hasAmount) {
-          alert('Please select at least one crypto asset and enter an amount before confirming.');
+          alert('Please select at least one crypto asset and enter an amount before creating.');
           return;
         }
+
+        if (typeof Swal === 'undefined') {
+          alert('Please enter PIN to confirm (SweetAlert2 not loaded).');
+          return;
+        }
+
+        Swal.fire({
+          title: 'Enter PIN',
+          html: `
+            <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;flex:1">
+              <input id="swalPinInput" type="password" maxlength="6"
+                style="width:200px;padding:8px 40px 8px 12px;border-radius:8px;border:1px solid #dfe3e8;font-size:14px;font-family:inherit;box-sizing:border-box;"
+                placeholder="PIN " inputmode="numeric" autocomplete="one-time-code" />
+              <button type="button" id="swalPinToggle"
+                style="border:none;background:none;position:relative;margin-left:-36px;cursor:pointer;color:#637381;">
+                <iconify-icon icon="solar:eye-bold" width="18"></iconify-icon>
+              </button>
+            </div>
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
+          focusConfirm: false,
+          didOpen: () => {
+            const input = document.getElementById('swalPinInput');
+            const btn = document.getElementById('swalPinToggle');
+            if (input) input.focus();
+            if (btn && input) {
+              btn.addEventListener('click', () => {
+                const icon = btn.querySelector('iconify-icon');
+                const isHidden = input.type === 'password';
+                input.type = isHidden ? 'text' : 'password';
+                if (icon) {
+                  icon.setAttribute('icon', isHidden ? 'solar:eye-closed-outline' : 'solar:eye-bold');
+                }
+              });
+            }
+          },
+          preConfirm: () => {
+            const val = (document.getElementById('swalPinInput') || {}).value || '';
+            if (!/^[0-9]{4,6}$/.test(val.trim())) {
+              Swal.showValidationMessage('Please enter a valid 4–6 digit PIN.');
+              return false;
+            }
+            return val.trim();
+          }
+        }).then(result => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Crypto Card created',
+              text: 'Your crypto card issuance has been submitted.',
+              timer: 2000,
+              showConfirmButton: false
+            });
+          }
+        });
+        return;
       }
       alert('✅ Confirm Issuance — API call would happen here');
     }
-    function saveDraft() { alert('💾 Saved as Draft'); }
+    function saveDraft() {
+      if (typeof Swal === 'undefined') {
+        alert('💾 Saved as Draft');
+        return;
+      }
+      Swal.fire({
+        icon: 'success',
+        title: 'Saved as Draft',
+        text: 'Your card configuration has been saved.',
+        timer: 1800,
+        showConfirmButton: false
+      });
+    }
 
     /* ──────────────────────────────────────────────
        SPIN ANIMATION

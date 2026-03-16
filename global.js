@@ -195,8 +195,13 @@
   // HAMBURGER BUTTON
   // ═══════════════════════════════════════════════════════════════════════════
   function injectHamburger() {
+    const existing = document.getElementById('hamburgerBtn');
+    if (existing) {
+      existing.addEventListener('click', toggleSidebar);
+      return;
+    }
     const header = document.querySelector('.top-header');
-    if (!header || document.getElementById('hamburgerBtn')) return;
+    if (!header) return;
 
     const btn = document.createElement('button');
     btn.id = 'hamburgerBtn';

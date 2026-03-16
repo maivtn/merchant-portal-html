@@ -220,6 +220,10 @@
       margin-bottom: 0;
     }
 
+    #sectionBenefits {
+      margin-top: 24px;
+    }
+
     .section-title {
       display: flex;
       align-items: center;
@@ -567,12 +571,19 @@
       display: block;
     }
 
+    /* Table container: horizontal scroll on overflow */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     /* Table Styling for Transactions */
     .transaction-table {
       width: 100%;
+      min-width: 760px;
       border-collapse: collapse;
       background: #fff;
-      /* border-radius: 16px; */
       overflow: hidden;
       box-shadow: var(--shadow-z1);
     }
@@ -643,15 +654,14 @@
       color: var(--grey-900);
     }
 
+    /* Pagination (from benefits-setup) */
     .pagination {
-      padding: 16px;
-      border-top: 1px dashed var(--grey-300);
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      gap: 24px;
-      color: var(--grey-800);
-      font-size: 14px;
+      gap: 8px;
+      padding: 16px 20px;
+      border-top: 1px dashed rgba(145, 158, 171, 0.24);
+      flex-wrap: wrap;
       background: #fff;
       margin-top: -2px;
       border-bottom-left-radius: 16px;
@@ -659,44 +669,62 @@
       box-shadow: var(--shadow-z1);
     }
 
-    .pagination-select {
-      border: none;
-      background: transparent;
-      padding: 4px;
-      font-size: 14px;
-      color: var(--grey-800);
-      cursor: pointer;
-      outline: none;
-      font-weight: 600;
-      appearance: none;
-    }
-
-    .pagination-arrows {
+    .pag-rows {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
+      font-size: 13px;
+      color: #637381;
     }
 
-    .pagination-btn {
-      background: transparent;
-      border: none;
-      padding: 8px;
+    .pag-select {
+      height: 32px;
+      border: 1px solid #dfe3e8;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #212b36;
+      padding: 0 24px 0 8px;
+      outline: none;
       cursor: pointer;
-      border-radius: 50%;
+      appearance: none;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center;
+    }
+
+    .pag-info {
+      margin-left: auto;
+      font-size: 13px;
+      color: #637381;
+    }
+
+    .pag-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #dfe3e8;
+      border-radius: 6px;
+      background: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--grey-800);
+      cursor: pointer;
+      color: #637381;
       transition: 0.2s;
     }
 
-    .pagination-btn:hover:not(:disabled) {
-      background: rgba(145, 158, 171, 0.08);
+    .pag-btn:hover:not(:disabled) {
+      border-color: #212b36;
+      color: #212b36;
     }
 
-    .pagination-btn:disabled {
-      color: var(--grey-400);
-      cursor: default;
+    .pag-btn:disabled {
+      cursor: not-allowed;
+      color: #c4cdd5;
+      border-color: #f4f6f8;
+    }
+
+    .pag-btn iconify-icon {
+      width: 18px;
+      height: 18px;
     }
 
     /* Modal Styles */
@@ -932,6 +960,7 @@
         flex-direction: column;
         align-items: stretch !important;
         gap: 12px !important;
+        padding: 16px !important;
       }
 
       .field-root {
@@ -943,8 +972,27 @@
         -webkit-overflow-scrolling: touch;
       }
 
+      #transaction-history .table-toolbar {
+        border-radius: 16px 16px 0 0;
+      }
+
+      #transaction-history .table-container {
+        border-radius: 0 0 16px 16px;
+        box-shadow: var(--shadow-z1);
+      }
+
+      #transaction-history .pagination {
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 12px 16px;
+      }
+
+      .pag-info {
+        margin-left: 0;
+      }
+
       table {
-        min-width: 800px;
+        min-width: 760px;
       }
 
       .modal-content {
@@ -1010,18 +1058,41 @@
       }
 
       .pagination {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         gap: 12px;
-        align-items: stretch;
-      }
-
-      .pagination-info {
-        order: -1;
-        text-align: center;
-      }
-
-      .pagination-arrows {
+        align-items: center;
         justify-content: center;
+        padding: 12px 16px !important;
+      }
+
+      .pag-rows {
+        order: 0;
+      }
+
+      .pag-rows span {
+        display: none;
+      }
+
+      .pag-info {
+        order: -1;
+        flex-basis: 100%;
+        text-align: center;
+        margin-left: 0 !important;
+      }
+
+      .pag-btn {
+        flex-shrink: 0;
+      }
+
+      #transaction-history .table-toolbar {
+        padding: 12px !important;
+      }
+
+      #transaction-history .transaction-table th,
+      #transaction-history .transaction-table td {
+        padding: 12px 10px;
+        font-size: 12px;
       }
 
       table {
@@ -1514,7 +1585,6 @@
         <!-- Table Filters -->
         <div class="table-toolbar">
           <div class="field-root" style="width: 260px;">
-            <label class="field-label">Search</label>
             <div class="field-container">
               <input type="text" class="field-input" placeholder="Search by Transaction ID...">
               <iconify-icon icon="solar:magnifer-linear" class="field-chevron"
@@ -1535,92 +1605,92 @@
           </div>
         </div>
 
-        <table class="transaction-table">
-          <thead>
-            <tr>
-              <th style="white-space: nowrap;">Transaction Type</th>
-              <th style="white-space: nowrap;">Transaction Date</th>
-              <th style="white-space: nowrap;">Transaction ID</th>
-              <th style="white-space: nowrap;">Benefit Name</th>
-              <th style="white-space: nowrap;">Benefit Unit</th>
-              <th style="white-space: nowrap; text-align: right;">Amount</th>
-              <th style="white-space: nowrap; text-align: right;">Balance</th>
-              <th style="white-space: nowrap;">Tran. Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Redeem</td>
-              <td style="white-space: nowrap;">Jan 15, 2026 09:30 AM</td>
-              <td style="font-weight: 600;">#VLP-582104</td>
-              <td>Monthly Credit</td>
-              <td>Currency</td>
-              <td style="text-align: right;">$20.00</td>
-              <td style="text-align: right;">$480.00</td>
-              <td><span class="status-badge status-active">Completed</span></td>
-            </tr>
-            <tr>
-              <td>Redeem</td>
-              <td style="white-space: nowrap;">Jan 15, 2026 12:45 PM</td>
-              <td style="font-weight: 600;">#VLP-582319</td>
-              <td>Cashback</td>
-              <td>Percentage</td>
-              <td style="text-align: right;">-</td>
-              <td style="text-align: right;">-</td>
-              <td><span class="status-badge status-active">Completed</span></td>
-            </tr>
-            <tr>
-              <td>Redeem</td>
-              <td style="white-space: nowrap;">Jan 16, 2026 03:15 PM</td>
-              <td style="font-weight: 600;">#VLP-583510</td>
-              <td>Discount</td>
-              <td>Percentage</td>
-              <td style="text-align: right;">-</td>
-              <td style="text-align: right;">-</td>
-              <td><span class="status-badge status-active">Completed</span></td>
-            </tr>
-            <tr>
-              <td>Rollover</td>
-              <td style="white-space: nowrap;">Jan 20, 2026 08:00 AM</td>
-              <td style="font-weight: 600;">#VLP-584721</td>
-              <td>Monthly Credit</td>
-              <td>Currency</td>
-              <td style="text-align: right;">$20.00</td>
-              <td style="text-align: right;">$500.00</td>
-              <td><span class="status-badge status-active">Completed</span></td>
-            </tr>
-            <tr>
-              <td>Redeem</td>
-              <td style="white-space: nowrap;">Jan 25, 2026 02:30 PM</td>
-              <td style="font-weight: 600;">#VLP-586133</td>
-              <td>Lounge Access</td>
-              <td>Access</td>
-              <td style="text-align: right;">-</td>
-              <td style="text-align: right;">-</td>
-              <td><span class="status-badge status-active">Completed</span></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-container">
+          <table class="transaction-table">
+            <thead>
+              <tr>
+                <th style="white-space: nowrap;">Transaction Type</th>
+                <th style="white-space: nowrap;">Transaction Date</th>
+                <th style="white-space: nowrap;">Transaction ID</th>
+                <th style="white-space: nowrap;">Benefit Name</th>
+                <th style="white-space: nowrap;">Benefit Unit</th>
+                <th style="white-space: nowrap; text-align: right;">Amount</th>
+                <th style="white-space: nowrap; text-align: right;">Balance</th>
+                <th style="white-space: nowrap;">Tran. Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Redeem</td>
+                <td style="white-space: nowrap;">Jan 15, 2026 09:30 AM</td>
+                <td style="font-weight: 600;">#VLP-582104</td>
+                <td>Monthly Credit</td>
+                <td>Currency</td>
+                <td style="text-align: right;">$20.00</td>
+                <td style="text-align: right;">$480.00</td>
+                <td><span class="status-badge status-active">Completed</span></td>
+              </tr>
+              <tr>
+                <td>Redeem</td>
+                <td style="white-space: nowrap;">Jan 15, 2026 12:45 PM</td>
+                <td style="font-weight: 600;">#VLP-582319</td>
+                <td>Cashback</td>
+                <td>Percentage</td>
+                <td style="text-align: right;">-</td>
+                <td style="text-align: right;">-</td>
+                <td><span class="status-badge status-active">Completed</span></td>
+              </tr>
+              <tr>
+                <td>Redeem</td>
+                <td style="white-space: nowrap;">Jan 16, 2026 03:15 PM</td>
+                <td style="font-weight: 600;">#VLP-583510</td>
+                <td>Discount</td>
+                <td>Percentage</td>
+                <td style="text-align: right;">-</td>
+                <td style="text-align: right;">-</td>
+                <td><span class="status-badge status-active">Completed</span></td>
+              </tr>
+              <tr>
+                <td>Rollover</td>
+                <td style="white-space: nowrap;">Jan 20, 2026 08:00 AM</td>
+                <td style="font-weight: 600;">#VLP-584721</td>
+                <td>Monthly Credit</td>
+                <td>Currency</td>
+                <td style="text-align: right;">$20.00</td>
+                <td style="text-align: right;">$500.00</td>
+                <td><span class="status-badge status-active">Completed</span></td>
+              </tr>
+              <tr>
+                <td>Redeem</td>
+                <td style="white-space: nowrap;">Jan 25, 2026 02:30 PM</td>
+                <td style="font-weight: 600;">#VLP-586133</td>
+                <td>Lounge Access</td>
+                <td>Access</td>
+                <td style="text-align: right;">-</td>
+                <td style="text-align: right;">-</td>
+                <td><span class="status-badge status-active">Completed</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <!-- Table Pagination -->
+        <!-- Table Pagination (from benefits-setup) -->
         <div class="pagination">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            Rows per page:
-            <select class="pagination-select">
-              <option>5</option>
-              <option selected>10</option>
-              <option>25</option>
+          <div class="pag-rows">
+            <span>Rows per page:</span>
+            <select class="pag-select">
+              <option value="5" selected>5</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
             </select>
           </div>
-          <div style="margin-left: auto;">1-5 of 5</div>
-          <div class="pagination-arrows">
-            <button class="pagination-btn" disabled>
-              <iconify-icon icon="eva:chevron-left-fill" width="20"></iconify-icon>
-            </button>
-            <button class="pagination-btn" disabled>
-              <iconify-icon icon="eva:chevron-right-fill" width="20"></iconify-icon>
-            </button>
-          </div>
+          <div class="pag-info">1–5 of 5</div>
+          <button type="button" class="pag-btn" disabled>
+            <iconify-icon icon="eva:chevron-left-fill" width="18"></iconify-icon>
+          </button>
+          <button type="button" class="pag-btn" disabled>
+            <iconify-icon icon="eva:chevron-right-fill" width="18"></iconify-icon>
+          </button>
         </div>
       </div>
 
@@ -1696,23 +1766,21 @@
           </div>
 
           <div class="pagination">
-            <div class="pagination-rows">
+            <div class="pag-rows">
               <span>Rows per page:</span>
-              <select class="pagination-select">
-                <option value="10">10</option>
+              <select class="pag-select">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
                 <option value="25">25</option>
-                <option value="50">50</option>
               </select>
             </div>
-            <div class="pagination-info">1–5 of 5</div>
-            <div class="pagination-arrows">
-              <button class="pagination-btn" disabled>
-                <iconify-icon icon="eva:chevron-left-fill" width="20"></iconify-icon>
-              </button>
-              <button class="pagination-btn" disabled>
-                <iconify-icon icon="eva:chevron-right-fill" width="20"></iconify-icon>
-              </button>
-            </div>
+            <div class="pag-info">1–5 of 5</div>
+            <button type="button" class="pag-btn" disabled>
+              <iconify-icon icon="eva:chevron-left-fill" width="18"></iconify-icon>
+            </button>
+            <button type="button" class="pag-btn" disabled>
+              <iconify-icon icon="eva:chevron-right-fill" width="18"></iconify-icon>
+            </button>
           </div>
         </div>
       </div>

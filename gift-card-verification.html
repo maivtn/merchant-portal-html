@@ -534,9 +534,15 @@
       font-weight: 500;
     }
 
+    /* Ensure card info in modal is responsive on mobile */
     @media (max-width: 767px) {
-      .product-main-layout {
-        grid-template-columns: 1fr;
+      #modal-card-info .modal-content {
+        max-width: 100%;
+        margin: 0 12px;
+      }
+
+      #modal-card-info .product-main-layout {
+        grid-template-columns: 1fr !important;
       }
     }
   </style>
@@ -1554,6 +1560,10 @@
     }
 
     .tabs-container {
+      width: 100%;
+    }
+
+    #cardinfo {
       margin-top: 24px;
       max-width: 100%;
       width: 1200px;
@@ -3683,7 +3693,15 @@
       const cardVal = (cardInput?.value || '').trim();
       const pinVal = (pinInput?.value || '').trim();
       if (!cardVal || !pinVal) {
-        alert('Please enter Card Number and PIN.');
+        if (typeof Swal !== 'undefined') {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Missing information',
+            text: 'Please enter Card Number and PIN.',
+          });
+        } else {
+          alert('Please enter Card Number and PIN.');
+        }
         return;
       }
       const infoCard = document.getElementById('infoCardNumber');
@@ -3924,11 +3942,27 @@
     var newPin = (document.getElementById('newPinInput') || {}).value || '';
     var confirmPin = (document.getElementById('confirmNewPinInput') || {}).value || '';
     if (!currentPin || !newPin || !confirmPin) {
-      alert('Please fill in all PIN fields.');
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Incomplete information',
+          text: 'Please fill in all PIN fields.',
+        });
+      } else {
+        alert('Please fill in all PIN fields.');
+      }
       return;
     }
     if (newPin !== confirmPin) {
-      alert('New PIN and confirmation do not match.');
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'error',
+          title: 'PIN mismatch',
+          text: 'New PIN and confirmation do not match.',
+        });
+      } else {
+        alert('New PIN and confirmation do not match.');
+      }
       return;
     }
 
@@ -3961,7 +3995,6 @@
       }
     }).then(function (result) {
       if (result.isConfirmed) {
-        // TODO: verify OTP with backend here
         Swal.fire({
           icon: 'success',
           title: 'PIN updated',
@@ -4018,7 +4051,15 @@
     const asset = (document.getElementById('reloadAsset') || {}).value;
     const amount = (document.getElementById('reloadAmount') || {}).value;
     if (!asset || !amount) {
-      alert('Please select asset and enter amount.');
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Missing information',
+          text: 'Please select asset and enter amount.',
+        });
+      } else {
+        alert('Please select asset and enter amount.');
+      }
       return;
     }
     // Placeholder for real reload logic

@@ -1416,7 +1416,7 @@
           </div>
           <div class="form-group">
             <label class="form-label">Cycle</label>
-            <select class="form-select" id="cycleField">
+            <select class="form-select" id="cycleField" disabled>
               <option value="" selected>Select cycle</option>
               <option value="Daily">Daily</option>
               <option value="Weekly">Weekly</option>
@@ -1921,6 +1921,7 @@
       document.getElementById('benefitUnit').value = '';
       document.getElementById('rolloverType').value = '';
       document.getElementById('cycleField').value = '';
+      document.getElementById('cycleField').disabled = true;
       document.querySelectorAll('.icon-btn').forEach(b => b.classList.remove('selected'));
       ['iconError', 'nameError', 'unitError'].forEach(id => { document.getElementById(id).style.display = 'none'; });
     }
@@ -1950,6 +1951,16 @@
 
     document.getElementById('createModal').addEventListener('click', e => {
       if (e.target === e.currentTarget) closeModal();
+    });
+
+    document.getElementById('rolloverType').addEventListener('change', function () {
+      const cycleEl = document.getElementById('cycleField');
+      if (this.value) {
+        cycleEl.disabled = false;
+      } else {
+        cycleEl.disabled = true;
+        cycleEl.value = '';
+      }
     });
 
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });

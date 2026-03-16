@@ -249,6 +249,31 @@
       transform: rotate(180deg);
     }
 
+    @media (max-width: 767px) {
+      .panel-card-header {
+        padding: 8px 12px;
+        flex-wrap: wrap;
+      }
+
+      .panel-card-header .header-title {
+        font-size: 11px;
+      }
+
+      .panel-card-header .header-actions {
+        order: 3;
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 8px;
+        padding-bottom: 2px;
+      }
+
+      .panel-card-header .chevron {
+        order: 2;
+        margin-left: auto;
+      }
+    }
+
     .panel-card-body {
       padding: 20px;
     }
@@ -737,7 +762,7 @@
       background: var(--c-surface-subtle);
       border: 1px solid var(--c-border);
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 400;
       color: var(--c-text-2);
       cursor: pointer;
       font-family: inherit;
@@ -963,6 +988,13 @@
       justify-content: space-between;
       padding: 14px 20px;
       border-top: 1px solid var(--c-border);
+    }
+
+    @media (max-width: 767px) {
+      .popular-row {
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
     }
 
     .popular-label {
@@ -1375,7 +1407,7 @@
       font-size: 13px;
       font-weight: 600;
       color: var(--c-text-3);
-      border-left: 1px solid var(--c-border);
+      border-right: 1px solid var(--c-border);
     }
 
     .pct-input {
@@ -1384,7 +1416,7 @@
       padding: 7px 12px;
       font-size: 13px;
       color: var(--c-text-1);
-      width: 70px;
+      width: 120px;
       font-family: inherit;
       background: transparent;
     }
@@ -1781,6 +1813,20 @@
         font-size: 17px;
       }
 
+      .step-card .step-header {
+        padding: 8px 12px;
+        flex-wrap: wrap;
+      }
+
+      /* On mobile: terms buttons drop below the title row */
+      .terms-actions-header {
+        order: 3;
+        width: 100%;
+        margin-left: 0;
+        margin-top: 8px;
+        padding-bottom: 4px;
+      }
+
       .step-block {
         padding: 14px 16px 12px;
       }
@@ -1840,8 +1886,8 @@
 
     .tc-modal-box {
       background: #fff;
-      width: 100%;
-      max-width: 480px;
+      max-width: 100%;
+      width: 480px;
       border-radius: 20px;
       box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
       padding: 28px 28px 24px;
@@ -2434,9 +2480,9 @@
                     <button class="preset-btn" onclick="selectDiscount(15,this)">15%</button>
                     <button class="preset-btn" onclick="selectDiscount(20,this)">20%</button>
                     <div class="pct-prefix-wrap">
+                      <span class="pct-suffix">%</span>
                       <input type="number" class="pct-input" id="customDiscountInput" placeholder="Custom" min="0"
                         max="100" oninput="onCustomDiscount(this)" />
-                      <span class="pct-suffix">%</span>
                     </div>
                   </div>
                 </div>
@@ -2510,7 +2556,7 @@ Please present this card before payment.</textarea>
             <!-- SUBMIT -->
             <div class="submit-bar">
               <button class="btn-submit" onclick="submitPackage()">
-                Create and Activate Package
+                Create
               </button>
             </div>
 
@@ -2581,7 +2627,14 @@ Please present this card before payment.</textarea>
       renderAiPrompts();
       updatePreview();
       document.getElementById('popularBadge').style.display = state.isMostPopular ? '' : 'none';
+      closeLeftColCollapsesIfMobile();
+      syncMobileActionsVisibility();
       lucide.createIcons();
+    });
+
+    window.addEventListener('resize', () => {
+      closeLeftColCollapsesIfMobile();
+      syncMobileActionsVisibility();
     });
 
     function buildColorSwatches() {
@@ -2863,12 +2916,50 @@ Please present this card before payment.</textarea>
       const hdr = document.getElementById(headerId);
       if (wrap) wrap.classList.toggle('open');
       if (hdr) hdr.classList.toggle('open');
+      if (window.innerWidth <= 767 && hdr) {
+        const actions = hdr.querySelector('.header-actions, .terms-actions-header');
+        if (actions) actions.style.display = wrap && wrap.classList.contains('open') ? '' : 'none';
+      }
     }
     function toggleStep(bodyId, chevId) {
       const body = document.getElementById(bodyId);
       const chev = document.getElementById(chevId);
       body.classList.toggle('collapsed');
       chev.classList.toggle('open');
+    }
+
+    function closeLeftColCollapsesIfMobile() {
+      if (window.innerWidth > 767) return;
+      const leftCol = document.querySelector('.left-col');
+      if (!leftCol) return;
+      leftCol.querySelectorAll('.panel-card-header').forEach(h => h.classList.remove('open'));
+      leftCol.querySelectorAll('.collapse-wrap').forEach(w => w.classList.remove('open'));
+      document.getElementById('textColorChev')?.classList.remove('open');
+    }
+
+    function syncMobileActionsVisibility() {
+      const isMobile = window.innerWidth <= 767;
+      document.querySelectorAll('.panel-card-header').forEach(hdr => {
+        const actions = hdr.querySelector('.header-actions');
+        if (!actions) return;
+        if (isMobile) {
+          const wrapId = hdr.getAttribute('onclick');
+          const m = wrapId && wrapId.match(/togglePanel\s*\(\s*['"]([^'"]+)['"]/);
+          const wrap = m ? document.getElementById(m[1]) : null;
+          actions.style.display = wrap && wrap.classList.contains('open') ? '' : 'none';
+        } else {
+          actions.style.display = '';
+        }
+      });
+      const termsActions = document.getElementById('termsActions');
+      if (termsActions) {
+        if (isMobile) {
+          const wrap6 = document.getElementById('scollapse-6');
+          termsActions.style.display = wrap6 && wrap6.classList.contains('open') ? '' : 'none';
+        } else {
+          termsActions.style.display = '';
+        }
+      }
     }
 
     /* ═══════════════════════════════════════════════════════

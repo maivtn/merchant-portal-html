@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gift Card Verification - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="global.css">
+  <script src="global.js" defer></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <style>
+    body {
+      background: #e9f1ff;
+      font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .public-topbar {
+      max-width: 100%;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: var(--shadow-z1);
+      border-bottom: 1px dashed var(--grey-200);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hamburger-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1px solid rgba(145, 158, 171, 0.5);
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .hamburger-btn span {
+      display: block;
+      width: 14px;
+      height: 2px;
+      border-radius: 999px;
+      background: #212b36;
+      position: relative;
+    }
+
+    .hamburger-btn span::before,
+    .hamburger-btn span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      border-radius: 999px;
+      background: #212b36;
+    }
+
+    .hamburger-btn span::before {
+      top: -4px;
+    }
+
+    .hamburger-btn span::after {
+      top: 4px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .topbar-pill {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid #00a76f;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #ffffff;
+      color: #00a76f;
+    }
+
+    .topbar-pill.primary {
+      background: #00a76f;
+      color: #ffffff;
+      border-color: #00a76f;
+    }
+
+    .topbar-icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1px solid rgba(145, 158, 171, 0.4);
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #212b36;
+    }
+
+    .verification-page {
+      min-height: calc(100vh - 56px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 16px 24px;
+      padding-bottom: 0;
+    }
+
+    .verification-card {
+      width: 100%;
+      max-width: 420px;
+      margin-top: 16px;
+      padding: 24px 20px 24px;
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+    }
+
+    .verification-title {
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      color: #161c24;
+      margin-bottom: 8px;
+    }
+
+    .verification-subtitle {
+      font-size: 13px;
+      color: #637381;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #161c24;
+      margin-bottom: 4px;
+    }
+
+    .form-label span {
+      color: #ff5630;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .minimal-input {
+      width: 100%;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid #c4cdd5;
+      padding: 0 40px 0 12px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .minimal-input:focus {
+      border-color: #00a76f;
+      box-shadow: 0 0 0 1px rgba(0, 167, 111, 0.32);
+    }
+
+    .input-suffix-btn {
+      position: absolute;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: transparent;
+      color: #637381;
+    }
+
+    .btn-primary {
+      width: 100%;
+      height: 46px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 999px;
+      background: #00a76f;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 12px 24px rgba(0, 167, 111, 0.28);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 16px rgba(0, 167, 111, 0.24);
+    }
+
+    /* Modal (reuse style from crypto-payment) */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(22, 28, 36, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #fff;
+      width: 100%;
+      max-width: 480px;
+      border-radius: 24px;
+      padding: 0;
+      position: relative;
+      box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      animation: modalFadeIn 0.3s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .modal-header {
+      padding: 20px 20px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #161c24;
+    }
+
+    .modal-body {
+      padding: 0 20px 20px;
+    }
+
+    .close-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      color: #919eab;
+      transition: 0.2s;
+      border: none;
+      background: transparent;
+    }
+
+    .close-btn:hover {
+      background: #f4f6f8;
+      color: #212b36;
+    }
+
+    .public-footer {
+      margin-top: auto;
+      width: 100%;
+      max-width: 480px;
+      padding: 8px 16px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      color: #637381;
+    }
+
+    .store-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .store-badge {
+      height: 32px;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .store-badge img {
+      display: block;
+      height: 100%;
+    }
+
+    .verification-container {
+      display: flex;
+      flex-direction: column;
+      background-color: #ffffff;
+    }
+
+    /* ── Scanner (from crypto-payment) ──────────────────── */
+    .scanner-container {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .scanner-frame {
+      width: 240px;
+      height: 240px;
+      margin: 0 auto 24px;
+      border: 2px solid var(--primary-main);
+      border-radius: 24px;
+      position: relative;
+      background: var(--grey-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .scanner-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--primary-main);
+      box-shadow: 0 0 15px var(--primary-main);
+      animation: scanMove 2.5s infinite linear;
+      z-index: 2;
+    }
+
+    @keyframes scanMove {
+      0% {
+        top: 0;
+      }
+
+      50% {
+        top: 100%;
+      }
+
+      100% {
+        top: 0;
+      }
+    }
+
+    .scanner-text {
+      font-size: 14px;
+      color: var(--grey-600);
+      max-width: 220px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="verification-container">
+    <div class="public-topbar">
+      <div class="topbar-left">
+        <button class="hamburger-btn" aria-label="Toggle menu">
+          <span></span>
+        </button>
+      </div>
+      <div class="topbar-actions">
+        <button class="topbar-pill">Sign In</button>
+        <button class="topbar-pill primary">Sign Up Free</button>
+        <button class="topbar-icon-btn" aria-label="Cart">
+          <iconify-icon icon="solar:cart-large-2-bold-duotone" width="18"></iconify-icon>
+        </button>
+        <button class="topbar-icon-btn" aria-label="Language">
+          <span style="font-size:11px;font-weight:600;">EN</span>
+        </button>
+      </div>
+    </div>
+
+    <main class="verification-page">
+      <div class="verification-card">
+        <h1 class="verification-title">Gift Card Verification</h1>
+        <p class="verification-subtitle">Enter your card details to check balance &amp; info</p>
+
+        <div class="form-group">
+          <label class="form-label">Card Number <span>*</span></label>
+          <div class="input-wrapper">
+            <input type="text" class="minimal-input" placeholder="Enter card number or scan..."
+              id="card-number-input" />
+            <div class="input-suffix-btn" onclick="openModal('modal-scan-qr')">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-main)">
+                <path
+                  d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" />
+                <rect x="7" y="7" width="3" height="3" rx="0.5" />
+                <rect x="14" y="7" width="3" height="3" rx="0.5" />
+                <rect x="7" y="14" width="3" height="3" rx="0.5" />
+                <path d="M14 14h1M14 17h1M17 14h1M17 17h1" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">PIN <span>*</span></label>
+          <div class="input-wrapper">
+            <input id="pinInput" type="password" class="minimal-input" placeholder="Enter PIN on card" />
+            <button class="input-suffix-btn" type="button" aria-label="Toggle PIN visibility" id="pinToggleBtn">
+              <iconify-icon icon="solar:eye-bold" width="18"></iconify-icon>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn-primary" type="button">View card</button>
+      </div>
+
+      <footer class="public-footer">
+        <div>© 2024 - VLINKPAY</div>
+        <div class="store-badges">
+          <a href="#" class="store-badge">
+            <img src="https://developer.android.com/images/brand/en_app_rgb_wo_60.png" alt="Get it on Google Play">
+          </a>
+          <a href="#" class="store-badge">
+            <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+              alt="Download on the App Store">
+          </a>
+        </div>
+      </footer>
+    </main>
+  </div>
+  <!-- ── Modal: Scan QR ────────────────────────────────── -->
+  <div id="modal-scan-qr" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">Scan QR Code</span>
+        <div class="close-btn" onclick="closeModal('modal-scan-qr')">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="scanner-container">
+          <div class="scanner-frame">
+            <div class="scanner-line"></div>
+            <iconify-icon icon="solar:qr-code-bold-duotone" width="120"
+              style="opacity: 0.1; color: var(--grey-900);"></iconify-icon>
+          </div>
+          <div class="scanner-text">Position the QR code within the frame to scan automatically</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const pinInput = document.getElementById('pinInput');
+      const toggleBtn = document.getElementById('pinToggleBtn');
+      if (!pinInput || !toggleBtn) return;
+      toggleBtn.addEventListener('click', function () {
+        const icon = toggleBtn.querySelector('iconify-icon');
+        const isHidden = pinInput.type === 'password';
+        pinInput.type = isHidden ? 'text' : 'password';
+        if (icon) {
+          icon.setAttribute('icon', isHidden ? 'solar:eye-closed-outline' : 'solar:eye-bold');
+        }
+      });
+    })();
+
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.display = 'flex';
+
+      // Simulate scan: after 2s, close scan modal and fill card number back in main modal
+      if (id === 'modal-scan-qr') {
+        setTimeout(() => {
+          closeModal('modal-scan-qr');
+          const cardInput = document.getElementById('card-number-input');
+          if (cardInput) {
+            cardInput.value = '8888 1234 5678 1234';
+          }
+        }, 2000);
+      }
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.display = 'none';
+    }
+  </script>
+</body>
+
+</html>

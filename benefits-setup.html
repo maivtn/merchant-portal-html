@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@5/dist/tippy.css">
   <script src="global.js" defer></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
@@ -1494,7 +1495,7 @@
             <span class="vb-detail-label vb-detail-label-with-tip">
               Rollover Type
               <span class="label-tooltip"
-                title="Reset: Any unused balance or usage count will expire at the end of the cycle, and the system will restore the original allocated amount for the new cycle. Rollover: Any unused balance or usage count will be carried forward and added to the next cycle."
+                data-tippy-content="Reset: Any unused balance or usage count will expire at the end of the cycle, and the system will restore the original allocated amount for the new cycle. Rollover: Any unused balance or usage count will be carried forward and added to the next cycle."
                 aria-label="More info">
                 <iconify-icon icon="mdi:information-outline" width="14" height="14"></iconify-icon>
               </span>
@@ -1581,7 +1582,7 @@
             <label class="form-label form-label-with-tip">
               Rollover Type
               <span class="label-tooltip"
-                title="Reset: Any unused balance or usage count will expire at the end of the cycle, and the system will restore the original allocated amount for the new cycle. Rollover: Any unused balance or usage count will be carried forward and added to the next cycle."
+                data-tippy-content="Reset: Any unused balance or usage count will expire at the end of the cycle, and the system will restore the original allocated amount for the new cycle. Rollover: Any unused balance or usage count will be carried forward and added to the next cycle."
                 aria-label="More info">
                 <iconify-icon icon="mdi:information-outline" width="16" height="16"></iconify-icon>
               </span>
@@ -1614,6 +1615,7 @@
     </div>
   </div>
 
+  <script src="https://unpkg.com/tippy.js@5/dist/tippy-bundle.umd.min.js"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   <script>
     /* ═══════════════════════════════════════════════════════
@@ -2145,8 +2147,17 @@
 
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
+    /* Init tooltips (Tippy.js) for .label-tooltip */
+    function initTooltips() {
+      if (typeof tippy === 'undefined') return;
+      document.querySelectorAll('.label-tooltip').forEach(el => {
+        const content = el.getAttribute('data-tippy-content');
+        if (content) tippy(el, { content, maxWidth: 380, delay: [100, 0], placement: 'top' });
+      });
+    }
+
     /* Init */
-    document.addEventListener('DOMContentLoaded', () => { render(); lucide.createIcons(); });
+    document.addEventListener('DOMContentLoaded', () => { render(); lucide.createIcons(); initTooltips(); });
   </script>
 </body>
 

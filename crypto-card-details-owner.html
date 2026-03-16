@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="global.js" defer></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <style>
@@ -734,28 +735,40 @@
             width: 28px;
             height: 28px;
             border-radius: 999px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            font-weight: 700;
-            color: #fff;
+            overflow: hidden;
+            font-size: 0;
+            /* hide text, use image instead */
+            background-color: #f4f6f8;
         }
 
-        .coin-btc {
-            background: #F7931A;
+        .coin-icon::before {
+            content: "";
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: block;
         }
 
-        .coin-eth {
-            background: #627EEA;
+        .coin-btc::before {
+            background-image: url("https://s2.coinmarketcap.com/static/img/coins/64x64/1.png");
         }
 
-        .coin-usdt {
-            background: #26A17B;
+        .coin-eth::before {
+            background-image: url("https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png");
         }
 
-        .coin-vrc {
-            background: #00A76F;
+        .coin-usdt::before {
+            background-image: url("https://s2.coinmarketcap.com/static/img/coins/64x64/825.png");
+        }
+
+        .coin-vrc::before {
+            background-image: url("https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/Vlinkpay.png");
         }
 
         .icon-select-text {
@@ -840,6 +853,89 @@
             background: rgba(0, 167, 111, 0.08);
             font-size: 11px;
             font-weight: 600;
+        }
+
+        /* Change PIN modal */
+        .change-pin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 4px;
+        }
+
+        .change-pin-input {
+            width: 100%;
+            height: 44px;
+            padding: 0 12px;
+            border-radius: 10px;
+            border: 1px solid var(--grey-300);
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: 0.2s;
+            box-sizing: border-box;
+        }
+
+        .change-pin-input:focus {
+            border-color: var(--primary-main);
+            box-shadow: 0 0 0 2px rgba(0, 167, 111, 0.08);
+        }
+
+        .pin-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .pin-input-wrapper .change-pin-input {
+            padding-right: 40px;
+        }
+
+        .change-pin-footer {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-secondary {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--grey-300);
+            background: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            min-width: 110px;
+            text-align: center;
+        }
+
+        .btn-primary-rounded {
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--primary-main);
+            background: var(--primary-main);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            min-width: 130px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 167, 111, 0.24);
+        }
+
+        .pin-eye-btn {
+            border: none;
+            background: none;
+            padding: 0;
+            cursor: pointer;
+            color: var(--grey-600);
+            display: inline-flex;
+            align-items: center;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .qr-modal-content {
@@ -2212,73 +2308,81 @@
                                 </div>
                             </div>
                         </div>
-                        <div>
 
-                            <!-- Right Column: Information -->
-                            <div class="product-info-column">
-                                <div class="details-header">
-                                    <div class="product-info-header">
-                                        <h1>Crypto card</h1>
-                                        <span id="cryptoStatusBadge" class="status-badge status-completed"
-                                            style="margin-top: 4px; text-transform: capitalize;">Unlocked</span>
-                                    </div>
-                                    <div class="price-tag">
-                                        <span class="label" style="letter-spacing: 0.08em;">BALANCE</span>
-                                        <span class="amount">$200</span>
-                                    </div>
+
+                        <!-- Right Column: Information -->
+                        <div class="product-info-column">
+                            <div class="details-header">
+                                <div class="product-info-header">
+                                    <h1>Crypto card</h1>
+                                    <!-- <span id="cryptoStatusBadge" class="status-badge status-completed"
+                                        style="margin-top: 4px; text-transform: capitalize;">Unlocked</span> -->
                                 </div>
+                                <div class="price-tag">
+                                    <span class="label" style="letter-spacing: 0.08em;">BALANCE</span>
+                                    <span class="amount">$200</span>
+                                </div>
+                            </div>
 
-                                <div class="grid-info">
-                                    <div class="info-item">
-                                        <span class="info-label">Card Number</span>
-                                        <span class="info-value" style="font-family: monospace;">
-                                            <span id="ownerCardNumberMasked">1234 **** **** 1234</span>
-                                            <span id="ownerCardNumberFull" style="display:none;">1234 5678 9012
-                                                3456</span>
-                                            <button type="button" id="toggleOwnerCardNumber"
-                                                style="border:none;background:none;padding:0;margin-left:6px;cursor:pointer;vertical-align:middle;">
-                                                <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
-                                            </button>
-                                        </span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="info-label">PIN</span>
-                                        <span class="info-value">
-                                            <span id="ownerPinMasked">***</span>
-                                            <span id="ownerPinFull" style="display:none;">1234</span>
-                                            <button type="button" id="toggleOwnerPin"
-                                                style="border:none;background:none;padding:0;margin-left:6px;cursor:pointer;vertical-align:middle;">
-                                                <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
-                                            </button>
-                                        </span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="info-label">Card Holder Name</span>
-                                        <span class="info-value">CARLOTA MONTEIRO</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="info-label">Phone Number</span>
-                                        <span class="info-value">+1 (408) 555-1234</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="info-label">Email</span>
-                                        <span class="info-value">carlota.monteiro@vlinkpay.com</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="info-label">Issued Date</span>
-                                        <span class="info-value">Jun 15, 2024</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="info-label">Received Via</span>
-                                        <span class="info-value">SMS</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="info-label">Phone Number</span>
-                                        <span class="info-value">+1 (408) 555-1234</span>
-                                    </div>
+                            <div class="grid-info">
+                                <div class="info-item">
+                                    <span class="info-label">Card Number</span>
+                                    <span class="info-value" style="font-family: monospace;">
+                                        <span id="ownerCardNumberMasked">1234 **** **** 1234</span>
+                                        <span id="ownerCardNumberFull" style="display:none;">1234 5678 9012
+                                            3456</span>
+                                        <button type="button" id="toggleOwnerCardNumber"
+                                            style="border:none;background:none;padding:0;margin-left:6px;cursor:pointer;vertical-align:middle;">
+                                            <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+                                        </button>
+                                    </span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">PIN
+                                        <button type="button"
+                                            onclick="document.getElementById('modal-change-pin').style.display='flex'"
+                                            style="border:none;background:none;padding:0;margin-left:4px;cursor:pointer;color:var(--primary-main);font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
+                                            <iconify-icon icon="solar:key-bold" width="14"></iconify-icon>
+                                            <span>Change PIN</span>
+                                        </button>
+                                    </span>
+
+                                    <span class="info-value">
+                                        <span id="ownerPinMasked">***</span>
+                                        <span id="ownerPinFull" style="display:none;">1234</span>
+                                        <button type="button" id="toggleOwnerPin"
+                                            style="border:none;background:none;padding:0;margin-left:6px;cursor:pointer;vertical-align:middle;">
+                                            <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+                                        </button>
+                                    </span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Card Holder Name</span>
+                                    <span class="info-value">CARLOTA MONTEIRO</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Phone Number</span>
+                                    <span class="info-value">+1 (408) 555-1234</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Email</span>
+                                    <span class="info-value">carlota.monteiro@vlinkpay.com</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Issued Date</span>
+                                    <span class="info-value">Jun 15, 2024</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Received Via</span>
+                                    <span class="info-value">SMS</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Phone Number</span>
+                                    <span class="info-value">+1 (408) 555-1234</span>
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                     <!-- Assets Section -->
@@ -2624,6 +2728,7 @@
                                     <option value="">All Actions</option>
                                     <option value="created">Created</option>
                                     <option value="updated">Updated</option>
+                                    <option value="change-pin">Đổi mã PIN</option>
                                 </select>
                                 <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
                             </div>
@@ -2845,7 +2950,59 @@
             </div>
         </div>
     </div>
-
+    <!-- Change PIN Modal -->
+    <div id="modal-change-pin" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">Change PIN</span>
+                <div class="close-btn" onclick="closeModal('modal-change-pin')">
+                    <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form class="change-pin-form" onsubmit="event.preventDefault(); saveChangePin();">
+                    <div class="form-group">
+                        <label class="form-label">Current PIN</label>
+                        <div class="pin-input-wrapper">
+                            <input type="password" maxlength="6" class="change-pin-input" id="currentPinInput"
+                                placeholder="Enter current PIN">
+                            <button type="button" class="pin-eye-btn"
+                                onclick="togglePinVisibility('currentPinInput', this)">
+                                <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">New PIN</label>
+                        <div class="pin-input-wrapper">
+                            <input type="password" maxlength="6" class="change-pin-input" id="newPinInput"
+                                placeholder="Enter new PIN">
+                            <button type="button" class="pin-eye-btn"
+                                onclick="togglePinVisibility('newPinInput', this)">
+                                <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm New PIN</label>
+                        <div class="pin-input-wrapper">
+                            <input type="password" maxlength="6" class="change-pin-input" id="confirmNewPinInput"
+                                placeholder="Confirm New PIN">
+                            <button type="button" class="pin-eye-btn"
+                                onclick="togglePinVisibility('confirmNewPinInput', this)">
+                                <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="change-pin-footer">
+                        <button type="button" class="btn-secondary"
+                            onclick="closeModal('modal-change-pin')">Cancel</button>
+                        <button type="submit" class="btn-primary-rounded">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- Receive Modal (copied from crypto-payment.html) -->
     <div id="modal-show-wallet" class="modal-overlay">
         <div class="modal-content">
@@ -2854,6 +3011,7 @@
                 <div class="close-btn" onclick="closeModal('modal-show-wallet')">
                     <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
                 </div>
+
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -3147,6 +3305,72 @@
                 window.copyToClipboard(text, 'Address copied!');
             } else if (navigator.clipboard) {
                 navigator.clipboard.writeText(text).catch(() => { });
+            }
+        }
+
+        function saveChangePin() {
+            var currentPin = (document.getElementById('currentPinInput') || {}).value || '';
+            var newPin = (document.getElementById('newPinInput') || {}).value || '';
+            var confirmPin = (document.getElementById('confirmNewPinInput') || {}).value || '';
+            if (!currentPin || !newPin || !confirmPin) {
+                alert('Please fill in all PIN fields.');
+                return;
+            }
+            if (newPin !== confirmPin) {
+                alert('New PIN and confirmation do not match.');
+                return;
+            }
+
+            if (typeof Swal === 'undefined') {
+                // Fallback if SweetAlert2 is not loaded
+                alert('PIN changed successfully (demo).');
+                closeModal('modal-change-pin');
+                return;
+            }
+
+            Swal.fire({
+                title: 'Enter OTP',
+                text: 'We sent a 4-digit code to your phone.',
+                input: 'text',
+                inputAttributes: {
+                    maxlength: 4,
+                    inputmode: 'numeric',
+                    autocomplete: 'one-time-code'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Verify',
+                cancelButtonText: 'Cancel',
+                allowOutsideClick: () => !Swal.isLoading(),
+                preConfirm: function (value) {
+                    if (!/^[0-9]{4}$/.test((value || '').trim())) {
+                        Swal.showValidationMessage('Please enter a valid 4-digit OTP.');
+                        return false;
+                    }
+                    return value.trim();
+                }
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    // TODO: verify OTP with backend here
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'PIN updated',
+                        text: 'Your PIN has been changed successfully.',
+                        timer: 1800,
+                        showConfirmButton: false
+                    });
+                    closeModal('modal-change-pin');
+                }
+            });
+        }
+
+        function togglePinVisibility(inputId, btn) {
+            var input = document.getElementById(inputId);
+            if (!input) return;
+            var icon = btn.querySelector('iconify-icon');
+            var isHidden = input.type === 'password';
+            input.type = isHidden ? 'text' : 'password';
+            if (icon) {
+                icon.setAttribute('icon', isHidden ? 'solar:eye-closed-outline' : 'solar:eye-bold');
             }
         }
 

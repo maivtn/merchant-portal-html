@@ -2262,7 +2262,6 @@
                 <div class="brand-preview" id="brandPreview" style="display:none;">
                   <img id="brandPreviewImg" src="" alt="Brand logo" />
                 </div>
-                <div class="section-label" style="margin-bottom:10px;">Style Tags</div>
                 <div class="style-tags" id="styleTags">
                   <button class="style-tag active" onclick="toggleStyleTag(this)">Luxury Gold</button>
                   <button class="style-tag" onclick="toggleStyleTag(this)">Minimalist</button>
@@ -2713,15 +2712,15 @@ Please present this card before payment.</textarea>
        STEP 1 — PACKAGE NAME
     ═══════════════════════════════════════════════════════ */
     function selectName(name, btn) {
-      document.querySelectorAll('.step-block:nth-child(1) .preset-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#step1Body .preset-btn').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
       document.getElementById('customNameInput').value = '';
       state.name = name;
       updatePreview();
     }
     function onCustomName(input) {
-      document.querySelectorAll('.step-block:nth-child(1) .preset-btn').forEach(b => b.classList.remove('active'));
-      state.name = input.value || 'PACKAGE';
+      document.querySelectorAll('#step1Body .preset-btn').forEach(b => b.classList.remove('active'));
+      state.name = input.value.trim() ? input.value.trim().toUpperCase() : 'PACKAGE';
       updatePreview();
     }
 
@@ -2819,17 +2818,35 @@ Please present this card before payment.</textarea>
     /* ═══════════════════════════════════════════════════════
        DESIGN COLLECTION
     ═══════════════════════════════════════════════════════ */
+    function getContrastColor(hex) {
+      if (!hex || typeof hex !== 'string') return '#fff';
+      const h = hex.replace(/^#/, '');
+      if (h.length !== 6) return '#fff';
+      const r = parseInt(h.slice(0, 2), 16) / 255;
+      const g = parseInt(h.slice(2, 4), 16) / 255;
+      const b = parseInt(h.slice(4, 6), 16) / 255;
+      const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+      return luminance > 0.5 ? '#161c24' : '#fff';
+    }
     function selectCardColor(idx, el) {
       document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
       if (el) el.classList.add('active');
       state.cardBg = DESIGN_COLORS[idx].bg;
       const card = document.getElementById('pkgCard');
       card.style.setProperty('--pkg-brand-color', DESIGN_COLORS[idx].card);
+      resetTextColorsToAuto();
     }
     function applyCustomCardColor(hex) {
       document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
       state.cardBg = hex;
       document.getElementById('pkgCard').style.setProperty('--pkg-brand-color', hex);
+      resetTextColorsToAuto();
+    }
+    function resetTextColorsToAuto() {
+      state.textColors = { name: 'auto', price: 'auto', other: 'auto' };
+      document.querySelectorAll('.tc-dot[data-color="auto"]').forEach(d => d.classList.add('active'));
+      document.querySelectorAll('.tc-dot:not([data-color="auto"])').forEach(d => d.classList.remove('active'));
+      applyTextColors();
     }
 
     /* ─── TEXT COLORS ─── */
@@ -2842,12 +2859,15 @@ Please present this card before payment.</textarea>
       applyTextColors();
     }
     function applyTextColors() {
+      const card = document.getElementById('pkgCard');
+      const brandColor = card ? getComputedStyle(card).getPropertyValue('--pkg-brand-color').trim() || '#101828' : '#101828';
+      const autoColor = getContrastColor(brandColor);
       const name = document.getElementById('previewName');
       const price = document.getElementById('previewPrice');
-      const otherEls = document.querySelectorAll('.pkg-benefit-item');
-      if (name) name.style.color = state.textColors.name === 'auto' ? '' : state.textColors.name;
-      if (price) price.style.color = state.textColors.price === 'auto' ? '' : state.textColors.price;
-      otherEls.forEach(el => el.style.color = state.textColors.other === 'auto' ? '' : state.textColors.other);
+      const otherEls = document.querySelectorAll('.pkg-benefit-item, #previewBenCount');
+      if (name) name.style.color = state.textColors.name === 'auto' ? autoColor : state.textColors.name;
+      if (price) price.style.color = state.textColors.price === 'auto' ? autoColor : state.textColors.price;
+      otherEls.forEach(el => { if (el) el.style.color = state.textColors.other === 'auto' ? autoColor : state.textColors.other; });
     }
 
     /* ─── MOST POPULAR ─── */
@@ -3096,16 +3116,6 @@ Please present this card before payment.</textarea>
     }
     function toggleStyleTag(btn) {
       btn.classList.toggle('active');
-      updateAiDescription();
-    }
-    function updateAiDescription() {
-      const activeTags = [...document.querySelectorAll('.style-tag.active')].map(b => b.textContent.trim());
-      const ta = document.getElementById('aiDescription');
-      if (ta && !ta.value) {
-        ta.placeholder = activeTags.length > 0
-          ? 'Style: ' + activeTags.join(', ') + '. Describe your logo idea...'
-          : 'Describe your logo idea (e.g. elegant spa brand, gold & black theme, minimalist style)...';
-      }
     }
     function onLogoUpload(input) {
       if (!input.files || !input.files[0]) return;

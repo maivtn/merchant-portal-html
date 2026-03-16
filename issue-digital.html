@@ -4643,7 +4643,15 @@ Please present this card before payment.</textarea>
           if (!bdayVal) {
             birthdayInput.style.borderColor = '#ff5630';
             birthdayInput.focus();
-            alert('Please enter Birthday when Birthday Gift benefit is selected.');
+            if (typeof Swal !== 'undefined') {
+              Swal.fire({
+                icon: 'warning',
+                title: 'Birthday required',
+                text: 'Please enter Birthday when Birthday Gift benefit is selected.'
+              });
+            } else {
+              alert('Please enter Birthday when Birthday Gift benefit is selected.');
+            }
             setTimeout(() => { birthdayInput.style.borderColor = ''; }, 3000);
             return;
           }
@@ -4657,7 +4665,15 @@ Please present this card before payment.</textarea>
           return v && !isNaN(parseFloat(v)) && parseFloat(v) > 0;
         });
         if (!hasAmount) {
-          alert('Please select at least one crypto asset and enter an amount before creating.');
+          if (typeof Swal !== 'undefined') {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Missing crypto amount',
+              text: 'Please select at least one crypto asset and enter an amount before creating.'
+            });
+          } else {
+            alert('Please select at least one crypto asset and enter an amount before creating.');
+          }
           return;
         }
 
@@ -4719,7 +4735,17 @@ Please present this card before payment.</textarea>
         });
         return;
       }
-      alert('✅ Confirm Issuance — API call would happen here');
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Confirm Issuance',
+          text: 'Issuance request would be sent to API here.',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      } else {
+        alert('✅ Confirm Issuance — API call would happen here');
+      }
     }
     function saveDraft() {
       if (typeof Swal === 'undefined') {

@@ -29,7 +29,7 @@
       type: 'group', label: 'Gift & Voucher Management',
       icon: 'solar:folder-with-files-bold-duotone', iconWidth: 26,
       children: [
-        { label: 'My Purchase',        href: 'my-purchase.html',               relatedPages: ['order-details.html', 'order-history.html'] },
+        { label: 'My Cards',        href: 'my-purchase.html',               relatedPages: ['order-details.html', 'order-history.html'] },
         { label: 'Merchant Map',       href: '#' },
         { label: 'Product Management', href: 'product-list.html',              relatedPages: ['gift-card-details.html', 'voucher-details.html', 'issue-card.html', 'issue-digital.html', 'issue-digital-details.html', 'issue-digital-membership-details.html', 'product-history.html'] },
         { label: 'VlinkPay Store',     href: 'digital-gifts-management.html' },

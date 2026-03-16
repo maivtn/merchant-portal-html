@@ -179,6 +179,103 @@
       }
       .field-root { flex-shrink: 1 !important; }
     }
+
+    /* Crypto card: list / grid view toggle */
+    .view-mode-toggle {
+      display: flex;
+      gap: 6px;
+      margin-left: auto;
+    }
+    .view-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid var(--grey-300);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--grey-600);
+      transition: 0.2s;
+    }
+    .view-btn:hover {
+      border-color: var(--grey-600);
+      color: var(--grey-900);
+    }
+    .view-btn.active {
+      border-color: var(--primary-main);
+      background: rgba(0, 167, 111, 0.08);
+      color: var(--primary-main);
+    }
+    .crypto-view-list { display: block; }
+    .crypto-view-grid { display: none; }
+    #crypto-card.view-mode-grid .crypto-view-list { display: none; }
+    #crypto-card.view-mode-grid .crypto-view-grid { display: block; }
+    .crypto-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      padding: 24px;
+    }
+    .crypto-card-item {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: var(--shadow-z1);
+      overflow: hidden;
+      border: 1px solid var(--grey-200);
+      transition: 0.2s;
+    }
+    .crypto-card-item:hover {
+      box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+    }
+    .crypto-card-item a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .crypto-card-item-img {
+      aspect-ratio: 1.586/1;
+      background: var(--grey-100);
+      position: relative;
+      overflow: hidden;
+    }
+    .crypto-card-item-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .crypto-card-item-info {
+      padding: 16px;
+    }
+    .crypto-card-item-info .product-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--grey-900);
+      margin-bottom: 4px;
+    }
+    .crypto-card-item-info .balance {
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--primary-main);
+    }
+    .crypto-card-item-info .meta {
+      font-size: 12px;
+      color: var(--grey-600);
+      margin-top: 8px;
+    }
+    .crypto-card-item-info .view-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-main);
+    }
+    @media (max-width: 767px) {
+      .crypto-cards-grid { grid-template-columns: 1fr; padding: 16px; }
+    }
   </style>
 </head>
 
@@ -219,7 +316,7 @@
       </a>
 
       <div class="submenu">
-        <a href="my-purchase.html" class="sub-item active"><span class="dot"></span>My Cards</a>
+        <a href="my-cards.html" class="sub-item active"><span class="dot"></span>My Cards</a>
         <a href="#" class="sub-item "><span class="dot"></span>Merchant Map</a>
         <a href="product-list.html" class="sub-item "><span class="dot"></span>Product Management</a>
 
@@ -314,12 +411,14 @@
 
     <div class="card">
       <div class="tabs-header">
-        <div class="tab-item active" onclick="switchTab(event, 'order-list')">Order List</div>
-        <div class="tab-item" onclick="switchTab(event, 'transaction-history')">Card Transaction History</div>
+        <div class="tab-item active" onclick="switchTab(event, 'vlinkpay-platform')">VlinkPay Platform</div>
+        <div class="tab-item" onclick="switchTab(event, 'in-store')">In-store</div>
+        <div class="tab-item" onclick="switchTab(event, 'crypto-card')">Crypto card</div>
+        <div class="tab-item" onclick="switchTab(event, 'membership-package')">Membership package</div>
       </div>
 
-      <!-- Tab: Order List -->
-      <div id="order-list" class="tab-pane active">
+      <!-- Tab: VlinkPay Platform -->
+      <div id="vlinkpay-platform" class="tab-pane active">
         <div class="table-toolbar">
           <div class="field-root search-field">
             <div class="field-container">
@@ -410,45 +509,15 @@
         </div>
       </div>
 
-      <!-- Tab: Transaction History -->
-      <div id="transaction-history" class="tab-pane">
+      <!-- Tab: In-store -->
+      <div id="in-store" class="tab-pane">
         <div class="table-toolbar">
           <div class="field-root search-field">
             <div class="field-container">
               <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
-              <input type="text" class="field-input" placeholder="Search card number or ID..." />
+              <input type="text" class="field-input" placeholder="Search Order ID, card number..." />
             </div>
           </div>
-
-          <!-- Transaction Type Filter -->
-          <div class="field-root select-field" style="width: 160px;">
-            <label class="field-label">Type</label>
-            <div class="field-container">
-              <select class="field-input" style="padding: 0 12px; appearance: none; width: 100%;">
-                <option value="redeem" selected>Redeem</option>
-                <option value="topup">Top-up</option>
-                <option value="refund">Refund</option>
-              </select>
-              <iconify-icon icon="eva:chevron-down-fill"
-                style="right: 12px; position: absolute; pointer-events: none;"></iconify-icon>
-            </div>
-          </div>
-
-          <!-- Status Filter -->
-          <div class="field-root select-field" style="width: 160px;">
-            <label class="field-label">Status</label>
-            <div class="field-container">
-              <select class="field-input" style="padding: 0 12px; appearance: none; width: 100%;">
-                <option value="">All Statuses</option>
-                <option value="completed">Completed</option>
-                <option value="pending">Pending</option>
-                <option value="failed">Failed</option>
-              </select>
-              <iconify-icon icon="eva:chevron-down-fill"
-                style="right: 12px; position: absolute; pointer-events: none;"></iconify-icon>
-            </div>
-          </div>
-
           <div class="field-root date-field">
             <label class="field-label">Start date</label>
             <div class="field-container">
@@ -464,83 +533,156 @@
             </div>
           </div>
         </div>
-
         <div class="table-container">
-          <table class="minimal-table" style="min-width: 2000px;">
+          <table class="minimal-table">
             <thead>
               <tr>
-                <th>Transaction ID</th>
-                <th>Card Number</th>
-                <th>Tran. Type</th>
-                <th class="text-right">Tran. Amount</th>
-                <th>Currency</th>
-                <th class="text-right">Balance <br /> Before</th>
-                <th class="text-right">Balance <br /> After</th>
-                <th>Transaction Date</th>
-                <th>Merchant ID</th>
-                <th>Merchant Name</th>
-                <th>Order ID</th>
-                <th>Reference Code</th>
+                <th>Card ID</th>
+                <th>Purchase Date</th>
                 <th>Status</th>
-                <th>Description</th>
-                <th>Failure Reason</th>
-                <th>Created By</th>
+                <th class="text-right">Amount</th>
+                <th>Merchant</th>
+                <th>Expiry</th>
+                <th class="text-right">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style="font-weight: 700">TXN-550291</td>
-                <td>8829 **** **** 3456</td>
-                <td>Redeem</td>
-                <td class="text-right" style="font-weight: 700">$50.00</td>
-                <td>USD</td>
-                <td class="text-right">$500.00</td>
-                <td class="text-right">$450.00</td>
-                <td>Jan 14, 2026 10:05 AM</td>
-                <td>MER-991</td>
-                <td>Tech Haven Store</td>
-                <td>ORD-882915</td>
-                <td>REF123456</td>
-                <td><span class="status-badge status-completed">Completed</span></td>
-                <td>Coffee Purchase</td>
-                <td>-</td>
-                <td>System</td>
+                <td colspan="7" class="text-center" style="padding: 48px; color: var(--grey-500);">No in-store cards yet.</td>
               </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Crypto card -->
+      <div id="crypto-card" class="tab-pane">
+        <div class="table-toolbar">
+          <div class="field-root search-field">
+            <div class="field-container">
+              <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
+              <input type="text" class="field-input" placeholder="Search card number, wallet..." />
+            </div>
+          </div>
+          <div class="field-root date-field">
+            <label class="field-label">Start date</label>
+            <div class="field-container">
+              <input type="text" class="field-input" placeholder="Pick a date" />
+              <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
+            </div>
+          </div>
+          <div class="field-root date-field">
+            <label class="field-label">End date</label>
+            <div class="field-container">
+              <input type="text" class="field-input" placeholder="Pick a date" />
+              <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
+            </div>
+          </div>
+          <div class="view-mode-toggle">
+            <button type="button" class="view-btn active" id="cryptoViewListBtn" title="List view">
+              <iconify-icon icon="solar:list-bold" width="20"></iconify-icon>
+            </button>
+            <button type="button" class="view-btn" id="cryptoViewGridBtn" title="Card view">
+              <iconify-icon icon="solar:widget-5-bold" width="20"></iconify-icon>
+            </button>
+          </div>
+        </div>
+        <div class="crypto-view-list">
+          <div class="table-container">
+            <table class="minimal-table">
+              <thead>
+                <tr>
+                  <th>Card Numbers</th>
+                  <th>Product Name</th>
+                  <th>Merchant Name</th>
+                  <th class="text-right">Amount</th>
+                  <th class="text-right">Balance</th>
+                  <th>Currency</th>
+                  <th>Card Lock</th>
+                  <th>Expiry Date</th>
+                  <th>Issue By</th>
+                  <th class="text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>8829 **** **** 3456</td>
+                  <td>Crypto Gift Card</td>
+                  <td>Tech Haven Store</td>
+                  <td class="text-right" style="font-weight: 700;">$100.00</td>
+                  <td class="text-right" style="font-weight: 700;">$75.50</td>
+                  <td>USD</td>
+                  <td><span class="status-badge status-completed">Unlocked</span></td>
+                  <td>Jan 14, 2027</td>
+                  <td>carlota@gmail.com</td>
+                  <td class="text-right">
+                    <a href="crypto-card-details.html" style="color: inherit;" title="View">
+                      <iconify-icon icon="solar:eye-bold" style="color: var(--primary-main); cursor: pointer"></iconify-icon>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="crypto-view-grid">
+          <div class="crypto-cards-grid">
+            <div class="crypto-card-item">
+              <a href="crypto-card-details.html">
+                <div class="crypto-card-item-img">
+                  <img src="cryptocard-front.png" alt="Crypto Card" />
+                </div>
+                <div class="crypto-card-item-info">
+                  <div class="product-name">Crypto Gift Card</div>
+                  <div class="balance">$75.50</div>
+                  <div class="meta">8829 **** **** 3456 · Tech Haven Store</div>
+                  <span class="view-link">View <iconify-icon icon="solar:arrow-right-bold" width="16"></iconify-icon></span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Membership package -->
+      <div id="membership-package" class="tab-pane">
+        <div class="table-toolbar">
+          <div class="field-root search-field">
+            <div class="field-container">
+              <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
+              <input type="text" class="field-input" placeholder="Search package name, member ID..." />
+            </div>
+          </div>
+          <div class="field-root date-field">
+            <label class="field-label">Start date</label>
+            <div class="field-container">
+              <input type="text" class="field-input" placeholder="Pick a date" />
+              <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
+            </div>
+          </div>
+          <div class="field-root date-field">
+            <label class="field-label">End date</label>
+            <div class="field-container">
+              <input type="text" class="field-input" placeholder="Pick a date" />
+              <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
+            </div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="minimal-table">
+            <thead>
               <tr>
-                <td style="font-weight: 700">TXN-550293</td>
-                <td>5521 **** **** 7734</td>
-                <td>Redeem</td>
-                <td class="text-right" style="font-weight: 700">$25.00</td>
-                <td>USD</td>
-                <td class="text-right">$100.50</td>
-                <td class="text-right">$75.50</td>
-                <td>Jan 14, 2026 01:45 PM</td>
-                <td>MER-991</td>
-                <td>Tech Haven Store</td>
-                <td>ORD-882916</td>
-                <td>REF123457</td>
-                <td><span class="status-badge status-completed">Completed</span></td>
-                <td>Bakery Items</td>
-                <td>-</td>
-                <td>System</td>
+                <th>Package</th>
+                <th>Member</th>
+                <th>Status</th>
+                <th>Start Date</th>
+                <th>Expiry</th>
+                <th class="text-right">Action</th>
               </tr>
+            </thead>
+            <tbody>
               <tr>
-                <td style="font-weight: 700">TXN-550295</td>
-                <td>9901 **** **** 2345</td>
-                <td>Redeem</td>
-                <td class="text-right" style="font-weight: 700">$120.00</td>
-                <td>USD</td>
-                <td class="text-right">$200.00</td>
-                <td class="text-right">$80.00</td>
-                <td>Jan 15, 2026 09:30 AM</td>
-                <td>MER-102</td>
-                <td>Luxury Nail Spa</td>
-                <td>ORD-882920</td>
-                <td>REF123458</td>
-                <td><span class="status-badge status-failed">Failed</span></td>
-                <td>Spa Package</td>
-                <td>Insufficient <br /> Balance</td>
-                <td>carlota@gmail.com</td>
+                <td colspan="6" class="text-center" style="padding: 48px; color: var(--grey-500);">No membership packages yet.</td>
               </tr>
             </tbody>
           </table>
@@ -579,6 +721,24 @@
       event.currentTarget.classList.add('active');
       document.getElementById(tabId).classList.add('active');
     }
+
+    // Crypto card: list / grid view toggle
+    (function () {
+      var pane = document.getElementById('crypto-card');
+      var listBtn = document.getElementById('cryptoViewListBtn');
+      var gridBtn = document.getElementById('cryptoViewGridBtn');
+      if (!pane || !listBtn || !gridBtn) return;
+      listBtn.addEventListener('click', function () {
+        listBtn.classList.add('active');
+        gridBtn.classList.remove('active');
+        pane.classList.remove('view-mode-grid');
+      });
+      gridBtn.addEventListener('click', function () {
+        gridBtn.classList.add('active');
+        listBtn.classList.remove('active');
+        pane.classList.add('view-mode-grid');
+      });
+    })();
   </script>
 </body>
 

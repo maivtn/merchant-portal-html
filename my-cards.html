@@ -108,6 +108,36 @@
       border-bottom: 1px dashed var(--grey-200);
     }
 
+    .toolbar-row-mobile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1 1 auto;
+    }
+
+    .toolbar-row-mobile .search-field {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .toolbar-filter-btn {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1px solid #dfe3e8;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      color: #212b36;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      height: 36px;
+    }
+
     .field-root {
       position: relative;
       flex-shrink: 0;
@@ -169,6 +199,19 @@
         flex-shrink: 1 !important;
         min-width: 0 !important;
         width: 100% !important;
+      }
+
+      .table-toolbar .date-field {
+        display: none;
+      }
+
+      .toolbar-filter-btn {
+        display: flex;
+      }
+
+      .view-mode-toggle {
+        margin-left: 0;
+        justify-content: flex-end;
       }
 
       .select-field {
@@ -602,11 +645,17 @@
       <!-- Tab: Crypto card -->
       <div id="crypto-card" class="tab-pane active">
         <div class="table-toolbar">
-          <div class="field-root search-field">
-            <div class="field-container">
-              <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
-              <input type="text" class="field-input" placeholder="Search card number, wallet..." />
+          <div class="toolbar-row-mobile">
+            <div class="field-root search-field">
+              <div class="field-container">
+                <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
+                <input type="text" class="field-input" placeholder="Search card number, wallet..." />
+              </div>
             </div>
+            <button type="button" class="toolbar-filter-btn">
+              <iconify-icon icon="solar:filter-bold-duotone" width="18"></iconify-icon>
+              <span>Filter</span>
+            </button>
           </div>
           <div class="field-root date-field">
             <label class="field-label">Start date</label>
@@ -659,8 +708,8 @@
                   <td><span class="status-badge status-completed">Unlocked</span></td>
                   <td>Jan 14, 2027</td>
                   <td>carlota@gmail.com</td>
-                <td class="text-right">
-                  <a href="crypto-card-details-owner.html" style="color: inherit;" title="View">
+                  <td class="text-right">
+                    <a href="crypto-card-details-owner.html" style="color: inherit;" title="View">
                       <iconify-icon icon="solar:eye-bold"
                         style="color: var(--primary-main); cursor: pointer"></iconify-icon>
                     </a>
@@ -741,7 +790,8 @@
                 <td>membership@elitefitness.com</td>
                 <td class="text-right">
                   <a href="membership-package-details.html" style="color: inherit;" title="View">
-                    <iconify-icon icon="solar:eye-bold" style="color: var(--primary-main); cursor: pointer"></iconify-icon>
+                    <iconify-icon icon="solar:eye-bold"
+                      style="color: var(--primary-main); cursor: pointer"></iconify-icon>
                   </a>
                 </td>
               </tr>
@@ -752,7 +802,7 @@
 
       <div class="pagination">
         <div class="pagination-rows">
-          Rows per page:
+          <span>Rows per page:</span>
           <select class="pagination-select">
             <option>5</option>
             <option selected>10</option>

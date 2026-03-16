@@ -4691,7 +4691,7 @@ Please present this card before payment.</textarea>
                 placeholder="PIN " inputmode="numeric" autocomplete="one-time-code" />
               <button type="button" id="swalPinToggle"
                 style="border:none;background:none;position:relative;margin-left:-36px;cursor:pointer;color:#637381;">
-                <iconify-icon icon="solar:eye-bold" width="18"></iconify-icon>
+                <i data-lucide="eye" style="width:18px;height:18px;"></i>
               </button>
             </div>
           `,
@@ -4703,13 +4703,20 @@ Please present this card before payment.</textarea>
             const input = document.getElementById('swalPinInput');
             const btn = document.getElementById('swalPinToggle');
             if (input) input.focus();
+            // render Lucide icons for popup content
+            if (typeof lucide !== 'undefined') {
+              lucide.createIcons();
+            }
             if (btn && input) {
               btn.addEventListener('click', () => {
-                const icon = btn.querySelector('iconify-icon');
                 const isHidden = input.type === 'password';
                 input.type = isHidden ? 'text' : 'password';
+                const icon = btn.querySelector('[data-lucide]');
                 if (icon) {
-                  icon.setAttribute('icon', isHidden ? 'solar:eye-closed-outline' : 'solar:eye-bold');
+                  icon.setAttribute('data-lucide', isHidden ? 'eye-off' : 'eye');
+                  if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                  }
                 }
               });
             }

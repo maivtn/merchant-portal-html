@@ -4,87 +4,166 @@
  */
 
 (function () {
-  'use strict';
+  "use strict";
 
   // ═══════════════════════════════════════════════════════════════════════════
   // SIDEBAR MENU DATA  ← Edit here to update sidebar across ALL pages
   // ═══════════════════════════════════════════════════════════════════════════
   const SIDEBAR_MENU = [
     // ── OVERVIEW ─────────────────────────────────────────────────────────────
-    { type: 'section', label: 'OVERVIEW' },
+    { type: "section", label: "OVERVIEW" },
     {
-      type: 'link', label: 'Homepage',
-      icon: 'solar:home-2-bold-duotone', iconWidth: 24,
-      href: 'https://p2pexchangeatmvlinkpay.tiiny.site'
+      type: "link",
+      label: "Homepage",
+      icon: "solar:home-2-bold-duotone",
+      iconWidth: 24,
+      href: "https://p2pexchangeatmvlinkpay.tiiny.site",
     },
     {
-      type: 'link', label: 'Dashboard',
-      icon: 'solar:widget-bold-duotone', iconWidth: 24,
-      href: 'dashboard.html'
+      type: "link",
+      label: "Dashboard",
+      icon: "solar:widget-bold-duotone",
+      iconWidth: 24,
+      href: "dashboard.html",
     },
 
     // ── GIFT CARD CENTER ──────────────────────────────────────────────────────
-    { type: 'section', label: 'GIFT CARD CENTER' },
+    { type: "section", label: "GIFT CARD CENTER" },
     {
-      type: 'group', label: 'Gift & Voucher Management',
-      icon: 'solar:folder-with-files-bold-duotone', iconWidth: 26,
+      type: "group",
+      label: "Gift & Voucher Management",
+      icon: "solar:folder-with-files-bold-duotone",
+      iconWidth: 26,
       children: [
-        { label: 'My Cards',        href: 'my-purchase.html',               relatedPages: ['order-details.html', 'order-history.html'] },
-        { label: 'Merchant Map',       href: '#' },
-        { label: 'Product Management', href: 'product-list.html',              relatedPages: ['gift-card-details.html', 'voucher-details.html', 'issue-card.html', 'issue-digital.html', 'issue-digital-details.html', 'issue-digital-membership-details.html', 'product-history.html'] },
-        { label: 'VlinkPay Store',     href: 'digital-gifts-management.html' },
-        { label: 'Cancelled Cards',    href: 'cancelled-cards.html',           relatedPages: ['cancelled-card-list.html'] },
-      ]
+        {
+          label: "My Cards",
+          href: "my-cards.html",
+          relatedPages: ["order-details.html", "order-history.html"],
+        },
+        { label: "Merchant Map", href: "#" },
+        {
+          label: "Product Management",
+          href: "product-list.html",
+          relatedPages: [
+            "gift-card-details.html",
+            "voucher-details.html",
+            "issue-card.html",
+            "issue-digital.html",
+            "issue-digital-details.html",
+            "issue-digital-membership-details.html",
+            "product-history.html",
+          ],
+        },
+        { label: "VlinkPay Store", href: "digital-gifts-management.html" },
+        {
+          label: "Cancelled Cards",
+          href: "cancelled-cards.html",
+          relatedPages: ["cancelled-card-list.html"],
+        },
+      ],
     },
     {
-      type: 'link', label: 'Crypto Card Management',
-      icon: 'solar:wallet-bold-duotone', iconWidth: 24,
-      href: 'crypto-card-list.html',
-      relatedPages: ['crypto-card-details.html', 'crypto-card-list-bootstrap.html', 'issue-crypto-card.html']
+      type: "link",
+      label: "Crypto Card Management",
+      icon: "solar:wallet-bold-duotone",
+      iconWidth: 24,
+      href: "crypto-card-list.html",
+      relatedPages: [
+        "crypto-card-details.html",
+        "crypto-card-list-bootstrap.html",
+        "issue-crypto-card.html",
+      ],
     },
     {
-      type: 'link', label: 'Marketing Tools',
-      icon: 'solar:chart-square-bold-duotone', iconWidth: 24,
-      href: 'marketing-tools.html',
-      relatedPages: ['marketing-create.html', 'marketing-edit.html', 'marketing-details.html']
+      type: "link",
+      label: "Marketing Tools",
+      icon: "solar:chart-square-bold-duotone",
+      iconWidth: 24,
+      href: "marketing-tools.html",
+      relatedPages: [
+        "marketing-create.html",
+        "marketing-edit.html",
+        "marketing-details.html",
+      ],
     },
     {
-      type: 'group', label: 'Payment Acceptance',
-      icon: 'solar:dollar-minimalistic-bold-duotone', iconWidth: 24,
+      type: "group",
+      label: "Payment Acceptance",
+      icon: "solar:dollar-minimalistic-bold-duotone",
+      iconWidth: 24,
       children: [
-        { label: 'Pay with Gift Card', href: 'gift-card-payment.html', relatedPages: ['gift-card-payment-box.html'] },
-        { label: 'Pay with Crypto',    href: 'crypto-payment.html',    relatedPages: ['crypto-payment-box.html'] },
-      ]
+        {
+          label: "Pay with Gift Card",
+          href: "gift-card-payment.html",
+          relatedPages: ["gift-card-payment-box.html"],
+        },
+        {
+          label: "Pay with Crypto",
+          href: "crypto-payment.html",
+          relatedPages: ["crypto-payment-box.html"],
+        },
+      ],
     },
     {
-      type: 'group', label: 'Settings',
-      icon: 'solar:settings-bold-duotone', iconWidth: 24,
+      type: "group",
+      label: "Settings",
+      icon: "solar:settings-bold-duotone",
+      iconWidth: 24,
       children: [
-        { label: 'Merchant Payment Setup', href: 'merchant-payment-setup.html' },
-        { label: 'Benefits Setup',         href: 'benefits-setup.html', relatedPages: ['benefit-package-details.html', 'benefit-package-view.html', 'benefit-package-view-active.html', 'create-membership-package.html', 'membership-package-details.html', 'membership-package-details-approved.html'] },
-      ]
+        {
+          label: "Merchant Payment Setup",
+          href: "merchant-payment-setup.html",
+        },
+        {
+          label: "Benefits Setup",
+          href: "benefits-setup.html",
+          relatedPages: [
+            "benefit-package-details.html",
+            "benefit-package-view.html",
+            "benefit-package-view-active.html",
+            "create-membership-package.html",
+            "membership-package-details.html",
+            "membership-package-details-approved.html",
+          ],
+        },
+      ],
     },
     {
-      type: 'group', label: 'Report',
-      icon: 'solar:chart-bold-duotone', iconWidth: 24,
+      type: "group",
+      label: "Report",
+      icon: "solar:chart-bold-duotone",
+      iconWidth: 24,
       children: [
-        { label: 'Sales Orders',      href: 'sales-order-list.html',                   relatedPages: ['sales-order-details.html'] },
-        { label: 'Redeem History',    href: 'card-transaction-history-merchant.html',   relatedPages: ['card-transaction-history.html'] },
-        { label: 'Membership Report', href: 'membership-report.html' },
-      ]
+        {
+          label: "Sales Orders",
+          href: "sales-order-list.html",
+          relatedPages: ["sales-order-details.html"],
+        },
+        {
+          label: "Redeem History",
+          href: "card-transaction-history-merchant.html",
+          relatedPages: ["card-transaction-history.html"],
+        },
+        { label: "Membership Report", href: "membership-report.html" },
+      ],
     },
 
     // ── APPS ──────────────────────────────────────────────────────────────────
-    { type: 'section', label: 'APPS' },
+    { type: "section", label: "APPS" },
     {
-      type: 'link', label: 'Notifications',
-      icon: 'solar:letter-bold-duotone', iconWidth: 24,
-      href: '#', badge: '32+'
+      type: "link",
+      label: "Notifications",
+      icon: "solar:letter-bold-duotone",
+      iconWidth: 24,
+      href: "#",
+      badge: "32+",
     },
     {
-      type: 'link', label: 'AI Assistant',
-      icon: 'solar:chat-round-dots-bold-duotone', iconWidth: 24,
-      href: '#'
+      type: "link",
+      label: "AI Assistant",
+      icon: "solar:chat-round-dots-bold-duotone",
+      iconWidth: 24,
+      href: "#",
     },
   ];
 
@@ -107,7 +186,7 @@
   // ═══════════════════════════════════════════════════════════════════════════
   // INIT
   // ═══════════════════════════════════════════════════════════════════════════
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener("DOMContentLoaded", function () {
     renderSidebarNav();
     injectHamburger();
     injectMobileLogo();
@@ -116,33 +195,42 @@
     bindKeyboard();
     handleResize();
     initDatePlaceholders();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
   });
 
   // ═══════════════════════════════════════════════════════════════════════════
   // RENDER SIDEBAR NAV FROM DATA
   // ═══════════════════════════════════════════════════════════════════════════
   function renderSidebarNav() {
-    const sc = document.querySelector('.sidebar-content');
+    const sc = document.querySelector(".sidebar-content");
     if (!sc) return;
 
     // Determine the current page filename
     // Pages can override this by setting: window.SIDEBAR_ACTIVE_PAGE = 'some-page.html'
-    const curPage = ((window.SIDEBAR_ACTIVE_PAGE ||
-      window.location.pathname.split('/').pop() ||
-      'index.html') + '').toLowerCase().split('?')[0].split('#')[0];
+    const curPage = (
+      (window.SIDEBAR_ACTIVE_PAGE ||
+        window.location.pathname.split("/").pop() ||
+        "index.html") + ""
+    )
+      .toLowerCase()
+      .split("?")[0]
+      .split("#")[0];
 
     // Helper: check if a menu item or any of its relatedPages matches current page
     function isItemActive(item) {
-      const hrefPage = (item.href || '').split('/').pop().toLowerCase();
+      const hrefPage = (item.href || "").split("/").pop().toLowerCase();
       if (hrefPage === curPage) return true;
-      if (item.relatedPages && item.relatedPages.some(p => p.toLowerCase() === curPage)) return true;
+      if (
+        item.relatedPages &&
+        item.relatedPages.some((p) => p.toLowerCase() === curPage)
+      )
+        return true;
       return false;
     }
 
     // Remove all nav-related nodes that were previously in the sidebar HTML
     // (everything from the first .nav-section-title onwards)
-    const firstSection = sc.querySelector('.nav-section-title');
+    const firstSection = sc.querySelector(".nav-section-title");
     if (firstSection) {
       let node = firstSection;
       while (node) {
@@ -153,24 +241,23 @@
     }
 
     // Build and inject nav HTML
-    let html = '';
+    let html = "";
     for (const item of SIDEBAR_MENU) {
-      if (item.type === 'section') {
+      if (item.type === "section") {
         html += `<div class="nav-section-title">${item.label}</div>\n`;
-
-      } else if (item.type === 'link') {
+      } else if (item.type === "link") {
         const active = isItemActive(item);
         const badge = item.badge
-          ? `<span class="badge-outlined">${item.badge}</span>` : '';
-        html += `<a href="${item.href}" class="nav-item${active ? ' active' : ''}">
+          ? `<span class="badge-outlined">${item.badge}</span>`
+          : "";
+        html += `<a href="${item.href}" class="nav-item${active ? " active" : ""}">
           <div class="nav-icon"><iconify-icon icon="${item.icon}" width="${item.iconWidth || 24}"></iconify-icon></div>
           <span>${item.label}</span>${badge}
         </a>\n`;
-
-      } else if (item.type === 'group') {
+      } else if (item.type === "group") {
         // Check if any child (or their relatedPages) matches current page
-        const activeChild = (item.children || []).find(c => isItemActive(c));
-        const parentCls = activeChild ? ' parent-active' : '';
+        const activeChild = (item.children || []).find((c) => isItemActive(c));
+        const parentCls = activeChild ? " parent-active" : "";
 
         html += `<a href="#" class="nav-item${parentCls}">
           <div class="nav-icon"><iconify-icon icon="${item.icon}" width="${item.iconWidth || 24}"></iconify-icon></div>
@@ -178,9 +265,9 @@
         </a>
         <div class="submenu">\n`;
 
-        for (const child of (item.children || [])) {
+        for (const child of item.children || []) {
           const childActive = isItemActive(child);
-          html += `  <a href="${child.href}" class="sub-item${childActive ? ' active' : ''}">
+          html += `  <a href="${child.href}" class="sub-item${childActive ? " active" : ""}">
             <span class="dot"></span>${child.label}
           </a>\n`;
         }
@@ -188,28 +275,28 @@
       }
     }
 
-    sc.insertAdjacentHTML('beforeend', html);
+    sc.insertAdjacentHTML("beforeend", html);
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
   // HAMBURGER BUTTON
   // ═══════════════════════════════════════════════════════════════════════════
   function injectHamburger() {
-    const existing = document.getElementById('hamburgerBtn');
+    const existing = document.getElementById("hamburgerBtn");
     if (existing) {
-      existing.addEventListener('click', toggleSidebar);
+      existing.addEventListener("click", toggleSidebar);
       return;
     }
-    const header = document.querySelector('.top-header');
+    const header = document.querySelector(".top-header");
     if (!header) return;
 
-    const btn = document.createElement('button');
-    btn.id = 'hamburgerBtn';
-    btn.className = 'hamburger-btn';
-    btn.setAttribute('aria-label', 'Toggle navigation');
-    btn.setAttribute('type', 'button');
+    const btn = document.createElement("button");
+    btn.id = "hamburgerBtn";
+    btn.className = "hamburger-btn";
+    btn.setAttribute("aria-label", "Toggle navigation");
+    btn.setAttribute("type", "button");
     btn.innerHTML = HAMBURGER_SVG;
-    btn.addEventListener('click', toggleSidebar);
+    btn.addEventListener("click", toggleSidebar);
     header.insertBefore(btn, header.firstChild);
   }
 
@@ -217,16 +304,17 @@
   // MOBILE LOGO
   // ═══════════════════════════════════════════════════════════════════════════
   function injectMobileLogo() {
-    const header = document.querySelector('.top-header');
-    if (!header || document.getElementById('mobileLogo')) return;
+    const header = document.querySelector(".top-header");
+    if (!header || document.getElementById("mobileLogo")) return;
 
-    const logo = document.createElement('img');
-    logo.id = 'mobileLogo';
-    logo.className = 'mobile-logo';
-    logo.src = 'https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg';
-    logo.alt = 'VLINKPAY';
+    const logo = document.createElement("img");
+    logo.id = "mobileLogo";
+    logo.className = "mobile-logo";
+    logo.src =
+      "https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg";
+    logo.alt = "VLINKPAY";
 
-    const hamburger = document.getElementById('hamburgerBtn');
+    const hamburger = document.getElementById("hamburgerBtn");
     if (hamburger) {
       const parent = hamburger.parentNode;
       // If hamburger is inside the header (directly or via wrapper), insert logo right after it
@@ -243,11 +331,11 @@
   // SIDEBAR OVERLAY
   // ═══════════════════════════════════════════════════════════════════════════
   function injectOverlay() {
-    if (document.getElementById('sidebarOverlay')) return;
-    const overlay = document.createElement('div');
-    overlay.id = 'sidebarOverlay';
-    overlay.className = 'sidebar-overlay';
-    overlay.addEventListener('click', closeSidebar);
+    if (document.getElementById("sidebarOverlay")) return;
+    const overlay = document.createElement("div");
+    overlay.id = "sidebarOverlay";
+    overlay.className = "sidebar-overlay";
+    overlay.addEventListener("click", closeSidebar);
     document.body.appendChild(overlay);
   }
 
@@ -255,17 +343,17 @@
   // SIDEBAR TOGGLE / RESPONSIVE
   // ═══════════════════════════════════════════════════════════════════════════
   function bindNavLinks() {
-    const sidebar = document.querySelector('.sidebar');
+    const sidebar = document.querySelector(".sidebar");
     if (!sidebar) return;
-    sidebar.addEventListener('click', function (e) {
-      const link = e.target.closest('a.nav-item, a.sub-item');
+    sidebar.addEventListener("click", function (e) {
+      const link = e.target.closest("a.nav-item, a.sub-item");
       if (link && window.innerWidth < 1024) closeSidebar();
     });
   }
 
   function bindKeyboard() {
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeSidebar();
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeSidebar();
     });
   }
 
@@ -274,8 +362,8 @@
   }
 
   function toggleSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    if (sidebar && sidebar.classList.contains('open')) {
+    const sidebar = document.querySelector(".sidebar");
+    if (sidebar && sidebar.classList.contains("open")) {
       closeSidebar();
     } else {
       openSidebar();
@@ -283,48 +371,50 @@
   }
 
   function openSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    if (sidebar) sidebar.classList.add('open');
-    if (overlay) overlay.classList.add('open');
-    document.body.classList.add('sidebar-open');
+    const sidebar = document.querySelector(".sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    if (sidebar) sidebar.classList.add("open");
+    if (overlay) overlay.classList.add("open");
+    document.body.classList.add("sidebar-open");
   }
 
   function closeSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    if (sidebar) sidebar.classList.remove('open');
-    if (overlay) overlay.classList.remove('open');
-    document.body.classList.remove('sidebar-open');
+    const sidebar = document.querySelector(".sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    if (sidebar) sidebar.classList.remove("open");
+    if (overlay) overlay.classList.remove("open");
+    document.body.classList.remove("sidebar-open");
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
   // DATE INPUT "PICK A DATE" PLACEHOLDER
   // ═══════════════════════════════════════════════════════════════════════════
   function initDatePlaceholders() {
-    document.querySelectorAll('input[type="date"].field-input').forEach(function (inp) {
-      // Inject placeholder span once
-      var fc = inp.closest('.field-container');
-      if (fc && !fc.querySelector('.date-ph')) {
-        var ph = document.createElement('span');
-        ph.className = 'date-ph';
-        ph.textContent = 'Pick a date';
-        fc.appendChild(ph);
-      }
-
-      // Sync data-empty attribute so CSS can react
-      function sync() {
-        if (inp.value) {
-          inp.removeAttribute('data-empty');
-        } else {
-          inp.setAttribute('data-empty', '');
+    document
+      .querySelectorAll('input[type="date"].field-input')
+      .forEach(function (inp) {
+        // Inject placeholder span once
+        var fc = inp.closest(".field-container");
+        if (fc && !fc.querySelector(".date-ph")) {
+          var ph = document.createElement("span");
+          ph.className = "date-ph";
+          ph.textContent = "Pick a date";
+          fc.appendChild(ph);
         }
-      }
 
-      inp.addEventListener('change', sync);
-      inp.addEventListener('input', sync);
-      sync(); // run on init
-    });
+        // Sync data-empty attribute so CSS can react
+        function sync() {
+          if (inp.value) {
+            inp.removeAttribute("data-empty");
+          } else {
+            inp.setAttribute("data-empty", "");
+          }
+        }
+
+        inp.addEventListener("change", sync);
+        inp.addEventListener("input", sync);
+        sync(); // run on init
+      });
   }
 
   // Also expose so pages that inject date inputs dynamically can re-init
@@ -337,28 +427,44 @@
   //   fmtDateTime('2026-01-15 09:30 AM') → "Jan 15, 2026 09:30 AM"
   // ═══════════════════════════════════════════════════════════════════════════
   function fmtDate(iso) {
-    if (!iso || iso === '—' || iso === '-') return '—';
+    if (!iso || iso === "—" || iso === "-") return "—";
     try {
-      const d = new Date(String(iso).length === 10 ? iso + 'T00:00:00' : iso);
+      const d = new Date(String(iso).length === 10 ? iso + "T00:00:00" : iso);
       if (isNaN(d)) return iso;
-      return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
-    } catch (e) { return iso; }
+      return d.toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      });
+    } catch (e) {
+      return iso;
+    }
   }
 
   function fmtDateTime(iso) {
-    if (!iso || iso === '—' || iso === '-') return '—';
+    if (!iso || iso === "—" || iso === "-") return "—";
     try {
       // Normalise 24h strings like "2026-01-15 14:20:05" → ISO
-      const normalised = String(iso).replace(' ', 'T');
+      const normalised = String(iso).replace(" ", "T");
       const d = new Date(normalised);
       if (isNaN(d)) return iso;
-      const date = d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
-      const time = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-      return date + ' ' + time;
-    } catch (e) { return iso; }
+      const date = d.toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      });
+      const time = d.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+      return date + " " + time;
+    } catch (e) {
+      return iso;
+    }
   }
 
-  window.fmtDate     = fmtDate;
+  window.fmtDate = fmtDate;
   window.fmtDateTime = fmtDateTime;
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -367,49 +473,60 @@
   var _toastTimer = null;
 
   function showCopyToast(label) {
-    label = label || 'Copied to clipboard!';
-    var toast = document.getElementById('copy-toast');
+    label = label || "Copied to clipboard!";
+    var toast = document.getElementById("copy-toast");
     if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'copy-toast';
+      toast = document.createElement("div");
+      toast.id = "copy-toast";
       toast.innerHTML =
         '<span class="toast-check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>' +
         '<span id="copy-toast-msg"></span>';
       document.body.appendChild(toast);
     }
-    document.getElementById('copy-toast-msg').textContent = label;
-    toast.classList.add('show');
+    document.getElementById("copy-toast-msg").textContent = label;
+    toast.classList.add("show");
     if (_toastTimer) clearTimeout(_toastTimer);
-    _toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2200);
+    _toastTimer = setTimeout(function () {
+      toast.classList.remove("show");
+    }, 2200);
   }
 
   function copyToClipboard(text, label) {
-    text = String(text || '').trim();
+    text = String(text || "").trim();
     if (!text) return;
-    var msg = label || 'Copied to clipboard!';
+    var msg = label || "Copied to clipboard!";
     if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(function () {
-        showCopyToast(msg);
-      }).catch(function () { _fallbackCopy(text, msg); });
+      navigator.clipboard
+        .writeText(text)
+        .then(function () {
+          showCopyToast(msg);
+        })
+        .catch(function () {
+          _fallbackCopy(text, msg);
+        });
     } else {
       _fallbackCopy(text, msg);
     }
   }
 
   function _fallbackCopy(text, msg) {
-    var el = document.createElement('textarea');
+    var el = document.createElement("textarea");
     el.value = text;
-    el.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+    el.style.cssText = "position:fixed;top:-9999px;left:-9999px;opacity:0";
     document.body.appendChild(el);
-    el.focus(); el.select();
-    try { document.execCommand('copy'); showCopyToast(msg); } catch (e) {}
+    el.focus();
+    el.select();
+    try {
+      document.execCommand("copy");
+      showCopyToast(msg);
+    } catch (e) {}
     document.body.removeChild(el);
   }
 
-  window.showCopyToast  = showCopyToast;
+  window.showCopyToast = showCopyToast;
   window.copyToClipboard = copyToClipboard;
 
   // Expose to global scope
-  window.toggleSidebar  = toggleSidebar;
-  window.closeSidebar   = closeSidebar;
+  window.toggleSidebar = toggleSidebar;
+  window.closeSidebar = closeSidebar;
 })();

@@ -54,6 +54,61 @@
       object-fit: cover;
     }
 
+    .card-preview-flip {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 200px;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .card-preview-face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+    }
+
+    .card-preview-face.back {
+      opacity: 0;
+    }
+
+    .card-preview-flip.flipped .card-preview-face.front {
+      opacity: 0;
+    }
+
+    .card-preview-flip.flipped .card-preview-face.back {
+      opacity: 1;
+    }
+
+    .card-preview-flip img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-preview-label {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
     .details-header {
       margin-bottom: 24px;
       padding-bottom: 20px;
@@ -127,6 +182,144 @@
       font-size: 14px;
       font-weight: 700;
       color: var(--grey-900);
+    }
+
+    .info-value-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-toggle-visibility {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--grey-500);
+      border-radius: 6px;
+      transition: color 0.2s;
+    }
+
+    .info-toggle-visibility:hover {
+      color: var(--grey-800);
+    }
+
+    /* Section card (collapsible) + Benefits grid — from membership-package-details */
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: var(--shadow-z1);
+      padding: 24px 28px;
+      margin-bottom: 20px;
+    }
+
+    .section-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 9px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 18px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .section-title svg {
+      color: var(--grey-600);
+    }
+
+    .section-title .section-chevron {
+      flex-shrink: 0;
+      color: var(--grey-600);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+
+    .section-title .section-chevron svg {
+      display: block;
+      width: 20px;
+      height: 20px;
+    }
+
+    .section-card.collapsed .section-chevron {
+      transform: rotate(180deg);
+    }
+
+    .section-card.collapsed .section-body {
+      display: none;
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .benefit-item-card {
+      background: var(--grey-100);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    .benefit-item-hd {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 6px;
+    }
+
+    .benefit-item-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .benefit-item-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey-900);
+    }
+
+    .benefit-item-value {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary-main);
+      line-height: 1.1;
+    }
+
+    .benefit-item-used {
+      font-size: 12px;
+      color: var(--grey-600);
+      font-weight: 500;
+      margin-top: 6px;
+    }
+
+    .terms-text {
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--grey-600);
+    }
+
+    .am-button--qrcode .am-button-icon {
+      box-shadow: 0px 4px 6px 0px #fae8ff, 0px 2px 4px 0px #fae8ff;
+      background-image: linear-gradient(135deg, #fae8ff 0%, #fdf2f8 100%);
     }
 
     .term-section {
@@ -695,6 +888,15 @@
         max-width: 500px;
         margin: 0 auto;
       }
+
+      .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .section-card {
+        padding: 22px 20px;
+      }
     }
 
     @media (max-width: 768px) {
@@ -761,6 +963,34 @@
       .action-buttons {
         gap: 8px;
       }
+
+      .benefits-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .benefit-item-card {
+        padding: 12px 14px;
+      }
+
+      .benefit-item-value {
+        font-size: 18px;
+      }
+
+      .section-card {
+        padding: 16px 14px;
+        margin-bottom: 16px;
+      }
+
+      .section-title {
+        font-size: 14px;
+        margin-bottom: 14px;
+      }
+
+      .terms-text {
+        font-size: 12px;
+        line-height: 1.7;
+      }
     }
 
     @media (max-width: 480px) {
@@ -802,6 +1032,39 @@
       td {
         padding: 12px 16px;
       }
+
+      .section-card {
+        padding: 14px 12px;
+        margin-bottom: 12px;
+      }
+
+      .section-title {
+        font-size: 13px;
+        margin-bottom: 12px;
+      }
+
+      .benefit-item-card {
+        padding: 12px;
+      }
+
+      .benefit-item-name {
+        font-size: 12px;
+      }
+
+      .benefit-item-value {
+        font-size: 16px;
+      }
+    }
+
+    .section-card,
+    .benefits-grid {
+      box-sizing: border-box;
+    }
+
+    .benefit-item-value,
+    .terms-text {
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
   </style>
 </head>
@@ -810,7 +1073,8 @@
   <aside class="sidebar">
     <div class="sidebar-content">
       <div class="logo">
-        <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLINKPAY" class="sidebar-logo" />
+        <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLINKPAY"
+          class="sidebar-logo" />
       </div>
 
       <div class="user-card">
@@ -850,7 +1114,7 @@
 
         <a href="digital-gifts-management.html" class="sub-item "><span class="dot"></span>VlinkPay Store</a>
         <a href="cancelled-cards.html" class="sub-item"><span class="dot"></span>Cancelled Cards</a>
-      </div>      <a href="crypto-card-list.html" class="nav-item">
+      </div> <a href="crypto-card-list.html" class="nav-item">
         <div class="nav-icon"><iconify-icon icon="solar:wallet-bold-duotone" width="24"></iconify-icon></div>
         <span>Crypto Card Management</span>
       </a>
@@ -909,15 +1173,16 @@
 
   <header class="top-header">
     <div class="header-left">
-      <button class="hamburger hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <button class="hamburger hamburger-btn" id="hamburgerBtn"
+        aria-label="Toggle menu"><span></span><span></span><span></span></button>
     </div>
     <div class="header-right">
-    <div class="header-info">Jan 14, 2026 10:05:32 AM (UTC)</div>
-    <div class="header-icons">
-      <div class="header-icon-btn">
-        <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
+      <div class="header-info">Jan 14, 2026 10:05:32 AM (UTC)</div>
+      <div class="header-icons">
+        <div class="header-icon-btn">
+          <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
+        </div>
       </div>
-    </div>
     </div>
   </header>
 
@@ -949,37 +1214,129 @@
       <div id="card-info" class="tab-content active">
         <div class="details-card">
           <div class="action-buttons" style="margin-bottom: 24px;">
-            <div style="display: flex; gap: 12px; justify-content: end;">
-              <button class="btn-action btn-outlined-primary">
-                <iconify-icon icon="solar:chat-round-dots-bold" width="20"></iconify-icon>
-                Send SMS
-              </button>
-              <a href="product-history.html" style="text-decoration: none;">
-                <button class="btn-action btn-outlined-primary">
-                  <iconify-icon icon="solar:history-bold" width="20"></iconify-icon>
-                  History
-                </button>
-              </a>
-              <button class="btn-action btn-outlined-primary">
-                <iconify-icon icon="solar:letter-bold" width="20"></iconify-icon>
-                Send Email
-              </button>
-
-              <button class="btn-action btn-outlined-primary">
-                <iconify-icon icon="solar:printer-bold" width="20"></iconify-icon>
-                Print
-              </button>
-              <button class="btn-action btn-outlined-primary">
-                <iconify-icon icon="solar:download-bold" width="20"></iconify-icon>
-                Download
-              </button>
+            <div class="am-menu" style="width: 100%;">
+              <div class="am-button am-button--sms">
+                <div class="am-button-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" preserveAspectRatio="none">
+                    <g id="Icon">
+                      <path
+                        d="M17.5 12.5C17.5 12.942 17.3244 13.366 17.0118 13.6785C16.6993 13.9911 16.2754 14.1667 15.8333 14.1667H5.83333L2.5 17.5V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H15.8333C16.2754 2.5 16.6993 2.67559 17.0118 2.98816C17.3244 3.30072 17.5 3.72464 17.5 4.16667V12.5Z"
+                        stroke="#7F22FE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                    </g>
+                  </svg>
+                </div>
+                <div class="am-button-label">Send SMS</div>
+              </div>
+              <div class="am-button am-button--email">
+                <div class="am-button-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" preserveAspectRatio="none">
+                    <g id="Icon">
+                      <path
+                        d="M16.6667 3.33333H3.33333C2.41286 3.33333 1.66667 4.07953 1.66667 5V15C1.66667 15.9205 2.41286 16.6667 3.33333 16.6667H16.6667C17.5871 16.6667 18.3333 15.9205 18.3333 15V5C18.3333 4.07953 17.5871 3.33333 16.6667 3.33333Z"
+                        stroke="#0084D1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                      <path
+                        d="M18.3333 5.83333L10.8583 10.5833C10.6011 10.7445 10.3036 10.83 10 10.83C9.6964 10.83 9.39894 10.7445 9.14167 10.5833L1.66667 5.83333"
+                        stroke="#0084D1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                    </g>
+                  </svg>
+                </div>
+                <div class="am-button-label">Send Email</div>
+              </div>
+              <div class="am-button am-button--print">
+                <div class="am-button-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" preserveAspectRatio="none">
+                    <g clip-path="url(#clip0_imd_print)" id="Icon">
+                      <path
+                        d="M5 15H3.33333C2.89131 15 2.46738 14.8244 2.15482 14.5118C1.84226 14.1993 1.66667 13.7754 1.66667 13.3333V9.16667C1.66667 8.72464 1.84226 8.30072 2.15482 7.98816C2.46738 7.6756 2.89131 7.5 3.33333 7.5H16.6667C17.1087 7.5 17.5326 7.6756 17.8452 7.98816C18.1577 8.30072 18.3333 8.72464 18.3333 9.16667V13.3333C18.3333 13.7754 18.1577 14.1993 17.8452 14.5118C17.5326 14.8244 17.1087 15 16.6667 15H15"
+                        stroke="#E17100" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                      <path
+                        d="M5 7.5V2.5C5 2.27899 5.0878 2.06702 5.24408 1.91074C5.40036 1.75446 5.61232 1.66667 5.83333 1.66667H14.1667C14.3877 1.66667 14.5996 1.75446 14.7559 1.91074C14.9122 2.06702 15 2.27899 15 2.5V7.5"
+                        stroke="#E17100" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                      <path
+                        d="M14.1667 11.6667H5.83333C5.3731 11.6667 5 12.0398 5 12.5V17.5C5 17.9602 5.3731 18.3333 5.83333 18.3333H14.1667C14.6269 18.3333 15 17.9602 15 17.5V12.5C15 12.0398 14.6269 11.6667 14.1667 11.6667Z"
+                        stroke="#E17100" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_imd_print">
+                        <rect fill="white" width="20" height="20" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+                <div class="am-button-label">Print</div>
+              </div>
+              <div class="am-button am-button--download">
+                <div class="am-button-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" preserveAspectRatio="none">
+                    <g id="Icon">
+                      <path
+                        d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5"
+                        stroke="#009966" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                      <path d="M5.83333 8.33333L10 12.5L14.1667 8.33333" stroke="#009966" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="1.5" />
+                      <path d="M10 12.5V2.5" stroke="#009966" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="1.5" />
+                    </g>
+                  </svg>
+                </div>
+                <div class="am-button-label">Download</div>
+              </div>
+              <div class="am-button am-button--qrcode" onclick="openQrModal()">
+                <div class="am-button-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" preserveAspectRatio="none">
+                    <g id="Icon">
+                      <path
+                        d="M5.83333 2.5H3.33333C2.8731 2.5 2.5 2.8731 2.5 3.33333V5.83333C2.5 6.29357 2.8731 6.66667 3.33333 6.66667H5.83333C6.29357 6.66667 6.66667 6.29357 6.66667 5.83333V3.33333C6.66667 2.8731 6.29357 2.5 5.83333 2.5Z"
+                        stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                      <path
+                        d="M16.6667 2.5H14.1667C13.7064 2.5 13.3333 2.8731 13.3333 3.33333V5.83333C13.3333 6.29357 13.7064 6.66667 14.1667 6.66667H16.6667C17.1269 6.66667 17.5 6.29357 17.5 5.83333V3.33333C17.5 2.8731 17.1269 2.5 16.6667 2.5Z"
+                        stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                      <path
+                        d="M5.83333 13.3333H3.33333C2.8731 13.3333 2.5 13.7064 2.5 14.1667V16.6667C2.5 17.1269 2.8731 17.5 3.33333 17.5H5.83333C6.29357 17.5 6.66667 17.1269 6.66667 16.6667V14.1667C6.66667 13.7064 6.29357 13.3333 5.83333 13.3333Z"
+                        stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                      <path
+                        d="M17.5 13.3333H15C14.558 13.3333 14.134 13.5089 13.8215 13.8215C13.5089 14.134 13.3333 14.558 13.3333 15V17.5"
+                        stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                      <path d="M17.5 17.5V17.5083" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="1.5" />
+                      <path
+                        d="M10 5.83333V8.33333C10 8.77536 9.82441 9.19928 9.51184 9.51184C9.19928 9.82441 8.77536 10 8.33333 10H5.83333"
+                        stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                      <path d="M2.5 10H2.50833" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="1.5" />
+                      <path d="M10 2.5H10.0083" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="1.5" />
+                      <path d="M10 13.3333V13.3417" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="1.5" />
+                      <path d="M13.3333 10H14.1667" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="1.5" />
+                      <path d="M17.5 10V10.0083" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="1.5" />
+                      <path d="M10 17.5V16.6667" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="1.5" />
+                    </g>
+                  </svg>
+                </div>
+                <div class="am-button-label">View QR</div>
+              </div>
             </div>
           </div>
           <div class="product-main-layout">
             <!-- Left Column: Visual & Actions -->
             <div class="product-visual-column">
               <div class="product-card-visual-large">
-                <img src="https://i.ibb.co/tMr10Cyz/download-7.png" alt="Luxury Nail Spa Card">
+                <div class="card-preview-flip" id="membershipPreviewFlip" onclick="toggleMembershipPreviewFlip()">
+                  <div class="card-preview-face front">
+                    <img src="membershipcard.png" alt="Membership Card Front">
+                  </div>
+                  <div class="card-preview-face back">
+                    <img src="membershipcard-back.png" alt="Membership Card Back">
+                  </div>
+                  <div class="card-preview-label">
+                    <iconify-icon icon="solar:refresh-bold" width="14"></iconify-icon>
+                    Tap to flip
+                  </div>
+                </div>
               </div>
               <div class="action-buttons">
                 <div class="switch-wrapper card-lock-hidden" style="padding: 8px 0; background: none;">
@@ -1004,8 +1361,8 @@
 
                 <div class="details-header">
                   <div class="product-info-header">
+                    <h1>Membership Card</h1>
                     <span class="status-badge status-active" style="margin-bottom: 8px;">Approved</span>
-                    <h1>Membership Card Details</h1>
                   </div>
                   <div class="price-tag">
                     <span class="label">Amount</span>
@@ -1016,23 +1373,27 @@
                 <div class="grid-info">
                   <div class="info-item">
                     <span class="info-label">Card Number</span>
-                    <span class="info-value">5819 **** **** 3456</span>
+                    <span class="info-value-wrap">
+                      <span class="info-value" id="cardNumberValue">1234 **** **** 1234</span>
+                      <button type="button" class="info-toggle-visibility" onclick="toggleCardNumber()"
+                        aria-label="Show/hide card number" title="Show/hide">
+                        <iconify-icon icon="solar:eye-bold" width="18" id="cardNumberEyeIcon"></iconify-icon>
+                      </button>
+                    </span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">PIN</span>
-                    <span class="info-value">***</span>
+                    <span class="info-value-wrap">
+                      <span class="info-value" id="pinValue">***</span>
+                      <button type="button" class="info-toggle-visibility" onclick="togglePin()"
+                        aria-label="Show/hide PIN" title="Show/hide">
+                        <iconify-icon icon="solar:eye-bold" width="18" id="pinEyeIcon"></iconify-icon>
+                      </button>
+                    </span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Card Holder Name</span>
                     <span class="info-value">CARLOTA MONTEIRO</span>
-                  </div>
-                  <!-- <div class="info-item">
-                    <span class="info-label">Current Balance</span>
-                    <span class="info-value" style="color: #00A76F;">$200.00</span>
-                  </div> -->
-                  <div class="info-item">
-                    <span class="info-label">Expiration Date</span>
-                    <span class="info-value">Jan 10, 2027</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Received Via</span>
@@ -1051,107 +1412,98 @@
             </div>
           </div>
 
-          <div class="term-section">
-            <div class="term-title">
-              <iconify-icon icon="solar:gift-bold-duotone" width="22" style="color: var(--grey-600);"></iconify-icon>
-              Membership Benefits
+          <!-- BENEFITS SECTION (from membership-package-details) -->
+          <div class="section-card" id="sectionBenefits">
+            <div class="section-title" onclick="toggleSection('sectionBenefits')">
+              <span style="display:flex;align-items:center;gap:9px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 12 20 22 4 22 4 12" />
+                  <rect x="2" y="7" width="20" height="5" />
+                  <line x1="12" y1="22" x2="12" y2="7" />
+                  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+                </svg>
+                Benefits
+              </span>
+              <span class="section-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="18 15 12 9 6 15" />
+                </svg></span>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px;">
-              <!-- CREDIT / MONTH -->
-              <div style="padding: 12px; background: var(--grey-100); border-radius: 8px;">
-                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
-                  <iconify-icon icon="solar:dollar-bold" width="16" style="color: var(--primary-main);"></iconify-icon>
-                  <span style="font-size: 13px; font-weight: 600; color: var(--grey-900);">Monthly Credit</span>
+            <div class="section-body">
+              <div class="benefits-grid">
+                <div class="benefit-item-card">
+                  <div class="benefit-item-hd">
+                    <div class="benefit-item-icon" style="background:#c8fae5;color:#00a76f;">$</div>
+                    <span class="benefit-item-name">Monthly Credit</span>
+                  </div>
+                  <div class="benefit-item-value">$25</div>
+                  <div class="benefit-item-used">Used times: 0</div>
                 </div>
-                <div style="font-size: 18px; font-weight: 700; color: var(--primary-main); margin-bottom: 8px;">$20<span
-                    style="font-size: 11px; color: var(--grey-600); font-weight: 500; margin-left: 4px;">/month</span>
+                <div class="benefit-item-card">
+                  <div class="benefit-item-hd">
+                    <div class="benefit-item-icon" style="background:#c8fae5;color:#00a76f;">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <polyline points="23 4 23 10 17 10" />
+                        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                      </svg>
+                    </div>
+                    <span class="benefit-item-name">Cashback</span>
+                  </div>
+                  <div class="benefit-item-value">12%</div>
+                  <div class="benefit-item-used">Used times: 0</div>
                 </div>
-                <div style="font-size: 12px; color: var(--grey-600);">Used times: <span
-                    style="font-weight: 600; color: var(--grey-900);">3</span></div>
-              </div>
-
-              <!-- CASHBACK % -->
-              <div style="padding: 12px; background: var(--grey-100); border-radius: 8px;">
-                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
-                  <iconify-icon icon="solar:refresh-bold" width="16" style="color: var(--primary-main);"></iconify-icon>
-                  <span style="font-size: 13px; font-weight: 600; color: var(--grey-900);">Cashback</span>
+                <div class="benefit-item-card">
+                  <div class="benefit-item-hd">
+                    <div class="benefit-item-icon" style="background:#e0d4ff;color:#7c3aed;">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <polyline points="20 12 20 22 4 22 4 12" />
+                        <rect x="2" y="7" width="20" height="5" />
+                        <line x1="12" y1="22" x2="12" y2="7" />
+                        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+                      </svg>
+                    </div>
+                    <span class="benefit-item-name">Birthday Voucher Gift</span>
+                  </div>
+                  <div class="benefit-item-value">$50</div>
+                  <div class="benefit-item-used">Used times: 0</div>
                 </div>
-                <div style="font-size: 18px; font-weight: 700; color: var(--primary-main); margin-bottom: 8px;">5%<span
-                    style="font-size: 11px; color: var(--grey-600); font-weight: 500; margin-left: 4px;">on
-                    purchases</span></div>
-                <div style="font-size: 12px; color: var(--grey-600);">Used times: <span
-                    style="font-weight: 600; color: var(--grey-900);">12</span></div>
-              </div>
-
-              <!-- DISCOUNT % -->
-              <div style="padding: 12px; background: var(--grey-100); border-radius: 8px;">
-                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
-                  <iconify-icon icon="solar:tag-bold" width="16" style="color: var(--primary-main);"></iconify-icon>
-                  <span style="font-size: 13px; font-weight: 600; color: var(--grey-900);">Discount</span>
-                </div>
-                <div style="font-size: 18px; font-weight: 700; color: var(--primary-main); margin-bottom: 8px;">10%<span
-                    style="font-size: 11px; color: var(--grey-600); font-weight: 500; margin-left: 4px;">off
-                    services</span></div>
-                <div style="font-size: 12px; color: var(--grey-600);">Used times: <span
-                    style="font-weight: 600; color: var(--grey-900);">8</span></div>
-              </div>
-
-              <!-- BIRTHDAY GIFT -->
-              <div style="padding: 12px; background: var(--grey-100); border-radius: 8px;">
-                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
-                  <iconify-icon icon="solar:gift-bold" width="16" style="color: var(--primary-main);"></iconify-icon>
-                  <span style="font-size: 13px; font-weight: 600; color: var(--grey-900);">Birthday Gift</span>
-                </div>
-                <div style="font-size: 18px; font-weight: 700; color: var(--primary-main); margin-bottom: 8px;">$50<span
-                    style="font-size: 11px; color: var(--grey-600); font-weight: 500; margin-left: 4px;">voucher</span>
-                </div>
-                <div style="font-size: 12px; color: var(--grey-600);">Used times: <span
-                    style="font-weight: 600; color: var(--grey-900);">1</span></div>
-              </div>
-
-              <!-- GROUP DISCOUNT -->
-              <div style="padding: 12px; background: var(--grey-100); border-radius: 8px;">
-                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
-                  <iconify-icon icon="solar:users-group-rounded-bold" width="16"
-                    style="color: var(--primary-main);"></iconify-icon>
-                  <span style="font-size: 13px; font-weight: 600; color: var(--grey-900);">Group Discount</span>
-                </div>
-                <div style="font-size: 18px; font-weight: 700; color: var(--primary-main); margin-bottom: 8px;">5%<span
-                    style="font-size: 11px; color: var(--grey-600); font-weight: 500; margin-left: 4px;">for 3+
-                    people</span></div>
-                <div style="font-size: 12px; color: var(--grey-600);">Used times: <span
-                    style="font-weight: 600; color: var(--grey-900);">2</span></div>
-              </div>
-
-              <!-- FREE LOUNGE -->
-              <div style="padding: 12px; background: var(--grey-100); border-radius: 8px;">
-                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
-                  <iconify-icon icon="solar:sofa-bold" width="16" style="color: var(--primary-main);"></iconify-icon>
-                  <span style="font-size: 13px; font-weight: 600; color: var(--grey-900);">Lounge Access</span>
-                </div>
-                <div style="font-size: 18px; font-weight: 700; color: var(--primary-main); margin-bottom: 8px;">
-                  Unlimited<span
-                    style="font-size: 11px; color: var(--grey-600); font-weight: 500; margin-left: 4px;">access</span>
-                </div>
-                <div style="font-size: 12px; color: var(--grey-600);">Used times: <span
-                    style="font-weight: 600; color: var(--grey-900);">15</span></div>
               </div>
             </div>
           </div>
 
-          <div class="term-section" style="margin-top: 24px;">
-            <div class="term-title">
-              <iconify-icon icon="solar:document-text-bold-duotone" width="22"
-                style="color: var(--grey-600);"></iconify-icon>
-              Membership Terms & Conditions
+          <!-- TERMS & CONDITIONS (from membership-package-details) -->
+          <div class="section-card" id="sectionTerms">
+            <div class="section-title" onclick="toggleSection('sectionTerms')">
+              <span style="display:flex;align-items:center;gap:9px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                  <polyline points="10 9 9 9 8 9" />
+                </svg>
+                Terms &amp; Conditions
+              </span>
+              <span class="section-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="18 15 12 9 6 15" />
+                </svg></span>
             </div>
-            <div class="term-content">
-              1. This Premium Gold Membership is valid for one year from the enrollment date.
-              2. Members enjoy exclusive benefits including monthly credits, cashback, and discounts.
-              3. Membership benefits cannot be transferred or exchanged for cash.
-              4. Please present your membership card or digital ID for all transactions.
-              5. Cashback and credits will be automatically applied to your VLINKPAY wallet.
-              6. Membership auto-renews annually unless cancelled 30 days prior to expiration.
+            <div class="section-body">
+              <p class="terms-text">
+                1. This SILVER Package is valid for one year from the enrollment date.<br>
+                2. Members enjoy exclusive benefits including monthly credits, cashback, and birthday gifts.<br>
+                3. Package benefits cannot be transferred or exchanged for cash.<br>
+                4. Please present your membership card or digital ID for all transactions.<br>
+                5. Cashback and credits will be automatically applied to your VLINKPAY wallet.<br>
+                6. Package auto-renews annually unless cancelled 30 days prior to expiration.
+              </p>
             </div>
           </div>
         </div>
@@ -1496,6 +1848,31 @@
     </div>
   </div>
 
+  <!-- QR Code Modal -->
+  <div id="qrModal" class="modal-overlay" onclick="if(event.target===this) closeQrModal()">
+    <div class="modal-content" style="max-width: 360px; text-align: center;">
+      <div class="modal-header">
+        <h2 class="modal-title">Membership QR Code</h2>
+        <p class="modal-subtitle">Scan to view card details</p>
+        <button type="button" class="modal-close" onclick="closeQrModal()" aria-label="Close"
+          style="position: absolute; top: 16px; right: 16px; background: none; border: none; cursor: pointer; padding: 4px; color: var(--grey-600);">
+          <iconify-icon icon="solar:close-circle-bold" width="24"></iconify-icon>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 24px;">
+        <div id="qrCodePlaceholder"
+          style="width: 200px; height: 200px; margin: 0 auto 16px; background: #fff; border: 2px solid var(--grey-200); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+          <iconify-icon icon="solar:qr-code-bold" width="120" height="120"
+            style="color: var(--grey-400);"></iconify-icon>
+        </div>
+        <p style="font-size: 13px; color: var(--grey-600);">Card: 1234 **** **** 1234</p>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn modal-btn-cancel" onclick="closeQrModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const CURRENT_BALANCE = 200.00; // This would come from your backend/data
 
@@ -1521,6 +1898,13 @@
 
     function closeReloadModal() {
       document.getElementById('reloadModal').classList.remove('active');
+    }
+
+    function openQrModal() {
+      document.getElementById('qrModal').classList.add('active');
+    }
+    function closeQrModal() {
+      document.getElementById('qrModal').classList.remove('active');
     }
 
     function confirmReload() {
@@ -1556,6 +1940,11 @@
         closeReloadModal();
       }
     });
+    document.getElementById('qrModal').addEventListener('click', function (e) {
+      if (e.target === this) {
+        closeQrModal();
+      }
+    });
 
     // Benefits Modal Functions
     function openBenefitsModal() {
@@ -1572,6 +1961,48 @@
         closeBenefitsModal();
       }
     });
+
+    function toggleCardNumber() {
+      const el = document.getElementById('cardNumberValue');
+      const icon = document.getElementById('cardNumberEyeIcon');
+      if (!el || !icon) return;
+      if (el.dataset.visible === '1') {
+        el.textContent = '1234 **** **** 1234';
+        el.dataset.visible = '0';
+        icon.setAttribute('icon', 'solar:eye-bold');
+      } else {
+        el.textContent = '1234 5678 9012 1234';
+        el.dataset.visible = '1';
+        icon.setAttribute('icon', 'solar:eye-closed-bold');
+      }
+    }
+
+    function togglePin() {
+      const el = document.getElementById('pinValue');
+      const icon = document.getElementById('pinEyeIcon');
+      if (!el || !icon) return;
+      if (el.dataset.visible === '1') {
+        el.textContent = '***';
+        el.dataset.visible = '0';
+        icon.setAttribute('icon', 'solar:eye-bold');
+      } else {
+        el.textContent = '1234';
+        el.dataset.visible = '1';
+        icon.setAttribute('icon', 'solar:eye-closed-bold');
+      }
+    }
+
+    function toggleSection(sectionId) {
+      const el = document.getElementById(sectionId);
+      if (el) el.classList.toggle('collapsed');
+    }
+    window.toggleSection = toggleSection;
+
+    function toggleMembershipPreviewFlip() {
+      const el = document.getElementById('membershipPreviewFlip');
+      if (el) el.classList.toggle('flipped');
+    }
+    window.toggleMembershipPreviewFlip = toggleMembershipPreviewFlip;
 
     function switchTab(tabId) {
       // Remove active class from all tabs and contents

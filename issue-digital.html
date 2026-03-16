@@ -73,8 +73,14 @@
     }
 
     .date-input-icon {
+      display: none; /* Ẩn icon calendar phía trước, chỉ giữ icon phía sau */
+    }
+
+    .date-input-icon-end {
       position: absolute;
-      left: 10px;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
       width: 15px;
       height: 15px;
       color: var(--c-text-3);
@@ -83,7 +89,7 @@
     }
 
     .date-has-icon {
-      padding-left: 32px !important;
+      padding-left: 12px !important;
       width: 100%;
     }
 
@@ -1880,6 +1886,23 @@
       padding: 0 10px;
     }
 
+    .mb-select-wrap .ts-control .item {
+      display: inline-flex;
+      align-items: center;
+      margin: 4px 4px 4px 0;
+    }
+
+    .mb-select-wrap .ts-control .mb-item-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
     .mb-select-wrap .ts-control:focus-within {
       border-color: var(--c-primary);
       box-shadow: 0 0 0 3px rgba(0, 171, 85, 0.10);
@@ -3078,6 +3101,7 @@
                         <line x1="18" y1="6" x2="6" y2="18" />
                         <line x1="6" y1="6" x2="18" y2="18" />
                       </svg></button>
+                    <i data-lucide="calendar" class="date-input-icon-end"></i>
                   </div>
                 </div>
               </div>
@@ -3116,6 +3140,7 @@
                         <line x1="18" y1="6" x2="6" y2="18" />
                         <line x1="6" y1="6" x2="18" y2="18" />
                       </svg></button>
+                    <i data-lucide="calendar" class="date-input-icon-end"></i>
                   </div>
                 </span>
               </div>
@@ -3968,6 +3993,7 @@ Please present this card before payment.</textarea>
 
       // Birthday: only for Membership
       if (birthdayField) birthdayField.style.display = isMembership ? '' : 'none';
+      if (isMembership) syncBirthdayRequired();
 
       if (isCrypto) {
         if (step2Title) step2Title.textContent = 'Recipient Information';
@@ -4278,8 +4304,7 @@ Please present this card before payment.</textarea>
             const b = benefitMap[data.value];
             if (!b) return escape(data.text);
             return '<div class="item">' +
-              '<span class="mb-opt-icon" style="background:' + escape(b.iconBg) + ';color:' + escape(b.iconColor) + '">' + escape(b.icon) + '</span>' +
-              escape(b.name) + ' (' + escape(b.unit) + ')' +
+              '<span class="mb-opt-icon mb-item-icon" style="background:' + escape(b.iconBg) + ';color:' + escape(b.iconColor) + '">' + escape(b.icon) + '</span>' +
               '</div>';
           }
         },
@@ -4289,6 +4314,7 @@ Please present this card before payment.</textarea>
           next.forEach(id => { if (!mbSelected[id]) mbSelected[id] = ''; });
           prev.forEach(id => { if (!next.includes(id)) delete mbSelected[id]; });
           renderMbCards();
+          syncBirthdayRequired();
         }
       });
       renderMbCards();
@@ -4298,6 +4324,17 @@ Please present this card before payment.</textarea>
       delete mbSelected[id];
       if (mbTomSelect) mbTomSelect.removeItem(id);
       renderMbCards();
+      syncBirthdayRequired();
+    }
+
+    function syncBirthdayRequired() {
+      const birthdayInput = document.getElementById('holderBirthday');
+      const birthdayField = document.getElementById('birthdayField');
+      if (!birthdayInput || !birthdayField || birthdayField.style.display === 'none') return;
+      const ids = mbTomSelect ? (mbTomSelect.getValue() || []) : Object.keys(mbSelected || {});
+      const hasBirthdayGift = ids.includes('birthday_gift');
+      birthdayInput.placeholder = hasBirthdayGift ? 'Birthday *' : 'Birthday (optional)';
+      birthdayField.classList.toggle('field-required', hasBirthdayGift);
     }
 
     function renderMbCards() {
@@ -4580,6 +4617,21 @@ Please present this card before payment.</textarea>
         email.focus();
         setTimeout(() => { email.style.borderColor = ''; }, 2000);
         return;
+      }
+      // Membership + Birthday Gift selected: Birthday is required
+      if (currentTypeId === '2' && mbSelected && mbSelected['birthday_gift'] !== undefined) {
+        const birthdayInput = document.getElementById('holderBirthday');
+        const birthdayField = document.getElementById('birthdayField');
+        if (birthdayInput && birthdayField && birthdayField.style.display !== 'none') {
+          const bdayVal = (birthdayInput.value || '').trim();
+          if (!bdayVal) {
+            birthdayInput.style.borderColor = '#ff5630';
+            birthdayInput.focus();
+            alert('Please enter Birthday when Birthday Gift benefit is selected.');
+            setTimeout(() => { birthdayInput.style.borderColor = ''; }, 3000);
+            return;
+          }
+        }
       }
       // Extra validation for Crypto Card: require at least one asset with amount
       if (currentTypeId === '5') {

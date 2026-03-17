@@ -1743,6 +1743,79 @@
       color: var(--c-text-3);
     }
 
+    .quantity-stepper {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 220px;
+    }
+
+    .quantity-stepper .qty-btn {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      border: 1.5px solid var(--c-border);
+      background: var(--c-surface);
+      color: var(--c-text-1);
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1;
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: border-color var(--transition-base), background-color var(--transition-base),
+        color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+    }
+    .quantity-stepper .qty-btn:hover {
+      border-color: var(--c-primary-border);
+      background: var(--c-primary-low);
+      color: var(--c-primary);
+    }
+    .quantity-stepper .qty-btn:focus {
+      outline: none;
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px var(--c-primary-low);
+    }
+    .quantity-stepper .qty-btn:active {
+      transform: scale(0.96);
+    }
+
+    .quantity-stepper .qty-plus {
+      border-radius: var(--radius-sm);
+    }
+
+    .quantity-stepper .input-minimal {
+      width: 64px;
+      min-width: 64px;
+      padding: 10px 8px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--c-border);
+      background: var(--c-surface);
+      -moz-appearance: textfield;
+      transition: border-color var(--transition-base), box-shadow var(--transition-base),
+        background-color var(--transition-base);
+    }
+    .quantity-stepper .input-minimal:hover {
+      border-color: #cbd5e1;
+      background: var(--c-surface-subtle);
+    }
+    .quantity-stepper .input-minimal:focus {
+      outline: none;
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px var(--c-primary-low);
+    }
+    .quantity-stepper .input-minimal::-webkit-outer-spin-button,
+    .quantity-stepper .input-minimal::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
     .select-minimal {
       appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23637381' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
@@ -3180,6 +3253,32 @@
           </div>
         </div>
 
+        <!-- STEP (Crypto only): Card Quantity - sau Select Crypto Assets -->
+        <div class="step-card" id="cryptoQuantityStepCard" style="display:none;">
+          <div class="step-header open" id="shdr-crypto-qty" onclick="toggleStep('crypto-qty')">
+            <div class="step-badge" id="sbadge-crypto-qty">4</div>
+            <div class="step-title-text">
+              Card Quantity <span class="step-required">*</span>
+            </div>
+            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+          </div>
+          <div class="collapse-wrap open" id="scollapse-crypto-qty">
+            <div class="step-body">
+              <div class="form-field">
+                <label class="field-label">Number of cards to create</label>
+                <div class="quantity-stepper">
+                  <button type="button" class="qty-btn qty-minus" onclick="changeCryptoCardQty(-1)"
+                    aria-label="Decrease">−</button>
+                  <input type="number" class="input-minimal" id="cryptoCardQuantity" min="1" value="1"
+                    oninput="clampCryptoCardQty(this)" />
+                  <button type="button" class="qty-btn qty-plus" onclick="changeCryptoCardQty(1)"
+                    aria-label="Increase">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- STEP 4: Value / Discount / Benefits -->
         <div class="step-card" id="step4Card">
           <div class="step-header open" id="shdr-4" onclick="toggleStep(4)">
@@ -3971,6 +4070,11 @@ Please present this card before payment.</textarea>
       if (cryptoStep) {
         cryptoStep.style.display = (typeId === '5') ? '' : 'none';
       }
+      // Card Quantity step: ngay sau Select Crypto Assets, chỉ khi chọn Crypto Card
+      const cryptoQtyStep = document.getElementById('cryptoQuantityStepCard');
+      if (cryptoQtyStep) {
+        cryptoQtyStep.style.display = (typeId === '5') ? '' : 'none';
+      }
 
       // Crypto-only T&C checkbox (Require VlinkPay account)
       const vlpRow = document.getElementById('cryptoVlpRow');
@@ -4032,6 +4136,19 @@ Please present this card before payment.</textarea>
           badge.textContent = isVisible ? String(n++) : badge.textContent;
         }
       });
+    }
+
+    function changeCryptoCardQty(delta) {
+      const input = document.getElementById('cryptoCardQuantity');
+      if (!input) return;
+      let v = parseInt(input.value, 10) || 1;
+      v = Math.max(1, v + delta);
+      input.value = v;
+    }
+    function clampCryptoCardQty(input) {
+      if (!input) return;
+      let v = parseInt(input.value, 10);
+      if (isNaN(v) || v < 1) input.value = 1;
     }
 
     /* ──────────────────────────────────────────────

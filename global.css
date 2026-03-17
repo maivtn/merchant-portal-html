@@ -369,6 +369,12 @@ img.sidebar-logo {
 /* Page Header */
 .page-header {
   margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.page-header .back-btn {
+  margin-bottom: 0;
 }
 .page-header--between {
   display: flex;
@@ -387,6 +393,26 @@ img.sidebar-logo {
   color: var(--grey-600);
   line-height: 1.6;
   margin-bottom: 24px;
+}
+@media (max-width: 1023px) {
+  .page-header {
+    gap: 12px;
+    position: relative;
+  }
+  .page-title {
+    flex: 1;
+    text-align: center;
+  }
+  .page-header .back-btn {
+    margin-bottom: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translateY(50%);
+    z-index: 1;
+    font-size: 11px !important;
+    margin-top: -2px;
+  }
 }
 
 .btn-contained {
@@ -957,7 +983,7 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
     font-size: 14px;
   }
   .page-header {
-    margin-bottom: 12px;
+    margin-bottom: 0;
   }
   .page-title {
     font-size: 14px;

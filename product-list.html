@@ -336,6 +336,7 @@
 
     /* Desktop: fix Actions column on the right when horizontal scroll */
     @media (min-width: 1024px) {
+
       .data-table th.col-actions,
       .data-table td.col-actions {
         position: sticky;
@@ -344,9 +345,11 @@
         z-index: 1;
         box-shadow: -6px 0 10px -4px rgba(22, 28, 36, 0.08);
       }
+
       .data-table thead th.col-actions {
         z-index: 2;
       }
+
       .data-table tbody tr:hover td.col-actions {
         background: #f9fafb;
       }
@@ -982,14 +985,12 @@
     /* Mobile (< 768px) — bottom sheet */
     @media (max-width: 767px) {
       .issue-overlay {
-        align-items: flex-end;
         padding: 0;
       }
 
       .issue-modal-content {
         max-width: 100%;
         width: 100%;
-        border-radius: 20px 20px 0 0;
         padding: 20px 16px 32px;
         margin: 0;
         max-height: 92vh;
@@ -1184,8 +1185,8 @@
 
     .btn-issue-mobile {
       display: none;
-      width: 40px;
-      height: 40px;
+      width: 24px;
+      height: 24px;
       border-radius: 8px;
       background: #00a76f;
       color: white;
@@ -1364,24 +1365,15 @@
 
   <main class="main">
     <!-- Page Header -->
-    <div class="page-header">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h1 class="page-title-text">Product Management</h1>
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <button class="btn-issue-desktop" onclick="openIssueCardModal()">
-            <i data-lucide="plus" style="width:20px;height:20px;"></i>
-            Issue Card
-          </button>
-          <button class="btn-issue-mobile" onclick="openIssueCardModal()">
-            <i data-lucide="plus" style="width:20px;height:20px;"></i>
-          </button>
-        </div>
-      </div>
-      <div class="breadcrumb-desktop" style="margin-top: 6px;">
-        <span style="font-size: 13px; color: #637381;">Gift &amp; Voucher</span>
-        <span style="font-size: 13px; color: #637381; margin: 0 6px;">•</span>
-        <span style="font-size: 13px; color: #637381;">Product Management</span>
-      </div>
+    <div class="page-header page-header--between">
+      <h1 class="page-title">Product Management</h1>
+      <button class="btn-issue-desktop" onclick="openIssueCardModal()">
+        <i data-lucide="plus" style="width:20px;height:20px;"></i>
+        Issue Card
+      </button>
+      <button class="btn-issue-mobile" onclick="openIssueCardModal()">
+        <i data-lucide="plus" style="width:20px;height:20px;"></i>
+      </button>
     </div>
 
     <!-- Main Card -->

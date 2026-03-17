@@ -150,6 +150,7 @@
       align-items: center;
       gap: 10px;
     }
+
     .btn-save-draft {
       display: flex;
       align-items: center;
@@ -2454,14 +2455,12 @@
     @media (max-width: 767px) {
       .page-header {
         position: fixed;
-        top: 68px;
+        top: 48px;
         left: 0;
         right: 0;
         z-index: 25;
         background: var(--c-surface);
-        padding: 8px 16px;
-        margin: 0;
-        box-shadow: 0 1px 0 rgba(145, 158, 171, 0.12);
+        margin: 8px 16px;
       }
 
       .create-card-layout {
@@ -2691,20 +2690,16 @@
 
   <main class="main">
     <!-- Page Header -->
-    <div class="page-header">
-      <div class="page-header-row">
-        <div class="page-header-left">
-          <a href="#" class="back-btn" title="Back" onclick="event.preventDefault(); window.history.back(); return false;">
-            <iconify-icon icon="eva:arrow-ios-back-fill" width="18"></iconify-icon>
-            Back
-          </a>
-          <h1 class="page-title" style="margin:0;">Issue Digital</h1>
-        </div>
-        <button class="btn-save-draft" onclick="saveDraft()">
-          <i data-lucide="save" style="width:16px;height:16px;"></i>
-          <span class="btn-save-text">Save for Later</span>
-        </button>
-      </div>
+    <div class="page-header page-header--between">
+      <a href="#" class="back-btn" title="Back" onclick="event.preventDefault(); window.history.back(); return false;">
+        <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
+        Back
+      </a>
+      <h1 class="page-title" style="margin:0;">Issue Digital</h1>
+      <button class="btn-save-draft" onclick="saveDraft()">
+        <i data-lucide="save" style="width:16px;height:16px;"></i>
+        <span class="btn-save-text">Save for Later</span>
+      </button>
     </div>
 
     <div class="create-card-layout">
@@ -4671,7 +4666,7 @@ Please present this card before payment.</textarea>
       if (!leftPanel) return;
       if (isMobile && previewCard) {
         // Main has padding-top 88px (global.css), page-header is below that
-        var mainTop = 78;
+        var mainTop = 60;
         var headerHeight = pageHeader ? pageHeader.offsetHeight : 0;
         var cardTop = mainTop + headerHeight;
         previewCard.style.top = cardTop + 'px';

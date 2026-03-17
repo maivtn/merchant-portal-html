@@ -267,6 +267,64 @@
             margin-left: 4px;
         }
 
+        /* Date of Birth – one horizontal row: calendar icon + input + clear */
+        .flatpickr-clear-wrap.flatpickr-clear-single {
+            position: relative;
+            flex: 1 1 0%;
+            min-width: 0;
+            align-self: stretch;
+        }
+
+        .flatpickr-clear-wrap.flatpickr-clear-single .form-control {
+            padding-right: 40px;
+            height: 100%;
+            border-radius: 0 0.375rem 0.375rem 0;
+        }
+
+        .input-group:has(.flatpickr-clear-wrap) {
+            flex-wrap: nowrap;
+        }
+
+        .input-group:has(.flatpickr-clear-wrap) .input-group-text {
+            border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
+        }
+
+        .input-group:has(.flatpickr-clear-wrap) .flatpickr-clear-wrap .form-control {
+            border-left: 0;
+        }
+
+        .date-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .date-clear.visible {
+            display: inline-flex;
+        }
+
+        .date-clear:hover {
+            background: rgba(148, 163, 184, 0.12);
+            color: #64748b;
+        }
+
+        .date-clear svg {
+            width: 14px;
+            height: 14px;
+        }
+
         .card {
             border: 1px solid var(--border);
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -1376,8 +1434,7 @@
                                     <span class="input-group-text">
                                         <iconify-icon icon="solar:calendar-bold-duotone" width="18"></iconify-icon>
                                     </span>
-                                    <div class="flatpickr-clear-wrap flatpickr-clear-single"
-                                        style="flex:1;position:relative;">
+                                    <div class="flatpickr-clear-wrap flatpickr-clear-single flex-grow-1 position-relative">
                                         <input type="text" id="dobInput" class="form-control" placeholder="Pick a date"
                                             required readonly>
                                         <button type="button" class="date-clear" id="dobInputClear"

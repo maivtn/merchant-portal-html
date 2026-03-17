@@ -224,85 +224,7 @@
       box-shadow: 0 6px 16px rgba(0, 167, 111, 0.24);
     }
 
-    /* Modal (reuse style from crypto-payment) */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(22, 28, 36, 0.8);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      backdrop-filter: blur(6px);
-    }
-
-    .modal-overlay.open {
-      display: flex;
-    }
-
-    .modal-content {
-      background: #fff;
-      width: 100%;
-      max-width: 480px;
-      border-radius: 24px;
-      padding: 0;
-      position: relative;
-      box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
-      animation: modalFadeIn 0.3s ease-out;
-    }
-
-    @keyframes modalFadeIn {
-      from {
-        opacity: 0;
-        transform: scale(0.95);
-      }
-
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    .modal-header {
-      padding: 20px 20px 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .modal-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: #161c24;
-    }
-
-    .modal-body {
-      padding: 0 20px 20px;
-    }
-
-    .close-btn {
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      cursor: pointer;
-      color: #919eab;
-      transition: 0.2s;
-      border: none;
-      background: transparent;
-    }
-
-    .close-btn:hover {
-      background: #f4f6f8;
-      color: #212b36;
-    }
-
+    /* Modal: dùng global.css (modal-overlay, modal-header, modal-title, close-btn, modal-body, modal-footer-centered) */
     .public-footer {
       margin-top: auto;
       width: 100%;
@@ -1170,66 +1092,7 @@
       display: flex;
     }
 
-    /* Modal styles copied from crypto-payment.html */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(22, 28, 36, 0.8);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      backdrop-filter: blur(6px);
-    }
-
-    .modal-content {
-      background: #fff;
-      width: 100%;
-      max-width: 480px;
-      border-radius: 24px;
-      padding: 0;
-      position: relative;
-      box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
-    }
-
-    .modal-header {
-      padding: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .modal-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--grey-900);
-    }
-
-    .modal-body {
-      padding: 0 24px 32px;
-    }
-
-    .close-btn {
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      cursor: pointer;
-      color: var(--grey-500);
-      transition: 0.2s;
-    }
-
-    .close-btn:hover {
-      background: var(--grey-100);
-      color: var(--grey-900);
-    }
-
+    /* Modal: dùng global.css */
     .form-group {
       margin-bottom: 12px;
     }
@@ -1360,6 +1223,29 @@
       margin-top: 8px;
       box-shadow: 0 4px 20px -4px rgba(0, 167, 111, 0.12), 0 1px 4px rgba(0, 0, 0, .06);
     }
+    /* Receive modal: giảm padding tránh tràn địa chỉ */
+    #modal-show-wallet .result-container {
+      padding: 10px 12px;
+      text-align: left;
+    }
+    #modal-show-wallet .result-container > div {
+      gap: 10px;
+    }
+    #modal-show-wallet .result-container > div > div:last-child {
+      min-width: 0;
+    }
+    #modal-show-wallet .address-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 6px 8px;
+      margin-bottom: 0;
+      min-width: 0;
+    }
+    #modal-show-wallet .address-text {
+      font-size: 11px;
+      word-break: break-all;
+    }
 
     .note-box {
       font-size: 11px;
@@ -1427,32 +1313,6 @@
       display: flex;
       justify-content: center;
       gap: 10px;
-    }
-
-    .btn-secondary {
-      padding: 8px 16px;
-      border-radius: 8px;
-      border: 1px solid var(--grey-300);
-      background: #fff;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      min-width: 110px;
-      text-align: center;
-    }
-
-    .btn-primary-rounded {
-      padding: 8px 20px;
-      border-radius: 8px;
-      border: 1px solid var(--primary-main);
-      background: var(--primary-main);
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      min-width: 130px;
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0, 167, 111, 0.24);
     }
 
     .pin-eye-btn {
@@ -1536,26 +1396,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .modal-btn {
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .modal-btn-cancel {
-      border: 1px solid #dfe3e8;
-      background: #fff;
-      color: #212b36;
-    }
-
-    .modal-btn-cancel:hover {
-      background: var(--grey-100);
     }
 
     .tabs-container {
@@ -2588,7 +2428,7 @@
             <div class="details-card">
               <div class="action-buttons">
                 <div class="am-menu" style="width: 100%;">
-                  <div class="am-button am-button--download">
+                  <div class="am-button am-button--download" onclick="openModal('modal-withdraw-crypto')">
                     <div class="am-button-icon">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path
@@ -3623,7 +3463,7 @@
             </div>
           </div>
         </div>
-        <div class="result-container" style="padding: 16px;">
+        <div class="result-container">
           <div style="display: flex; gap: 12px; align-items: flex-start;">
             <div class="qr-box" style="width: 100px; height: 100px; margin: 0; padding: 8px; flex-shrink: 0;">
               <img src="https://api.qrserver.com/v1/create-qr-code/?size=84x84&data=TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQ"
@@ -3650,6 +3490,72 @@
           are
           irreversible.
         </div>
+      </div>
+    </div>
+  </div><!-- Withdraw Crypto Card Modal -->
+  <div id="modal-withdraw-crypto" class="modal-overlay">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <span class="modal-title">Withdraw Crypto Card</span>
+        <div class="close-btn" onclick="closeModal('modal-withdraw-crypto')">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </div>
+      </div>
+      <p class="modal-subtitle">Transfer funds from your card to your account</p>
+      <div class="modal-body">
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label class="form-label">Select Assets</label>
+          <div class="icon-select" id="withdrawAssetSelect">
+            <div class="icon-select-trigger" onclick="toggleIconSelect('withdrawAssetSelect')">
+              <div class="coin-icon coin-btc">₿</div>
+              <span class="icon-select-text">BTC</span>
+              <svg class="icon-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+            <div class="icon-select-dropdown">
+              <div class="icon-select-option selected" onclick="pickWithdrawAsset(this,'coin-btc','₿','BTC')">
+                <div class="coin-icon coin-btc">₿</div>BTC
+              </div>
+              <div class="icon-select-option" onclick="pickWithdrawAsset(this,'coin-eth','Ξ','ETH')">
+                <div class="coin-icon coin-eth">Ξ</div>ETH
+              </div>
+              <div class="icon-select-option" onclick="pickWithdrawAsset(this,'coin-usdt','₮','USDT')">
+                <div class="coin-icon coin-usdt">₮</div>USDT
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label class="form-label">Amount</label>
+          <div class="field-container" style="position: relative; display: flex; align-items: center;">
+            <span style="position: absolute; left: 12px; color: var(--grey-600); font-weight: 600;">$</span>
+            <input type="number" class="field-input" id="withdrawCryptoAmount" placeholder="0" value="100" min="1"
+              step="0.01" style="padding-left: 28px;" oninput="updateWithdrawCryptoSummary()">
+          </div>
+        </div>
+        <div style="background: var(--grey-100); padding: 16px; border-radius: 12px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span style="color: var(--grey-600); font-size: 13px;">Amount</span>
+            <span style="font-weight: 600; font-size: 13px;" id="withdrawSummaryAmount">$100</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span style="color: var(--grey-600); font-size: 13px;">Exchange Rate</span>
+            <span style="font-weight: 600; font-size: 13px;" id="withdrawSummaryRate">1 BTC =
+              $26,789.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--grey-900); font-weight: 700; font-size: 14px;">You Will Receive</span>
+            <span style="font-weight: 700; font-size: 14px; color: var(--primary-main);"
+              id="withdrawSummaryReceive">0.005
+              BTC</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer-centered">
+        <button type="button" class="btn-secondary" onclick="closeModal('modal-withdraw-crypto')">Cancel</button>
+        <button type="button" class="btn-primary-rounded" id="btnConfirmWithdrawCrypto"
+          onclick="confirmWithdrawCrypto()">Confirm Withdrawal</button>
       </div>
     </div>
   </div>
@@ -4341,6 +4247,50 @@
       }
     });
   });
+
+  function pickWithdrawAsset(optionEl, coinClass, symbol, label) {
+    const el = document.getElementById('withdrawAssetSelect');
+    if (!el) return;
+    const trigger = el.querySelector('.icon-select-trigger');
+    const icon = trigger.querySelector('.coin-icon');
+    icon.className = 'coin-icon ' + coinClass;
+    icon.textContent = symbol;
+    trigger.querySelector('.icon-select-text').textContent = label;
+    el.querySelectorAll('.icon-select-option').forEach(o => o.classList.remove('selected'));
+    optionEl.classList.add('selected');
+    el.classList.remove('open');
+    updateWithdrawCryptoSummary();
+  }
+
+  var withdrawCryptoRates = { BTC: 26789, ETH: 3580, USDT: 1 };
+
+  function updateWithdrawCryptoSummary() {
+    var amountEl = document.getElementById('withdrawCryptoAmount');
+    var amount = parseFloat(amountEl && amountEl.value ? amountEl.value : 0) || 0;
+    var assetEl = document.getElementById('withdrawAssetSelect');
+    var label = (assetEl && assetEl.querySelector('.icon-select-text')) ? assetEl.querySelector('.icon-select-text').textContent.trim() : 'BTC';
+    var rate = withdrawCryptoRates[label] || withdrawCryptoRates.BTC;
+    var receiveCrypto = rate > 0 ? amount / rate : 0;
+    var summaryAmount = document.getElementById('withdrawSummaryAmount');
+    var summaryRate = document.getElementById('withdrawSummaryRate');
+    var summaryReceive = document.getElementById('withdrawSummaryReceive');
+    if (summaryAmount) summaryAmount.textContent = '$' + (amount ? amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0');
+    if (summaryRate) summaryRate.textContent = '1 ' + label + ' = $' + rate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (summaryReceive) summaryReceive.textContent = (receiveCrypto ? receiveCrypto.toFixed(6) : '0') + ' ' + label;
+  }
+
+  function confirmWithdrawCrypto() {
+    var amountEl = document.getElementById('withdrawCryptoAmount');
+    var amount = parseFloat(amountEl && amountEl.value ? amountEl.value : 0) || 0;
+    if (!amount || amount <= 0) {
+      if (typeof Swal !== 'undefined') Swal.fire({ icon: 'warning', title: 'Invalid amount', text: 'Please enter a valid amount.' });
+      else alert('Please enter a valid amount.');
+      return;
+    }
+    closeModal('modal-withdraw-crypto');
+    if (typeof Swal !== 'undefined') Swal.fire({ icon: 'success', title: 'Withdrawal submitted', text: 'Your withdrawal has been submitted successfully.' });
+    else alert('Withdrawal submitted successfully.');
+  }
 </script>
 
 </html>

@@ -640,66 +640,7 @@
             display: flex;
         }
 
-        /* Modal styles copied from crypto-payment.html */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(22, 28, 36, 0.8);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            backdrop-filter: blur(6px);
-        }
-
-        .modal-content {
-            background: #fff;
-            width: 100%;
-            max-width: 480px;
-            border-radius: 24px;
-            padding: 0;
-            position: relative;
-            box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
-
-        .modal-header {
-            padding: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--grey-900);
-        }
-
-        .modal-body {
-            padding: 0 24px 32px;
-        }
-
-        .close-btn {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            cursor: pointer;
-            color: var(--grey-500);
-            transition: 0.2s;
-        }
-
-        .close-btn:hover {
-            background: var(--grey-100);
-            color: var(--grey-900);
-        }
-
+        /* Modal: dùng global.css (modal-overlay, modal-header, modal-title, close-btn, modal-body, modal-footer-centered) */
         .form-group {
             margin-bottom: 12px;
         }
@@ -830,6 +771,29 @@
             margin-top: 8px;
             box-shadow: 0 4px 20px -4px rgba(0, 167, 111, 0.12), 0 1px 4px rgba(0, 0, 0, .06);
         }
+        /* Receive modal: giảm padding tránh tràn địa chỉ */
+        #modal-show-wallet .result-container {
+            padding: 10px 12px;
+            text-align: left;
+        }
+        #modal-show-wallet .result-container > div {
+            gap: 10px;
+        }
+        #modal-show-wallet .result-container > div > div:last-child {
+            min-width: 0;
+        }
+        #modal-show-wallet .address-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 6px 8px;
+            margin-bottom: 0;
+            min-width: 0;
+        }
+        #modal-show-wallet .address-text {
+            font-size: 11px;
+            word-break: break-all;
+        }
 
         .note-box {
             font-size: 11px;
@@ -897,54 +861,6 @@
             display: flex;
             justify-content: center;
             gap: 10px;
-        }
-
-        .btn-secondary {
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: 1px solid var(--grey-300);
-            background: #fff;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            min-width: 110px;
-            text-align: center;
-            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-        }
-
-        .btn-secondary:hover {
-            background: var(--grey-100);
-            border-color: var(--grey-400);
-        }
-
-        .btn-secondary:active {
-            transform: scale(0.98);
-        }
-
-        .btn-primary-rounded {
-            padding: 8px 20px;
-            border-radius: 8px;
-            border: 1px solid var(--primary-main);
-            background: var(--primary-main);
-            color: #fff;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            min-width: 130px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 167, 111, 0.24);
-            transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-        }
-
-        .btn-primary-rounded:hover {
-            background: var(--primary-dark, #0d9668);
-            box-shadow: 0 6px 14px rgba(0, 167, 111, 0.35);
-            transform: translateY(-1px);
-        }
-
-        .btn-primary-rounded:active {
-            transform: translateY(0) scale(0.98);
-            box-shadow: 0 2px 8px rgba(0, 167, 111, 0.24);
         }
 
         .pin-eye-btn {
@@ -1028,34 +944,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .modal-btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .modal-btn-cancel {
-            border: 1px solid #dfe3e8;
-            background: #fff;
-            color: #212b36;
-        }
-
-        .modal-btn-cancel:hover {
-            background: var(--grey-100);
-        }
-
-        .modal-footer-centered {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 16px 24px;
-            border-top: 1px solid var(--grey-200);
         }
 
         .tabs-container {
@@ -1920,8 +1808,6 @@
             #product-history .table-toolbar {
                 flex-wrap: nowrap;
             }
-
-            #product-history .table-toolbar .product-history-search-wrap {}
 
             #product-history .table-toolbar .product-history-search-wrap .field-container {
                 height: 40px;
@@ -3171,20 +3057,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="result-container" style="padding: 16px;">
-                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                <div class="result-container">
+                    <div style="display: flex; gap: 10px; align-items: flex-start;">
                         <div class="qr-box"
-                            style="width: 100px; height: 100px; margin: 0; padding: 8px; flex-shrink: 0;">
+                            style="width: 100px; height: 100px; margin: 0; padding: 6px; flex-shrink: 0;">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=84x84&data=TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQ"
                                 alt="QR">
                         </div>
-                        <div style="flex: 1; text-align: left;">
+                        <div style="flex: 1; min-width: 0; text-align: left;">
                             <div style="font-size: 13px; font-weight: 700; color: var(--grey-900); margin-bottom: 4px;">
                                 Address</div>
-                            <div class="address-wrapper"
-                                style="padding: 0px; margin-bottom: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
-                                <span class="address-text"
-                                    style="font-size: 11px;">TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQ</span>
+                            <div class="address-wrapper">
+                                <span class="address-text">TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQ</span>
                                 <div class="copy-btn" onclick="copyAddress(this)" title="Copy address">
                                     <iconify-icon icon="solar:copy-bold-duotone" width="16"></iconify-icon>
                                     <span>Copy</span>

@@ -1095,6 +1095,178 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
 }
 
 /* ═══════════════════════════════════════════════════════
+   GLOBAL MODAL — modal-overlay, header, title, close, subtitle, body, footer
+   Dùng chung cho tất cả trang. Footer actions: nút center, cùng chiều cao/màu.
+═══════════════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(22, 28, 36, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+}
+.modal-overlay.active,
+.modal-overlay.open,
+.modal-overlay[style*="display: flex"] {
+  display: flex !important;
+}
+.modal-content {
+  background: #fff;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 24px;
+  padding: 0;
+  position: relative;
+  box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+.modal-header {
+  padding: 24px 24px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--grey-900);
+  margin: 0;
+  flex: 1;
+}
+.modal-close-btn,
+.close-btn {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--grey-500);
+  transition: background 0.2s, color 0.2s;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  padding: 0;
+}
+.modal-close-btn:hover,
+.close-btn:hover {
+  background: var(--grey-100);
+  color: var(--grey-900);
+}
+.modal-subtitle {
+  padding: 8px 24px 16px;
+  margin: 0;
+  font-size: 14px;
+  color: var(--grey-600);
+  line-height: 1.5;
+}
+.modal-body {
+  padding: 0 24px 24px;
+  font-size: 14px;
+  color: var(--grey-800);
+}
+.modal-footer,
+.modal-footer-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--grey-200);
+}
+.modal-footer .btn-secondary,
+.modal-footer .btn-primary-rounded,
+.modal-footer-centered .btn-secondary,
+.modal-footer-centered .btn-primary-rounded {
+  height: 40px;
+  min-height: 40px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+.btn-secondary {
+  min-width: 100px;
+  border: 1px solid var(--grey-300);
+  background: #fff;
+  color: var(--grey-800);
+}
+.btn-secondary:hover {
+  background: var(--grey-100);
+  border-color: var(--grey-500);
+}
+.btn-secondary:active {
+  transform: scale(0.98);
+}
+.btn-primary-rounded {
+  min-width: 120px;
+  border: 1px solid var(--primary-main);
+  background: var(--primary-main);
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 167, 111, 0.24);
+}
+.btn-primary-rounded:hover {
+  background: var(--primary-dark);
+  box-shadow: 0 6px 14px rgba(0, 167, 111, 0.35);
+  transform: translateY(-1px);
+}
+.btn-primary-rounded:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px rgba(0, 167, 111, 0.24);
+}
+/* Legacy modal buttons (đồng bộ với btn-*) */
+.modal-btn {
+  height: 40px;
+  min-height: 40px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+.modal-btn-cancel {
+  border: 1px solid var(--grey-300);
+  background: #fff;
+  color: var(--grey-800);
+}
+.modal-btn-cancel:hover {
+  background: var(--grey-100);
+  border-color: var(--grey-500);
+}
+.modal-btn-confirm {
+  border: 1px solid var(--primary-main);
+  background: var(--primary-main);
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 167, 111, 0.24);
+}
+.modal-btn-confirm:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════════════
    ACTION COLUMN — always right-aligned
 ═══════════════════════════════════════════════════════ */
 .col-actions,

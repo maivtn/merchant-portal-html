@@ -35,12 +35,12 @@
       icon: "solar:folder-with-files-bold-duotone",
       iconWidth: 26,
       children: [
-        {
-          label: "My Cards",
-          href: "my-cards.html",
-          relatedPages: ["order-details.html", "order-history.html"],
-        },
-        { label: "Merchant Map", href: "#" },
+        // {
+        //   label: "My Cards",
+        //   href: "my-cards.html",
+        //   relatedPages: ["order-details.html", "order-history.html"],
+        // },
+
         {
           label: "Product Management",
           href: "product-list.html",
@@ -54,7 +54,7 @@
             "product-history.html",
           ],
         },
-        { label: "VlinkPay Store", href: "digital-gifts-management.html" },
+
         {
           label: "Cancelled Cards",
           href: "cancelled-cards.html",
@@ -168,6 +168,42 @@
   ];
 
   // ═══════════════════════════════════════════════════════════════════════════
+  // SIDEBAR MENU — CHỈ MY CARDS & CRYPTO CARD MANAGEMENT
+  // Trang dùng menu này: set window.SIDEBAR_USE_CARDS_MENU = true trước khi load global.js
+  // hoặc thêm <script>window.SIDEBAR_USE_CARDS_MENU = true;</script> trước global.js
+  // ═══════════════════════════════════════════════════════════════════════════
+  const SIDEBAR_MENU_CARDS = [
+    { type: "section", label: "" },
+    {
+      type: "group",
+      label: "Gift Card Center",
+      icon: "solar:folder-with-files-bold-duotone",
+      iconWidth: 26,
+      children: [
+        {
+          label: "My Cards",
+          href: "my-cards.html",
+          relatedPages: ["order-details.html", "order-history.html", "crypto-card-details-owner.html", "issue-digital-membership-detail-owner.html"],
+        },
+        { label: "VlinkPay Store", href: "digital-gifts-management.html" },
+        { label: "Merchant Map", href: "#" },
+      ],
+    },
+    {
+      type: "link",
+      label: "Crypto Card Management",
+      icon: "solar:wallet-bold-duotone",
+      iconWidth: 24,
+      href: "crypto-card-list.html?role=personal",
+      relatedPages: [
+        "crypto-card-details.html",
+        "crypto-card-list-bootstrap.html",
+        "issue-crypto-card.html",
+      ],
+    },
+  ];
+
+  // ═══════════════════════════════════════════════════════════════════════════
   // SVG ICONS
   // ═══════════════════════════════════════════════════════════════════════════
   const HAMBURGER_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
@@ -218,11 +254,12 @@
 
     // Helper: check if a menu item or any of its relatedPages matches current page
     function isItemActive(item) {
-      const hrefPage = (item.href || "").split("/").pop().toLowerCase();
+      const raw = (item.href || "").split("/").pop().toLowerCase();
+      const hrefPage = raw.split("?")[0].split("#")[0];
       if (hrefPage === curPage) return true;
       if (
         item.relatedPages &&
-        item.relatedPages.some((p) => p.toLowerCase() === curPage)
+        item.relatedPages.some((p) => (p || "").toLowerCase().split("?")[0].split("#")[0] === curPage)
       )
         return true;
       return false;
@@ -240,9 +277,12 @@
       }
     }
 
-    // Build and inject nav HTML
+    // Chọn menu: nếu trang set SIDEBAR_USE_CARDS_MENU thì dùng menu rút gọn (chỉ My Cards + Crypto)
+    const menu = window.SIDEBAR_USE_CARDS_MENU
+      ? SIDEBAR_MENU_CARDS
+      : SIDEBAR_MENU;
     let html = "";
-    for (const item of SIDEBAR_MENU) {
+    for (const item of menu) {
       if (item.type === "section") {
         html += `<div class="nav-section-title">${item.label}</div>\n`;
       } else if (item.type === "link") {

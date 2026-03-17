@@ -19,6 +19,12 @@
   <script src="https://cdn.jsdelivr.net/npm/tom-select@2.5.2/dist/js/tom-select.complete.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="global.css">
+  <script>
+    (function () {
+      var p = new URLSearchParams(window.location.search);
+      if ((p.get('role') || '').toLowerCase() === 'personal') window.SIDEBAR_USE_CARDS_MENU = true;
+    })();
+  </script>
   <script src="global.js" defer></script>
   <style>
     /* ─── FLATPICKR OVERRIDES ─── */
@@ -2982,8 +2988,8 @@
           </div>
         </div>
 
-        <!-- Card 4: Business Information (collapsible) -->
-        <div class="panel-card">
+        <!-- Card 4: Business Information (collapsible) - ẩn khi role=personal -->
+        <div class="panel-card" id="panelCardBusinessInfo">
           <div class="panel-card-header" id="hdr-bizinfo" onclick="toggleSection('business-info','hdr-bizinfo')">
             <div class="header-icon"><i data-lucide="building-2" style="width:16px;height:16px;"></i></div>
             <span class="header-title">Business Information</span>
@@ -3084,8 +3090,8 @@
           * required
         </p>
 
-        <!-- STEP 1: Select Product Line -->
-        <div class="step-card">
+        <!-- STEP 1: Select Product Line - ẩn khi role=personal -->
+        <div class="step-card" id="step1SelectProductLine">
           <div class="step-header open" id="shdr-1" onclick="toggleStep(1)">
             <div class="step-badge" id="sbadge-1">1</div>
             <div class="step-title-text">
@@ -4592,6 +4598,14 @@ Please present this card before payment.</textarea>
       if (typeParam === 'crypto-card') {
         const cryptoItem = document.querySelector('.card-type-item:nth-child(3)');
         if (cryptoItem) selectCardType(cryptoItem, 'Crypto Card', '5');
+      }
+      // role=personal: ẩn step Select Product Line và panel Business Information
+      const isRolePersonal = (params.get('role') || '').toLowerCase() === 'personal';
+      if (isRolePersonal) {
+        const step1 = document.getElementById('step1SelectProductLine');
+        const bizPanel = document.getElementById('panelCardBusinessInfo');
+        if (step1) step1.style.display = 'none';
+        if (bizPanel) bizPanel.style.display = 'none';
       }
 
       // Init card front for current card type (default E-Gift Card unless overridden by query)

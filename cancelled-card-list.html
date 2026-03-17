@@ -328,8 +328,8 @@
 
     <main class="main">
         <div class="page-header">
-            <a href="product-list.html" class="back-btn">
-                <iconify-icon icon="eva:arrow-ios-back-fill" width="18"></iconify-icon>
+            <a href="#" class="back-btn" onclick="event.preventDefault(); window.history.back(); return false;">
+                <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
                 Back
             </a>
             <h1 class="page-title" style="margin: 0;">Cancelled Cards & Products</h1>
@@ -368,7 +368,13 @@
                     <label class="field-label">Start date</label>
                     <div class="field-container flatpickr-clear-wrap">
                         <input type="text" class="field-input" id="cancelStartDate" placeholder="Pick a date" readonly>
-                        <button type="button" class="date-clear" id="cancelStartDateClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                        <button type="button" class="date-clear" id="cancelStartDateClear" aria-label="Clear date"
+                            title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg></button>
                         <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
                     </div>
                 </div>
@@ -377,7 +383,13 @@
                     <label class="field-label">End date</label>
                     <div class="field-container flatpickr-clear-wrap">
                         <input type="text" class="field-input" id="cancelEndDate" placeholder="Pick a date" readonly>
-                        <button type="button" class="date-clear" id="cancelEndDateClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                        <button type="button" class="date-clear" id="cancelEndDateClear" aria-label="Clear date"
+                            title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg></button>
                         <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
                     </div>
                 </div>
@@ -645,8 +657,8 @@
                         filterCancelledTables();
                     }
                 });
-                document.getElementById('cancelStartDateClear').addEventListener('click', function() { fpStart.clear(); this.classList.remove('visible'); filterCancelledTables(); });
-                document.getElementById('cancelEndDateClear').addEventListener('click', function() { fpEnd.clear(); this.classList.remove('visible'); filterCancelledTables(); });
+                document.getElementById('cancelStartDateClear').addEventListener('click', function () { fpStart.clear(); this.classList.remove('visible'); filterCancelledTables(); });
+                document.getElementById('cancelEndDateClear').addEventListener('click', function () { fpEnd.clear(); this.classList.remove('visible'); filterCancelledTables(); });
             } else {
                 const startDateInput = document.getElementById('cancelStartDate');
                 if (startDateInput) {

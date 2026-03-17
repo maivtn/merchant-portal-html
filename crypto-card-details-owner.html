@@ -112,33 +112,6 @@
             color: rgba(255, 255, 255, 0.9);
         }
 
-        /* Back button (from membership-package-details) */
-        .btn-back {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--grey-600);
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            transition: 0.2s;
-            text-decoration: none;
-            flex-shrink: 0;
-        }
-
-        .btn-back:hover {
-            background: var(--grey-200);
-            color: var(--grey-900);
-        }
-
-        .btn-back i[data-lucide],
-        .btn-back svg {
-            width: 20px;
-            height: 20px;
-        }
 
         .details-header {
             margin-bottom: 24px;
@@ -2190,21 +2163,12 @@
     </header>
 
     <main class="main">
-        <div class="page-header" style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <a href="crypto-card-list.html" class="back-btn" title="Back">
-                    <iconify-icon icon="eva:arrow-ios-back-fill" width="18"></iconify-icon>
-                    Back
-                </a>
-                <div>
-                    <h1 class="page-title">Crypto Card Details</h1>
-                    <div class="breadcrumbs">
-                        <a href="crypto-card-list.html">Crypto Card Management</a>
-                        <span class="breadcrumbs-dot"></span>
-                        <span style="color: var(--grey-900); font-weight: 500;">Card Details</span>
-                    </div>
-                </div>
-            </div>
+        <div class="page-header page-header--between">
+            <a href="#" class="back-btn" title="Back" onclick="event.preventDefault(); window.history.back(); return false;">
+                <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
+                Back
+            </a>
+            <h1 class="page-title">Crypto Card Details</h1>
         </div>
 
         <div class="tabs-container">

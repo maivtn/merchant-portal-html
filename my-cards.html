@@ -703,8 +703,8 @@
 
     <div class="card">
       <div class="tabs-header">
-        <div class="tab-item active" onclick="switchTab(event, 'crypto-card')">Crypto card</div>
-        <div class="tab-item" onclick="switchTab(event, 'membership-package')">Membership package</div>
+        <div class="tab-item active" data-tabid="crypto-card" onclick="switchTab(event, 'crypto-card')">Crypto card</div>
+        <div class="tab-item" data-tabid="membership-package" onclick="switchTab(event, 'membership-package')">Membership package</div>
       </div>
 
       <!-- Tab: VlinkPay Platform (temporarily hidden) -->
@@ -1158,15 +1158,36 @@
   </main>
 
   <script>
-    function switchTab(event, tabId) {
-      // Remove active class from all tabs and panes
-      document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+    var TAB_PARAM = { 'crypto-card': 'crypto', 'membership-package': 'membership-package' };
+    var PARAM_TAB = { 'crypto': 'crypto-card', 'membership-package': 'membership-package' };
 
-      // Add active class to selected tab and pane
-      event.currentTarget.classList.add('active');
-      document.getElementById(tabId).classList.add('active');
+    function activateTab(tabId) {
+      document.querySelectorAll('.tab-item').forEach(function (tab) {
+        tab.classList.toggle('active', tab.getAttribute('data-tabid') === tabId);
+      });
+      document.querySelectorAll('.tab-pane').forEach(function (pane) {
+        pane.classList.toggle('active', pane.id === tabId);
+      });
     }
+
+    function switchTab(event, tabId) {
+      activateTab(tabId);
+      var param = TAB_PARAM[tabId];
+      if (param) {
+        var url = new URL(window.location.href);
+        url.searchParams.set('type', param);
+        history.replaceState({}, '', url);
+      }
+    }
+
+    (function initTabFromUrl() {
+      var params = new URLSearchParams(window.location.search);
+      var type = params.get('type');
+      var tabId = type ? PARAM_TAB[type] : 'crypto-card';
+      if (tabId && document.getElementById(tabId)) {
+        activateTab(tabId);
+      }
+    })();
 
     // Crypto card: list / grid view toggle
     (function () {

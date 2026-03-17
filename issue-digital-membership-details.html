@@ -251,11 +251,19 @@
       height: 20px;
     }
 
-    .section-card.collapsed .section-chevron {
+    /* Đồng bộ collapsed: section-card + term-section dùng chung collapsible-section */
+    /* Chevron: expanded = ^, collapsed = v (section SVG là ^) */
+    .collapsible-section.collapsed .section-chevron {
       transform: rotate(180deg);
     }
+    .term-chevron {
+      transform: rotate(180deg);
+    }
+    .collapsible-section.collapsed .term-chevron {
+      transform: rotate(0deg);
+    }
 
-    .section-card.collapsed .section-body {
+    .collapsible-section.collapsed .section-body {
       display: none;
     }
 
@@ -310,12 +318,6 @@
       margin-top: 6px;
     }
 
-    .terms-text {
-      font-size: 13px;
-      line-height: 1.75;
-      color: var(--grey-600);
-    }
-
     .am-button--qrcode .am-button-icon {
       box-shadow: 0px 4px 6px 0px #fae8ff, 0px 2px 4px 0px #fae8ff;
       background-image: linear-gradient(135deg, #fae8ff 0%, #fdf2f8 100%);
@@ -340,10 +342,19 @@
     }
 
     .term-content {
-      font-size: 13px;
-      line-height: 1.6;
+      font-size: 14px;
+      line-height: 1.8;
       color: var(--grey-600);
-      white-space: pre-line;
+      overflow: hidden;
+      transition: max-height 0.25s ease-out;
+      max-height: 600px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .collapsible-section.collapsed .term-content {
+      max-height: 0 !important;
+      overflow: hidden;
     }
 
     /* Product History Styles */
@@ -1060,6 +1071,18 @@
         margin-top: 4px;
       }
 
+      .collapsible-section.collapsed {
+        padding: 10px 12px;
+        margin-bottom: 12px;
+        border-radius: 12px;
+      }
+
+      .collapsible-section.collapsed .section-title,
+      .collapsible-section.collapsed .term-title {
+        margin-bottom: 0;
+        padding: 4px 0;
+      }
+
       .table-toolbar {
         flex-direction: column;
         align-items: stretch !important;
@@ -1231,7 +1254,7 @@
         margin-bottom: 14px;
       }
 
-      .terms-text {
+      .term-content {
         font-size: 12px;
         line-height: 1.7;
       }
@@ -1334,6 +1357,17 @@
         margin-bottom: 12px;
       }
 
+      .collapsible-section.collapsed {
+        padding: 10px 12px;
+        margin-bottom: 10px;
+      }
+
+      .collapsible-section.collapsed .section-title,
+      .collapsible-section.collapsed .term-title {
+        margin-bottom: 0;
+        padding: 4px 0;
+      }
+
       .section-title {
         font-size: 13px;
         margin-bottom: 12px;
@@ -1353,12 +1387,13 @@
     }
 
     .section-card,
+    .term-section,
     .benefits-grid {
       box-sizing: border-box;
     }
 
     .benefit-item-value,
-    .terms-text {
+    .term-content {
       word-wrap: break-word;
       overflow-wrap: break-word;
     }
@@ -1713,7 +1748,7 @@
           </div>
 
           <!-- BENEFITS SECTION (from membership-package-details) -->
-          <div class="section-card" id="sectionBenefits">
+          <div class="section-card collapsible-section" id="sectionBenefits">
             <div class="section-title" onclick="toggleSection('sectionBenefits')">
               <span style="display:flex;align-items:center;gap:9px;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1777,7 +1812,7 @@
           </div>
 
           <!-- TERMS & CONDITIONS (from membership-package-details) -->
-          <div class="section-card" id="sectionTerms">
+          <div class="section-card collapsible-section collapsed" id="sectionTerms">
             <div class="section-title" onclick="toggleSection('sectionTerms')">
               <span style="display:flex;align-items:center;gap:9px;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1796,7 +1831,7 @@
                 </svg></span>
             </div>
             <div class="section-body">
-              <p class="terms-text">
+              <p class="term-content">
                 1. This SILVER Package is valid for one year from the enrollment date.<br>
                 2. Members enjoy exclusive benefits including monthly credits, cashback, and birthday gifts.<br>
                 3. Package benefits cannot be transferred or exchanged for cash.<br>

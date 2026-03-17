@@ -423,7 +423,13 @@
       color: var(--c-primary);
     }
 
-    .ai-category-select {
+    .ai-category-select-wrap {
+      position: relative;
+      display: inline-block;
+      max-width: 170px;
+    }
+
+    .ai-category-select-wrap .ai-category-select {
       padding: 5px 28px 5px 10px;
       font-size: 11px;
       font-weight: 600;
@@ -435,11 +441,22 @@
       cursor: pointer;
       outline: none;
       font-family: inherit;
-      max-width: 170px;
+      width: 100%;
     }
 
-    .ai-category-select:focus {
+    .ai-category-select-wrap .ai-category-select:focus {
       border-color: var(--c-primary);
+    }
+
+    .ai-category-select-wrap .ai-category-select-arrow {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--c-text-2);
+      width: 14px;
+      height: 14px;
     }
 
     .ai-prompts-list {
@@ -2327,18 +2344,21 @@
                 <div class="ai-prompts-header">
                   <div class="ai-prompts-label">SUGGESTED DESCRIPTIONS for <span id="categoryLabel">Nail Spa &amp; Nail
                       Salon</span></div>
-                  <select class="ai-category-select" id="categorySelect" onchange="onCategorySelect(this.value)">
-                    <option value="1" selected>Nail Spa &amp; Nail Salon</option>
-                    <option value="2">Beauty, Fashion &amp; Lifestyle</option>
-                    <option value="3">Retail &amp; Consumer Services</option>
-                    <option value="4">Hospitality &amp; Food Services</option>
-                    <option value="5">Financial &amp; Fintech Services</option>
-                    <option value="6">Technology &amp; Digital Products</option>
-                    <option value="7">Health, Wellness &amp; Medical</option>
-                    <option value="8">Real Estate &amp; Property Services</option>
-                    <option value="9">Travel, Tourism &amp; Experiences</option>
-                    <option value="10">Entertainment, Media &amp; Creative</option>
-                  </select>
+                  <div class="ai-category-select-wrap">
+                    <select class="ai-category-select" id="categorySelect" onchange="onCategorySelect(this.value)">
+                      <option value="1" selected>Nail Spa &amp; Nail Salon</option>
+                      <option value="2">Beauty, Fashion &amp; Lifestyle</option>
+                      <option value="3">Retail &amp; Consumer Services</option>
+                      <option value="4">Hospitality &amp; Food Services</option>
+                      <option value="5">Financial &amp; Fintech Services</option>
+                      <option value="6">Technology &amp; Digital Products</option>
+                      <option value="7">Health, Wellness &amp; Medical</option>
+                      <option value="8">Real Estate &amp; Property Services</option>
+                      <option value="9">Travel, Tourism &amp; Experiences</option>
+                      <option value="10">Entertainment, Media &amp; Creative</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="ai-category-select-arrow" aria-hidden="true"></i>
+                  </div>
                 </div>
                 <div class="ai-prompts-list" id="aiPromptsList"></div>
                 <button class="btn-ai-gen" onclick="generateAiLogo()">

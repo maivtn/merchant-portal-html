@@ -1352,7 +1352,7 @@
         <div style="display: flex; gap: 8px; align-items: center;">
           <button class="btn-issue-desktop" onclick="openIssueCardModal()">
             <i data-lucide="plus" style="width:20px;height:20px;"></i>
-            Create Card
+            Issue Card
           </button>
           <button class="btn-issue-mobile" onclick="openIssueCardModal()">
             <i data-lucide="plus" style="width:20px;height:20px;"></i>
@@ -1511,14 +1511,6 @@
               </th>
               <th class="sortable" style="min-width:150px;" onclick="sortTable('campaignName')">
                 <div class="th-inner"><span class="th-text">Campaign Name</span><span id="sort-campaignName"
-                    class="th-sort-icon"></span></div>
-              </th>
-              <th class="sortable" style="min-width:190px;" onclick="sortTable('redeemBy')">
-                <div class="th-inner"><span class="th-text">Redeem By</span><span id="sort-redeemBy"
-                    class="th-sort-icon"></span></div>
-              </th>
-              <th class="sortable" style="min-width:175px;" onclick="sortTable('lastRedeem')">
-                <div class="th-inner"><span class="th-text">Last Redeem</span><span id="sort-lastRedeem"
                     class="th-sort-icon"></span></div>
               </th>
               <th class="sortable" style="min-width:120px;" onclick="sortTable('createdDate')">
@@ -2096,8 +2088,6 @@
             <td class="td-secondary">${p.available === '—' ? '<span class="td-dash">—</span>' : p.available}</td>
             <td>${formatDate(p.expiryTime)}</td>
             <td>${p.campaignName === '—' ? '<span class="td-dash">—</span>' : `<span style="color:#212b36;max-width:140px;overflow:hidden;text-overflow:ellipsis;display:inline-block;">${p.campaignName}</span>`}</td>
-            <td>${p.redeemBy === '—' ? '<span class="td-dash">—</span>' : `<span class="td-email">${p.redeemBy}</span>`}</td>
-            <td>${formatDateTime(p.lastRedeem)}</td>
             <td>${formatDate(p.createdDate)}</td>
             <td>${formatDate(p.lastUpdated)}</td>
             <td class="col-actions">${actionButtons(p)}</td>

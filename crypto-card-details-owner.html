@@ -622,24 +622,7 @@
             background-image: linear-gradient(135deg, #fae8ff 0%, #fdf2f8 100%);
         }
 
-        /* QR Code Modal (from issue-digital-membership-details) */
-        .qr-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(33, 43, 54, 0.8);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .qr-modal-overlay.active {
-            display: flex;
-        }
-
+        /* QR Modal: dùng global.css (qr-modal-overlay, qr-modal-content, qr-modal-header, ...) */
         /* Modal: dùng global.css (modal-overlay, modal-header, modal-title, close-btn, modal-body, modal-footer-centered) */
         .form-group {
             margin-bottom: 12px;
@@ -771,17 +754,21 @@
             margin-top: 8px;
             box-shadow: 0 4px 20px -4px rgba(0, 167, 111, 0.12), 0 1px 4px rgba(0, 0, 0, .06);
         }
+
         /* Receive modal: giảm padding tránh tràn địa chỉ */
         #modal-show-wallet .result-container {
             padding: 10px 12px;
             text-align: left;
         }
-        #modal-show-wallet .result-container > div {
+
+        #modal-show-wallet .result-container>div {
             gap: 10px;
         }
-        #modal-show-wallet .result-container > div > div:last-child {
+
+        #modal-show-wallet .result-container>div>div:last-child {
             min-width: 0;
         }
+
         #modal-show-wallet .address-wrapper {
             display: flex;
             flex-direction: column;
@@ -790,6 +777,7 @@
             margin-bottom: 0;
             min-width: 0;
         }
+
         #modal-show-wallet .address-text {
             font-size: 11px;
             word-break: break-all;
@@ -856,13 +844,7 @@
             padding-right: 40px;
         }
 
-        .change-pin-footer {
-            margin-top: 12px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
+        /* .change-pin-footer: dùng global.css (.modal-content .change-pin-footer) */
         .pin-eye-btn {
             border: none;
             background: none;
@@ -875,75 +857,6 @@
             right: 10px;
             top: 50%;
             transform: translateY(-50%);
-        }
-
-        .qr-modal-content {
-            background: #fff;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 360px;
-            box-shadow: var(--shadow-z24, 0 24px 48px rgba(0, 0, 0, 0.16));
-            animation: qrModalSlideIn 0.3s ease-out;
-            text-align: center;
-        }
-
-        @keyframes qrModalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .qr-modal-header {
-            padding: 24px 24px 0;
-        }
-
-        .qr-modal-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--grey-900);
-            margin-bottom: 4px;
-        }
-
-        .qr-modal-subtitle {
-            font-size: 13px;
-            color: var(--grey-600);
-        }
-
-        .qr-modal-body {
-            padding: 24px;
-        }
-
-        .qr-modal-close {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 4px;
-            color: var(--grey-600);
-        }
-
-        .qr-modal-footer {
-            padding: 0 24px 24px;
-        }
-
-        .qr-modal-placeholder {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 16px;
-            background: #fff;
-            border: 2px solid var(--grey-200);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .tabs-container {
@@ -2810,13 +2723,13 @@
                 <h2 class="qr-modal-title">Crypto Card QR Code</h2>
                 <p class="qr-modal-subtitle">Scan to view card details</p>
                 <button type="button" class="qr-modal-close" onclick="closeQrModal()" aria-label="Close">
-                    <iconify-icon icon="solar:close-circle-bold" width="24"></iconify-icon>
+                    <iconify-icon icon="eva:close-fill" width="24"></iconify-icon>
                 </button>
             </div>
             <div class="qr-modal-body">
                 <div id="qrCodePlaceholder" class="qr-modal-placeholder">
-                    <iconify-icon icon="solar:qr-code-bold" width="120" height="120"
-                        style="color: var(--grey-400);"></iconify-icon>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQQ"
+                        alt="QR">
                 </div>
                 <p style="font-size: 13px; color: var(--grey-600);">Card: 8829 **** **** 3456</p>
             </div>
@@ -3061,7 +2974,7 @@
                     <div style="display: flex; gap: 10px; align-items: flex-start;">
                         <div class="qr-box"
                             style="width: 100px; height: 100px; margin: 0; padding: 6px; flex-shrink: 0;">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=84x84&data=TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQ"
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQ"
                                 alt="QR">
                         </div>
                         <div style="flex: 1; min-width: 0; text-align: left;">

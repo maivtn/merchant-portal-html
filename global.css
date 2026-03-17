@@ -1152,7 +1152,9 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
   border-radius: 50%;
   cursor: pointer;
   color: var(--grey-500);
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   border: none;
   background: transparent;
   font-size: 20px;
@@ -1188,7 +1190,9 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
 .modal-footer .btn-secondary,
 .modal-footer .btn-primary-rounded,
 .modal-footer-centered .btn-secondary,
-.modal-footer-centered .btn-primary-rounded {
+.modal-footer-centered .btn-primary-rounded,
+.modal-content .change-pin-footer .btn-secondary,
+.modal-content .change-pin-footer .btn-primary-rounded {
   height: 40px;
   min-height: 40px;
   padding: 0 20px;
@@ -1200,7 +1204,22 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Change PIN modal: footer đồng bộ với modal-footer-centered */
+.modal-content .change-pin-footer {
+  margin-top: 0;
+  padding: 16px 24px;
+  border-top: 1px solid var(--grey-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 .btn-secondary {
   min-width: 100px;
@@ -1244,7 +1263,10 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
 }
 .modal-btn-cancel {
   border: 1px solid var(--grey-300);
@@ -1264,6 +1286,114 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
 .modal-btn-confirm:hover {
   background: var(--primary-dark);
   transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════════════
+   QR MODAL — đồng bộ với GLOBAL MODAL (qr-modal-*)
+   Dùng cho modal QR Code ở crypto-card-details-owner, gift-card-verification, v.v.
+═══════════════════════════════════════════════════════ */
+.qr-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(22, 28, 36, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+}
+.qr-modal-overlay.active {
+  display: flex !important;
+}
+.qr-modal-content {
+  background: #fff;
+  width: 100%;
+  max-width: 360px;
+  border-radius: 24px;
+  padding: 0;
+  position: relative;
+  box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+.qr-modal-header {
+  padding: 24px 24px 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 0 12px;
+  align-items: start;
+}
+.qr-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--grey-900);
+  margin: 0;
+  grid-column: 1;
+  grid-row: 1;
+}
+.qr-modal-subtitle {
+  padding: 4px 0 0;
+  margin: 0;
+  font-size: 14px;
+  color: var(--grey-600);
+  line-height: 1.5;
+  grid-column: 1;
+  grid-row: 2;
+}
+.qr-modal-close {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  align-self: start;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--grey-500);
+  transition:
+    background 0.2s,
+    color 0.2s;
+  border: none;
+  background: transparent;
+  padding: 0;
+  flex-shrink: 0;
+}
+.qr-modal-close:hover {
+  background: var(--grey-100);
+  color: var(--grey-900);
+}
+.qr-modal-body {
+  padding: 0 24px 24px;
+  font-size: 14px;
+  color: var(--grey-800);
+  text-align: center;
+}
+.qr-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--grey-200);
+}
+.qr-modal-placeholder {
+  width: 200px;
+  height: 200px;
+  padding: 16px;
+  margin: 16px auto;
+  background: #fff;
+  border: 2px solid var(--grey-200);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ═══════════════════════════════════════════════════════

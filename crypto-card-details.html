@@ -19,6 +19,7 @@
             if ((p.get('role') || '').toLowerCase() === 'personal') window.SIDEBAR_USE_CARDS_MENU = true;
         })();
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="global.js" defer></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <style>
@@ -724,11 +725,12 @@
         }
 
         #reloadNetworkNoticeModal .address-wrapper {
-            background: rgba(145, 158, 171, 0.08);
+
             border-radius: 10px;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            justify-content: center;
+            align-items: center;
             gap: 4px;
             margin-bottom: 8px;
             word-break: break-all;
@@ -744,6 +746,7 @@
 
         #reloadNetworkNoticeModal .copy-btn {
             color: var(--primary-main);
+            background: rgba(145, 158, 171, 0.08);
             cursor: pointer;
             flex-shrink: 0;
             display: inline-flex;
@@ -751,6 +754,26 @@
             gap: 4px;
             font-size: 12px;
             font-weight: 600;
+        }
+
+        .refresh-link {
+            color: var(--primary-main);
+            font-weight: 600;
+            text-decoration: none;
+            margin-left: 4px;
+            cursor: pointer;
+        }
+
+        /* Note styling (smaller font on both desktop & mobile) */
+        .note-box {
+            font-size: 11px;
+            color: var(--grey-500);
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        .note-box b {
+            color: var(--grey-700);
         }
 
         .qr-modal-placeholder {
@@ -1593,8 +1616,8 @@
         }
 
         .reload-summary-label {
-            color: var(--grey-500);
-            font-weight: 500;
+            color: var(--grey-600);
+            font-weight: 400;
         }
 
         .reload-summary-value {
@@ -2780,7 +2803,8 @@
             </div>
             <div class="reload-modal-body">
                 <div>
-                    <div class="reload-field-label" style="display:flex;justify-content:space-between;align-items:center;">
+                    <div class="reload-field-label"
+                        style="display:flex;justify-content:space-between;align-items:center;">
                         <span>Select Asset</span>
                         <span id="reloadAssetAvailable" style="font-size:12px;color:var(--grey-600);display:none;">
                             Available: <span style="font-weight:600;color:var(--grey-900);">$6,918,241.48</span>
@@ -2917,10 +2941,9 @@
                         <div class="amount-crypto" id="reloadNoticeAmountCrypto"
                             style="font-size: 13px; color: var(--grey-600); margin-top: 2px;">0.000896 BTC</div>
                     </div>
-                    <div id="reloadNoticeRate"
-                        style="font-size: 12px; color: var(--grey-500); margin-bottom: 8px;">1 BTC = $111,626.90</div>
-                    <div class="address-wrapper"
-                        style="justify-content: center; padding: 8px 10px;">
+                    <div id="reloadNoticeRate" style="font-size: 12px; color: var(--grey-500); margin-bottom: 8px;">1
+                        BTC = $111,626.90</div>
+                    <div class="address-wrapper" style="justify-content: center; padding: 8px 10px;">
                         <span class="address-text"
                             style="font-size: 11px; max-width: 260px; text-overflow: ellipsis; overflow: hidden;">TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQ</span>
                         <div class="copy-btn" onclick="copyAddress(this)" title="Copy address">
@@ -2930,8 +2953,9 @@
                     </div>
                     <div class="timer-text"
                         style="font-size: 12px; color: var(--grey-600); margin-bottom: 4px; text-align: center;">
-                        Code auto-refresh in <span style="color: var(--primary-main); font-weight: 600;">1:29s</span>
-                        <a class="refresh-link" style="cursor: pointer; font-weight: 600;">Refresh</a>
+                        Code auto-refresh in <span id="reloadCountdown"
+                            style="color: #FF5630; font-weight: 600;">1:29</span>s
+                        <!-- <a class="refresh-link" style="cursor: pointer; font-weight: 600;">Refresh</a> -->
                     </div>
                     <div class="status-waiting"
                         style="font-size: 13px; font-weight: 600; color: var(--grey-800); margin-top: 4px;">
@@ -2939,9 +2963,11 @@
                     </div>
                 </div>
 
-                <div style="font-size: 13px; color: var(--grey-700); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                <div
+                    style="font-size: 13px; color: var(--grey-700); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
                     <b>Network:</b>
-                    <span id="reloadNoticeNetworkIcon" class="coin-icon coin-btc" style="width: 18px; height: 18px;">₿</span>
+                    <span id="reloadNoticeNetworkIcon" class="coin-icon coin-btc"
+                        style="width: 18px; height: 18px;">₿</span>
                     <span id="reloadNoticeNetworkText">Bitcoin (BTC)</span>
                 </div>
 
@@ -3247,6 +3273,57 @@
             updateReloadSummary();
         }
 
+        function copyAddress(btn) {
+            const wrapper = btn.closest('.address-wrapper');
+            const text = wrapper ? (wrapper.querySelector('.address-text') || {}).textContent?.trim() || '' : '';
+            if (!text) return;
+            if (window.copyToClipboard) {
+                window.copyToClipboard(text, 'Address copied!');
+            } else if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function () {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Address copied!',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                        });
+                    }
+                }).catch(function () { });
+            }
+        }
+
+        let reloadCountdownTimer = null;
+
+        function startReloadCountdown(totalSeconds) {
+            const el = document.getElementById('reloadCountdown');
+            if (!el) return;
+            if (reloadCountdownTimer) {
+                clearInterval(reloadCountdownTimer);
+                reloadCountdownTimer = null;
+            }
+            function formatTime(s) {
+                const m = Math.floor(s / 60);
+                const sec = s % 60;
+                return m + ':' + String(sec).padStart(2, '0');
+            }
+            let remaining = totalSeconds;
+            el.textContent = formatTime(remaining);
+            reloadCountdownTimer = setInterval(function () {
+                remaining -= 1;
+                if (remaining <= 0) {
+                    clearInterval(reloadCountdownTimer);
+                    reloadCountdownTimer = null;
+                    el.textContent = '0:00';
+                    return;
+                }
+                el.textContent = formatTime(remaining);
+            }, 1000);
+        }
+
         function openReloadNetworkNoticeModal(asset, network, amount, amountUnit) {
             const modal = document.getElementById('reloadNetworkNoticeModal');
             if (!modal) return;
@@ -3318,6 +3395,8 @@
             }
 
             modal.style.display = 'flex';
+            // Start countdown 1:29 (89 seconds)
+            startReloadCountdown(89);
         }
 
         function closeReloadNetworkNoticeModal() {
@@ -3344,9 +3423,17 @@
                 return;
             }
 
-            // Placeholder for real reload logic (VRC20)
-            console.log('Reload asset', asset, 'network', network, 'amount', amount);
+            // VRC20: show success modal
             closeReloadModal();
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Reload submitted',
+                    text: 'Your reload request has been submitted successfully.',
+                });
+            } else {
+                alert('Reload submitted successfully.');
+            }
         }
 
         function updateAssetIcon() {

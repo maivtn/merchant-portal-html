@@ -14,9 +14,12 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
     <script>window.SIDEBAR_USE_CARDS_MENU = true;</script>
     <script src="global.js" defer></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
     <style>
         .details-card {
             margin: 0 auto;
@@ -796,13 +799,169 @@
 
         .note-box {
             font-size: 11px;
-            color: var(--grey-500);
+            color: var(--grey-700);
             text-align: left;
             line-height: 1.6;
         }
 
         .note-box b {
             color: var(--grey-700);
+        }
+
+        #externalNetworkFeeNote b {
+            font-size: 12px;
+            font-weight: 600 !important;
+        }
+
+        /* Fees Overview popover + Tippy (copied from crypto-card-details.html) */
+        .fees-overview-popover {
+            text-align: left;
+            padding: 0;
+            min-width: 280px;
+            max-width: 340px;
+        }
+
+        .fees-overview-popover .fees-overview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--grey-200);
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--grey-900);
+        }
+
+        .fees-overview-popover .fees-overview-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: var(--grey-500);
+            display: inline-flex;
+        }
+
+        .fees-overview-popover .fees-overview-body {
+            padding: 12px 14px;
+        }
+
+        .fees-overview-popover .fees-overview-section {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .fees-overview-popover .fees-overview-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .fees-overview-popover .fees-overview-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .fees-overview-popover .fees-overview-icon.green {
+            background: rgba(22, 163, 74, 0.15);
+            color: #16a34a;
+        }
+
+        .fees-overview-popover .fees-overview-icon.blue {
+            background: rgba(21, 93, 252, 0.15);
+            color: #155DFC;
+        }
+
+        .fees-overview-popover .fees-overview-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .fees-overview-popover .fees-overview-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--grey-900);
+            margin-bottom: 6px;
+        }
+
+        .fees-overview-popover .fees-overview-pill {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .fees-overview-popover .fees-overview-pill.free {
+            background: rgba(22, 163, 74, 0.15);
+            color: #16a34a;
+        }
+
+        .fees-overview-popover .fees-overview-pill.membership {
+            background: rgba(147, 51, 234, 0.15);
+            color: #7c3aed;
+        }
+
+        .fees-overview-popover .fees-overview-pill.franchise {
+            background: rgba(234, 179, 8, 0.2);
+            color: #b45309;
+        }
+
+        .fees-overview-popover .fees-overview-divider {
+            border-top: 1px dashed var(--grey-200);
+            margin: 10px 0;
+        }
+
+        .fees-overview-popover .fees-overview-sublist {
+            font-size: 12px;
+            color: var(--grey-700);
+        }
+
+        .fees-overview-popover .fees-overview-sublist div {
+            margin-bottom: 6px;
+        }
+
+        .fees-overview-popover .fees-overview-sublist .note {
+            font-size: 11px;
+            color: var(--grey-500);
+            margin-top: 4px;
+            margin-bottom: 0 !important;
+        }
+
+        .reload-summary-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            color: var(--grey-600);
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .tippy-box {
+            background: #fff;
+            color: var(--grey-900);
+            border: 1px solid rgba(145, 158, 171, 0.24);
+            border-radius: 20px;
+            box-shadow:
+                0 18px 40px rgba(15, 23, 42, 0.18),
+                0 1px 3px rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+        }
+
+        .tippy-arrow {
+            color: #fff;
+        }
+
+        .tippy-content {
+            padding: 0;
         }
 
         .copy-btn {
@@ -3051,8 +3210,19 @@
                                 onclick="pickOption('networkSelect2',this,'coin-eth','Ξ','Ethereum (ERC20)')">
                                 <div class="coin-icon coin-eth">Ξ</div>Ethereum (ERC20)
                             </div>
+                            <div class="icon-select-option"
+                                onclick="pickOption('networkSelect2',this,'coin-btc','₿','Bitcoin (BTC)')">
+                                <div class="coin-icon coin-btc">₿</div>Bitcoin (BTC)
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div id="externalNetworkFeeNote" class="note-box"
+                    style="margin-top: 12px; margin-bottom: 12px; display: none;">
+                    <b>Fee applied when receiving reloads from external networks.</b>
+                    <span id="externalNetworkFeeTipTrigger" class="reload-summary-info-icon" title="Fees overview">
+                        <i data-lucide="info" style="width:12px;height:12px;"></i>
+                    </span>
                 </div>
                 <div class="result-container">
                     <div style="display: flex; gap: 10px; align-items: flex-start;">
@@ -3074,6 +3244,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="note-box" style="margin-top: 16px;">
                     <b>Note:</b><br>
                     BTC Minimum Top-up: 0.0000001 BTC. Top-up below this amount will not be processed or recovered.<br>
@@ -3081,6 +3252,7 @@
                     are
                     irreversible.
                 </div>
+
             </div>
         </div>
     </div>
@@ -3262,6 +3434,12 @@
             el.querySelectorAll('.icon-select-option').forEach(o => o.classList.remove('selected'));
             optionEl.classList.add('selected');
             el.classList.remove('open');
+            if (selectId === 'networkSelect2') {
+                const note = document.getElementById('externalNetworkFeeNote');
+                if (note) {
+                    note.style.display = (coinClass === 'coin-vrc') ? 'none' : 'block';
+                }
+            }
         }
 
         function pickWithdrawAsset(optionEl, coinClass, symbol, label) {
@@ -3701,6 +3879,43 @@
             updateAmountUnitIcon();
 
             // Redeem History: Flatpickr for from/to date and clear buttons
+            // Fees Overview tooltip on external network fee note icon
+            (function () {
+                var trigger = document.getElementById('externalNetworkFeeTipTrigger');
+                if (!trigger || typeof tippy === 'undefined') return;
+                var feesHtml = '<div class="fees-overview-popover">' +
+                    '<div class="fees-overview-header">Fees Overview <button type="button" class="fees-overview-close" aria-label="Close"><iconify-icon icon="eva:close-fill" width="18"></iconify-icon></button></div>' +
+                    '<div class="fees-overview-body">' +
+                    '<div class="fees-overview-section"><div class="fees-overview-icon green"><iconify-icon icon="eva:checkmark-fill" width="14"></iconify-icon></div>' +
+                    '<div class="fees-overview-content"><div class="fees-overview-title">Platform Fee <span class="fees-overview-pill free">Free</span></div></div></div>' +
+                    '<div class="fees-overview-divider"></div>' +
+                    '<div class="fees-overview-section"><div class="fees-overview-icon blue"><iconify-icon icon="eva:swap-fill" width="14"></iconify-icon></div>' +
+                    '<div class="fees-overview-content"><div class="fees-overview-title">Transfer fee</div>' +
+                    '<div class="fees-overview-sublist">' +
+                    '<div>Accounts with a <span class="fees-overview-pill membership">Membership Plan</span></div>' +
+                    '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px;">$5 - $25: <strong>1.5% fee</strong><div class="note">The fee is deducted from USDV. If insufficient, it will be deducted from the reloaded crypto.</div></div>' +
+                    '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px;">Above $25: <span class="fees-overview-pill free">Free</span></div>' +
+                    '<div style="margin-top:8px;">Accounts with a <span class="fees-overview-pill franchise">Franchise Plan</span></div>' +
+                    '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px;">All transfers: <span class="fees-overview-pill free">Free</span></div>' +
+                    '</div></div></div></div></div>';
+                tippy(trigger, {
+                    content: feesHtml,
+                    allowHTML: true,
+                    trigger: 'mouseenter focus',
+                    interactive: true,
+                    theme: 'light',
+                    placement: 'top',
+                    appendTo: document.body,
+                    onShow: function (instance) {
+                        var box = instance.popper.querySelector('.fees-overview-popover');
+                        if (box) {
+                            var closeBtn = box.querySelector('.fees-overview-close');
+                            if (closeBtn) closeBtn.onclick = function () { instance.hide(); };
+                        }
+                    },
+                });
+            })();
+
             if (window.flatpickr) {
                 var redeemFrom = document.getElementById('redeemFromDate');
                 var redeemTo = document.getElementById('redeemToDate');

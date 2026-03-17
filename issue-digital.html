@@ -2870,6 +2870,15 @@
                 Preset Colors
               </div>
               <div class="color-dots">
+                <div class="color-dot color-dot-bg-image"
+                  style="background-image:url('images/bg1.png');background-size:cover;background-position:center;"
+                  onclick="selectColor(this,'url(images/bg1.png)')" title="Background image"></div>
+                <div class="color-dot color-dot-bg-image"
+                  style="background-image:url('images/bg2.png');background-size:cover;background-position:center;"
+                  onclick="selectColor(this,'url(images/bg2.png)')" title="Background image"></div>
+                <div class="color-dot color-dot-bg-image"
+                  style="background-image:url('images/bg3.png');background-size:cover;background-position:center;"
+                  onclick="selectColor(this,'url(images/bg3.png)')" title="Background image"></div>
                 <div class="color-dot active" style="background:#1E293B" onclick="selectColor(this,'#1E293B')"
                   title="Slate Dark"></div>
                 <div class="color-dot" style="background:#064E3B" onclick="selectColor(this,'#064E3B')"
@@ -2884,16 +2893,17 @@
                 </div>
                 <div class="color-dot" style="background:#F59E0B" onclick="selectColor(this,'#F59E0B')" title="Amber">
                 </div>
-                <div class="color-dot" style="background:#EC4899" onclick="selectColor(this,'#EC4899')" title="Pink">
-                </div>
-                <div class="color-dot" style="background:#06B6D4" onclick="selectColor(this,'#06B6D4')" title="Cyan">
-                </div>
-                <div class="color-dot" style="background:#8B5CF6" onclick="selectColor(this,'#8B5CF6')" title="Purple">
+                <!-- <div class="color-dot" style="background:#EC4899" onclick="selectColor(this,'#EC4899')" title="Pink">
+                </div> -->
+                <!-- <div class="color-dot" style="background:#06B6D4" onclick="selectColor(this,'#06B6D4')" title="Cyan">
+                </div> -->
+                <!-- <div class="color-dot" style="background:#8B5CF6" onclick="selectColor(this,'#8B5CF6')" title="Purple">
                 </div>
                 <div class="color-dot" style="background:#FFD84D" onclick="selectColor(this,'#FFD84D')" title="Yellow">
-                </div>
+                </div> -->
                 <div class="color-dot" style="background:#DBCD43" onclick="selectColor(this,'#DBCD43')" title="Gold">
                 </div>
+
                 <div class="color-dot color-picker-btn" title="Custom color">
                   <iconify-icon class="pick-color-icon" icon="mdi:eyedropper" width="12"></iconify-icon>
                   <input type="color"
@@ -3642,9 +3652,73 @@ Please present this card before payment.</textarea>
       dot.classList.add('active');
       updateCardColor(color);
     }
+    function getLuminance(hex) {
+      hex = hex.replace(/^#/, '');
+      if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+      var r = parseInt(hex.slice(0, 2), 16) / 255;
+      var g = parseInt(hex.slice(2, 4), 16) / 255;
+      var b = parseInt(hex.slice(4, 6), 16) / 255;
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    }
     function updateCardColor(color) {
       const front = document.getElementById('cardFront');
-      if (front) front.style.background = color;
+      const back = document.querySelector('.card-back');
+      if (!front) return;
+      var isImage = typeof color === 'string' && color.trim().toLowerCase().indexOf('url(') === 0;
+      if (isImage) {
+        front.style.backgroundImage = color;
+        front.style.backgroundSize = 'cover';
+        front.style.backgroundPosition = 'center';
+        front.style.backgroundColor = '#0d4a34';
+        front.style.backgroundRepeat = 'no-repeat';
+        front.style.color = '#ffffff';
+        front.querySelectorAll('.cf-expiry-label, .cf-holder-rank').forEach(function (el) {
+          el.style.color = 'rgba(255,255,255,0.85)';
+        });
+        if (back) {
+          back.style.background = '#0d3b2e';
+          back.style.color = '#ffffff';
+          back.querySelectorAll('.cb-pin-label, .cb-section-title, .cb-contact-title').forEach(function (el) {
+            el.style.color = '#fff';
+          });
+          back.querySelectorAll('.cb-pin-dots, .cb-terms-text, .cb-merchant-tc, .cb-benefits, .cb-contact-row').forEach(function (el) {
+            el.style.color = 'rgba(255,255,255,0.75)';
+          });
+        }
+        return;
+      }
+      front.style.backgroundImage = '';
+      front.style.background = color;
+      var lum = getLuminance(color);
+      var textColor = lum < 0.45 ? '#ffffff' : '#1a1a1a';
+      var textMuted = lum < 0.45 ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.7)';
+      front.style.color = textColor;
+      front.querySelectorAll('.cf-brand-name, .cf-slogan, .cf-value-badge, .cf-number, .cf-num-group, .cf-expiry-label, .cf-expiry-date, .cf-holder-name, .cf-holder-rank, .cf-type-label').forEach(function (el) {
+        el.style.color = '';
+        el.style.textShadow = '';
+      });
+      if (lum < 0.45) {
+        front.querySelectorAll('.cf-expiry-label, .cf-holder-rank').forEach(function (el) {
+          el.style.color = 'rgba(255,255,255,0.85)';
+        });
+      }
+      if (back) {
+        back.style.background = lum < 0.45 ? (color ? (function () {
+          var h = color.replace(/^#/, '');
+          if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+          var r = Math.max(0, parseInt(h.slice(0, 2), 16) - 40);
+          var g = Math.max(0, parseInt(h.slice(2, 4), 16) - 40);
+          var b = Math.max(0, parseInt(h.slice(4, 6), 16) - 40);
+          return '#' + [r, g, b].map(function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
+        })() : '#0d3b2e') : '#1a1a1a';
+        back.style.color = lum < 0.45 ? '#ffffff' : '#1a1a1a';
+        back.querySelectorAll('.cb-pin-label, .cb-section-title, .cb-contact-title').forEach(function (el) {
+          el.style.color = lum < 0.45 ? '#fff' : '#1a1a1a';
+        });
+        back.querySelectorAll('.cb-pin-dots, .cb-terms-text, .cb-merchant-tc, .cb-benefits, .cb-contact-row').forEach(function (el) {
+          el.style.color = lum < 0.45 ? 'rgba(255,255,255,0.75)' : 'rgba(0,0,0,0.7)';
+        });
+      }
     }
 
     function selectTextColor(dot, group, color) {

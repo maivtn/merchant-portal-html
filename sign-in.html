@@ -343,6 +343,9 @@
               </button>
             </div>
           </div>
+          <div class="signin-forgot">
+            <a href="#" onclick="openForgotPinModal(); return false;">Forgot PIN?</a>
+          </div>
           <button type="button" class="signin-btn" onclick="submitCardSignIn()">Sign in</button>
         </div>
       </div>
@@ -365,6 +368,44 @@
             <iconify-icon icon="solar:qr-code-bold-duotone" width="80" height="80" style="opacity:0.12;color:var(--grey-800);"></iconify-icon>
           </div>
           <p class="signin-scan-text">Position the QR code within the frame to scan</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Forgot PIN (Reset PIN) -->
+  <div id="forgotPinModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-content" onclick="event.stopPropagation()" style="max-width:400px;">
+      <div class="modal-header">
+        <span class="modal-title">Forgot PIN</span>
+        <button type="button" class="modal-close-btn" onclick="closeForgotPinModal()" aria-label="Close">
+          <i data-lucide="x" style="width:20px;height:20px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-subtitle" style="margin-top:0;">Enter your email to receive an OTP and set a new PIN.</p>
+        <div class="signin-field">
+          <label for="forgotPinEmail">Email <span style="color:var(--error-main);">*</span></label>
+          <input type="email" id="forgotPinEmail" placeholder="Enter your email" />
+        </div>
+        <button type="button" class="signin-btn" id="sendForgotPinOtpBtn" onclick="sendForgotPinOtp()" style="margin-bottom:16px;">Send OTP</button>
+        <div id="forgotPinOtpGroup" style="display:none;">
+          <div class="signin-field">
+            <label for="forgotPinOtp">OTP <span style="color:var(--error-main);">*</span></label>
+            <input type="text" id="forgotPinOtp" placeholder="Enter OTP from email" maxlength="6" inputmode="numeric" />
+          </div>
+          <div class="signin-field">
+            <label for="forgotPinNewPin">New PIN <span style="color:var(--error-main);">*</span></label>
+            <input type="password" id="forgotPinNewPin" placeholder="Enter new PIN" maxlength="8" inputmode="numeric" />
+          </div>
+          <div class="signin-field">
+            <label for="forgotPinConfirmPin">Confirm New PIN <span style="color:var(--error-main);">*</span></label>
+            <input type="password" id="forgotPinConfirmPin" placeholder="Confirm new PIN" maxlength="8" inputmode="numeric" />
+          </div>
+          <div style="display:flex;gap:12px;margin-top:16px;">
+            <button type="button" class="signin-btn" style="flex:1;background:var(--grey-500);" onclick="closeForgotPinModal()">Cancel</button>
+            <button type="button" class="signin-btn" style="flex:1;" onclick="submitForgotPinReset()">Reset PIN</button>
+          </div>
         </div>
       </div>
     </div>
@@ -408,6 +449,48 @@
     document.getElementById('signInScanModal').addEventListener('click', function (e) {
       if (e.target === this) closeSignInScanModal();
     });
+
+    function openForgotPinModal() {
+      var el = document.getElementById('forgotPinModal');
+      el.classList.add('active');
+      el.style.display = 'flex';
+      document.getElementById('forgotPinEmail').value = '';
+      document.getElementById('forgotPinOtp').value = '';
+      document.getElementById('forgotPinNewPin').value = '';
+      document.getElementById('forgotPinConfirmPin').value = '';
+      document.getElementById('forgotPinOtpGroup').style.display = 'none';
+      document.getElementById('sendForgotPinOtpBtn').disabled = false;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+    function closeForgotPinModal() {
+      var el = document.getElementById('forgotPinModal');
+      el.classList.remove('active');
+      el.style.display = 'none';
+    }
+    document.getElementById('forgotPinModal').addEventListener('click', function (e) {
+      if (e.target === this) closeForgotPinModal();
+    });
+    function sendForgotPinOtp() {
+      var email = (document.getElementById('forgotPinEmail').value || '').trim();
+      if (!email) { alert('Please enter your email to receive OTP.'); return; }
+      document.getElementById('sendForgotPinOtpBtn').disabled = true;
+      alert('OTP has been sent to ' + email + ' (demo).');
+      document.getElementById('forgotPinOtpGroup').style.display = 'block';
+      setTimeout(function () {
+        document.getElementById('forgotPinOtp').value = '1234';
+        document.getElementById('sendForgotPinOtpBtn').disabled = false;
+      }, 300);
+    }
+    function submitForgotPinReset() {
+      var otp = (document.getElementById('forgotPinOtp').value || '').trim();
+      var newPin = (document.getElementById('forgotPinNewPin').value || '').trim();
+      var confirmPin = (document.getElementById('forgotPinConfirmPin').value || '').trim();
+      if (!otp) { alert('Please enter the OTP sent to your email.'); return; }
+      if (!newPin || !confirmPin) { alert('Please enter and confirm your new PIN.'); return; }
+      if (newPin !== confirmPin) { alert('New PIN and confirmation do not match.'); return; }
+      alert('PIN has been reset successfully (demo).');
+      closeForgotPinModal();
+    }
 
     function switchSignInTab(tabId) {
       document.querySelectorAll('.signin-tab').forEach(function (t) {

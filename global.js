@@ -192,6 +192,7 @@
         },
         { label: "VlinkPay Store", href: "digital-gifts-management.html" },
         { label: "Merchant Map", href: "#" },
+        { label: "Merchant Portal", href: "dashboard.html" },
       ],
     },
     {
@@ -335,7 +336,9 @@
     if (!userInfo) return;
     const roleDiv = userInfo.querySelector("div:last-child");
     if (!roleDiv) return;
-    roleDiv.textContent = window.SIDEBAR_USE_CARDS_MENU ? "Personal" : "Merchant";
+    roleDiv.textContent = window.SIDEBAR_USE_CARDS_MENU
+      ? "Personal"
+      : "Merchant";
   }
 
   // ═══════════════════════════════════════════════════════════════════════════

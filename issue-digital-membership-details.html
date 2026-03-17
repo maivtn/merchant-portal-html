@@ -749,7 +749,7 @@
     /* Table Styling for Transactions */
     .transaction-table {
       width: 100%;
-      min-width: 760px;
+      min-width: 1000px;
       border-collapse: collapse;
       background: #fff;
       overflow: hidden;
@@ -1225,8 +1225,8 @@
 
 
 
-      table {
-        min-width: 760px;
+      #transaction-history .transaction-table {
+        min-width: 1000px;
       }
 
 
@@ -1871,72 +1871,90 @@
             <table class="transaction-table">
               <thead>
                 <tr>
-                  <th style="white-space: nowrap;">Transaction Type</th>
-                  <th style="white-space: nowrap;">Transaction Date</th>
                   <th style="white-space: nowrap;">Transaction ID</th>
+                  <th style="white-space: nowrap;">Transaction Type</th>
+                  <th style="white-space: nowrap; text-align: right;">Amount</th>
+                  <th style="white-space: nowrap;">Currency</th>
+                  <th style="white-space: nowrap; text-align: right;">Balance</th>
+                  <th style="white-space: nowrap;">Transaction Date</th>
+                  <th style="white-space: nowrap;">Status</th>
                   <th style="white-space: nowrap;">Benefit Name</th>
                   <th style="white-space: nowrap;">Benefit Unit</th>
-                  <th style="white-space: nowrap; text-align: right;">Amount</th>
-                  <th style="white-space: nowrap; text-align: right;">Balance</th>
-                  <th style="white-space: nowrap;">Tran. Status</th>
+                  <th style="white-space: nowrap;">Description</th>
+                  <th style="white-space: nowrap;">Failure Reason</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Redeem</td>
-                  <td style="white-space: nowrap;">Jan 15, 2026 09:30 AM</td>
                   <td style="font-weight: 600;">#VLP-582104</td>
-                  <td>Monthly Credit</td>
-                  <td>Currency</td>
+                  <td>Redeem</td>
                   <td style="text-align: right;">$20.00</td>
+                  <td>USD</td>
                   <td style="text-align: right;">$480.00</td>
+                  <td style="white-space: nowrap;">Jan 15, 2026 09:30 AM</td>
                   <td><span class="status-badge status-active">Completed</span></td>
+                  <td>Monthly Credit</td>
+                  <td>$</td>
+                  <td>-</td>
+                  <td>-</td>
                 </tr>
                 <tr>
-                  <td>Redeem</td>
-                  <td style="white-space: nowrap;">Jan 15, 2026 12:45 PM</td>
                   <td style="font-weight: 600;">#VLP-582319</td>
+                  <td>Redeem</td>
+                  <td style="text-align: right;">-</td>
+                  <td>USD</td>
+                  <td style="text-align: right;">-</td>
+                  <td style="white-space: nowrap;">Jan 15, 2026 12:45 PM</td>
+                  <td><span class="status-badge status-active">Completed</span></td>
                   <td>Cashback</td>
                   <td>Percentage</td>
-                  <td style="text-align: right;">-</td>
-                  <td style="text-align: right;">-</td>
-                  <td><span class="status-badge status-active">Completed</span></td>
+                  <td>-</td>
+                  <td>-</td>
                 </tr>
                 <tr>
-                  <td>Redeem</td>
-                  <td style="white-space: nowrap;">Jan 16, 2026 03:15 PM</td>
                   <td style="font-weight: 600;">#VLP-583510</td>
+                  <td>Redeem</td>
+                  <td style="text-align: right;">-</td>
+                  <td>USD</td>
+                  <td style="text-align: right;">-</td>
+                  <td style="white-space: nowrap;">Jan 16, 2026 03:15 PM</td>
+                  <td><span class="status-badge status-active">Completed</span></td>
                   <td>Discount</td>
                   <td>Percentage</td>
-                  <td style="text-align: right;">-</td>
-                  <td style="text-align: right;">-</td>
-                  <td><span class="status-badge status-active">Completed</span></td>
+                  <td>-</td>
+                  <td>-</td>
                 </tr>
                 <tr>
-                  <td>Rollover</td>
-                  <td style="white-space: nowrap;">Jan 20, 2026 08:00 AM</td>
                   <td style="font-weight: 600;">#VLP-584721</td>
-                  <td>Monthly Credit</td>
-                  <td>Currency</td>
+                  <td>Rollover</td>
                   <td style="text-align: right;">$20.00</td>
+                  <td>USD</td>
                   <td style="text-align: right;">$500.00</td>
+                  <td style="white-space: nowrap;">Jan 20, 2026 08:00 AM</td>
                   <td><span class="status-badge status-active">Completed</span></td>
+                  <td>Monthly Credit</td>
+                  <td>$</td>
+                  <td>-</td>
+                  <td>-</td>
                 </tr>
                 <tr>
-                  <td>Redeem</td>
-                  <td style="white-space: nowrap;">Jan 25, 2026 02:30 PM</td>
                   <td style="font-weight: 600;">#VLP-586133</td>
+                  <td>Redeem</td>
+                  <td style="text-align: right;">-</td>
+                  <td>USD</td>
+                  <td style="text-align: right;">-</td>
+                  <td style="white-space: nowrap;">Jan 25, 2026 02:30 PM</td>
+                  <td><span class="status-badge status-active">Completed</span></td>
                   <td>Lounge Access</td>
                   <td>Access</td>
-                  <td style="text-align: right;">-</td>
-                  <td style="text-align: right;">-</td>
-                  <td><span class="status-badge status-active">Completed</span></td>
+                  <td>-</td>
+                  <td>-</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          <!-- Redeem History: mobile cards -->
+          <!-- Redeem History: mobile cards (cột đồng bộ với bảng) -->
           <div class="transaction-mobile-cards" id="transactionHistoryMobileCards">
             <div class="transaction-product-card" data-date="2026-01-15">
               <div class="product-card-header">
@@ -1947,16 +1965,14 @@
                 <span class="status-badge status-active">Completed</span>
               </div>
               <div class="product-card-info">
-                <div class="info-field"><span class="info-field-label">Transaction Type</span><span
-                    class="info-field-value">Redeem</span></div>
-                <div class="info-field"><span class="info-field-label">Transaction Date</span><span
-                    class="info-field-value">Jan 15, 2026 09:30 AM</span></div>
-                <div class="info-field"><span class="info-field-label">Benefit Name</span><span
-                    class="info-field-value">Monthly Credit</span></div>
-                <div class="info-field"><span class="info-field-label">Benefit Unit</span><span
-                    class="info-field-value">Currency</span></div>
-                <div class="info-field"><span class="info-field-label">Balance</span><span
-                    class="info-field-value">$480.00</span></div>
+                <div class="info-field"><span class="info-field-label">Transaction Type</span><span class="info-field-value">Redeem</span></div>
+                <div class="info-field"><span class="info-field-label">Currency</span><span class="info-field-value">USD</span></div>
+                <div class="info-field"><span class="info-field-label">Balance</span><span class="info-field-value">$480.00</span></div>
+                <div class="info-field"><span class="info-field-label">Transaction Date</span><span class="info-field-value">Jan 15, 2026 09:30 AM</span></div>
+                <div class="info-field"><span class="info-field-label">Benefit Name</span><span class="info-field-value">Monthly Credit</span></div>
+                <div class="info-field"><span class="info-field-label">Benefit Unit</span><span class="info-field-value">$</span></div>
+                <div class="info-field"><span class="info-field-label">Description</span><span class="info-field-value">-</span></div>
+                <div class="info-field"><span class="info-field-label">Failure Reason</span><span class="info-field-value">-</span></div>
               </div>
             </div>
             <div class="transaction-product-card" data-date="2026-01-15">
@@ -1968,14 +1984,14 @@
                 <span class="status-badge status-active">Completed</span>
               </div>
               <div class="product-card-info">
-                <div class="info-field"><span class="info-field-label">Transaction Type</span><span
-                    class="info-field-value">Redeem</span></div>
-                <div class="info-field"><span class="info-field-label">Transaction Date</span><span
-                    class="info-field-value">Jan 15, 2026 12:45 PM</span></div>
-                <div class="info-field"><span class="info-field-label">Benefit Name</span><span
-                    class="info-field-value">Cashback</span></div>
-                <div class="info-field"><span class="info-field-label">Benefit Unit</span><span
-                    class="info-field-value">Percentage</span></div>
+                <div class="info-field"><span class="info-field-label">Transaction Type</span><span class="info-field-value">Redeem</span></div>
+                <div class="info-field"><span class="info-field-label">Currency</span><span class="info-field-value">USD</span></div>
+                <div class="info-field"><span class="info-field-label">Balance</span><span class="info-field-value">-</span></div>
+                <div class="info-field"><span class="info-field-label">Transaction Date</span><span class="info-field-value">Jan 15, 2026 12:45 PM</span></div>
+                <div class="info-field"><span class="info-field-label">Benefit Name</span><span class="info-field-value">Cashback</span></div>
+                <div class="info-field"><span class="info-field-label">Benefit Unit</span><span class="info-field-value">Percentage</span></div>
+                <div class="info-field"><span class="info-field-label">Description</span><span class="info-field-value">-</span></div>
+                <div class="info-field"><span class="info-field-label">Failure Reason</span><span class="info-field-value">-</span></div>
               </div>
             </div>
             <div class="transaction-product-card" data-date="2026-01-16">
@@ -1987,14 +2003,14 @@
                 <span class="status-badge status-active">Completed</span>
               </div>
               <div class="product-card-info">
-                <div class="info-field"><span class="info-field-label">Transaction Type</span><span
-                    class="info-field-value">Redeem</span></div>
-                <div class="info-field"><span class="info-field-label">Transaction Date</span><span
-                    class="info-field-value">Jan 16, 2026 03:15 PM</span></div>
-                <div class="info-field"><span class="info-field-label">Benefit Name</span><span
-                    class="info-field-value">Discount</span></div>
-                <div class="info-field"><span class="info-field-label">Benefit Unit</span><span
-                    class="info-field-value">Percentage</span></div>
+                <div class="info-field"><span class="info-field-label">Transaction Type</span><span class="info-field-value">Redeem</span></div>
+                <div class="info-field"><span class="info-field-label">Currency</span><span class="info-field-value">USD</span></div>
+                <div class="info-field"><span class="info-field-label">Balance</span><span class="info-field-value">-</span></div>
+                <div class="info-field"><span class="info-field-label">Transaction Date</span><span class="info-field-value">Jan 16, 2026 03:15 PM</span></div>
+                <div class="info-field"><span class="info-field-label">Benefit Name</span><span class="info-field-value">Discount</span></div>
+                <div class="info-field"><span class="info-field-label">Benefit Unit</span><span class="info-field-value">Percentage</span></div>
+                <div class="info-field"><span class="info-field-label">Description</span><span class="info-field-value">-</span></div>
+                <div class="info-field"><span class="info-field-label">Failure Reason</span><span class="info-field-value">-</span></div>
               </div>
             </div>
             <div class="transaction-product-card" data-date="2026-01-20">
@@ -2006,14 +2022,14 @@
                 <span class="status-badge status-active">Completed</span>
               </div>
               <div class="product-card-info">
-                <div class="info-field"><span class="info-field-label">Transaction Type</span><span
-                    class="info-field-value">Rollover</span></div>
-                <div class="info-field"><span class="info-field-label">Transaction Date</span><span
-                    class="info-field-value">Jan 20, 2026 08:00 AM</span></div>
-                <div class="info-field"><span class="info-field-label">Benefit Name</span><span
-                    class="info-field-value">Monthly Credit</span></div>
-                <div class="info-field"><span class="info-field-label">Balance</span><span
-                    class="info-field-value">$500.00</span></div>
+                <div class="info-field"><span class="info-field-label">Transaction Type</span><span class="info-field-value">Rollover</span></div>
+                <div class="info-field"><span class="info-field-label">Currency</span><span class="info-field-value">USD</span></div>
+                <div class="info-field"><span class="info-field-label">Balance</span><span class="info-field-value">$500.00</span></div>
+                <div class="info-field"><span class="info-field-label">Transaction Date</span><span class="info-field-value">Jan 20, 2026 08:00 AM</span></div>
+                <div class="info-field"><span class="info-field-label">Benefit Name</span><span class="info-field-value">Monthly Credit</span></div>
+                <div class="info-field"><span class="info-field-label">Benefit Unit</span><span class="info-field-value">$</span></div>
+                <div class="info-field"><span class="info-field-label">Description</span><span class="info-field-value">-</span></div>
+                <div class="info-field"><span class="info-field-label">Failure Reason</span><span class="info-field-value">-</span></div>
               </div>
             </div>
             <div class="transaction-product-card" data-date="2026-01-25">
@@ -2025,14 +2041,14 @@
                 <span class="status-badge status-active">Completed</span>
               </div>
               <div class="product-card-info">
-                <div class="info-field"><span class="info-field-label">Transaction Type</span><span
-                    class="info-field-value">Redeem</span></div>
-                <div class="info-field"><span class="info-field-label">Transaction Date</span><span
-                    class="info-field-value">Jan 25, 2026 02:30 PM</span></div>
-                <div class="info-field"><span class="info-field-label">Benefit Name</span><span
-                    class="info-field-value">Lounge Access</span></div>
-                <div class="info-field"><span class="info-field-label">Benefit Unit</span><span
-                    class="info-field-value">Access</span></div>
+                <div class="info-field"><span class="info-field-label">Transaction Type</span><span class="info-field-value">Redeem</span></div>
+                <div class="info-field"><span class="info-field-label">Currency</span><span class="info-field-value">USD</span></div>
+                <div class="info-field"><span class="info-field-label">Balance</span><span class="info-field-value">-</span></div>
+                <div class="info-field"><span class="info-field-label">Transaction Date</span><span class="info-field-value">Jan 25, 2026 02:30 PM</span></div>
+                <div class="info-field"><span class="info-field-label">Benefit Name</span><span class="info-field-value">Lounge Access</span></div>
+                <div class="info-field"><span class="info-field-label">Benefit Unit</span><span class="info-field-value">Access</span></div>
+                <div class="info-field"><span class="info-field-label">Description</span><span class="info-field-value">-</span></div>
+                <div class="info-field"><span class="info-field-label">Failure Reason</span><span class="info-field-value">-</span></div>
               </div>
             </div>
           </div>

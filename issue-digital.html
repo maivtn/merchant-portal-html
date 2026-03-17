@@ -4215,6 +4215,12 @@ Please present this card before payment.</textarea>
         vlpRow.style.display = (typeId === '5') ? '' : 'none';
       }
 
+      // Payment methods: hide payment grid when Crypto Card
+      const paymentGrid = document.querySelector('.payment-grid');
+      if (paymentGrid) {
+        paymentGrid.style.display = (typeId === '5') ? 'none' : '';
+      }
+
       // Membership-specific fields
       const birthdayField = document.getElementById('birthdayField');
       const termsActions = document.getElementById('termsActions');

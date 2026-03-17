@@ -2473,13 +2473,21 @@
     }
 
     @media (max-width: 767px) {
-      .create-card-layout {
-        gap: 16px;
-        margin-top: 16px;
+      .page-header {
+        position: fixed;
+        top: 68px;
+        left: 0;
+        right: 0;
+        z-index: 25;
+        background: var(--c-surface);
+        padding: 8px 16px;
+        margin: 0;
+        box-shadow: 0 1px 0 rgba(145, 158, 171, 0.12);
       }
 
-      .left-panel {
-        padding-top: 220px;
+      .create-card-layout {
+        gap: 16px;
+        margin-top: 56px;
       }
 
       .panel-card {
@@ -4585,8 +4593,32 @@ Please present this card before payment.</textarea>
         expiryDateEl.textContent = '—';
       }
     }
+    // Mobile: position fixed card below page-header, set left-panel padding to card height
+    function updateMobilePreviewCardPadding() {
+      var leftPanel = document.querySelector('.left-panel');
+      var previewCard = document.querySelector('.panel-card-preview-card');
+      var pageHeader = document.querySelector('.page-header');
+      var isMobile = window.innerWidth <= 767;
+      if (!leftPanel) return;
+      if (isMobile && previewCard) {
+        // Main has padding-top 88px (global.css), page-header is below that
+        var mainTop = 88;
+        var headerHeight = pageHeader ? pageHeader.offsetHeight : 0;
+        var cardTop = mainTop + headerHeight;
+        previewCard.style.top = cardTop + 'px';
+        var h = previewCard.offsetHeight;
+        leftPanel.style.paddingTop = (h > 0 ? h : 220) + 'px';
+      } else {
+        if (previewCard) previewCard.style.top = '';
+        leftPanel.style.paddingTop = '';
+      }
+    }
+    window.addEventListener('resize', updateMobilePreviewCardPadding);
+
     // Set today as min date for custom expiry
     document.addEventListener('DOMContentLoaded', () => {
+      updateMobilePreviewCardPadding();
+
       // ── Flatpickr: Custom Expiry Date ──
       const fpCustom = flatpickr('#customDate', {
         dateFormat: 'M j, Y',

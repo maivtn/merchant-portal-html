@@ -714,6 +714,45 @@
             padding: 0 24px 24px;
         }
 
+        /* Reload Asset - result container (QR + amount + address) */
+        .result-container {
+            background: #f9fafb;
+            border: 1px solid var(--grey-200);
+            border-radius: 16px;
+            padding: 20px 16px;
+            text-align: center;
+        }
+
+        #reloadNetworkNoticeModal .address-wrapper {
+            background: rgba(145, 158, 171, 0.08);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            margin-bottom: 8px;
+            word-break: break-all;
+        }
+
+        #reloadNetworkNoticeModal .address-text {
+            font-family: monospace;
+            font-size: 11px;
+            color: var(--grey-800);
+            flex: 1;
+            text-align: left;
+        }
+
+        #reloadNetworkNoticeModal .copy-btn {
+            color: var(--primary-main);
+            cursor: pointer;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
         .qr-modal-placeholder {
             width: 200px;
             height: 200px;
@@ -1409,6 +1448,109 @@
             padding-left: 40px;
         }
 
+        .icon-select {
+            position: relative;
+            user-select: none;
+        }
+
+        .icon-select-trigger {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            height: 40px;
+            padding: 0 14px;
+            border: 1px solid var(--grey-300);
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .coin-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-size: 0;
+            background-color: #f4f6f8;
+        }
+
+        .coin-icon::before {
+            content: "";
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: block;
+        }
+
+        .coin-eth::before {
+            background-image: url("https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png");
+        }
+
+        .coin-btc::before {
+            background-image: url("btc.png");
+        }
+
+        .coin-vrc::before {
+            background-image: url("vrc20.png");
+        }
+
+        .icon-select-text {
+            flex: 1;
+            color: var(--grey-900);
+        }
+
+        .icon-select-chevron {
+            width: 16px;
+            height: 16px;
+            color: var(--grey-500);
+        }
+
+        .icon-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-radius: 12px;
+            margin-top: 4px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
+            z-index: 10;
+            padding: 6px 0;
+            display: none;
+        }
+
+        .icon-select.open .icon-select-dropdown {
+            display: block;
+        }
+
+        .icon-select-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            font-size: 14px;
+            color: var(--grey-800);
+            cursor: pointer;
+        }
+
+        .icon-select-option:hover {
+            background: #F4F6F8;
+        }
+
+        .icon-select-option.selected {
+            background: #E8F5E9;
+            color: #007867;
+        }
+
         .reload-amount-row {
             display: flex;
             gap: 8px;
@@ -1421,12 +1563,6 @@
 
         .reload-amount-unit {
             width: 120px;
-        }
-
-        .reload-modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
         }
 
         .btn-text {
@@ -1467,8 +1603,8 @@
             color: var(--grey-900);
         }
 
-        /* Rate value should use normal font weight */
-        #reloadRate {
+        /* Price value normal font weight */
+        #reloadPrice {
             font-weight: 400;
         }
 
@@ -1483,6 +1619,46 @@
             font-size: 12px;
             font-weight: 500;
             color: var(--grey-500);
+        }
+
+        .reload-summary-row.reload-summary-row--divider {
+            border-top: 1px solid var(--grey-200);
+            margin-top: 8px;
+            padding-top: 8px;
+        }
+
+        .reload-summary-value--free {
+            color: var(--green-600, #16a34a);
+            font-weight: 600;
+        }
+
+        .reload-summary-row.reload-summary-row--total .reload-summary-label {
+            font-weight: 700;
+            color: var(--grey-900);
+        }
+
+        .reload-summary-row.reload-summary-row--total .reload-summary-value {
+            font-weight: 700;
+        }
+
+        .reload-summary-label-inline {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .reload-summary-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--grey-300);
+            color: var(--grey-600);
+            font-size: 10px;
+            font-weight: 700;
+            cursor: help;
         }
 
         /* ─── Responsive: iPad (max-width: 1023px) ─── */
@@ -2604,16 +2780,60 @@
             </div>
             <div class="reload-modal-body">
                 <div>
-                    <div class="reload-field-label">Select Asset</div>
-                    <div class="reload-select-with-icon select-with-chevron" id="reloadAssetWrapper">
-                        <img id="reloadAssetIcon" class="reload-select-icon"
-                            src="https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/Usd.png"
-                            alt="Asset icon" />
-                        <select class="reload-field-select" id="reloadAsset">
-                            <option value="">Choose asset</option>
-                            <option value="BTC">BTC</option>
-                            <option value="ETH">ETH</option>
-                        </select>
+                    <div class="reload-field-label" style="display:flex;justify-content:space-between;align-items:center;">
+                        <span>Select Asset</span>
+                        <span id="reloadAssetAvailable" style="font-size:12px;color:var(--grey-600);display:none;">
+                            Available: <span style="font-weight:600;color:var(--grey-900);">$6,918,241.48</span>
+                        </span>
+                    </div>
+                    <input type="hidden" id="reloadAsset" value="BTC">
+                    <div class="icon-select" id="reloadAssetSelect">
+                        <div class="icon-select-trigger" onclick="toggleIconSelect('reloadAssetSelect')">
+                            <div class="coin-icon coin-btc">₿</div>
+                            <span class="icon-select-text">Bitcoin (BTC)</span>
+                            <svg class="icon-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </div>
+                        <div class="icon-select-dropdown">
+                            <div class="icon-select-option selected"
+                                onclick="pickReloadAsset(this,'coin-btc','₿','Bitcoin (BTC)','BTC')">
+                                <div class="coin-icon coin-btc">₿</div>Bitcoin (BTC)
+                            </div>
+                            <div class="icon-select-option"
+                                onclick="pickReloadAsset(this,'coin-eth','Ξ','Ethereum (ETH)','ETH')">
+                                <div class="coin-icon coin-eth">Ξ</div>Ethereum (ETH)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="reload-field-label">Select Network</div>
+                    <input type="hidden" id="reloadNetwork" value="VRC20">
+                    <div class="icon-select" id="reloadNetworkSelect">
+                        <div class="icon-select-trigger" onclick="toggleIconSelect('reloadNetworkSelect')">
+                            <div class="coin-icon coin-vrc">V</div>
+                            <span class="icon-select-text">Vlinkpay (VRC20)</span>
+                            <svg class="icon-select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </div>
+                        <div class="icon-select-dropdown">
+                            <div class="icon-select-option selected"
+                                onclick="pickReloadNetwork(this,'coin-vrc','V','Vlinkpay (VRC20)','VRC20')">
+                                <div class="coin-icon coin-vrc">V</div>Vlinkpay (VRC20)
+                            </div>
+                            <div class="icon-select-option"
+                                onclick="pickReloadNetwork(this,'coin-eth','Ξ','Ethereum (ERC20)','ERC20')">
+                                <div class="coin-icon coin-eth">Ξ</div>Ethereum (ERC20)
+                            </div>
+                            <div class="icon-select-option"
+                                onclick="pickReloadNetwork(this,'coin-btc','₿','Bitcoin (BTC)','BTC')">
+                                <div class="coin-icon coin-btc">₿</div>Bitcoin (BTC)
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -2635,8 +2855,8 @@
                 </div>
                 <div class="reload-summary">
                     <div class="reload-summary-row">
-                        <span class="reload-summary-label">Rate</span>
-                        <span id="reloadRate" class="reload-summary-value">-</span>
+                        <span class="reload-summary-label">Price</span>
+                        <span id="reloadPrice" class="reload-summary-value">-</span>
                     </div>
                     <div class="reload-summary-row">
                         <span class="reload-summary-label">Current Balance</span>
@@ -2652,11 +2872,88 @@
                             <span id="reloadAfterUsd" class="reload-summary-subvalue">-</span>
                         </span>
                     </div>
+                    <div class="reload-summary-row reload-summary-row--divider">
+                        <span class="reload-summary-label">Platform Fee (1.5%)</span>
+                        <span id="reloadPlatformFee" class="reload-summary-value">-</span>
+                    </div>
+                    <div class="reload-summary-row">
+                        <span class="reload-summary-label">Transfer Fee (1.5%)</span>
+                        <span id="reloadTransferFee" class="reload-summary-value">-</span>
+                    </div>
+                    <div class="reload-summary-row reload-summary-row--total">
+                        <span class="reload-summary-label reload-summary-label-inline">
+                            Total
+                            <span class="reload-summary-info-icon" title="Total amount including fees">i</span>
+                        </span>
+                        <span id="reloadTotal" class="reload-summary-value">-</span>
+                    </div>
                 </div>
             </div>
-            <div class="reload-modal-footer">
-                <button class="btn-text" onclick="closeReloadModal()">Cancel</button>
-                <button class="btn-action btn-edit" onclick="confirmReload()">Confirm</button>
+            <div class="modal-footer-centered">
+                <button type="button" class="btn-secondary" onclick="closeReloadModal()">Cancel</button>
+                <button type="button" class="btn-primary-rounded" onclick="confirmReload()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reload Network Notice Modal (for non-VRC20 networks) -->
+    <div id="reloadNetworkNoticeModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">Reload Asset</span>
+                <div class="close-btn" onclick="closeReloadNetworkNoticeModal()">
+                    <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="result-container" style="margin-bottom: 16px;">
+                    <div class="qr-box" style="width: 120px; height: 120px; margin: 0 auto 16px; padding: 8px;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQ"
+                            alt="QR Code">
+                    </div>
+                    <div class="amount-display" style="margin-bottom: 8px;">
+                        <div class="amount-usd" id="reloadNoticeAmountUsd"
+                            style="font-size: 24px; font-weight: 700; color: var(--grey-900);">$101.5</div>
+                        <div class="amount-crypto" id="reloadNoticeAmountCrypto"
+                            style="font-size: 13px; color: var(--grey-600); margin-top: 2px;">0.000896 BTC</div>
+                    </div>
+                    <div id="reloadNoticeRate"
+                        style="font-size: 12px; color: var(--grey-500); margin-bottom: 8px;">1 BTC = $111,626.90</div>
+                    <div class="address-wrapper"
+                        style="justify-content: center; padding: 8px 10px;">
+                        <span class="address-text"
+                            style="font-size: 11px; max-width: 260px; text-overflow: ellipsis; overflow: hidden;">TDWZWCMIMWNcXgzMuj64RskQZjbvmvD1CQ</span>
+                        <div class="copy-btn" onclick="copyAddress(this)" title="Copy address">
+                            <iconify-icon icon="solar:copy-bold-duotone" width="16"></iconify-icon>
+                            <span>Copy</span>
+                        </div>
+                    </div>
+                    <div class="timer-text"
+                        style="font-size: 12px; color: var(--grey-600); margin-bottom: 4px; text-align: center;">
+                        Code auto-refresh in <span style="color: var(--primary-main); font-weight: 600;">1:29s</span>
+                        <a class="refresh-link" style="cursor: pointer; font-weight: 600;">Refresh</a>
+                    </div>
+                    <div class="status-waiting"
+                        style="font-size: 13px; font-weight: 600; color: var(--grey-800); margin-top: 4px;">
+                        Waiting for reload...
+                    </div>
+                </div>
+
+                <div style="font-size: 13px; color: var(--grey-700); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                    <b>Network:</b>
+                    <span id="reloadNoticeNetworkIcon" class="coin-icon coin-btc" style="width: 18px; height: 18px;">₿</span>
+                    <span id="reloadNoticeNetworkText">Bitcoin (BTC)</span>
+                </div>
+
+                <div class="note-box" style="margin-top: 8px;">
+                    <b>Note:</b><br>
+                    Please send the exact amount using the selected asset and network to complete your payment.
+                </div>
+            </div>
+            <div class="modal-footer-centered">
+                <button type="button" class="btn-secondary" onclick="closeReloadNetworkNoticeModal()">Cancel</button>
+                <button type="button" class="btn-primary-rounded" onclick="closeReloadNetworkNoticeModal()">View Crypto
+                    Card Details</button>
             </div>
         </div>
     </div>
@@ -2830,10 +3127,40 @@
             if (modal) {
                 modal.style.display = 'flex';
             }
-            const assetSelect = document.getElementById('reloadAsset');
+            const assetInput = document.getElementById('reloadAsset');
+            const assetWrap = document.getElementById('reloadAssetSelect');
             const amountInput = document.getElementById('reloadAmount');
             const amountUnitSelect = document.getElementById('reloadAmountUnit');
-            if (assetSelect) assetSelect.value = '';
+            const networkSelect = document.getElementById('reloadNetwork');
+            const networkWrap = document.getElementById('reloadNetworkSelect');
+            if (assetInput) assetInput.value = 'BTC';
+            if (assetWrap) {
+                const trigger = assetWrap.querySelector('.icon-select-trigger');
+                const icon = trigger && trigger.querySelector('.coin-icon');
+                const textEl = trigger && trigger.querySelector('.icon-select-text');
+                if (icon) { icon.className = 'coin-icon coin-btc'; icon.textContent = '₿'; }
+                if (textEl) textEl.textContent = 'Bitcoin (BTC)';
+                assetWrap.querySelectorAll('.icon-select-option').forEach(function (o, index) {
+                    o.classList.toggle('selected', index === 0);
+                });
+                assetWrap.classList.remove('open');
+            }
+            if (networkSelect) networkSelect.value = 'VRC20';
+            if (networkWrap) {
+                const trigger = networkWrap.querySelector('.icon-select-trigger');
+                const icon = trigger && trigger.querySelector('.coin-icon');
+                const textEl = trigger && trigger.querySelector('.icon-select-text');
+                if (icon) { icon.className = 'coin-icon coin-vrc'; icon.textContent = 'V'; }
+                if (textEl) textEl.textContent = 'Vlinkpay (VRC20)';
+                networkWrap.querySelectorAll('.icon-select-option').forEach(function (o, index) {
+                    o.classList.toggle('selected', index === 0);
+                });
+                networkWrap.classList.remove('open');
+            }
+            const availEl = document.getElementById('reloadAssetAvailable');
+            if (availEl) {
+                availEl.style.display = 'inline-flex';
+            }
             if (amountInput) amountInput.value = '';
             if (amountUnitSelect) {
                 amountUnitSelect.value = 'USD';
@@ -2844,6 +3171,9 @@
             updateAmountUnitIcon();
             updateReloadSummary();
         }
+
+        // Ensure openReloadModal is available for inline onclick
+        window.openReloadModal = openReloadModal;
 
         function closeReloadModal() {
             const modal = document.getElementById('reloadModal');
@@ -2868,43 +3198,159 @@
             if (e.target === modal) {
                 closeReloadModal();
             }
+            if (!e.target.closest('.icon-select')) {
+                document.querySelectorAll('.icon-select.open').forEach(function (el) { el.classList.remove('open'); });
+            }
         });
+
+        function toggleIconSelect(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const isOpen = el.classList.contains('open');
+            document.querySelectorAll('.icon-select.open').forEach(function (e) { e.classList.remove('open'); });
+            if (!isOpen) el.classList.add('open');
+        }
+
+        function pickReloadNetwork(optionEl, coinClass, symbol, label, value) {
+            const el = document.getElementById('reloadNetworkSelect');
+            if (!el) return;
+            const trigger = el.querySelector('.icon-select-trigger');
+            const icon = trigger && trigger.querySelector('.coin-icon');
+            const textEl = trigger && trigger.querySelector('.icon-select-text');
+            if (icon) { icon.className = 'coin-icon ' + coinClass; icon.textContent = symbol; }
+            if (textEl) textEl.textContent = label;
+            el.querySelectorAll('.icon-select-option').forEach(function (o) { o.classList.remove('selected'); });
+            optionEl.classList.add('selected');
+            el.classList.remove('open');
+            const hidden = document.getElementById('reloadNetwork');
+            if (hidden) hidden.value = value;
+            const availEl = document.getElementById('reloadAssetAvailable');
+            if (availEl) {
+                availEl.style.display = (value === 'VRC20') ? 'inline-flex' : 'none';
+            }
+        }
+
+        function pickReloadAsset(optionEl, coinClass, symbol, label, value) {
+            const el = document.getElementById('reloadAssetSelect');
+            if (!el) return;
+            const trigger = el.querySelector('.icon-select-trigger');
+            const icon = trigger && trigger.querySelector('.coin-icon');
+            const textEl = trigger && trigger.querySelector('.icon-select-text');
+            if (icon) { icon.className = 'coin-icon ' + coinClass; icon.textContent = symbol; }
+            if (textEl) textEl.textContent = label;
+            el.querySelectorAll('.icon-select-option').forEach(function (o) { o.classList.remove('selected'); });
+            optionEl.classList.add('selected');
+            el.classList.remove('open');
+            const hidden = document.getElementById('reloadAsset');
+            if (hidden) hidden.value = value;
+            syncAmountUnitOptions(value || '');
+            updateReloadSummary();
+        }
+
+        function openReloadNetworkNoticeModal(asset, network, amount, amountUnit) {
+            const modal = document.getElementById('reloadNetworkNoticeModal');
+            if (!modal) return;
+
+            const rate = assetRates[asset] || 0;
+            const amountUsdEl = document.getElementById('reloadNoticeAmountUsd');
+            const amountCryptoEl = document.getElementById('reloadNoticeAmountCrypto');
+            const rateEl = document.getElementById('reloadNoticeRate');
+
+            const numericAmount = parseFloat(amount || '0') || 0;
+            let usdAmount = numericAmount;
+            let cryptoAmount = numericAmount;
+
+            if (amountUnit === 'USD') {
+                usdAmount = numericAmount;
+                cryptoAmount = rate > 0 ? (usdAmount / rate) : 0;
+            } else {
+                cryptoAmount = numericAmount;
+                usdAmount = cryptoAmount * rate;
+            }
+
+            if (amountUsdEl) {
+                amountUsdEl.textContent = usdAmount > 0
+                    ? '$' + usdAmount.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    })
+                    : '$0.00';
+            }
+            if (amountCryptoEl) {
+                amountCryptoEl.textContent = cryptoAmount > 0
+                    ? cryptoAmount.toFixed(6) + ' ' + asset
+                    : '0 ' + asset;
+            }
+            if (rateEl) {
+                rateEl.textContent = rate
+                    ? ('1 ' + asset + ' = $' + rate.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    }))
+                    : '-';
+            }
+            // Map network code to display name + icon
+            var networkLabel = network;
+            var networkIconClass = 'coin-vrc';
+            var networkSymbol = 'V';
+            if (network === 'ERC20') {
+                networkLabel = 'Ethereum (ERC20)';
+                networkIconClass = 'coin-eth';
+                networkSymbol = 'Ξ';
+            } else if (network === 'BTC') {
+                networkLabel = 'Bitcoin (BTC)';
+                networkIconClass = 'coin-btc';
+                networkSymbol = '₿';
+            } else {
+                networkLabel = 'Vlinkpay (VRC20)';
+                networkIconClass = 'coin-vrc';
+                networkSymbol = 'V';
+            }
+
+            const networkTextEl = document.getElementById('reloadNoticeNetworkText');
+            const networkIconEl = document.getElementById('reloadNoticeNetworkIcon');
+            if (networkTextEl) {
+                networkTextEl.textContent = networkLabel;
+            }
+            if (networkIconEl) {
+                networkIconEl.className = 'coin-icon ' + networkIconClass;
+                networkIconEl.textContent = networkSymbol;
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeReloadNetworkNoticeModal() {
+            const modal = document.getElementById('reloadNetworkNoticeModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
 
         function confirmReload() {
             const asset = (document.getElementById('reloadAsset') || {}).value;
+            const network = (document.getElementById('reloadNetwork') || {}).value;
             const amount = (document.getElementById('reloadAmount') || {}).value;
-            if (!asset || !amount) {
-                alert('Please select asset and enter amount.');
+            const amountUnit = (document.getElementById('reloadAmountUnit') || {}).value || 'USD';
+            if (!asset || !network || !amount) {
+                alert('Please select asset, network and enter amount.');
                 return;
             }
-            // Placeholder for real reload logic
-            console.log('Reload asset', asset, 'amount', amount);
+
+            if (network !== 'VRC20') {
+                // Show notice popup for non-VRC20 networks
+                closeReloadModal();
+                openReloadNetworkNoticeModal(asset, network, amount, amountUnit);
+                return;
+            }
+
+            // Placeholder for real reload logic (VRC20)
+            console.log('Reload asset', asset, 'network', network, 'amount', amount);
             closeReloadModal();
         }
 
         function updateAssetIcon() {
-            const assetSelect = document.getElementById('reloadAsset');
-            const iconEl = document.getElementById('reloadAssetIcon');
-            const wrapper = document.getElementById('reloadAssetWrapper');
-            if (!assetSelect || !iconEl || !wrapper) return;
-
-            const value = assetSelect.value;
-            if (!value) {
-                // No asset selected: hide icon
-                iconEl.style.display = 'none';
-                wrapper.classList.remove('has-icon');
-                return;
-            }
-
-            iconEl.style.display = 'block';
-            wrapper.classList.add('has-icon');
-            if (value === 'BTC') {
-                iconEl.src = ICONS.BTC;
-            } else if (value === 'ETH') {
-                iconEl.src = ICONS.ETH;
-            } else {
-                iconEl.src = ICONS.USD;
-            }
+            // Icon is handled by custom icon-select (reloadAssetSelect)
         }
 
         function updateAmountUnitIcon() {
@@ -2969,33 +3415,43 @@
             const currentUsdEl = document.getElementById('reloadCurrentUsd');
             const afterQtyEl = document.getElementById('reloadAfterQty');
             const afterUsdEl = document.getElementById('reloadAfterUsd');
-            const rateEl = document.getElementById('reloadRate');
+            const priceEl = document.getElementById('reloadPrice');
+            const platformFeeEl = document.getElementById('reloadPlatformFee');
+            const transferFeeEl = document.getElementById('reloadTransferFee');
+            const totalEl = document.getElementById('reloadTotal');
 
-            if (!assetEl || !amountEl || !amountUnitEl || !currentQtyEl || !currentUsdEl || !afterQtyEl || !afterUsdEl || !rateEl) return;
+            if (!assetEl || !amountEl || !amountUnitEl || !currentQtyEl || !currentUsdEl || !afterQtyEl || !afterUsdEl || !priceEl || !platformFeeEl || !transferFeeEl || !totalEl) return;
 
             const asset = assetEl.value;
             const rawAmount = amountEl.value;
             const amountUnit = amountUnitEl.value || 'USD';
 
-            if (!asset) {
+            function setDash() {
                 currentQtyEl.textContent = '-';
                 currentUsdEl.textContent = '-';
                 afterQtyEl.textContent = '-';
                 afterUsdEl.textContent = '-';
-                rateEl.textContent = '-';
+                priceEl.textContent = '-';
+                platformFeeEl.textContent = '-';
+                platformFeeEl.classList.remove('reload-summary-value--free');
+                transferFeeEl.textContent = '-';
+                totalEl.textContent = '-';
+            }
+
+            if (!asset) {
+                setDash();
                 return;
             }
 
             const current = assetBalances[asset] || 0;
             const rate = assetRates[asset] || 0;
 
-            // Ensure amount unit options match selected asset
             syncAmountUnitOptions(asset);
 
             if (!rate) {
-                rateEl.textContent = '-';
+                priceEl.textContent = '-';
             } else {
-                rateEl.textContent = '1 ' + asset + ' = $' + rate.toLocaleString('en-US', {
+                priceEl.textContent = '1 ' + asset + ' = $' + rate.toLocaleString('en-US', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                 });
@@ -3009,12 +3465,10 @@
                 usdAmount = inputAmount;
                 deltaCoins = rate > 0 ? (usdAmount / rate) : 0;
             } else {
-                // Amount entered directly in crypto units
                 deltaCoins = inputAmount;
                 usdAmount = deltaCoins * rate;
             }
             const after = current + deltaCoins;
-
             const currentUsd = current * rate;
             const afterUsd = after * rate;
 
@@ -3026,6 +3480,31 @@
 
             afterQtyEl.textContent = after.toFixed(8) + ' ' + asset;
             afterUsdEl.textContent = '$' + afterUsd.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            });
+
+            // Fees & total: show "-" when no amount entered
+            if (!rawAmount || inputAmount <= 0) {
+                platformFeeEl.textContent = '-';
+                platformFeeEl.classList.remove('reload-summary-value--free');
+                transferFeeEl.textContent = '-';
+                totalEl.textContent = '-';
+                return;
+            }
+
+            // Platform fee: Free (green); transfer fee 1.5% of reload amount in USD
+            const transferFeeRate = 0.015;
+            const transferFee = usdAmount * transferFeeRate;
+            const total = usdAmount + transferFee;
+
+            platformFeeEl.textContent = 'Free';
+            platformFeeEl.classList.add('reload-summary-value--free');
+            transferFeeEl.textContent = '$' + transferFee.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            });
+            totalEl.textContent = '$' + total.toLocaleString('en-US', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
             });
@@ -3066,13 +3545,7 @@
             const assetSelect = document.getElementById('reloadAsset');
             const amountInput = document.getElementById('reloadAmount');
             const amountUnitSelect = document.getElementById('reloadAmountUnit');
-            if (assetSelect) {
-                assetSelect.addEventListener('change', function () {
-                    syncAmountUnitOptions(assetSelect.value || '');
-                    updateAssetIcon();
-                    updateReloadSummary();
-                });
-            }
+            // Asset change is handled via pickReloadAsset (icon-select)
             if (amountInput) {
                 amountInput.addEventListener('input', updateReloadSummary);
             }

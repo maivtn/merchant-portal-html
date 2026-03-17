@@ -229,6 +229,7 @@
   // ═══════════════════════════════════════════════════════════════════════════
   document.addEventListener("DOMContentLoaded", function () {
     renderSidebarNav();
+    updateSidebarUserRole();
     injectHamburger();
     injectMobileLogo();
     injectOverlay();
@@ -324,6 +325,17 @@
     }
 
     sc.insertAdjacentHTML("beforeend", html);
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SIDEBAR USER ROLE LABEL: Personal (SIDEBAR_MENU_CARDS) / Merchant (SIDEBAR_MENU)
+  // ═══════════════════════════════════════════════════════════════════════════
+  function updateSidebarUserRole() {
+    const userInfo = document.querySelector(".sidebar .user-info");
+    if (!userInfo) return;
+    const roleDiv = userInfo.querySelector("div:last-child");
+    if (!roleDiv) return;
+    roleDiv.textContent = window.SIDEBAR_USE_CARDS_MENU ? "Personal" : "Merchant";
   }
 
   // ═══════════════════════════════════════════════════════════════════════════

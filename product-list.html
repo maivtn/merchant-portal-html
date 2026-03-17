@@ -334,6 +334,24 @@
       min-width: 90px;
     }
 
+    /* Desktop: fix Actions column on the right when horizontal scroll */
+    @media (min-width: 1024px) {
+      .data-table th.col-actions,
+      .data-table td.col-actions {
+        position: sticky;
+        right: 0;
+        background: #fff;
+        z-index: 1;
+        box-shadow: -6px 0 10px -4px rgba(22, 28, 36, 0.08);
+      }
+      .data-table thead th.col-actions {
+        z-index: 2;
+      }
+      .data-table tbody tr:hover td.col-actions {
+        background: #f9fafb;
+      }
+    }
+
     /* ===== Badges ===== */
     /* ===== Action Buttons ===== */
     .action-btns {

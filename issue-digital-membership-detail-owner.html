@@ -1535,24 +1535,30 @@
       display: block;
     }
 
-    .change-pin-email-at-bottom.hidden {
+    .change-pin-email-at-bottom.hidden,
+    .change-pin-new-pin-group.hidden {
       display: none !important;
     }
 
     .send-otp-btn {
-      margin-top: 8px;
-      padding: 8px 16px;
-      font-size: 13px;
+      height: 40px;
+      min-height: 40px;
+      padding: 0 20px;
+      font-size: 14px;
       font-weight: 600;
-      color: var(--primary-main);
-      background: rgba(0, 167, 111, 0.1);
-      border: 1px solid var(--primary-main);
+      color: #fff;
+      background: var(--primary-main);
+      border: none;
       border-radius: 8px;
       cursor: pointer;
+      transition: background 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .send-otp-btn:hover {
-      background: rgba(0, 167, 111, 0.15);
+      background: var(--primary-dark);
     }
 
     .send-otp-btn:disabled {
@@ -2627,7 +2633,7 @@
     </div>
   </div>
 
-  <!-- Change PIN Modal (same as crypto-card-details-owner) -->
+  <!-- Change PIN Modal (same as crypto-card-details-owner.html) -->
   <div id="modal-change-pin" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
@@ -2639,6 +2645,7 @@
       <div class="modal-body">
         <form class="change-pin-form" id="changePinForm" onsubmit="event.preventDefault(); saveChangePin();">
           <input type="hidden" id="changePinMode" value="change">
+
           <div id="changePinCurrentBlock" class="change-pin-current-block">
             <div class="form-group">
               <label class="form-label">Current PIN <span>*</span></label>
@@ -2649,45 +2656,41 @@
                   <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
                 </button>
               </div>
-              <a href="#" class="forgot-pin-link" onclick="switchToForgotPin(); return false;">Forgot current PIN?</a>
+              <a href="#" class="forgot-pin-link" onclick="switchToForgotPin(); return false;">Forgot
+                current PIN?</a>
             </div>
           </div>
+
           <div id="forgotPinBlock" class="forgot-pin-block">
-            <a href="#" class="change-pin-back-link" onclick="switchBackToChangePin(); return false;">← Back to Change
-              PIN</a>
+            <a href="#" class="change-pin-back-link" onclick="switchBackToChangePin(); return false;">← Back
+              to Change PIN</a>
             <div class="form-group">
               <label class="form-label">Email to receive OTP <span>*</span></label>
               <input type="email" class="change-pin-input" id="forgotPinEmailInput"
                 placeholder="Enter email to receive OTP" autocomplete="email">
             </div>
+          </div>
+
+          <div id="changePinNewPinGroup" class="change-pin-new-pin-group">
             <div class="form-group">
-              <button type="button" class="send-otp-btn" id="sendOtpBtn" onclick="sendOtpForResetPin()">Send
-                OTP</button>
+              <label class="form-label">New PIN <span>*</span></label>
+              <div class="pin-input-wrapper">
+                <input type="password" maxlength="6" class="change-pin-input" id="newPinInput"
+                  placeholder="Enter new PIN">
+                <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('newPinInput', this)">
+                  <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
+                </button>
+              </div>
             </div>
-            <div class="form-group" id="otpInputGroup" style="display:none;">
-              <label class="form-label">OTP <span>*</span></label>
-              <input type="text" class="change-pin-input" id="changePinOtpInput" placeholder="Enter 4-digit OTP"
-                maxlength="4" inputmode="numeric" pattern="[0-9]*">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">New PIN <span>*</span></label>
-            <div class="pin-input-wrapper">
-              <input type="password" maxlength="6" class="change-pin-input" id="newPinInput"
-                placeholder="Enter new PIN">
-              <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('newPinInput', this)">
-                <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
-              </button>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Confirm New PIN <span>*</span></label>
-            <div class="pin-input-wrapper">
-              <input type="password" maxlength="6" class="change-pin-input" id="confirmNewPinInput"
-                placeholder="Confirm New PIN">
-              <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('confirmNewPinInput', this)">
-                <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
-              </button>
+            <div class="form-group">
+              <label class="form-label">Confirm New PIN <span>*</span></label>
+              <div class="pin-input-wrapper">
+                <input type="password" maxlength="6" class="change-pin-input" id="confirmNewPinInput"
+                  placeholder="Confirm New PIN">
+                <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('confirmNewPinInput', this)">
+                  <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
+                </button>
+              </div>
             </div>
           </div>
           <div class="form-group change-pin-email-at-bottom" id="changePinEmailGroup">
@@ -2698,6 +2701,8 @@
           <div class="change-pin-footer">
             <button type="button" class="btn-secondary" onclick="closeModal('modal-change-pin')">Cancel</button>
             <button type="submit" class="btn-primary-rounded" id="changePinSubmitBtn">Confirm</button>
+            <button type="button" class="btn-primary-rounded change-pin-send-code-btn" id="sendOtpBtn"
+              style="display: none;" onclick="sendOtpForResetPin()">Send verification code</button>
           </div>
         </form>
       </div>
@@ -2846,25 +2851,30 @@
       document.getElementById('changePinMode').value = 'forgot';
       document.getElementById('changePinCurrentBlock').classList.add('hidden');
       document.getElementById('changePinEmailGroup').classList.add('hidden');
+      var newPinGrp = document.getElementById('changePinNewPinGroup');
+      if (newPinGrp) newPinGrp.classList.add('hidden');
       document.getElementById('forgotPinBlock').classList.add('active');
       var title = document.getElementById('changePinModalTitle');
       if (title) title.textContent = 'Reset PIN';
       var btn = document.getElementById('changePinSubmitBtn');
-      if (btn) btn.textContent = 'Reset PIN';
-      document.getElementById('changePinOtpInput').value = '';
-      document.getElementById('otpInputGroup').style.display = 'none';
-      document.getElementById('sendOtpBtn').disabled = false;
+      if (btn) { btn.textContent = 'Reset PIN'; btn.style.display = 'none'; }
+      var sendOtpBtn = document.getElementById('sendOtpBtn');
+      if (sendOtpBtn) { sendOtpBtn.style.display = ''; sendOtpBtn.disabled = false; }
     }
     function switchBackToChangePin() {
       changePinMode = 'change';
       document.getElementById('changePinMode').value = 'change';
       document.getElementById('changePinCurrentBlock').classList.remove('hidden');
       document.getElementById('changePinEmailGroup').classList.remove('hidden');
+      var newPinGrp = document.getElementById('changePinNewPinGroup');
+      if (newPinGrp) newPinGrp.classList.remove('hidden');
       document.getElementById('forgotPinBlock').classList.remove('active');
       var title = document.getElementById('changePinModalTitle');
       if (title) title.textContent = 'Change PIN';
       var btn = document.getElementById('changePinSubmitBtn');
-      if (btn) btn.textContent = 'Confirm';
+      if (btn) { btn.textContent = 'Confirm'; btn.style.display = ''; }
+      var sendOtpBtn = document.getElementById('sendOtpBtn');
+      if (sendOtpBtn) sendOtpBtn.style.display = 'none';
     }
     function sendOtpForResetPin() {
       var emailInput = document.getElementById('forgotPinEmailInput');
@@ -2877,38 +2887,28 @@
       document.getElementById('sendOtpBtn').disabled = true;
       if (typeof Swal !== 'undefined') Swal.fire({ icon: 'success', title: 'OTP sent', text: 'A 4-digit code has been sent to ' + email + ' (demo).', timer: 2000, showConfirmButton: false });
       else alert('OTP sent to ' + email + ' (demo).');
-      document.getElementById('otpInputGroup').style.display = 'block';
-      setTimeout(function () {
-        document.getElementById('changePinOtpInput').value = '1234';
-        document.getElementById('sendOtpBtn').disabled = false;
-      }, 500);
     }
     function saveChangePin() {
       var mode = (document.getElementById('changePinMode') || {}).value || 'change';
-      var newPin = (document.getElementById('newPinInput') || {}).value || '';
-      var confirmPin = (document.getElementById('confirmNewPinInput') || {}).value || '';
-      if (!newPin || !confirmPin) {
-        if (typeof Swal !== 'undefined') Swal.fire({ icon: 'warning', title: 'Incomplete information', text: 'Please fill in New PIN and Confirm New PIN.' });
-        else alert('Please fill in New PIN and Confirm New PIN.');
-        return;
-      }
-      if (newPin !== confirmPin) {
-        if (typeof Swal !== 'undefined') Swal.fire({ icon: 'error', title: 'PIN mismatch', text: 'New PIN and confirmation do not match.' });
-        else alert('New PIN and confirmation do not match.');
-        return;
+      if (mode !== 'forgot') {
+        var newPin = (document.getElementById('newPinInput') || {}).value || '';
+        var confirmPin = (document.getElementById('confirmNewPinInput') || {}).value || '';
+        if (!newPin || !confirmPin) {
+          if (typeof Swal !== 'undefined') Swal.fire({ icon: 'warning', title: 'Incomplete information', text: 'Please fill in New PIN and Confirm New PIN.' });
+          else alert('Please fill in New PIN and Confirm New PIN.');
+          return;
+        }
+        if (newPin !== confirmPin) {
+          if (typeof Swal !== 'undefined') Swal.fire({ icon: 'error', title: 'PIN mismatch', text: 'New PIN and confirmation do not match.' });
+          else alert('New PIN and confirmation do not match.');
+          return;
+        }
       }
       if (mode === 'change') {
         var currentPin = (document.getElementById('currentPinInput') || {}).value || '';
         if (!currentPin) {
           if (typeof Swal !== 'undefined') Swal.fire({ icon: 'warning', title: 'Incomplete information', text: 'Please enter Current PIN.' });
           else alert('Please enter Current PIN.');
-          return;
-        }
-      } else {
-        var otp = (document.getElementById('changePinOtpInput') || {}).value || '';
-        if (!/^[0-9]{4}$/.test(otp)) {
-          if (typeof Swal !== 'undefined') Swal.fire({ icon: 'warning', title: 'OTP required', text: 'Please enter the 4-digit OTP sent to your email.' });
-          else alert('Please enter the 4-digit OTP.');
           return;
         }
       }

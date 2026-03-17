@@ -62,18 +62,18 @@
         },
       ],
     },
-    {
-      type: "link",
-      label: "Crypto Card Management",
-      icon: "solar:wallet-bold-duotone",
-      iconWidth: 24,
-      href: "crypto-card-list.html",
-      relatedPages: [
-        "crypto-card-details.html",
-        "crypto-card-list-bootstrap.html",
-        "issue-crypto-card.html",
-      ],
-    },
+    // {
+    //   type: "link",
+    //   label: "Crypto Card Management",
+    //   icon: "solar:wallet-bold-duotone",
+    //   iconWidth: 24,
+    //   href: "crypto-card-list.html",
+    //   relatedPages: [
+    //     "crypto-card-details.html",
+    //     "crypto-card-list-bootstrap.html",
+    //     "issue-crypto-card.html",
+    //   ],
+    // },
     {
       type: "link",
       label: "Marketing Tools",
@@ -183,7 +183,12 @@
         {
           label: "My Cards",
           href: "my-cards.html",
-          relatedPages: ["order-details.html", "order-history.html", "crypto-card-details-owner.html", "issue-digital-membership-detail-owner.html"],
+          relatedPages: [
+            "order-details.html",
+            "order-history.html",
+            "crypto-card-details-owner.html",
+            "issue-digital-membership-detail-owner.html",
+          ],
         },
         { label: "VlinkPay Store", href: "digital-gifts-management.html" },
         { label: "Merchant Map", href: "#" },
@@ -259,7 +264,10 @@
       if (hrefPage === curPage) return true;
       if (
         item.relatedPages &&
-        item.relatedPages.some((p) => (p || "").toLowerCase().split("?")[0].split("#")[0] === curPage)
+        item.relatedPages.some(
+          (p) =>
+            (p || "").toLowerCase().split("?")[0].split("#")[0] === curPage,
+        )
       )
         return true;
       return false;

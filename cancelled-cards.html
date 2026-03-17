@@ -384,7 +384,7 @@
     }
 
     /* ── Pagination ──────────────────────────────────── */
-    .pagination {
+    /* .pagination {
       display: flex;
       align-items: center;
       gap: 16px;
@@ -449,7 +449,7 @@
     .pag-btn svg {
       width: 15px;
       height: 15px;
-    }
+    } */
 
     /* ── Filter Modal (mobile) ───────────────────────── */
     .filter-overlay {
@@ -777,7 +777,12 @@
           <label class="field-label">Cancelled From</label>
           <div class="field-container flatpickr-clear-wrap">
             <input type="text" class="field-input" id="dateFrom" placeholder="Pick a date" readonly />
-            <button type="button" class="date-clear" id="dateFromClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            <button type="button" class="date-clear" id="dateFromClear" aria-label="Clear date" title="Clear"><svg
+                xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg></button>
             <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
         </div>
@@ -786,7 +791,12 @@
           <label class="field-label">To</label>
           <div class="field-container flatpickr-clear-wrap">
             <input type="text" class="field-input" id="dateTo" placeholder="Pick a date" readonly />
-            <button type="button" class="date-clear" id="dateToClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            <button type="button" class="date-clear" id="dateToClear" aria-label="Clear date" title="Clear"><svg
+                xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg></button>
             <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
         </div>
@@ -845,7 +855,12 @@
             <label class="field-label">Cancelled From</label>
             <div class="field-container flatpickr-clear-wrap">
               <input type="text" class="field-input" id="mDateFrom" placeholder="Pick a date" readonly />
-              <button type="button" class="date-clear" id="mDateFromClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              <button type="button" class="date-clear" id="mDateFromClear" aria-label="Clear date" title="Clear"><svg
+                  xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg></button>
               <i data-lucide="calendar" style="width:16px;height:16px;"></i>
             </div>
           </div>
@@ -855,7 +870,12 @@
             <label class="field-label">To</label>
             <div class="field-container flatpickr-clear-wrap">
               <input type="text" class="field-input" id="mDateTo" placeholder="Pick a date" readonly />
-              <button type="button" class="date-clear" id="mDateToClear" aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+              <button type="button" class="date-clear" id="mDateToClear" aria-label="Clear date" title="Clear"><svg
+                  xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg></button>
               <i data-lucide="calendar" style="width:16px;height:16px;"></i>
             </div>
           </div>
@@ -1199,51 +1219,51 @@
     document.addEventListener('DOMContentLoaded', () => {
       buildChips();
       render();
-    lucide.createIcons();
+      lucide.createIcons();
 
-    // Flatpickr date pickers for Cancelled Cards
-    const fpFrom = flatpickr('#dateFrom', {
-      dateFormat: 'Y-m-d',
-      allowInput: false,
-      disableMobile: true,
-      onChange(selectedDates, dateStr) {
-        document.getElementById('dateFrom').value = dateStr;
-        document.getElementById('dateFromClear').classList.toggle('visible', !!dateStr);
-        applyDateFilter();
-      }
-    });
-    const fpTo = flatpickr('#dateTo', {
-      dateFormat: 'Y-m-d',
-      allowInput: false,
-      disableMobile: true,
-      onChange(selectedDates, dateStr) {
-        document.getElementById('dateTo').value = dateStr;
-        document.getElementById('dateToClear').classList.toggle('visible', !!dateStr);
-        applyDateFilter();
-      }
-    });
-    const fpMFrom = flatpickr('#mDateFrom', {
-      dateFormat: 'Y-m-d',
-      allowInput: false,
-      disableMobile: true,
-      onChange(selectedDates, dateStr) {
-        document.getElementById('mDateFrom').value = dateStr;
-        document.getElementById('mDateFromClear').classList.toggle('visible', !!dateStr);
-      }
-    });
-    const fpMTo = flatpickr('#mDateTo', {
-      dateFormat: 'Y-m-d',
-      allowInput: false,
-      disableMobile: true,
-      onChange(selectedDates, dateStr) {
-        document.getElementById('mDateTo').value = dateStr;
-        document.getElementById('mDateToClear').classList.toggle('visible', !!dateStr);
-      }
-    });
-    document.getElementById('dateFromClear').addEventListener('click', function() { fpFrom.clear(); this.classList.remove('visible'); applyDateFilter(); });
-    document.getElementById('dateToClear').addEventListener('click', function() { fpTo.clear(); this.classList.remove('visible'); applyDateFilter(); });
-    document.getElementById('mDateFromClear').addEventListener('click', function() { fpMFrom.clear(); this.classList.remove('visible'); });
-    document.getElementById('mDateToClear').addEventListener('click', function() { fpMTo.clear(); this.classList.remove('visible'); });
+      // Flatpickr date pickers for Cancelled Cards
+      const fpFrom = flatpickr('#dateFrom', {
+        dateFormat: 'Y-m-d',
+        allowInput: false,
+        disableMobile: true,
+        onChange(selectedDates, dateStr) {
+          document.getElementById('dateFrom').value = dateStr;
+          document.getElementById('dateFromClear').classList.toggle('visible', !!dateStr);
+          applyDateFilter();
+        }
+      });
+      const fpTo = flatpickr('#dateTo', {
+        dateFormat: 'Y-m-d',
+        allowInput: false,
+        disableMobile: true,
+        onChange(selectedDates, dateStr) {
+          document.getElementById('dateTo').value = dateStr;
+          document.getElementById('dateToClear').classList.toggle('visible', !!dateStr);
+          applyDateFilter();
+        }
+      });
+      const fpMFrom = flatpickr('#mDateFrom', {
+        dateFormat: 'Y-m-d',
+        allowInput: false,
+        disableMobile: true,
+        onChange(selectedDates, dateStr) {
+          document.getElementById('mDateFrom').value = dateStr;
+          document.getElementById('mDateFromClear').classList.toggle('visible', !!dateStr);
+        }
+      });
+      const fpMTo = flatpickr('#mDateTo', {
+        dateFormat: 'Y-m-d',
+        allowInput: false,
+        disableMobile: true,
+        onChange(selectedDates, dateStr) {
+          document.getElementById('mDateTo').value = dateStr;
+          document.getElementById('mDateToClear').classList.toggle('visible', !!dateStr);
+        }
+      });
+      document.getElementById('dateFromClear').addEventListener('click', function () { fpFrom.clear(); this.classList.remove('visible'); applyDateFilter(); });
+      document.getElementById('dateToClear').addEventListener('click', function () { fpTo.clear(); this.classList.remove('visible'); applyDateFilter(); });
+      document.getElementById('mDateFromClear').addEventListener('click', function () { fpMFrom.clear(); this.classList.remove('visible'); });
+      document.getElementById('mDateToClear').addEventListener('click', function () { fpMTo.clear(); this.classList.remove('visible'); });
     });
   </script>
 </body>

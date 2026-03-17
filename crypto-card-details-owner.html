@@ -475,23 +475,30 @@
             }
 
             .term-section {
-                margin-top: 20px;
-                padding: 12px 16px;
+                margin-top: 12px;
+                padding: 10px 12px;
                 border-radius: 12px;
             }
 
             .term-section .term-title {
-                font-size: 14px;
+                font-size: 13px;
                 margin-bottom: 0;
                 cursor: pointer;
                 padding: 4px 0;
+                gap: 6px;
                 user-select: none;
                 -webkit-tap-highlight-color: transparent;
             }
 
+            .term-section .term-title svg:first-of-type {
+                width: 16px;
+                height: 16px;
+            }
+
             .term-section .term-content {
-                font-size: 13px;
-                line-height: 1.6;
+                font-size: 12px;
+                line-height: 1.55;
+                margin-top: 4px;
                 margin-bottom: 0;
                 overflow: hidden;
                 transition: max-height 0.25s ease-out;
@@ -1295,7 +1302,7 @@
         }
 
         /* Pagination (from benefits-setup) */
-        .pagination {
+        /* .pagination {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -1361,7 +1368,7 @@
         .pag-btn iconify-icon {
             width: 18px;
             height: 18px;
-        }
+        } */
 
         /* Redeem History: mobile cards (from product-list) */
         #redeem-history .redeem-mobile-cards {
@@ -2106,7 +2113,7 @@
                                             3456</span>
                                         <button type="button" id="toggleOwnerCardNumber"
                                             style="border:none;background:none;padding:0;margin-left:6px;cursor:pointer;vertical-align:middle;">
-                                            <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+                                            <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
                                         </button>
                                     </span>
                                 </div>
@@ -2125,7 +2132,7 @@
                                         <span id="ownerPinFull" style="display:none;">1234</span>
                                         <button type="button" id="toggleOwnerPin"
                                             style="border:none;background:none;padding:0;margin-left:6px;cursor:pointer;vertical-align:middle;">
-                                            <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+                                            <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
                                         </button>
                                     </span>
                                 </div>
@@ -2803,7 +2810,7 @@
                                 placeholder="Enter current PIN">
                             <button type="button" class="pin-eye-btn"
                                 onclick="togglePinVisibility('currentPinInput', this)">
-                                <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+                                <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
                             </button>
                         </div>
                     </div>
@@ -2814,7 +2821,7 @@
                                 placeholder="Enter new PIN">
                             <button type="button" class="pin-eye-btn"
                                 onclick="togglePinVisibility('newPinInput', this)">
-                                <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+                                <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
                             </button>
                         </div>
                     </div>
@@ -2825,7 +2832,7 @@
                                 placeholder="Confirm New PIN">
                             <button type="button" class="pin-eye-btn"
                                 onclick="togglePinVisibility('confirmNewPinInput', this)">
-                                <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon>
+                                <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
                             </button>
                         </div>
                     </div>
@@ -3316,7 +3323,7 @@
             var isHidden = input.type === 'password';
             input.type = isHidden ? 'text' : 'password';
             if (icon) {
-                icon.setAttribute('icon', isHidden ? 'solar:eye-closed-outline' : 'solar:eye-bold');
+                icon.setAttribute('icon', isHidden ? 'lucide:eye-off' : 'lucide:eye');
             }
         }
 
@@ -3337,11 +3344,11 @@
                     if (showingFull) {
                         fullEl.style.display = 'none';
                         maskedEl.style.display = '';
-                        if (iconEl) iconEl.setAttribute('icon', 'solar:eye-bold');
+                        if (iconEl) iconEl.setAttribute('icon', 'lucide:eye');
                     } else {
                         fullEl.style.display = '';
                         maskedEl.style.display = 'none';
-                        if (iconEl) iconEl.setAttribute('icon', 'solar:eye-closed-outline');
+                        if (iconEl) iconEl.setAttribute('icon', 'lucide:eye-off');
                     }
                 });
             }

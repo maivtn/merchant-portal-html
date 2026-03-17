@@ -464,6 +464,109 @@
         padding: 16px;
       }
     }
+
+    /* Membership package: list / grid view toggle */
+    .membership-view-list {
+      display: block;
+    }
+
+    .membership-view-grid {
+      display: none;
+    }
+
+    #membership-package.view-mode-grid .membership-view-list {
+      display: none;
+    }
+
+    #membership-package.view-mode-grid .membership-view-grid {
+      display: block;
+    }
+
+    .membership-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      padding: 24px;
+    }
+
+    .membership-card-item {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: var(--shadow-z1);
+      overflow: hidden;
+      border: 1px solid var(--grey-200);
+      transition: 0.2s;
+    }
+
+    .membership-card-item:hover {
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .membership-card-item a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .membership-card-item-img {
+      aspect-ratio: 1.586/1;
+      position: relative;
+      overflow: hidden;
+      background: var(--grey-100);
+    }
+
+    .membership-card-item-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .membership-card-item-info {
+      padding: 16px;
+    }
+
+    .membership-card-item-info .product-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--grey-900);
+      margin-bottom: 4px;
+    }
+
+    .membership-card-item-info .amount-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .membership-card-item-info .balance {
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--primary-main);
+    }
+
+    .membership-card-item-info .meta {
+      font-size: 12px;
+      color: var(--grey-600);
+      margin-top: 8px;
+    }
+
+    .membership-card-item-info .view-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-main);
+    }
+
+    @media (max-width: 767px) {
+      .membership-cards-grid {
+        grid-template-columns: 1fr;
+        padding: 16px;
+      }
+    }
   </style>
 </head>
 
@@ -614,14 +717,14 @@
             </div>
           </div>
           <div class="field-root date-field">
-            <label class="field-label">Start date</label>
+            <label class="field-label">Created from</label>
             <div class="field-container">
               <input type="text" class="field-input" placeholder="Pick a date" />
               <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
             </div>
           </div>
           <div class="field-root date-field">
-            <label class="field-label">End date</label>
+            <label class="field-label">To</label>
             <div class="field-container">
               <input type="text" class="field-input" placeholder="Pick a date" />
               <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
@@ -665,8 +768,7 @@
                 <td>Payment</td>
                 <td class="text-right">
                   <a href="order-details.html" style="color: inherit;">
-                    <iconify-icon icon="solar:eye-bold"
-                      style="color: var(--primary-main); cursor: pointer"></iconify-icon>
+                    <iconify-icon icon="lucide:eye" style="color: var(--primary-main); cursor: pointer"></iconify-icon>
                   </a>
                 </td>
               </tr>
@@ -686,8 +788,7 @@
                 <td>Payment</td>
                 <td class="text-right">
                   <a href="order-details.html" style="color: inherit;">
-                    <iconify-icon icon="solar:eye-bold"
-                      style="color: var(--primary-main); cursor: pointer"></iconify-icon>
+                    <iconify-icon icon="lucide:eye" style="color: var(--primary-main); cursor: pointer"></iconify-icon>
                   </a>
                 </td>
               </tr>
@@ -702,11 +803,11 @@
           <div class="field-root search-field">
             <div class="field-container">
               <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
-              <input type="text" class="field-input" placeholder="Search Order ID, card number..." />
+              <input type="text" class="field-input" placeholder="Order ID, card number..." />
             </div>
           </div>
           <div class="field-root date-field">
-            <label class="field-label">Start date</label>
+            <label class="field-label">Created from</label>
             <div class="field-container">
               <input type="text" class="field-input" placeholder="Pick a date" />
               <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
@@ -759,14 +860,14 @@
             </button>
           </div>
           <div class="field-root date-field">
-            <label class="field-label">Start date</label>
+            <label class="field-label">Created from</label>
             <div class="field-container">
               <input type="text" class="field-input" placeholder="Pick a date" />
               <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
             </div>
           </div>
           <div class="field-root date-field">
-            <label class="field-label">End date</label>
+            <label class="field-label">To</label>
             <div class="field-container">
               <input type="text" class="field-input" placeholder="Pick a date" />
               <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
@@ -811,7 +912,7 @@
                   <td>carlota@gmail.com</td>
                   <td class="text-right">
                     <a href="crypto-card-details-owner.html" style="color: inherit;" title="View">
-                      <iconify-icon icon="solar:eye-bold"
+                      <iconify-icon icon="lucide:eye"
                         style="color: var(--primary-main); cursor: pointer"></iconify-icon>
                     </a>
                   </td>
@@ -831,7 +932,7 @@
                   <div class="product-name">Tech Haven Store</div>
                   <div class="amount-row">
                     <div class="balance">$75.50</div>
-                    <span class="view-link">View <iconify-icon icon="solar:eye-bold" width="16"></iconify-icon></span>
+                    <span class="view-link">View <iconify-icon icon="lucide:eye" width="16"></iconify-icon></span>
                   </div>
                 </div>
               </a>
@@ -863,17 +964,17 @@
               </div>
             </div>
             <div class="mobile-filter-group">
-              <label class="mobile-filter-label">Date range</label>
+              <!-- <label class="mobile-filter-label">Date range</label> -->
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                 <div class="field-root date-field" style="width:100%;">
-                  <label class="field-label">Start date</label>
+                  <label class="field-label">Created from</label>
                   <div class="field-container">
                     <input type="text" class="field-input" placeholder="Pick a date" />
                     <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="20"></iconify-icon>
                   </div>
                 </div>
                 <div class="field-root date-field" style="width:100%;">
-                  <label class="field-label">End date</label>
+                  <label class="field-label">To</label>
                   <div class="field-container">
                     <input type="text" class="field-input" placeholder="Pick a date" />
                     <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="20"></iconify-icon>
@@ -892,61 +993,145 @@
       <!-- Tab: Membership package -->
       <div id="membership-package" class="tab-pane">
         <div class="table-toolbar">
-          <div class="field-root search-field">
-            <div class="field-container">
-              <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
-              <input type="text" class="field-input" placeholder="Card number," />
+          <div class="toolbar-row-mobile">
+            <div class="search-field">
+              <div class="field-container">
+                <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
+                <input type="text" class="field-input" placeholder="Card number, merchant name" />
+              </div>
             </div>
+            <button type="button" class="toolbar-filter-btn" onclick="openMembershipMobileFilter()">
+              <iconify-icon icon="solar:filter-bold-duotone" width="18"></iconify-icon>
+              <span>Filter</span>
+            </button>
           </div>
           <div class="field-root date-field">
-            <label class="field-label">Start date</label>
+            <label class="field-label">Created from</label>
             <div class="field-container">
               <input type="text" class="field-input" placeholder="Pick a date" />
               <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
             </div>
           </div>
           <div class="field-root date-field">
-            <label class="field-label">End date</label>
+            <label class="field-label">To</label>
             <div class="field-container">
               <input type="text" class="field-input" placeholder="Pick a date" />
               <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
+            </div>
+          </div>
+          <div class="view-mode-toggle">
+            <button type="button" class="view-btn active" id="membershipViewListBtn" title="List view">
+              <iconify-icon icon="solar:list-bold" width="20"></iconify-icon>
+            </button>
+            <button type="button" class="view-btn" id="membershipViewGridBtn" title="Card view">
+              <iconify-icon icon="solar:widget-5-bold" width="20"></iconify-icon>
+            </button>
+          </div>
+        </div>
+        <div class="membership-view-list">
+          <div class="table-container">
+            <table class="minimal-table">
+              <thead>
+                <tr>
+                  <th>Card Numbers</th>
+                  <th>Merchant Name</th>
+                  <th class="text-right">Amount</th>
+                  <th class="text-right">Balance</th>
+                  <th>Currency</th>
+                  <th>Card Locked</th>
+                  <th>Expiry Date</th>
+                  <th>Issue By</th>
+                  <th class="text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>7722 **** **** 8899</td>
+                  <td>Elite Fitness Club</td>
+                  <td class="text-right" style="font-weight: 700;">$1,200.00</td>
+                  <td class="text-right" style="font-weight: 700;">$950.00</td>
+                  <td>USD</td>
+                  <td><span class="status-badge status-completed">Unlocked</span></td>
+                  <td>Dec 31, 2026</td>
+                  <td>membership@elitefitness.com</td>
+                  <td class="text-right">
+                    <a href="issue-digital-membership-detail-owner.html" style="color: inherit;" title="View">
+                      <iconify-icon icon="lucide:eye"
+                        style="color: var(--primary-main); cursor: pointer"></iconify-icon>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="membership-view-grid">
+          <div class="membership-cards-grid">
+            <div class="membership-card-item">
+              <a href="issue-digital-membership-detail-owner.html">
+                <div class="membership-card-item-img">
+                  <img src="membershipcard.png" alt="Membership Card" />
+                </div>
+                <div class="membership-card-item-info">
+                  <div class="product-name">Elite Fitness Club</div>
+                  <div class="amount-row">
+                    <div class="balance">$950.00</div>
+                    <span class="view-link">View <iconify-icon icon="lucide:eye" width="16"></iconify-icon></span>
+                  </div>
+                  <!-- <div class="meta">Expires Dec 31, 2026</div> -->
+                </div>
+              </a>
             </div>
           </div>
         </div>
-        <div class="table-container">
-          <table class="minimal-table">
-            <thead>
-              <tr>
-                <th>Card Numbers</th>
-                <th>Merchant Name</th>
-                <th class="text-right">Amount</th>
-                <th class="text-right">Balance</th>
-                <th>Currency</th>
-                <th>Card Locked</th>
-                <th>Expiry Date</th>
-                <th>Issue By</th>
-                <th class="text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>7722 **** **** 8899</td>
-                <td>Elite Fitness Club</td>
-                <td class="text-right" style="font-weight: 700;">$1,200.00</td>
-                <td class="text-right" style="font-weight: 700;">$950.00</td>
-                <td>USD</td>
-                <td><span class="status-badge status-completed">Unlocked</span></td>
-                <td>Dec 31, 2026</td>
-                <td>membership@elitefitness.com</td>
-                <td class="text-right">
-                  <a href="issue-digital-membership-details.html" style="color: inherit;" title="View">
-                    <iconify-icon icon="solar:eye-bold"
-                      style="color: var(--primary-main); cursor: pointer"></iconify-icon>
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      </div>
+
+      <!-- Mobile Filter Modal for Membership package -->
+      <div id="membershipMobileFilterModal" class="mobile-filter-overlay" onclick="handleMembershipFilterOverlayClick(event)">
+        <div class="mobile-filter-sheet">
+          <div class="mobile-filter-header">
+            <span class="mobile-filter-title">Filter</span>
+            <button class="mobile-filter-close" type="button" onclick="closeMembershipMobileFilter()">
+              <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+            </button>
+          </div>
+          <div class="mobile-filter-body">
+            <div class="mobile-filter-group">
+              <label class="mobile-filter-label">Status</label>
+              <div class="field-root select-field" style="width:100%;">
+                <div class="field-container">
+                  <select class="field-input">
+                    <option value="">All</option>
+                    <option value="unlocked">Unlocked</option>
+                    <option value="locked">Locked</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="mobile-filter-group">
+              <!-- <label class="mobile-filter-label">Date range</label> -->
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="field-root date-field" style="width:100%;">
+                  <label class="field-label">Created from</label>
+                  <div class="field-container">
+                    <input type="text" class="field-input" placeholder="Pick a date" />
+                    <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="20"></iconify-icon>
+                  </div>
+                </div>
+                <div class="field-root date-field" style="width:100%;">
+                  <label class="field-label">To</label>
+                  <div class="field-container">
+                    <input type="text" class="field-input" placeholder="Pick a date" />
+                    <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="20"></iconify-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-filter-footer">
+            <button type="button" class="btn-filter-reset" onclick="resetMembershipMobileFilter()">Reset</button>
+            <button type="button" class="btn-filter-apply" onclick="applyMembershipMobileFilter()">Apply</button>
+          </div>
         </div>
       </div>
 
@@ -1001,6 +1186,24 @@
       });
     })();
 
+    // Membership package: list / grid view toggle
+    (function () {
+      var pane = document.getElementById('membership-package');
+      var listBtn = document.getElementById('membershipViewListBtn');
+      var gridBtn = document.getElementById('membershipViewGridBtn');
+      if (!pane || !listBtn || !gridBtn) return;
+      listBtn.addEventListener('click', function () {
+        listBtn.classList.add('active');
+        gridBtn.classList.remove('active');
+        pane.classList.remove('view-mode-grid');
+      });
+      gridBtn.addEventListener('click', function () {
+        gridBtn.classList.add('active');
+        listBtn.classList.remove('active');
+        pane.classList.add('view-mode-grid');
+      });
+    })();
+
     // Mobile filter for Crypto card (UI only)
     function openCryptoMobileFilter() {
       var modal = document.getElementById('cryptoMobileFilterModal');
@@ -1033,6 +1236,40 @@
     function applyCryptoMobileFilter() {
       // Placeholder for future filter logic
       closeCryptoMobileFilter();
+    }
+
+    // Mobile filter for Membership package (UI only)
+    function openMembershipMobileFilter() {
+      var modal = document.getElementById('membershipMobileFilterModal');
+      if (modal) modal.classList.add('open');
+    }
+
+    function closeMembershipMobileFilter() {
+      var modal = document.getElementById('membershipMobileFilterModal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function handleMembershipFilterOverlayClick(event) {
+      if (event.target.id === 'membershipMobileFilterModal') {
+        closeMembershipMobileFilter();
+      }
+    }
+
+    function resetMembershipMobileFilter() {
+      var modal = document.getElementById('membershipMobileFilterModal');
+      if (!modal) return;
+      modal.querySelectorAll('select, input').forEach(function (el) {
+        if (el.tagName === 'SELECT') {
+          el.selectedIndex = 0;
+        } else {
+          el.value = '';
+        }
+      });
+    }
+
+    function applyMembershipMobileFilter() {
+      // Placeholder for future filter logic
+      closeMembershipMobileFilter();
     }
   </script>
 </body>

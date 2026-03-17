@@ -1538,6 +1538,50 @@ td.col-actions .action-btns {
   height: 16px;
 }
 
+/* Alias cho trang dùng .pag-info / .pag-btn */
+.pag-info {
+  font-size: 13px;
+  color: var(--grey-600);
+  margin-left: auto;
+}
+
+.pag-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--grey-300);
+  background: #fff;
+  color: var(--grey-600);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+}
+
+.pag-btn:hover:not(:disabled) {
+  background: var(--grey-100);
+  border-color: var(--grey-300);
+  color: var(--grey-800);
+}
+
+.pag-btn:disabled {
+  color: var(--grey-500);
+  cursor: not-allowed;
+  border-color: var(--grey-200);
+  background: var(--grey-100);
+}
+
+.pag-btn svg,
+.pag-btn i,
+.pag-btn iconify-icon {
+  width: 16px;
+  height: 16px;
+}
+
 @media (max-width: 767px) {
   .pagination,
   .pagination-bar {
@@ -1556,6 +1600,7 @@ td.col-actions .action-btns {
   .pag-rows {
     font-size: 12px;
     gap: 6px;
+    width: 100px;
   }
   .pagination-select-wrap {
     max-width: 56px;
@@ -1572,15 +1617,24 @@ td.col-actions .action-btns {
   .pagination-select-chevron {
     right: 4px;
   }
-  .pagination-info {
+  .pagination-info,
+  .pag-info {
     font-size: 12px;
+    flex-basis: 100%;
+    text-align: right;
+    margin-left: 0;
   }
-  .pagination-btn {
+  .pagination-btn,
+  .pag-btn {
     width: 36px;
     height: 36px;
+    flex-shrink: 0;
   }
   .pagination-btn svg,
-  .pagination-btn i {
+  .pagination-btn i,
+  .pag-btn svg,
+  .pag-btn i,
+  .pag-btn iconify-icon {
     width: 18px;
     height: 18px;
   }

@@ -2098,10 +2098,10 @@
 
     function buildIconGrid() {
       const grid = document.getElementById('iconGrid');
-      grid.innerHTML = ICONS.map((ic, i) => `
+      grid.innerHTML = UPLOAD_BTN_HTML + ICONS.map((ic, i) => `
         <button class="icon-btn" style="background:${ic.bg};color:${ic.color}" onclick="selectIcon(${i})" id="icon-btn-${i}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">${iconPath(ic.el)}</svg>
-        </button>`).join('') + UPLOAD_BTN_HTML;
+        </button>`).join('');
     }
 
     function triggerIconUpload() {

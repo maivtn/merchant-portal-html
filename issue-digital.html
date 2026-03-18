@@ -1612,7 +1612,6 @@
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 20px;
     }
 
     .card-type-item {
@@ -1684,6 +1683,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
+      margin-top: 10px;
     }
 
     .rank-pill {
@@ -3220,8 +3220,6 @@
 
               <!-- Rank Grid (hidden for PrepaidCard) -->
               <div id="rankSection">
-                <div class="rank-section-label">Select Rank <span
-                    style="color:var(--c-text-3);font-weight:400">(optional)</span></div>
                 <div class="rank-grid" id="rankGrid">
                   <button class="rank-pill" onclick="toggleRank(this)">STARTER</button>
                   <button class="rank-pill" onclick="toggleRank(this)">BRONZE</button>
@@ -4331,11 +4329,13 @@ Please present this card before payment.</textarea>
       if (desktopLabel) desktopLabel.textContent = text;
       if (mobileLabel) mobileLabel.textContent = text;
 
-      // Auto-close "Select Product Line" collapse after 1s
-      setTimeout(function () {
-        const step1Body = document.getElementById('scollapse-1');
-        if (step1Body && step1Body.classList.contains('open')) toggleStep(1);
-      }, 1000);
+      // Auto-close "Select Product Line" collapse after 1s (mobile only)
+      if (window.innerWidth <= 767) {
+        setTimeout(function () {
+          const step1Body = document.getElementById('scollapse-1');
+          if (step1Body && step1Body.classList.contains('open')) toggleStep(1);
+        }, 1000);
+      }
     }
 
     function renumberSteps() {

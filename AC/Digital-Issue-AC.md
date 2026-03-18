@@ -19,8 +19,8 @@
 
 ## 2. Header (top of page)
 
-| Element | Mô tả |
-|--------|--------|
+| Element                   | Mô tả                                                                                                |
+| ------------------------- | ---------------------------------------------------------------------------------------------------- |
 | **Save for Update Later** | Button góc phải; click → `confirmIssuance('DRAFT')` (hoặc tương đương). Có thể disabled khi loading. |
 
 ---
@@ -72,7 +72,7 @@
 - **Steps:** `.step-card` × 7; mỗi step có `.step-header` (id shdr-1 … shdr-7), `.step-badge`, `.step-title-text`, `.step-chevron`; body `.collapse-wrap` (id scollapse-1 … scollapse-7)
 - **Toggle step:** `toggleStep(1..7)` — đóng/mở body tương ứng, xoay chevron
 
-### Step 1 — Select Product Line *(Required *)*
+### Step 1 — Select Product _(Required _)\*
 
 - **Card Type Grid:** `.card-type-grid` (#cardTypeGrid)
   - Items: E-Gift Card (0), Membership (2), Crypto Card (disabled, “Coming soon”), Prepaid Card (4), Discount (3), Promotion (1)
@@ -87,19 +87,19 @@
 - **Email:** #holderEmail, placeholder "Enter email address" (đổi khi Membership)
 - **Birthday:** #birthdayField (ẩn mặc định), chỉ hiện khi card type = Membership; #holderBirthday dùng **Flatpickr**, format ngày, `maxDate: 'today'`, placeholder "Birthday (optional)"
 
-### Step 3 — Expiration Date *(Required *)*
+### Step 3 — Expiration Date _(Required _)\*
 
 - **Select:** #expirationSelect — None (No expiry), 30 Days, 60 Days, Custom Date; `onchange="onExpirationChange()"`
 - **Custom Date:** #customDateWrap ẩn mặc định; khi chọn Custom Date thì hiện; #customDate dùng **Flatpickr**, `minDate: 'today'`, format phù hợp
 
-### Step 4 — Value / Discount / Benefits *(Required *)*
+### Step 4 — Value / Discount / Benefits _(Required _)\*
 
 - **Gift/Prepaid (default):** #valueGroup — preset $50, $100, $250, $500 + custom input ($); `selectPreset(this,'amount')`, `clearPresets('amount')`
 - **Discount:** #discountGroup (ẩn mặc định) — 5%, 10%, 15%, 20% + custom (%)
 - **Promotion:** #promotionGroup (ẩn mặc định) — toggle "By Amount" / "By Discount"; preset amount hoặc discount tương ứng + custom
 - **Membership:** #membershipBenefits (ẩn mặc định) — **Tom Select** #mbBenefitSelect (multiple, placeholder "Select Benefit"); #mbSelectedArea, #mbCardsRow, #mbEmptyHint "No benefits selected yet"; cần ≥1 benefit khi type = Membership
 
-### Step 5 — Purchase Price *(Required *)*
+### Step 5 — Purchase Price _(Required _)\*
 
 - Preset $50, $100, $250, $500 + custom (#customPrice); `selectPreset(this,'price')`, `clearPresets('price')`
 
@@ -109,7 +109,7 @@
 - **Textarea:** #termsTextarea, rows=5, placeholder "Enter terms and conditions...", `oninput="syncTermsToCard()"` (đồng bộ lên mặt sau card)
 - **Suggested Terms:** `.term-chip` — click → `addTerm('...')` append vào textarea (ví dụ: "Valid for services only...", "No cash value", "One-time use only", "Present before payment")
 
-### Step 7 — Payment Method *(Required *)*
+### Step 7 — Payment Method _(Required _)\*
 
 - **Payment grid:** `.payment-method` — Gift, Cash, Credit Card, Zelle, Venmo, VlinkPay; click → `selectPayment(this, method)`; class `.active` khi được chọn
 - **Platform Service Fee:** #feeDisplay (ví dụ "1.5%", giá trị $)
@@ -126,18 +126,18 @@
 
 ## 6. Click Actions & Logic (tóm tắt)
 
-| Khu vực | Hành động |
-|---------|-----------|
-| **Card Preview** | TAP TO FLIP / click card → flipCard(event) |
+| Khu vực               | Hành động                                                                                                                        |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Card Preview**      | TAP TO FLIP / click card → flipCard(event)                                                                                       |
 | **Design Collection** | Preset color → selectColor(el, hex); custom → input color onchange; text color → selectTextColor(el, brand/holder/amount, value) |
-| **Step 1** | selectCardType(el, label, value); toggleRank(el); setCustomRank(val); clearRankSelection() |
-| **Step 2** | updateCardHolder(val); (email/birthday theo card type) |
-| **Step 3** | onExpirationChange(); Flatpickr cho #customDate |
-| **Step 4** | selectPreset(el, type); clearPresets(type); setPromoMode(el, amount/discount); Tom Select benefits |
-| **Step 5** | selectPreset(el, 'price'); clearPresets('price') |
-| **Step 6** | addTerm(text); syncTermsToCard(); loadTerms(); saveTerms() |
-| **Step 7** | selectPayment(el, method); confirmIssuance() |
-| **Header** | Save for Update Later → confirmIssuance('DRAFT') (hoặc tương đương) |
+| **Step 1**            | selectCardType(el, label, value); toggleRank(el); setCustomRank(val); clearRankSelection()                                       |
+| **Step 2**            | updateCardHolder(val); (email/birthday theo card type)                                                                           |
+| **Step 3**            | onExpirationChange(); Flatpickr cho #customDate                                                                                  |
+| **Step 4**            | selectPreset(el, type); clearPresets(type); setPromoMode(el, amount/discount); Tom Select benefits                               |
+| **Step 5**            | selectPreset(el, 'price'); clearPresets('price')                                                                                 |
+| **Step 6**            | addTerm(text); syncTermsToCard(); loadTerms(); saveTerms()                                                                       |
+| **Step 7**            | selectPayment(el, method); confirmIssuance()                                                                                     |
+| **Header**            | Save for Update Later → confirmIssuance('DRAFT') (hoặc tương đương)                                                              |
 
 ---
 
@@ -165,17 +165,11 @@
 ## 9. CSS Design Tokens (issue-digital.html)
 
 ```css
---c-primary: #00A76F
---c-primary-low: rgba(0, 167, 111, 0.08)
---c-border: #e2e8f0
---c-surface: #ffffff
---c-surface-subtle: #f8fafc
---c-text-1: #212B36
---c-text-2: #454F5B
---c-text-3: #637381
---radius-xs: 6px  --radius-sm: 8px  --radius-md: 12px
---radius-lg: 16px  --radius-xl: 20px
---transition-base: 0.2s ease
+--c-primary: #00a76f --c-primary-low: rgba(0, 167, 111, 0.08)
+  --c-border: #e2e8f0 --c-surface: #ffffff --c-surface-subtle: #f8fafc
+  --c-text-1: #212b36 --c-text-2: #454f5b --c-text-3: #637381 --radius-xs: 6px
+  --radius-sm: 8px --radius-md: 12px --radius-lg: 16px --radius-xl: 20px
+  --transition-base: 0.2s ease;
 ```
 
 ---

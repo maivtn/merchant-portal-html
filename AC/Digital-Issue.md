@@ -20,8 +20,8 @@
 
 ## Header Actions (góc phải trên cùng)
 
-| Element | Mô tả |
-|---------|-------|
+| Element                          | Mô tả                                                                                                                                              |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Button **Save for Update Later** | `zType="outline"`, `zSize="lg"`, `min-w-[160px]` trên sm+, hidden text trên mobile. Click → `confirmIssuance('DRAFT')`. Disabled khi `isLoading()` |
 
 ---
@@ -42,20 +42,20 @@
 - **Collapsible:** click title → toggle `design-collection`; mặc định **đóng** trên mobile
 - **Preset Colors** (12 màu):
 
-  | Hex | Màu |
-  |-----|-----|
-  | `#1E293B` | Slate dark |
+  | Hex       | Màu          |
+  | --------- | ------------ |
+  | `#1E293B` | Slate dark   |
   | `#064E3B` | Emerald dark |
-  | `#7F1D1D` | Red dark |
-  | `#4C1D95` | Violet dark |
-  | `#3B82F6` | Blue |
-  | `#10B981` | Green |
-  | `#F59E0B` | Amber |
-  | `#EC4899` | Pink |
-  | `#06B6D4` | Cyan |
-  | `#8B5CF6` | Purple |
-  | `#FFD84D` | Yellow |
-  | `#DBCD43` | Gold |
+  | `#7F1D1D` | Red dark     |
+  | `#4C1D95` | Violet dark  |
+  | `#3B82F6` | Blue         |
+  | `#10B981` | Green        |
+  | `#F59E0B` | Amber        |
+  | `#EC4899` | Pink         |
+  | `#06B6D4` | Cyan         |
+  | `#8B5CF6` | Purple       |
+  | `#FFD84D` | Yellow       |
+  | `#DBCD43` | Gold         |
 
 - **Custom Color picker:** button icon palette + `<input type="color">` ẩn
 - **Advanced Text Colors (Accordion):**
@@ -77,6 +77,7 @@
   - Click buttons KHÔNG trigger toggle collapse (`stopPropagation`)
 
 - **Style Tags** (8 tags):
+
   > `Luxury Gold` · `Minimalist` · `Vintage Badge` · `Playful` · `Modern – Tech` · `Pastel` · `Neon` · `Vibrant`
   - Click toggle active → tự động cập nhật `aiLogoDescription`
 
@@ -86,20 +87,21 @@
   - Label "SUGGESTED DESCRIPTIONS for [category]"
   - **Category Dropdown** — 10 categories:
 
-    | ID | Category |
-    |----|----------|
-    | 1 | Nail Spa & Nail Salon |
-    | 2 | Beauty, Fashion & Lifestyle |
-    | 3 | Retail & Consumer Services |
-    | 4 | Hospitality & Food Services |
-    | 5 | Financial & Fintech Services |
-    | 6 | Technology & Digital Products |
-    | 7 | Health, Wellness & Medical |
-    | 8 | Real Estate & Property Services |
-    | 9 | Travel, Tourism & Experiences |
-    | 10 | Entertainment, Media & Creative |
+    | ID  | Category                        |
+    | --- | ------------------------------- |
+    | 1   | Nail Spa & Nail Salon           |
+    | 2   | Beauty, Fashion & Lifestyle     |
+    | 3   | Retail & Consumer Services      |
+    | 4   | Hospitality & Food Services     |
+    | 5   | Financial & Fintech Services    |
+    | 6   | Technology & Digital Products   |
+    | 7   | Health, Wellness & Medical      |
+    | 8   | Real Estate & Property Services |
+    | 9   | Travel, Tourism & Experiences   |
+    | 10  | Entertainment, Media & Creative |
 
   - Mỗi category có **6 prompt mẫu** (ví dụ category 1 — Nail Spa):
+
     > 1. "Design a luxury nail spa logo for a professional and high-end nail salon..."
     > 2. "Create a premium nail salon brand logo with a modern and professional identity..."
     > 3. "Develop a high-class nail spa logo that reflects relaxation, beauty, and professionalism..."
@@ -127,25 +129,26 @@
 
 ---
 
-### Step 1 — Select Product Line *(Required \*)*
+### Step 1 — Select Product _(Required \*)_
 
 **Card Type Grid** (`.card-type-grid`):
+
 - Layout: `flex flex-wrap`, `width: auto` theo nội dung, gap `16px` desktop / `6px` (≤768px)
 - Mobile (≤639px): 3 item/hàng — `width: calc(33.333% - 4px)`, gap `5px`
 - Mỗi item: icon trên, label dưới (`.card-type-item`), `padding: 8px 14px`
 - `disabled` item: opacity 45%, `cursor: not-allowed`, grayscale nhẹ
 
-| Value | Label | Icon | Disabled |
-|-------|-------|------|----------|
-| `0` | E-Gift Card | `gift-card.svg` | ❌ |
-| `2` | Membership | `membership.svg` | ❌ |
-| `5` | **Crypto Card** | `PrepaidCard.svg` | ✅ (tạm disabled) |
-| `4` | Prepaid Card | `PrepaidCard.svg` | ❌ |
-| `3` | Discount | `discount.svg` | ❌ |
-| `1` | Promotion | `discount.svg` | ❌ |
-
+| Value | Label           | Icon              | Disabled          |
+| ----- | --------------- | ----------------- | ----------------- |
+| `0`   | E-Gift Card     | `gift-card.svg`   | ❌                |
+| `2`   | Membership      | `membership.svg`  | ❌                |
+| `5`   | **Crypto Card** | `PrepaidCard.svg` | ✅ (tạm disabled) |
+| `4`   | Prepaid Card    | `PrepaidCard.svg` | ❌                |
+| `3`   | Discount        | `discount.svg`    | ❌                |
+| `1`   | Promotion       | `discount.svg`    | ❌                |
 
 **Rank Grid** (`.rank-grid`): ẩn khi `cardType = PrepaidCard`; cách card type `mt-5` (20px)
+
 - Layout: `flex flex-wrap`, `width: auto`, gap `16px` desktop / `6px` (≤768px)
 - Ranks là dynamic từ API theo từng card type
 - Click rank → `toggleRank(r)` (click lại = deselect)
@@ -160,12 +163,15 @@
 ### Step 2 — Customer Details
 
 **Fields chung (tất cả card type):**
+
 - **Holder Name** (`holderName`) — input text, full width
 
 **Khi `cardType !== Membership`:**
+
 - **Holder Email** (`holderEmail`) — required + email format validation
 
 **Khi `cardType === Membership`:**
+
 - **Member Email** (`memberEmail`) — optional, email format validation; i18n key: `member-email`
 - **Birthday** (`holderBirthday`) — `z-date-picker`, optional, format `MMM d, yyyy`; i18n key: `member-birthday`
 
@@ -173,26 +179,26 @@ Layout: `flex flex-wrap gap-2`, mỗi field `flex-1 min-w-[200px]` — tự wrap
 
 ---
 
-### Step 3 — Expiration Date *(Required \*, ẩn với GiftCard & PrepaidCard)*
+### Step 3 — Expiration Date _(Required \*, ẩn với GiftCard & PrepaidCard)_
 
 - **Select:** None · 30 Days · 60 Days · Custom Date
 - **Date Picker** (`z-date-picker`): hiện khi CustomDate, `minDate = today`, format `MMM d, yyyy`
 
 ---
 
-### Step 4 — Value / Discount / Benefits *(Required \*)*
+### Step 4 — Value / Discount / Benefits _(Required \*)_
 
-| Card Type | Nội dung |
-|-----------|----------|
-| **GiftCard / PrepaidCard** | Preset: `$50 · $100 · $250 · $500` + custom input ($) |
-| **Discount** | Preset %: `5% · 10% · 15% · 20%` + custom input (%) |
-| **Promotion** | Toggle Amount/Discount → preset tương ứng + custom |
-| **Membership** | Grid: Monthly Credit · Cashback · Discount · Birthday Gift · Group Discount · Free Lounge; cần ≥1 field |
-| **Crypto Card** | ⚠️ Planned |
+| Card Type                  | Nội dung                                                                                                |
+| -------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **GiftCard / PrepaidCard** | Preset: `$50 · $100 · $250 · $500` + custom input ($)                                                   |
+| **Discount**               | Preset %: `5% · 10% · 15% · 20%` + custom input (%)                                                     |
+| **Promotion**              | Toggle Amount/Discount → preset tương ứng + custom                                                      |
+| **Membership**             | Grid: Monthly Credit · Cashback · Discount · Birthday Gift · Group Discount · Free Lounge; cần ≥1 field |
+| **Crypto Card**            | ⚠️ Planned                                                                                              |
 
 ---
 
-### Step 5 — Purchase Price / Amount *(Required \*)*
+### Step 5 — Purchase Price / Amount _(Required \*)_
 
 - **Membership:** Preset `$50 · $100 · $250 · $500` + custom ($), `Validators.min(1)`
 - **Discount:** Preset amounts + custom input ($)
@@ -211,28 +217,28 @@ Layout: `flex flex-wrap gap-2`, mỗi field `flex-1 min-w-[200px]` — tự wrap
   - Mobile (≤639px): mỗi badge `max-width: calc(50% - 3px)` — 2 item/hàng
 
   Dữ liệu mẫu (`VOUCHER_CONDITIONS`):
+
   > 1. "Valid for services only. Not applicable to products."
   > 2. "No cash value."
   > 3. "Valid for one-time use per invoice."
   > 4. "Please present this card before payment."
-
   - Click badge → `addTag(cond.label)` — append vào textarea (newline separator)
   - Hover: green theme (`--c-primary`)
 
 ---
 
-### Step 7 — Payment Method *(Required \*)*
+### Step 7 — Payment Method _(Required \*)_
 
 **Payment Methods** (`.payment-methods-grid`): 3 item/hàng mobile
 
-| Method | Label | Icon |
-|--------|-------|------|
-| `Gift` | Gift | `gift.png` |
-| `Cash` | Cash | `cash.png` |
-| `Credit` | Credit Card | `credit.png` |
-| `Zelle` | Zelle | `zelle.png` |
-| `Venmo` | Venmo | `venmo.png` |
-| `VlinkPay` | VlinkPay | `vlinkpay.png` |
+| Method     | Label       | Icon           |
+| ---------- | ----------- | -------------- |
+| `Gift`     | Gift        | `gift.png`     |
+| `Cash`     | Cash        | `cash.png`     |
+| `Credit`   | Credit Card | `credit.png`   |
+| `Zelle`    | Zelle       | `zelle.png`    |
+| `Venmo`    | Venmo       | `venmo.png`    |
+| `VlinkPay` | VlinkPay    | `vlinkpay.png` |
 
 - **Platform Fee:** hiển thị % + giá trị tính toán (Free nếu ≤ 0)
 - **Confirm Issuance** (desktop): `min-w-[280px]`, `h-12`, `text-base`, `font-semibold`
@@ -249,13 +255,13 @@ Layout: `flex flex-wrap gap-2`, mỗi field `flex-1 min-w-[200px]` — tự wrap
 
 ## Payout Preview Popup
 
-| Element | Điều kiện hiển thị |
-|---------|-------------------|
-| Account name | Luôn hiển thị |
-| Edit icon | Luôn hiển thị → mở lại setup dialog |
-| QR Code image (160×160) | Chỉ khi `selectedPayoutQrCode` có giá trị |
-| "Scan QR Code for payment" | Chỉ khi có QR code |
-| "Use account info above" | Khi KHÔNG có QR code |
+| Element                    | Điều kiện hiển thị                        |
+| -------------------------- | ----------------------------------------- |
+| Account name               | Luôn hiển thị                             |
+| Edit icon                  | Luôn hiển thị → mở lại setup dialog       |
+| QR Code image (160×160)    | Chỉ khi `selectedPayoutQrCode` có giá trị |
+| "Scan QR Code for payment" | Chỉ khi có QR code                        |
+| "Use account info above"   | Khi KHÔNG có QR code                      |
 
 **SweetAlert2:** `padding: 28px 28px 24px`, `border-radius: 16px`, `width: 360px`
 
@@ -264,108 +270,109 @@ Layout: `flex flex-wrap gap-2`, mỗi field `flex-1 min-w-[200px]` — tự wrap
 ## Click Actions
 
 ### Header
-| Button | Flow |
-|--------|------|
+
+| Button                | Flow                                                        |
+| --------------------- | ----------------------------------------------------------- |
 | Save for Update Later | Swal loading → API `issueCard(status=Draft)` → Swal success |
 
 ### Card Preview
-| Button | Flow |
-|--------|------|
+
+| Button                     | Flow                                    |
+| -------------------------- | --------------------------------------- |
 | TAP TO FLIP / click canvas | Toggle `isFlipped` signal → CSS 3D flip |
 
 ### Design Collection
-| Element | Flow |
-|---------|------|
-| Preset color dot | `form.themeColor = c` → re-render canvas |
-| Custom color picker | `onColorChange` → `form.themeColor` |
-| Text color: Auto | Reset field về `'auto'` |
-| Text color: Preset/Custom | Patch field tương ứng |
+
+| Element                   | Flow                                     |
+| ------------------------- | ---------------------------------------- |
+| Preset color dot          | `form.themeColor = c` → re-render canvas |
+| Custom color picker       | `onColorChange` → `form.themeColor`      |
+| Text color: Auto          | Reset field về `'auto'`                  |
+| Text color: Preset/Custom | Patch field tương ứng                    |
 
 ### Brand Identity
-| Button | Flow |
-|--------|------|
-| Library | `openLogoLibrary()` ⚠️ TODO |
-| Upload Logo | Trigger file input → `onLogoUpload()` → FileReader → `renderCanvas()` |
-| Style tag | `toggleStyleTag(tag)` → cập nhật `aiLogoDescription` |
-| Category dropdown | `onCategorySelect(id)` → đổi prompt list |
-| Prompt badge | `useAiPrompt(prompt)` → fill textarea |
-| Generate AI | Validate desc → `isGeneratingAiLogo=true` → API → base64 → `renderCanvas()` |
+
+| Button            | Flow                                                                        |
+| ----------------- | --------------------------------------------------------------------------- |
+| Library           | `openLogoLibrary()` ⚠️ TODO                                                 |
+| Upload Logo       | Trigger file input → `onLogoUpload()` → FileReader → `renderCanvas()`       |
+| Style tag         | `toggleStyleTag(tag)` → cập nhật `aiLogoDescription`                        |
+| Category dropdown | `onCategorySelect(id)` → đổi prompt list                                    |
+| Prompt badge      | `useAiPrompt(prompt)` → fill textarea                                       |
+| Generate AI       | Validate desc → `isGeneratingAiLogo=true` → API → base64 → `renderCanvas()` |
 
 ### Step 1
-| Element | Flow |
-|---------|------|
-| Card Type item | `form.cardType` → reset rank/amount/slogan defaults → re-render |
-| Rank pill | `toggleRank(r)` — click lại = deselect, extract amount từ rank config |
-| Custom Rank input | Focus → deselect; input → `form.rank = value` → `renderCanvas()` |
+
+| Element           | Flow                                                                  |
+| ----------------- | --------------------------------------------------------------------- |
+| Card Type item    | `form.cardType` → reset rank/amount/slogan defaults → re-render       |
+| Rank pill         | `toggleRank(r)` — click lại = deselect, extract amount từ rank config |
+| Custom Rank input | Focus → deselect; input → `form.rank = value` → `renderCanvas()`      |
 
 ### Step 6 — Terms
-| Button | Flow |
-|--------|------|
-| Load Terms | Mở `LoadTermsDialogComponent` → chọn template → fill `form.terms` |
-| Save Terms | Mở `SaveTermsDialogComponent` → đặt tên → lưu |
-| Suggested term badge | `addTag()` → append xuống cuối textarea |
+
+| Button               | Flow                                                              |
+| -------------------- | ----------------------------------------------------------------- |
+| Load Terms           | Mở `LoadTermsDialogComponent` → chọn template → fill `form.terms` |
+| Save Terms           | Mở `SaveTermsDialogComponent` → đặt tên → lưu                     |
+| Suggested term badge | `addTag()` → append xuống cuối textarea                           |
 
 ### Step 7 — Payment
-| Method + Lần click | Flow |
-|--------------------|------|
-| Bất kỳ (lần 1) | Chọn radio, không mở popup |
-| Zelle/Venmo (lần 2, chưa có account) | Mở `SetUpZelleAccountComponent` (390px) |
-| Zelle/Venmo (lần 2, đã có account) | Hiện Swal Payout Preview |
-| VlinkPay (lần 2) | Mở `CryptoPaymentComponent`; `result.success` → auto `confirmIssuance()` |
-| Edit icon trong Payout popup | Đóng Swal → mở lại setup dialog |
+
+| Method + Lần click                   | Flow                                                                     |
+| ------------------------------------ | ------------------------------------------------------------------------ |
+| Bất kỳ (lần 1)                       | Chọn radio, không mở popup                                               |
+| Zelle/Venmo (lần 2, chưa có account) | Mở `SetUpZelleAccountComponent` (390px)                                  |
+| Zelle/Venmo (lần 2, đã có account)   | Hiện Swal Payout Preview                                                 |
+| VlinkPay (lần 2)                     | Mở `CryptoPaymentComponent`; `result.success` → auto `confirmIssuance()` |
+| Edit icon trong Payout popup         | Đóng Swal → mở lại setup dialog                                          |
 
 ### Confirm Issuance
-| Điều kiện | Flow |
-|-----------|------|
-| `form.invalid` | `markAllAsTouched()` → Swal error validation |
-| Valid nhưng `!logoUrl` | Swal warning logo required |
-| Valid + có logo | Swal loading → API `issueCard` → generate canvas images (full+masked) → upload → `IssueDigitalSuccessComponent` |
+
+| Điều kiện              | Flow                                                                                                            |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `form.invalid`         | `markAllAsTouched()` → Swal error validation                                                                    |
+| Valid nhưng `!logoUrl` | Swal warning logo required                                                                                      |
+| Valid + có logo        | Swal loading → API `issueCard` → generate canvas images (full+masked) → upload → `IssueDigitalSuccessComponent` |
 
 ---
 
 ## Validation Summary
 
-| Field | Rule |
-|-------|------|
-| Holder Email | Required (non-Membership) + email format |
-| Expiration Type | Required khi applicable |
-| Custom Date | Required khi chọn CustomDate |
-| Amount / Custom Amount | Min/Max theo card type |
-| Discount Percent | 1–100 |
-| Purchase Price | Min = 1 |
-| Benefits (Membership) | At least one required |
-| Payment Method | Required |
+| Field                  | Rule                                     |
+| ---------------------- | ---------------------------------------- |
+| Holder Email           | Required (non-Membership) + email format |
+| Expiration Type        | Required khi applicable                  |
+| Custom Date            | Required khi chọn CustomDate             |
+| Amount / Custom Amount | Min/Max theo card type                   |
+| Discount Percent       | 1–100                                    |
+| Purchase Price         | Min = 1                                  |
+| Benefits (Membership)  | At least one required                    |
+| Payment Method         | Required                                 |
 
 ---
 
 ## CSS Design Tokens
 
 ```scss
---c-primary: #00AB55
---c-primary-low: rgba(0,171,85,0.08)
---c-border: #e2e8f0
---c-surface: #ffffff
---c-surface-subtle: #f8fafc
---c-text-1: #212B36
---c-text-2: #454F5B
---c-text-3: #637381
---radius-xs: 6px  --radius-sm: 8px  --radius-md: 12px
---radius-lg: 16px  --radius-xl: 20px
---shadow-sm / --shadow-md
---transition-base: 0.2s ease
+--c-primary: #00ab55 --c-primary-low: rgba(0, 171, 85, 0.08) --c-border: #e2e8f0
+  --c-surface: #ffffff --c-surface-subtle: #f8fafc --c-text-1: #212b36
+  --c-text-2: #454f5b --c-text-3: #637381 --radius-xs: 6px --radius-sm: 8px
+  --radius-md: 12px --radius-lg: 16px --radius-xl: 20px --shadow-sm /
+  --shadow-md --transition-base: 0.2s ease;
 ```
 
 ---
 
 ## Responsive Breakpoints
 
-| Breakpoint | prefix | px |
-|------------|--------|----|
-| Mobile | (default) | < 640px |
-| SM | `sm:` | ≥ 640px |
-| MD | `md:` | ≥ 768px |
-| LG | `lg:` | ≥ 1024px |
-| XL | `xl:` | ≥ 1200px |
+| Breakpoint | prefix    | px       |
+| ---------- | --------- | -------- |
+| Mobile     | (default) | < 640px  |
+| SM         | `sm:`     | ≥ 640px  |
+| MD         | `md:`     | ≥ 768px  |
+| LG         | `lg:`     | ≥ 1024px |
+| XL         | `xl:`     | ≥ 1200px |
 
 ---
 

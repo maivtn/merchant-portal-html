@@ -2833,10 +2833,6 @@
           </div>
           <div class="collapse-wrap open" id="design-collection">
             <div class="panel-card-body">
-              <div class="section-label">
-                <iconify-icon icon="solar:color-filter-bold-duotone" width="14"></iconify-icon>
-                Preset Colors
-              </div>
               <div class="color-dots">
                 <div class="color-dot color-dot-bg-image"
                   style="background-image:url('images/bg1.png');background-size:cover;background-position:center;"
@@ -3116,12 +3112,12 @@
           * required
         </p>
 
-        <!-- STEP 1: Select Product Line - ẩn khi role=personal -->
+        <!-- STEP 1: Select Product - ẩn khi role=personal -->
         <div class="step-card" id="step1SelectProductLine">
           <div class="step-header open" id="shdr-1" onclick="toggleStep(1)">
             <div class="step-badge" id="sbadge-1">1</div>
             <div class="step-title-text">
-              Select Product Line <span class="step-required">*</span>
+              Select Product <span class="step-required">*</span>
             </div>
             <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
           </div>
@@ -4205,7 +4201,7 @@ Please present this card before payment.</textarea>
       if (isMembership) syncBirthdayRequired();
 
       if (isCrypto) {
-        if (step2Title) step2Title.textContent = 'Recipient Information';
+        if (step2Title) step2Title.textContent = 'Recipient';
         if (nameInput) nameInput.placeholder = 'Recipient Name';
         if (emailInput) emailInput.placeholder = 'Recipient Email';
       } else if (isMembership) {
@@ -4725,7 +4721,7 @@ Please present this card before payment.</textarea>
         const cryptoItem = document.querySelector('.card-type-item:nth-child(3)');
         if (cryptoItem) selectCardType(cryptoItem, 'Crypto Card', '5');
       }
-      // role=personal: ẩn step Select Product Line và panel Business Information
+      // role=personal: ẩn step Select Product và panel Business Information
       const isRolePersonal = (params.get('role') || '').toLowerCase() === 'personal';
       if (isRolePersonal) {
         const step1 = document.getElementById('step1SelectProductLine');

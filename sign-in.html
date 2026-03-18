@@ -120,9 +120,11 @@
       display: flex;
       align-items: center;
     }
+
     .signin-card-number-wrap input {
       padding-right: 48px;
     }
+
     .signin-scan-btn {
       position: absolute;
       right: 10px;
@@ -139,10 +141,12 @@
       padding: 0;
       transition: background 0.2s, color 0.2s;
     }
+
     .signin-scan-btn:hover {
       background: var(--grey-100);
       color: var(--primary-dark);
     }
+
     .signin-scan-btn svg {
       flex-shrink: 0;
     }
@@ -227,7 +231,11 @@
       text-decoration: underline;
     }
 
-    .signin-scan-container { text-align: center; padding: 8px 0 16px; }
+    .signin-scan-container {
+      text-align: center;
+      padding: 8px 0 16px;
+    }
+
     .signin-scan-frame {
       width: 200px;
       height: 200px;
@@ -240,6 +248,7 @@
       align-items: center;
       justify-content: center;
     }
+
     .signin-scan-line {
       position: absolute;
       left: 0;
@@ -250,10 +259,17 @@
       animation: signinScanMove 2.2s infinite linear;
       z-index: 2;
     }
+
     @keyframes signinScanMove {
-      0% { top: 0; }
-      100% { top: 100%; }
+      0% {
+        top: 0;
+      }
+
+      100% {
+        top: 100%;
+      }
     }
+
     .signin-scan-text {
       font-size: 13px;
       color: var(--grey-600);
@@ -290,7 +306,7 @@
             <button type="button" class="signin-tab" role="tab" aria-selected="false" aria-controls="pane-card"
               id="tab-card" data-tab="card" onclick="switchSignInTab('card')">
               <i data-lucide="credit-card" class="tab-icon" style="width:18px;height:18px;"></i>
-              <span>Card / PIN</span>
+              <span>Card</span>
             </button>
           </div>
         </div>
@@ -326,10 +342,12 @@
             <label for="signinCardNumber">Card Number</label>
             <div class="signin-card-number-wrap">
               <input type="text" id="signinCardNumber" placeholder="Enter card number or scan..." maxlength="19" />
-              <button type="button" class="signin-scan-btn" onclick="openSignInScanModal()" aria-label="Scan card QR code">
+              <button type="button" class="signin-scan-btn" onclick="openSignInScanModal()"
+                aria-label="Scan card QR code">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" />
+                  <path
+                    d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" />
                   <rect x="7" y="7" width="3" height="3" rx="0.5" />
                   <rect x="14" y="7" width="3" height="3" rx="0.5" />
                   <rect x="7" y="14" width="3" height="3" rx="0.5" />
@@ -370,7 +388,8 @@
         <div class="signin-scan-container">
           <div class="signin-scan-frame">
             <div class="signin-scan-line"></div>
-            <iconify-icon icon="solar:qr-code-bold-duotone" width="80" height="80" style="opacity:0.12;color:var(--grey-800);"></iconify-icon>
+            <iconify-icon icon="solar:qr-code-bold-duotone" width="80" height="80"
+              style="opacity:0.12;color:var(--grey-800);"></iconify-icon>
           </div>
           <p class="signin-scan-text">Position the QR code within the frame to scan</p>
         </div>
@@ -393,7 +412,8 @@
           <label for="forgotPinEmail">Email <span style="color:var(--error-main);">*</span></label>
           <input type="email" id="forgotPinEmail" placeholder="Enter your email" />
         </div>
-        <button type="button" class="signin-btn" id="sendForgotPinOtpBtn" onclick="sendForgotPinOtp()" style="margin-bottom:16px;">Send OTP</button>
+        <button type="button" class="signin-btn" id="sendForgotPinOtpBtn" onclick="sendForgotPinOtp()"
+          style="margin-bottom:16px;">Send OTP</button>
         <div id="forgotPinOtpGroup" style="display:none;">
           <div class="signin-field">
             <label for="forgotPinOtp">OTP <span style="color:var(--error-main);">*</span></label>
@@ -405,10 +425,12 @@
           </div>
           <div class="signin-field">
             <label for="forgotPinConfirmPin">Confirm New PIN <span style="color:var(--error-main);">*</span></label>
-            <input type="password" id="forgotPinConfirmPin" placeholder="Confirm new PIN" maxlength="8" inputmode="numeric" />
+            <input type="password" id="forgotPinConfirmPin" placeholder="Confirm new PIN" maxlength="8"
+              inputmode="numeric" />
           </div>
           <div style="display:flex;gap:12px;margin-top:16px;">
-            <button type="button" class="signin-btn" style="flex:1;background:var(--grey-500);" onclick="closeForgotPinModal()">Cancel</button>
+            <button type="button" class="signin-btn" style="flex:1;background:var(--grey-500);"
+              onclick="closeForgotPinModal()">Cancel</button>
             <button type="button" class="signin-btn" style="flex:1;" onclick="submitForgotPinReset()">Reset PIN</button>
           </div>
         </div>

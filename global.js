@@ -118,7 +118,7 @@
       children: [
         {
           label: "Sales Orders",
-          href: "sales-order-list.html",
+          href: "#",
           relatedPages: ["sales-order-details.html"],
         },
         {

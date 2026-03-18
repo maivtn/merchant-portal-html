@@ -203,6 +203,72 @@
       .select-field {
         width: 100% !important;
       }
+
+      /* Mobile: render table rows as cards */
+      .table-container {
+        overflow-x: visible;
+      }
+
+      .minimal-table {
+        min-width: 0;
+      }
+
+      .minimal-table thead {
+        display: none;
+      }
+
+      .minimal-table,
+      .minimal-table tbody,
+      .minimal-table tr,
+      .minimal-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .minimal-table tr {
+        background: #fff;
+        border: 1px solid var(--grey-200);
+        border-radius: 14px;
+        margin: 12px 12px 0;
+        padding: 12px 14px;
+        box-shadow: var(--shadow-z1);
+      }
+
+      .minimal-table td {
+        padding: 8px 0;
+        border-top: none;
+        white-space: normal;
+        display: flex;
+        gap: 12px;
+        align-items: baseline;
+        justify-content: space-between;
+      }
+
+      .minimal-table td::before {
+        content: attr(data-label);
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--grey-600);
+        flex: 0 0 44%;
+        padding-right: 10px;
+      }
+
+      .minimal-table td.col-actions {
+        text-align: left;
+      }
+
+      .minimal-table td.col-actions::before {
+        content: 'Action';
+      }
+
+      .minimal-table td.col-actions .action-btns {
+        justify-content: flex-start;
+      }
+
+      .text-right,
+      .text-center {
+        text-align: left;
+      }
     }
 
     @media (min-width: 768px) and (max-width: 1023px) {
@@ -344,26 +410,26 @@
           </thead>
           <tbody>
             <tr>
-              <td style="font-weight: 700"><a href="sales-order-details.html"
+              <td data-label="Order ID" style="font-weight: 700"><a href="sales-order-details.html"
                   style="color: var(--primary-main); text-decoration: none">ORD-2026001</a></td>
-              <td>Jan 14, 2026 </br>10:05 AM</td>
-              <td>Amazon eGift Card</td>
-              <td>Digital</td>
-              <td>5678 **** **** 1234</td>
-              <td>John Doe</td>
-              <td class="text-center">1</td>
-              <td class="text-right">$100.00</td>
-              <td class="text-right">5%</td>
-              <td class="text-right">$5.00</td>
-              <td class="text-right">0%</td>
-              <td class="text-right">$0.00</td>
-              <td class="text-right">$0.00</td>
-              <td class="text-right">$0.00</td>
-              <td>Credit Card</td>
-              <td><span class="status-badge status-completed">Completed</span></td>
-              <td class="text-right">1.5%</td>
-              <td class="text-right">$1.50</td>
-              <td class="text-right" style="font-weight: 700">$93.50</td>
+              <td data-label="Order Date">Jan 14, 2026 </br>10:05 AM</td>
+              <td data-label="Product Name">Amazon eGift Card</td>
+              <td data-label="Issue Mode">Digital</td>
+              <td data-label="Card Number">5678 **** **** 1234</td>
+              <td data-label="Holder Name">John Doe</td>
+              <td data-label="Qty" class="text-center">1</td>
+              <td data-label="Total Amount" class="text-right">$100.00</td>
+              <td data-label="Discount (%)" class="text-right">5%</td>
+              <td data-label="Discount" class="text-right">$5.00</td>
+              <td data-label="Cashback (%)" class="text-right">0%</td>
+              <td data-label="Cashback" class="text-right">$0.00</td>
+              <td data-label="Merchant Cashback" class="text-right">$0.00</td>
+              <td data-label="VlinkPay Cashback" class="text-right">$0.00</td>
+              <td data-label="Payment Method">Credit Card</td>
+              <td data-label="Status"><span class="status-badge status-completed">Completed</span></td>
+              <td data-label="Fee (%)" class="text-right">1.5%</td>
+              <td data-label="Platform Fee" class="text-right">$1.50</td>
+              <td data-label="Merchant Revenue" class="text-right" style="font-weight: 700">$93.50</td>
               <td class="col-actions">
                 <div class="action-btns">
                   <a href="sales-order-details.html" class="action-btn action-btn-view" title="View">
@@ -373,26 +439,26 @@
               </td>
             </tr>
             <tr>
-              <td style="font-weight: 700"><a href="sales-order-details.html"
+              <td data-label="Order ID" style="font-weight: 700"><a href="sales-order-details.html"
                   style="color: var(--primary-main); text-decoration: none">ORD-2026002</a></td>
-              <td>Jan 14, 2026</br> 10:05 AM</td>
-              <td>Starbucks Voucher</td>
-              <td>Digital</td>
-              <td>1234 **** **** 5678</td>
-              <td>Jane Smith</td>
-              <td class="text-center">2</td>
-              <td class="text-right">$50.00</td>
-              <td class="text-right">0%</td>
-              <td class="text-right">$0.00</td>
-              <td class="text-right">0%</td>
-              <td class="text-right">$0.00</td>
-              <td class="text-right">$0.00</td>
-              <td class="text-right">$0.00</td>
-              <td>Zelle</td>
-              <td><span class="status-badge status-pending">Pending</span></td>
-              <td class="text-right">1%</td>
-              <td class="text-right">$0.50</td>
-              <td class="text-right" style="font-weight: 700">$49.50</td>
+              <td data-label="Order Date">Jan 14, 2026</br> 10:05 AM</td>
+              <td data-label="Product Name">Starbucks Voucher</td>
+              <td data-label="Issue Mode">Digital</td>
+              <td data-label="Card Number">1234 **** **** 5678</td>
+              <td data-label="Holder Name">Jane Smith</td>
+              <td data-label="Qty" class="text-center">2</td>
+              <td data-label="Total Amount" class="text-right">$50.00</td>
+              <td data-label="Discount (%)" class="text-right">0%</td>
+              <td data-label="Discount" class="text-right">$0.00</td>
+              <td data-label="Cashback (%)" class="text-right">0%</td>
+              <td data-label="Cashback" class="text-right">$0.00</td>
+              <td data-label="Merchant Cashback" class="text-right">$0.00</td>
+              <td data-label="VlinkPay Cashback" class="text-right">$0.00</td>
+              <td data-label="Payment Method">Zelle</td>
+              <td data-label="Status"><span class="status-badge status-pending">Pending</span></td>
+              <td data-label="Fee (%)" class="text-right">1%</td>
+              <td data-label="Platform Fee" class="text-right">$0.50</td>
+              <td data-label="Merchant Revenue" class="text-right" style="font-weight: 700">$49.50</td>
               <td class="col-actions">
                 <div class="action-btns">
                   <a href="sales-order-details.html" class="action-btn action-btn-view" title="View">

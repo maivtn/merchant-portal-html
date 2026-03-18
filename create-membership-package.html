@@ -341,8 +341,8 @@
     }
 
     .style-tag.active {
-      background: rgba(37, 99, 235, 0.08);
-      border-color: rgba(37, 99, 235, 0.18);
+      background: rgba(37, 235, 139, 0.08);
+      border-color: rgba(37, 235, 129, 0.18);
       color: var(--c-primary);
     }
 
@@ -379,7 +379,6 @@
     .ai-prompts-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       flex-wrap: wrap;
       gap: 6px;
       margin-top: 14px;
@@ -447,7 +446,7 @@
 
     .ai-prompt-badge {
       padding: 7px 10px;
-      border-radius: var(--radius-xs);
+      border-radius: var(--radius-md);
       border: 1.5px solid var(--c-border);
       background: var(--c-surface-subtle);
       font-size: 11px;
@@ -471,17 +470,18 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 10px 18px;
+      padding: 8px 18px;
+      background-color: #fff;
       border-radius: var(--radius-sm);
       border: 1.5px solid var(--c-primary);
-      background: var(--c-primary-low);
       color: var(--c-primary);
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
       transition: var(--transition-base);
       font-family: inherit;
-      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .btn-ai-gen:hover {
@@ -2307,14 +2307,12 @@
                   <button class="style-tag" onclick="toggleStyleTag(this)">Neon</button>
                   <button class="style-tag" onclick="toggleStyleTag(this)">Vibrant</button>
                 </div>
-                <div class="section-label" style="margin-bottom:8px;">AI Logo Description</div>
                 <div class="ai-textarea-wrap">
                   <textarea id="aiDescription" rows="3"
                     placeholder="Describe your logo idea (e.g. elegant spa brand, gold & black theme, minimalist style)..."></textarea>
                 </div>
                 <div class="ai-prompts-header">
-                  <div class="ai-prompts-label">SUGGESTED DESCRIPTIONS for <span id="categoryLabel">Nail Spa &amp; Nail
-                      Salon</span></div>
+                  <div class="ai-prompts-label">SUGGESTED DESCRIPTIONS for </div>
                   <div class="ai-category-select-wrap">
                     <select class="ai-category-select" id="categorySelect" onchange="onCategorySelect(this.value)">
                       <option value="1" selected>Nail Spa &amp; Nail Salon</option>
@@ -2332,10 +2330,13 @@
                   </div>
                 </div>
                 <div class="ai-prompts-list" id="aiPromptsList"></div>
-                <button class="btn-ai-gen" onclick="generateAiLogo()">
-                  <iconify-icon icon="ph:sparkle" width="18"></iconify-icon>
-                  Generate Logo with AI
-                </button>
+                <div style="display: flex;justify-content: center;">
+                  <button class="btn-ai-gen" onclick="generateAiLogo()">
+                    <iconify-icon icon="ph:sparkle" width="18"></iconify-icon>
+                    <i _ngcontent-ng-c185309087="" class="bi bi-magic"></i>
+                    Generate Logo with AI
+                  </button>
+                </div>
               </div>
             </div>
           </div>

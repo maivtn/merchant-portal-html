@@ -206,6 +206,7 @@
       border-bottom: 1px solid var(--c-border);
       cursor: pointer;
       user-select: none;
+      justify-content: center;
     }
 
     .panel-card-header.no-collapse {
@@ -705,6 +706,10 @@
       border: none;
       transition: var(--transition-base);
       font-family: inherit;
+      margin: 0 auto;
+      width: auto;
+      padding: 5px 12px;
+      font-size: 11px;
     }
 
     .flip-btn:hover {
@@ -2708,17 +2713,6 @@
 
         <!-- Card 1: Card Preview (always open) -->
         <div class="panel-card panel-card-preview-card">
-          <div class="panel-card-header no-collapse">
-            <div class="header-icon">
-              <iconify-icon icon="solar:card-bold-duotone" width="18"></iconify-icon>
-            </div>
-            <span class="header-title" id="previewCardHeaderTitle">E-Gift Card</span>
-            <button class="flip-btn" onclick="flipCard(event)"
-              style="width:auto;padding:5px 12px;font-size:11px;margin:0;">
-              <iconify-icon icon="solar:refresh-bold" width="14"></iconify-icon>
-              TAP TO FLIP
-            </button>
-          </div>
           <div class="panel-card-body">
             <!-- 3D Card Flip -->
             <div class="card-flip-container">
@@ -2828,6 +2822,10 @@
                 </div>
               </div>
             </div>
+            <button class="flip-btn" onclick="flipCard(event)">
+              <iconify-icon icon="solar:refresh-bold" width="14"></iconify-icon>
+              TAP TO FLIP
+            </button>
           </div>
         </div>
 
@@ -4238,6 +4236,12 @@ Please present this card before payment.</textarea>
       const text = isCryptoType ? 'Create' : 'Confirm Issuance';
       if (desktopLabel) desktopLabel.textContent = text;
       if (mobileLabel) mobileLabel.textContent = text;
+
+      // Auto-close "Select Product Line" collapse after 1s
+      setTimeout(function () {
+        const step1Body = document.getElementById('scollapse-1');
+        if (step1Body && step1Body.classList.contains('open')) toggleStep(1);
+      }, 1000);
     }
 
     function renumberSteps() {

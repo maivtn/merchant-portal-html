@@ -374,7 +374,7 @@
     logo.id = "mobileLogo";
     logo.className = "mobile-logo";
     logo.src =
-      "https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg";
+      "https://staging-web-app.vlinkpay.com/assets/images/logoVlink.png";
     logo.alt = "VLINKPAY";
 
     const hamburger = document.getElementById("hamburgerBtn");

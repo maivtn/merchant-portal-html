@@ -1509,17 +1509,18 @@
     }
 
     .step-badge {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--c-primary-low);
-      color: var(--c-primary);
-      font-size: 12px;
+      /* width: 28px; */
+      /* height: 28px; */
+      border-radius: 12px;
+      /* background: var(--c-primary-low); */
+      /* color: var(--c-primary); */
+      font-size: 13px;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      padding: 0px;
     }
 
     .step-badge.done {
@@ -3115,7 +3116,7 @@
         <!-- STEP 1: Select Product - ẩn khi role=personal -->
         <div class="step-card" id="step1SelectProductLine">
           <div class="step-header open" id="shdr-1" onclick="toggleStep(1)">
-            <div class="step-badge" id="sbadge-1">1</div>
+            <div class="step-badge" id="sbadge-1">Step 1:</div>
             <div class="step-title-text">
               Select Product <span class="step-required">*</span>
             </div>
@@ -3181,7 +3182,7 @@
         <!-- STEP 2: Customer Details -->
         <div class="step-card">
           <div class="step-header open" id="shdr-2" onclick="toggleStep(2)">
-            <div class="step-badge" id="sbadge-2">2</div>
+            <div class="step-badge" id="sbadge-2">Step 2:</div>
             <div class="step-title-text" id="step2Title">Customer Details</div>
             <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
           </div>
@@ -3221,7 +3222,7 @@
         <!-- STEP 3: Expiration Date (hidden for Crypto Card) -->
         <div class="step-card" id="step3Card">
           <div class="step-header open" id="shdr-3" onclick="toggleStep(3)">
-            <div class="step-badge" id="sbadge-3">3</div>
+            <div class="step-badge" id="sbadge-3">Step 3:</div>
             <div class="step-title-text">
               Expiration Date <span class="step-required">*</span>
             </div>
@@ -3260,7 +3261,7 @@
         <!-- STEP 3 (Crypto): Select Crypto Assets -->
         <div class="step-card" id="cryptoStepCard" style="display:none;">
           <div class="step-header open" id="shdr-crypto" onclick="toggleStep('crypto')">
-            <div class="step-badge" id="sbadge-crypto">3</div>
+            <div class="step-badge" id="sbadge-crypto">Step 3:</div>
             <div class="step-title-text">
               Select Crypto Assets <span class="step-required">*</span>
             </div>
@@ -3290,7 +3291,7 @@
         <!-- STEP (Crypto only): Card Quantity - sau Select Crypto Assets -->
         <div class="step-card" id="cryptoQuantityStepCard" style="display:none;">
           <div class="step-header open" id="shdr-crypto-qty" onclick="toggleStep('crypto-qty')">
-            <div class="step-badge" id="sbadge-crypto-qty">4</div>
+            <div class="step-badge" id="sbadge-crypto-qty">Step 4:</div>
             <div class="step-title-text">
               Card Quantity <span class="step-required">*</span>
             </div>
@@ -3315,7 +3316,7 @@
         <!-- STEP 4: Value / Discount / Benefits -->
         <div class="step-card" id="step4Card">
           <div class="step-header open" id="shdr-4" onclick="toggleStep(4)">
-            <div class="step-badge" id="sbadge-4">4</div>
+            <div class="step-badge" id="sbadge-4">Step 4:</div>
             <div class="step-title-text" id="step4Title">
               Amount <span class="step-required">*</span>
             </div>
@@ -3398,7 +3399,7 @@
         <!-- STEP 5: Purchase Price -->
         <div class="step-card" id="step5Card">
           <div class="step-header open" id="shdr-5" onclick="toggleStep(5)">
-            <div class="step-badge" id="sbadge-5">5</div>
+            <div class="step-badge" id="sbadge-5">Step 5:</div>
             <div class="step-title-text">
               Purchase Price <span class="step-required">*</span>
             </div>
@@ -3423,7 +3424,7 @@
         <!-- STEP 6: Terms & Conditions -->
         <div class="step-card">
           <div class="step-header open" id="shdr-6" onclick="toggleStep(6)">
-            <div class="step-badge" id="sbadge-6">6</div>
+            <div class="step-badge" id="sbadge-6">Step 6:</div>
             <div class="step-title-text">Terms & Conditions</div>
             <!-- Terms actions: desktop — in header; mobile — in body -->
             <div class="terms-actions terms-actions-header" id="termsActions" onclick="event.stopPropagation()">
@@ -3479,7 +3480,7 @@ Please present this card before payment.</textarea>
         <!-- STEP 7: Payment Method -->
         <div class="step-card">
           <div class="step-header open" id="shdr-7" onclick="toggleStep(7)">
-            <div class="step-badge" id="sbadge-7">7</div>
+            <div class="step-badge" id="sbadge-7">Step 7:</div>
             <div class="step-title-text">
               Payment Method <span class="step-required">*</span>
             </div>
@@ -4242,7 +4243,7 @@ Please present this card before payment.</textarea>
         const isVisible = card.style.display !== 'none';
         const badge = card.querySelector('.step-badge');
         if (badge) {
-          badge.textContent = isVisible ? String(n++) : badge.textContent;
+          badge.textContent = isVisible ? "Step " + String(n++) + ":" : badge.textContent;
         }
       });
     }

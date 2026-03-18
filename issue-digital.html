@@ -1818,6 +1818,7 @@
       align-items: center;
       justify-content: center;
       padding: 0;
+      border-radius: 100px;
       transition: border-color var(--transition-base), background-color var(--transition-base),
         color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
     }
@@ -1839,18 +1840,18 @@
     }
 
     .quantity-stepper .qty-plus {
-      border-radius: var(--radius-sm);
+      border-radius: 100px;
     }
 
     .quantity-stepper .input-minimal {
-      width: 52px;
-      min-width: 52px;
+      width: 42px;
+      min-width: 42px;
       padding: 6px 4px;
       text-align: center;
       font-size: 13px;
       font-weight: 600;
       border-radius: var(--radius-sm);
-      border: 1.5px solid var(--c-border);
+      border: 0;
       background: var(--c-surface);
       -moz-appearance: textfield;
       transition: border-color var(--transition-base), box-shadow var(--transition-base),
@@ -2312,7 +2313,7 @@
 
     .term-chip {
       padding: 6px 12px;
-      border-radius: var(--radius-xs);
+      border-radius: var(--radius-md);
       background: var(--c-surface-subtle);
       border: 1px solid var(--c-border);
       font-size: 12px;
@@ -3239,7 +3240,7 @@
         </div>
 
         <!-- STEP 2: Customer Details -->
-        <div class="step-card">
+        <div class="step-card" id="step2Card">
           <div class="step-header open" id="shdr-2" onclick="toggleStep(2)">
             <div class="step-badge" id="sbadge-2">Step 2:</div>
             <div class="step-title-text" id="step2Title">Customer Details</div>
@@ -3364,6 +3365,29 @@
                     oninput="clampCryptoCardQty(this)" />
                   <button type="button" class="qty-btn qty-plus" onclick="changeCryptoCardQty(1)"
                     aria-label="Increase">+</button>
+                </div>
+              </div>
+
+              <div class="crypto-vlp-row" style="margin-top:10px;">
+                <label class="crypto-vlp-check">
+                  <input type="checkbox" id="cryptoSendAsGift" />
+                  <span>Send as a gift</span>
+                </label>
+              </div>
+
+
+              <div id="cryptoGiftFields" style="display:none;margin-top:10px;">
+                <div class="customer-row">
+                  <div class="form-field">
+                    <div class="field-label">Recipient Name</div>
+                    <input type="text" class="input-minimal" id="cryptoRecipientName"
+                      placeholder="Enter recipient name" />
+                  </div>
+                  <div class="form-field">
+                    <div class="field-label">Recipient email</div>
+                    <input type="email" class="input-minimal" id="cryptoRecipientEmail"
+                      placeholder="Enter recipient email" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -4266,6 +4290,10 @@ Please present this card before payment.</textarea>
       const isMembership = typeId === '2';
       const isCrypto = typeId === '5';
 
+      // Show/hide Step 2 (Customer Details — hidden for Crypto Card)
+      const step2 = document.getElementById('step2Card');
+      if (step2) step2.style.display = isCrypto ? 'none' : '';
+
       // Step 2 title + fields based on card type
       const step2Title = document.getElementById('step2Title');
       const nameInput = document.getElementById('holderName');
@@ -4449,6 +4477,22 @@ Please present this card before payment.</textarea>
         const delta = masked.length - prev.length;
         const nextPos = Math.max(0, Math.min(masked.length, (prevPos || 0) + delta));
         try { el.setSelectionRange(nextPos, nextPos); } catch (e) { }
+      }
+    }
+
+    function toggleCryptoGiftFields(force) {
+      const chk = document.getElementById('cryptoSendAsGift');
+      const wrap = document.getElementById('cryptoGiftFields');
+      const name = document.getElementById('cryptoRecipientName');
+      const email = document.getElementById('cryptoRecipientEmail');
+      if (!chk || !wrap) return;
+      const on = typeof force === 'boolean' ? force : !!chk.checked;
+      wrap.style.display = on ? '' : 'none';
+      if (name) name.required = on;
+      if (email) email.required = on;
+      if (!on) {
+        if (name) name.value = '';
+        if (email) email.value = '';
       }
     }
 
@@ -4880,6 +4924,13 @@ Please present this card before payment.</textarea>
       updateCardValueBadge();
       // Init card brand name from default business info
       onBizInfoChange();
+
+      // Gift fields in Card Quantity step (Crypto)
+      const giftChk = document.getElementById('cryptoSendAsGift');
+      if (giftChk) {
+        giftChk.addEventListener('change', () => toggleCryptoGiftFields());
+        toggleCryptoGiftFields(false);
+      }
 
       // Init AI prompt list with default category
       renderAiPrompts();

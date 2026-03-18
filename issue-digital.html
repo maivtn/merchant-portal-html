@@ -980,9 +980,9 @@
     .crypto-selected-card {
       margin-top: 10px;
       border-radius: 14px;
-      background: #f9fafb;
+      /* background: #f9fafb; */
       border: 0;
-      padding: 14px 16px 12px;
+      padding: 0;
     }
 
     .crypto-selected-header {
@@ -1008,13 +1008,16 @@
 
     .crypto-row {
       display: grid;
-      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      /* grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); */
       gap: 10px;
       align-items: center;
       padding: 8px 10px;
       border-radius: 10px;
       background: #ffffff;
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .crypto-asset {
@@ -1024,8 +1027,6 @@
     }
 
     .crypto-asset-icon {
-      width: 28px;
-      height: 28px;
       border-radius: 999px;
       display: flex;
       align-items: center;
@@ -1035,8 +1036,8 @@
     }
 
     .crypto-asset-icon img {
-      width: 100%;
-      height: 100%;
+      width: 28px;
+      height: 28px;
       object-fit: cover;
       border-radius: inherit;
     }
@@ -1131,11 +1132,14 @@
     }
 
     .reload-select-with-icon.has-icon .reload-field-select {
-      padding-left: 40px;
+      padding-left: 30px;
+      padding-right: 20px;
     }
 
+
+
     .reload-amount-unit {
-      width: 120px;
+      width: 90px;
     }
 
     .reload-field-select {
@@ -1155,13 +1159,12 @@
     }
 
     @media (max-width: 767px) {
-      .crypto-selected-card {
-        padding: 10px 12px 8px;
-      }
+      .crypto-selected-card {}
 
       .crypto-row {
-        grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+        /* grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); */
         gap: 8px;
+        padding: 0;
       }
     }
 
@@ -2219,6 +2222,10 @@
     }
 
     @media (max-width: 767px) {
+      .crypto-amount-input-wrap {
+        max-width: 90px;
+      }
+
       .mb-cards-row {
         grid-template-columns: 1fr;
         gap: 8px;
@@ -2535,7 +2542,7 @@
       }
 
       .step-body {
-        padding: 0 16px 16px;
+        padding: 0 12px 12px;
       }
 
       .step-body--fee {

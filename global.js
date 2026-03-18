@@ -24,7 +24,7 @@
       label: "Dashboard",
       icon: "solar:widget-bold-duotone",
       iconWidth: 24,
-      href: "dashboard.html",
+      href: "index.html",
     },
 
     // ── GIFT CARD CENTER ──────────────────────────────────────────────────────
@@ -35,12 +35,6 @@
       icon: "solar:folder-with-files-bold-duotone",
       iconWidth: 26,
       children: [
-        // {
-        //   label: "My Cards",
-        //   href: "my-cards.html",
-        //   relatedPages: ["order-details.html", "order-history.html"],
-        // },
-
         {
           label: "Product Management",
           href: "product-list.html",
@@ -62,18 +56,6 @@
         },
       ],
     },
-    // {
-    //   type: "link",
-    //   label: "Crypto Card Management",
-    //   icon: "solar:wallet-bold-duotone",
-    //   iconWidth: 24,
-    //   href: "crypto-card-list.html",
-    //   relatedPages: [
-    //     "crypto-card-details.html",
-    //     "crypto-card-list-bootstrap.html",
-    //     "issue-crypto-card.html",
-    //   ],
-    // },
     {
       type: "link",
       label: "Marketing Tools",
@@ -192,7 +174,7 @@
         },
         { label: "VlinkPay Store", href: "digital-gifts-management.html" },
         { label: "Merchant Map", href: "#" },
-        { label: "Merchant Portal", href: "dashboard.html" },
+        { label: "Merchant Portal", href: "index.html" },
       ],
     },
     {

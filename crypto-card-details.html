@@ -2844,7 +2844,7 @@
                         <span id="reloadAmountAltValue" class="reload-field-label-alt"></span>
                     </div>
                     <div class="reload-amount-row">
-                        <input type="number" min="0" step="0.00000001" id="reloadAmount"
+                        <input type="text" id="reloadAmount" inputmode="decimal"
                             class="reload-field-input reload-amount-input" placeholder="Enter amount" />
                         <div class="reload-select-with-icon reload-amount-unit has-icon select-with-chevron">
                             <img id="reloadAmountUnitIcon" class="reload-select-icon"
@@ -3393,7 +3393,7 @@
         function confirmReload() {
             const asset = (document.getElementById('reloadAsset') || {}).value;
             const network = (document.getElementById('reloadNetwork') || {}).value;
-            const amount = (document.getElementById('reloadAmount') || {}).value;
+            const amount = parseMaskedNumber((document.getElementById('reloadAmount') || {}).value);
             const amountUnit = (document.getElementById('reloadAmountUnit') || {}).value || 'USD';
             if (!asset || !network || !amount) {
                 alert('Please select asset, network and enter amount.');
@@ -3439,6 +3439,45 @@
                 iconEl.src = ICONS.ETH;
             } else {
                 iconEl.src = ICONS.USD;
+            }
+        }
+
+        function formatThousands(val) {
+            if (val == null) return '';
+            const s = String(val);
+            if (!s) return '';
+            let out = '';
+            let dotSeen = false;
+            for (let i = 0; i < s.length; i++) {
+                const ch = s[i];
+                if (ch >= '0' && ch <= '9') out += ch;
+                else if (ch === '.' && !dotSeen) { out += ch; dotSeen = true; }
+            }
+            if (!out) return '';
+            const parts = out.split('.');
+            const intPart = parts[0] || '';
+            const decPart = (parts.length > 1) ? parts[1] : '';
+            const intWithCommas = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return decPart ? `${intWithCommas}.${decPart}` : intWithCommas;
+        }
+
+        function parseMaskedNumber(masked) {
+            if (masked == null) return '';
+            return String(masked).replace(/,/g, '').trim();
+        }
+
+        function handleReloadAmountInput() {
+            const el = document.getElementById('reloadAmount');
+            if (!el) return;
+            const prevPos = el.selectionStart;
+            const prev = el.value || '';
+            const raw = parseMaskedNumber(prev);
+            const masked = formatThousands(raw);
+            if (masked !== prev) {
+                el.value = masked;
+                const delta = masked.length - prev.length;
+                const nextPos = Math.max(0, Math.min(masked.length, (prevPos || 0) + delta));
+                try { el.setSelectionRange(nextPos, nextPos); } catch (e) { }
             }
         }
 
@@ -3532,7 +3571,7 @@
             if (!assetEl || !amountEl || !amountUnitEl || !currentQtyEl || !currentUsdEl || !afterQtyEl || !afterUsdEl || !priceEl || !platformFeeEl || !transferFeeEl || !totalEl) return;
 
             const asset = assetEl.value;
-            const rawAmount = amountEl.value;
+            const rawAmount = parseMaskedNumber(amountEl.value);
             const amountUnit = amountUnitEl.value || 'USD';
 
             function setDash() {
@@ -3660,7 +3699,10 @@
             const amountUnitSelect = document.getElementById('reloadAmountUnit');
             // Asset change is handled via pickReloadAsset (icon-select)
             if (amountInput) {
-                amountInput.addEventListener('input', updateReloadSummary);
+                amountInput.addEventListener('input', function () {
+                    handleReloadAmountInput();
+                    updateReloadSummary();
+                });
             }
             if (amountUnitSelect) {
                 amountUnitSelect.addEventListener('change', function () {

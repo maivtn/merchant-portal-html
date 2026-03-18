@@ -4,15 +4,26 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Digital Card Issue Details - VLINKPAY</title>
+  <title>Details - VLINKPAY</title>
+  <!-- Latest compiled and minified CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
   <script>window.SIDEBAR_USE_CARDS_MENU = true;</script>
   <script src="global.js" defer></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+
   <style>
     .details-card {
       margin: 0 auto;
@@ -137,13 +148,6 @@
       text-align: right;
     }
 
-    .price-tag .amount {
-      display: block;
-      color: var(--primary-main);
-      font-size: 28px;
-      font-weight: 700;
-      line-height: 1;
-    }
 
     .price-tag .label {
       font-size: 11px;
@@ -204,51 +208,7 @@
     }
 
     /* Back button — UI giống crypto, click quay lại trang trước (history) */
-    .back-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      color: var(--grey-600);
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      flex-shrink: 0;
-      margin-bottom: 0 !important
-    }
 
-    .back-btn:hover {
-      background: var(--grey-200);
-      color: var(--grey-900);
-    }
-
-    .back-btn iconify-icon {
-      width: 20px;
-      height: 20px;
-    }
-
-    .back-btn .back-btn-text {
-      display: none;
-    }
-
-    @media (min-width: 769px) {
-      .back-btn {
-        width: auto;
-        padding: 8px 12px;
-        border-radius: 8px;
-      }
-
-      .back-btn .back-btn-text {
-        display: inline;
-      }
-    }
 
     /* Section card (collapsible) + Benefits grid — from membership-package-details */
     .section-card {
@@ -1398,9 +1358,6 @@
       }
 
 
-      .price-tag .amount {
-        font-size: 24px;
-      }
 
       #transaction-history .table-toolbar {
         padding: 12px !important;
@@ -1545,6 +1502,10 @@
       display: none !important;
     }
 
+    .change-pin-new-pin-group .form-group {
+      margin-bottom: 12px;
+    }
+
     .send-otp-btn {
       height: 40px;
       min-height: 40px;
@@ -1636,9 +1597,8 @@
 
   <main class="main">
     <div class="page-header">
-      <a href="#" class="back-btn" id="backBtn" title="Back" aria-label="Back"
-        onclick="event.preventDefault(); window.history.back(); return false;">
-        <i data-lucide="arrow-left" style="width:20px;height:20px;"></i>
+      <a href="#" class="back-btn" title="Back" onclick="event.preventDefault(); window.history.back(); return false;">
+        <i data-lucide="arrow-left" class="icon-back"></i>
         Back
       </a>
       <h1 class="page-title">Membership Card Details</h1>

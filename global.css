@@ -25,11 +25,14 @@
   color: var(--grey-600);
   text-decoration: none;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   margin-bottom: 12px;
   transition: 0.2s;
 }
-
+.icon-back {
+  width: 18px;
+  height: 18px;
+}
 .back-btn:hover {
   color: var(--grey-900);
 }
@@ -413,6 +416,10 @@ img.sidebar-logo {
   .back-btn {
     font-size: 11px !important;
     margin-bottom: 0;
+  }
+  .icon-back {
+    width: 14px;
+    height: 14px;
   }
   .page-header .back-btn {
     margin-bottom: 0;
@@ -872,7 +879,6 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
 .price-tag {
   text-align: right;
 }
-
 .price-tag .amount {
   display: block;
   color: var(--primary-main);
@@ -927,7 +933,18 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
     opacity: 1;
   }
 }
-
+.info-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--grey-900);
+}
+.info-label {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--grey-600);
+  text-transform: none;
+  letter-spacing: 0;
+}
 /* ═══════════════════════════════════════════════════════
    RESPONSIVE — MOBILE + TABLET  (< 1024px)
    Sidebar ẩn, hamburger hiện trên cả mobile lẫn iPad
@@ -977,9 +994,31 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
 }
 
 /* ═══════════════════════════════════════════════════════
-   RESPONSIVE — MOBILE ONLY  (< 768px)
+   RESPONSIVE — MOBILE ONLY  (< 1023px)
 ═══════════════════════════════════════════════════════ */
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
+  .details-header {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    gap: 10px;
+  }
+  .info-label {
+    font-size: 11px;
+  }
+  .info-value {
+    font-size: 11px;
+  }
+  .product-info-header h1 {
+    font-size: 14px;
+  }
+  .price-tag .amount {
+    font-size: 20px;
+  }
+  .term-section {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+  }
   .top-header {
     padding: 0 12px 0 4px;
   }
@@ -1460,9 +1499,9 @@ td.col-actions .action-btns {
 }
 
 /* ═══════════════════════════════════════════════════════
-   RESPONSIVE — TABLET ONLY  (768px – 1023px)
+   RESPONSIVE — TABLET ONLY  (1023px – 1023px)
 ═══════════════════════════════════════════════════════ */
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (min-width: 1023px) and (max-width: 1023px) {
   .top-header {
     padding: 0 20px;
   }
@@ -1763,7 +1802,7 @@ td.col-actions .action-btns {
 @media (max-width: 1023px) {
   .am-menu {
     gap: 12px;
-    justify-content: center;
+    justify-content: space-around;
   }
   .am-button-icon {
     width: 40px;

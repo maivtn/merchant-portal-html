@@ -1556,6 +1556,10 @@
       padding: 0 20px 20px;
     }
 
+    .step-body--fee {
+      padding: 20px !important;
+    }
+
     /* ═══════════════════════════════════════════════════════
        STEP 1 — CARD TYPE GRID
     ═══════════════════════════════════════════════════════ */
@@ -2492,6 +2496,10 @@
 
       .step-body {
         padding: 0 16px 16px;
+      }
+
+      .step-body--fee {
+        padding: 16px !important;
       }
 
       .step-header {
@@ -3478,7 +3486,7 @@ Please present this card before payment.</textarea>
         </div>
 
         <!-- STEP 7: Payment Method -->
-        <div class="step-card">
+        <div class="step-card step-payment">
           <div class="step-header open" id="shdr-7" onclick="toggleStep(7)">
             <div class="step-badge" id="sbadge-7">Step 7:</div>
             <div class="step-title-text">
@@ -3526,20 +3534,24 @@ Please present this card before payment.</textarea>
                   <span>VlinkPay</span>
                 </div>
               </div>
+            </div>
 
-              <div class="fee-divider"></div>
-              <div class="fee-row">
-                <span class="fee-label">Platform Service Fee (1.5%)</span>
-                <span class="fee-value" id="feeDisplay">$0.75</span>
-              </div>
+          </div>
 
-              <!-- Desktop confirm -->
-              <button class="btn-confirm-desktop" onclick="confirmIssuance()">
-                <span id="confirmIssuanceLabelDesktop">Confirm Issuance</span>
-              </button>
+        </div>
+        <div class="step-card">
+          <div class="step-body step-body--fee">
+            <div class="fee-row">
+              <span class="fee-label">Platform Service Fee (1.5%)</span>
+              <span class="fee-value" id="feeDisplay">$0.75</span>
             </div>
           </div>
+
         </div>
+        <!-- Desktop confirm -->
+        <button class="btn-confirm-desktop" onclick="confirmIssuance()">
+          <span id="confirmIssuanceLabelDesktop">Confirm Issuance</span>
+        </button>
 
       </div><!-- /right-panel -->
     </div><!-- /create-card-layout -->
@@ -4181,7 +4193,7 @@ Please present this card before payment.</textarea>
       }
 
       // Payment methods: hide payment grid when Crypto Card
-      const paymentGrid = document.querySelector('.payment-grid');
+      const paymentGrid = document.querySelector('.step-payment');
       if (paymentGrid) {
         paymentGrid.style.display = (typeId === '5') ? 'none' : '';
       }

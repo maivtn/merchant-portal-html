@@ -1114,6 +1114,46 @@
       background: rgba(239, 68, 68, 0.12);
     }
 
+    .reload-select-with-icon {
+      position: relative;
+    }
+
+    .reload-select-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    .reload-select-with-icon.has-icon .reload-field-select {
+      padding-left: 40px;
+    }
+
+    .reload-amount-unit {
+      width: 120px;
+    }
+
+    .reload-field-select {
+      width: 100%;
+      height: 32px;
+      border-radius: var(--radius-md);
+      border: 1px solid #d1d5db;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fff;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .reload-field-select:focus {
+      border-color: #00ab55;
+    }
+
     @media (max-width: 767px) {
       .crypto-selected-card {
         padding: 10px 12px 8px;
@@ -4237,7 +4277,7 @@ Please present this card before payment.</textarea>
       const desktopLabel = document.getElementById('confirmIssuanceLabelDesktop');
       const mobileLabel = document.getElementById('confirmIssuanceLabelMobile');
       const isCryptoType = typeId === '5';
-      const text = isCryptoType ? 'Create' : 'Confirm Issuance';
+      const text = isCryptoType ? 'Confirm Issuance' : 'Confirm Issuance';
       if (desktopLabel) desktopLabel.textContent = text;
       if (mobileLabel) mobileLabel.textContent = text;
 
@@ -4312,49 +4352,65 @@ Please present this card before payment.</textarea>
       {
         id: 'BTC',
         name: 'BTC',
-        iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png',
+        iconUrl: 'images/btc.png',
         available: 200.55,
         balance: 0.0003593
       },
       {
         id: 'ETH',
         name: 'ETH',
-        iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
+        iconUrl: 'images/eth.png',
         available: 200.55,
         balance: 0.052
       },
       {
         id: 'USDT',
         name: 'USDT',
-        iconUrl: 'https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/USDT.png',
+        iconUrl: 'images/usdt.png',
         available: 500.00,
         balance: 500
       },
       {
         id: 'SHIB',
         name: 'SHIB',
-        iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5994.png',
+        iconUrl: 'images/shiba.png',
         available: 1000.00,
         balance: 12500000
       },
       {
         id: 'DOGE',
         name: 'DOGE',
-        iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/74.png',
+        iconUrl: 'images/doge.png',
         available: 750.00,
         balance: 2500
       }
     ];
 
     const selectedAssets = {}; // { BTC: '50', ETH: '100', ... }
+    const selectedAssetUnits = {}; // { BTC: 'USD', ETH: 'BTC', ... }
     let cryptoTomSelect = null; // Tom Select instance for crypto assets
 
     function updateAssetAmount(id, val) {
       selectedAssets[id] = val;
     }
 
+    function updateAssetAmountUnit(id, unit) {
+      selectedAssetUnits[id] = unit;
+      const icon = document.getElementById('cryptoAmountUnitIcon_' + id);
+      if (icon) {
+        const usdUrl = 'https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/Usd.png';
+        if (unit === 'USD') {
+          icon.src = usdUrl;
+        } else {
+          const a = CRYPTO_ASSETS.find(x => x.id === id);
+          icon.src = (a && a.iconUrl) ? a.iconUrl : usdUrl;
+        }
+      }
+    }
+
     function removeAsset(id) {
       delete selectedAssets[id];
+      delete selectedAssetUnits[id];
       const pill = document.querySelector('.crypto-pill[data-asset="' + id + '"]');
       if (pill) pill.classList.remove('active');
       if (cryptoTomSelect) cryptoTomSelect.removeItem(id);
@@ -4374,6 +4430,9 @@ Please present this card before payment.</textarea>
       body.innerHTML = ids.map(id => {
         const a = CRYPTO_ASSETS.find(x => x.id === id) || { name: id, iconUrl: '', available: 0 };
         const val = selectedAssets[id] || '';
+        const unit = selectedAssetUnits[id] || 'USD';
+        const usdUrl = 'https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/Usd.png';
+        const unitIconUrl = (unit === 'USD') ? usdUrl : (a.iconUrl || usdUrl);
         return `
           <div class="crypto-row">
             <div class="crypto-asset">
@@ -4391,6 +4450,15 @@ Please present this card before payment.</textarea>
                 <input type="text" class="crypto-amount-input"
                   value="${val}"
                   oninput="updateAssetAmount('${id}', this.value)" />
+              </div>
+              <div class="reload-select-with-icon reload-amount-unit has-icon select-with-chevron">
+                <img id="cryptoAmountUnitIcon_${id}" class="reload-select-icon"
+                  src="${unitIconUrl}"
+                  alt="Amount unit icon" />
+                <select id="cryptoAmountUnit_${id}" class="reload-field-select" onchange="updateAssetAmountUnit('${id}', this.value)">
+                  <option value="USD" ${unit === 'USD' ? 'selected' : ''}>USD</option>
+                  <option value="${id}" ${unit === id ? 'selected' : ''}>${id}</option>
+                </select>
               </div>
               <button class="crypto-remove" onclick="removeAsset('${id}')">×</button>
             </div>
@@ -4437,7 +4505,7 @@ Please present this card before payment.</textarea>
                   <div class="crypto-option-amount">${escape(typeof a.balance !== 'undefined' && a.balance != null ? (Number(a.balance).toLocaleString('en-US', { maximumFractionDigits: 8 }) + ' ' + a.name) : a.name)}</div>
                 </div>
                 <div class="crypto-option-right">
-                  <div class="crypto-option-available-label">Available</div>
+                  <div class="crypto-option-available-label">Value</div>
                   <div class="crypto-option-available-value">${escape(availableFmt)}</div>
                 </div>
               </div>
@@ -4461,6 +4529,7 @@ Please present this card before payment.</textarea>
           });
           next.forEach(id => {
             if (!selectedAssets[id]) selectedAssets[id] = '';
+            if (!selectedAssetUnits[id]) selectedAssetUnits[id] = 'USD';
           });
           renderSelectedAssets();
         }

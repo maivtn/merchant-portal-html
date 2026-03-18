@@ -999,7 +999,11 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
 /* ═══════════════════════════════════════════════════════
    RESPONSIVE — MOBILE ONLY  (< 1023px)
 ═══════════════════════════════════════════════════════ */
-
+.divider {
+  height: 1px;
+  background: var(--grey-200);
+  margin: 12px 0;
+}
 @media (max-width: 1023px) {
   .page-header-left {
     flex: 1;
@@ -2183,4 +2187,142 @@ td.col-actions .action-btns {
 }
 .address-wrapper {
   padding: 0 !important;
+}
+
+/* Fees Overview popover (Tippy content) */
+.fees-overview-popover {
+  text-align: left;
+  padding: 0;
+  min-width: 280px;
+  max-width: 340px;
+}
+
+.fees-overview-popover .fees-overview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--grey-200);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--grey-900);
+}
+
+.fees-overview-popover .fees-overview-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--grey-500);
+  display: inline-flex;
+}
+
+.fees-overview-popover .fees-overview-body {
+  padding: 12px 14px;
+}
+
+.fees-overview-popover .fees-overview-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.fees-overview-popover .fees-overview-section:last-child {
+  margin-bottom: 0;
+}
+
+.fees-overview-popover .fees-overview-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fees-overview-popover .fees-overview-icon.green {
+  background: rgba(22, 163, 74, 0.15);
+  color: #16a34a;
+}
+
+.fees-overview-popover .fees-overview-icon.blue {
+  background: rgba(21, 93, 252, 0.15);
+  color: #155dfc;
+}
+
+.fees-overview-popover .fees-overview-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.fees-overview-popover .fees-overview-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--grey-900);
+  margin-bottom: 6px;
+}
+
+.fees-overview-popover .fees-overview-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.fees-overview-popover .fees-overview-pill.free {
+  background: rgba(22, 163, 74, 0.15);
+  color: #16a34a;
+}
+
+.fees-overview-popover .fees-overview-pill.membership {
+  background: rgba(147, 51, 234, 0.15);
+  color: #7c3aed;
+}
+
+.fees-overview-popover .fees-overview-pill.franchise {
+  background: rgba(234, 179, 8, 0.2);
+  color: #b45309;
+}
+
+.fees-overview-popover .fees-overview-divider {
+  border-top: 1px dashed var(--grey-200);
+  margin: 10px 0;
+}
+
+.fees-overview-popover .fees-overview-sublist {
+  font-size: 12px;
+  color: var(--grey-700);
+}
+
+.fees-overview-popover .fees-overview-sublist div {
+  margin-bottom: 6px;
+}
+
+.fees-overview-popover .fees-overview-sublist .note {
+  font-size: 11px;
+  color: var(--grey-500);
+  margin-top: 4px;
+  margin-bottom: 0 !important;
+}
+/* Tippy (light mode): white card-style popover */
+.tippy-box {
+  background: #fff;
+  color: var(--grey-900);
+  border: 1px solid rgba(145, 158, 171, 0.24);
+  border-radius: 20px;
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.18),
+    0 1px 3px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.tippy-arrow {
+  color: #fff;
+}
+
+.tippy-content {
+  padding: 0;
 }

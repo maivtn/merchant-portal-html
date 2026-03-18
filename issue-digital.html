@@ -18,6 +18,8 @@
   <link href="https://cdn.jsdelivr.net/npm/tom-select@2.5.2/dist/css/tom-select.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/tom-select@2.5.2/dist/js/tom-select.complete.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
   <link rel="stylesheet" href="global.css">
   <script>
     (function () {
@@ -3589,7 +3591,20 @@ Please present this card before payment.</textarea>
         <div class="step-card">
           <div class="step-body step-body--fee">
             <div class="fee-row">
-              <span class="fee-label">Platform Service Fee (1.5%)</span>
+              <span class="fee-label">Platform Service Fee</span>
+              <span class="fee-value"> <span class="fee-free">Free</span></span></span>
+            </div>
+            <div class="fee-row">
+              <span class="fee-label">Transfer Fee (1.5%)</span>
+              <span class="fee-value" id="feeDisplay">$0.75</span>
+            </div>
+            <div class=" divider">
+            </div>
+            <div class="fee-row">
+              <span class="fee-label">Total Fees <span id="reloadTotalFeesTipTrigger" class="reload-summary-info-icon"
+                  title="Fees overview">
+                  <i data-lucide="info" style="width:12px;height:12px;"></i>
+                </span></span>
               <span class="fee-value" id="feeDisplay">$0.75</span>
             </div>
           </div>
@@ -5114,6 +5129,42 @@ Please present this card before payment.</textarea>
         showConfirmButton: false
       });
     }
+    // Fees Overview tooltip (Tippy) on Total (i) icon
+    (function () {
+      var trigger = document.getElementById('reloadTotalFeesTipTrigger');
+      if (!trigger || typeof tippy === 'undefined') return;
+      var feesHtml = '<div class="fees-overview-popover">' +
+        '<div class="fees-overview-header">Fees Overview <button type="button" class="fees-overview-close" aria-label="Close"><iconify-icon icon="eva:close-fill" width="18"></iconify-icon></button></div>' +
+        '<div class="fees-overview-body">' +
+        '<div class="fees-overview-section"><div class="fees-overview-icon green"><iconify-icon icon="eva:checkmark-fill" width="14"></iconify-icon></div>' +
+        '<div class="fees-overview-content"><div class="fees-overview-title">Platform Fee <span class="fees-overview-pill free">Free</span></div></div></div>' +
+        '<div class="fees-overview-divider"></div>' +
+        '<div class="fees-overview-section"><div class="fees-overview-icon blue"><iconify-icon icon="eva:swap-fill" width="14"></iconify-icon></div>' +
+        '<div class="fees-overview-content"><div class="fees-overview-title">Transfer fee</div>' +
+        '<div class="fees-overview-sublist">' +
+        '<div>Accounts with a <span class="fees-overview-pill membership">Membership Plan</span></div>' +
+        '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px;">$5 - $25: <strong>1.5% fee</strong><div class="note">The fee is deducted from USDV. If insufficient, it will be deducted from the reloaded crypto.</div></div>' +
+        '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px;">Above $25: <span class="fees-overview-pill free">Free</span></div>' +
+        '<div style="margin-top:8px;">Accounts with a <span class="fees-overview-pill franchise">Franchise Plan</span></div>' +
+        '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px;">All transfers: <span class="fees-overview-pill free">Free</span></div>' +
+        '</div></div></div></div></div>';
+      var instance = tippy(trigger, {
+        content: feesHtml,
+        allowHTML: true,
+        trigger: 'click',
+        interactive: true,
+        theme: 'light',
+        placement: 'top',
+        appendTo: document.body,
+        onShow: function (i) {
+          var box = i.popper.querySelector('.fees-overview-popover');
+          if (box) {
+            var closeBtn = box.querySelector('.fees-overview-close');
+            if (closeBtn) closeBtn.onclick = function () { i.hide(); };
+          }
+        },
+      });
+    })();
 
     /* ──────────────────────────────────────────────
        SPIN ANIMATION

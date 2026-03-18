@@ -4412,6 +4412,46 @@ Please present this card before payment.</textarea>
     const selectedAssetUnits = {}; // { BTC: 'USD', ETH: 'BTC', ... }
     let cryptoTomSelect = null; // Tom Select instance for crypto assets
 
+    function formatThousands(val) {
+      if (val == null) return '';
+      const s = String(val);
+      if (!s) return '';
+      // keep only digits and a single dot for decimals
+      let out = '';
+      let dotSeen = false;
+      for (let i = 0; i < s.length; i++) {
+        const ch = s[i];
+        if (ch >= '0' && ch <= '9') out += ch;
+        else if (ch === '.' && !dotSeen) { out += ch; dotSeen = true; }
+      }
+      if (!out) return '';
+      const parts = out.split('.');
+      const intPart = parts[0] || '';
+      const decPart = (parts.length > 1) ? parts[1] : '';
+      const intWithCommas = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return decPart ? `${intWithCommas}.${decPart}` : intWithCommas;
+    }
+
+    function parseMaskedNumber(masked) {
+      if (masked == null) return '';
+      return String(masked).replace(/,/g, '').trim();
+    }
+
+    function handleAssetAmountInput(id, el) {
+      const prevPos = el.selectionStart;
+      const prev = el.value || '';
+      const raw = parseMaskedNumber(prev);
+      const masked = formatThousands(raw);
+      selectedAssets[id] = raw;
+      if (masked !== prev) {
+        el.value = masked;
+        // best-effort cursor retention (keep near end)
+        const delta = masked.length - prev.length;
+        const nextPos = Math.max(0, Math.min(masked.length, (prevPos || 0) + delta));
+        try { el.setSelectionRange(nextPos, nextPos); } catch (e) { }
+      }
+    }
+
     function updateAssetAmount(id, val) {
       selectedAssets[id] = val;
     }
@@ -4451,7 +4491,8 @@ Please present this card before payment.</textarea>
       card.style.display = '';
       body.innerHTML = ids.map(id => {
         const a = CRYPTO_ASSETS.find(x => x.id === id) || { name: id, iconUrl: '', available: 0 };
-        const val = selectedAssets[id] || '';
+        const rawVal = selectedAssets[id] || '';
+        const val = formatThousands(rawVal);
         const unit = selectedAssetUnits[id] || 'USD';
         const usdUrl = 'https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/Usd.png';
         const unitIconUrl = (unit === 'USD') ? usdUrl : (a.iconUrl || usdUrl);
@@ -4471,7 +4512,8 @@ Please present this card before payment.</textarea>
                 <span class="crypto-amount-prefix">$</span>
                 <input type="text" class="crypto-amount-input"
                   value="${val}"
-                  oninput="updateAssetAmount('${id}', this.value)" />
+                  inputmode="decimal"
+                  oninput="handleAssetAmountInput('${id}', this)" />
               </div>
               <div class="reload-select-with-icon reload-amount-unit has-icon select-with-chevron">
                 <img id="cryptoAmountUnitIcon_${id}" class="reload-select-icon"

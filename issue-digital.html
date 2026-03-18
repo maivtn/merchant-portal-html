@@ -4236,6 +4236,8 @@ Please present this card before payment.</textarea>
 
       // Show/hide rank (hidden for Prepaid Card & Crypto Card)
       const rankSection = document.getElementById('rankSection');
+      const previewRank = document.getElementById('previewRank');
+      if (previewRank) previewRank.style.display = (typeId === '4' || typeId === '5') ? 'none' : '';
       if (rankSection) rankSection.style.display = (typeId === '4' || typeId === '5') ? 'none' : '';
 
       // Show/hide Step 3 (Expiration — hidden for GiftCard & PrepaidCard & Crypto)

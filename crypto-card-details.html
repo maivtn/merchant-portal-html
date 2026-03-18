@@ -1416,6 +1416,20 @@
             margin-bottom: 4px;
         }
 
+        .reload-field-label-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .reload-field-label-alt {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--grey-700);
+            white-space: nowrap;
+        }
+
         .reload-field-input,
         .reload-field-select {
             width: 100%;
@@ -2825,7 +2839,10 @@
                     </div>
                 </div>
                 <div>
-                    <div class="reload-field-label">Amount</div>
+                    <div class="reload-field-label reload-field-label-row">
+                        <span>Amount</span>
+                        <span id="reloadAmountAltValue" class="reload-field-label-alt"></span>
+                    </div>
                     <div class="reload-amount-row">
                         <input type="number" min="0" step="0.00000001" id="reloadAmount"
                             class="reload-field-input reload-amount-input" placeholder="Enter amount" />
@@ -3220,6 +3237,7 @@
             if (availEl) {
                 availEl.style.display = (value === 'VRC20') ? 'inline-flex' : 'none';
             }
+            updateReloadAmountAltValue();
         }
 
         function pickReloadAsset(optionEl, coinClass, symbol, label, value) {
@@ -3463,6 +3481,41 @@
             updateAmountUnitIcon();
         }
 
+        function updateReloadAmountAltValue() {
+            const el = document.getElementById('reloadAmountAltValue');
+            const networkEl = document.getElementById('reloadNetwork');
+            const assetEl = document.getElementById('reloadAsset');
+            const amountEl = document.getElementById('reloadAmount');
+            const amountUnitEl = document.getElementById('reloadAmountUnit');
+            if (!el || !networkEl || !assetEl || !amountEl || !amountUnitEl) return;
+
+            const network = networkEl.value || '';
+            if (network !== 'VRC20') {
+                el.style.display = 'none';
+                el.textContent = '';
+                return;
+            }
+
+            const asset = assetEl.value || '';
+            const unit = amountUnitEl.value || 'USD';
+            const rate = assetRates[asset] || 0;
+            const amount = parseFloat(amountEl.value || '0') || 0;
+
+            el.style.display = '';
+            if (!asset || !rate || amount <= 0) {
+                el.textContent = '';
+                return;
+            }
+
+            if (unit === 'USD') {
+                const qty = amount / rate;
+                el.textContent = '' + qty.toFixed(8) + ' ' + asset;
+            } else {
+                const usd = amount * rate;
+                el.textContent = '$' + usd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+        }
+
         function updateReloadSummary() {
             const assetEl = document.getElementById('reloadAsset');
             const amountEl = document.getElementById('reloadAmount');
@@ -3494,6 +3547,8 @@
                 totalEl.textContent = '-';
             }
 
+            updateReloadAmountAltValue();
+
             if (!asset) {
                 setDash();
                 return;
@@ -3503,6 +3558,7 @@
             const rate = assetRates[asset] || 0;
 
             syncAmountUnitOptions(asset);
+            updateReloadAmountAltValue();
 
             if (!rate) {
                 priceEl.textContent = '-';
@@ -3546,6 +3602,7 @@
                 platformFeeEl.classList.remove('reload-summary-value--free');
                 transferFeeEl.textContent = '-';
                 totalEl.textContent = '-';
+                updateReloadAmountAltValue();
                 return;
             }
 

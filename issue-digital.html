@@ -1752,7 +1752,7 @@
     .customer-row {
       display: flex;
       gap: 12px;
-      flex-wrap: nowrap;
+      flex-wrap: wrap;
       align-items: flex-start;
     }
 
@@ -1776,7 +1776,7 @@
 
     .input-minimal {
       width: 100%;
-      padding: 10px 14px;
+      padding: 8px 14px;
       border: 1.5px solid var(--c-border);
       border-radius: var(--radius-sm);
       font-size: 14px;
@@ -1787,13 +1787,17 @@
       box-sizing: border-box;
     }
 
-    .input-minimal:focus {
-      border-color: var(--c-text-1);
-      outline: none;
+    .biz-input::placeholder {
+      color: #b0b8c1;
+    }
+
+    .biz-input:focus {
+      border-color: var(--c-primary);
+      box-shadow: 0 0 0 3px rgba(0, 171, 85, 0.10);
     }
 
     .input-minimal::placeholder {
-      color: var(--c-text-3);
+      color: #b0b8c1;
     }
 
     .quantity-stepper {
@@ -2495,6 +2499,10 @@
       box-shadow: 0 8px 16px rgba(0, 167, 111, 0.28);
     }
 
+    .customer-row .biz-phone-wrap {
+      max-width: 240px;
+    }
+
     /* ═══════════════════════════════════════════════════════
        RESPONSIVE
     ═══════════════════════════════════════════════════════ */
@@ -2669,6 +2677,8 @@
         flex-direction: column;
         gap: 10px;
       }
+
+
 
       .form-field {
         min-width: 0;
@@ -3271,6 +3281,42 @@
                       </svg></button>
                     <i data-lucide="calendar" class="date-input-icon-end"></i>
                   </div>
+                </div>
+
+
+              </div>
+              <div class="customer-row" id="membershipContactRow" style="display:none; margin-top: 12px;">
+                <!-- Membership-only: extra contact fields -->
+                <div class="biz-phone-wrap">
+                  <select class="biz-dial-select">
+                    <option value="+1">+1</option>
+                    <option value="+44">+44</option>
+                    <option value="+61">+61</option>
+                    <option value="+33">+33</option>
+                    <option value="+49">+49</option>
+                    <option value="+81">+81</option>
+                    <option value="+82">+82</option>
+                    <option value="+84">+84</option>
+                    <option value="+86">+86</option>
+                    <option value="+91">+91</option>
+                    <option value="+65">+65</option>
+                    <option value="+60">+60</option>
+                    <option value="+66">+66</option>
+                    <option value="+62">+62</option>
+                    <option value="+63">+63</option>
+                    <option value="+852">+852</option>
+                    <option value="+886">+886</option>
+                    <option value="+971">+971</option>
+                    <option value="+966">+966</option>
+                    <option value="+55">+55</option>
+                    <option value="+52">+52</option>
+                    <option value="+7">+7</option>
+                  </select>
+                  <div class="biz-phone-divider"></div>
+                  <input type="tel" class="biz-phone-input" id="bizPhone" placeholder="Phone Number">
+                </div>
+                <div class="form-field">
+                  <input type="text" class="input-minimal" id="holderAddress" placeholder="Address (optional)">
                 </div>
               </div>
             </div>
@@ -4298,10 +4344,22 @@ Please present this card before payment.</textarea>
       const step2Title = document.getElementById('step2Title');
       const nameInput = document.getElementById('holderName');
       const emailInput = document.getElementById('holderEmail');
+      const membershipContactRow = document.getElementById('membershipContactRow');
+      const holderPhone = document.getElementById('holderPhone');
+      const holderAddress = document.getElementById('holderAddress');
 
       // Birthday: only for Membership
       if (birthdayField) birthdayField.style.display = isMembership ? '' : 'none';
       if (isMembership) syncBirthdayRequired();
+
+      // Membership-only: show phone/address, otherwise hide + clear
+      if (membershipContactRow) {
+        membershipContactRow.style.display = isMembership ? '' : 'none';
+        if (!isMembership) {
+          if (holderPhone) holderPhone.value = '';
+          if (holderAddress) holderAddress.value = '';
+        }
+      }
 
       if (isCrypto) {
         if (step2Title) step2Title.textContent = 'Recipient';

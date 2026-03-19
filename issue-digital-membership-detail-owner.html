@@ -2502,34 +2502,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Reset PIN Modal -->
-  <div id="modal-enter-mail-pin" class="modal-overlay">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="modal-title" id="resetPinModalTitle">Enter email to receive OTP</span>
-        <div class="close-btn" onclick="closeModal('modal-enter-mail-pin')">
-          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
-        </div>
-      </div>
-      <div class="modal-body">
-        <form class="change-pin-form" id="resetPinForm" onsubmit="event.preventDefault(); sendOtpForResetPin();">
-          <input type="hidden" id="resetPinMode" value="change">
-
-          <label class="form-label">Email to receive OTP <span>*</span></label>
-          <input type="email" class="change-pin-input" id="resetPinEmailInput" placeholder="Enter email to receive OTP"
-            autocomplete="email">
-      </div>
-      <div class="change-pin-footer">
-        <button type="button" class="btn-secondary" onclick="closeModal('modal-enter-mail-pin')">Cancel</button>
-        <button type="button" class="btn-primary-rounded change-pin-send-code-btn" id="resetPinSendOtpBtn"
-          onclick="sendOtpForResetPin()">Send
-          verification code</button>
-      </div>
-      </form>
-    </div>
-  </div>
-  </div>
   <!-- Change PIN Modal (same as crypto-card-details-owner.html) -->
   <div id="modal-change-pin" class="modal-overlay">
     <div class="modal-content">
@@ -2540,8 +2512,7 @@
         </div>
       </div>
       <div class="modal-body">
-        <form class="change-pin-form" id="changePinForm"
-          onsubmit="event.preventDefault(); openModal('modal-enter-mail-pin');">
+        <form class="change-pin-form" id="changePinForm" onsubmit="event.preventDefault(); saveChangePin();">
           <input type="hidden" id="changePinMode" value="change">
 
           <div id="changePinCurrentBlock" class="change-pin-current-block">

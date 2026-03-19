@@ -29,6 +29,20 @@
       margin: 0 auto;
     }
 
+    /* SweetAlert2 OTP input responsive */
+    .swal2-popup .swal2-input {
+      max-width: 260px;
+      box-sizing: border-box;
+      font-size: 16px;
+      text-align: center;
+      letter-spacing: 4px;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 16px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     /* Two-column layout */
     .product-main-layout {
       display: grid;
@@ -850,33 +864,6 @@
       color: var(--grey-900);
     }
 
-    /* Pagination: dùng global.css (.pagination, .pag-rows, .pag-select, .pag-info, .pag-btn) */
-    /* Modal Styles */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(33, 43, 54, 0.8);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: #fff;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 480px;
-      box-shadow: var(--shadow-z24);
-      animation: modalSlideIn 0.3s ease-out;
-    }
 
     @keyframes modalSlideIn {
       from {
@@ -890,25 +877,6 @@
       }
     }
 
-    .modal-header {
-      padding: 24px 24px 0;
-    }
-
-    .modal-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--grey-900);
-      margin-bottom: 4px;
-    }
-
-    .modal-subtitle {
-      font-size: 13px;
-      color: var(--grey-600);
-    }
-
-    .modal-body {
-      padding: 24px;
-    }
 
     .balance-info {
       background: var(--grey-100);
@@ -2503,6 +2471,37 @@
     </div>
   </div>
 
+
+  <!-- Reset PIN Modal -->
+  <div id="modal-reset-pin" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title" id="resetPinModalTitle">Reset PIN</span>
+        <div class="close-btn" onclick="closeModal('modal-reset-pin')">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </div>
+      </div>
+      <div class="modal-body">
+        <form class="change-pin-form" id="resetPinForm" onsubmit="event.preventDefault(); sendOtpForResetPin();">
+          <input type="hidden" id="resetPinMode" value="change">
+          <a href="#" class="change-pin-back-link"
+            onclick="closeModal('modal-reset-pin'); openModal('modal-change-pin'); return false;">← Back
+            to Change PIN</a>
+          <div class="form-group change-pin-email-at-bottom">
+            <label class="form-label">Email to receive OTP <span>*</span></label>
+            <input type="email" class="change-pin-input" id="resetPinEmailInput"
+              placeholder="Enter email to receive OTP" autocomplete="email">
+          </div>
+          <div class="change-pin-footer">
+            <button type="button" class="btn-secondary" onclick="closeModal('modal-reset-pin')">Cancel</button>
+            <button type="button" class="btn-primary-rounded change-pin-send-code-btn" id="resetPinSendOtpBtn"
+              onclick="sendOtpForResetPin()">Send
+              verification code</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
   <!-- Change PIN Modal (same as crypto-card-details-owner.html) -->
   <div id="modal-change-pin" class="modal-overlay">
     <div class="modal-content">
@@ -2526,20 +2525,12 @@
                   <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
                 </button>
               </div>
-              <a href="#" class="forgot-pin-link" onclick="switchToForgotPin(); return false;">Forgot
+              <a href="#" class="forgot-pin-link"
+                onclick="openModal('modal-reset-pin'); closeModal('modal-change-pin');">Forgot
                 current PIN?</a>
             </div>
           </div>
 
-          <div id="forgotPinBlock" class="forgot-pin-block">
-            <a href="#" class="change-pin-back-link" onclick="switchBackToChangePin(); return false;">← Back
-              to Change PIN</a>
-            <div class="form-group">
-              <label class="form-label">Email to receive OTP <span>*</span></label>
-              <input type="email" class="change-pin-input" id="forgotPinEmailInput"
-                placeholder="Enter email to receive OTP" autocomplete="email">
-            </div>
-          </div>
 
           <div id="changePinNewPinGroup" class="change-pin-new-pin-group">
             <div class="form-group">
@@ -2563,16 +2554,9 @@
               </div>
             </div>
           </div>
-          <div class="form-group change-pin-email-at-bottom" id="changePinEmailGroup">
-            <label class="form-label">Email to receive OTP <span>*</span></label>
-            <input type="email" class="change-pin-input" id="changePinEmailInput"
-              placeholder="Enter email to receive OTP" autocomplete="email">
-          </div>
           <div class="change-pin-footer">
             <button type="button" class="btn-secondary" onclick="closeModal('modal-change-pin')">Cancel</button>
             <button type="submit" class="btn-primary-rounded" id="changePinSubmitBtn">Confirm</button>
-            <button type="button" class="btn-primary-rounded change-pin-send-code-btn" id="sendOtpBtn"
-              style="display: none;" onclick="sendOtpForResetPin()">Send verification code</button>
           </div>
         </form>
       </div>
@@ -2655,7 +2639,10 @@
     function closeBenefitsModal() {
       document.getElementById('benefitsModal').classList.remove('active');
     }
-
+    function openModal(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = 'flex';
+    }
     // Close benefits modal when clicking outside
     document.getElementById('benefitsModal').addEventListener('click', function (e) {
       if (e.target === this) {
@@ -2693,22 +2680,13 @@
 
     function fillChangePinModalEmail() {
       var email = (document.body.getAttribute('data-otp-email') || window.OTP_EMAIL_PREFILL || '').trim();
-      if (email) {
-        var el1 = document.getElementById('changePinEmailInput');
-        var el2 = document.getElementById('forgotPinEmailInput');
-        if (el1) el1.value = email;
-        if (el2) el2.value = email;
-      }
+      if (email) window.changePinOtpEmail = email;
     }
     function openChangePinModal() {
       fillChangePinModalEmail();
-      document.getElementById('modal-change-pin').classList.add('active');
+      openModal('modal-change-pin');
     }
-    function closeModal(id) {
-      var el = document.getElementById(id);
-      if (el) el.classList.remove('active');
-      if (id === 'modal-change-pin' && typeof switchBackToChangePin === 'function') switchBackToChangePin();
-    }
+
     window.onclick = function (event) {
       if (event.target.classList && event.target.classList.contains('modal-overlay')) {
         closeModal(event.target.id);
@@ -2720,7 +2698,8 @@
       changePinMode = 'forgot';
       document.getElementById('changePinMode').value = 'forgot';
       document.getElementById('changePinCurrentBlock').classList.add('hidden');
-      document.getElementById('changePinEmailGroup').classList.add('hidden');
+      var emailGroup = document.getElementById('changePinEmailGroup');
+      if (emailGroup) emailGroup.classList.add('hidden');
       var newPinGrp = document.getElementById('changePinNewPinGroup');
       if (newPinGrp) newPinGrp.classList.add('hidden');
       document.getElementById('forgotPinBlock').classList.add('active');
@@ -2731,32 +2710,19 @@
       var sendOtpBtn = document.getElementById('sendOtpBtn');
       if (sendOtpBtn) { sendOtpBtn.style.display = ''; sendOtpBtn.disabled = false; }
     }
-    function switchBackToChangePin() {
-      changePinMode = 'change';
-      document.getElementById('changePinMode').value = 'change';
-      document.getElementById('changePinCurrentBlock').classList.remove('hidden');
-      document.getElementById('changePinEmailGroup').classList.remove('hidden');
-      var newPinGrp = document.getElementById('changePinNewPinGroup');
-      if (newPinGrp) newPinGrp.classList.remove('hidden');
-      document.getElementById('forgotPinBlock').classList.remove('active');
-      var title = document.getElementById('changePinModalTitle');
-      if (title) title.textContent = 'Change PIN';
-      var btn = document.getElementById('changePinSubmitBtn');
-      if (btn) { btn.textContent = 'Confirm'; btn.style.display = ''; }
-      var sendOtpBtn = document.getElementById('sendOtpBtn');
-      if (sendOtpBtn) sendOtpBtn.style.display = 'none';
-    }
+
     function sendOtpForResetPin() {
-      var emailInput = document.getElementById('forgotPinEmailInput');
-      var email = (emailInput && emailInput.value || '').trim();
+      var emailInput = document.getElementById('resetPinEmailInput');
+      var email = (emailInput && emailInput.value || window.changePinOtpEmail || document.body.getAttribute('data-otp-email') || window.OTP_EMAIL_PREFILL || '').trim();
       if (!email) {
-        if (typeof Swal !== 'undefined') Swal.fire({ icon: 'warning', title: 'Email required', text: 'Please enter your email to receive OTP.' });
-        else alert('Please enter your email to receive OTP.');
+        if (typeof Swal !== 'undefined') Swal.fire({ icon: 'warning', title: 'Email required', text: 'OTP email is not configured.' });
+        else alert('OTP email is not configured.');
         return;
       }
-      document.getElementById('sendOtpBtn').disabled = true;
-      if (typeof Swal !== 'undefined') Swal.fire({ icon: 'success', title: 'OTP sent', text: 'A 4-digit code has been sent to ' + email + ' (demo).', timer: 2000, showConfirmButton: false });
-      else alert('OTP sent to ' + email + ' (demo).');
+      var sendOtpBtn = document.getElementById('resetPinSendOtpBtn');
+      if (sendOtpBtn) sendOtpBtn.disabled = true;
+      if (typeof Swal !== 'undefined') Swal.fire({ icon: 'success', title: 'OTP sent', text: 'OTP code has been sent to email ' + email + '.', timer: 2000, showConfirmButton: false });
+      else alert('OTP code has been sent to email ' + email + '.');
     }
     function saveChangePin() {
       var mode = (document.getElementById('changePinMode') || {}).value || 'change';
@@ -2782,21 +2748,60 @@
           return;
         }
       }
+      function finalizePinChange() {
+        if (typeof Swal === 'undefined') {
+          alert(mode === 'forgot' ? 'PIN reset successfully (demo).' : 'PIN changed successfully (demo).');
+          closeModal('modal-change-pin');
+          return;
+        }
+        Swal.fire({
+          icon: 'success',
+          title: mode === 'forgot' ? 'PIN reset' : 'PIN updated',
+          text: mode === 'forgot' ? 'Your PIN has been reset successfully.' : 'Your PIN has been changed successfully.',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(function () {
+          closeModal('modal-change-pin');
+        });
+      }
+      function isValidOtp(otp) {
+        return /^\d{4}$/.test((otp || '').trim());
+      }
       if (typeof Swal === 'undefined') {
-        alert(mode === 'forgot' ? 'PIN reset successfully (demo).' : 'PIN changed successfully (demo).');
-        closeModal('modal-change-pin');
-        if (mode === 'forgot') switchBackToChangePin();
+        var fallbackOtp = prompt('Enter 4-digit OTP');
+        if (!isValidOtp(fallbackOtp)) {
+          alert('Invalid OTP. Please enter a valid 4-digit OTP.');
+          return;
+        }
+        finalizePinChange();
         return;
       }
       Swal.fire({
-        icon: 'success',
-        title: mode === 'forgot' ? 'PIN reset' : 'PIN updated',
-        text: mode === 'forgot' ? 'Your PIN has been reset successfully.' : 'Your PIN has been changed successfully.',
-        showConfirmButton: false,
-        timer: 1500
-      }).then(function () {
-        closeModal('modal-change-pin');
-        if (mode === 'forgot') switchBackToChangePin();
+        title: 'Enter OTP',
+        text: 'A 4-digit OTP has been sent to your email. Please enter it to continue.',
+        input: 'text',
+        inputPlaceholder: 'Enter OTP',
+        confirmButtonText: 'Verify',
+        showCancelButton: true,
+        preConfirm: function (otp) {
+          var value = (otp || '').trim();
+          if (!value) {
+            Swal.showValidationMessage('OTP is required.');
+            return false;
+          }
+          if (!/^\d+$/.test(value)) {
+            Swal.showValidationMessage('OTP must contain digits only.');
+            return false;
+          }
+          if (value.length !== 4) {
+            Swal.showValidationMessage('OTP must be exactly 4 digits.');
+            return false;
+          }
+          return value;
+        }
+      }).then(function (result) {
+        if (!result.isConfirmed) return;
+        finalizePinChange();
       });
     }
     function togglePinVisibility(inputId, btn) {
@@ -2808,6 +2813,10 @@
       if (icon) icon.setAttribute('icon', isHidden ? 'lucide:eye-off' : 'lucide:eye');
     }
 
+    function closeModal(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    }
     function toggleCardNumber() {
       const el = document.getElementById('cardNumberValue');
       const icon = document.getElementById('cardNumberEyeIcon');

@@ -3291,6 +3291,64 @@
       </div>
     </div>
   </div>
+  <!-- Reset PIN Modal -->
+  <div id="modal-reset-pin" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title" id="resetPinModalTitle">Reset PIN</span>
+        <div class="close-btn" onclick="closeModal('modal-reset-pin')">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </div>
+      </div>
+      <div class="modal-body">
+        <form class="change-pin-form" id="resetPinForm" onsubmit="event.preventDefault(); sendOtpForResetPin();">
+          <input type="hidden" id="resetPinMode" value="change">
+          <a href="#" class="change-pin-back-link"
+            onclick="closeModal('modal-reset-pin'); openModal('modal-change-pin'); return false;">← Back
+            to Change PIN</a>
+          <div class="form-group change-pin-email-at-bottom">
+            <label class="form-label">Email to receive OTP <span>*</span></label>
+            <input type="email" class="change-pin-input" id="resetPinEmailInput"
+              placeholder="Enter email to receive OTP" autocomplete="email">
+          </div>
+          <div class="change-pin-footer">
+            <button type="button" class="btn-secondary" onclick="closeModal('modal-reset-pin')">Cancel</button>
+            <button type="button" class="btn-primary-rounded change-pin-send-code-btn" id="resetPinSendOtpBtn"
+              onclick="sendOtpForResetPin()">Send
+              verification code</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enter email to receive OTP PIN Modal -->
+  <div id="modal-enter-mail-pin" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title" id="resetPinModalTitle">Enter email to receive OTP</span>
+        <div class="close-btn" onclick="closeModal('modal-enter-mail-pin')">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </div>
+      </div>
+      <div class="modal-body">
+        <form class="change-pin-form" id="resetPinForm" onsubmit="event.preventDefault(); sendOtp();">
+          <input type="hidden" id="resetPinMode" value="change">
+
+          <label class="form-label">Email to receive OTP <span>*</span></label>
+          <input type="email" class="change-pin-input" id="changePinEmailInput" placeholder="Enter email to receive OTP"
+            autocomplete="email">
+      </div>
+      <div class="change-pin-footer">
+        <button type="button" class="btn-secondary" onclick="closeModal('modal-enter-mail-pin')">Cancel</button>
+        <button type="button" class="btn-primary-rounded change-pin-send-code-btn" id="resetPinSendOtpBtn"
+          onclick="sendOtp()">Send
+          verification code</button>
+      </div>
+      </form>
+    </div>
+  </div>
+  </div>
   <!-- Change PIN Modal (same as crypto-card-details-owner.html) -->
   <div id="modal-change-pin" class="modal-overlay">
     <div class="modal-content">
@@ -3301,7 +3359,8 @@
         </div>
       </div>
       <div class="modal-body">
-        <form class="change-pin-form" id="changePinForm" onsubmit="event.preventDefault(); saveChangePin();">
+        <form class="change-pin-form" id="changePinForm"
+          onsubmit="event.preventDefault(); openModal('modal-enter-mail-pin'); closeModal('modal-change-pin');">
           <input type="hidden" id="changePinMode" value="change">
 
           <div id="changePinCurrentBlock" class="change-pin-current-block">
@@ -3314,20 +3373,12 @@
                   <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
                 </button>
               </div>
-              <a href="#" class="forgot-pin-link" onclick="switchToForgotPin(); return false;">Forgot
+              <a href="#" class="forgot-pin-link"
+                onclick="openModal('modal-reset-pin'); closeModal('modal-change-pin');">Forgot
                 current PIN?</a>
             </div>
           </div>
 
-          <div id="forgotPinBlock" class="forgot-pin-block">
-            <a href="#" class="change-pin-back-link" onclick="switchBackToChangePin(); return false;">← Back
-              to Change PIN</a>
-            <div class="form-group">
-              <label class="form-label">Email to receive OTP <span>*</span></label>
-              <input type="email" class="change-pin-input" id="forgotPinEmailInput"
-                placeholder="Enter email to receive OTP" autocomplete="email">
-            </div>
-          </div>
 
           <div id="changePinNewPinGroup" class="change-pin-new-pin-group">
             <div class="form-group">
@@ -3351,21 +3402,15 @@
               </div>
             </div>
           </div>
-          <div class="form-group change-pin-email-at-bottom" id="changePinEmailGroup">
-            <label class="form-label">Email to receive OTP <span>*</span></label>
-            <input type="email" class="change-pin-input" id="changePinEmailInput"
-              placeholder="Enter email to receive OTP" autocomplete="email">
-          </div>
           <div class="change-pin-footer">
             <button type="button" class="btn-secondary" onclick="closeModal('modal-change-pin')">Cancel</button>
             <button type="submit" class="btn-primary-rounded" id="changePinSubmitBtn">Confirm</button>
-            <button type="button" class="btn-primary-rounded change-pin-send-code-btn" id="sendOtpBtn"
-              style="display: none;" onclick="sendOtpForResetPin()">Send verification code</button>
           </div>
         </form>
       </div>
     </div>
   </div>
+
   <!-- Receive Modal (copied from crypto-payment.html) -->
   <div id="modal-show-wallet" class="modal-overlay">
     <div class="modal-content">
@@ -3866,6 +3911,50 @@
     } else { alert('OTP sent to ' + email + ' (demo).'); }
 
   }
+
+  function sendOtp() {
+    var emailInput = document.getElementById('changePinEmailInput');
+    var email = (emailInput && emailInput.value || '').trim();
+    if (!email) {
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({ icon: 'warning', title: 'Email required', text: 'Please enter your email to receive OTP.' });
+      } else { alert('Please enter your email to receive OTP.'); }
+      return;
+    }
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({ icon: 'success', title: 'OTP sent', text: 'A 4-digit code has been sent to ' + email + ' (demo).', timer: 2000, showConfirmButton: false });
+
+
+    } else { alert('OTP sent to ' + email + ' (demo).'); }
+    Swal.fire({
+      title: 'Enter OTP',
+      text: 'A 4-digit OTP has been sent to your email. Please enter it to continue.',
+      input: 'text',
+      inputPlaceholder: 'Enter OTP',
+      confirmButtonText: 'Verify',
+      showCancelButton: true,
+      preConfirm: function (otp) {
+        var value = (otp || '').trim();
+        if (!value) {
+          Swal.showValidationMessage('OTP is required.');
+          return false;
+        }
+        if (!/^\d+$/.test(value)) {
+          Swal.showValidationMessage('OTP must contain digits only.');
+          return false;
+        }
+        if (value.length !== 4) {
+          Swal.showValidationMessage('OTP must be exactly 4 digits.');
+          return false;
+        }
+        return value;
+      }
+    }).then(function (result) {
+      if (!result.isConfirmed) return;
+      finalizePinChange();
+    });
+  }
+
 
   function saveChangePin() {
     var mode = (document.getElementById('changePinMode') || {}).value || 'change';

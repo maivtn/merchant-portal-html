@@ -3843,7 +3843,6 @@
   function closeModal(id) {
     var el = document.getElementById(id);
     if (el) el.style.display = 'none';
-    if (id === 'modal-change-pin' && typeof switchBackToChangePin === 'function') switchBackToChangePin();
   }
 
   window.onclick = function (event) {
@@ -3864,37 +3863,25 @@
 
   var changePinMode = 'change';
 
-  function switchToForgotPin() {
-    changePinMode = 'forgot';
-    document.getElementById('changePinMode').value = 'forgot';
-    document.getElementById('changePinCurrentBlock').classList.add('hidden');
-    document.getElementById('changePinEmailGroup').classList.add('hidden');
-    var newPinGrp = document.getElementById('changePinNewPinGroup');
-    if (newPinGrp) newPinGrp.classList.add('hidden');
-    document.getElementById('forgotPinBlock').classList.add('active');
-    var title = document.getElementById('changePinModalTitle');
-    if (title) title.textContent = 'Reset PIN';
-    var btn = document.getElementById('changePinSubmitBtn');
-    if (btn) { btn.textContent = 'Reset PIN'; btn.style.display = 'none'; }
-    var sendOtpBtn = document.getElementById('sendOtpBtn');
-    if (sendOtpBtn) { sendOtpBtn.style.display = ''; sendOtpBtn.disabled = false; }
+  function finalizePinChange() {
+    if (typeof Swal === 'undefined') {
+      alert('PIN changed successfully (demo).');
+      closeModal('modal-change-pin');
+      closeModal('modal-enter-mail-pin');
+      return;
+    }
+    Swal.fire({
+      icon: 'success',
+      title: 'PIN updated',
+      text: 'Your PIN has been changed successfully.',
+      showConfirmButton: false,
+      timer: 1500
+    }).then(function () {
+      closeModal('modal-change-pin');
+      closeModal('modal-enter-mail-pin');
+    });
   }
 
-  function switchBackToChangePin() {
-    changePinMode = 'change';
-    document.getElementById('changePinMode').value = 'change';
-    document.getElementById('changePinCurrentBlock').classList.remove('hidden');
-    document.getElementById('changePinEmailGroup').classList.remove('hidden');
-    var newPinGrp = document.getElementById('changePinNewPinGroup');
-    if (newPinGrp) newPinGrp.classList.remove('hidden');
-    document.getElementById('forgotPinBlock').classList.remove('active');
-    var title = document.getElementById('changePinModalTitle');
-    if (title) title.textContent = 'Change PIN';
-    var btn = document.getElementById('changePinSubmitBtn');
-    if (btn) { btn.textContent = 'Confirm'; btn.style.display = ''; }
-    var sendOtpBtn = document.getElementById('sendOtpBtn');
-    if (sendOtpBtn) sendOtpBtn.style.display = 'none';
-  }
 
   function sendOtpForResetPin() {
     var emailInput = document.getElementById('forgotPinEmailInput');
@@ -3988,7 +3975,6 @@
     if (typeof Swal === 'undefined') {
       alert(mode === 'forgot' ? 'PIN reset successfully (demo).' : 'PIN changed successfully (demo).');
       closeModal('modal-change-pin');
-      if (mode === 'forgot') switchBackToChangePin();
       return;
     }
 
@@ -4000,7 +3986,6 @@
       timer: 1500
     }).then(function () {
       closeModal('modal-change-pin');
-      if (mode === 'forgot') switchBackToChangePin();
     });
   }
 

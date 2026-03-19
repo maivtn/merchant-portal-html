@@ -9,10 +9,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-  <link rel="stylesheet" href="global.css" />
   <script>window.SIDEBAR_USE_CARDS_MENU = true;</script>
   <script src="global.js" defer></script>
+  <link rel="stylesheet" href="global.css" />
   <style>
     .card {
       background: #fff;
@@ -569,6 +570,155 @@
       }
     }
   </style>
+  <style>
+    .sgc-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 10px;
+    }
+
+    .sgc-qr-input {
+      padding-left: 14px !important;
+      padding-right: 56px !important;
+    }
+
+    .sgc-error {
+      font-size: 12px;
+      color: #ff5630;
+      margin-top: 6px;
+    }
+
+    .sgc-card-preview {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      background: #f9fafb;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 24px;
+    }
+
+    .sgc-card-img {
+      width: 110px;
+      height: 70px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .sgc-card-info {
+      flex: 1;
+    }
+
+    .sgc-card-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 6px;
+    }
+
+    .sgc-card-balance {
+      font-size: 14px;
+      color: var(--grey-700, #454f5b);
+    }
+
+    .sgc-card-balance strong {
+      color: var(--grey-900);
+    }
+
+    @media (max-width: 767px) {
+      .sgc-card-preview {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .sgc-card-img {
+        width: 100%;
+        height: 120px;
+      }
+    }
+
+    /* Form Styling */
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey-600);
+      margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      color: var(--grey-500);
+      font-size: 20px;
+    }
+
+    .input-suffix {
+      position: absolute;
+      right: 10px;
+      z-index: 2;
+      color: var(--primary-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 6px 8px;
+      border-radius: 8px;
+      transition: background 0.15s;
+    }
+
+    .input-suffix:hover {
+      background: rgba(0, 167, 111, 0.08);
+    }
+
+    .minimal-input {
+      width: 100%;
+      height: 52px;
+      padding: 0 14px 0 44px;
+      border: 1px solid var(--grey-300);
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s;
+      background: #fff;
+    }
+
+    .minimal-input:focus {
+      border-color: var(--grey-900);
+      box-shadow: 0 0 0 2px rgba(22, 28, 36, 0.05);
+    }
+
+    .btn-submit {
+      width: 100%;
+      height: 52px;
+      background: var(--primary-main);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 8px 16px 0 rgba(0, 167, 111, 0.24);
+    }
+
+    .btn-submit:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+  </style>
 </head>
 
 <body>
@@ -605,13 +755,17 @@
   </header>
 
   <main class="main">
-    <div class="page-header">
+
+    <!-- Page Header -->
+    <div class="page-header page-header--between">
       <h1 class="page-title">My Cards</h1>
-      <div class="breadcrumbs">
-        <a href="#">Management</a>
-        <span class="breadcrumbs-dot"></span>
-        <span style="color: var(--grey-900); font-weight: 500">My Cards</span>
-      </div>
+      <button class="btn-desktop" onclick="openModal('modal-add-card')">
+        <i data-lucide="plus" style="width:20px;height:20px;"></i>
+        Add Card
+      </button>
+      <button class="btn-mobile" onclick="openModal('modal-add-card')">
+        <i data-lucide="plus" style="width:20px;height:20px;"></i>
+      </button>
     </div>
 
     <div class="card">
@@ -1073,6 +1227,47 @@
     </div>
   </main>
 
+
+
+
+  <div id="modal-add-card" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">Enter Card Details</span>
+        <div class="close-btn" onclick="closeModal('modal-add-card')">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </div>
+      </div>
+
+      <!-- Step 1: Card Number -->
+      <div class="modal-body" id="ecd-step1">
+        <div class="form-group" style="margin-bottom:28px">
+          <label class="form-label sgc-label">
+            Card Number <span style="color:#ff5630">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input type="text" class="minimal-input sgc-qr-input" id="ecdCardInput"
+              placeholder="Enter card number or scan..." oninput="ecdClearError()" />
+            <div class="input-suffix" onclick="ecdSimulateScan()" title="Scan QR">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-main)">
+                <path
+                  d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" />
+                <rect x="7" y="7" width="3" height="3" rx="0.5" />
+                <rect x="14" y="7" width="3" height="3" rx="0.5" />
+                <rect x="7" y="14" width="3" height="3" rx="0.5" />
+                <path d="M14 14h1M14 17h1M17 14h1M17 17h1" />
+              </svg>
+            </div>
+          </div>
+          <div id="ecdCardError" class="sgc-error" style="display:none">Please enter a card number</div>
+        </div>
+        <button class="btn-submit" onclick="ecdContinue()">Continue</button>
+      </div>
+
+
+    </div>
+  </div>
   <script>
     var TAB_PARAM = { 'crypto-card': 'crypto', 'membership-package': 'membership-package' };
     var PARAM_TAB = { 'crypto': 'crypto-card', 'membership-package': 'membership-package' };
@@ -1208,7 +1403,18 @@
       // Placeholder for future filter logic
       closeMembershipMobileFilter();
     }
+
+    function closeModal(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    }
+
+    function openModal(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = 'flex';
+    }
   </script>
+
 </body>
 
 </html>

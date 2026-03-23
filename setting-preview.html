@@ -5,7 +5,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Setting Image Preview</title>
+
+  <!-- Bootstrap 5 (CSS) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
+    :root {
+      --bg-soft: #eef2f7;
+      --card-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+      --primary: #3366ff;
+      --primary-soft: #edf2ff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border-soft: #e5e7eb;
+    }
+
     html,
     body {
       height: 100%;
@@ -16,8 +30,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #f5f6f8;
-      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #f8fbff 0%, var(--bg-soft) 45%, #e8edf5 100%);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px;
     }
 
     .container {
@@ -28,6 +43,9 @@
       align-items: center;
       justify-content: center;
       position: relative;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
     }
 
     img {
@@ -39,38 +57,686 @@
     .edit-email {
       position: absolute;
       top: 235px;
-      left: 208px;
+      left: 211px;
       display: flex;
-      width: 72px;
-      padding: 2px 4px;
+      padding: 4px 8px;
       justify-content: start;
       align-items: center;
-      gap: 3px;
-      border-radius: 8px;
-      background: #F2F5F7;
-      color: #36F;
-      font-family: 'Inter', sans-serif;
+      gap: 4px;
+      border-radius: 999px;
+      background: #F2F5F7 !important;
+      color: var(--primary);
       font-size: 11px;
-      font-style: normal;
       font-weight: 600;
       line-height: 130%;
-      /* 14.3px */
+      border: none;
+      /* border: 1px solid rgba(51, 102, 255, 0.18); */
+      outline: none;
+      cursor: pointer;
+      text-decoration: none;
+      /* box-shadow: 0 4px 16px rgba(51, 102, 255, 0.12); */
+      transition: all 0.2s ease;
+    }
+
+    .edit-email:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(51, 102, 255, 0.2);
+    }
+
+    .edit-email:focus-visible {
+      box-shadow: 0 0 0 0.25rem rgba(51, 102, 255, 0.2), 0 8px 20px rgba(51, 102, 255, 0.2);
+    }
+
+    .modal-content {
+      border: 1px solid var(--border-soft);
+      border-radius: 18px;
+      box-shadow: 0 24px 60px rgba(17, 24, 39, 0.16);
+      overflow: hidden;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+
+    .modal-header {
+      border-bottom: 1px solid #f1f5f9;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .modal-body p {
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .current-email {
+      margin-bottom: 1rem;
+      padding: 0.75rem 0.85rem;
+      border-radius: 10px;
+      background: #f8fafd;
+      border: 1px solid #e6ebf2;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+
+    .current-email-value {
+      margin: 0.3rem 0 0;
+      color: var(--text-main);
+      font-weight: 500;
+      word-break: break-word;
+    }
+
+    .payment-method-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .available-balance {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .available-balance strong {
+      color: #0f766e;
+      font-weight: 700;
+    }
+
+    .payment-dropdown-toggle {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border-soft);
+      padding: 0.65rem 0.8rem;
+      background: #fff;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .payment-dropdown-toggle:hover,
+    .payment-dropdown-toggle:focus,
+    .payment-dropdown-toggle:active {
+      border-color: rgba(51, 102, 255, 0.55);
+      box-shadow: 0 0 0 0.25rem rgba(51, 102, 255, 0.14);
+      background: #fff !important;
+      color: var(--text-main) !important;
+    }
+
+    .payment-selected {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+
+    .payment-menu {
+      width: 100%;
+      border-radius: 10px;
+      border-color: var(--border-soft);
+      overflow: hidden;
+      padding: 0.25rem;
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 8px;
+      padding: 0.55rem 0.65rem;
+    }
+
+    .payment-option-value {
+      margin-left: auto;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .payment-option-value strong {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    .fee-box {
+      margin-top: 1rem;
+      border: 1px solid var(--border-soft);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      background: #fcfdff;
+    }
+
+    .fee-box-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.35rem;
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .fee-box-amount {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    .fee-box-note {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .form-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      text-transform: capitalize;
+    }
+
+    .form-control {
+      border-radius: 10px;
+      border-color: var(--border-soft);
+      padding: 0.65rem 0.8rem;
+    }
+
+    .form-control:focus {
+      border-color: rgba(51, 102, 255, 0.55);
+      box-shadow: 0 0 0 0.25rem rgba(51, 102, 255, 0.14);
+    }
+
+    .invalid-feedback {
+      font-size: 0.82rem;
+      margin-top: 0.4rem;
+    }
+
+    .modal-footer {
+      border-top: 1px solid #f1f5f9;
+      padding-top: 0.9rem;
+      padding-bottom: 1rem;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .btn {
+      border-radius: 10px;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+    }
+
+    .btn-outline-secondary {
+      border-color: #d1d5db;
+      color: #4b5563;
+    }
+
+    .btn-outline-secondary:hover {
+      background: #f9fafb;
+      border-color: #c7cdd8;
+      color: #374151;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: #2954db;
+      border-color: #2954db;
+    }
+
+    .verify-email-text {
+      color: var(--text-main);
+      font-weight: 500;
+      word-break: break-word;
+      margin-bottom: 1rem;
+    }
+
+    .otp-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .otp-input {
+      width: 44px;
+      height: 44px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: 1px solid var(--border-soft);
+      border-radius: 10px;
+      color: var(--text-main);
+    }
+
+    .otp-input:focus {
+      border-color: rgba(51, 102, 255, 0.55);
+      box-shadow: 0 0 0 0.2rem rgba(51, 102, 255, 0.12);
+      outline: none;
+    }
+
+    .resend-code-btn {
+      padding: 0;
+      border: none;
+      background: none;
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .resend-code-btn:disabled {
+      color: #9ca3af;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .resend-countdown {
+      margin-left: 0.4rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    #verifyEmailModal .modal-body {
+      text-align: center;
+    }
+
+    #verifyEmailModal .form-label {
+      display: block;
+      text-align: center;
+    }
+
+    #verifyEmailModal .otp-row {
+      justify-content: center;
+    }
+
+    #verifyEmailModal .modal-footer {
+      justify-content: center;
+    }
+
+    .success-modal-body {
+      text-align: center;
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+
+    .success-check {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1rem;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ecfdf3;
+      color: #16a34a;
+      border: 1px solid #bbf7d0;
+    }
+
+    .success-title {
+      color: var(--text-main);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .success-description {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .success-email {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .success-footer {
+      justify-content: center;
+      border-top: none;
+      padding-top: 0;
+      padding-bottom: 1.5rem;
+    }
+
+    .payment-method-icon {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <div class="btn edit-email">
+    <button type="button" class="edit-email" data-bs-toggle="modal" data-bs-target="#changeEmailModal">
       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
         <path
           d="M9.535 6.94L6.5 9.97V11H7.53L10.56 7.965M11.35 6.79L10.71 6.15C10.6859 6.12351 10.6566 6.10228 10.6239 6.08766C10.5912 6.07303 10.5558 6.06532 10.52 6.065C10.445 6.07 10.375 6.095 10.325 6.15L9.825 6.65L10.85 7.65L11.35 7.15C11.445 7.05 11.445 6.89 11.35 6.79ZM5.5 9H2V4L6 6.5L10 4V5H11V3C11 2.45 10.55 2 10 2H2C1.45 2 1 2.45 1 3V9C1 9.55 1.45 10 2 10H5.5V9ZM10 3L6 5.5L2 3H10Z"
           fill="#3366FF" />
       </svg>
       <span>Change</span>
-    </div>
+    </button>
     <img src="images/setting.png" alt="Settings screen preview">
   </div>
+
+  <div class="modal fade" id="changeEmailModal" tabindex="-1" aria-labelledby="changeEmailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="changeEmailModalLabel">Change Email</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-3">Update the email address linked to your account.</p>
+
+          <div class="current-email">
+            <label class="form-label mb-0">Current email</label>
+            <p class="current-email-value">oldemail@example.com</p>
+          </div>
+
+          <label for="newEmailAddress" class="form-label">New email</label>
+          <input type="email" class="form-control" id="newEmailAddress" placeholder="yournewemail@example.com">
+          <div id="emailError" class="invalid-feedback"></div>
+
+          <div class="payment-method-row">
+            <label for="paymentMethod" class="form-label mb-0">Payment method</label>
+            <span class="available-balance">Value: <strong>$250</strong></span>
+          </div>
+          <div class="dropdown">
+            <button class="btn payment-dropdown-toggle dropdown-toggle" type="button" id="paymentMethodDropdown"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="payment-selected" id="selectedPaymentDisplay">
+                <img src="images/usdt.png" alt="USDT" class="payment-method-icon">
+                <span>USDT</span>
+              </span>
+            </button>
+            <ul class="dropdown-menu payment-menu" aria-labelledby="paymentMethodDropdown">
+              <li>
+                <button type="button" class="dropdown-item payment-option" data-value="USDT"
+                  data-icon="images/usdt.png">
+                  <img src="images/usdt.png" alt="USDT" class="payment-method-icon">
+                  <span>USDT</span>
+                  <span class="payment-option-value">Value: <strong>$250</strong></span>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item payment-option" data-value="USD" data-icon="images/usd.png">
+                  <img src="images/usd.png" alt="USD" class="payment-method-icon">
+                  <span>USD</span>
+                  <span class="payment-option-value">Value: <strong>$180</strong></span>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item payment-option" data-value="BTC" data-icon="images/btc.png">
+                  <img src="images/btc.png" alt="BTC" class="payment-method-icon">
+                  <span>BTC</span>
+                  <span class="payment-option-value">Value: <strong>$95</strong></span>
+                </button>
+              </li>
+              <li>
+                <button type="button" class="dropdown-item payment-option" data-value="ETH" data-icon="images/eth.png">
+                  <img src="images/eth.png" alt="ETH" class="payment-method-icon">
+                  <span>ETH</span>
+                  <span class="payment-option-value">Value: <strong>$120</strong></span>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <input type="hidden" id="paymentMethod" value="USDT">
+
+          <div class="fee-box">
+            <div class="fee-box-head">
+              <span>Change Fee</span>
+              <span class="fee-box-amount">$12.99</span>
+            </div>
+            <p class="fee-box-note">A one-time fee is required to change your email.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="continueBtn">Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="verifyEmailModal" tabindex="-1" aria-labelledby="verifyEmailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="verifyEmailModalLabel">Verify Your New Email</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-2">We sent a verification code to</p>
+          <p class="verify-email-text" id="verifyEmailText">yournewemail@example.com</p>
+
+          <label class="form-label">Verification code</label>
+          <div class="otp-row">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+            <input type="text" class="otp-input" maxlength="1" inputmode="numeric">
+          </div>
+
+          <button type="button" class="resend-code-btn" id="resendCodeBtn" disabled>Resend code</button>
+          <span class="resend-countdown" id="resendCountdown">15s</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" id="backToChangeEmailBtn">Back</button>
+          <button type="button" class="btn btn-primary" id="verifyBtn">Verify</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title visually-hidden" id="successModalLabel">Email Updated Successfully</h5>
+          <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body success-modal-body">
+          <div class="success-check" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 16 16" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 10-1.06-1.06L7.25 8.69 5.78 7.22a.75.75 0 10-1.06 1.06l2 2a.75.75 0 001.06 0l4-4z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <h3 class="success-title">Email Updated Successfully</h3>
+          <p class="success-description">
+            Your email has been updated to<br>
+            <span class="success-email" id="successEmailText">yournewemail@example.com</span>
+          </p>
+        </div>
+        <div class="modal-footer success-footer">
+          <button type="button" class="btn btn-primary" id="backToSettingsBtn">Back to Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 (JS) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const existingEmails = {
+      "oldemail@example.com": true,
+      "admin@merchant.com": true,
+      "support@vlinkgroup.com": true,
+      "payment.team@merchant.com": true
+    };
+
+    const changeEmailModalEl = document.getElementById("changeEmailModal");
+    const verifyEmailModalEl = document.getElementById("verifyEmailModal");
+    const successModalEl = document.getElementById("successModal");
+    const newEmailInput = document.getElementById("newEmailAddress");
+    const emailError = document.getElementById("emailError");
+    const continueBtn = document.getElementById("continueBtn");
+    const verifyEmailText = document.getElementById("verifyEmailText");
+    const backToChangeEmailBtn = document.getElementById("backToChangeEmailBtn");
+    const verifyBtn = document.getElementById("verifyBtn");
+    const successEmailText = document.getElementById("successEmailText");
+    const backToSettingsBtn = document.getElementById("backToSettingsBtn");
+    const selectedPaymentDisplay = document.getElementById("selectedPaymentDisplay");
+    const paymentMethodInput = document.getElementById("paymentMethod");
+    const paymentOptions = document.querySelectorAll(".payment-option");
+    const resendCodeBtn = document.getElementById("resendCodeBtn");
+    const resendCountdown = document.getElementById("resendCountdown");
+    const otpInputs = document.querySelectorAll(".otp-input");
+
+    const changeEmailModal = new bootstrap.Modal(changeEmailModalEl);
+    const verifyEmailModal = new bootstrap.Modal(verifyEmailModalEl);
+    const successModal = new bootstrap.Modal(successModalEl);
+    let resendSeconds = 15;
+    let resendIntervalId = null;
+
+    function isValidEmailFormat(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function validateEmailInput() {
+      const rawValue = newEmailInput.value;
+      const email = rawValue.trim().toLowerCase();
+
+      newEmailInput.classList.remove("is-invalid", "is-valid");
+      emailError.textContent = "";
+
+      if (!email) {
+        return;
+      }
+
+      if (!isValidEmailFormat(email)) {
+        newEmailInput.classList.add("is-invalid");
+        emailError.textContent = "Invalid email format.";
+        return;
+      }
+
+      if (existingEmails[email]) {
+        newEmailInput.classList.add("is-invalid");
+        emailError.textContent = "This email already exists. Please use another one.";
+        return;
+      }
+
+      newEmailInput.classList.add("is-valid");
+      return true;
+    }
+
+    function stopResendCountdown() {
+      if (resendIntervalId) {
+        clearInterval(resendIntervalId);
+        resendIntervalId = null;
+      }
+    }
+
+    function startResendCountdown() {
+      stopResendCountdown();
+      resendSeconds = 15;
+      resendCodeBtn.disabled = true;
+      resendCountdown.textContent = `${resendSeconds}s`;
+      resendCountdown.style.display = "inline";
+
+      resendIntervalId = setInterval(function () {
+        resendSeconds -= 1;
+
+        if (resendSeconds <= 0) {
+          stopResendCountdown();
+          resendCodeBtn.disabled = false;
+          resendCountdown.style.display = "none";
+          return;
+        }
+
+        resendCountdown.textContent = `${resendSeconds}s`;
+      }, 1000);
+    }
+
+    continueBtn.addEventListener("click", function () {
+      const isValid = validateEmailInput();
+      if (!isValid) {
+        return;
+      }
+
+      verifyEmailText.textContent = newEmailInput.value.trim();
+      changeEmailModal.hide();
+      verifyEmailModal.show();
+      startResendCountdown();
+      otpInputs[0].focus();
+    });
+
+    backToChangeEmailBtn.addEventListener("click", function () {
+      verifyEmailModal.hide();
+      changeEmailModal.show();
+      newEmailInput.focus();
+    });
+
+    verifyBtn.addEventListener("click", function () {
+      const updatedEmail = newEmailInput.value.trim() || "yournewemail@example.com";
+      successEmailText.textContent = updatedEmail;
+      stopResendCountdown();
+      verifyEmailModal.hide();
+      successModal.show();
+    });
+
+    backToSettingsBtn.addEventListener("click", function () {
+      successModal.hide();
+      otpInputs.forEach((input) => {
+        input.value = "";
+      });
+    });
+
+    resendCodeBtn.addEventListener("click", function () {
+      // Mock resend action; restart cooldown after requesting a new code.
+      startResendCountdown();
+      otpInputs.forEach((input) => {
+        input.value = "";
+      });
+      otpInputs[0].focus();
+    });
+
+    paymentOptions.forEach((option) => {
+      option.addEventListener("click", function () {
+        const value = option.dataset.value;
+        const icon = option.dataset.icon;
+
+        selectedPaymentDisplay.innerHTML = `
+          <img src="${icon}" alt="${value}" class="payment-method-icon">
+          <span>${value}</span>
+        `;
+        paymentMethodInput.value = value;
+      });
+    });
+
+    otpInputs.forEach((input, index) => {
+      input.addEventListener("input", function () {
+        input.value = input.value.replace(/\D/g, "").slice(0, 1);
+        if (input.value && index < otpInputs.length - 1) {
+          otpInputs[index + 1].focus();
+        }
+      });
+
+      input.addEventListener("keydown", function (event) {
+        if (event.key === "Backspace" && !input.value && index > 0) {
+          otpInputs[index - 1].focus();
+        }
+      });
+    });
+
+    newEmailInput.addEventListener("input", validateEmailInput);
+    newEmailInput.addEventListener("blur", validateEmailInput);
+  </script>
 </body>
 
 </html>

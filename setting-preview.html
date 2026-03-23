@@ -413,6 +413,161 @@
       height: 20px;
       object-fit: contain;
     }
+
+    .swal-container-popup {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .swal-container-popup .swal2-image {
+      margin-bottom: 0 !important;
+    }
+
+    .swal-container-popup.text-start .swal2-title,
+    .swal-container-popup.text-start .swal2-html-container {
+      text-align: left;
+    }
+
+    .swal-container-popup.text-start .swal2-html-container {
+      font-size: 14px;
+    }
+
+    .swal-container-popup .swal2-validation-message {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+      justify-content: start;
+      color: red;
+      font-size: 0.75em;
+    }
+
+    .swal-container-popup .swal2-validation-message::before {
+      display: none;
+    }
+
+    .swal-container-popup .swal2-title {
+      color: #212b36;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600 !important;
+      line-height: 150%;
+      letter-spacing: normal !important;
+      padding: 0;
+      margin: 0;
+    }
+
+    .swal-container-popup .swal2-popup {
+      display: flex;
+      padding: 20px 16px 16px 16px;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      border-radius: 16px;
+      background: #fff;
+      color: #212b36;
+      text-align: center;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%;
+    }
+
+    .swal-container-popup .swal2-icon {
+      margin: 0 auto;
+    }
+
+    .swal-container-popup .swal2-html-container {
+      padding: 0;
+      font-size: 14px;
+      line-height: 150%;
+      margin: 0;
+    }
+
+    .swal-container-popup .swal2-actions {
+      margin-top: 0;
+    }
+
+    .swal-container-popup .swal2-cancel {
+      display: flex;
+      padding: 7px 16px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      border: 1px solid rgba(145, 158, 171, 0.32) !important;
+      background: #fff !important;
+      color: #212b36 !important;
+      text-align: center;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 140%;
+      transition: all 0.1s;
+    }
+
+    .swal-container-popup .swal2-confirm.btn-primary {
+      display: flex;
+      padding: 7px 16px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      border: 0 solid #274ec6 !important;
+      background: #36f !important;
+      color: #fff !important;
+      text-align: center;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 140%;
+      transition: all 0.1s;
+    }
+
+    .swal-container-popup .swal2-confirm.btn-danger {
+      display: flex;
+      padding: 7px 16px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      border: 1px solid #c03733 !important;
+      background: #ff4842 !important;
+      color: #fff !important;
+      text-align: center;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 140%;
+      transition: all 0.1s;
+    }
+
+    .swal-container-popup .swal2-close {
+      top: 5px;
+      right: 5px;
+      color: #555;
+      font-size: 1.5em;
+      background: #f2f2f2;
+      border-radius: 8px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .swal-container-popup.text-start .swal2-html-container {
+        font-size: 12px;
+      }
+
+      .swal-container-popup .swal2-title {
+        font-size: 14px;
+      }
+
+      .swal-container-popup .swal2-popup {
+        font-size: 12px;
+        padding: 16px 12px 12px 12px;
+      }
+
+      .swal-container-popup .swal2-html-container {
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 
@@ -570,6 +725,7 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Bootstrap 5 (JS) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
@@ -664,6 +820,23 @@
     }
 
     continueBtn.addEventListener("click", function () {
+      const rawEmail = newEmailInput.value.trim();
+      if (!rawEmail) {
+        Swal.fire({
+          icon: "warning",
+          title: "Email required",
+          text: "Please enter your new email address before continuing.",
+          confirmButtonText: "OK",
+          customClass: {
+            container: "swal-container-popup",
+            confirmButton: "btn-primary"
+          },
+          buttonsStyling: false
+        });
+        newEmailInput.focus();
+        return;
+      }
+
       const isValid = validateEmailInput();
       if (!isValid) {
         return;

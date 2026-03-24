@@ -718,6 +718,25 @@
       background: var(--primary-dark);
       transform: translateY(-1px);
     }
+
+    .btn-desktop {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+
+      @media (max-width: 768px) {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+      }
+    }
+
+    .btn-add-card-label {
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
   </style>
 </head>
 
@@ -759,12 +778,9 @@
     <!-- Page Header -->
     <div class="page-header page-header--between">
       <h1 class="page-title">My Cards</h1>
-      <button class="btn-desktop" onclick="openModal('modal-add-card')">
+      <button class="btn-desktop btn-add-card" onclick="openModal('modal-add-card')">
         <i data-lucide="plus" style="width:20px;height:20px;"></i>
-        Add Card
-      </button>
-      <button class="btn-mobile" onclick="openModal('modal-add-card')">
-        <i data-lucide="plus" style="width:20px;height:20px;"></i>
+        <span class="btn-add-card-label">Add Card</span>
       </button>
     </div>
 

@@ -1412,7 +1412,21 @@
     function openModal(id) {
       var el = document.getElementById(id);
       if (el) el.style.display = 'flex';
+      renderLucideIcons();
     }
+
+    function renderLucideIcons() {
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      renderLucideIcons();
+    });
+
+    window.addEventListener('load', renderLucideIcons);
+    renderLucideIcons();
   </script>
 
 </body>

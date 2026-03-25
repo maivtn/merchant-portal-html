@@ -930,6 +930,7 @@
         display: none;
       }
     }
+
   </style>
 </head>
 
@@ -1059,6 +1060,43 @@
           </div>
         </div>
 
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap: Add Card -->
+  <div class="modal fade mcv2-bs-modal" id="modal-add-card" tabindex="-1" aria-labelledby="modalAddCardLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5 fw-bold mb-0" id="modalAddCardLabel">Add Card</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="ecd-step1">
+          <div class="form-group" style="margin-bottom:28px">
+            <label class="form-label sgc-label" for="ecdCardInput">
+              Card Number <span style="color:#ff5630">*</span>
+            </label>
+            <div class="input-wrapper">
+              <input type="text" class="minimal-input sgc-qr-input" id="ecdCardInput"
+                placeholder="Enter card number or scan..." oninput="ecdClearError()" autocomplete="off" />
+              <div class="input-suffix" onclick="ecdSimulateScan()" title="Scan QR" role="button" tabindex="0">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-main)">
+                  <path
+                    d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" />
+                  <rect x="7" y="7" width="3" height="3" rx="0.5" />
+                  <rect x="14" y="7" width="3" height="3" rx="0.5" />
+                  <rect x="7" y="14" width="3" height="3" rx="0.5" />
+                  <path d="M14 14h1M14 17h1M17 14h1M17 17h1" />
+                </svg>
+              </div>
+            </div>
+            <div id="ecdCardError" class="sgc-error" style="display:none">Please enter a card number</div>
+          </div>
+          <button type="button" class="btn-submit" onclick="ecdContinue()">Add</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1672,6 +1710,53 @@
       return bootstrap.Modal.getInstance(el) || new bootstrap.Modal(el);
     }
 
+    function getAddCardModal() {
+      var el = document.getElementById('modal-add-card');
+      if (!el || typeof bootstrap === 'undefined') return null;
+      return bootstrap.Modal.getInstance(el) || new bootstrap.Modal(el);
+    }
+
+    function openAddCardModal() {
+      mcv2ResetAddCardModal();
+      var m = getAddCardModal();
+      if (m) m.show();
+      renderLucideIcons();
+    }
+
+    function mcv2ResetAddCardModal() {
+      var input = document.getElementById('ecdCardInput');
+      if (input) input.value = '';
+      var err = document.getElementById('ecdCardError');
+      if (err) err.style.display = 'none';
+    }
+
+    function ecdClearError() {
+      var err = document.getElementById('ecdCardError');
+      if (err) err.style.display = 'none';
+    }
+
+    function ecdSimulateScan() {
+      var num = '';
+      for (var i = 0; i < 16; i++) {
+        num += String(Math.floor(Math.random() * 10));
+      }
+      var input = document.getElementById('ecdCardInput');
+      if (input) input.value = num;
+      ecdClearError();
+    }
+
+    function ecdContinue() {
+      var input = document.getElementById('ecdCardInput');
+      var card = input ? input.value.trim() : '';
+      if (!card) {
+        var err = document.getElementById('ecdCardError');
+        if (err) err.style.display = 'block';
+        return;
+      }
+      var m = getAddCardModal();
+      if (m) m.hide();
+    }
+
     function bindSelectCardTypeModal() {
       document.querySelectorAll('[data-mcv2-card-type]').forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -1687,10 +1772,27 @@
             if (modal) modal.hide();
             return;
           }
+          if (t === 'vlinkpay') {
+            function onVlinkHidden() {
+              modalEl.removeEventListener('hidden.bs.modal', onVlinkHidden);
+              myCardsV2SelectPlatform(0);
+              openAddCardModal();
+            }
+            if (modalEl) modalEl.addEventListener('hidden.bs.modal', onVlinkHidden);
+            if (modal) modal.hide();
+            return;
+          }
           if (modal) modal.hide();
-          if (t === 'vlinkpay') myCardsV2SelectPlatform(0);
-          else if (t === 'store') myCardsV2SelectPlatform(1);
+          if (t === 'store') myCardsV2SelectPlatform(1);
         });
+      });
+    }
+
+    function bindAddCardModalReset() {
+      var el = document.getElementById('modal-add-card');
+      if (!el) return;
+      el.addEventListener('hidden.bs.modal', function () {
+        mcv2ResetAddCardModal();
       });
     }
 
@@ -1709,6 +1811,7 @@
       myCardsV2BindProductTabs();
       myCardsV2UpdateUrl();
       bindSelectCardTypeModal();
+      bindAddCardModalReset();
       renderLucideIcons();
     });
 

@@ -11,10 +11,10 @@
     rel="stylesheet" />
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   <script>window.SIDEBAR_USE_CARDS_MENU = true;</script>
-  <script src="global.js" defer></script>
-  <link rel="stylesheet" href="global.css" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <script src="global.js" defer></script>
+  <link rel="stylesheet" href="global.css" />
   <style>
     .sa-page {
       --sa-primary: var(--primary-main);
@@ -25,6 +25,18 @@
       --sa-line: rgba(145, 158, 171, 0.18);
       padding: 0 !important;
 
+    }
+
+    .btn-primary {
+      background: #00a76f;
+    }
+
+    .btn-primary:hover {
+      background: #007a56;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
     }
 
     .sa-header {
@@ -232,6 +244,7 @@
 
     .sa-drop {
       position: relative;
+      overflow: hidden;
       border-radius: 14px;
       padding: 22px 18px;
       width: 100%;
@@ -250,6 +263,19 @@
       border-color: rgba(0, 167, 111, 0.45);
       background: var(--sa-primary-soft);
       box-shadow: inset 0 0 0 1px rgba(0, 167, 111, 0.06);
+    }
+
+    .sa-drop.is-processing {
+      border-color: rgba(0, 167, 111, 0.6);
+      background: rgba(0, 167, 111, 0.05);
+      box-shadow: inset 0 0 0 1px rgba(0, 167, 111, 0.12);
+    }
+
+    .sa-drop.has-preview {
+      justify-content: flex-end;
+      align-items: stretch;
+      text-align: left;
+      padding: 12px;
     }
 
     .sa-drop-icon {
@@ -272,11 +298,108 @@
       margin: 0 0 14px;
     }
 
+    .sa-drop-preview {
+      display: none;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .sa-drop.has-preview .sa-drop-preview {
+      display: block;
+    }
+
+    .sa-drop-overlay {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sa-drop.has-preview .sa-drop-overlay {
+      margin-top: auto;
+      align-items: stretch;
+      padding: 10px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(18, 18, 18, 0.04) 0%, rgba(18, 18, 18, 0.74) 100%);
+      color: #fff;
+    }
+
+    .sa-drop.has-preview h3,
+    .sa-drop.has-preview .sa-drop-hint,
+    .sa-drop.has-preview .sa-drop-status {
+      color: #fff;
+    }
+
     .sa-drop-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       justify-content: center;
+    }
+
+    .sa-drop-hint,
+    .sa-drop-status {
+      margin-top: 10px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--grey-500);
+    }
+
+    .sa-drop-status {
+      min-height: 18px;
+      font-weight: 600;
+    }
+
+    .sa-drop-status[data-state="error"] {
+      color: #d14343;
+    }
+
+    .sa-drop-status[data-state="success"] {
+      color: var(--primary-main);
+    }
+
+    .sa-drop.has-preview .sa-btn-ghost {
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .sa-drop.has-preview .sa-drop-status[data-state="success"] {
+      color: #b6ffd7;
+    }
+
+    .sa-drop-input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 1px;
+      height: 1px;
+    }
+
+    .sa-ocr-summary {
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      margin-top: 14px;
+      border-radius: 12px;
+      background: rgba(0, 167, 111, 0.06);
+      border: 1px solid rgba(0, 167, 111, 0.14);
+      color: var(--grey-700);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .sa-ocr-summary.is-visible {
+      display: flex;
+    }
+
+    .sa-ocr-summary iconify-icon {
+      flex-shrink: 0;
+      color: var(--primary-main);
+      margin-top: 1px;
     }
 
     .sa-btn-ghost {
@@ -798,35 +921,56 @@
             Card photos
           </div>
           <div class="sa-upload-grid">
-            <div class="sa-drop">
-
-              <h3>Front of card</h3>
-              <div class="sa-drop-actions">
-                <button type="button" class="sa-btn-ghost">
-                  <iconify-icon icon="lucide:upload" width="16" height="16"></iconify-icon>
-                  Upload
-                </button>
-                <button type="button" class="sa-btn-ghost">
-                  <iconify-icon icon="lucide:camera" width="16" height="16"></iconify-icon>
-                  Camera
-                </button>
+            <div class="sa-drop" data-side="front">
+              <input type="file" class="sa-drop-input" id="saFrontUpload" accept="image/*" />
+              <input type="file" class="sa-drop-input" id="saFrontCamera" accept="image/*" capture="environment" />
+              <img class="sa-drop-preview" id="saFrontPreview" alt="Front card preview" />
+              <div class="sa-drop-overlay">
+                <div class="sa-drop-icon">
+                  <iconify-icon icon="lucide:image-plus" width="22" height="22"></iconify-icon>
+                </div>
+                <h3>Front of card</h3>
+                <div class="sa-drop-actions">
+                  <button type="button" class="sa-btn-ghost" data-trigger="saFrontUpload">
+                    <iconify-icon icon="lucide:upload" width="16" height="16"></iconify-icon>
+                    Upload
+                  </button>
+                  <button type="button" class="sa-btn-ghost" data-trigger="saFrontCamera">
+                    <iconify-icon icon="lucide:camera" width="16" height="16"></iconify-icon>
+                    Camera
+                  </button>
+                </div>
+                <div class="sa-drop-hint">PNG, JPG, WEBP. Text will be extracted to help fill the form.</div>
+                <div class="sa-drop-status" id="saFrontStatus" aria-live="polite"></div>
               </div>
             </div>
-            <div class="sa-drop">
-
-              <h3>Back of card</h3>
-              <div class="sa-drop-actions">
-                <button type="button" class="sa-btn-ghost">
-                  <iconify-icon icon="lucide:upload" width="16" height="16"></iconify-icon>
-                  Upload
-                </button>
-                <button type="button" class="sa-btn-ghost">
-                  <iconify-icon icon="lucide:camera" width="16" height="16"></iconify-icon>
-                  Camera
-                </button>
-
+            <div class="sa-drop" data-side="back">
+              <input type="file" class="sa-drop-input" id="saBackUpload" accept="image/*" />
+              <input type="file" class="sa-drop-input" id="saBackCamera" accept="image/*" capture="environment" />
+              <img class="sa-drop-preview" id="saBackPreview" alt="Back card preview" />
+              <div class="sa-drop-overlay">
+                <div class="sa-drop-icon">
+                  <iconify-icon icon="lucide:scan-search" width="22" height="22"></iconify-icon>
+                </div>
+                <h3>Back of card</h3>
+                <div class="sa-drop-actions">
+                  <button type="button" class="sa-btn-ghost" data-trigger="saBackUpload">
+                    <iconify-icon icon="lucide:upload" width="16" height="16"></iconify-icon>
+                    Upload
+                  </button>
+                  <button type="button" class="sa-btn-ghost" data-trigger="saBackCamera">
+                    <iconify-icon icon="lucide:camera" width="16" height="16"></iconify-icon>
+                    Camera
+                  </button>
+                </div>
+                <div class="sa-drop-hint">Use the back image if PIN, barcode, or expiry is printed there.</div>
+                <div class="sa-drop-status" id="saBackStatus" aria-live="polite"></div>
               </div>
             </div>
+          </div>
+          <div class="sa-ocr-summary" id="saOcrSummary" aria-live="polite">
+            <iconify-icon icon="lucide:sparkles" width="18" height="18"></iconify-icon>
+            <span id="saOcrSummaryText"></span>
           </div>
         </div>
 
@@ -922,8 +1066,367 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      var OCR_LANG = 'eng';
+      var ocrState = {
+        front: '',
+        back: ''
+      };
+      var fieldOwners = {};
+      var isAutofilling = false;
+
+      function normalizeWhitespace(text) {
+        return String(text || '').replace(/\s+/g, ' ').trim();
+      }
+
+      function normalizeDigits(text) {
+        return String(text || '').replace(/[^\d]/g, '');
+      }
+
+      function titleCaseWords(value) {
+        return String(value || '').replace(/\w\S*/g, function (word) {
+          return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        });
+      }
+
+      function slugify(value) {
+        return String(value || '')
+          .toLowerCase()
+          .replace(/&/g, ' and ')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '')
+          .replace(/-{2,}/g, '-');
+      }
+
+      function formatCardNumber(raw) {
+        var digits = normalizeDigits(raw).slice(0, 19);
+        return digits.replace(/(.{4})/g, '$1 ').trim();
+      }
+
+      function formatExpiryValue(raw) {
+        var value = normalizeWhitespace(raw);
+        if (!value) return '';
+        var slashMatch = value.match(/\b(0?[1-9]|1[0-2])\s*\/\s*(\d{2,4})\b/);
+        if (slashMatch) {
+          var mm = slashMatch[1].padStart(2, '0');
+          var yyyy = slashMatch[2].length === 2 ? ('20' + slashMatch[2]) : slashMatch[2];
+          return mm + '/' + yyyy;
+        }
+
+        var longMatch = value.match(/\b(?:jan|january|feb|february|mar|march|apr|april|may|jun|june|jul|july|aug|august|sep|sept|september|oct|october|nov|november|dec|december)\s+\d{1,2},?\s+\d{4}\b/i);
+        if (longMatch) return titleCaseWords(longMatch[0].replace(/\s+/g, ' '));
+        return value;
+      }
+
+      function setDropStatus(side, message, state) {
+        var statusEl = document.getElementById(side === 'front' ? 'saFrontStatus' : 'saBackStatus');
+        var dropEl = document.querySelector('.sa-drop[data-side="' + side + '"]');
+        if (!statusEl || !dropEl) return;
+        statusEl.textContent = message || '';
+        if (state) {
+          statusEl.setAttribute('data-state', state);
+        } else {
+          statusEl.removeAttribute('data-state');
+        }
+        dropEl.classList.toggle('is-processing', state === 'processing');
+      }
+
+      function showPreview(side, file) {
+        var previewEl = document.getElementById(side === 'front' ? 'saFrontPreview' : 'saBackPreview');
+        var dropEl = document.querySelector('.sa-drop[data-side="' + side + '"]');
+        if (!previewEl || !dropEl || !file) return;
+        previewEl.src = URL.createObjectURL(file);
+        dropEl.classList.add('has-preview');
+      }
+
+      function markUserOwned(input) {
+        if (!input) return;
+        function handler() {
+          if (isAutofilling) return;
+          fieldOwners[input.id] = 'user';
+        }
+        input.addEventListener('input', handler);
+        input.addEventListener('change', handler);
+      }
+
+      function updateSummary(message) {
+        var summary = document.getElementById('saOcrSummary');
+        var summaryText = document.getElementById('saOcrSummaryText');
+        if (!summary || !summaryText) return;
+        summaryText.textContent = message || '';
+        summary.classList.toggle('is-visible', !!message);
+      }
+
+      function setFieldValue(input, value, owner) {
+        if (!input || !value) return false;
+        if (fieldOwners[input.id] === 'user') return false;
+        isAutofilling = true;
+        input.value = value;
+        fieldOwners[input.id] = owner || 'ocr';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        isAutofilling = false;
+        return true;
+      }
+
+      function ensureMerchantOption(selectEl, merchant) {
+        if (!selectEl || !merchant || !merchant.label) return '';
+        var optionValue = merchant.value || slugify(merchant.label);
+        if (!optionValue) return '';
+
+        var existingOption = selectEl.querySelector('option[value="' + optionValue + '"]');
+        if (!existingOption) {
+          existingOption = document.createElement('option');
+          existingOption.value = optionValue;
+          existingOption.textContent = merchant.label;
+          existingOption.setAttribute('data-ocr-added', '1');
+          selectEl.appendChild(existingOption);
+        } else if (existingOption.textContent !== merchant.label) {
+          existingOption.textContent = merchant.label;
+        }
+
+        return optionValue;
+      }
+
+      function setSelectValue(selectEl, value, owner) {
+        if (!selectEl || !value) return false;
+        if (fieldOwners[selectEl.id] === 'user') return false;
+        var nextValue = value;
+        if (typeof value === 'object') {
+          nextValue = ensureMerchantOption(selectEl, value);
+        }
+        if (!nextValue) return false;
+        if (!selectEl.querySelector('option[value="' + nextValue + '"]')) return false;
+        isAutofilling = true;
+        selectEl.value = nextValue;
+        fieldOwners[selectEl.id] = owner || 'ocr';
+        selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+        isAutofilling = false;
+        return true;
+      }
+
+      function detectStoreValue(text) {
+        var source = String(text || '').toLowerCase();
+        var candidates = [
+          { value: 'amazon', label: 'Amazon', keywords: ['amazon'] },
+          { value: 'walmart', label: 'Walmart', keywords: ['walmart'] },
+          { value: 'starbucks', label: 'Starbucks', keywords: ['starbucks'] },
+          { value: 'target', label: 'Target', keywords: ['target'] },
+          { value: 'costco', label: 'Costco', keywords: ['costco'] },
+          { value: 'whole-foods', label: 'Whole Foods Market', keywords: ['whole foods', 'wholefoods'] }
+        ];
+
+        for (var i = 0; i < candidates.length; i += 1) {
+          for (var j = 0; j < candidates[i].keywords.length; j += 1) {
+            if (source.indexOf(candidates[i].keywords[j]) !== -1) {
+              return {
+                value: candidates[i].value,
+                label: candidates[i].label
+              };
+            }
+          }
+        }
+
+        var lines = String(text || '').split(/\r?\n/).map(function (line) {
+          return normalizeWhitespace(line);
+        }).filter(Boolean);
+
+        for (var k = 0; k < lines.length; k += 1) {
+          var candidate = lines[k]
+            .replace(/^(gift\s*card|card|merchant|store|for)\s*[:\-]?\s*/i, '')
+            .replace(/\b(balance|amount|value|pin|card number|account number|valid thru|expiry|exp)\b.*$/i, '')
+            .replace(/[^\w&' -]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+          if (!candidate) continue;
+          if (candidate.length < 3 || candidate.length > 40) continue;
+          if (/\d{3,}/.test(candidate)) continue;
+          if (/^(scan|upload|camera|front of card|back of card|manual entry|ocr)$/i.test(candidate)) continue;
+
+          return {
+            value: slugify(candidate),
+            label: titleCaseWords(candidate)
+          };
+        }
+        return null;
+      }
+
+      function extractFieldByLabel(text, labelRegex) {
+        var lines = String(text || '').split(/\r?\n/).map(function (line) {
+          return line.trim();
+        }).filter(Boolean);
+        for (var i = 0; i < lines.length; i += 1) {
+          var line = lines[i];
+          if (labelRegex.test(line)) {
+            var inline = line.replace(labelRegex, '').replace(/^[:\-\s]+/, '').trim();
+            if (inline) return inline;
+            if (lines[i + 1]) return lines[i + 1].trim();
+          }
+        }
+        return '';
+      }
+
+      function detectCardNumber(text) {
+        var preferred = extractFieldByLabel(text, /(card\s*(number|no\.?)|gift\s*card|account\s*(number|no\.?))/i);
+        var preferredDigits = normalizeDigits(preferred);
+        if (preferredDigits.length >= 8) return formatCardNumber(preferredDigits);
+
+        var candidates = String(text || '').match(/(?:\d[\s-]*){8,19}/g) || [];
+        var best = '';
+        for (var i = 0; i < candidates.length; i += 1) {
+          var digits = normalizeDigits(candidates[i]);
+          if (digits.length >= 8 && digits.length <= 19 && digits.length > best.length) {
+            best = digits;
+          }
+        }
+        return best ? formatCardNumber(best) : '';
+      }
+
+      function detectPin(text) {
+        var labeled = extractFieldByLabel(text, /\b(pin|security code|access code)\b/i);
+        var pin = normalizeDigits(labeled);
+        if (pin.length >= 3 && pin.length <= 8) return pin;
+
+        var match = String(text || '').match(/\b(?:pin|security code|access code)\D{0,10}(\d{3,8})\b/i);
+        return match ? match[1] : '';
+      }
+
+      function detectBalance(text) {
+        var labeled = extractFieldByLabel(text, /\b(balance|amount|value)\b/i);
+        var target = labeled || text;
+        var dollarMatch = String(target || '').match(/\$\s*(\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?|\d+(?:\.\d{1,2})?)/);
+        if (dollarMatch) return dollarMatch[1];
+
+        var labeledMatch = labeled ? String(labeled).match(/(\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?|\d+(?:\.\d{1,2})?)/) : null;
+        return labeledMatch ? labeledMatch[1] : '';
+      }
+
+      function detectExpiry(text) {
+        var labeled = extractFieldByLabel(text, /\b(exp(?:iry|iration)?|valid thru|valid until|expires?)\b/i);
+        var source = labeled || text;
+        var slashMatch = String(source || '').match(/\b(0?[1-9]|1[0-2])\s*\/\s*(\d{2,4})\b/);
+        if (slashMatch) return formatExpiryValue(slashMatch[0]);
+
+        var fullDateMatch = String(source || '').match(/\b(?:jan|january|feb|february|mar|march|apr|april|may|jun|june|jul|july|aug|august|sep|sept|september|oct|october|nov|november|dec|december)\s+\d{1,2},?\s+\d{4}\b/i);
+        return fullDateMatch ? formatExpiryValue(fullDateMatch[0]) : '';
+      }
+
+      function detectNotes(text) {
+        var lines = String(text || '').split(/\r?\n/).map(function (line) {
+          return normalizeWhitespace(line);
+        }).filter(Boolean);
+        for (var i = 0; i < lines.length; i += 1) {
+          var line = lines[i];
+          if (line.length >= 8 && !/\d{6,}/.test(line) && !/\b(balance|amount|pin|card|expiry|exp|valid)\b/i.test(line)) {
+            return line.slice(0, 80);
+          }
+        }
+        return '';
+      }
+
+      function inferFieldsFromOcr(text) {
+        return {
+          merchantStore: detectStoreValue(text),
+          cardNumber: detectCardNumber(text),
+          pin: detectPin(text),
+          balance: detectBalance(text),
+          notes: detectNotes(text),
+          expiry: detectExpiry(text)
+        };
+      }
+
+      function fillFieldsFromOcr(fields) {
+        var changed = [];
+        var cardType = document.getElementById('saCardType');
+        var cardNumber = document.getElementById('saCardNumber');
+        var pin = document.getElementById('saPin');
+        var balance = document.getElementById('saBalance');
+        var notes = document.getElementById('saNotes');
+        var expiry = document.getElementById('saExpiry');
+
+        if (setSelectValue(cardType, fields.merchantStore, 'ocr')) changed.push('card type');
+        if (setFieldValue(cardNumber, fields.cardNumber, 'ocr')) changed.push('card number');
+        if (setFieldValue(pin, fields.pin, 'ocr')) changed.push('PIN');
+        if (setFieldValue(balance, fields.balance, 'ocr')) changed.push('balance');
+        if (setFieldValue(notes, fields.notes, 'ocr')) changed.push('notes');
+        if (setFieldValue(expiry, fields.expiry, 'ocr')) changed.push('expiration date');
+
+        return changed;
+      }
+
+      function summarizeChanges(changedFields, fields) {
+        if (changedFields.length) {
+          return 'OCR filled: ' + changedFields.join(', ') + '. Review the values before saving.';
+        }
+
+        var detected = Object.keys(fields).filter(function (key) {
+          return !!fields[key];
+        });
+        if (detected.length) {
+          return 'OCR found text, but current inputs were kept because they were already edited manually.';
+        }
+        return 'OCR could not confidently map the text to form fields. You can still review the photo and enter details manually.';
+      }
+
+      function runOcrOnFile(file, side) {
+        if (!file || !window.Tesseract) {
+          setDropStatus(side, 'OCR library is unavailable.', 'error');
+          updateSummary('OCR library could not be loaded, so auto-fill is unavailable on this page.');
+          return;
+        }
+
+        setDropStatus(side, 'Reading image and extracting text...', 'processing');
+        Tesseract.recognize(file, OCR_LANG, {
+          logger: function (message) {
+            if (message && message.status === 'recognizing text' && typeof message.progress === 'number') {
+              setDropStatus(side, 'Scanning text... ' + Math.round(message.progress * 100) + '%', 'processing');
+            }
+          }
+        }).then(function (result) {
+          ocrState[side] = (result && result.data && result.data.text) || '';
+          var mergedText = [ocrState.front, ocrState.back].filter(Boolean).join('\n');
+          var fields = inferFieldsFromOcr(mergedText);
+          var changedFields = fillFieldsFromOcr(fields);
+          setDropStatus(side, 'Text extracted successfully.', 'success');
+          updateSummary(summarizeChanges(changedFields, fields));
+        }).catch(function () {
+          setDropStatus(side, 'Could not read text from this image.', 'error');
+          updateSummary('OCR could not extract usable text from the latest image. Try a clearer, brighter photo.');
+        });
+      }
+
+      function bindDropInput(inputId, side) {
+        var input = document.getElementById(inputId);
+        if (!input) return;
+        input.addEventListener('change', function (event) {
+          var file = event.target.files && event.target.files[0];
+          if (!file) return;
+          showPreview(side, file);
+          runOcrOnFile(file, side);
+          input.value = '';
+        });
+      }
+
+      Array.prototype.forEach.call(document.querySelectorAll('[data-trigger]'), function (button) {
+        button.addEventListener('click', function () {
+          var targetId = button.getAttribute('data-trigger');
+          var targetInput = document.getElementById(targetId);
+          if (targetInput) targetInput.click();
+        });
+      });
+
+      ['saCardType', 'saCardNumber', 'saPin', 'saBalance', 'saNotes', 'saExpiry'].forEach(function (id) {
+        markUserOwned(document.getElementById(id));
+      });
+
+      bindDropInput('saFrontUpload', 'front');
+      bindDropInput('saFrontCamera', 'front');
+      bindDropInput('saBackUpload', 'back');
+      bindDropInput('saBackCamera', 'back');
+
       var pinInp = document.getElementById('saPin');
       var pinToggle = document.getElementById('saPinToggle');
       var pinIcon = document.getElementById('saPinToggleIcon');

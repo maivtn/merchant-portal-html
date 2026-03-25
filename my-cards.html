@@ -930,7 +930,6 @@
         display: none;
       }
     }
-
   </style>
 </head>
 
@@ -1042,7 +1041,7 @@
               </span>
               <div class="flex-grow-1 min-w-0">
                 <p class="mcv2-type-option-title">Store-Issued</p>
-                <p class="mcv2-type-option-desc">Cards issued directly by a merchant at the store</p>
+                <p class="mcv2-type-option-desc">In-store cards from VLINKPAY partner merchants.</p>
               </div>
               <iconify-icon class="chev" icon="eva:chevron-right-fill" width="20"></iconify-icon>
             </button>
@@ -1102,6 +1101,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     var MY_CARDS_V2_CONFIG = {
       "platforms": [
@@ -1755,6 +1755,29 @@
       }
       var m = getAddCardModal();
       if (m) m.hide();
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Card added',
+          text: 'Your card has been added successfully.'
+        });
+      }
+    }
+
+    function mcv2NotifyCardAddedSuccessFromUrl() {
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('cardAdded') !== '1') return;
+      params.delete('cardAdded');
+      var qs = params.toString();
+      var newUrl = window.location.pathname + (qs ? '?' + qs : '') + window.location.hash;
+      history.replaceState({}, '', newUrl);
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Card added',
+          text: 'Your card has been added successfully.'
+        });
+      }
     }
 
     function bindSelectCardTypeModal() {
@@ -1804,6 +1827,7 @@
 
     document.addEventListener('DOMContentLoaded', function () {
       myCardsV2InitFromUrl();
+      mcv2NotifyCardAddedSuccessFromUrl();
       myCardsV2RenderPlatformTabs();
       myCardsV2RenderProductTabs();
       myCardsV2RenderActiveProductPane();

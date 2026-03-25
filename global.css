@@ -644,7 +644,7 @@ img.sidebar-logo {
 }
 .pagination-select {
   border: none;
-  background: transparent;
+  /* background: transparent; */
   padding: 4px;
   font-size: 14px;
   font-weight: 600;
@@ -752,26 +752,6 @@ img.sidebar-logo {
 }
 .field-input:focus ~ .field-chevron {
   color: var(--grey-900);
-}
-
-/* ── Pagination select (shared across all pages) ────── */
-.pag-select {
-  height: 32px;
-  border: 1px solid #dfe3e8;
-  border-radius: 6px;
-  font-size: 13px;
-  font-family: inherit;
-  color: #212b36;
-  padding: 0 28px 0 8px;
-  outline: none;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")
-    no-repeat right 10px center;
-}
-.pag-select:focus {
-  border-color: #212b36;
 }
 
 /* Generic select with custom chevron icon (for dropdowns with leading icons, etc.) */
@@ -1634,11 +1614,22 @@ td.col-actions .action-btns {
   font-size: 13px;
   font-family: inherit;
   color: var(--grey-800);
-  background: #fff;
+  /* background-color + image: không dùng shorthand background:#fff (sẽ xóa icon) */
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px 12px;
   cursor: pointer;
   outline: none;
   appearance: none;
   -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.pagination-select:focus,
+.pag-select:focus {
+  border-color: var(--grey-900, #212b36);
 }
 
 .pagination-select-chevron {
@@ -1774,6 +1765,8 @@ td.col-actions .action-btns {
     padding: 6px 20px 6px 6px;
     font-size: 12px;
     min-height: 32px;
+    background-position: right 6px center;
+    background-size: 10px 10px;
   }
   .pagination-select-chevron {
     right: 4px;

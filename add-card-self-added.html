@@ -1137,15 +1137,210 @@
       function formatExpiryValue(raw) {
         var value = normalizeWhitespace(raw);
         if (!value) return '';
-        var slashMatch = value.match(/\b(0?[1-9]|1[0-2])\s*\/\s*(\d{2,4})\b/);
-        if (slashMatch) {
-          var mm = slashMatch[1].padStart(2, '0');
-          var yyyy = slashMatch[2].length === 2 ? ('20' + slashMatch[2]) : slashMatch[2];
-          return mm + '/' + yyyy;
+
+        var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        function monthIndexFromName(maybeName) {
+          var s = String(maybeName || '').toLowerCase().replace(/\./g, '').trim();
+          if (!s) return null;
+          var key = s.slice(0, 3);
+          var map = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+          return typeof map[key] === 'number' ? map[key] : null;
         }
 
-        var longMatch = value.match(/\b(?:jan|january|feb|february|mar|march|apr|april|may|jun|june|jul|july|aug|august|sep|sept|september|oct|october|nov|november|dec|december)\s+\d{1,2},?\s+\d{4}\b/i);
-        if (longMatch) return titleCaseWords(longMatch[0].replace(/\s+/g, ' '));
+        function normalizeYear(rawYear) {
+          var s = String(rawYear || '').trim();
+          if (!s) return null;
+          var y = parseInt(s, 10);
+          if (isNaN(y)) return null;
+          if (s.length !== 2) return y;
+
+          var now = new Date();
+          var currentYear = now.getFullYear();
+          var currentYY = currentYear % 100;
+          var century = currentYear - currentYY;
+
+          // Choose the "closest" 4-digit year that is not wildly in the past.
+          // This is primarily for expiry dates, which are usually in a near future range.
+          var candidates = [century + y, (century + 100) + y, (century - 100) + y];
+          var best = null;
+          var bestScore = Infinity;
+          for (var i = 0; i < candidates.length; i += 1) {
+            var yy = candidates[i];
+            var score = Math.abs(yy - currentYear);
+            if (yy < currentYear - 1) score += 1000;
+            // Strongly prefer a near-future year.
+            if (yy >= currentYear && yy <= currentYear + 20) score -= 500;
+            if (score < bestScore) {
+              bestScore = score;
+              best = yy;
+            }
+          }
+          return best;
+        }
+
+        function formatMonthDayYear(monthIndex, day, year) {
+          var mi = monthIndex;
+          if (mi == null || mi < 0 || mi > 11) return '';
+          var d = parseInt(day, 10);
+          var y = parseInt(year, 10);
+          if (!d || isNaN(y)) return '';
+          return MONTHS[mi] + ' ' + d + ', ' + y;
+        }
+
+        function inferYearForMonthDay(monthIndex, day) {
+          // Prefer a year that makes the date "not already passed" (helps for OCR missing year).
+          var n = new Date();
+          var currentYear = n.getFullYear();
+          var today = new Date(currentYear, n.getMonth(), n.getDate());
+          var cand = new Date(currentYear, monthIndex, day);
+          return cand < today ? currentYear + 1 : currentYear;
+        }
+
+        // 1) mm/yyyy (or mm-yy / mm-yyyy)
+        var slashMatch = value.match(/\b(0?[1-9]|1[0-2])\s*\/\s*(\d{2,4})\b/);
+        if (slashMatch) {
+          var mm = parseInt(slashMatch[1], 10);
+          var yyyy = normalizeYear(slashMatch[2]);
+          if (yyyy) return String(mm).padStart(2, '0') + '/' + yyyy;
+        }
+        var dashMatch = value.match(/\b(0?[1-9]|1[0-2])\s*[-\.]\s*(\d{2,4})\b/);
+        if (dashMatch) {
+          var mm2 = parseInt(dashMatch[1], 10);
+          var yyyy2 = normalizeYear(dashMatch[2]);
+          if (yyyy2) return String(mm2).padStart(2, '0') + '/' + yyyy2;
+        }
+        // mm yyyy (space separated)
+        var spaceMmY = value.match(/\b(0?[1-9]|1[0-2])\s+(19\d{2}|20\d{2}|\d{2})\b/);
+        if (spaceMmY) {
+          var mm3 = parseInt(spaceMmY[1], 10);
+          var yyyy3 = normalizeYear(spaceMmY[2]);
+          if (yyyy3) return String(mm3).padStart(2, '0') + '/' + yyyy3;
+        }
+
+        // MMYY without separator (e.g. 0125)
+        var mmYContig = value.match(/\b(0?[1-9]|1[0-2])([0-9]{2})\b/);
+        if (mmYContig) {
+          var mm5 = parseInt(mmYContig[1], 10);
+          var year5 = normalizeYear(mmYContig[2]);
+          if (year5) return String(mm5).padStart(2, '0') + '/' + year5;
+        }
+
+        // Year-first: YYYY-MM-DD (or YYYY/MM/DD, YYYY.MM.DD)
+        var sepYear = '[\\s\\-\\/.]+';
+        var ymd = value.match(new RegExp('\\b(\\d{4})' + sepYear + '(0?[1-9]|1[0-2])' + sepYear + '(\\d{1,2})\\b'));
+        if (ymd) {
+          var y0 = parseInt(ymd[1], 10);
+          var m0 = parseInt(ymd[2], 10);
+          var d0 = parseInt(ymd[3], 10);
+          if (m0 >= 1 && m0 <= 12 && d0 >= 1 && d0 <= 31) {
+            return formatMonthDayYear(m0 - 1, d0, y0);
+          }
+        }
+
+        // Month name formats: "jan 12 2025" / "12 jan 2025"
+        var monthNameRe = '(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t|tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)';
+        var m1 = value.match(new RegExp('\\b' + monthNameRe + '\\s+(\\d{1,2})\\s*,?\\s*(\\d{2,4})\\b', 'i'));
+        if (m1) {
+          var monthIndex1 = monthIndexFromName(m1[1]);
+          var day1 = parseInt(m1[2], 10);
+          var year1 = normalizeYear(m1[3]);
+          return formatMonthDayYear(monthIndex1, day1, year1);
+        }
+        var m2 = value.match(new RegExp('\\b(\\d{1,2})\\s*' + monthNameRe + '\\s*,?\\s*(\\d{2,4})\\b', 'i'));
+        if (m2) {
+          var day2 = parseInt(m2[1], 10);
+          var monthIndex2 = monthIndexFromName(m2[2]);
+          var year2 = normalizeYear(m2[3]);
+          return formatMonthDayYear(monthIndex2, day2, year2);
+        }
+
+        // Month/day without year: "Jan 12" / "12 Jan"
+        var mNoYear1 = value.match(new RegExp('\\b' + monthNameRe + '\\s+(\\d{1,2})\\b', 'i'));
+        if (mNoYear1) {
+          var monthIndex3 = monthIndexFromName(mNoYear1[1]);
+          var day3 = parseInt(mNoYear1[2], 10);
+          if (monthIndex3 != null && day3 >= 1 && day3 <= 31) {
+            var inferredYear1 = inferYearForMonthDay(monthIndex3, day3);
+            return formatMonthDayYear(monthIndex3, day3, inferredYear1);
+          }
+        }
+        var mNoYear2 = value.match(new RegExp('\\b(\\d{1,2})\\s*' + monthNameRe + '\\b', 'i'));
+        if (mNoYear2) {
+          var day4 = parseInt(mNoYear2[1], 10);
+          var monthIndex4 = monthIndexFromName(mNoYear2[2]);
+          if (monthIndex4 != null && day4 >= 1 && day4 <= 31) {
+            var inferredYear2 = inferYearForMonthDay(monthIndex4, day4);
+            return formatMonthDayYear(monthIndex4, day4, inferredYear2);
+          }
+        }
+
+        // Numeric full dates:
+        // - dd mm yyyy (space or -, /, . separators)
+        // - mm dd yyyy (fallback when day/month are ambiguous)
+        var sep = '[\\s\\-\\/.]+';
+        var now = new Date();
+        var parsedCandidates = [];
+
+        var ddmmyyyy = value.match(new RegExp('\\b(\\d{1,2})' + sep + '(0?[1-9]|1[0-2])' + sep + '(\\d{2,4})\\b'));
+        if (ddmmyyyy) {
+          var day3 = parseInt(ddmmyyyy[1], 10);
+          var month3 = parseInt(ddmmyyyy[2], 10);
+          var year3 = normalizeYear(ddmmyyyy[3]);
+          if (year3) {
+            var candDate3 = new Date(year3, month3 - 1, day3);
+            if (candDate3.getFullYear() === year3 && candDate3.getMonth() === month3 - 1 && candDate3.getDate() === day3) {
+              parsedCandidates.push({ date: candDate3, monthIndex: month3 - 1, day: day3, year: year3, order: 'ddmm' });
+            }
+          }
+        }
+
+        var mmdyyyy = value.match(new RegExp('\\b(0?[1-9]|1[0-2])' + sep + '(\\d{1,2})' + sep + '(\\d{2,4})\\b'));
+        if (mmdyyyy) {
+          var month4 = parseInt(mmdyyyy[1], 10);
+          var day4 = parseInt(mmdyyyy[2], 10);
+          var year4 = normalizeYear(mmdyyyy[3]);
+          if (year4) {
+            var candDate4 = new Date(year4, month4 - 1, day4);
+            if (candDate4.getFullYear() === year4 && candDate4.getMonth() === month4 - 1 && candDate4.getDate() === day4) {
+              parsedCandidates.push({ date: candDate4, monthIndex: month4 - 1, day: day4, year: year4, order: 'mmdd' });
+            }
+          }
+        }
+
+        if (parsedCandidates.length) {
+          // Prefer non-expired or near-future dates.
+          var best = null;
+          var bestScore = Infinity;
+          for (var c = 0; c < parsedCandidates.length; c += 1) {
+            var cand = parsedCandidates[c];
+            var penalty = cand.date < now ? 1000000000 : 0;
+            // Bias toward dd/mm/yyyy style when multiple parses are valid.
+            var orderBias = cand.order === 'ddmm' ? 0 : 50;
+            var score = penalty +
+              Math.abs(cand.year - now.getFullYear()) * 100 +
+              Math.abs(cand.date.getMonth() - now.getMonth()) * 10 +
+              Math.abs(cand.date.getDate() - now.getDate()) +
+              orderBias;
+            if (score < bestScore) {
+              bestScore = score;
+              best = cand;
+            }
+          }
+          return formatMonthDayYear(best.monthIndex, best.day, best.year);
+        }
+
+        // dd mm (no year). Fallback: infer current year.
+        var ddmmOnly = value.match(new RegExp('\\b(\\d{1,2})' + sep + '(0?[1-9]|1[0-2])\\b'));
+        if (ddmmOnly) {
+          var day5 = parseInt(ddmmOnly[1], 10);
+          var month5 = parseInt(ddmmOnly[2], 10);
+          if (day5 >= 1 && day5 <= 31) {
+            var year5b = inferYearForMonthDay(month5 - 1, day5);
+            return formatMonthDayYear(month5 - 1, day5, year5b);
+          }
+        }
+
         return value;
       }
 
@@ -1377,12 +1572,58 @@
 
       function detectExpiry(text) {
         var labeled = extractFieldByLabel(text, /\b(exp(?:iry|iration)?|valid thru|valid until|expires?)\b/i);
-        var source = labeled || text;
-        var slashMatch = String(source || '').match(/\b(0?[1-9]|1[0-2])\s*\/\s*(\d{2,4})\b/);
-        if (slashMatch) return formatExpiryValue(slashMatch[0]);
+        var source = String(labeled || text || '');
 
-        var fullDateMatch = String(source || '').match(/\b(?:jan|january|feb|february|mar|march|apr|april|may|jun|june|jul|july|aug|august|sep|sept|september|oct|october|nov|november|dec|december)\s+\d{1,2},?\s+\d{4}\b/i);
-        return fullDateMatch ? formatExpiryValue(fullDateMatch[0]) : '';
+        // 1) mm/yyyy
+        var slashMatch = source.match(/\b(0?[1-9]|1[0-2])\s*\/\s*(\d{2,4})\b/);
+        if (slashMatch) return formatExpiryValue(slashMatch[0]);
+        // 2) mm-yy / mm-yyyy
+        var dashMatch = source.match(/\b(0?[1-9]|1[0-2])\s*[-\.]\s*(\d{2,4})\b/);
+        if (dashMatch) return formatExpiryValue(dashMatch[0]);
+
+        // 2.5) MMYY without separator (e.g. 0125)
+        var mmYContig = source.match(/\b(0?[1-9]|1[0-2])([0-9]{2})\b/);
+        if (mmYContig) return formatExpiryValue(mmYContig[0]);
+
+        // Year-first: YYYY-MM-DD (or YYYY/MM/DD, YYYY.MM.DD)
+        var sepYear = '[\\s\\-\\/.]+';
+        var ymd = source.match(new RegExp('\\b(\\d{4})' + sepYear + '(0?[1-9]|1[0-2])' + sepYear + '(\\d{1,2})\\b'));
+        if (ymd) return formatExpiryValue(ymd[0]);
+
+        // 3) month name formats: "jan 12 2025" or "12 jan 2025"
+        var monthNameRe = '(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t|tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)';
+        var full1 = source.match(new RegExp('\\b' + monthNameRe + '\\s+\\d{1,2}\\s*,?\\s*\\d{2,4}\\b', 'i'));
+        if (full1) return formatExpiryValue(full1[0]);
+        var full2 = source.match(new RegExp('\\b\\d{1,2}\\s+' + monthNameRe + '\\s*,?\\s*\\d{2,4}\\b', 'i'));
+        if (full2) return formatExpiryValue(full2[0]);
+
+        // 3.5) month/day without year: "Jan 12" / "12 Jan"
+        var noYear1 = source.match(new RegExp('\\b' + monthNameRe + '\\s+\\d{1,2}\\b', 'i'));
+        if (noYear1) return formatExpiryValue(noYear1[0]);
+        var noYear2 = source.match(new RegExp('\\b\\d{1,2}\\s+' + monthNameRe + '\\b', 'i'));
+        if (noYear2) return formatExpiryValue(noYear2[0]);
+
+        // 4) numeric full dates: dd mm yyyy (or dd-mm-yy)
+        var sep = '[\\s\\-\\/.]+';
+        var ddmmyyyy = source.match(new RegExp('\\b(\\d{1,2})' + sep + '(0?[1-9]|1[0-2])' + sep + '(\\d{2,4})\\b'));
+        if (ddmmyyyy) return formatExpiryValue(ddmmyyyy[0]);
+
+        // 5) numeric full dates: mm dd yyyy (fallback)
+        var mmdyyyy = source.match(new RegExp('\\b(0?[1-9]|1[0-2])' + sep + '(\\d{1,2})' + sep + '(\\d{2,4})\\b'));
+        if (mmdyyyy) return formatExpiryValue(mmdyyyy[0]);
+
+        // 6) dd mm (infer year if present somewhere in the same OCR source)
+        var ddmmOnly = source.match(new RegExp('\\b(\\d{1,2})' + sep + '(0?[1-9]|1[0-2])\\b'));
+        if (ddmmOnly) {
+          var year4 = source.match(/\b(19\d{2}|20\d{2})\b/);
+          if (year4) {
+            return formatExpiryValue(ddmmOnly[1] + ' ' + ddmmOnly[2] + ' ' + year4[1]);
+          }
+          // If OCR doesn't include a year, still try to infer it in formatExpiryValue().
+          return formatExpiryValue(ddmmOnly[0]);
+        }
+
+        return '';
       }
 
       function detectNotes(text) {

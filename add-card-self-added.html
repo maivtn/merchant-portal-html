@@ -236,10 +236,8 @@
       gap: 16px;
     }
 
-    @media (min-width: 768px) {
-      .sa-upload-grid {
-        grid-template-columns: 1fr 1fr;
-      }
+    .sa-upload-grid {
+      grid-template-columns: 1fr 1fr;
     }
 
     .sa-drop-field {
@@ -374,6 +372,16 @@
       font-size: 12px;
       line-height: 1.5;
       color: var(--grey-500);
+      font-weight: 500 !important;
+    }
+
+    @media (max-width: 768px) {
+
+      .sa-drop-hint,
+      .sa-drop-status {
+        font-size: 10px;
+        font-weight: 500;
+      }
     }
 
     .sa-drop-hint {
@@ -441,6 +449,19 @@
       transition: border-color 0.2s, color 0.2s, background 0.2s;
     }
 
+    @media (max-width: 768px) {
+      .sa-btn-ghost {
+        padding: 4px 4px !important;
+        font-size: 10px !important;
+        font-weight: 500 !important;
+      }
+
+      .sa-btn-ghost iconify-icon {
+        width: 12px;
+        height: 12px;
+      }
+    }
+
     .sa-btn-ghost:hover {
       border-color: rgba(0, 167, 111, 0.4);
       color: var(--primary-main);
@@ -457,13 +478,13 @@
 
     .sa-form .sa-form-row {
       display: flex;
-      flex-direction: column;
-      gap: 6px;
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
     }
 
     @media (min-width: 576px) {
       .sa-form .sa-form-row {
-        flex-direction: row;
         align-items: center;
         gap: 16px;
       }
@@ -471,13 +492,24 @@
       .sa-form .sa-form-row .form-label {
         flex: 0 0 168px;
         max-width: 40%;
-        margin-bottom: 0;
       }
 
       .sa-form .sa-form-row> :not(.form-label) {
         flex: 1 1 0;
         min-width: 0;
       }
+    }
+
+    /* Keep label + control on the same row (mobile too) */
+    .sa-form .sa-form-row .form-label {
+      flex: 0 0 120px;
+      max-width: 45%;
+      margin-bottom: 0;
+    }
+
+    .sa-form .sa-form-row> :not(.form-label) {
+      flex: 1 1 0;
+      min-width: 0;
     }
 
     .sa-form .form-label {
@@ -737,6 +769,12 @@
         padding: 14px 12px;
       }
 
+      @media (max-width: 768px) {
+        .sa-drop {
+          padding: 10px 8px !important;
+        }
+      }
+
       .sa-drop-icon {
         width: 36px;
         height: 36px;
@@ -950,23 +988,23 @@
                 <input type="file" class="sa-drop-input" id="saFrontCamera" accept="image/*" capture="environment" />
                 <img class="sa-drop-preview" id="saFrontPreview" alt="Front card preview" />
                 <button type="button" class="sa-btn-ghost sa-preview-remove" data-remove-preview="front"
-                  aria-label="Remove front image"><iconify-icon icon="lucide:x" width="16"
-                    height="16"></iconify-icon></button>
+                  aria-label="Remove front image"><iconify-icon icon="lucide:x" width="14"
+                    height="14"></iconify-icon></button>
                 <div class="sa-drop-overlay">
                   <h3>Front of card</h3>
                   <div class="sa-drop-actions">
                     <button type="button" class="sa-btn-ghost sa-upload-btn" data-trigger="saFrontUpload">
-                      <iconify-icon icon="lucide:image-plus" width="16" height="16"></iconify-icon>
+                      <iconify-icon icon="lucide:image-plus" width="14" height="14"></iconify-icon>
                       Upload
                     </button>
                     <button type="button" class="sa-btn-ghost sa-camera-btn" data-trigger="saFrontCamera">
-                      <iconify-icon icon="lucide:camera" width="16" height="16"></iconify-icon>
+                      <iconify-icon icon="lucide:camera" width="14" height="14"></iconify-icon>
                       Camera
                     </button>
                   </div>
                 </div>
               </div>
-              <div class="sa-drop-status" id="saFrontStatus" aria-live="polite"></div>
+              <div class="sa-drop-status" id="saFrontStatus" aria-live="polite" style="display: none;"></div>
             </div>
             <div class="sa-drop-field">
               <div class="sa-drop" data-side="back">
@@ -980,17 +1018,17 @@
                   <h3>Back of card</h3>
                   <div class="sa-drop-actions">
                     <button type="button" class="sa-btn-ghost sa-upload-btn" data-trigger="saBackUpload">
-                      <iconify-icon icon="lucide:image-plus" width="16" height="16"></iconify-icon>
+                      <iconify-icon icon="lucide:image-plus" width="14" height="14"></iconify-icon>
                       Upload
                     </button>
                     <button type="button" class="sa-btn-ghost sa-camera-btn" data-trigger="saBackCamera">
-                      <iconify-icon icon="lucide:camera" width="16" height="16"></iconify-icon>
+                      <iconify-icon icon="lucide:camera" width="14" height="14"></iconify-icon>
                       Camera
                     </button>
                   </div>
                 </div>
               </div>
-              <div class="sa-drop-status" id="saBackStatus" aria-live="polite"></div>
+              <div class="sa-drop-status" id="saBackStatus" aria-live="polite" style="display: none;"></div>
             </div>
           </div>
           <!-- <div class="sa-ocr-summary" id="saOcrSummary" aria-live="polite">
@@ -1013,7 +1051,7 @@
                     <iconify-icon icon="lucide:store" width="20" height="20"></iconify-icon>
                   </span>
                   <select class="form-select flex-grow-1" id="saCardType" name="merchantStore" required>
-                    <option value="" selected disabled>Select merchant store</option>
+                    <option value="" selected disabled>Select merchant</option>
                     <option value="amazon">Amazon</option>
                     <option value="walmart">Walmart</option>
                     <option value="starbucks">Starbucks</option>
@@ -1346,6 +1384,7 @@
 
       function setDropStatus(side, message, state) {
         var statusEl = document.getElementById(side === 'front' ? 'saFrontStatus' : 'saBackStatus');
+        statusEl.style.display = 'block';
         var dropEl = document.querySelector('.sa-drop[data-side="' + side + '"]');
         if (!statusEl || !dropEl) return;
         statusEl.textContent = message || '';

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My Cards - VLINKPAY</title>
+  <title>My Cards v2 - VLINKPAY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
@@ -14,12 +14,266 @@
   <script>window.SIDEBAR_USE_CARDS_MENU = true;</script>
   <script src="global.js" defer></script>
   <link rel="stylesheet" href="global.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
-    .card {
+    /* Main white panel — not Bootstrap .card (avoids clash with Bootstrap) */
+    .mcv2-shell {
       background: #fff;
       border-radius: 16px;
       box-shadow: var(--shadow-z1);
       overflow: hidden;
+    }
+
+    /* Bootstrap modals on this page: soften clash with global.css .modal-content rules */
+    .mcv2-bs-modal.modal .modal-dialog {
+      max-width: 560px;
+    }
+
+    .mcv2-bs-modal.modal .modal-content {
+      border-radius: 16px;
+      border: none;
+      box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.2);
+    }
+
+    .mcv2-bs-modal .modal-header {
+      padding: 1.25rem 1.25rem 0.5rem;
+      border-bottom: none;
+    }
+
+    .mcv2-bs-modal .modal-body {
+      padding: 0 1.25rem 1rem;
+    }
+
+    .mcv2-bs-modal .modal-footer {
+      border-top: 1px solid var(--grey-200);
+      padding: 0.75rem 1.25rem 1.25rem;
+    }
+
+    /* Select Card Type modal — themed options */
+    #selectCardTypeModal .modal-content {
+      overflow: hidden;
+    }
+
+    #selectCardTypeModal .modal-header {
+      position: relative;
+      padding-bottom: 0.75rem;
+    }
+
+    #selectCardTypeModal .modal-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-main) 0%, var(--primary-light) 45%, #7c3aed 100%);
+      opacity: 0.9;
+    }
+
+    .mcv2-type-modal-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, var(--primary-lighter), #fff);
+      color: var(--primary-dark);
+      box-shadow: 0 4px 14px rgba(0, 167, 111, 0.18);
+    }
+
+    .mcv2-type-intro {
+      font-size: 13px;
+      color: var(--grey-600);
+      margin: 0 0 1rem;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--grey-100) 0%, rgba(200, 250, 214, 0.35) 100%);
+      border: 1px solid rgba(0, 167, 111, 0.12);
+    }
+
+    .mcv2-type-option {
+      --mcv2-type-accent: var(--primary-main);
+      --mcv2-type-accent-soft: rgba(0, 167, 111, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      border: 1px solid var(--grey-200);
+      border-radius: 14px;
+      background: #fff;
+      transition:
+        background 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease,
+        transform 0.22s ease;
+      font-family: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mcv2-type-option::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      opacity: 0;
+      background: radial-gradient(120% 80% at 0% 50%, var(--mcv2-type-accent-soft), transparent 55%);
+      transition: opacity 0.28s ease;
+      pointer-events: none;
+    }
+
+    .mcv2-type-option:hover {
+      border-color: #c4e8d6;
+      box-shadow:
+        0 8px 24px -6px rgba(22, 28, 36, 0.12),
+        0 0 0 1px rgba(0, 167, 111, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .mcv2-type-option--vlinkpay:hover {
+      border-color: #7dd4b2;
+      box-shadow:
+        0 8px 24px -6px rgba(22, 28, 36, 0.12),
+        0 0 0 1px rgba(0, 167, 111, 0.16);
+    }
+
+    .mcv2-type-option--store:hover {
+      border-color: #fdba74;
+      box-shadow:
+        0 8px 24px -6px rgba(22, 28, 36, 0.12),
+        0 0 0 1px rgba(234, 88, 12, 0.14);
+    }
+
+    .mcv2-type-option--self-added:hover {
+      border-color: #c4b5fd;
+      box-shadow:
+        0 8px 24px -6px rgba(22, 28, 36, 0.12),
+        0 0 0 1px rgba(124, 58, 237, 0.14);
+    }
+
+    .mcv2-type-option:hover::after {
+      opacity: 1;
+    }
+
+    .mcv2-type-option:focus-visible {
+      outline: 2px solid var(--mcv2-type-accent);
+      outline-offset: 2px;
+    }
+
+    .mcv2-type-option:active {
+      transform: translateY(0);
+      transition-duration: 0.1s;
+    }
+
+    .mcv2-type-option--vlinkpay {
+      --mcv2-type-accent: var(--primary-main);
+      --mcv2-type-accent-soft: rgba(0, 167, 111, 0.14);
+    }
+
+    .mcv2-type-option--store {
+      --mcv2-type-accent: #ea580c;
+      --mcv2-type-accent-soft: rgba(234, 88, 12, 0.12);
+    }
+
+    .mcv2-type-option--self-added {
+      --mcv2-type-accent: #7c3aed;
+      --mcv2-type-accent-soft: rgba(124, 58, 237, 0.12);
+    }
+
+    .mcv2-type-option-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      flex-shrink: 0;
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+    }
+
+    .mcv2-type-option--vlinkpay .mcv2-type-option-icon {
+      background: linear-gradient(145deg, #c8fad6 0%, #5be49b 55%, #00a76f 130%);
+      color: #004b33;
+      box-shadow: 0 6px 16px rgba(0, 167, 111, 0.28);
+    }
+
+    .mcv2-type-option--store .mcv2-type-option-icon {
+      background: linear-gradient(145deg, #ffedd5 0%, #fdba74 50%, #ea580c 125%);
+      color: #7c2d12;
+      box-shadow: 0 6px 16px rgba(234, 88, 12, 0.26);
+    }
+
+    .mcv2-type-option--self-added .mcv2-type-option-icon {
+      background: linear-gradient(145deg, #ede9fe 0%, #c4b5fd 45%, #7c3aed 120%);
+      color: #4c1d95;
+      box-shadow: 0 6px 16px rgba(124, 58, 237, 0.26);
+    }
+
+    .mcv2-type-option:hover .mcv2-type-option-icon {
+      transform: scale(1.06) rotate(-2deg);
+      box-shadow: 0 10px 22px rgba(22, 28, 36, 0.14);
+    }
+
+    .mcv2-type-option-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--grey-900);
+      margin: 0 0 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mcv2-type-option-desc {
+      font-size: 13px;
+      color: var(--grey-600);
+      margin: 0;
+      line-height: 1.4;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mcv2-type-option .chev {
+      color: var(--grey-400);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.25s ease, color 0.2s ease;
+    }
+
+    .mcv2-type-option:hover .chev {
+      color: var(--mcv2-type-accent);
+      transform: translateX(4px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .mcv2-type-option,
+      .mcv2-type-option::after,
+      .mcv2-type-option-icon,
+      .mcv2-type-option .chev {
+        transition: none;
+      }
+
+      .mcv2-type-option:hover {
+        transform: none;
+      }
+
+      .mcv2-type-option:hover .mcv2-type-option-icon {
+        transform: none;
+      }
+
+      .mcv2-type-option:hover .chev {
+        transform: none;
+      }
+    }
+
+    #selectCardTypeModal {
+      --bs-primary: var(--primary-main);
+      --bs-primary-rgb: 0, 167, 111;
     }
 
     /* Tabs Styles */
@@ -59,6 +313,40 @@
       background: var(--grey-900);
     }
 
+    /* My Cards v2: platform + product tabs */
+    .product-tabs {
+      display: flex;
+      padding: 12px 24px;
+      gap: 8px;
+      background: #fafbfb;
+      border-bottom: 1px solid var(--grey-200);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .product-tab-item {
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey-600);
+      cursor: pointer;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+
+    .product-tab-item:hover {
+      color: var(--grey-900);
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .product-tab-item.active {
+      color: var(--primary-main);
+      background: rgba(0, 167, 111, 0.1);
+      border-color: rgba(0, 167, 111, 0.35);
+    }
+
     .tab-pane {
       display: none;
     }
@@ -76,6 +364,14 @@
       width: 100%;
       border-collapse: collapse;
       min-width: 1400px;
+    }
+
+    #active-product-pane .minimal-table {
+      min-width: 0;
+    }
+
+    #active-product-pane .table-container .minimal-table {
+      min-width: var(--mcv2-tmin, 720px);
     }
 
     .minimal-table th {
@@ -333,7 +629,7 @@
       }
     }
 
-    /* Crypto card: list / grid view toggle */
+    /* List / grid view toggle (all products) */
     .view-mode-toggle {
       display: flex;
       gap: 6px;
@@ -365,30 +661,30 @@
       color: var(--primary-main);
     }
 
-    .crypto-view-list {
+    .cards-view-list {
       display: block;
     }
 
-    .crypto-view-grid {
+    .cards-view-grid {
       display: none;
     }
 
-    #crypto-card.view-mode-grid .crypto-view-list {
+    .product-pane.view-mode-grid .cards-view-list {
       display: none;
     }
 
-    #crypto-card.view-mode-grid .crypto-view-grid {
+    .product-pane.view-mode-grid .cards-view-grid {
       display: block;
     }
 
-    .crypto-cards-grid {
+    .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 24px;
       padding: 24px;
     }
 
-    .crypto-card-item {
+    .card-grid-item {
       background: #fff;
       border-radius: 16px;
       box-shadow: var(--shadow-z1);
@@ -397,41 +693,41 @@
       transition: 0.2s;
     }
 
-    .crypto-card-item:hover {
+    .card-grid-item:hover {
       box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
     }
 
-    .crypto-card-item a {
+    .card-grid-item a {
       text-decoration: none;
       color: inherit;
       display: block;
     }
 
-    .crypto-card-item-img {
+    .card-grid-item-img {
       aspect-ratio: 1.586/1;
       background: var(--grey-100);
       position: relative;
       overflow: hidden;
     }
 
-    .crypto-card-item-img img {
+    .card-grid-item-img img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    .crypto-card-item-info {
+    .card-grid-item-info {
       padding: 16px;
     }
 
-    .crypto-card-item-info .product-name {
+    .card-grid-item-info .grid-merchant-name {
       font-weight: 600;
       font-size: 14px;
       color: var(--grey-900);
       margin-bottom: 4px;
     }
 
-    .crypto-card-item-info .amount-row {
+    .card-grid-item-info .grid-amount-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -439,19 +735,19 @@
       margin-top: 4px;
     }
 
-    .crypto-card-item-info .balance {
+    .card-grid-item-info .grid-balance {
       font-weight: 700;
       font-size: 18px;
       color: var(--primary-main);
     }
 
-    .crypto-card-item-info .meta {
-      font-size: 12px;
-      color: var(--grey-600);
-      margin-top: 8px;
+    .card-grid-item-info .grid-amount-only {
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--primary-main);
     }
 
-    .crypto-card-item-info .view-link {
+    .card-grid-item-info .grid-view-link {
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -461,110 +757,7 @@
     }
 
     @media (max-width: 767px) {
-      .crypto-cards-grid {
-        grid-template-columns: 1fr;
-        padding: 16px;
-      }
-    }
-
-    /* Membership package: list / grid view toggle */
-    .membership-view-list {
-      display: block;
-    }
-
-    .membership-view-grid {
-      display: none;
-    }
-
-    #membership-package.view-mode-grid .membership-view-list {
-      display: none;
-    }
-
-    #membership-package.view-mode-grid .membership-view-grid {
-      display: block;
-    }
-
-    .membership-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 24px;
-      padding: 24px;
-    }
-
-    .membership-card-item {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: var(--shadow-z1);
-      overflow: hidden;
-      border: 1px solid var(--grey-200);
-      transition: 0.2s;
-    }
-
-    .membership-card-item:hover {
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-    }
-
-    .membership-card-item a {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-
-    .membership-card-item-img {
-      aspect-ratio: 1.586/1;
-      position: relative;
-      overflow: hidden;
-      background: var(--grey-100);
-    }
-
-    .membership-card-item-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .membership-card-item-info {
-      padding: 16px;
-    }
-
-    .membership-card-item-info .product-name {
-      font-weight: 600;
-      font-size: 14px;
-      color: var(--grey-900);
-      margin-bottom: 4px;
-    }
-
-    .membership-card-item-info .amount-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-top: 4px;
-    }
-
-    .membership-card-item-info .balance {
-      font-weight: 700;
-      font-size: 18px;
-      color: var(--primary-main);
-    }
-
-    .membership-card-item-info .meta {
-      font-size: 12px;
-      color: var(--grey-600);
-      margin-top: 8px;
-    }
-
-    .membership-card-item-info .view-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--primary-main);
-    }
-
-    @media (max-width: 767px) {
-      .membership-cards-grid {
+      .cards-grid {
         grid-template-columns: 1fr;
         padding: 16px;
       }
@@ -776,659 +969,729 @@
   <main class="main">
 
     <!-- Page Header -->
-    <div class="page-header page-header--between">
-      <h1 class="page-title">My Cards</h1>
-      <button class="btn-desktop btn-add-card" onclick="openModal('modal-add-card')">
-        <i data-lucide="plus" style="width:20px;height:20px;"></i>
-        <span class="btn-add-card-label">Add Card</span>
-      </button>
-    </div>
-
-    <div class="card">
-      <div class="tabs-header">
-        <div class="tab-item active" data-tabid="crypto-card" onclick="switchTab(event, 'crypto-card')">Crypto card
-        </div>
-        <div class="tab-item" data-tabid="membership-package" onclick="switchTab(event, 'membership-package')">
-          Membership package</div>
+    <div id="mcv2-list-view">
+      <div class="page-header page-header--between">
+        <h1 class="page-title">My Cards</h1>
+        <button type="button" class="btn-desktop btn-add-card" data-bs-toggle="modal"
+          data-bs-target="#selectCardTypeModal">
+          <i data-lucide="plus" style="width:20px;height:20px;"></i>
+          <span class="btn-add-card-label">Add Card</span>
+        </button>
       </div>
 
-      <!-- Tab: VlinkPay Platform (temporarily hidden) -->
-      <div id="vlinkpay-platform" class="tab-pane" style="display: none;">
-        <div class="table-toolbar">
-          <div class="field-root search-field">
-            <div class="field-container">
-              <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
-              <input type="text" class="field-input" placeholder="Search Order ID, Transaction ID..." />
-            </div>
-          </div>
-          <div class="field-root date-field">
-            <label class="field-label">Created from</label>
-            <div class="field-container">
-              <input type="text" class="field-input" placeholder="Pick a date" />
-              <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
-            </div>
-          </div>
-          <div class="field-root date-field">
-            <label class="field-label">To</label>
-            <div class="field-container">
-              <input type="text" class="field-input" placeholder="Pick a date" />
-              <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
-            </div>
-          </div>
-        </div>
+      <div class="mcv2-shell">
+        <div class="tabs-header" id="platform-tabs"></div>
+        <div class="product-tabs" id="product-tabs"></div>
+        <div id="active-product-pane" class="product-pane active"></div>
 
-        <div class="table-container">
-          <table class="minimal-table">
-            <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Purchase Date</th>
-                <th>Order Status</th>
-                <th class="text-right">Total Amount</th>
-                <th>Payment Method</th>
-                <th>Merchant Name</th>
-                <th class="text-right">Total Qty</th>
-                <th class="text-right">Used Qty</th>
-                <th class="text-right">Remaining Qty</th>
-                <th>Expiry Time</th>
-                <th>Transaction ID</th>
-                <th>Transaction Type</th>
-                <th class="text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="font-weight: 700;"><a href="order-details.html"
-                    style="color: inherit; text-decoration: none;">260114_0001</a></td>
-                <td>Jan 14, 2026 10:05 AM</td>
-                <td><span class="status-badge status-completed">Completed</span></td>
-                <td class="text-right" style="font-weight: 700;">$50.00</td>
-                <td>Credit Card</td>
-                <td>Beauty Spa Center</td>
-                <td class="text-right">1</td>
-                <td class="text-right">1</td>
-                <td class="text-right">0</td>
-                <td>Jan 14, 2027</td>
-                <td>TXN-7788910</td>
-                <td>Payment</td>
-                <td class="text-right">
-                  <a href="order-details.html" style="color: inherit;">
-                    <iconify-icon icon="lucide:eye" style="color: var(--primary-main); cursor: pointer"></iconify-icon>
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td style="font-weight: 700;"><a href="order-details.html"
-                    style="color: inherit; text-decoration: none;">260114_0002</a></td>
-                <td>Jan 14, 2026 11:20 AM</td>
-                <td><span class="status-badge status-completed">Completed</span></td>
-                <td class="text-right" style="font-weight: 700;">$200.00</td>
-                <td>Cash</td>
-                <td>Luxury Nail Spa</td>
-                <td class="text-right">2</td>
-                <td class="text-right">2</td>
-                <td class="text-right">0</td>
-                <td>No Expiry</td>
-                <td>TXN-7788911</td>
-                <td>Payment</td>
-                <td class="text-right">
-                  <a href="order-details.html" style="color: inherit;">
-                    <iconify-icon icon="lucide:eye" style="color: var(--primary-main); cursor: pointer"></iconify-icon>
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Tab: In-store (temporarily hidden) -->
-      <div id="in-store" class="tab-pane" style="display: none;">
-        <div class="table-toolbar">
-          <div class="field-root search-field">
-            <div class="field-container">
-              <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
-              <input type="text" class="field-input" placeholder="Order ID, card number..." />
-            </div>
+        <div class="pagination">
+          <div class="pagination-rows">
+            <span>Rows per page:</span>
+            <select class="pagination-select">
+              <option>5</option>
+              <option selected>10</option>
+              <option>25</option>
+            </select>
           </div>
-          <div class="field-root date-field">
-            <label class="field-label">Created from</label>
-            <div class="field-container">
-              <input type="text" class="field-input" placeholder="Pick a date" />
-              <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
-            </div>
-          </div>
-          <div class="field-root date-field">
-            <label class="field-label">End date</label>
-            <div class="field-container">
-              <input type="text" class="field-input" placeholder="Pick a date" />
-              <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
-            </div>
-          </div>
-        </div>
-        <div class="table-container">
-          <table class="minimal-table">
-            <thead>
-              <tr>
-                <th>Card ID</th>
-                <th>Purchase Date</th>
-                <th>Status</th>
-                <th class="text-right">Amount</th>
-                <th>Merchant</th>
-                <th>Expiry</th>
-                <th class="text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td colspan="7" class="text-center" style="padding: 48px; color: var(--grey-500);">No in-store cards
-                  yet.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Tab: Crypto card -->
-      <div id="crypto-card" class="tab-pane active">
-        <div class="table-toolbar">
-          <div class="toolbar-row-mobile">
-            <div class="search-field">
-              <div class="field-container">
-                <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
-                <input type="text" class="field-input" placeholder="Card number, merchant name" />
-              </div>
-            </div>
-            <button type="button" class="toolbar-filter-btn" onclick="openCryptoMobileFilter()">
-              <iconify-icon icon="solar:filter-bold-duotone" width="18"></iconify-icon>
-              <span>Filter</span>
+          <div class="pagination-info">1-2 of 12</div>
+          <div class="pagination-arrows">
+            <button class="pagination-btn" disabled>
+              <iconify-icon icon="eva:chevron-left-fill" width="20"></iconify-icon>
+            </button>
+            <button class="pagination-btn">
+              <iconify-icon icon="eva:chevron-right-fill" width="20"></iconify-icon>
             </button>
           </div>
-          <div class="field-root date-field">
-            <label class="field-label">Created from</label>
-            <div class="field-container">
-              <input type="text" class="field-input" placeholder="Pick a date" />
-              <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
-            </div>
-          </div>
-          <div class="field-root date-field">
-            <label class="field-label">To</label>
-            <div class="field-container">
-              <input type="text" class="field-input" placeholder="Pick a date" />
-              <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
-            </div>
-          </div>
-          <div class="view-mode-toggle">
-            <button type="button" class="view-btn active" id="cryptoViewListBtn" title="List view">
-              <iconify-icon icon="solar:list-bold" width="20"></iconify-icon>
-            </button>
-            <button type="button" class="view-btn" id="cryptoViewGridBtn" title="Card view">
-              <iconify-icon icon="solar:widget-5-bold" width="20"></iconify-icon>
-            </button>
-          </div>
-        </div>
-        <div class="crypto-view-list">
-          <div class="table-container">
-            <table class="minimal-table">
-              <thead>
-                <tr>
-                  <th>Card Numbers</th>
-                  <th>Product Name</th>
-                  <th>Merchant Name</th>
-                  <th class="text-right">Amount</th>
-                  <th class="text-right">Balance</th>
-                  <th>Currency</th>
-                  <th>Card Lock</th>
-                  <th>Expiry Date</th>
-                  <th>Issue By</th>
-                  <th class="text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>8829 **** **** 3456</td>
-                  <td>Crypto Gift Card</td>
-                  <td>Tech Haven Store</td>
-                  <td class="text-right" style="font-weight: 700;">$100.00</td>
-                  <td class="text-right" style="font-weight: 700;">$75.50</td>
-                  <td>USD</td>
-                  <td><span class="status-badge status-completed">Unlocked</span></td>
-                  <td>Jan 14, 2027</td>
-                  <td>carlota@gmail.com</td>
-                  <td class="text-right">
-                    <a href="crypto-card-details-owner.html" style="color: inherit;" title="View">
-                      <iconify-icon icon="lucide:eye"
-                        style="color: var(--primary-main); cursor: pointer"></iconify-icon>
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="crypto-view-grid">
-          <div class="crypto-cards-grid">
-            <div class="crypto-card-item">
-              <a href="crypto-card-details-owner.html">
-                <div class="crypto-card-item-img">
-                  <img src="images/cryptocard-front.png" alt="Crypto Card" />
-                </div>
-                <div class="crypto-card-item-info">
-                  <div class="product-name">Tech Haven Store</div>
-                  <div class="amount-row">
-                    <div class="balance">$75.50</div>
-                    <span class="view-link">View <iconify-icon icon="lucide:eye" width="16"></iconify-icon></span>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mobile Filter Modal for Crypto Cards -->
-      <div id="cryptoMobileFilterModal" class="mobile-filter-overlay" onclick="handleCryptoFilterOverlayClick(event)">
-        <div class="mobile-filter-sheet">
-          <div class="mobile-filter-header">
-            <span class="mobile-filter-title">Filter</span>
-            <button class="mobile-filter-close" type="button" onclick="closeCryptoMobileFilter()">
-              <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
-            </button>
-          </div>
-          <div class="mobile-filter-body">
-            <div class="mobile-filter-group">
-              <label class="mobile-filter-label">Status</label>
-              <div class="field-root select-field" style="width:100%;">
-                <div class="field-container">
-                  <select class="field-input">
-                    <option value="">All</option>
-                    <option value="unlocked">Unlocked</option>
-                    <option value="locked">Locked</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="mobile-filter-group">
-              <!-- <label class="mobile-filter-label">Date range</label> -->
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                <div class="field-root date-field" style="width:100%;">
-                  <label class="field-label">Created from</label>
-                  <div class="field-container">
-                    <input type="text" class="field-input" placeholder="Pick a date" />
-                    <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="20"></iconify-icon>
-                  </div>
-                </div>
-                <div class="field-root date-field" style="width:100%;">
-                  <label class="field-label">To</label>
-                  <div class="field-container">
-                    <input type="text" class="field-input" placeholder="Pick a date" />
-                    <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="20"></iconify-icon>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mobile-filter-footer">
-            <button type="button" class="btn-filter-reset" onclick="resetCryptoMobileFilter()">Reset</button>
-            <button type="button" class="btn-filter-apply" onclick="applyCryptoMobileFilter()">Apply</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tab: Membership package -->
-      <div id="membership-package" class="tab-pane">
-        <div class="table-toolbar">
-          <div class="toolbar-row-mobile">
-            <div class="search-field">
-              <div class="field-container">
-                <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>
-                <input type="text" class="field-input" placeholder="Card number, merchant name" />
-              </div>
-            </div>
-            <button type="button" class="toolbar-filter-btn" onclick="openMembershipMobileFilter()">
-              <iconify-icon icon="solar:filter-bold-duotone" width="18"></iconify-icon>
-              <span>Filter</span>
-            </button>
-          </div>
-          <div class="field-root date-field">
-            <label class="field-label">Created from</label>
-            <div class="field-container">
-              <input type="text" class="field-input" placeholder="Pick a date" />
-              <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
-            </div>
-          </div>
-          <div class="field-root date-field">
-            <label class="field-label">To</label>
-            <div class="field-container">
-              <input type="text" class="field-input" placeholder="Pick a date" />
-              <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="24"></iconify-icon>
-            </div>
-          </div>
-          <div class="view-mode-toggle">
-            <button type="button" class="view-btn active" id="membershipViewListBtn" title="List view">
-              <iconify-icon icon="solar:list-bold" width="20"></iconify-icon>
-            </button>
-            <button type="button" class="view-btn" id="membershipViewGridBtn" title="Card view">
-              <iconify-icon icon="solar:widget-5-bold" width="20"></iconify-icon>
-            </button>
-          </div>
-        </div>
-        <div class="membership-view-list">
-          <div class="table-container">
-            <table class="minimal-table">
-              <thead>
-                <tr>
-                  <th>Card Numbers</th>
-                  <th>Merchant Name</th>
-                  <th class="text-right">Amount</th>
-                  <th class="text-right">Balance</th>
-                  <th>Currency</th>
-                  <th>Card Locked</th>
-                  <th>Expiry Date</th>
-                  <th>Issue By</th>
-                  <th class="text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>7722 **** **** 8899</td>
-                  <td>Elite Fitness Club</td>
-                  <td class="text-right" style="font-weight: 700;">$1,200.00</td>
-                  <td class="text-right" style="font-weight: 700;">$950.00</td>
-                  <td>USD</td>
-                  <td><span class="status-badge status-completed">Unlocked</span></td>
-                  <td>Dec 31, 2026</td>
-                  <td>membership@elitefitness.com</td>
-                  <td class="text-right">
-                    <a href="issue-digital-membership-detail-owner.html" style="color: inherit;" title="View">
-                      <iconify-icon icon="lucide:eye"
-                        style="color: var(--primary-main); cursor: pointer"></iconify-icon>
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="membership-view-grid">
-          <div class="membership-cards-grid">
-            <div class="membership-card-item">
-              <a href="issue-digital-membership-detail-owner.html">
-                <div class="membership-card-item-img">
-                  <img src="images/membershipcard.png" alt="Membership Card" />
-                </div>
-                <div class="membership-card-item-info">
-                  <div class="product-name">Elite Fitness Club</div>
-                  <div class="amount-row">
-                    <div class="balance">$950.00</div>
-                    <span class="view-link">View <iconify-icon icon="lucide:eye" width="16"></iconify-icon></span>
-                  </div>
-                  <!-- <div class="meta">Expires Dec 31, 2026</div> -->
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mobile Filter Modal for Membership package -->
-      <div id="membershipMobileFilterModal" class="mobile-filter-overlay"
-        onclick="handleMembershipFilterOverlayClick(event)">
-        <div class="mobile-filter-sheet">
-          <div class="mobile-filter-header">
-            <span class="mobile-filter-title">Filter</span>
-            <button class="mobile-filter-close" type="button" onclick="closeMembershipMobileFilter()">
-              <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
-            </button>
-          </div>
-          <div class="mobile-filter-body">
-            <div class="mobile-filter-group">
-              <label class="mobile-filter-label">Status</label>
-              <div class="field-root select-field" style="width:100%;">
-                <div class="field-container">
-                  <select class="field-input">
-                    <option value="">All</option>
-                    <option value="unlocked">Unlocked</option>
-                    <option value="locked">Locked</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="mobile-filter-group">
-              <!-- <label class="mobile-filter-label">Date range</label> -->
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                <div class="field-root date-field" style="width:100%;">
-                  <label class="field-label">Created from</label>
-                  <div class="field-container">
-                    <input type="text" class="field-input" placeholder="Pick a date" />
-                    <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="20"></iconify-icon>
-                  </div>
-                </div>
-                <div class="field-root date-field" style="width:100%;">
-                  <label class="field-label">To</label>
-                  <div class="field-container">
-                    <input type="text" class="field-input" placeholder="Pick a date" />
-                    <iconify-icon icon="solar:calendar-minimalistic-bold-duotone" width="20"></iconify-icon>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mobile-filter-footer">
-            <button type="button" class="btn-filter-reset" onclick="resetMembershipMobileFilter()">Reset</button>
-            <button type="button" class="btn-filter-apply" onclick="applyMembershipMobileFilter()">Apply</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="pagination">
-        <div class="pagination-rows">
-          <span>Rows per page:</span>
-          <select class="pagination-select">
-            <option>5</option>
-            <option selected>10</option>
-            <option>25</option>
-          </select>
-        </div>
-        <div class="pagination-info">1-2 of 12</div>
-        <div class="pagination-arrows">
-          <button class="pagination-btn" disabled>
-            <iconify-icon icon="eva:chevron-left-fill" width="20"></iconify-icon>
-          </button>
-          <button class="pagination-btn">
-            <iconify-icon icon="eva:chevron-right-fill" width="20"></iconify-icon>
-          </button>
         </div>
       </div>
     </div>
   </main>
 
 
-
-
-  <div id="modal-add-card" class="modal-overlay">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="modal-title">Add Card</span>
-        <div class="close-btn" onclick="closeModal('modal-add-card')">
-          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
-        </div>
-      </div>
-
-      <!-- Step 1: Card Number -->
-      <div class="modal-body" id="ecd-step1">
-        <div class="form-group" style="margin-bottom:28px">
-          <label class="form-label sgc-label">
-            Card Number <span style="color:#ff5630">*</span>
-          </label>
-          <div class="input-wrapper">
-            <input type="text" class="minimal-input sgc-qr-input" id="ecdCardInput"
-              placeholder="Enter card number or scan..." oninput="ecdClearError()" />
-            <div class="input-suffix" onclick="ecdSimulateScan()" title="Scan QR">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-main)">
-                <path
-                  d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" />
-                <rect x="7" y="7" width="3" height="3" rx="0.5" />
-                <rect x="14" y="7" width="3" height="3" rx="0.5" />
-                <rect x="7" y="14" width="3" height="3" rx="0.5" />
-                <path d="M14 14h1M14 17h1M17 14h1M17 17h1" />
-              </svg>
-            </div>
+  <!-- Bootstrap: Select Card Type -->
+  <div class="modal fade mcv2-bs-modal" id="selectCardTypeModal" tabindex="-1"
+    aria-labelledby="selectCardTypeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="d-flex align-items-center gap-3 flex-grow-1 min-w-0">
+            <span class="mcv2-type-modal-badge" aria-hidden="true">
+              <iconify-icon icon="solar:layers-bold-duotone" width="22"></iconify-icon>
+            </span>
+            <h2 class="modal-title fs-5 fw-bold mb-0" id="selectCardTypeModalLabel">Select Card Type</h2>
           </div>
-          <div id="ecdCardError" class="sgc-error" style="display:none">Please enter a card number</div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <button class="btn-submit" onclick="ecdContinue()">Add</button>
+        <div class="modal-body">
+          <p class="mcv2-type-intro">Choose the type of card you want to add.</p>
+          <div class="d-flex flex-column gap-3">
+            <button type="button" class="mcv2-type-option mcv2-type-option--vlinkpay" data-mcv2-card-type="vlinkpay">
+              <span class="mcv2-type-option-icon" aria-hidden="true">
+                <iconify-icon icon="solar:card-bold-duotone" width="26"></iconify-icon>
+              </span>
+              <div class="flex-grow-1 min-w-0">
+                <p class="mcv2-type-option-title">Issued on VLINKPAY</p>
+                <p class="mcv2-type-option-desc">Cards issued by merchants on VLINKPAY</p>
+              </div>
+              <iconify-icon class="chev" icon="eva:chevron-right-fill" width="20"></iconify-icon>
+            </button>
+            <button type="button" class="mcv2-type-option mcv2-type-option--store" data-mcv2-card-type="store">
+              <span class="mcv2-type-option-icon" aria-hidden="true">
+                <iconify-icon icon="solar:shop-bold-duotone" width="26"></iconify-icon>
+              </span>
+              <div class="flex-grow-1 min-w-0">
+                <p class="mcv2-type-option-title">Store-Issued</p>
+                <p class="mcv2-type-option-desc">Cards issued directly by a merchant at the store</p>
+              </div>
+              <iconify-icon class="chev" icon="eva:chevron-right-fill" width="20"></iconify-icon>
+            </button>
+            <button type="button" class="mcv2-type-option mcv2-type-option--self-added"
+              data-mcv2-card-type="self-added">
+              <span class="mcv2-type-option-icon" aria-hidden="true">
+                <iconify-icon icon="solar:scanner-bold-duotone" width="26"></iconify-icon>
+              </span>
+              <div class="flex-grow-1 min-w-0">
+                <p class="mcv2-type-option-title">Self-Added Card</p>
+                <p class="mcv2-type-option-desc">Add your own card manually or with OCR</p>
+              </div>
+              <iconify-icon class="chev" icon="eva:chevron-right-fill" width="20"></iconify-icon>
+            </button>
+          </div>
+        </div>
+
       </div>
-
-
     </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    var TAB_PARAM = { 'crypto-card': 'crypto', 'membership-package': 'membership-package' };
-    var PARAM_TAB = { 'crypto': 'crypto-card', 'membership-package': 'membership-package' };
-
-    function activateTab(tabId) {
-      document.querySelectorAll('.tab-item').forEach(function (tab) {
-        tab.classList.toggle('active', tab.getAttribute('data-tabid') === tabId);
-      });
-      document.querySelectorAll('.tab-pane').forEach(function (pane) {
-        pane.classList.toggle('active', pane.id === tabId);
-      });
-    }
-
-    function switchTab(event, tabId) {
-      activateTab(tabId);
-      var param = TAB_PARAM[tabId];
-      if (param) {
-        var url = new URL(window.location.href);
-        url.searchParams.set('type', param);
-        history.replaceState({}, '', url);
-      }
-    }
-
-    (function initTabFromUrl() {
-      var params = new URLSearchParams(window.location.search);
-      var type = params.get('type');
-      var tabId = type ? PARAM_TAB[type] : 'crypto-card';
-      if (tabId && document.getElementById(tabId)) {
-        activateTab(tabId);
-      }
-    })();
-
-    // Crypto card: list / grid view toggle
-    (function () {
-      var pane = document.getElementById('crypto-card');
-      var listBtn = document.getElementById('cryptoViewListBtn');
-      var gridBtn = document.getElementById('cryptoViewGridBtn');
-      if (!pane || !listBtn || !gridBtn) return;
-      listBtn.addEventListener('click', function () {
-        listBtn.classList.add('active');
-        gridBtn.classList.remove('active');
-        pane.classList.remove('view-mode-grid');
-      });
-      gridBtn.addEventListener('click', function () {
-        gridBtn.classList.add('active');
-        listBtn.classList.remove('active');
-        pane.classList.add('view-mode-grid');
-      });
-    })();
-
-    // Membership package: list / grid view toggle
-    (function () {
-      var pane = document.getElementById('membership-package');
-      var listBtn = document.getElementById('membershipViewListBtn');
-      var gridBtn = document.getElementById('membershipViewGridBtn');
-      if (!pane || !listBtn || !gridBtn) return;
-      listBtn.addEventListener('click', function () {
-        listBtn.classList.add('active');
-        gridBtn.classList.remove('active');
-        pane.classList.remove('view-mode-grid');
-      });
-      gridBtn.addEventListener('click', function () {
-        gridBtn.classList.add('active');
-        listBtn.classList.remove('active');
-        pane.classList.add('view-mode-grid');
-      });
-    })();
-
-    // Mobile filter for Crypto card (UI only)
-    function openCryptoMobileFilter() {
-      var modal = document.getElementById('cryptoMobileFilterModal');
-      if (modal) modal.classList.add('open');
-    }
-
-    function closeCryptoMobileFilter() {
-      var modal = document.getElementById('cryptoMobileFilterModal');
-      if (modal) modal.classList.remove('open');
-    }
-
-    function handleCryptoFilterOverlayClick(event) {
-      if (event.target.id === 'cryptoMobileFilterModal') {
-        closeCryptoMobileFilter();
-      }
-    }
-
-    function resetCryptoMobileFilter() {
-      var modal = document.getElementById('cryptoMobileFilterModal');
-      if (!modal) return;
-      modal.querySelectorAll('select, input').forEach(function (el) {
-        if (el.tagName === 'SELECT') {
-          el.selectedIndex = 0;
-        } else {
-          el.value = '';
+    var MY_CARDS_V2_CONFIG = {
+      "platforms": [
+        {
+          "name": "Issued on VLINKPAY",
+          "products": [
+            {
+              "productName": "E-Gift Card",
+              "search": { "enabled": true, "placeholder": "Search by merchant name", "searchBy": ["merchantName"] },
+              "viewModes": {
+                "list": { "enabled": true, "columns": ["merchantName", "balance", "action"] },
+                "grid": { "enabled": true, "fields": ["cardImage", "merchantName", "balance", "viewDetails"] }
+              }
+            },
+            {
+              "productName": "E-Voucher",
+              "search": { "enabled": true, "placeholder": "Search by merchant name", "searchBy": ["merchantName"] },
+              "viewModes": {
+                "list": { "enabled": true, "columns": ["merchantName", "balance", "action"] },
+                "grid": { "enabled": true, "fields": ["cardImage", "merchantName", "balance", "viewDetails"] }
+              }
+            },
+            {
+              "productName": "Third-Party Gift Card",
+              "search": { "enabled": true, "placeholder": "Search by merchant name", "searchBy": ["merchantName"] },
+              "viewModes": {
+                "list": {
+                  "enabled": true,
+                  "columns": ["merchantName", "balance", "createdDate", "status", "action"],
+                  "statusOptions": ["active", "inactive"]
+                },
+                "grid": { "enabled": true, "fields": ["cardImage", "merchantName", "balance", "viewDetails"] }
+              }
+            },
+            {
+              "productName": "E-Gift Code",
+              "search": { "enabled": true, "placeholder": "Search by gift code", "searchBy": ["id"] },
+              "viewModes": {
+                "list": {
+                  "enabled": true,
+                  "columns": ["id", "amount", "status", "giftTo", "action"],
+                  "statusOptions": ["gifted", "available"]
+                },
+                "grid": { "enabled": true, "fields": ["cardImage", "amount", "viewDetails"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Store-Issued",
+          "products": [
+            {
+              "productName": "Gift Card",
+              "search": { "enabled": true, "placeholder": "Search by merchant name", "searchBy": ["merchantName"] },
+              "viewModes": {
+                "list": { "enabled": true, "columns": ["cardNumbers", "productName", "merchantName", "amount", "balance", "issueBy", "action"] },
+                "grid": { "enabled": true, "fields": ["cardImage", "merchantName", "balance", "viewDetails"] }
+              }
+            },
+            {
+              "productName": "Promotion",
+              "search": { "enabled": true, "placeholder": "Search by merchant name", "searchBy": ["merchantName"] },
+              "viewModes": {
+                "list": { "enabled": true, "columns": ["cardNumbers", "productName", "merchantName", "amount", "balance", "issueBy", "action"] },
+                "grid": { "enabled": true, "fields": ["cardImage", "merchantName", "balance", "viewDetails"] }
+              }
+            },
+            {
+              "productName": "Discount",
+              "search": { "enabled": true, "placeholder": "Search by merchant name", "searchBy": ["merchantName"] },
+              "viewModes": {
+                "list": { "enabled": true, "columns": ["cardNumbers", "productName", "merchantName", "amount", "balance", "issueBy", "action"] },
+                "grid": { "enabled": true, "fields": ["cardImage", "merchantName", "balance", "viewDetails"] }
+              }
+            },
+            {
+              "productName": "Membership Package",
+              "search": { "enabled": true, "placeholder": "Search by merchant name", "searchBy": ["merchantName"] },
+              "viewModes": {
+                "list": { "enabled": true, "columns": ["cardNumbers", "merchantName", "amount", "balance", "currency", "cardLocked", "expiryDate", "issueBy", "action"] },
+                "grid": { "enabled": true, "fields": ["cardImage", "merchantName", "balance", "viewDetails"] }
+              }
+            },
+            {
+              "productName": "Prepaid Card",
+              "search": { "enabled": true, "placeholder": "Search by merchant name", "searchBy": ["merchantName"] },
+              "viewModes": {
+                "list": { "enabled": true, "columns": ["cardNumbers", "productName", "merchantName", "amount", "balance", "issueBy", "action"] },
+                "grid": { "enabled": true, "fields": ["cardImage", "merchantName", "balance", "viewDetails"] }
+              }
+            },
+            {
+              "productName": "Crypto Card",
+              "search": { "enabled": true, "placeholder": "Search by merchant name", "searchBy": ["merchantName"] },
+              "viewModes": {
+                "list": { "enabled": true, "columns": ["cardNumbers", "productName", "merchantName", "amount", "balance", "currency", "cardLock", "expiryDate", "issueBy", "action"] },
+                "grid": { "enabled": true, "fields": ["cardImage", "merchantName", "balance", "viewDetails"] }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Self-Added",
+          "products": [
+            {
+              "productName": "Self-Added Gift Card",
+              "search": { "enabled": true, "placeholder": "Search by merchant name", "searchBy": ["merchantName"] },
+              "viewModes": {
+                "list": {
+                  "enabled": true,
+                  "columns": ["merchantName", "balance", "createdDate", "status", "action"],
+                  "statusOptions": ["active", "inactive"]
+                },
+                "grid": { "enabled": true, "fields": ["cardImage", "merchantName", "balance", "viewDetails"] }
+              }
+            }
+          ]
         }
-      });
+      ]
+    };
+
+    var COLUMN_LABELS = {
+      merchantName: 'Merchant Name',
+      balance: 'Balance',
+      action: 'Action',
+      createdDate: 'Created Date',
+      status: 'Status',
+      id: 'ID',
+      amount: 'Amount',
+      giftTo: 'Gift To',
+      cardNumbers: 'Card Numbers',
+      productName: 'Product Name',
+      issueBy: 'Issue By',
+      currency: 'Currency',
+      cardLocked: 'Card Locked',
+      expiryDate: 'Expiry Date',
+      cardLock: 'Card Lock'
+    };
+
+    var MY_CARDS_V2_SAMPLE_DATA = {
+      "Issued on VLINKPAY": {
+        "E-Gift Card": [
+          { "merchantName": "Amazon", "balance": 100, "action": "view" },
+          { "merchantName": "Walmart", "balance": 250, "action": "view" },
+          { "merchantName": "Starbucks", "balance": 50, "action": "view" },
+          { "merchantName": "Nike", "balance": 180, "action": "view" },
+          { "merchantName": "Target", "balance": 75, "action": "view" },
+          { "merchantName": "Apple", "balance": 220, "action": "view" }
+        ],
+        "E-Voucher": [
+          { "merchantName": "Pizza Hut", "balance": 20, "action": "view" },
+          { "merchantName": "KFC", "balance": 15, "action": "view" },
+          { "merchantName": "CGV", "balance": 30, "action": "view" },
+          { "merchantName": "Highlands Coffee", "balance": 10, "action": "view" },
+          { "merchantName": "Phuc Long", "balance": 25, "action": "view" },
+          { "merchantName": "The Coffee House", "balance": 18, "action": "view" }
+        ],
+        "Third-Party Gift Card": [
+          { "merchantName": "Amazon", "balance": 100, "createdDate": "Jan 20, 2025", "status": "active", "action": "view" },
+          { "merchantName": "Apple", "balance": 200, "createdDate": "Feb 18, 2025", "status": "inactive", "action": "view" },
+          { "merchantName": "Target", "balance": 75, "createdDate": "Mar 15, 2025", "status": "active", "action": "view" },
+          { "merchantName": "eBay", "balance": 120, "createdDate": "Apr 10, 2025", "status": "inactive", "action": "view" },
+          { "merchantName": "Best Buy", "balance": 90, "createdDate": "May 08, 2025", "status": "active", "action": "view" },
+          { "merchantName": "Sephora", "balance": 60, "createdDate": "Jun 05, 2025", "status": "inactive", "action": "view" }
+        ],
+        "E-Gift Code": [
+          { "id": "GC-20260324-0001", "amount": 100, "status": "available", "giftTo": "", "action": "view" },
+          { "id": "GC-20260324-0002", "amount": 50, "status": "gifted", "giftTo": "anna@gmail.com", "action": "view" },
+          { "id": "GC-20260324-0003", "amount": 200, "status": "available", "giftTo": "", "action": "view" },
+          { "id": "GC-20260324-0004", "amount": 75, "status": "gifted", "giftTo": "johnsmith@yahoo.com", "action": "view" },
+          { "id": "GC-20260324-0005", "amount": 120, "status": "available", "giftTo": "", "action": "view" },
+          { "id": "GC-20260324-0006", "amount": 30, "status": "gifted", "giftTo": "emily@outlook.com", "action": "view" }
+        ]
+      },
+      "Store-Issued": {
+        "Gift Card": [
+          { "cardNumbers": "2244 **** **** 2244", "productName": "Gift Card", "merchantName": "Amazon", "amount": 100, "balance": 80, "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "5566 **** **** 5566", "productName": "Gift Card", "merchantName": "Walmart", "amount": 200, "balance": 200, "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "7788 **** **** 7788", "productName": "Gift Card", "merchantName": "Starbucks", "amount": 50, "balance": 35, "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "9900 **** **** 9900", "productName": "Gift Card", "merchantName": "Nike", "amount": 150, "balance": 120, "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "1122 **** **** 1122", "productName": "Gift Card", "merchantName": "Target", "amount": 80, "balance": 60, "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "3344 **** **** 3344", "productName": "Gift Card", "merchantName": "Apple", "amount": 250, "balance": 210, "issueBy": "Merchant", "action": "view" }
+        ],
+        "Promotion": [
+          { "cardNumbers": "4455 **** **** 4455", "productName": "Promotion", "merchantName": "KFC", "amount": 20, "balance": 20, "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "6677 **** **** 6677", "productName": "Promotion", "merchantName": "Pizza Hut", "amount": 15, "balance": 10, "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "8899 **** **** 8899", "productName": "Promotion", "merchantName": "CGV", "amount": 30, "balance": 25, "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "1010 **** **** 1010", "productName": "Promotion", "merchantName": "Highlands Coffee", "amount": 10, "balance": 8, "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "2020 **** **** 2020", "productName": "Promotion", "merchantName": "Phuc Long", "amount": 25, "balance": 25, "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "3030 **** **** 3030", "productName": "Promotion", "merchantName": "The Coffee House", "amount": 18, "balance": 12, "issueBy": "Admin", "action": "view" }
+        ],
+        "Discount": [
+          { "cardNumbers": "4040 **** **** 4040", "productName": "Discount", "merchantName": "CGV", "amount": 30, "balance": 30, "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "5050 **** **** 5050", "productName": "Discount", "merchantName": "Highlands Coffee", "amount": 10, "balance": 8, "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "6060 **** **** 6060", "productName": "Discount", "merchantName": "KFC", "amount": 12, "balance": 12, "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "7070 **** **** 7070", "productName": "Discount", "merchantName": "Pizza Hut", "amount": 18, "balance": 15, "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "8080 **** **** 8080", "productName": "Discount", "merchantName": "Phuc Long", "amount": 22, "balance": 20, "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "9090 **** **** 9090", "productName": "Discount", "merchantName": "The Coffee House", "amount": 16, "balance": 14, "issueBy": "Admin", "action": "view" }
+        ],
+        "Membership Package": [
+          { "cardNumbers": "1111 **** **** 1111", "merchantName": "VLINK Salon", "amount": 850, "balance": 850, "currency": "USD", "cardLocked": true, "expiryDate": "Dec 30, 2026", "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "2222 **** **** 2222", "merchantName": "BTC Nail Bar", "amount": 1200, "balance": 900, "currency": "USD", "cardLocked": false, "expiryDate": "Nov 15, 2026", "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "3333 **** **** 3333", "merchantName": "Luxury Nails", "amount": 950, "balance": 950, "currency": "USD", "cardLocked": true, "expiryDate": "Oct 20, 2026", "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "4444 **** **** 4444", "merchantName": "Golden Spa", "amount": 1500, "balance": 1300, "currency": "USD", "cardLocked": false, "expiryDate": "Sep 18, 2026", "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "5555 **** **** 5555", "merchantName": "Diamond Beauty", "amount": 1100, "balance": 1000, "currency": "USD", "cardLocked": true, "expiryDate": "Aug 12, 2026", "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "6666 **** **** 6666", "merchantName": "Royal Nail Studio", "amount": 780, "balance": 780, "currency": "USD", "cardLocked": false, "expiryDate": "Jul 25, 2026", "issueBy": "Admin", "action": "view" }
+        ],
+        "Prepaid Card": [
+          { "cardNumbers": "3322 **** **** 3322", "productName": "Prepaid Card", "merchantName": "Visa Center", "amount": 500, "balance": 420, "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "6655 **** **** 6655", "productName": "Prepaid Card", "merchantName": "Mastercard Hub", "amount": 300, "balance": 150, "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "7789 **** **** 7789", "productName": "Prepaid Card", "merchantName": "Payoneer Center", "amount": 450, "balance": 450, "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "8890 **** **** 8890", "productName": "Prepaid Card", "merchantName": "Stripe Hub", "amount": 600, "balance": 520, "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "9901 **** **** 9901", "productName": "Prepaid Card", "merchantName": "Western Union", "amount": 250, "balance": 200, "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "1023 **** **** 1023", "productName": "Prepaid Card", "merchantName": "Global Payments", "amount": 700, "balance": 640, "issueBy": "Merchant", "action": "view" }
+        ],
+        "Crypto Card": [
+          { "cardNumbers": "4567 **** **** 4567", "productName": "Crypto Card", "merchantName": "Binance Store", "amount": 500, "balance": 420, "currency": "USD", "cardLock": true, "expiryDate": "Dec 30, 2026", "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "8901 **** **** 8901", "productName": "Crypto Card", "merchantName": "OKX Merchant", "amount": 300, "balance": 300, "currency": "USD", "cardLock": false, "expiryDate": "Nov 15, 2026", "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "2345 **** **** 2345", "productName": "Crypto Card", "merchantName": "Bybit Hub", "amount": 450, "balance": 390, "currency": "USD", "cardLock": true, "expiryDate": "Oct 10, 2026", "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "6789 **** **** 6789", "productName": "Crypto Card", "merchantName": "Kraken Pay", "amount": 250, "balance": 180, "currency": "USD", "cardLock": false, "expiryDate": "Sep 09, 2026", "issueBy": "Admin", "action": "view" },
+          { "cardNumbers": "3456 **** **** 3456", "productName": "Crypto Card", "merchantName": "Coinbase Store", "amount": 800, "balance": 760, "currency": "USD", "cardLock": true, "expiryDate": "Aug 08, 2026", "issueBy": "Merchant", "action": "view" },
+          { "cardNumbers": "7890 **** **** 7890", "productName": "Crypto Card", "merchantName": "Bitget Card", "amount": 350, "balance": 350, "currency": "USD", "cardLock": false, "expiryDate": "Jul 07, 2026", "issueBy": "Admin", "action": "view" }
+        ]
+      },
+      "Self-Added": {
+        "Self-Added Gift Card": [
+          { "merchantName": "Amazon", "balance": 100, "createdDate": "Jan 20, 2025", "status": "active", "action": "view" },
+          { "merchantName": "Apple", "balance": 200, "createdDate": "Feb 18, 2025", "status": "inactive", "action": "view" },
+          { "merchantName": "Target", "balance": 75, "createdDate": "Mar 15, 2025", "status": "active", "action": "view" },
+          { "merchantName": "eBay", "balance": 120, "createdDate": "Apr 10, 2025", "status": "inactive", "action": "view" },
+          { "merchantName": "Best Buy", "balance": 90, "createdDate": "May 08, 2025", "status": "active", "action": "view" },
+          { "merchantName": "Sephora", "balance": 60, "createdDate": "Jun 05, 2025", "status": "inactive", "action": "view" }
+        ]
+      }
+    };
+
+    var myCardsV2State = { platformIndex: 0, productIndex: 0 };
+
+    function slugify(s) {
+      return String(s).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     }
 
-    function applyCryptoMobileFilter() {
-      // Placeholder for future filter logic
-      closeCryptoMobileFilter();
+    function escapeHtml(s) {
+      var d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
     }
 
-    // Mobile filter for Membership package (UI only)
-    function openMembershipMobileFilter() {
-      var modal = document.getElementById('membershipMobileFilterModal');
-      if (modal) modal.classList.add('open');
+    function getDetailHref(product) {
+      var key = slugify(product.productName);
+      if (key === 'crypto-card') return 'crypto-card-details-owner.html';
+      if (key === 'membership-package') return 'issue-digital-membership-detail-owner.html';
+      return '#';
     }
 
-    function closeMembershipMobileFilter() {
-      var modal = document.getElementById('membershipMobileFilterModal');
-      if (modal) modal.classList.remove('open');
+    function getSampleRows(platform, product) {
+      var byPlat = MY_CARDS_V2_SAMPLE_DATA[platform.name];
+      if (!byPlat) return [];
+      var rows = byPlat[product.productName];
+      return Array.isArray(rows) ? rows : [];
     }
 
-    function handleMembershipFilterOverlayClick(event) {
-      if (event.target.id === 'membershipMobileFilterModal') {
-        closeMembershipMobileFilter();
+    function formatMoney(n) {
+      if (n === undefined || n === null || n === '') return '—';
+      var num = Number(n);
+      if (Number.isNaN(num)) return escapeHtml(String(n));
+      return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function statusBadgeHtml(status) {
+      var map = {
+        active: { label: 'Active', cls: 'status-active' },
+        inactive: { label: 'Inactive', cls: 'status-inactive' },
+        gifted: { label: 'Gifted', cls: 'status-completed' },
+        available: { label: 'Available', cls: 'status-created' }
+      };
+      var m = map[status] || { label: status, cls: 'status-completed' };
+      return '<span class="status-badge ' + m.cls + '">' + escapeHtml(m.label) + '</span>';
+    }
+
+    function listCellHtml(column, product, listCfg, row) {
+      var actionHtml = '<a href="' + getDetailHref(product) + '" style="color: inherit;" title="View">' +
+        '<iconify-icon icon="lucide:eye" style="color: var(--primary-main); cursor: pointer"></iconify-icon></a>';
+      if (column === 'action') return actionHtml;
+      var v = row[column];
+      if (v === undefined || v === null) {
+        if (column === 'giftTo') return '—';
+        return '—';
+      }
+      switch (column) {
+        case 'balance':
+        case 'amount':
+          return formatMoney(v);
+        case 'status':
+          return statusBadgeHtml(String(v));
+        case 'giftTo':
+          return v === '' ? '—' : escapeHtml(String(v));
+        case 'cardLocked':
+          return v
+            ? '<span class="status-badge status-locked">Locked</span>'
+            : '<span class="status-badge status-completed">Unlocked</span>';
+        case 'cardLock':
+          return v
+            ? '<span class="status-badge status-locked">Locked</span>'
+            : '<span class="status-badge status-completed">Unlocked</span>';
+        case 'id':
+        case 'merchantName':
+        case 'createdDate':
+        case 'cardNumbers':
+        case 'productName':
+        case 'issueBy':
+        case 'currency':
+        case 'expiryDate':
+          return escapeHtml(String(v));
+        default:
+          return typeof v === 'number' ? formatMoney(v) : escapeHtml(String(v));
       }
     }
 
-    function resetMembershipMobileFilter() {
-      var modal = document.getElementById('membershipMobileFilterModal');
-      if (!modal) return;
-      modal.querySelectorAll('select, input').forEach(function (el) {
-        if (el.tagName === 'SELECT') {
-          el.selectedIndex = 0;
-        } else {
-          el.value = '';
-        }
+    function getGridImageSrc(product) {
+      var key = slugify(product.productName);
+      if (key === 'crypto-card') return 'images/cryptocard-front.png';
+      if (key === 'membership-package') return 'images/membershipcard.png';
+      if (key === 'gift-card') return 'images/giftcard-front.png';
+      if (key === 'promotion') return 'images/promotion-front.png';
+      if (key === 'discount') return 'images/discount-front.png';
+      if (key === 'prepaid-card') return 'images/prepaid-front.png';
+      return 'images/giftcard-front.png';
+    }
+
+    function thClassForColumn(column) {
+      if (column === 'amount' || column === 'balance' || column === 'action') return ' class="text-right"';
+      return '';
+    }
+
+    function tdClassForColumn(column) {
+      if (column === 'amount' || column === 'balance' || column === 'action') return ' class="text-right"';
+      return '';
+    }
+
+    function buildListTable(columns, product, listCfg, platform) {
+      var rows = getSampleRows(platform, product);
+      var tmin = Math.max(640, columns.length * 96);
+      var thead = columns.map(function (col) {
+        return '<th' + thClassForColumn(col) + '>' + (COLUMN_LABELS[col] || col) + '</th>';
+      }).join('');
+      if (!rows.length) {
+        return (
+          '<div class="table-container">' +
+          '<table class="minimal-table" style="--mcv2-tmin:' + tmin + 'px">' +
+          '<thead><tr>' + thead + '</tr></thead>' +
+          '<tbody><tr><td colspan="' +
+          columns.length +
+          '" class="text-center" style="padding:48px;color:var(--grey-500)">No data</td></tr></tbody>' +
+          '</table></div>'
+        );
+      }
+      var tbody = rows
+        .map(function (row) {
+          return (
+            '<tr>' +
+            columns
+              .map(function (col) {
+                return (
+                  '<td' + tdClassForColumn(col) + '>' + listCellHtml(col, product, listCfg, row) + '</td>'
+                );
+              })
+              .join('') +
+            '</tr>'
+          );
+        })
+        .join('');
+      return (
+        '<div class="table-container">' +
+        '<table class="minimal-table" style="--mcv2-tmin:' + tmin + 'px">' +
+        '<thead><tr>' +
+        thead +
+        '</tr></thead><tbody>' +
+        tbody +
+        '</tbody></table></div>'
+      );
+    }
+
+    function buildGridHtml(fields, product, platform) {
+      var rows = getSampleRows(platform, product);
+      var href = getDetailHref(product);
+      var imgDefault = getGridImageSrc(product);
+      var hasMerchant = fields.indexOf('merchantName') !== -1;
+      var hasBalance = fields.indexOf('balance') !== -1;
+      var hasAmount = fields.indexOf('amount') !== -1;
+      var hasView = fields.indexOf('viewDetails') !== -1;
+      if (!rows.length) {
+        return (
+          '<div class="cards-grid"><p class="text-center" style="padding:32px;color:var(--grey-500);margin:0">No data</p></div>'
+        );
+      }
+      var items = rows
+        .map(function (row) {
+          var nameBlock =
+            hasMerchant && row.merchantName !== undefined
+              ? '<div class="grid-merchant-name">' + escapeHtml(String(row.merchantName)) + '</div>'
+              : '';
+          var rowInner = '';
+          if (hasBalance && row.balance !== undefined) {
+            rowInner += '<div class="grid-balance">' + escapeHtml(formatMoney(row.balance)) + '</div>';
+          } else if (hasAmount && row.amount !== undefined) {
+            rowInner += '<div class="grid-amount-only">' + escapeHtml(formatMoney(row.amount)) + '</div>';
+          }
+          var viewBlock = hasView
+            ? '<span class="grid-view-link">View Details <iconify-icon icon="lucide:eye" width="16"></iconify-icon></span>'
+            : '';
+          return (
+            '<div class="card-grid-item">' +
+            '<a href="' +
+            escapeHtml(href) +
+            '">' +
+            '<div class="card-grid-item-img"><img src="' +
+            escapeHtml(imgDefault) +
+            '" alt="" /></div>' +
+            '<div class="card-grid-item-info">' +
+            nameBlock +
+            '<div class="grid-amount-row">' +
+            rowInner +
+            viewBlock +
+            '</div>' +
+            '</div></a></div>'
+          );
+        })
+        .join('');
+      return '<div class="cards-grid">' + items + '</div>';
+    }
+
+    function buildProductPaneHtml(platform, product) {
+      var s = product.search || {};
+      var vm = product.viewModes || {};
+      var list = vm.list || {};
+      var grid = vm.grid || {};
+      var cols = list.columns || [];
+      var fields = grid.fields || [];
+
+      var toolbar = '<div class="table-toolbar">';
+      if (s.enabled) {
+        toolbar +=
+          '<div class="toolbar-row-mobile">' +
+          '<div class="search-field"><div class="field-container">' +
+          '<iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon>' +
+          '<input type="text" class="field-input mcv2-search-input" placeholder="' +
+          escapeHtml(s.placeholder || '') +
+          '" />' +
+          '</div></div></div>';
+      }
+      toolbar +=
+        '<div class="view-mode-toggle">' +
+        '<button type="button" class="view-btn active" data-mcv2-view="list" title="List view">' +
+        '<iconify-icon icon="solar:list-bold" width="20"></iconify-icon></button>' +
+        '<button type="button" class="view-btn" data-mcv2-view="grid" title="Grid view">' +
+        '<iconify-icon icon="solar:widget-5-bold" width="20"></iconify-icon></button>' +
+        '</div></div>';
+
+      var listHtml = list.enabled
+        ? '<div class="cards-view-list">' + buildListTable(cols, product, list, platform) + '</div>'
+        : '';
+      var gridHtml = grid.enabled
+        ? '<div class="cards-view-grid">' + buildGridHtml(fields, product, platform) + '</div>'
+        : '';
+
+      return toolbar + listHtml + gridHtml;
+    }
+
+    function myCardsV2RenderPlatformTabs() {
+      var el = document.getElementById('platform-tabs');
+      if (!el) return;
+      var html = MY_CARDS_V2_CONFIG.platforms
+        .map(function (p, i) {
+          var active = i === myCardsV2State.platformIndex ? ' active' : '';
+          return (
+            '<div class="tab-item' + active + '" data-platform-index="' + i + '" role="button" tabindex="0">' +
+            escapeHtml(p.name) +
+            '</div>'
+          );
+        })
+        .join('');
+      el.innerHTML = html;
+    }
+
+    function myCardsV2RenderProductTabs() {
+      var el = document.getElementById('product-tabs');
+      if (!el) return;
+      var platform = MY_CARDS_V2_CONFIG.platforms[myCardsV2State.platformIndex];
+      if (!platform || !platform.products.length) {
+        el.innerHTML = '';
+        el.style.display = 'none';
+        return;
+      }
+      el.style.display = 'flex';
+      var html = platform.products
+        .map(function (p, j) {
+          var active = j === myCardsV2State.productIndex ? ' active' : '';
+          return '<div class="product-tab-item' + active + '" data-product-index="' + j + '">' + escapeHtml(p.productName) + '</div>';
+        })
+        .join('');
+      el.innerHTML = html;
+    }
+
+    function myCardsV2RenderActiveProductPane() {
+      var pane = document.getElementById('active-product-pane');
+      if (!pane) return;
+      var platform = MY_CARDS_V2_CONFIG.platforms[myCardsV2State.platformIndex];
+      var product = platform.products[myCardsV2State.productIndex];
+      pane.classList.remove('view-mode-grid');
+      pane.innerHTML = buildProductPaneHtml(platform, product);
+      var rowCount = getSampleRows(platform, product).length;
+      var pag = document.querySelector('.mcv2-shell .pagination-info');
+      if (pag) pag.textContent = rowCount ? '1-' + rowCount + ' of ' + rowCount : '0 of 0';
+      pane.querySelectorAll('[data-mcv2-view]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var mode = btn.getAttribute('data-mcv2-view');
+          var listB = pane.querySelector('[data-mcv2-view="list"]');
+          var gridB = pane.querySelector('[data-mcv2-view="grid"]');
+          if (mode === 'list') {
+            pane.classList.remove('view-mode-grid');
+            if (listB) listB.classList.add('active');
+            if (gridB) gridB.classList.remove('active');
+          } else {
+            pane.classList.add('view-mode-grid');
+            if (gridB) gridB.classList.add('active');
+            if (listB) listB.classList.remove('active');
+          }
+        });
       });
-    }
-
-    function applyMembershipMobileFilter() {
-      // Placeholder for future filter logic
-      closeMembershipMobileFilter();
-    }
-
-    function closeModal(id) {
-      var el = document.getElementById(id);
-      if (el) el.style.display = 'none';
-    }
-
-    function openModal(id) {
-      var el = document.getElementById(id);
-      if (el) el.style.display = 'flex';
       renderLucideIcons();
+    }
+
+    function myCardsV2SelectPlatform(index) {
+      myCardsV2State.platformIndex = index;
+      myCardsV2State.productIndex = 0;
+      myCardsV2RenderPlatformTabs();
+      myCardsV2RenderProductTabs();
+      myCardsV2RenderActiveProductPane();
+      myCardsV2UpdateUrl();
+    }
+
+    function myCardsV2SelectProduct(index) {
+      myCardsV2State.productIndex = index;
+      myCardsV2RenderProductTabs();
+      myCardsV2RenderActiveProductPane();
+      myCardsV2UpdateUrl();
+    }
+
+    function myCardsV2UpdateUrl() {
+      var plats = MY_CARDS_V2_CONFIG.platforms;
+      var p = plats[myCardsV2State.platformIndex];
+      var prod = p.products[myCardsV2State.productIndex];
+      var url = new URL(window.location.href);
+      url.searchParams.set('platform', slugify(p.name));
+      url.searchParams.set('product', slugify(prod.productName));
+      url.searchParams.delete('type');
+      history.replaceState({}, '', url);
+    }
+
+    function myCardsV2InitFromUrl() {
+      var params = new URLSearchParams(window.location.search);
+      var ps = params.get('platform');
+      var prs = params.get('product');
+      if (!ps || !prs) return;
+      var plats = MY_CARDS_V2_CONFIG.platforms;
+      for (var i = 0; i < plats.length; i++) {
+        if (slugify(plats[i].name) === ps) {
+          myCardsV2State.platformIndex = i;
+          var prods = plats[i].products;
+          for (var j = 0; j < prods.length; j++) {
+            if (slugify(prods[j].productName) === prs) {
+              myCardsV2State.productIndex = j;
+              return;
+            }
+          }
+          myCardsV2State.productIndex = 0;
+          return;
+        }
+      }
+    }
+
+    function myCardsV2BindPlatformTabs() {
+      var el = document.getElementById('platform-tabs');
+      if (!el) return;
+      el.addEventListener('click', function (e) {
+        var t = e.target.closest('[data-platform-index]');
+        if (!t) return;
+        myCardsV2SelectPlatform(parseInt(t.getAttribute('data-platform-index'), 10));
+      });
+    }
+
+    function myCardsV2BindProductTabs() {
+      var el = document.getElementById('product-tabs');
+      if (!el) return;
+      el.addEventListener('click', function (e) {
+        var t = e.target.closest('[data-product-index]');
+        if (!t) return;
+        myCardsV2SelectProduct(parseInt(t.getAttribute('data-product-index'), 10));
+      });
+    }
+
+    function getSelectCardTypeModal() {
+      var el = document.getElementById('selectCardTypeModal');
+      if (!el || typeof bootstrap === 'undefined') return null;
+      return bootstrap.Modal.getInstance(el) || new bootstrap.Modal(el);
+    }
+
+    function bindSelectCardTypeModal() {
+      document.querySelectorAll('[data-mcv2-card-type]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var t = btn.getAttribute('data-mcv2-card-type');
+          var modalEl = document.getElementById('selectCardTypeModal');
+          var modal = getSelectCardTypeModal();
+          if (t === 'self-added') {
+            function onHidden() {
+              modalEl.removeEventListener('hidden.bs.modal', onHidden);
+              window.location.href = 'add-card-self-added.html';
+            }
+            if (modalEl) modalEl.addEventListener('hidden.bs.modal', onHidden);
+            if (modal) modal.hide();
+            return;
+          }
+          if (modal) modal.hide();
+          if (t === 'vlinkpay') myCardsV2SelectPlatform(0);
+          else if (t === 'store') myCardsV2SelectPlatform(1);
+        });
+      });
     }
 
     function renderLucideIcons() {
@@ -1438,12 +1701,21 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
+      myCardsV2InitFromUrl();
+      myCardsV2RenderPlatformTabs();
+      myCardsV2RenderProductTabs();
+      myCardsV2RenderActiveProductPane();
+      myCardsV2BindPlatformTabs();
+      myCardsV2BindProductTabs();
+      myCardsV2UpdateUrl();
+      bindSelectCardTypeModal();
       renderLucideIcons();
     });
 
     window.addEventListener('load', renderLucideIcons);
     renderLucideIcons();
   </script>
+
 
 </body>
 

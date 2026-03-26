@@ -1488,7 +1488,7 @@
     }
     const ImageCard = [...Array(50).keys()]
       .map((i) => i + 1)
-      .filter((num) => ![1, 5, 4].includes(num))
+      .filter((num) => ![1, 5, 4, 7, 2, 6, 3].includes(num))
       .map(
         (num) =>
           `https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-${num}.jpg`
@@ -1622,7 +1622,7 @@
           );
         })
         .join('');
-      var gridClass = platform && platform.name === 'Issued on VLINKPAY' ? ' cards-grid--issued-vlinkpay' : '';
+      var gridClass = platform && platform.name === 'Issued on VLINKPAY' ? ' cards-grid--issued-vlinkpay' : platform && platform.name === 'Self-Added' ? ' cards-grid--issued-vlinkpay' : '';
       return '<div class="cards-grid' + gridClass + '">' + items + '</div>';
     }
 
@@ -1647,9 +1647,9 @@
       }
       toolbar +=
         '<div class="view-mode-toggle">' +
-        '<button type="button" class="view-btn active" data-mcv2-view="list" title="List view">' +
+        '<button type="button" class="view-btn" data-mcv2-view="list" title="List view">' +
         '<iconify-icon icon="solar:list-bold" width="20"></iconify-icon></button>' +
-        '<button type="button" class="view-btn" data-mcv2-view="grid" title="Grid view">' +
+        '<button type="button" class="view-btn active" data-mcv2-view="grid" title="Grid view">' +
         '<iconify-icon icon="solar:widget-5-bold" width="20"></iconify-icon></button>' +
         '</div></div>';
 
@@ -1703,7 +1703,7 @@
       if (!pane) return;
       var platform = MY_CARDS_V2_CONFIG.platforms[myCardsV2State.platformIndex];
       var product = platform.products[myCardsV2State.productIndex];
-      pane.classList.remove('view-mode-grid');
+      pane.classList.add('view-mode-grid');
       pane.innerHTML = buildProductPaneHtml(platform, product);
       var rowCount = getSampleRows(platform, product).length;
       var pag = document.querySelector('.mcv2-shell .pagination-info');

@@ -1486,18 +1486,13 @@
           return typeof v === 'number' ? formatMoney(v) : escapeHtml(String(v));
       }
     }
-    const ImageCard = [
-      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-15.jpg',
-      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-27.jpg',
-      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-28.jpg',
-      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-29.jpg',
-      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-30.jpg',
-      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-14.jpg',
-      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-31.jpg',
-      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-32.jpg',
-      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-22.jpg',
-    ]
-
+    const ImageCard = [...Array(50).keys()]
+      .map((i) => i + 1)
+      .filter((num) => ![1, 5, 4].includes(num))
+      .map(
+        (num) =>
+          `https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-${num}.jpg`
+      );
     function getGridFallbackImages(count) {
       var shuffled = ImageCard.slice();
       for (var i = shuffled.length - 1; i > 0; i -= 1) {

@@ -727,6 +727,10 @@
       overflow: hidden;
     }
 
+    .cards-grid.cards-grid--issued-vlinkpay .card-grid-item-img {
+      aspect-ratio: 2/1;
+    }
+
     .card-grid-item-img img {
       width: 100%;
       height: 100%;
@@ -807,7 +811,8 @@
         object-fit: contain;
       }
 
-      .card-grid-item-info .grid-balance {
+      .card-grid-item-info .grid-balance,
+      .card-grid-item-info .grid-amount-only {
         font-size: 12px;
       }
 
@@ -1436,7 +1441,7 @@
       var map = {
         active: { label: 'Active', cls: 'status-active' },
         inactive: { label: 'Inactive', cls: 'status-inactive' },
-        gifted: { label: 'Gifted', cls: 'status-completed' },
+        gifted: { label: 'Gifted', cls: 'status-inactive' },
         available: { label: 'Available', cls: 'status-created' }
       };
       var m = map[status] || { label: status, cls: 'status-completed' };
@@ -1481,6 +1486,32 @@
           return typeof v === 'number' ? formatMoney(v) : escapeHtml(String(v));
       }
     }
+    const ImageCard = [
+      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-15.jpg',
+      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-27.jpg',
+      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-28.jpg',
+      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-29.jpg',
+      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-30.jpg',
+      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-14.jpg',
+      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-31.jpg',
+      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-32.jpg',
+      'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/promotions/GiftCard/Giftcard-TH-22.jpg',
+    ]
+
+    function getGridFallbackImages(count) {
+      var shuffled = ImageCard.slice();
+      for (var i = shuffled.length - 1; i > 0; i -= 1) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = temp;
+      }
+      var result = [];
+      for (var k = 0; k < count; k += 1) {
+        result.push(shuffled[k % shuffled.length]);
+      }
+      return result;
+    }
 
     function getGridImageSrc(product) {
       var key = slugify(product.productName);
@@ -1490,7 +1521,9 @@
       if (key === 'promotion') return 'images/promotion-front.png';
       if (key === 'discount') return 'images/discount-front.png';
       if (key === 'prepaid-card') return 'images/prepaid-front.png';
-      return 'images/giftcard-front.png';
+      if (key === 'gift-card') return 'https://raw.githubusercontent.com/vlink-group/VlinkPay/main/sell-EGift/Cards-v2/GiftCards/GC1-26.jpg';
+      if (key === 'e-gift-code') return 'https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/egift-code/egiftcode.jpg'
+      return '';
     }
 
     function thClassForColumn(column) {
@@ -1550,6 +1583,7 @@
       var rows = getSampleRows(platform, product);
       var href = getDetailHref(product);
       var imgDefault = getGridImageSrc(product);
+      var fallbackImages = imgDefault ? [] : getGridFallbackImages(rows.length);
       var hasMerchant = fields.indexOf('merchantName') !== -1;
       var hasBalance = fields.indexOf('balance') !== -1;
       var hasAmount = fields.indexOf('amount') !== -1;
@@ -1560,7 +1594,8 @@
         );
       }
       var items = rows
-        .map(function (row) {
+        .map(function (row, index) {
+          var imgSrc = imgDefault || fallbackImages[index];
           var nameBlock =
             hasMerchant && row.merchantName !== undefined
               ? '<div class="grid-merchant-name">' + escapeHtml(String(row.merchantName)) + '</div>'
@@ -1580,7 +1615,7 @@
             escapeHtml(href) +
             '">' +
             '<div class="card-grid-item-img"><img src="' +
-            escapeHtml(imgDefault) +
+            escapeHtml(imgSrc) +
             '" alt="" /></div>' +
             '<div class="card-grid-item-info">' +
             nameBlock +
@@ -1592,7 +1627,8 @@
           );
         })
         .join('');
-      return '<div class="cards-grid">' + items + '</div>';
+      var gridClass = platform && platform.name === 'Issued on VLINKPAY' ? ' cards-grid--issued-vlinkpay' : '';
+      return '<div class="cards-grid' + gridClass + '">' + items + '</div>';
     }
 
     function buildProductPaneHtml(platform, product) {

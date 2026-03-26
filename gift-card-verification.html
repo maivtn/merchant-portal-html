@@ -237,6 +237,8 @@
       gap: 8px;
       font-size: 11px;
       color: #637381;
+      background-color: #fff;
+      margin-top: 12px;
     }
 
     .store-badges {
@@ -400,6 +402,7 @@
       font-weight: 600;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+      display: none !important;
     }
 
     .details-header {
@@ -577,6 +580,7 @@
       gap: 12px;
       width: 100%;
       margin-bottom: 12px;
+      display: none !important;
     }
 
     .price-tag {
@@ -2124,11 +2128,14 @@
       }
 
       .details-header {
-        flex-direction: column;
-        align-items: flex-start;
+        /* flex-direction: column;
+        align-items: flex-start; */
         gap: 12px;
       }
 
+      .product-visual-column {
+        gap: 12px;
+      }
 
 
       .table-wrap,
@@ -2370,7 +2377,7 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">PIN <span>*</span></label>
+          <label class="form-label">PIN</label>
           <div class="input-wrapper">
             <input id="pinInput" type="password" class="minimal-input" placeholder="Enter PIN on card" />
             <button class="input-suffix-btn" type="button" aria-label="Toggle PIN visibility" id="pinToggleBtn">
@@ -2566,7 +2573,7 @@
                         </button>
                       </span>
                     </div>
-                    <div class="info-item">
+                    <!-- <div class="info-item">
                       <span class="info-label">Card Holder Name</span>
                       <span class="info-value">CARLOTA MONTEIRO</span>
                     </div>
@@ -2585,7 +2592,7 @@
                     <div class="info-item">
                       <span class="info-label">Phone Number</span>
                       <span class="info-value">+1 (408) 555-1234</span>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
 
@@ -3117,19 +3124,20 @@
         </div>
       </div>
 
-      <footer class="public-footer">
-        <div>© 2024 - VLINKPAY</div>
-        <div class="store-badges">
-          <a href="#" class="store-badge">
-            <img src="https://developer.android.com/images/brand/en_app_rgb_wo_60.png" alt="Get it on Google Play">
-          </a>
-          <a href="#" class="store-badge">
-            <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
-              alt="Download on the App Store">
-          </a>
-        </div>
-      </footer>
+
     </main>
+    <footer class="public-footer">
+      <div>© 2024 - VLINKPAY</div>
+      <div class="store-badges">
+        <a href="#" class="store-badge">
+          <img src="https://developer.android.com/images/brand/en_app_rgb_wo_60.png" alt="Get it on Google Play">
+        </a>
+        <a href="#" class="store-badge">
+          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+            alt="Download on the App Store">
+        </a>
+      </div>
+    </footer>
   </div>
   <!-- ── Modal: Card Info (preview from crypto-card-details-owner) ───────── -->
   <div id="modal-card-info" class="modal-overlay">
@@ -3602,15 +3610,15 @@
       const pinInput = document.getElementById('pinInput');
       const cardVal = (cardInput?.value || '').trim();
       const pinVal = (pinInput?.value || '').trim();
-      if (!cardVal || !pinVal) {
+      if (!cardVal) {
         if (typeof Swal !== 'undefined') {
           Swal.fire({
             icon: 'warning',
             title: 'Missing information',
-            text: 'Please enter Card Number and PIN.',
+            text: 'Please enter Card Number.',
           });
         } else {
-          alert('Please enter Card Number and PIN.');
+          alert('Please enter Card Number.');
         }
         return;
       }

@@ -13,7 +13,6 @@
   <link rel="stylesheet" href="global.css">
   <style>
     body {
-      background: linear-gradient(180deg, #f8fbff 0%, #f4f7fc 100%);
       font-family: "Poppins", sans-serif;
       color: var(--grey-900);
     }
@@ -64,7 +63,7 @@
       background: #fff;
       border: 1px solid #e9eef7;
       border-radius: 20px;
-      box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
+      box-shadow: 0 8px 28px rgba(47, 125, 246, 0.12);
       padding: 24px;
     }
 
@@ -516,6 +515,11 @@
         });
       }
 
+      function isRightAlignedColumn(columnKey) {
+        const key = String(columnKey || "").toLowerCase();
+        return isMoneyColumn(columnKey) || key === "action";
+      }
+
       function buildCell(columnKey, row) {
         const valueCell = row[columnKey];
         if (columnKey === "status" && valueCell && typeof valueCell === "object") {
@@ -541,13 +545,13 @@
         const rows = Array.isArray(view.table.rows) ? view.table.rows : [];
 
         tableHeadRowEl.innerHTML = columns.map(function (col) {
-          const alignClass = isMoneyColumn(col.key) ? "text-end money-col" : "";
+          const alignClass = isRightAlignedColumn(col.key) ? "text-end money-col" : "";
           return '<th class="' + alignClass + '">' + (col.label || "") + "</th>";
         }).join("");
 
         tableBodyEl.innerHTML = rows.map(function (row) {
           const tds = columns.map(function (col) {
-            const alignClass = isMoneyColumn(col.key) ? "text-end money-col" : "";
+            const alignClass = isRightAlignedColumn(col.key) ? "text-end money-col" : "";
             return '<td class="' + alignClass + '">' + buildCell(col.key, row) + "</td>";
           }).join("");
           return "<tr>" + tds + "</tr>";

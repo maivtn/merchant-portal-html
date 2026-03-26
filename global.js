@@ -174,7 +174,7 @@
         },
         { label: "VlinkPay Store", href: "digital-gifts-management.html" },
         { label: "Merchant Map", href: "#" },
-        { label: "Merchant Portal", href: "index.html" },
+        // { label: "Merchant Portal", href: "index.html" },
       ],
     },
     {

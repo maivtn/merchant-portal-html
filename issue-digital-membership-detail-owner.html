@@ -144,6 +144,12 @@
       align-items: flex-start;
     }
 
+    .mode-public .details-header {
+      padding-bottom: 0 !important;
+      border-bottom: none !important;
+      margin-bottom: 0 !important;
+    }
+
     .product-info-header h1 {
       font-size: 24px;
       font-weight: 700;
@@ -2591,6 +2597,21 @@
 
   <script>
     const CURRENT_BALANCE = 200.00; // This would come from your backend/data
+
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('mode') === 'public') {
+        const gridInfo = document.querySelector('.grid-info');
+        const actionButtons = document.querySelector('.action-buttons');
+        const main = document.querySelector('.main');
+        if (main) {
+          main.classList.add('mode-public');
+        }
+
+        if (actionButtons) actionButtons.style.display = 'none';
+        if (gridInfo) gridInfo.style.display = 'none';
+      }
+    })();
 
     function updateExpectedBalance() {
       const reloadAmount = parseFloat(document.getElementById('reloadAmount').value) || 0;

@@ -2594,17 +2594,6 @@
   <script>
     const CURRENT_BALANCE = 200.00; // This would come from your backend/data
 
-    (function () {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('mode') === 'public') {
-        const gridInfo = document.querySelector('.grid-info');
-        const actionButtons = document.querySelector('.action-buttons');
-        document.body.classList.add('mode-public');
-
-        if (actionButtons) actionButtons.style.display = 'none';
-        if (gridInfo) gridInfo.style.display = 'none';
-      }
-    })();
 
     function updateExpectedBalance() {
       const reloadAmount = parseFloat(document.getElementById('reloadAmount').value) || 0;

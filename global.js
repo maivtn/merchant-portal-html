@@ -574,4 +574,16 @@
   // Expose to global scope
   window.toggleSidebar = toggleSidebar;
   window.closeSidebar = closeSidebar;
+
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("mode") === "public") {
+      const gridInfo = document.querySelector(".grid-info");
+      const actionButtons = document.querySelector(".action-buttons");
+      document.body.classList.add("mode-public");
+
+      if (actionButtons) actionButtons.style.display = "none";
+      if (gridInfo) gridInfo.style.display = "none";
+    }
+  })();
 })();

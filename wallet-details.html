@@ -69,7 +69,7 @@
 
     .wallet-head {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
       flex-wrap: wrap;
@@ -106,6 +106,12 @@
 
     .summary-row {
       margin-bottom: 18px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .summary-row {
+        margin-bottom: 8px;
+      }
     }
 
     .summary-balance {
@@ -148,6 +154,41 @@
       font-size: 14px;
       font-weight: 500;
       letter-spacing: .35px;
+    }
+
+    @media (max-width: 767.98px) {
+      .summary-balance {
+        gap: 6px;
+        margin-bottom: 2px;
+        line-height: 1.25;
+      }
+
+      .summary-balance-label {
+        font-size: 12px;
+        margin-right: 0;
+        letter-spacing: 0.2px;
+      }
+
+      .summary-balance-value {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      .summary-value {
+        font-size: 14px;
+        margin-top: 2px;
+        gap: 4px;
+        line-height: 1.25;
+      }
+
+      .summary-value-label {
+        font-size: 12px;
+        letter-spacing: 0.2px;
+      }
     }
 
     .eye-btn {
@@ -293,6 +334,79 @@
       overflow-x: auto;
     }
 
+    .wallet-mobile-list {
+      display: none;
+    }
+
+    .wallet-mobile-item {
+      border-bottom: 1px dashed #e7edf6;
+      padding: 14px 0;
+    }
+
+    .wallet-mobile-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .wallet-mobile-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .wallet-mobile-left-label {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--grey-900);
+    }
+
+    .wallet-mobile-right-value {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.3;
+      text-align: right;
+      color: var(--grey-900);
+    }
+
+    .wallet-mobile-date,
+    .wallet-mobile-condition {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.45;
+      color: var(--grey-600);
+    }
+
+    .wallet-mobile-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .wallet-mobile-amount {
+      font-size: 16;
+      font-weight: 700;
+      line-height: 1.1;
+      text-align: right;
+      color: var(--grey-900);
+    }
+
+    .wallet-mobile-amount .amount {
+      font-size: inherit;
+      font-weight: inherit;
+    }
+
+    .wallet-mobile-empty {
+      padding: 16px 0;
+      font-size: 14px;
+      color: var(--grey-600);
+      text-align: center;
+    }
+
     .table thead th {
       font-size: 12px;
       color: var(--grey-600);
@@ -390,6 +504,112 @@
       .wallet-title {
         font-size: 18px;
       }
+
+      .wallet-tabs {
+        gap: 22px;
+      }
+
+
+
+      .table-wrap {
+        display: none;
+      }
+
+      .wallet-mobile-list {
+        display: block;
+      }
+
+
+    }
+
+    @media (max-width: 767.98px) {
+      .wallet-tabs {
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .wallet-tab-btn {
+        font-size: 12px;
+        padding: 8px 0;
+        min-height: 36px;
+      }
+
+      .wallet-tab-btn.active::after {
+        height: 2px;
+      }
+    }
+
+    /* Mobile: smaller text sizes */
+    .wallet-mobile-left-label {
+      font-size: 12px;
+    }
+
+    .wallet-mobile-right-value {
+      font-size: 12px;
+    }
+
+    .wallet-mobile-amount {
+      font-size: 14px;
+    }
+
+    .wallet-mobile-date,
+    .wallet-mobile-condition {
+      font-size: 12px;
+    }
+
+    .wallet-mobile-condition {
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    .wallet-mobile-bottom .status-pill {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+    }
+
+    .wallet-mobile-bottom .view-btn {
+      font-size: 12px;
+      padding: 2px 4px;
+    }
+
+    .wallet-mobile-bottom .view-btn span {
+      font-size: 12px;
+    }
+
+    .wallet-mobile-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .wallet-mobile-info-left,
+    .wallet-mobile-info-right {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .wallet-mobile-info-left {
+      flex: 1;
+      align-items: flex-start;
+    }
+
+    .wallet-mobile-info-right {
+      flex-shrink: 0;
+      align-items: flex-end;
+    }
+
+    .wallet-mobile-amount {
+      text-align: right;
+      line-height: 1.2;
+    }
+
+    .view-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
   </style>
 </head>
@@ -403,27 +623,31 @@
 
     <div class="wallet-card">
       <div class="wallet-head">
-        <div class="wallet-title">
-          <img id="walletIcon" src="images/usdv-icon.png" alt="Wallet Icon">
-          <span id="walletTitle">USD VLINK</span>
+        <div class="wallet-head-left">
+          <div class="wallet-title">
+            <img id="walletIcon" src="images/usdv-icon.png" alt="Wallet Icon">
+            <span id="walletTitle">USD VLINK</span>
+          </div>
+          <div class="summary-row">
+            <div class="summary-balance">
+              <span class="summary-balance-label">Available Balance:</span>
+              <span class="summary-balance-value">
+                <span id="availableBalance">0</span>
+                <button class="eye-btn" id="toggleBalanceBtn" aria-label="Toggle balance visibility"><i
+                    class="bi bi-eye"></i></button>
+              </span>
+            </div>
+            <div class="summary-value">
+              <span class="summary-value-label">Value:</span>
+              <span id="walletValue" class="text-dark">$0</span>
+            </div>
+          </div>
         </div>
+
         <div class="wallet-actions" id="walletActions"></div>
       </div>
 
-      <div class="summary-row">
-        <div class="summary-balance">
-          <span class="summary-balance-label">Available Balance:</span>
-          <span class="summary-balance-value">
-            <span id="availableBalance">0</span>
-            <button class="eye-btn" id="toggleBalanceBtn" aria-label="Toggle balance visibility"><i
-                class="bi bi-eye"></i></button>
-          </span>
-        </div>
-        <div class="summary-value">
-          <span class="summary-value-label">Value:</span>
-          <span id="walletValue" class="text-dark">$0</span>
-        </div>
-      </div>
+
 
       <div class="wallet-tabs" id="walletTabs"></div>
       <div class="table-wrap">
@@ -434,6 +658,7 @@
           <tbody id="tableBody"></tbody>
         </table>
       </div>
+      <div class="wallet-mobile-list" id="walletMobileList"></div>
       <div class="pagination-wrap">
         <button class="pagination-btn" id="prevPageBtn" disabled>
           <i class="bi bi-chevron-left"></i>
@@ -481,6 +706,7 @@
       const walletTabsEl = document.getElementById("walletTabs");
       const tableHeadRowEl = document.getElementById("tableHeadRow");
       const tableBodyEl = document.getElementById("tableBody");
+      const walletMobileListEl = document.getElementById("walletMobileList");
       const toggleBalanceBtn = document.getElementById("toggleBalanceBtn");
 
       walletTitleEl.textContent = wallet.name || wallet.code || "Wallet";
@@ -535,6 +761,75 @@
         return valueCell == null ? "" : String(valueCell);
       }
 
+      function escapeHtml(text) {
+        return String(text == null ? "" : text)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function getDisplayValue(valueCell) {
+        if (valueCell && typeof valueCell === "object" && valueCell.display) {
+          return valueCell.display;
+        }
+        return valueCell == null ? "" : String(valueCell);
+      }
+
+      function renderMobileRow(viewKey, row) {
+        const typeText = escapeHtml(getDisplayValue(row.type) || "-");
+        const amountRaw = row.amount;
+        const amountText = escapeHtml(getDisplayValue(amountRaw) || "-");
+        const amountClass = amountRaw && typeof amountRaw === "object" && amountRaw.trend
+          ? "amount " + escapeHtml(amountRaw.trend)
+          : "";
+
+        if (viewKey === "bonusHoldings") {
+          const status = row.status && typeof row.status === "object"
+            ? '<span class="status-pill ' + statusClass(row.status) + '">' + escapeHtml(row.status.label || "Holding") + "</span>"
+            : '<span class="status-pill warning">Holding</span>';
+          const condition = escapeHtml(getDisplayValue(row.conditionToUnlock) || "-");
+
+          return '<article class="wallet-mobile-item">'
+            + '<div class="wallet-mobile-top">'
+            + '<div class="wallet-mobile-left-label">Type</div>'
+            + '<div class="wallet-mobile-right-value">' + typeText + "</div>"
+            + "</div>"
+            + '<div class="wallet-mobile-bottom">'
+            + status
+            + '<div class="wallet-mobile-amount">' + amountText + "</div>"
+            + "</div>"
+            + '<div class="wallet-mobile-condition">' + condition + "</div>"
+            + "</article>";
+        }
+
+        const dateText = escapeHtml(getDisplayValue(row.dateTime) || "-");
+        const status = row.status && typeof row.status === "object"
+          ? '<span class="status-pill ' + statusClass(row.status) + '">' + escapeHtml(row.status.label || "Completed") + "</span>"
+          : '<span class="status-pill success">Completed</span>';
+        const actionLabel = row.action && typeof row.action === "object" ? (row.action.label || "View Details") : "View Details";
+
+        return '<article class="wallet-mobile-item">'
+          + '<div class="wallet-mobile-top">'
+          + '<div class="wallet-mobile-left-label">Type</div>'
+          + '<div class="wallet-mobile-right-value">' + typeText + '</div>'
+          + '</div>'
+          + '<div class="wallet-mobile-info-row">'
+          + '<div class="wallet-mobile-info-left">'
+          + '<div class="wallet-mobile-date">' + dateText + '</div>'
+          + status
+          + '</div>'
+          + '<div class="wallet-mobile-info-right">'
+          + '<div class="wallet-mobile-amount"><span class="' + amountClass + '">' + amountText + '</span></div>'
+          + '<button type="button" class="view-btn" aria-label="' + escapeHtml(actionLabel) + '" title="' + escapeHtml(actionLabel) + '">'
+          + '<i class="bi bi-eye"></i><span>View Details</span>'
+          + '</button>'
+          + '</div>'
+          + '</div>'
+          + '</article>';
+      }
+
       function renderTable(view) {
         if (!view || !view.table) {
           tableHeadRowEl.innerHTML = "";
@@ -558,6 +853,21 @@
         }).join("");
       }
 
+      function renderMobileList(view) {
+        if (!view || !view.table) {
+          walletMobileListEl.innerHTML = "";
+          return;
+        }
+        const rows = Array.isArray(view.table.rows) ? view.table.rows : [];
+        if (!rows.length) {
+          walletMobileListEl.innerHTML = '<div class="wallet-mobile-empty">No data available</div>';
+          return;
+        }
+        walletMobileListEl.innerHTML = rows.map(function (row) {
+          return renderMobileRow(view.key, row);
+        }).join("");
+      }
+
       function renderTabs() {
         walletTabsEl.innerHTML = views.map(function (view) {
           const activeClass = activeView && view.key === activeView.key ? "active" : "";
@@ -574,6 +884,7 @@
         activeView = nextView;
         renderTabs();
         renderTable(activeView);
+        renderMobileList(activeView);
       });
 
       toggleBalanceBtn.addEventListener("click", function () {
@@ -591,6 +902,7 @@
 
       renderTabs();
       renderTable(activeView);
+      renderMobileList(activeView);
     })();
   </script>
 </body>

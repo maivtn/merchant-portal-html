@@ -674,6 +674,10 @@
               <span class="summary-value-label">Value:</span>
               <span id="walletValue" class="text-dark">$0</span>
             </div>
+            <div class="summary-value">
+              <span class="summary-value-label"><i class="bi bi-info-circle"></i> Frozen:</span>
+              <span id="walletFrozen" class="text-danger">$0</span>
+            </div>
           </div>
         </div>
 
@@ -730,11 +734,13 @@
       const views = Array.isArray(wallet.views) ? wallet.views : [];
       let activeView = views.find(function (v) { return v.defaultActive; }) || views[0];
       let showBalance = true;
+      const frozen = summary.find(function (s) { return s.key === "frozen"; }) || {};
 
       const walletTitleEl = document.getElementById("walletTitle");
       const walletIconEl = document.getElementById("walletIcon");
       const availableBalanceEl = document.getElementById("availableBalance");
       const walletValueEl = document.getElementById("walletValue");
+      const walletFrozenEl = document.getElementById("walletFrozen");
       const walletActionsEl = document.getElementById("walletActions");
       const walletTabsEl = document.getElementById("walletTabs");
       const tableHeadRowEl = document.getElementById("tableHeadRow");
@@ -747,6 +753,7 @@
       walletIconEl.alt = wallet.name || "Wallet icon";
       availableBalanceEl.textContent = available.display || "0";
       walletValueEl.textContent = value.display || "$0";
+      walletFrozenEl.textContent = frozen.display || "$0";
 
       const actions = Array.isArray(wallet.actions) ? wallet.actions : [];
       function getActionIconClass(label) {

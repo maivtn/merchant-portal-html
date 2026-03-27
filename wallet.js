@@ -32,6 +32,13 @@
             unit: "USD",
             display: "$7,207.92",
           },
+          {
+            key: "frozen",
+            label: "Frozen",
+            value: 6822.88,
+            unit: "USDV",
+            display: "6,822.88 USDV",
+          },
         ],
         actions: [
           {
@@ -52,6 +59,7 @@
             table: {
               columns: [
                 { key: "type", label: "Type" },
+                { key: "paymentMethod", label: "Payment Method" },
                 { key: "amount", label: "Amount" },
                 { key: "dateTime", label: "Date & Time" },
                 { key: "status", label: "Status" },
@@ -60,7 +68,8 @@
               rows: [
                 {
                   id: "usdv-tx-001",
-                  type: "Transfer",
+                  type: "Buy Membership Package",
+                  paymentMethod: "USDV",
                   amount: {
                     value: -98.5,
                     display: "-$98.5",
@@ -82,7 +91,8 @@
                 },
                 {
                   id: "usdv-tx-002",
-                  type: "Transfer",
+                  type: "Buy Membership Package",
+                  paymentMethod: "USDV",
                   amount: {
                     value: -98.5,
                     display: "-$98.5",
@@ -105,6 +115,7 @@
                 {
                   id: "usdv-tx-003",
                   type: "Buy E-gift Code",
+                  paymentMethod: "USDV",
                   amount: {
                     value: -500,
                     display: "-$500",
@@ -127,6 +138,7 @@
                 {
                   id: "usdv-tx-004",
                   type: "Send Gift",
+                  paymentMethod: "USDV",
                   amount: {
                     value: -50,
                     display: "-$50",
@@ -149,6 +161,7 @@
                 {
                   id: "usdv-tx-005",
                   type: "IOU Package",
+                  paymentMethod: "USDV",
                   amount: {
                     value: 101.25,
                     display: "+$101.25",
@@ -170,7 +183,8 @@
                 },
                 {
                   id: "usdv-tx-006",
-                  type: "Received",
+                  type: "IOU Package",
+                  paymentMethod: "USDV",
                   amount: {
                     value: 43.25,
                     display: "+$43.25",
@@ -192,7 +206,8 @@
                 },
                 {
                   id: "usdv-tx-007",
-                  type: "Buy USDV",
+                  type: "IOU Package",
+                  paymentMethod: "USDV",
                   amount: {
                     value: 100,
                     display: "+$100",

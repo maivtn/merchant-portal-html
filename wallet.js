@@ -288,20 +288,6 @@
                     tone: "warning",
                   },
                 },
-                {
-                  id: "usdv-bonus-004",
-                  type: "F1 bonus (50%) from direct member quanpmref01",
-                  amount: {
-                    value: 75,
-                    display: "75 USDV",
-                  },
-                  conditionToUnlock: "Active an IOU package",
-                  status: {
-                    key: "holding",
-                    label: "Holding",
-                    tone: "warning",
-                  },
-                },
               ],
             },
           },

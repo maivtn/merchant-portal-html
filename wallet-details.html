@@ -637,6 +637,33 @@
       margin-right: 2px;
     }
 
+    .tippy-box[data-theme~='wallet-tooltip'] {
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.4;
+      padding: 6px 8px;
+      box-shadow: 0 6px 20px rgba(17, 24, 39, 0.25);
+      max-width: 260px;
+    }
+
+    .tippy-box[data-theme~='wallet-tooltip'][data-placement^='top']>.tippy-arrow::before {
+      border-top-color: #111827;
+    }
+
+    .tippy-box[data-theme~='wallet-tooltip'][data-placement^='bottom']>.tippy-arrow::before {
+      border-bottom-color: #111827;
+    }
+
+    .tippy-box[data-theme~='wallet-tooltip'][data-placement^='left']>.tippy-arrow::before {
+      border-left-color: #111827;
+    }
+
+    .tippy-box[data-theme~='wallet-tooltip'][data-placement^='right']>.tippy-arrow::before {
+      border-right-color: #111827;
+    }
+
     .wallet-top-title {
       flex: 1;
     }
@@ -668,7 +695,7 @@
       <div class="wallet-head">
         <div class="wallet-head-left">
           <div class="wallet-title">
-            <img id="walletIcon" src="images/usdv-icon.png" alt="Wallet Icon">
+            <img id="walletIcon" src="images/usdv.png" alt="Wallet Icon">
             <span id="walletTitle">USD VLINK</span>
           </div>
           <div class="summary-row">
@@ -722,7 +749,8 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy-bundle.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js"></script>
   <script src="wallet.js"></script>
   <script>
     (function () {
@@ -772,7 +800,7 @@
         window.tippy(frozenInfoTooltipEl, {
           content: "Frozen balance is temporarily locked and cannot be used until released.",
           placement: "top",
-          theme: "light-border",
+          theme: "wallet-tooltip",
           arrow: true
         });
       }

@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="global.css" />
   <style>
     body.sign-in-page {
@@ -400,6 +401,7 @@
   <!-- Modal: Forgot PIN (Reset PIN) -->
   <div id="forgotPinModal" class="modal-overlay" aria-hidden="true">
     <div class="modal-content" onclick="event.stopPropagation()" style="max-width:400px;">
+
       <div class="modal-header">
         <span class="modal-title">Forgot PIN</span>
         <button type="button" class="modal-close-btn" onclick="closeForgotPinModal()" aria-label="Close">
@@ -407,6 +409,7 @@
         </button>
       </div>
       <p class="modal-subtitle" style="margin-top:0;">Enter your email to receive an OTP and set a new PIN.</p>
+
       <div class="modal-body">
         <div class="signin-field">
           <label for="forgotPinEmail">Email <span style="color:var(--error-main);">*</span></label>
@@ -414,26 +417,6 @@
         </div>
         <button type="button" class="signin-btn" id="sendForgotPinOtpBtn" onclick="sendForgotPinOtp()"
           style="margin-bottom:16px;">Send OTP</button>
-        <div id="forgotPinOtpGroup" style="display:none;">
-          <div class="signin-field">
-            <label for="forgotPinOtp">OTP <span style="color:var(--error-main);">*</span></label>
-            <input type="text" id="forgotPinOtp" placeholder="Enter OTP from email" maxlength="6" inputmode="numeric" />
-          </div>
-          <div class="signin-field">
-            <label for="forgotPinNewPin">New PIN <span style="color:var(--error-main);">*</span></label>
-            <input type="password" id="forgotPinNewPin" placeholder="Enter new PIN" maxlength="8" inputmode="numeric" />
-          </div>
-          <div class="signin-field">
-            <label for="forgotPinConfirmPin">Confirm New PIN <span style="color:var(--error-main);">*</span></label>
-            <input type="password" id="forgotPinConfirmPin" placeholder="Confirm new PIN" maxlength="8"
-              inputmode="numeric" />
-          </div>
-          <div style="display:flex;gap:12px;margin-top:16px;">
-            <button type="button" class="signin-btn" style="flex:1;background:var(--grey-500);"
-              onclick="closeForgotPinModal()">Cancel</button>
-            <button type="button" class="signin-btn" style="flex:1;" onclick="submitForgotPinReset()">Reset PIN</button>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -501,7 +484,16 @@
       var email = (document.getElementById('forgotPinEmail').value || '').trim();
       if (!email) { alert('Please enter your email to receive OTP.'); return; }
       document.getElementById('sendForgotPinOtpBtn').disabled = true;
-      alert('OTP has been sent to ' + email + ' (demo).');
+      if (typeof Swal !== 'undefined') {
+        closeForgotPinModal();
+        Swal.fire({
+          icon: 'success',
+          title: 'OTP sent',
+          text: 'The OTP code has been sent to email ' + email
+        });
+      } else {
+        alert('The OTP code has been sent to email ' + email);
+      }
       document.getElementById('forgotPinOtpGroup').style.display = 'block';
       setTimeout(function () {
         document.getElementById('forgotPinOtp').value = '1234';

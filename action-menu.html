@@ -25,363 +25,272 @@
             font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
+        /*  */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
         .action-bar {
-            background-color: #fff;
             display: flex;
-            gap: 8px;
             align-items: center;
+            gap: 8px;
             width: 100%;
-            max-width: 900px;
             padding: 20px;
+            background: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .button-item {
+        .action-bar__item {
             display: flex;
-            flex: 1 0 0;
+            flex: 1 1 0;
             flex-direction: column;
-            gap: 8px;
             align-items: center;
-            min-height: 1px;
-            min-width: 1px;
-            transition: opacity 0.3s;
+            gap: 8px;
+            min-width: 0;
+            padding: 0;
+            border: 0;
+            background: transparent;
             cursor: pointer;
+            transition: opacity 0.25s ease;
         }
 
-        .button-item:hover {
-            opacity: 0.8;
+        .action-bar__item:hover {
+            opacity: 0.85;
         }
 
-        .button-icon {
-            position: relative;
-            border-radius: 16px;
-            flex-shrink: 0;
-            width: 48px;
-            height: 48px;
+        .action-bar__icon {
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            flex-shrink: 0;
         }
 
-        .button-label {
-            flex: 1 0 0;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 500;
-            line-height: 15px;
-            min-height: 1px;
-            min-width: 1px;
-            font-style: normal;
+        .action-bar__icon svg {
+            width: 20px;
+            height: 20px;
+            display: block;
+        }
+
+        .action-bar__label {
             color: #6a7282;
             font-size: 11px;
+            font-weight: 500;
+            line-height: 1.35;
             text-align: center;
         }
 
-        .button-item--sms .button-icon {
-            box-shadow: 0px 4px 6px 0px #ede9fe, 0px 2px 4px 0px #ede9fe;
-            background-image: linear-gradient(135deg, #ede9fe 0%, #f5f3ff 100%);
+        .action-bar__item--sms {
+            color: #7f22fe;
         }
 
-        .button-item--email .button-icon {
-            box-shadow: 0px 4px 6px 0px #dff2fe, 0px 2px 4px 0px #dff2fe;
-            background-image: linear-gradient(135deg, #dff2fe 0%, #f0f9ff 100%);
+        .action-bar__item--sms .action-bar__icon {
+            background: linear-gradient(135deg, #ede9fe 0%, #f5f3ff 100%);
+            box-shadow: 0 4px 6px #ede9fe, 0 2px 4px #ede9fe;
         }
 
-        .button-item--print .button-icon {
-            box-shadow: 0px 4px 6px 0px #fef3c6, 0px 2px 4px 0px #fef3c6;
-            background-image: linear-gradient(135deg, #fef3c6 0%, #fffbeb 100%);
+        .action-bar__item--email {
+            color: #0084d1;
         }
 
-        .button-item--download .button-icon {
-            box-shadow: 0px 4px 6px 0px #d0fae5, 0px 2px 4px 0px #d0fae5;
-            background-image: linear-gradient(135deg, #d0fae5 0%, #ecfdf5 100%);
+        .action-bar__item--email .action-bar__icon {
+            background: linear-gradient(135deg, #dff2fe 0%, #f0f9ff 100%);
+            box-shadow: 0 4px 6px #dff2fe, 0 2px 4px #dff2fe;
         }
 
-        .button-item--reload .button-icon {
-            box-shadow: 0px 4px 6px 0px #dbeafe, 0px 2px 4px 0px #dbeafe;
-            background-image: linear-gradient(135deg, #dbeafe 0%, #eef2ff 100%);
+        .action-bar__item--print {
+            color: #e17100;
         }
 
-        .button-item--edit .button-icon {
-            box-shadow: 0px 4px 6px 0px #e0e7ff, 0px 2px 4px 0px #e0e7ff;
-            background-image: linear-gradient(135deg, #e0e7ff 0%, #eff6ff 100%);
+        .action-bar__item--print .action-bar__icon {
+            background: linear-gradient(135deg, #fef3c6 0%, #fffbeb 100%);
+            box-shadow: 0 4px 6px #fef3c6, 0 2px 4px #fef3c6;
         }
 
-        .button-item--withdraw .button-icon {
-            box-shadow: 0px 4px 6px 0px #cbfbf1, 0px 2px 4px 0px #cbfbf1;
-            background-image: linear-gradient(135deg, #cbfbf1 0%, #ecfdf5 100%);
+        .action-bar__item--download {
+            color: #009966;
         }
 
-        .button-item--qr .button-icon {
-            box-shadow: 0px 4px 6px 0px #fae8ff, 0px 2px 4px 0px #fae8ff;
-            background-image: linear-gradient(135deg, #fae8ff 0%, #fdf2f8 100%);
+        .action-bar__item--download .action-bar__icon {
+            background: linear-gradient(135deg, #d0fae5 0%, #ecfdf5 100%);
+            box-shadow: 0 4px 6px #d0fae5, 0 2px 4px #d0fae5;
+        }
+
+        .action-bar__item--reload,
+        .action-bar__item--swap {
+            color: #155dfc;
+        }
+
+        .action-bar__item--reload .action-bar__icon,
+        .action-bar__item--swap .action-bar__icon {
+            background: linear-gradient(135deg, #dbeafe 0%, #eef2ff 100%);
+            box-shadow: 0 4px 6px #dbeafe, 0 2px 4px #dbeafe;
+        }
+
+        .action-bar__item--edit {
+            color: #4f39f6;
+        }
+
+        .action-bar__item--edit .action-bar__icon {
+            background: linear-gradient(135deg, #e0e7ff 0%, #eff6ff 100%);
+            box-shadow: 0 4px 6px #e0e7ff, 0 2px 4px #e0e7ff;
+        }
+
+        .action-bar__item--withdraw {
+            color: #009689;
+        }
+
+        .action-bar__item--withdraw .action-bar__icon {
+            background: linear-gradient(135deg, #cbfbf1 0%, #ecfdf5 100%);
+            box-shadow: 0 4px 6px #cbfbf1, 0 2px 4px #cbfbf1;
+        }
+
+        .action-bar__item--qr {
+            color: #c800de;
+        }
+
+        .action-bar__item--qr .action-bar__icon {
+            background: linear-gradient(135deg, #fae8ff 0%, #fdf2f8 100%);
+            box-shadow: 0 4px 6px #fae8ff, 0 2px 4px #fae8ff;
+        }
+
+        .action-bar__item--sms:hover .action-bar__icon {
+            box-shadow: 0 8px 16px rgba(127, 34, 254, 0.18);
+        }
+
+        .action-bar__item--email:hover .action-bar__icon {
+            box-shadow: 0 8px 16px rgba(0, 132, 209, 0.18);
+        }
+
+        .action-bar__item--print:hover .action-bar__icon {
+            box-shadow: 0 8px 16px rgba(225, 113, 0, 0.18);
+        }
+
+        .action-bar__item--download:hover .action-bar__icon {
+            box-shadow: 0 8px 16px rgba(0, 153, 102, 0.18);
+        }
+
+        .action-bar__item--reload:hover .action-bar__icon,
+        .action-bar__item--swap:hover .action-bar__icon {
+            box-shadow: 0 8px 16px rgba(21, 93, 252, 0.18);
+        }
+
+        .action-bar__item--edit:hover .action-bar__icon {
+            box-shadow: 0 8px 16px rgba(79, 57, 246, 0.18);
+        }
+
+        .action-bar__item--withdraw:hover .action-bar__icon {
+            box-shadow: 0 8px 16px rgba(0, 150, 137, 0.18);
+        }
+
+        .action-bar__item--qr:hover .action-bar__icon {
+            box-shadow: 0 8px 16px rgba(200, 0, 222, 0.18);
+        }
+
+        @media (max-width: 768px) {
+            .action-bar {
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 16px;
+            }
+
+            .action-bar__item {
+                flex: 0 0 calc(25% - 8px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .action-bar {
+                gap: 12px 8px;
+            }
+
+            .action-bar__item {
+                flex: 0 0 calc(33.333% - 6px);
+            }
+
+            .action-bar__icon {
+                width: 44px;
+                height: 44px;
+                border-radius: 14px;
+            }
+
+            .action-bar__label {
+                font-size: 10px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div data-name="Navigation/Bottom-Bar" class="action-bar">
 
-        <!-- Send SMS Button -->
-        <div class="button-item button-item--sms" data-name="button">
-            <div data-name="div" class="button-icon">
-                <div class="button-icon-inner">
-                    <div data-name="Icon" style="position: relative; flex-shrink: 0; width: 20px; height: 20px;">
-                        <svg style="position: absolute; display: block; width: 100%; height: 100%;" fill="none"
-                            preserveAspectRatio="none" viewBox="0 0 20 20">
-                            <g id="Icon">
-                                <path
-                                    d="M17.5 12.5C17.5 12.942 17.3244 13.366 17.0118 13.6785C16.6993 13.9911 16.2754 14.1667 15.8333 14.1667H5.83333L2.5 17.5V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H15.8333C16.2754 2.5 16.6993 2.67559 17.0118 2.98816C17.3244 3.30072 17.5 3.72464 17.5 4.16667V12.5Z"
-                                    id="Vector" stroke="#7F22FE" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div data-name="span" style="position: relative; flex-shrink: 0; width: 100%;">
-                <div class="button-icon-inner">
-                    <p class="button-label">Send SMS</p>
-                </div>
-            </div>
-        </div>
+    <div class="action-bar">
+        <button class="action-bar__item action-bar__item--sms" type="button">
+            <span class="action-bar__icon">
+                <img src="assets/icons/actions/sms.svg" alt="Send SMS" />
+            </span>
+            <span class="action-bar__label">Send SMS</span>
+        </button>
 
-        <!-- Send Email Button -->
-        <div class="button-item button-item--email" data-name="button">
-            <div data-name="div" class="button-icon">
-                <div class="button-icon-inner">
-                    <div data-name="Icon" style="position: relative; flex-shrink: 0; width: 20px; height: 20px;">
-                        <svg style="position: absolute; display: block; width: 100%; height: 100%;" fill="none"
-                            preserveAspectRatio="none" viewBox="0 0 20 20">
-                            <g id="Icon">
-                                <path
-                                    d="M16.6667 3.33333H3.33333C2.41286 3.33333 1.66667 4.07953 1.66667 5V15C1.66667 15.9205 2.41286 16.6667 3.33333 16.6667H16.6667C17.5871 16.6667 18.3333 15.9205 18.3333 15V5C18.3333 4.07953 17.5871 3.33333 16.6667 3.33333Z"
-                                    id="Vector" stroke="#0084D1" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                                <path
-                                    d="M18.3333 5.83333L10.8583 10.5833C10.6011 10.7445 10.3036 10.83 10 10.83C9.6964 10.83 9.39894 10.7445 9.14167 10.5833L1.66667 5.83333"
-                                    id="Vector_2" stroke="#0084D1" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div data-name="span" style="position: relative; flex-shrink: 0; width: 100%;">
-                <div class="button-icon-inner">
-                    <p class="button-label">Send Email</p>
-                </div>
-            </div>
-        </div>
+        <button class="action-bar__item action-bar__item--email" type="button">
+            <span class="action-bar__icon">
+                <img src="assets/icons/actions/email.svg" alt="Send Email" />
+            </span>
+            <span class="action-bar__label">Send Email</span>
+        </button>
 
-        <!-- Print Button -->
-        <div class="button-item button-item--print" data-name="button">
-            <div data-name="div" class="button-icon">
-                <div class="button-icon-inner">
-                    <div data-name="Icon" style="position: relative; flex-shrink: 0; width: 20px; height: 20px;">
-                        <svg style="position: absolute; display: block; width: 100%; height: 100%;" fill="none"
-                            preserveAspectRatio="none" viewBox="0 0 20 20">
-                            <g clip-path="url(#clip0_1_525)" id="Icon">
-                                <path
-                                    d="M5 15H3.33333C2.89131 15 2.46738 14.8244 2.15482 14.5118C1.84226 14.1993 1.66667 13.7754 1.66667 13.3333V9.16667C1.66667 8.72464 1.84226 8.30072 2.15482 7.98816C2.46738 7.6756 2.89131 7.5 3.33333 7.5H16.6667C17.1087 7.5 17.5326 7.6756 17.8452 7.98816C18.1577 8.30072 18.3333 8.72464 18.3333 9.16667V13.3333C18.3333 13.7754 18.1577 14.1993 17.8452 14.5118C17.5326 14.8244 17.1087 15 16.6667 15H15"
-                                    id="Vector" stroke="#E17100" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                                <path
-                                    d="M5 7.5V2.5C5 2.27899 5.0878 2.06702 5.24408 1.91074C5.40036 1.75446 5.61232 1.66667 5.83333 1.66667H14.1667C14.3877 1.66667 14.5996 1.75446 14.7559 1.91074C14.9122 2.06702 15 2.27899 15 2.5V7.5"
-                                    id="Vector_2" stroke="#E17100" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                                <path
-                                    d="M14.1667 11.6667H5.83333C5.3731 11.6667 5 12.0398 5 12.5V17.5C5 17.9602 5.3731 18.3333 5.83333 18.3333H14.1667C14.6269 18.3333 15 17.9602 15 17.5V12.5C15 12.0398 14.6269 11.6667 14.1667 11.6667Z"
-                                    id="Vector_3" stroke="#E17100" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_1_525">
-                                    <rect fill="white" height="20" width="20" />
-                                </clipPath>
-                            </defs>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div data-name="span" style="height: 15px; position: relative; flex-shrink: 0; width: 100%;">
-                <div class="button-icon-inner">
-                    <p class="button-label">Print</p>
-                </div>
-            </div>
-        </div>
+        <button class="action-bar__item action-bar__item--print" type="button">
+            <span class="action-bar__icon">
+                <img src="assets/icons/actions/print.svg" alt="Print" />
+            </span>
+            <span class="action-bar__label">Print</span>
+        </button>
 
-        <!-- Download Button -->
-        <div class="button-item button-item--download" data-name="button">
-            <div data-name="div" class="button-icon">
-                <div class="button-icon-inner">
-                    <div data-name="Icon" style="position: relative; flex-shrink: 0; width: 20px; height: 20px;">
-                        <svg style="position: absolute; display: block; width: 100%; height: 100%;" fill="none"
-                            preserveAspectRatio="none" viewBox="0 0 20 20">
-                            <g id="Icon">
-                                <path
-                                    d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5"
-                                    id="Vector" stroke="#009966" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                                <path d="M5.83333 8.33333L10 12.5L14.1667 8.33333" id="Vector_2" stroke="#009966"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                                <path d="M10 12.5V2.5" id="Vector_3" stroke="#009966" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" />
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div data-name="span" style="height: 15px; position: relative; flex-shrink: 0; width: 100%;">
-                <div class="button-icon-inner">
-                    <p class="button-label">Download</p>
-                </div>
-            </div>
-        </div>
+        <button class="action-bar__item action-bar__item--download" type="button">
+            <span class="action-bar__icon">
+                <img src="assets/icons/actions/download.svg" alt="Download" />
+            </span>
+            <span class="action-bar__label">Download</span>
+        </button>
 
-        <!-- Reload Button -->
-        <div class="button-item button-item--reload" data-name="reload">
-            <div data-name="div" class="button-icon">
-                <div class="button-icon-inner">
-                    <div data-name="RefreshCw" style="position: relative; flex-shrink: 0; width: 20px; height: 20px;">
-                        <svg style="position: absolute; display: block; width: 100%; height: 100%;" fill="none"
-                            preserveAspectRatio="none" viewBox="0 0 20 20">
-                            <g id="RefreshCw">
-                                <path
-                                    d="M2.5 10C2.5 8.01088 3.29018 6.10322 4.6967 4.6967C6.10322 3.29018 8.01088 2.5 10 2.5C12.0967 2.50789 14.1092 3.32602 15.6167 4.78333L17.5 6.66667"
-                                    id="Vector" stroke="#155DFC" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                                <path d="M17.5 2.5V6.66667H13.3333" id="Vector_2" stroke="#155DFC"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                                <path
-                                    d="M17.5 10C17.5 11.9891 16.7098 13.8968 15.3033 15.3033C13.8968 16.7098 11.9891 17.5 10 17.5C7.90329 17.4921 5.89081 16.674 4.38333 15.2167L2.5 13.3333"
-                                    id="Vector_3" stroke="#155DFC" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                                <path d="M6.66667 13.3333H2.5V17.5" id="Vector_4" stroke="#155DFC"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div data-name="span" style="height: 15px; position: relative; flex-shrink: 0; width: 100%;">
-                <div class="button-icon-inner">
-                    <p class="button-label">Reload</p>
-                </div>
-            </div>
-        </div>
+        <button class="action-bar__item action-bar__item--reload" type="button">
+            <span class="action-bar__icon">
+                <img src="assets/icons/actions/reload.svg" alt="Reload" />
+            </span>
+            <span class="action-bar__label">Reload</span>
+        </button>
 
-        <!-- Edit Button -->
-        <div class="button-item button-item--edit" data-name="edit">
-            <div data-name="div" class="button-icon">
-                <div class="button-icon-inner">
-                    <div data-name="Icon" style="position: relative; flex-shrink: 0; width: 20px; height: 20px;">
-                        <svg style="position: absolute; display: block; width: 100%; height: 100%;" fill="none"
-                            preserveAspectRatio="none" viewBox="0 0 20 20">
-                            <g clip-path="url(#clip0_1_152)" id="Icon">
-                                <path
-                                    d="M17.645 5.67667C18.0856 5.23619 18.3332 4.63872 18.3332 4.01571C18.3333 3.3927 18.0859 2.79517 17.6454 2.35458C17.2049 1.91399 16.6075 1.66643 15.9845 1.66635C15.3614 1.66627 14.7639 1.91369 14.3233 2.35417L3.20167 13.4783C3.00818 13.6713 2.86509 13.9088 2.785 14.17L1.68417 17.7967C1.66263 17.8687 1.661 17.9453 1.67946 18.0182C1.69792 18.0911 1.73577 18.1577 1.789 18.2108C1.84223 18.264 1.90885 18.3017 1.9818 18.3201C2.05475 18.3384 2.1313 18.3367 2.20333 18.315L5.83083 17.215C6.09181 17.1356 6.32931 16.9934 6.5225 16.8008L17.645 5.67667Z"
-                                    id="Vector" stroke="#4F39F6" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                                <path d="M12.5 4.16667L15.8333 7.5" id="Vector_2" stroke="#4F39F6"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_1_152">
-                                    <rect fill="white" height="20" width="20" />
-                                </clipPath>
-                            </defs>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div data-name="span" style="height: 15px; position: relative; flex-shrink: 0; width: 100%;">
-                <div class="button-icon-inner">
-                    <p class="button-label">Edit</p>
-                </div>
-            </div>
-        </div>
+        <button class="action-bar__item action-bar__item--swap" type="button">
+            <span class="action-bar__icon">
+                <img src="assets/icons/actions/swap.svg" alt="Swap" />
+            </span>
+            <span class="action-bar__label">Swap</span>
+        </button>
 
-        <!-- Withdraw Button -->
-        <div class="button-item button-item--withdraw" data-name="Withdraw">
-            <div data-name="div" class="button-icon">
-                <div class="button-icon-inner">
-                    <div data-name="Icon" style="position: relative; flex-shrink: 0; width: 20px; height: 20px;">
-                        <svg style="position: absolute; display: block; width: 100%; height: 100%;" fill="none"
-                            preserveAspectRatio="none" viewBox="0 0 20 20">
-                            <g id="Icon">
-                                <path d="M10 14.1667V2.5" id="Vector" stroke="#009689" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" />
-                                <path d="M5 9.16667L10 14.1667L15 9.16667" id="Vector_2" stroke="#009689"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                                <path d="M15.8333 17.5H4.16667" id="Vector_3" stroke="#009689" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" />
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div data-name="span" style="height: 15px; position: relative; flex-shrink: 0; width: 100%;">
-                <div class="button-icon-inner">
-                    <p class="button-label">Withdraw</p>
-                </div>
-            </div>
-        </div>
+        <button class="action-bar__item action-bar__item--edit" type="button">
+            <span class="action-bar__icon">
+                <img src="assets/icons/actions/edit.svg" alt="Edit" />
+            </span>
+            <span class="action-bar__label">Edit</span>
+        </button>
 
-        <!-- View QR Button -->
-        <div class="button-item button-item--qr" data-name="qr">
-            <div data-name="div" class="button-icon">
-                <div style="background-clip: padding-box; border: 0; border-color: transparent; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
-                    <div data-name="Icon" style="position: relative; flex-shrink: 0; width: 20px; height: 20px;">
-                        <svg style="position: absolute; display: block; width: 100%; height: 100%;" fill="none"
-                            preserveAspectRatio="none" viewBox="0 0 20 20">
-                            <g id="Icon">
-                                <path
-                                    d="M5.83333 2.5H3.33333C2.8731 2.5 2.5 2.8731 2.5 3.33333V5.83333C2.5 6.29357 2.8731 6.66667 3.33333 6.66667H5.83333C6.29357 6.66667 6.66667 6.29357 6.66667 5.83333V3.33333C6.66667 2.8731 6.29357 2.5 5.83333 2.5Z"
-                                    id="Vector" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                                <path
-                                    d="M16.6667 2.5H14.1667C13.7064 2.5 13.3333 2.8731 13.3333 3.33333V5.83333C13.3333 6.29357 13.7064 6.66667 14.1667 6.66667H16.6667C17.1269 6.66667 17.5 6.29357 17.5 5.83333V3.33333C17.5 2.8731 17.1269 2.5 16.6667 2.5Z"
-                                    id="Vector_2" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                                <path
-                                    d="M5.83333 13.3333H3.33333C2.8731 13.3333 2.5 13.7064 2.5 14.1667V16.6667C2.5 17.1269 2.8731 17.5 3.33333 17.5H5.83333C6.29357 17.5 6.66667 17.1269 6.66667 16.6667V14.1667C6.66667 13.7064 6.29357 13.3333 5.83333 13.3333Z"
-                                    id="Vector_3" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                                <path
-                                    d="M17.5 13.3333H15C14.558 13.3333 14.134 13.5089 13.8215 13.8215C13.5089 14.134 13.3333 14.558 13.3333 15V17.5"
-                                    id="Vector_4" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                                <path d="M17.5 17.5V17.5083" id="Vector_5" stroke="#C800DE" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" />
-                                <path
-                                    d="M10 5.83333V8.33333C10 8.77536 9.82441 9.19928 9.51184 9.51184C9.19928 9.82441 8.77536 10 8.33333 10H5.83333"
-                                    id="Vector_6" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="1.5" />
-                                <path d="M2.5 10H2.50833" id="Vector_7" stroke="#C800DE" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" />
-                                <path d="M10 2.5H10.0083" id="Vector_8" stroke="#C800DE" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" />
-                                <path d="M10 13.3333V13.3417" id="Vector_9" stroke="#C800DE" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" />
-                                <path d="M13.3333 10H14.1667" id="Vector_10" stroke="#C800DE" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" />
-                                <path d="M17.5 10V10.0083" id="Vector_11" stroke="#C800DE" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" />
-                                <path d="M10 17.5V16.6667" id="Vector_12" stroke="#C800DE" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="1.5" />
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div data-name="span" style="height: 15px; position: relative; flex-shrink: 0; width: 100%;">
-                <div style="background-clip: padding-box; border: 0; border-color: transparent; display: flex; align-items: flex-start; width: 100%; height: 100%;">
-                    <p class="button-label">View QR</p>
-                </div>
-            </div>
-        </div>
+        <button class="action-bar__item action-bar__item--withdraw" type="button">
+            <span class="action-bar__icon">
+                <img src="assets/icons/actions/withdraw.svg" alt="Withdraw" />
+            </span>
+            <span class="action-bar__label">Withdraw</span>
+        </button>
 
+        <button class="action-bar__item action-bar__item--qr" type="button">
+            <span class="action-bar__icon">
+                <img src="assets/icons/actions/qrcode.svg" alt="View QR" />
+            </span>
+            <span class="action-bar__label">View QR</span>
+        </button>
     </div>
 </body>
 

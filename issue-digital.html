@@ -107,15 +107,15 @@
        DESIGN TOKENS
     ═══════════════════════════════════════════════════════ */
     :root {
-      --c-primary: #00A76F;
-      --c-primary-low: rgba(0, 167, 111, 0.08);
-      --c-primary-border: rgba(0, 167, 111, 0.28);
+      --c-primary: var(--primary-main);
+      --c-primary-low: var(--background-hover-opacity);
+      --c-primary-border: var(--background-hover-opacity-strong);
       --c-border: #e2e8f0;
       --c-surface: #ffffff;
       --c-surface-subtle: #f8fafc;
-      --c-text-1: #212B36;
-      --c-text-2: #454F5B;
-      --c-text-3: #637381;
+      --c-text-1: var(--grey-900);
+      --c-text-2: var(--grey-500);
+      --c-text-3: var(--grey-600);
       --radius-xs: 6px;
       --radius-sm: 8px;
       --radius-md: 12px;
@@ -1273,10 +1273,10 @@
     }
 
     .ai-textarea-wrap {
-      border: 1px solid var(--background-hover-opacity);
+      border: 1px solid var(--grey-300);
       border-radius: var(--radius-md);
       padding: 12px;
-      background: var(--background-hover-opacity);
+      background: #fff;
       margin-bottom: 10px;
       transition: border-color var(--transition-base);
     }
@@ -1299,7 +1299,7 @@
     }
 
     .ai-textarea-wrap textarea::placeholder {
-      color: var(--primary-main);
+      color: var(--grey-500);
     }
 
     /* ─── AI PROMPTS ─── */
@@ -1809,14 +1809,14 @@
 
     .input-minimal:focus,
     .biz-input:focus {
-      border: 1.5px solid var(--c-border);
-      box-shadow: 0 0 0 3px rgba(0, 171, 85, 0.10);
+      border: 1.5px solid var(--primary-main);
+      box-shadow: 0 0 0 3px var(--background-hover-opacity);
       outline: none;
     }
 
     .input-minimal:focus-within {
-      border: 1.5px solid var(--c-border);
-      box-shadow: 0 0 0 3px rgba(0, 171, 85, 0.10);
+      border: 1.5px solid var(--primary-main);
+      box-shadow: 0 0 0 3px var(--background-hover-opacity);
       outline: none;
     }
 
@@ -2305,7 +2305,7 @@
     }
 
     .terms-box:focus-within {
-      border-color: var(--c-primary);
+      border-color: var(--primary-main);
     }
 
     .terms-textarea {

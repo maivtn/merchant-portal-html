@@ -389,6 +389,15 @@
       background: rgba(255, 86, 48, 0.18);
     }
 
+    .action-btn-edit {
+      background: rgba(59, 130, 246, 0.12);
+      color: #2563eb;
+    }
+
+    .action-btn-edit:hover {
+      background: rgba(59, 130, 246, 0.22);
+    }
+
     .action-btn-view {
       background: rgba(0, 167, 111, 0.08);
       color: #00a76f;
@@ -1661,6 +1670,7 @@
     const IC = {
       trash2: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>`,
       link2: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`,
+      edit: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>`,
       eye: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
       trash2sm: `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>`,
       eyesm: `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
@@ -1745,7 +1755,7 @@
         expiryTime: '2024-01-31', campaignName: '—',
         redeemBy: '—', lastRedeem: '2024-01-15 11:20',
         createdDate: '2024-01-01', lastUpdated: '2024-01-31',
-        detailUrl: 'crypto-card-details.html'
+        detailUrl: 'issue-digital.html?type=crypto-card'
       },
       {
         id: '#PRD-10264', name: 'Crypto Card', category: 'Crypto Card',
@@ -1868,6 +1878,7 @@
 
     function actionButtons(product) {
       const status = product.productStatus;
+      const isCryptoDraft = product.category === 'Crypto Card' && status === 'DRAFT';
       let btns = '';
       if (status === 'AWAITING APPROVAL') {
         btns += `<button class="action-btn action-btn-delete" title="Cancel card" onclick="openCancelModal('${product.id}','${product.cardNumber}','${product.name}')">${IC.trash2}</button>`;
@@ -1875,7 +1886,11 @@
       if (status === 'APPROVED') {
         btns += `<button class="action-btn action-btn-copy" title="Copy link" onclick="copyProductLink('${buildDetailUrl(product)}','${product.id}')">${IC.link2}</button>`;
       }
-      btns += `<a href="${buildDetailUrl(product)}" class="action-btn action-btn-view" title="View">${IC.eye}</a>`;
+      if (isCryptoDraft) {
+        btns += `<a href="${buildDetailUrl(product)}" class="action-btn action-btn-edit" title="Edit">${IC.edit}</a>`;
+      } else {
+        btns += `<a href="${buildDetailUrl(product)}" class="action-btn action-btn-view" title="View">${IC.eye}</a>`;
+      }
       return `<div class="action-btns">${btns}</div>`;
     }
 

@@ -147,6 +147,7 @@
       iconWidth: 24,
       href: "#",
     },
+    { type: "section", label: "ACCOUNT" },
     {
       type: "link",
       label: "Logout",
@@ -196,6 +197,7 @@
         "issue-crypto-card.html",
       ],
     },
+    { type: "section", label: "ACCOUNT" },
     {
       type: "link",
       label: "Logout",

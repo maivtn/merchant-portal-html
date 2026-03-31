@@ -4745,7 +4745,7 @@ Please present this card before payment.</textarea>
           }
         },
         onChange(values) {
-          const next = values || [];
+          const next = Array.isArray(values) ? values : (values ? [values] : []);
           // keep amounts for existing selections
           Object.keys(selectedAssets).forEach(id => {
             if (!next.includes(id)) delete selectedAssets[id];

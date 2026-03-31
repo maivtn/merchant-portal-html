@@ -4439,8 +4439,9 @@ Please present this card before payment.</textarea>
       // Update confirm button label for Crypto Card
       const desktopLabel = document.getElementById('confirmIssuanceLabelDesktop');
       const mobileLabel = document.getElementById('confirmIssuanceLabelMobile');
-      const isCryptoType = typeId === '5';
-      const text = isCryptoType ? 'Confirm Issuance' : 'Confirm Issuance';
+      const currentParams = new URLSearchParams(window.location.search);
+      const isPersonal = (currentParams.get('role') || '').toLowerCase() === 'personal';
+      const text = isPersonal ? 'Create' : 'Confirm Issuance';
       if (desktopLabel) desktopLabel.textContent = text;
       if (mobileLabel) mobileLabel.textContent = text;
 
@@ -5383,11 +5384,18 @@ Please present this card before payment.</textarea>
     document.head.appendChild(style);
 
     /* ── Close modals on backdrop click ── */
-    document.getElementById('loadTermsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLoadTerms(); });
-    document.getElementById('saveTermsModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeSaveTerms(); });
-    document.getElementById('libraryModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLogoLibrary(); });
-    document.getElementById('logoPreviewModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeLogoPreview(); });
-    document.getElementById('aiLogoModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAiLogoModal(); });
+    const bindBackdropClose = (id, onClose) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('click', e => {
+        if (e.target === e.currentTarget) onClose();
+      });
+    };
+    bindBackdropClose('loadTermsModal', closeLoadTerms);
+    bindBackdropClose('saveTermsModal', closeSaveTerms);
+    bindBackdropClose('libraryModal', closeLogoLibrary);
+    bindBackdropClose('logoPreviewModal', closeLogoPreview);
+    bindBackdropClose('aiLogoModal', closeAiLogoModal);
   </script>
 
   <!-- ═══ LOGO LIBRARY MODAL ═══ -->

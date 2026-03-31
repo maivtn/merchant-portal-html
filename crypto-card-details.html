@@ -177,6 +177,30 @@
             text-align: right;
         }
 
+        .info-sensitive-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .info-eye-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border: 0;
+            background: transparent;
+            color: var(--grey-500);
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .info-eye-toggle:hover {
+            color: var(--grey-700);
+        }
+
         .crypto-list-section {
             margin-top: 32px;
             background: #fff;
@@ -2023,12 +2047,26 @@
                                 <div class="grid-info">
                                     <div class="info-item">
                                         <span class="info-label">Card Number</span>
-                                        <span class="info-value" style="font-family: monospace;">1234 **** ****
-                                            1234</span>
+                                        <div class="info-sensitive-wrap">
+                                            <span id="cardNumberValue" class="info-value" style="font-family: monospace;"
+                                                data-masked="1234 **** **** 1234" data-full="1234 5678 9012 1234"
+                                                data-state="masked">1234 **** **** 1234</span>
+                                            <button type="button" class="info-eye-toggle" data-target="cardNumberValue"
+                                                onclick="toggleSensitiveValue(this)" aria-label="Show card number">
+                                                <i data-lucide="eye" style="width:14px;height:14px;"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">PIN</span>
-                                        <span class="info-value">***</span>
+                                        <div class="info-sensitive-wrap">
+                                            <span id="cardPinValue" class="info-value" data-masked="***"
+                                                data-full="123" data-state="masked">***</span>
+                                            <button type="button" class="info-eye-toggle" data-target="cardPinValue"
+                                                onclick="toggleSensitiveValue(this)" aria-label="Show pin">
+                                                <i data-lucide="eye" style="width:14px;height:14px;"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="info-item">
                                         <span class="info-label">Recipient Name</span>
@@ -3489,6 +3527,25 @@
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
             });
+        }
+
+        function toggleSensitiveValue(buttonEl) {
+            if (!buttonEl) return;
+            var targetId = buttonEl.getAttribute('data-target');
+            var valueEl = targetId ? document.getElementById(targetId) : null;
+            if (!valueEl) return;
+
+            var currentState = valueEl.getAttribute('data-state') || 'masked';
+            var showFull = currentState === 'masked';
+            var nextText = showFull ? valueEl.getAttribute('data-full') : valueEl.getAttribute('data-masked');
+            valueEl.textContent = nextText || '';
+            valueEl.setAttribute('data-state', showFull ? 'full' : 'masked');
+
+            // Lucide replaces <i> with <svg>, so rebuild icon markup on each toggle.
+            buttonEl.innerHTML = '<i data-lucide="' + (showFull ? 'eye-off' : 'eye') + '" style="width:14px;height:14px;"></i>';
+            buttonEl.setAttribute('aria-label', showFull ? 'Hide value' : 'Show value');
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         document.addEventListener('DOMContentLoaded', function () {

@@ -307,6 +307,21 @@
       }
     }
 
+    a {
+      text-decoration: none !important;
+    }
+
+    .view-details-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .view-text {
+      text-decoration: none !important;
+      color: var(--primary-main);
+    }
+
     .tab-item:hover {
       color: var(--grey-900);
     }
@@ -355,8 +370,8 @@
 
     .product-tab-item.active {
       color: var(--primary-main);
-      background: rgba(0, 167, 111, 0.1);
-      border-color: rgba(0, 167, 111, 0.35);
+      background: var(--primary-lighter);
+      border-color: var(--primary-light);
     }
 
     .tab-pane {
@@ -673,7 +688,7 @@
 
     .view-btn.active {
       border-color: var(--primary-main);
-      background: rgba(0, 167, 111, 0.08);
+      background: var(--background-hover-opacity);
       color: var(--primary-main);
     }
 
@@ -758,13 +773,13 @@
     .card-grid-item-info .grid-balance {
       font-weight: 700;
       font-size: 18px;
-      color: var(--primary-main);
+      color: var(--grey-800);
     }
 
     .card-grid-item-info .grid-amount-only {
       font-weight: 700;
       font-size: 18px;
-      color: var(--primary-main);
+      color: var(--grey-800);
     }
 
     .card-grid-item-info .grid-view-link {
@@ -1552,7 +1567,7 @@
     var COLUMN_LABELS = {
       merchantName: 'Merchant Name',
       balance: 'Balance',
-      action: 'Action',
+      action: 'View Details',
       createdDate: 'Created Date',
       status: 'Status',
       id: 'ID',
@@ -1710,8 +1725,8 @@
     }
 
     function listCellHtml(column, product, listCfg, row) {
-      var actionHtml = '<a href="' + getDetailHref(product) + '" style="color: inherit;" title="View">' +
-        '<iconify-icon icon="lucide:eye" style="color: var(--primary-main); cursor: pointer"></iconify-icon></a>';
+      var actionHtml = '<a href="' + getDetailHref(product) + '" style="color: inherit;" title="View Details" class="view-details-link">' +
+        '<iconify-icon icon="lucide:eye" style="color: var(--primary-main); cursor: pointer"></iconify-icon> <span class="view-text">View</span></a>';
       if (column === 'action') return actionHtml;
       var v = row[column];
       if (v === undefined || v === null) {

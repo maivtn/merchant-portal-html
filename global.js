@@ -227,6 +227,7 @@
   // INIT
   // ═══════════════════════════════════════════════════════════════════════════
   document.addEventListener("DOMContentLoaded", function () {
+    applyThemeMode();
     renderSidebarNav();
     updateSidebarUserRole();
     injectHamburger();
@@ -238,6 +239,15 @@
     initDatePlaceholders();
     window.addEventListener("resize", handleResize);
   });
+
+  function applyThemeMode() {
+    const role = (new URLSearchParams(window.location.search).get("role") || "")
+      .toLowerCase()
+      .trim();
+    const isPersonal = role === "personal" || !!window.SIDEBAR_USE_CARDS_MENU;
+
+    document.documentElement.classList.toggle("style-personal", isPersonal);
+  }
 
   // ═══════════════════════════════════════════════════════════════════════════
   // RENDER SIDEBAR NAV FROM DATA

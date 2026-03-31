@@ -197,14 +197,6 @@
         "issue-crypto-card.html",
       ],
     },
-    { type: "section", label: "ACCOUNT" },
-    {
-      type: "link",
-      label: "Logout",
-      icon: "solar:logout-3-bold-duotone",
-      iconWidth: 24,
-      href: "sign-in.html",
-    },
   ];
 
   // ═══════════════════════════════════════════════════════════════════════════

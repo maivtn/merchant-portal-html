@@ -4016,9 +4016,6 @@ Please present this card before payment.</textarea>
     /* ── LOGO LIBRARY ── */
     const SI = (slug) => `https://cdn.simpleicons.org/${slug}`;
     const LIBRARY_LIMIT = 6;
-    const LIBRARY_FALLBACK_LOGO = 'data:image/svg+xml,' + encodeURIComponent(
-      `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" rx="16" fill="#f4f6f8"/><rect x="16" y="16" width="88" height="88" rx="12" fill="#ffffff" stroke="#dfe3e8"/><circle cx="60" cy="48" r="18" fill="#c4cdd5"/><rect x="30" y="76" width="60" height="10" rx="5" fill="#c4cdd5"/></svg>`
-    );
     const LOGO_LIBRARY_BRANDS = [
       { id: 1, name: 'Apple', date: 'Mar 12, 2026', src: SI('apple') },
       { id: 2, name: 'Nike', date: 'Mar 11, 2026', src: SI('nike') },
@@ -4038,12 +4035,39 @@ Please present this card before payment.</textarea>
       { id: 16, name: 'BMW', date: 'Feb 25, 2026', src: SI('bmw') },
       { id: 17, name: 'Sony', date: 'Feb 24, 2026', src: SI('sony') },
     ];
-    // Shuffle and use as LOGO_LIBRARY (max 6, random order each load)
-    const LOGO_LIBRARY = [...LOGO_LIBRARY_BRANDS].sort(() => Math.random() - 0.5).slice(0, LIBRARY_LIMIT);
+    let LOGO_LIBRARY = [];
 
     let selectedLibraryLogo = null;
 
-    function openLogoLibrary() {
+    function isLogoImageAvailable(src) {
+      return new Promise(resolve => {
+        const img = new Image();
+        let done = false;
+        const finish = (ok) => {
+          if (done) return;
+          done = true;
+          resolve(ok);
+        };
+        img.onload = () => finish(true);
+        img.onerror = () => finish(false);
+        img.src = src;
+        setTimeout(() => finish(false), 2500);
+      });
+    }
+    async function prepareLogoLibrary() {
+      const shuffled = [...LOGO_LIBRARY_BRANDS].sort(() => Math.random() - 0.5);
+      const validLogos = [];
+      for (const logo of shuffled) {
+        if (validLogos.length >= LIBRARY_LIMIT) break;
+        const isAvailable = await isLogoImageAvailable(logo.src);
+        if (isAvailable) validLogos.push(logo);
+      }
+      LOGO_LIBRARY = validLogos;
+    }
+    async function openLogoLibrary() {
+      const count = document.getElementById('libraryCount');
+      if (count) count.textContent = '(loading...)';
+      await prepareLogoLibrary();
       renderLogoLibrary();
       document.getElementById('libraryModal').classList.add('open');
       lucide.createIcons();
@@ -4056,7 +4080,7 @@ Please present this card before payment.</textarea>
       const grid = document.getElementById('libraryGrid');
       const count = document.getElementById('libraryCount');
       if (!grid || !count) return;
-      const visible = grid.querySelectorAll('.lib-card:not(.lib-card-hidden)').length;
+      const visible = grid.querySelectorAll('.lib-card').length;
       count.textContent = `(${visible} logos)`;
     }
     function renderLogoLibrary() {
@@ -4066,7 +4090,7 @@ Please present this card before payment.</textarea>
       grid.innerHTML = LOGO_LIBRARY.map(logo => `
         <div class="lib-card" id="libcard-${logo.id}">
           <div class="lib-card-img-wrap">
-            <img src="${logo.src}" class="lib-card-img" alt="${logo.name}" onerror="this.onerror=null;this.src=LIBRARY_FALLBACK_LOGO;updateLibraryCount();" onload="updateLibraryCount()" />
+            <img src="${logo.src}" class="lib-card-img" alt="${logo.name}" onload="updateLibraryCount()" />
             <div class="lib-card-overlay">
               <button class="lib-btn-del" onclick="deleteLibraryLogo(${logo.id})" title="Delete">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>

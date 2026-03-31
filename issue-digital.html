@@ -1045,6 +1045,13 @@
       border-radius: inherit;
     }
 
+    @media screen and (max-width: 767px) {
+      .crypto-asset-icon img {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
     .crypto-asset-info {
       display: flex;
       flex-direction: column;
@@ -1095,6 +1102,12 @@
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
+    @media (max-width: 767px) {
+      .crypto-amount-input {
+        padding: 0 8px 0 8px;
+      }
+    }
+
     .crypto-amount-input:focus {
       border-color: var(--primary-main);
       box-shadow: 0 0 0 1px var(--background-hover-opacity-strong);
@@ -1134,16 +1147,32 @@
       pointer-events: none;
     }
 
+
+
     .reload-select-with-icon.has-icon .reload-field-select {
       padding-left: 30px;
       padding-right: 20px;
     }
 
-
-
     .reload-amount-unit {
       width: 90px;
     }
+
+    @media (max-width: 767px) {
+      .reload-select-icon {
+        display: none;
+      }
+
+      .reload-select-with-icon.has-icon .reload-field-select {
+        padding-left: 10px;
+      }
+
+      .reload-amount-unit {
+        width: 70px;
+      }
+    }
+
+
 
     .reload-field-select {
       width: 100%;
@@ -2252,7 +2281,7 @@
 
     @media (max-width: 767px) {
       .crypto-amount-input-wrap {
-        max-width: 90px;
+        max-width: 80px;
       }
 
       .mb-cards-row {
@@ -2558,7 +2587,7 @@
         left: 0;
         right: 0;
         z-index: 25;
-        background: #fff;
+        background: var(--c-surface);
         margin: 8px 16px;
       }
 
@@ -4682,6 +4711,7 @@ Please present this card before payment.</textarea>
               </div>
               <div class="crypto-asset-info">
                 <div class="crypto-asset-name">${a.name}</div>
+                <div class="crypto-asset-available">Qty: ${a.balance}</div>
                 <div class="crypto-asset-available">Value: $${a.available.toFixed(2)}</div>
               </div>
             </div>

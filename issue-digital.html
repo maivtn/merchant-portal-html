@@ -2761,11 +2761,7 @@
     </div>
     <div class="header-right">
       <div class="header-info">Jan 14, 2026 10:05:53 AM (UTC)</div>
-      <div class="header-icons">
-        <div class="header-icon-btn">
-          <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
-        </div>
-      </div>
+
     </div>
   </header>
 
@@ -2869,19 +2865,21 @@
                   <div class="cb-contact-container"
                     style="display: flex; flex-direction: row; gap: 10px; justify-content: space-between; padding: 10px 14px; align-items: flex-end;">
                     <div class="cb-contact">
-                      <div class="cb-contact-title">For help, contact <span id="cbMerchantName">[MERCHANT
-                          NAME]</span>:</div>
-                      <div class="cb-contact-row">
-                        <i data-lucide="phone" class="cb-contact-icon"></i>
-                        <span id="cbPhone">+ 1 (777) 777-7777</span>
-                      </div>
-                      <div class="cb-contact-row">
-                        <i data-lucide="mail" class="cb-contact-icon"></i>
-                        <span id="cbEmail">merchant@example.com</span>
-                      </div>
-                      <div class="cb-contact-row">
-                        <i data-lucide="globe" class="cb-contact-icon"></i>
-                        <span id="cbWebsite">www.merchant.com</span>
+                      <div id="cbContactInfo">
+                        <div class="cb-contact-title">For help, contact <span id="cbMerchantName">[MERCHANT
+                            NAME]</span>:</div>
+                        <div class="cb-contact-row">
+                          <i data-lucide="phone" class="cb-contact-icon"></i>
+                          <span id="cbPhone">+ 1 (777) 777-7777</span>
+                        </div>
+                        <div class="cb-contact-row">
+                          <i data-lucide="mail" class="cb-contact-icon"></i>
+                          <span id="cbEmail">merchant@example.com</span>
+                        </div>
+                        <div class="cb-contact-row">
+                          <i data-lucide="globe" class="cb-contact-icon"></i>
+                          <span id="cbWebsite">www.merchant.com</span>
+                        </div>
                       </div>
                       <div class="cb-contact-row">
                         <i data-lucide="shield-check" class="cb-contact-icon"></i>
@@ -4986,8 +4984,10 @@ Please present this card before payment.</textarea>
       if (isRolePersonal) {
         const step1 = document.getElementById('step1SelectProductLine');
         const bizPanel = document.getElementById('panelCardBusinessInfo');
+        const contactInfo = document.getElementById('cbContactInfo');
         if (step1) step1.style.display = 'none';
         if (bizPanel) bizPanel.style.display = 'none';
+        if (contactInfo) contactInfo.style.display = 'none';
       }
 
       // Init card front for current card type (default E-Gift Card unless overridden by query)

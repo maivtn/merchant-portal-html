@@ -109,9 +109,10 @@
         }
 
         .action-btn {
-            width: 28px;
             height: 28px;
             border-radius: 6px;
+            padding: 0 8px;
+            background-color: none;
             border: none;
             cursor: pointer;
             display: inline-flex;
@@ -125,16 +126,21 @@
         }
 
         .action-btn:hover {
-            background: rgba(145, 158, 171, 0.08);
+            background: var(--background-hover-opacity);
         }
 
         .action-btn-view {
-            background: rgba(0, 167, 111, 0.08);
-            color: #00a76f;
+            color: var(--primary-main);
         }
 
         .action-btn-view:hover {
-            background: rgba(0, 167, 111, 0.18);
+            background: var(--background-hover-opacity-strong);
+        }
+
+        .view-text {
+            text-decoration: none !important;
+            color: var(--primary-main);
+            margin-left: 4px;
         }
 
         .crypto-create-btn {
@@ -144,12 +150,14 @@
             padding: 10px 16px;
             border-radius: 8px;
             border: none;
-            background: var(--primary-main);
             color: #fff;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 8px 16px rgba(0, 167, 111, 0.24);
+        }
+
+        .crypto-create-btn:hover {
+            transform: translateY(-1px);
         }
 
         /* Ẩn cột Redeemed By, Last Redeemed At */
@@ -380,12 +388,6 @@
             justify-content: center;
             gap: 8px;
             padding-top: 12px;
-            border-top: 1px dashed rgba(145, 158, 171, 0.24);
-        }
-
-        .m-actions .action-btn {
-            width: 32px;
-            height: 32px;
         }
 
         /* Mobile action button (from product-list) */
@@ -646,7 +648,7 @@
                             <th>Issued Date</th>
                             <th class="col-redeemed-by">Redeemed By</th>
                             <th class="col-last-redeemed">Last Redeemed At</th>
-                            <th class="col-actions">Actions</th>
+                            <th class="col-actions">View Details</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -664,6 +666,7 @@
                                     <a href="crypto-card-details.html?status=APPROVED"
                                         class="action-btn action-btn-view" title="View">
                                         <i data-lucide="eye" style="width:18px;height:18px;"></i>
+                                        <span class="view-text">View</span>
                                     </a>
                                 </div>
                             </td>
@@ -682,6 +685,7 @@
                                     <a href="crypto-card-details.html?status=APPROVED"
                                         class="action-btn action-btn-view" title="View">
                                         <i data-lucide="eye" style="width:18px;height:18px;"></i>
+                                        <span class="view-text">View</span>
                                     </a>
                                 </div>
                             </td>
@@ -700,6 +704,7 @@
                                     <a href="crypto-card-details.html?status=DRAFT" class="action-btn action-btn-view"
                                         title="View">
                                         <i data-lucide="eye" style="width:18px;height:18px;"></i>
+                                        <span class="view-text">View</span>
                                     </a>
                                 </div>
                             </td>
@@ -718,6 +723,7 @@
                                     <a href="crypto-card-details.html?status=APPROVED"
                                         class="action-btn action-btn-view" title="View">
                                         <i data-lucide="eye" style="width:18px;height:18px;"></i>
+                                        <span class="view-text">View</span>
                                     </a>
                                 </div>
                             </td>
@@ -736,6 +742,7 @@
                                     <a href="crypto-card-details.html?status=APPROVED"
                                         class="action-btn action-btn-view" title="View">
                                         <i data-lucide="eye" style="width:18px;height:18px;"></i>
+                                        <span class="view-text">View</span>
                                     </a>
                                 </div>
                             </td>
@@ -762,7 +769,8 @@
                     <div class="m-actions">
                         <a href="crypto-card-details.html?status=APPROVED" class="mobile-action-btn mobile-btn-view"
                             title="View">
-                            <i data-lucide="eye" style="width:16px;height:16px;"></i> View
+                            <i data-lucide="eye" style="width:16px;height:16px;"></i>
+                            <span class="view-text">View</span>
                         </a>
                     </div>
                 </div>
@@ -783,7 +791,8 @@
                     <div class="m-actions">
                         <a href="crypto-card-details.html?status=APPROVED" class="mobile-action-btn mobile-btn-view"
                             title="View">
-                            <i data-lucide="eye" style="width:16px;height:16px;"></i> View
+                            <i data-lucide="eye" style="width:16px;height:16px;"></i> <span
+                                class="view-text">View</span>
                         </a>
                     </div>
                 </div>
@@ -804,7 +813,8 @@
                     <div class="m-actions">
                         <a href="crypto-card-details.html?status=DRAFT" class="mobile-action-btn mobile-btn-view"
                             title="View">
-                            <i data-lucide="eye" style="width:16px;height:16px;"></i> View
+                            <i data-lucide="eye" style="width:16px;height:16px;"></i> <span
+                                class="view-text">View</span>
                         </a>
                     </div>
                 </div>
@@ -825,7 +835,8 @@
                     <div class="m-actions">
                         <a href="crypto-card-details.html?status=APPROVED" class="mobile-action-btn mobile-btn-view"
                             title="View">
-                            <i data-lucide="eye" style="width:16px;height:16px;"></i> View
+                            <i data-lucide="eye" style="width:16px;height:16px;"></i> <span
+                                class="view-text">View</span>
                         </a>
                     </div>
                 </div>
@@ -846,7 +857,8 @@
                     <div class="m-actions">
                         <a href="crypto-card-details.html?status=APPROVED" class="mobile-action-btn mobile-btn-view"
                             title="View">
-                            <i data-lucide="eye" style="width:16px;height:16px;"></i> View
+                            <i data-lucide="eye" style="width:16px;height:16px;"></i>
+                            <span class="view-text">View</span>
                         </a>
                     </div>
                 </div>

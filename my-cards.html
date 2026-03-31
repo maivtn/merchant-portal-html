@@ -1249,8 +1249,8 @@
       <div class="page-header page-header--between mcv2-page-header">
         <h1 class="page-title">My Cards</h1>
         <div class="page-header-actions">
-          <button type="button" class="btn-outline btn-add-card" data-bs-toggle="modal"
-            data-bs-target="#modal-master-qr-verify">
+          <button type="button" id="mcv2-btn-master-qr" class="btn-outline btn-add-card" data-bs-toggle="modal"
+            data-bs-target="#modal-master-qr-verify" style="display:none">
             <i data-lucide="qr-code" style="width:20px;height:20px;"></i>
             <span class="btn-add-card-label">Master QR</span>
           </button>
@@ -1706,6 +1706,15 @@
       return Array.isArray(rows) ? rows : [];
     }
 
+    /** Master QR chỉ hiện khi tab platform đang chọn là Issued on VLINKPAY. */
+    function updateMasterQrButtonVisibility() {
+      var btn = document.getElementById('mcv2-btn-master-qr');
+      if (!btn) return;
+      var platform = MY_CARDS_V2_CONFIG.platforms[myCardsV2State.platformIndex];
+      var show = platform && platform.name === 'Issued on VLINKPAY';
+      btn.style.display = show ? '' : 'none';
+    }
+
     function formatMoney(n) {
       if (n === undefined || n === null || n === '') return '—';
       var num = Number(n);
@@ -2001,6 +2010,7 @@
         });
       });
       renderLucideIcons();
+      updateMasterQrButtonVisibility();
     }
 
     function myCardsV2SelectPlatform(index) {

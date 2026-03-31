@@ -195,6 +195,7 @@
         "crypto-card-details.html",
         "crypto-card-list-bootstrap.html",
         "issue-crypto-card.html",
+        "issue-digital.html",
       ],
     },
   ];

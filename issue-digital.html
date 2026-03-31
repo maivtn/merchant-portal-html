@@ -3844,7 +3844,7 @@ Please present this card before payment.</textarea>
             </div>
             <div class="fee-row">
               <span class="fee-label">Transfer Fee (1.5%)</span>
-              <span class="fee-value" id="feeDisplay">$0.75</span>
+              <span class="fee-value" data-fee-display>$0.75</span>
             </div>
             <div class=" divider">
             </div>
@@ -3853,7 +3853,7 @@ Please present this card before payment.</textarea>
                   title="Fees overview">
                   <i data-lucide="info" style="width:12px;height:12px;"></i>
                 </span></span>
-              <span class="fee-value" id="feeDisplay">$0.75</span>
+              <span class="fee-value" data-fee-display>$0.75</span>
             </div>
           </div>
 
@@ -4429,6 +4429,63 @@ Please present this card before payment.</textarea>
     // Whether to show VALID THRU row
     const CARD_SHOW_EXPIRY = { '1': true, '2': true, '3': true };
 
+    function getActiveTransferBaseAmount() {
+      // Crypto card: fee base uses total transfer value across all cards.
+      if (currentTypeId === '5') {
+        const ids = Object.keys(selectedAssets || {});
+        if (!ids.length) return 0;
+        const qtyInput = document.getElementById('cryptoCardQuantity');
+        const qty = Math.max(1, parseInt(qtyInput && qtyInput.value, 10) || 1);
+        let totalValueUsd = 0;
+
+        ids.forEach(id => {
+          const asset = CRYPTO_ASSETS.find(x => x.id === id) || { balance: 0, available: 0 };
+          const amountRaw = (selectedAssets[id] || '').toString().trim();
+          const amountNumber = Number(parseMaskedNumber(amountRaw)) || 0;
+          const unit = selectedAssetUnits[id] || 'USD';
+          const coinBalance = Number(asset.balance) || 0;
+          const usdValue = Number(asset.available) || 0;
+          const usdPerCoin = coinBalance > 0 ? (usdValue / coinBalance) : 0;
+          totalValueUsd += unit === 'USD' ? amountNumber : (amountNumber * usdPerCoin);
+        });
+
+        return totalValueUsd * qty;
+      }
+
+      // E-Gift Card / Prepaid / Promotion by amount.
+      if (currentTypeId === '0' || currentTypeId === '4') {
+        const activeBtn = document.querySelector('#valueGroup .preset-btn.active');
+        const customInput = document.querySelector('#valueGroup .custom-input-row input');
+        const btnVal = activeBtn ? Number(parseMaskedNumber((activeBtn.textContent || '').replace(/[^0-9.,-]/g, ''))) : 0;
+        const customVal = customInput ? Number(parseMaskedNumber(customInput.value)) : 0;
+        return (btnVal || customVal || 0);
+      }
+
+      if (currentTypeId === '1') {
+        const isDiscount = document.querySelector('#promoDiscountPreset')
+          && document.querySelector('#promoDiscountPreset').style.display !== 'none';
+        if (isDiscount) return 0;
+        const activeBtn = document.querySelector('#promoAmountPreset .preset-btn.active');
+        const customInput = document.querySelector('#promoAmountPreset .custom-input-row input');
+        const btnVal = activeBtn ? Number(parseMaskedNumber((activeBtn.textContent || '').replace(/[^0-9.,-]/g, ''))) : 0;
+        const customVal = customInput ? Number(parseMaskedNumber(customInput.value)) : 0;
+        return (btnVal || customVal || 0);
+      }
+
+      return 0;
+    }
+
+    function updateFeeDisplay() {
+      const feeNodes = document.querySelectorAll('[data-fee-display]');
+      if (!feeNodes.length) return;
+      const baseAmount = getActiveTransferBaseAmount();
+      const feeAmount = baseAmount > 0 ? (baseAmount * 0.015) : 0;
+      const feeText = '$' + feeAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      feeNodes.forEach(node => {
+        node.textContent = feeText;
+      });
+    }
+
     function updateCardValueBadge() {
       const badgeEl = document.getElementById('cfValueBadge');
       if (!badgeEl) return;
@@ -4463,6 +4520,7 @@ Please present this card before payment.</textarea>
       }
       badgeEl.textContent = val;
       badgeEl.style.display = '';
+      updateFeeDisplay();
     }
 
     let currentTypeId = '0';
@@ -4616,6 +4674,7 @@ Please present this card before payment.</textarea>
       if (desktopLabel) desktopLabel.textContent = text;
       if (mobileLabel) mobileLabel.textContent = text;
       renderCryptoSummaryCollapse();
+      updateFeeDisplay();
 
       // Auto-close "Select Product Line" collapse after 1s (mobile only)
       if (window.innerWidth <= 767) {
@@ -4874,6 +4933,7 @@ Please present this card before payment.</textarea>
       if (!wrap || !body) return;
       if (currentTypeId !== '5') {
         wrap.style.display = 'none';
+        updateFeeDisplay();
         return;
       }
 
@@ -4881,6 +4941,7 @@ Please present this card before payment.</textarea>
       if (!ids.length) {
         wrap.style.display = 'none';
         body.innerHTML = '';
+        updateFeeDisplay();
         return;
       }
       wrap.style.display = '';
@@ -4941,6 +5002,7 @@ Please present this card before payment.</textarea>
           <strong>$${totalValueUsdFmt}</strong>
         </div>
       `;
+      updateFeeDisplay();
     }
 
     function initCryptoSelect() {

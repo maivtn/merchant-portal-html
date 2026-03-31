@@ -4199,6 +4199,20 @@ Please present this card before payment.</textarea>
     function closeAiLogoModal() {
       document.getElementById('aiLogoModal').classList.remove('open');
     }
+    function saveAiLogo() {
+      closeAiLogoModal();
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Saved successfully',
+          text: 'Logo has been saved.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      } else {
+        alert('Logo has been saved.');
+      }
+    }
     function useAiGeneratedLogo() {
       const logoBox = document.getElementById('cardLogoBox');
       if (logoBox) logoBox.innerHTML = `<img src="${AI_LOGO_MOCK}" style="width:100%;height:100%;object-fit:contain;border-radius:8px" alt="Logo">`;
@@ -5436,7 +5450,7 @@ Please present this card before payment.</textarea>
         <div class="ai-logo-display" id="aiLogoDisplay"></div>
       </div>
       <div class="ai-logo-modal-foot">
-        <button class="ai-logo-btn-outline" onclick="closeAiLogoModal()">Save</button>
+        <button class="ai-logo-btn-outline" onclick="saveAiLogo()" id="saveLogoBtn">Save</button>
         <button class="ai-logo-btn-use" onclick="useAiGeneratedLogo()">Use this logo</button>
       </div>
     </div>

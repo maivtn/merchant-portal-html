@@ -147,6 +147,13 @@
       iconWidth: 24,
       href: "#",
     },
+    {
+      type: "link",
+      label: "Logout",
+      icon: "solar:logout-3-bold-duotone",
+      iconWidth: 24,
+      href: "sign-in.html",
+    },
   ];
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -188,6 +195,13 @@
         "crypto-card-list-bootstrap.html",
         "issue-crypto-card.html",
       ],
+    },
+    {
+      type: "link",
+      label: "Logout",
+      icon: "solar:logout-3-bold-duotone",
+      iconWidth: 24,
+      href: "sign-in.html",
     },
   ];
 

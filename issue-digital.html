@@ -3404,10 +3404,10 @@
           <div class="collapse-wrap open" id="scollapse-1">
             <div class="step-body">
               <div class="card-type-grid" id="cardTypeGrid">
-                <div class="card-type-item active" onclick="selectCardType(this,'E-Gift Card','0')">
+                <div class="card-type-item active" onclick="selectCardType(this,'Gift Card','0')">
                   <div class="card-type-icon"><iconify-icon icon="solar:gift-bold-duotone" width="24"></iconify-icon>
                   </div>
-                  <span>E-Gift Card</span>
+                  <span>Gift Card</span>
                 </div>
                 <div class="card-type-item" onclick="selectCardType(this,'Membership','2')">
                   <div class="card-type-icon"><iconify-icon icon="solar:crown-minimalistic-bold-duotone"
@@ -3940,7 +3940,7 @@ Please present this card before payment.</textarea>
     /* ──────────────────────────────────────────────
        CURRENT STATE
     ────────────────────────────────────────────── */
-    let currentCardType = 'E-Gift Card';
+    let currentCardType = 'Gift Card';
     let isFlipped = false;
 
     /* ──────────────────────────────────────────────
@@ -4516,7 +4516,7 @@ Please present this card before payment.</textarea>
         return totalValueUsd * qty;
       }
 
-      // E-Gift Card / Prepaid / Promotion by amount.
+      // Gift Card / Prepaid / Promotion by amount.
       if (currentTypeId === '0' || currentTypeId === '4') {
         const activeBtn = document.querySelector('#valueGroup .preset-btn.active');
         const customInput = document.querySelector('#valueGroup .custom-input-row input');
@@ -4576,7 +4576,7 @@ Please present this card before payment.</textarea>
         val = activeBtn ? activeBtn.textContent.trim() : (customInput && customInput.value ? (isDiscount ? customInput.value + '% OFF' : '$' + customInput.value) : '');
         if (!val) val = '$—';
       } else {
-        // E-Gift Card or Prepaid: $X
+        // Gift Card or Prepaid: $X
         const activeBtn = document.querySelector('#valueGroup .preset-btn.active');
         const customInput = document.querySelector('#valueGroup .custom-input-row input');
         val = activeBtn ? activeBtn.textContent.trim() : (customInput && customInput.value ? '$' + customInput.value : '');
@@ -5419,7 +5419,7 @@ Please present this card before payment.</textarea>
         if (contactInfo) contactInfo.style.display = 'none';
       }
 
-      // Init card front for current card type (default E-Gift Card unless overridden by query)
+      // Init card front for current card type (default Gift Card unless overridden by query)
       updateCardValueBadge();
       // Init card brand name from default business info
       onBizInfoChange();

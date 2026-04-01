@@ -1776,6 +1776,10 @@
       padding: 16px;
     }
 
+    .fee-payment-method-tooltip {
+      padding: 16px;
+    }
+
     /* ═══════════════════════════════════════════════════════
        STEP 1 — CARD TYPE GRID
     ═══════════════════════════════════════════════════════ */
@@ -4008,7 +4012,10 @@ Please present this card before payment.</textarea>
               <span class="fee-value" data-fee-display>$0.75</span>
             </div>
             <div class="fee-row fee-row--payment-method">
-              <span class="fee-label">Fee Payment Method</span>
+              <span class="fee-label">Fee Payment Method <span id="feePaymentMethodTipTrigger"
+                  class="reload-summary-info-icon" title="Fee payment method info">
+                  <i data-lucide="info" style="width:12px;height:12px;"></i>
+                </span></span>
               <span class="fee-value">
                 <select id="feeTokenSelect" class="fee-token-select crypto-select" aria-label="Pay fees in token"
                   placeholder="Select token"></select>
@@ -5203,7 +5210,7 @@ Please present this card before payment.</textarea>
        
         <div class="crypto-summary-card-qty">
           <span style="display:inline-flex;align-items:center;gap:6px;">
-            Total Card Value
+            Total Value
             <span id="totalCardValueTipTrigger" class="reload-summary-info-icon" style="cursor:pointer;"
               title="Amount deduction info">
               <iconify-icon icon="eva:info-outline" width="14"></iconify-icon>
@@ -6018,6 +6025,21 @@ Please present this card before payment.</textarea>
             if (closeBtn) closeBtn.onclick = function () { i.hide(); };
           }
         },
+      });
+    })();
+
+    // Fee Payment Method tooltip
+    (function () {
+      var trigger = document.getElementById('feePaymentMethodTipTrigger');
+      if (!trigger || typeof tippy === 'undefined') return;
+      tippy(trigger, {
+        content: '<div class="fee-payment-method-tooltip">Select a wallet to pay the transaction fee.</div>',
+        allowHTML: true,
+        trigger: 'click',
+        interactive: true,
+        theme: 'light',
+        placement: 'top',
+        appendTo: document.body
       });
     })();
 

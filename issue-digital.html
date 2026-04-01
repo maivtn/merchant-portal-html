@@ -5650,7 +5650,7 @@ Please present this card before payment.</textarea>
       // Show Step 5 (Purchase Price) only for Membership & Discount
       if (step5) step5.style.display = (currentTypeId === '2' || currentTypeId === '3') ? '' : 'none';
       renumberSteps();
-      // On mobile: collapse Design Collection, Brand Identity, Business Information by default
+      // Collapse left-panel sections by default
       const isMobile = window.innerWidth <= 767;
       const mobileCollapseIds = [
         { wrap: 'design-collection', hdr: 'hdr-design' },
@@ -5660,8 +5660,8 @@ Please present this card before payment.</textarea>
       mobileCollapseIds.forEach(({ wrap, hdr }) => {
         const w = document.getElementById(wrap);
         const h = document.getElementById(hdr);
-        if (w) w.classList.toggle('open', !isMobile);
-        if (h) h.classList.toggle('open', !isMobile);
+        if (w) w.classList.remove('open');
+        if (h) h.classList.remove('open');
         // On mobile: when collapsed, also hide header actions area
         if (isMobile && hdr === 'hdr-brand') {
           const actions = h ? h.querySelector('.header-actions') : null;

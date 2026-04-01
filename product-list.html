@@ -2174,7 +2174,12 @@
       tempToDate = toDate;
       document.getElementById('mobileStatusFilter').value = tempStatusFilter;
       document.getElementById('mobileLockedFilter').value = tempLockedFilter;
-      document.getElementById('mobileFromDate').value = tempFromDate;
+      const mobileFromInput = document.getElementById('mobileFromDate');
+      if (mobileFromInput && mobileFromInput._flatpickr) {
+        mobileFromInput._flatpickr.setDate(tempFromDate || null, false, 'Y-m-d');
+      } else {
+        document.getElementById('mobileFromDate').value = tempFromDate;
+      }
       document.getElementById('mobileToDate').value = tempToDate;
       document.getElementById('mobileFromDateClear').classList.toggle('visible', !!tempFromDate);
       document.getElementById('mobileToDateClear').classList.toggle('visible', !!tempToDate);
@@ -2261,6 +2266,8 @@
         });
         const fpMFrom = flatpickr('#mobileFromDate', {
           dateFormat: 'Y-m-d',
+          altInput: true,
+          altFormat: 'M j, Y',
           allowInput: false,
           disableMobile: true,
           onChange(selectedDates, dateStr) {

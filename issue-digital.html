@@ -1697,6 +1697,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 16px;
       padding: 6px 12px;
       background: var(--grey-100);
       border-radius: var(--radius-md);
@@ -1738,6 +1739,7 @@
       align-items: flex-end;
       gap: 2px;
       color: var(--c-text-2);
+      margin-left: auto;
     }
 
     .crypto-summary-item-amount {
@@ -1749,12 +1751,20 @@
       color: var(--c-text-1);
     }
 
+    .crypto-summary-item-value {
+      min-width: 120px;
+      text-align: right;
+      color: var(--c-text-1);
+      font-weight: 600;
+    }
+
     .crypto-summary-card-qty {
       padding-top: 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       color: var(--c-text-2);
+      gap: 16px;
       border-top: 1px dashed var(--c-border);
     }
 
@@ -4976,6 +4986,8 @@ Please present this card before payment.</textarea>
 
         const totalCryptoQty = cryptoQtyPlusCardQty.toLocaleString('en-US', { maximumFractionDigits: 8 });
         const cryptoQtyFmt = cryptoQty.toLocaleString('en-US', { maximumFractionDigits: 8 });
+        const tokenValueUsd = cryptoQtyPlusCardQty * usdPerCoin;
+        const tokenValueUsdFmt = tokenValueUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         totalQty += amountNumber;
         if (unit === 'USD') {
           totalValueUsd += amountNumber;
@@ -4994,6 +5006,7 @@ Please present this card before payment.</textarea>
             <div class="crypto-summary-item-meta">
               <span class="crypto-summary-item-amount"><b>${totalCryptoQty} ${asset.name}</b></span>
             </div>
+            <div class="crypto-summary-item-value">$${tokenValueUsdFmt}</div>
           </div>
         `;
       }).join('');

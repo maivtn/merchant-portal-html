@@ -5327,7 +5327,7 @@ Please present this card before payment.</textarea>
             return `
               <div class="item">
                 <span class="crypto-item-icon">${a.iconUrl ? `<img src="${escape(a.iconUrl)}" alt="${escape(a.name)}">` : ''}</span>
-                <span>${escape(fullName)} (${escape(a.name)})</span>
+                <span>${escape(a.name)}</span>
               </div>
             `;
           }
@@ -6136,14 +6136,15 @@ Please present this card before payment.</textarea>
           </div>
           <h2 class="modal-title fs-5 fw-bold mb-2" id="modalMasterQrVerifyLabel">Please verify your identity</h2>
           <div class="mcv2-verify-pin-wrap">
-            <input type="password" class="mcv2-verify-pin-input" id="masterQrPinInput" placeholder="••••••" maxlength="6"
-              inputmode="numeric" autocomplete="off" />
+            <input type="password" class="mcv2-verify-pin-input" id="masterQrPinInput" placeholder="••••••"
+              maxlength="6" inputmode="numeric" autocomplete="off" />
             <button type="button" class="mcv2-verify-pin-toggle" id="masterQrPinToggle" aria-label="Show PIN">
               <i data-lucide="eye-off" style="width:18px;height:18px;"></i>
             </button>
           </div>
           <div class="mcv2-verify-actions">
-            <button type="button" class="mcv2-verify-btn mcv2-verify-btn--cancel" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="mcv2-verify-btn mcv2-verify-btn--cancel"
+              data-bs-dismiss="modal">Cancel</button>
             <button type="button" class="mcv2-verify-btn mcv2-verify-btn--confirm" id="masterQrConfirmBtn"
               disabled>Confirm</button>
           </div>

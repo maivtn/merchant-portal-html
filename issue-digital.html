@@ -1772,6 +1772,10 @@
       color: var(--c-text-1);
     }
 
+    .total-card-value-tooltip {
+      padding: 16px;
+    }
+
     /* ═══════════════════════════════════════════════════════
        STEP 1 — CARD TYPE GRID
     ═══════════════════════════════════════════════════════ */
@@ -3036,6 +3040,10 @@
       .main {
         padding-bottom: 80px;
       }
+    }
+
+    .total-card-value-tooltip {
+      padding: 16px;
     }
   </style>
 </head>
@@ -5194,11 +5202,33 @@ Please present this card before payment.</textarea>
         </div>
        
         <div class="crypto-summary-card-qty">
-          <span>Total Card Value</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;">
+            Total Card Value
+            <span id="totalCardValueTipTrigger" class="reload-summary-info-icon" style="cursor:pointer;"
+              title="Amount deduction info">
+              <iconify-icon icon="eva:info-outline" width="14"></iconify-icon>
+            </span>
+          </span>
           <strong>$${totalValueUsdFmt}</strong>
         </div>
       `;
+      initTotalCardValueTooltip();
       updateFeeDisplay();
+    }
+
+    function initTotalCardValueTooltip() {
+      var trigger = document.getElementById('totalCardValueTipTrigger');
+      if (!trigger || typeof tippy === 'undefined') return;
+      if (trigger._tippy) trigger._tippy.destroy();
+      tippy(trigger, {
+        content: '<div class="total-card-value-tooltip">Each amount will be deducted from its respective cryptocurrency wallet.</div>',
+        allowHTML: true,
+        trigger: 'click',
+        interactive: true,
+        theme: 'light',
+        placement: 'top',
+        appendTo: document.body
+      });
     }
 
     function initCryptoSelect() {

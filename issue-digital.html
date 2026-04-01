@@ -4737,11 +4737,11 @@ Please present this card before payment.</textarea>
         logoBox.textContent = CARD_TYPE_ICONS[name] || '💳';
       }
 
-      // Show/hide rank (hidden for Prepaid Card & Crypto Card)
+      // Show/hide rank (hidden for Gift Card, Prepaid Card & Crypto Card)
       const rankSection = document.getElementById('rankSection');
       const previewRank = document.getElementById('previewRank');
-      if (previewRank) previewRank.style.display = (typeId === '4' || typeId === '5') ? 'none' : '';
-      if (rankSection) rankSection.style.display = (typeId === '4' || typeId === '5') ? 'none' : '';
+      if (previewRank) previewRank.style.display = (typeId === '0' || typeId === '4' || typeId === '5') ? 'none' : '';
+      if (rankSection) rankSection.style.display = (typeId === '0' || typeId === '4' || typeId === '5') ? 'none' : '';
 
       // Show/hide Step 3 (Expiration — hidden for GiftCard & PrepaidCard & Crypto)
       const step3 = document.getElementById('step3Card');
@@ -5620,7 +5620,9 @@ Please present this card before payment.</textarea>
         if (contactInfo) contactInfo.style.display = 'none';
       }
 
-      // Init card front for current card type (default Gift Card unless overridden by query)
+      // Init UI state for current card type (default Gift Card unless overridden by query)
+      const activeCardTypeItem = document.querySelector('.card-type-item.active');
+      if (activeCardTypeItem) selectCardType(activeCardTypeItem, currentCardType, currentTypeId);
       updateCardValueBadge();
       // Init card brand name from default business info
       onBizInfoChange();

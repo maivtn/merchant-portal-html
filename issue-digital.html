@@ -2612,6 +2612,29 @@
       color: #00a76f;
     }
 
+    .fee-token-select {
+      border: 0;
+      background-color: transparent;
+      color: var(--c-text-1);
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath fill='%23111827' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right center;
+      padding: 0 16px 0 0;
+      cursor: pointer;
+      text-align: right;
+      max-width: 130px;
+    }
+
+    .fee-token-select:focus {
+      outline: none;
+    }
+
     /* Confirm button (desktop) */
     .btn-confirm-desktop {
       display: flex;
@@ -2834,6 +2857,10 @@
 
       .fee-label,
       .fee-value {
+        font-size: 12px;
+      }
+
+      .fee-token-select {
         font-size: 12px;
       }
 
@@ -3869,6 +3896,25 @@ Please present this card before payment.</textarea>
                 </span></span>
               <span class="fee-value" data-fee-display>$0.75</span>
             </div>
+            <div class="fee-row">
+              <span class="fee-label">Pay Fees In</span>
+              <span class="fee-value">
+                <select class="fee-token-select" aria-label="Pay fees in token">
+                  <option value="USDT" selected>USDT</option>
+                  <option value="USDC">USDC</option>
+                  <option value="BTC">BTC</option>
+                  <option value="ETH">ETH</option>
+                </select>
+              </span>
+            </div>
+            <div class="fee-row">
+              <span class="fee-label">Estimated Rate</span>
+              <span class="fee-value">1 USDT = $1.00</span>
+            </div>
+            <div class="fee-row">
+              <span class="fee-label">You Pay</span>
+              <span class="fee-value">0.75 USDT</span>
+            </div>
           </div>
 
         </div>
@@ -4430,7 +4476,7 @@ Please present this card before payment.</textarea>
        CARD TYPE SELECTION
     ────────────────────────────────────────────── */
     const CARD_TYPE_ICONS = {
-      'E-Gift Card': '🎁', 'Membership': '👑', 'Prepaid Card': '💳',
+      'Gift Card': '🎁', 'Membership': '👑', 'Prepaid Card': '💳',
       'Discount': '🏷️', 'Promotion': '🔥',
     };
     // Map typeId → display label for bottom-right of card
@@ -5019,7 +5065,7 @@ Please present this card before payment.</textarea>
         </div>
        
         <div class="crypto-summary-card-qty">
-          <span>Total Value</span>
+          <span>Total Card Value</span>
           <strong>$${totalValueUsdFmt}</strong>
         </div>
       `;

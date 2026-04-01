@@ -2612,27 +2612,126 @@
       color: #00a76f;
     }
 
-    .fee-token-select {
-      border: 0;
-      background-color: transparent;
+    .fee-row--payment-method {
+      gap: 20px;
+    }
+
+    .fee-row.fee-row--payment-method .fee-value {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      min-width: 0;
+    }
+
+    .fee-value .ts-wrapper.fee-token-ts {
+      width: 100%;
+      min-width: 0;
+      max-width: none;
+    }
+
+    .fee-value .ts-wrapper.fee-token-ts .ts-control {
+      border: 0px solid var(--c-border);
+      border-radius: 10px;
+      background: var(--c-surface);
+      box-shadow: none;
+      min-height: 36px;
+      padding: 6px 34px 6px 10px;
+      justify-content: flex-end;
+      cursor: pointer;
+      position: relative;
+      padding-right: 24px !important;
+    }
+
+    .fee-value .ts-wrapper.single.fee-token-ts .ts-control::after,
+    .fee-value .ts-wrapper.single.fee-token-ts.input-active .ts-control::after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 5px 4px 0 4px;
+      border-color: #111827 transparent transparent transparent;
+      right: 12px;
+      top: 50%;
+      margin-top: -2px;
+      pointer-events: none;
+    }
+
+    .fee-value .ts-wrapper.fee-token-ts.focus .ts-control {
+      border-color: var(--primary-main);
+      box-shadow: 0 0 0 3px var(--background-hover-opacity);
+    }
+
+    .fee-value .ts-wrapper.fee-token-ts .item {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
       color: var(--c-text-1);
       font-size: 15px;
       font-weight: 700;
-      font-family: inherit;
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath fill='%23111827' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right center;
-      padding: 0 16px 0 0;
-      cursor: pointer;
-      text-align: right;
-      max-width: 130px;
+      line-height: 1.2;
+      padding: 0;
+      background: transparent;
     }
 
-    .fee-token-select:focus {
-      outline: none;
+    .fee-token-item-icon,
+    .fee-token-option-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #f3f4f6;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fee-token-item-icon img,
+    .fee-token-option-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .fee-value .ts-wrapper.fee-token-ts .ts-dropdown {
+      min-width: 220px;
+      border-radius: 12px;
+      border: 1px solid var(--c-border);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+    }
+
+    .fee-token-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+    }
+
+    .fee-token-option-text {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .fee-token-option-symbol {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-text-1);
+    }
+
+    .fee-token-option-qty {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--c-text-2);
+      line-height: 1.2;
+      white-space: nowrap;
+      text-align: right;
     }
 
     /* Confirm button (desktop) */
@@ -2861,6 +2960,10 @@
       }
 
       .fee-token-select {
+        font-size: 12px;
+      }
+
+      .fee-value .ts-wrapper.fee-token-ts .item {
         font-size: 12px;
       }
 
@@ -3896,24 +3999,16 @@ Please present this card before payment.</textarea>
                 </span></span>
               <span class="fee-value" data-fee-display>$0.75</span>
             </div>
-            <div class="fee-row">
-              <span class="fee-label">Pay Fees In</span>
+            <div class="fee-row fee-row--payment-method">
+              <span class="fee-label">Select payments method</span>
               <span class="fee-value">
-                <select class="fee-token-select" aria-label="Pay fees in token">
-                  <option value="USDT" selected>USDT</option>
-                  <option value="USDC">USDC</option>
-                  <option value="BTC">BTC</option>
-                  <option value="ETH">ETH</option>
-                </select>
+                <select id="feeTokenSelect" class="fee-token-select crypto-select" aria-label="Pay fees in token"
+                  placeholder="Select token"></select>
               </span>
             </div>
             <div class="fee-row">
-              <span class="fee-label">Estimated Rate</span>
-              <span class="fee-value">1 USDT = $1.00</span>
-            </div>
-            <div class="fee-row">
-              <span class="fee-label">You Pay</span>
-              <span class="fee-value">0.75 USDT</span>
+              <span class="fee-label"><span class="small" id="feeEstimatedRateText">1 USDV = $1.00</span></span>
+              <span class="fee-value" id="feeYouPayText">0.75 USDV</span>
             </div>
           </div>
 
@@ -4548,6 +4643,31 @@ Please present this card before payment.</textarea>
       feeNodes.forEach(node => {
         node.textContent = feeText;
       });
+      updateFeeTokenSummary(feeAmount);
+    }
+
+    function getFeeTokenUsdRate(symbol) {
+      const token = (symbol || '').toUpperCase();
+      if (!token) return 1;
+      if (token === 'USDV' || token === 'USDT' || token === 'USDC') return 1;
+      const asset = CRYPTO_ASSETS.find(x => (x.id || '').toUpperCase() === token);
+      if (!asset) return 1;
+      const balance = Number(asset.balance) || 0;
+      const valueUsd = Number(asset.available) || 0;
+      if (balance <= 0 || valueUsd <= 0) return 1;
+      return valueUsd / balance;
+    }
+
+    function updateFeeTokenSummary(feeAmountUsd) {
+      const estimatedEl = document.getElementById('feeEstimatedRateText');
+      const youPayEl = document.getElementById('feeYouPayText');
+      const tokenSelect = document.getElementById('feeTokenSelect');
+      if (!estimatedEl || !youPayEl || !tokenSelect) return;
+      const token = (tokenSelect.value || 'USDV').toUpperCase();
+      const usdPerToken = getFeeTokenUsdRate(token);
+      const tokenAmount = usdPerToken > 0 ? ((Number(feeAmountUsd) || 0) / usdPerToken) : 0;
+      estimatedEl.textContent = `1 ${token} = $${usdPerToken.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`;
+      youPayEl.textContent = `${tokenAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })} ${token}`;
     }
 
     function updateCardValueBadge() {
@@ -4813,6 +4933,13 @@ Please present this card before payment.</textarea>
     const CRYPTO_ASSET_NAMES = { BTC: 'Bitcoin', ETH: 'Ethereum', USDT: 'Tether', SHIB: 'Shiba Inu' };
     const CRYPTO_ASSETS = [
       {
+        id: 'USDV',
+        name: 'USDV',
+        iconUrl: 'images/usdv.png',
+        available: 1000000,
+        balance: 1000000
+      },
+      {
         id: 'BTC',
         name: 'BTC',
         iconUrl: 'images/btc.png',
@@ -4852,6 +4979,7 @@ Please present this card before payment.</textarea>
     const selectedAssets = {}; // { BTC: '50', ETH: '100', ... }
     const selectedAssetUnits = {}; // { BTC: 'USD', ETH: 'BTC', ... }
     let cryptoTomSelect = null; // Tom Select instance for crypto assets
+    let feeTokenTomSelect = null; // Tom Select instance for fee token
 
     function formatThousands(val) {
       if (val == null) return '';
@@ -5139,6 +5267,78 @@ Please present this card before payment.</textarea>
           renderSelectedAssets();
         }
       });
+    }
+
+    function initFeeTokenSelect() {
+      const sel = document.getElementById('feeTokenSelect');
+      if (!sel) return;
+      if (feeTokenTomSelect) { feeTokenTomSelect.destroy(); feeTokenTomSelect = null; }
+      sel.innerHTML = '';
+      const feeAssets = [
+        { id: 'USDV', name: 'USDV', iconUrl: '', available: 1, balance: 1 },
+        ...CRYPTO_ASSETS
+      ];
+      feeAssets.forEach(a => {
+        const opt = document.createElement('option');
+        opt.value = a.id;
+        opt.textContent = a.name;
+        opt.dataset.iconUrl = a.iconUrl || '';
+        sel.appendChild(opt);
+      });
+      const assetMap = Object.fromEntries(feeAssets.map(a => [a.id, a]));
+      feeTokenTomSelect = new TomSelect('#feeTokenSelect', {
+        maxItems: 1,
+        create: false,
+        hideSelected: false,
+        allowEmptyOption: false,
+        searchField: ['text'],
+        dropdownParent: 'body',
+        controlInput: null,
+        items: ['USDV'],
+        render: {
+          option: function (data, escape) {
+            const a = assetMap[data.value];
+            if (!a) return escape(data.text);
+            const fullName = CRYPTO_ASSET_NAMES[a.id] || a.name;
+            const availableFmt = typeof a.available === 'number'
+              ? '$' + a.available.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 })
+              : '';
+            return `
+              <div class="option option-crypto">
+                <div class="crypto-option-icon">
+                  ${a.iconUrl ? `<img src="${escape(a.iconUrl)}" alt="${escape(a.name)}">` : ''}
+                </div>
+                <div class="crypto-option-text">
+                  <div class="crypto-option-name">${escape(fullName)}</div>
+                  <div class="crypto-option-amount">${escape(typeof a.balance !== 'undefined' && a.balance != null ? (Number(a.balance).toLocaleString('en-US', { maximumFractionDigits: 8 }) + ' ' + a.name) : a.name)}</div>
+                </div>
+                <div class="crypto-option-right">
+                  <div class="crypto-option-available-label">Value</div>
+                  <div class="crypto-option-available-value">${escape(availableFmt)}</div>
+                </div>
+              </div>
+            `;
+          },
+          item: function (data, escape) {
+            const a = assetMap[data.value];
+            if (!a) return escape(data.text);
+            const fullName = CRYPTO_ASSET_NAMES[a.id] || a.name;
+            return `
+              <div class="item">
+                <span class="crypto-item-icon">${a.iconUrl ? `<img src="${escape(a.iconUrl)}" alt="${escape(a.name)}">` : ''}</span>
+                <span>${escape(fullName)} (${escape(a.name)})</span>
+              </div>
+            `;
+          }
+        },
+        onChange: function () {
+          updateFeeDisplay();
+        }
+      });
+      if (feeTokenTomSelect && feeTokenTomSelect.wrapper) {
+        feeTokenTomSelect.wrapper.classList.add('fee-token-ts');
+      }
+      updateFeeDisplay();
     }
     function clearRankSelection() {
       document.querySelectorAll('.rank-pill').forEach(p => p.classList.remove('active'));
@@ -5437,6 +5637,7 @@ Please present this card before payment.</textarea>
       initMbBenefitSelect();
       // Init crypto assets select (Tom Select)
       initCryptoSelect();
+      initFeeTokenSelect();
       renderCryptoSummaryCollapse();
       // Init step visibility for current card type
       const step3 = document.getElementById('step3Card');

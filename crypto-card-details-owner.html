@@ -2204,7 +2204,8 @@
 
                                 <div class="info-item">
                                     <span class="info-label">Recipient Email</span>
-                                    <span class="info-value">carlota.monteiro@vlinkpay.com</span>
+                                    <span class="info-value"
+                                        id="recipientEmailValue">carlota.monteiro@vlinkpay.com</span>
                                 </div>
                                 <div class="info-item">
                                     <span class="info-label">Issued Date</span>
@@ -3450,33 +3451,72 @@
                 finalizePinChange();
                 return;
             }
-            Swal.fire({
-                title: 'Enter OTP',
-                text: 'A 4-digit OTP has been sent to your email john.doe@example.com. Please enter it to continue.',
-                input: 'text',
-                inputPlaceholder: 'Enter OTP',
-                confirmButtonText: 'Verify',
-                showCancelButton: true,
-                preConfirm: function (otp) {
-                    var value = (otp || '').trim();
-                    if (!value) {
-                        Swal.showValidationMessage('OTP is required.');
-                        return false;
+
+            const params = new URLSearchParams(window.location.search);
+            const statusParam = params.get('status');
+            const hasEmailParam = params.get('hasEmail');
+
+            if (hasEmailParam === '0') {
+                Swal.fire({
+                    title: 'Enter email address',
+                    text: 'Please enter the email address to receive the OTP.',
+                    input: 'email',
+                    inputPlaceholder: 'Enter email address',
+                    confirmButtonText: 'Submit',
+                    showCancelButton: true,
+                    preConfirm: function (email) {
+                        return email;
                     }
-                    if (!/^\d+$/.test(value)) {
-                        Swal.showValidationMessage('OTP must contain digits only.');
-                        return false;
+                }).then(function (result) {
+                    if (!result.isConfirmed) return;
+                    const email = result.value;
+                    if (email) {
+                        window.location.href = window.location.href + '?email=' + email;
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'OTP sent',
+                            text: 'A 4-digit OTP has been sent to your email ' + email + '.',
+                            showConfirmButton: true,
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Invalid email address',
+                            text: 'Please enter a valid email address.',
+                        });
                     }
-                    if (value.length !== 4) {
-                        Swal.showValidationMessage('OTP must be exactly 4 digits.');
-                        return false;
+                });
+            }
+            else {
+                Swal.fire({
+                    title: 'Enter OTP',
+                    text: 'A 4-digit OTP has been sent to your email carlota.monteiro@vlinkpay.com. Please enter it to continue.',
+                    input: 'text',
+                    inputPlaceholder: 'Enter OTP',
+                    confirmButtonText: 'Verify',
+                    showCancelButton: true,
+                    preConfirm: function (otp) {
+                        var value = (otp || '').trim();
+                        if (!value) {
+                            Swal.showValidationMessage('OTP is required.');
+                            return false;
+                        }
+                        if (!/^\d+$/.test(value)) {
+                            Swal.showValidationMessage('OTP must contain digits only.');
+                            return false;
+                        }
+                        if (value.length !== 4) {
+                            Swal.showValidationMessage('OTP must be exactly 4 digits.');
+                            return false;
+                        }
+                        return value;
                     }
-                    return value;
-                }
-            }).then(function (result) {
-                if (!result.isConfirmed) return;
-                finalizePinChange();
-            });
+                }).then(function (result) {
+                    if (!result.isConfirmed) return;
+                    finalizePinChange();
+                });
+
+            }
         }
 
         function togglePinVisibility(inputId, btn) {
@@ -3685,6 +3725,18 @@
             if (typeof lucide !== 'undefined') lucide.createIcons();
             const params = new URLSearchParams(window.location.search);
             const statusParam = params.get('status');
+            const hasEmailParam = params.get('hasEmail');
+            const recipientEmailValue = document.getElementById('recipientEmailValue');
+
+            if (recipientEmailValue) {
+                if (hasEmailParam === '0') {
+                    recipientEmailValue.textContent = '-';
+                } else {
+                    const emailText = recipientEmailValue.textContent.trim();
+                    recipientEmailValue.textContent = emailText || '-';
+                }
+            }
+
             if (statusParam) {
                 const badge = document.getElementById('cryptoStatusBadge');
                 if (badge) {

@@ -3484,7 +3484,6 @@
                     if (!result.isConfirmed) return;
                     const email = result.value;
                     if (email) {
-                        window.location.href = window.location.href + '?email=' + email;
                         Swal.fire({
                             icon: 'success',
                             title: 'OTP sent',
@@ -3494,6 +3493,7 @@
                                 container: 'modal-enter-mail-otp',
                             },
                         });
+                        window.location.href = window.location.href + '?email=' + email;
                     } else {
                         Swal.fire({
                             icon: 'error',

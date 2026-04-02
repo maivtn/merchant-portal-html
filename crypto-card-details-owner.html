@@ -2020,7 +2020,7 @@
             margin-right: auto;
         }
 
-        .modal-enter-mail-email .swal2-popup .swal2-input {
+        .swal2-popup .swal2-input.modal-enter-mail-email-input {
             letter-spacing: 0px;
             width: 320px;
             max-width: 100%;
@@ -3471,8 +3471,11 @@
                     inputPlaceholder: 'Enter email address',
                     confirmButtonText: 'Submit',
                     showCancelButton: true,
-                    classNames: {
-                        container: 'modal-enter-mail-email',
+                    customClass: {
+                        container: 'modal-enter-mail-email'
+                    },
+                    didOpen: () => {
+                        Swal.getInput()?.classList.add('modal-enter-mail-email-input');
                     },
                     preConfirm: function (email) {
                         return email;

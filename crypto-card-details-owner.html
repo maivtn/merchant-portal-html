@@ -3482,7 +3482,7 @@
                     }
                 }).then(function (result) {
                     if (!result.isConfirmed) return;
-                    const email = result.value;
+                    const email = (result.value || '').trim();
                     if (email) {
                         Swal.fire({
                             icon: 'success',
@@ -3492,8 +3492,37 @@
                             classNames: {
                                 container: 'modal-enter-mail-otp',
                             },
+                        }).then(function (successResult) {
+                            if (!successResult.isConfirmed) return;
+                            Swal.fire({
+                                title: 'Enter OTP',
+                                text: 'A 4-digit OTP has been sent to your email carlota.monteiro@vlinkpay.com. Please enter it to continue.',
+                                input: 'text',
+                                inputPlaceholder: 'Enter OTP',
+                                confirmButtonText: 'Verify',
+                                showCancelButton: true,
+                                preConfirm: function (otp) {
+                                    var value = (otp || '').trim();
+                                    if (!value) {
+                                        Swal.showValidationMessage('OTP is required.');
+                                        return false;
+                                    }
+                                    if (!/^\d+$/.test(value)) {
+                                        Swal.showValidationMessage('OTP must contain digits only.');
+                                        return false;
+                                    }
+                                    if (value.length !== 4) {
+                                        Swal.showValidationMessage('OTP must be exactly 4 digits.');
+                                        return false;
+                                    }
+                                    return value;
+                                }
+                            }).then(function (result) {
+                                if (!result.isConfirmed) return;
+                                finalizePinChange();
+                            });
+                            // window.location.href = window.location.pathname + '?hasEmail=1&email=' + encodeURIComponent(email);
                         });
-                        window.location.href = window.location.href + '?hasEmail=1&email=' + email;
                     } else {
                         Swal.fire({
                             icon: 'error',

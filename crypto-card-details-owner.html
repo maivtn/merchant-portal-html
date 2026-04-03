@@ -3449,6 +3449,62 @@
             function isValidOtp(otp) {
                 return /^\d{4}$/.test((otp || '').trim());
             }
+            function otpResendSwalHooks() {
+                var otpResendTimer = null;
+                return {
+                    didOpen: function () {
+                        var input = Swal.getInput();
+                        if (!input) return;
+                        var wrap = document.createElement('div');
+                        wrap.className = 'swal-otp-resend-wrap';
+                        wrap.setAttribute('style', 'margin-top:12px;text-align:center;font-size:14px; margin-bottom:12px;');
+                        var link = document.createElement('a');
+                        link.href = '#';
+                        link.className = 'swal-otp-resend-link';
+                        var seconds = 59;
+                        function updateDisplay() {
+                            if (seconds > 0) {
+                                link.textContent = 'Resend OTP (' + seconds + 's)';
+                                link.style.pointerEvents = 'none';
+                                link.style.opacity = '0.6';
+                                link.style.cursor = 'default';
+                            } else {
+                                link.textContent = 'Resend OTP';
+                                link.style.pointerEvents = '';
+                                link.style.opacity = '1';
+                                link.style.cursor = 'pointer';
+                                if (otpResendTimer) {
+                                    clearInterval(otpResendTimer);
+                                    otpResendTimer = null;
+                                }
+                            }
+                        }
+                        updateDisplay();
+                        otpResendTimer = setInterval(function () {
+                            seconds--;
+                            updateDisplay();
+                        }, 1000);
+                        link.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            if (seconds > 0) return;
+                            seconds = 59;
+                            updateDisplay();
+                            otpResendTimer = setInterval(function () {
+                                seconds--;
+                                updateDisplay();
+                            }, 1000);
+                        });
+                        wrap.appendChild(link);
+                        input.parentNode.insertBefore(wrap, input.nextSibling);
+                    },
+                    willClose: function () {
+                        if (otpResendTimer) {
+                            clearInterval(otpResendTimer);
+                            otpResendTimer = null;
+                        }
+                    }
+                };
+            }
             if (typeof Swal === 'undefined') {
                 var fallbackOtp = prompt('Enter 4-digit OTP');
                 if (!isValidOtp(fallbackOtp)) {
@@ -3494,34 +3550,39 @@
                             },
                         }).then(function (successResult) {
                             if (!successResult.isConfirmed) return;
-                            Swal.fire({
-                                title: 'Enter OTP',
-                                text: 'A 4-digit OTP has been sent to your email carlota.monteiro@vlinkpay.com. Please enter it to continue.',
-                                input: 'text',
-                                inputPlaceholder: 'Enter OTP',
-                                confirmButtonText: 'Verify',
-                                showCancelButton: true,
-                                allowOutsideClick: false,
-                                preConfirm: function (otp) {
-                                    var value = (otp || '').trim();
-                                    if (!value) {
-                                        Swal.showValidationMessage('OTP is required.');
-                                        return false;
+                            (function () {
+                                var otpHooks = otpResendSwalHooks();
+                                Swal.fire({
+                                    title: 'Enter OTP',
+                                    text: 'A 4-digit OTP has been sent to your email carlota.monteiro@vlinkpay.com. Please enter it to continue.',
+                                    input: 'text',
+                                    inputPlaceholder: 'Enter OTP',
+                                    confirmButtonText: 'Verify',
+                                    showCancelButton: true,
+                                    allowOutsideClick: false,
+                                    didOpen: otpHooks.didOpen,
+                                    willClose: otpHooks.willClose,
+                                    preConfirm: function (otp) {
+                                        var value = (otp || '').trim();
+                                        if (!value) {
+                                            Swal.showValidationMessage('OTP is required.');
+                                            return false;
+                                        }
+                                        if (!/^\d+$/.test(value)) {
+                                            Swal.showValidationMessage('OTP must contain digits only.');
+                                            return false;
+                                        }
+                                        if (value.length !== 4) {
+                                            Swal.showValidationMessage('OTP must be exactly 4 digits.');
+                                            return false;
+                                        }
+                                        return value;
                                     }
-                                    if (!/^\d+$/.test(value)) {
-                                        Swal.showValidationMessage('OTP must contain digits only.');
-                                        return false;
-                                    }
-                                    if (value.length !== 4) {
-                                        Swal.showValidationMessage('OTP must be exactly 4 digits.');
-                                        return false;
-                                    }
-                                    return value;
-                                }
-                            }).then(function (result) {
-                                if (!result.isConfirmed) return;
-                                finalizePinChange();
-                            });
+                                }).then(function (result) {
+                                    if (!result.isConfirmed) return;
+                                    finalizePinChange();
+                                });
+                            })();
                             // window.location.href = window.location.pathname + '?hasEmail=1&email=' + encodeURIComponent(email);
                         });
                     } else {
@@ -3534,34 +3595,39 @@
                 });
             }
             else {
-                Swal.fire({
-                    title: 'Enter OTP',
-                    text: 'A 4-digit OTP has been sent to your email carlota.monteiro@vlinkpay.com. Please enter it to continue.',
-                    input: 'text',
-                    inputPlaceholder: 'Enter OTP',
-                    confirmButtonText: 'Verify',
-                    allowOutsideClick: false,
-                    showCancelButton: true,
-                    preConfirm: function (otp) {
-                        var value = (otp || '').trim();
-                        if (!value) {
-                            Swal.showValidationMessage('OTP is required.');
-                            return false;
+                (function () {
+                    var otpHooks = otpResendSwalHooks();
+                    Swal.fire({
+                        title: 'Enter OTP',
+                        text: 'A 4-digit OTP has been sent to your email carlota.monteiro@vlinkpay.com. Please enter it to continue.',
+                        input: 'text',
+                        inputPlaceholder: 'Enter OTP',
+                        confirmButtonText: 'Verify',
+                        allowOutsideClick: false,
+                        showCancelButton: true,
+                        didOpen: otpHooks.didOpen,
+                        willClose: otpHooks.willClose,
+                        preConfirm: function (otp) {
+                            var value = (otp || '').trim();
+                            if (!value) {
+                                Swal.showValidationMessage('OTP is required.');
+                                return false;
+                            }
+                            if (!/^\d+$/.test(value)) {
+                                Swal.showValidationMessage('OTP must contain digits only.');
+                                return false;
+                            }
+                            if (value.length !== 4) {
+                                Swal.showValidationMessage('OTP must be exactly 4 digits.');
+                                return false;
+                            }
+                            return value;
                         }
-                        if (!/^\d+$/.test(value)) {
-                            Swal.showValidationMessage('OTP must contain digits only.');
-                            return false;
-                        }
-                        if (value.length !== 4) {
-                            Swal.showValidationMessage('OTP must be exactly 4 digits.');
-                            return false;
-                        }
-                        return value;
-                    }
-                }).then(function (result) {
-                    if (!result.isConfirmed) return;
-                    finalizePinChange();
-                });
+                    }).then(function (result) {
+                        if (!result.isConfirmed) return;
+                        finalizePinChange();
+                    });
+                })();
 
             }
         }

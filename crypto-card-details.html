@@ -1771,6 +1771,83 @@
             box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
             overflow: hidden;
             z-index: 1301;
+            left: auto !important;
+            right: 0 !important;
+        }
+
+        .crypto-select .ts-dropdown .option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-block: 6px;
+        }
+
+        .option-crypto {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            width: 100%;
+        }
+
+        .crypto-select .ts-dropdown .option.option-crypto {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            width: 100%;
+        }
+
+        .crypto-option-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #f0f0f0;
+        }
+
+        .crypto-option-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .crypto-option-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .crypto-option-name {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.3;
+        }
+
+        .crypto-option-amount {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+            line-height: 1.3;
+        }
+
+        .crypto-option-right {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .crypto-option-available-label {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.3;
+        }
+
+        .crypto-option-available-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+            line-height: 1.3;
         }
 
         .fee-token-option {
@@ -3857,9 +3934,9 @@
             }
 
             var feeAssets = [
-                { id: 'USDV', name: 'USDV', iconUrl: ICONS.USD, balance: 0 },
-                { id: 'BTC', name: 'BTC', iconUrl: ICONS.BTC, balance: assetBalances.BTC || 0 },
-                { id: 'ETH', name: 'ETH', iconUrl: ICONS.ETH, balance: assetBalances.ETH || 0 }
+                { id: 'USDV', name: 'USDV', iconUrl: ICONS.USD, balance: 1, available: 1 },
+                { id: 'BTC', name: 'BTC', iconUrl: ICONS.BTC, balance: assetBalances.BTC || 0, available: (assetBalances.BTC || 0) * (assetRates.BTC || 0) },
+                { id: 'ETH', name: 'ETH', iconUrl: ICONS.ETH, balance: assetBalances.ETH || 0, available: (assetBalances.ETH || 0) * (assetRates.ETH || 0) }
             ];
 
             sel.innerHTML = '';
@@ -3878,8 +3955,8 @@
                 create: false,
                 hideSelected: false,
                 allowEmptyOption: false,
+                openOnFocus: true,
                 searchField: ['text'],
-                dropdownParent: 'body',
                 controlInput: null,
                 items: ['USDV'],
                 render: {
@@ -3887,12 +3964,20 @@
                         var a = assetMap[data.value];
                         if (!a) return escape(data.text);
                         var qtyText = (Number(a.balance || 0).toLocaleString('en-US', { maximumFractionDigits: 8 }) + ' ' + a.name);
-                        return '<div class="fee-token-option">' +
-                            '<span class="fee-token-option-icon">' + (a.iconUrl ? ('<img src="' + escape(a.iconUrl) + '" alt="' + escape(a.name) + '">') : '') + '</span>' +
-                            '<span class="fee-token-option-text">' +
-                            '<span class="fee-token-option-symbol">' + escape(a.name) + '</span>' +
-                            '<span class="fee-token-option-qty">' + escape(qtyText) + '</span>' +
-                            '</span></div>';
+                        var availableFmt = typeof a.available === 'number'
+                            ? ('$' + a.available.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 }))
+                            : '';
+                        return '<div class="option option-crypto">' +
+                            '<div class="crypto-option-icon">' + (a.iconUrl ? ('<img src="' + escape(a.iconUrl) + '" alt="' + escape(a.name) + '">') : '') + '</div>' +
+                            '<div class="crypto-option-text">' +
+                            '<div class="crypto-option-name">' + escape(a.name) + '</div>' +
+                            '<div class="crypto-option-amount">' + escape(qtyText) + '</div>' +
+                            '</div>' +
+                            '<div class="crypto-option-right">' +
+                            '<div class="crypto-option-available-label">Value</div>' +
+                            '<div class="crypto-option-available-value">' + escape(availableFmt) + '</div>' +
+                            '</div>' +
+                            '</div>';
                     },
                     item: function (data, escape) {
                         var a = assetMap[data.value];
@@ -3911,15 +3996,24 @@
                 feeTokenTomSelect.wrapper.classList.add('fee-token-ts');
                 var control = feeTokenTomSelect.wrapper.querySelector('.ts-control');
                 if (control) {
-                    control.addEventListener('click', function (e) {
+                    var openDropdown = function (e) {
+                        e.preventDefault();
                         e.stopPropagation();
                         if (feeTokenTomSelect && typeof feeTokenTomSelect.open === 'function') {
+                            feeTokenTomSelect.focus();
                             feeTokenTomSelect.open();
                         }
-                    });
+                    };
+                    control.addEventListener('mousedown', openDropdown);
+                    control.addEventListener('click', openDropdown);
                 }
+                if (feeTokenTomSelect.dropdown) feeTokenTomSelect.dropdown.classList.add('fee-token-dropdown');
             }
-            sel.value = 'USDV';
+            if (typeof feeTokenTomSelect.setValue === 'function') {
+                feeTokenTomSelect.setValue('USDV', true);
+            } else {
+                sel.value = 'USDV';
+            }
             updateReloadFeeTokenSummary(0);
         }
 

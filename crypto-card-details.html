@@ -3343,13 +3343,7 @@
             if (el) el.classList.remove('active');
         }
 
-        // Close modal when clicking on backdrop
         document.addEventListener('click', function (e) {
-            const modal = document.getElementById('reloadModal');
-            if (!modal) return;
-            if (e.target === modal) {
-                closeReloadModal();
-            }
             if (!e.target.closest('.icon-select')) {
                 document.querySelectorAll('.icon-select.open').forEach(function (el) { el.classList.remove('open'); });
             }

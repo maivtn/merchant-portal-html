@@ -1295,18 +1295,18 @@
                 "grid": { "enabled": true, "fields": ["cardImage", "merchantName", "balance", "viewDetails"] }
               }
             },
-            {
-              "productName": "E-Gift Code",
-              "search": { "enabled": true, "placeholder": "Search by gift code or card number", "searchBy": ["id"] },
-              "viewModes": {
-                "list": {
-                  "enabled": true,
-                  "columns": ["id", "amount", "status", "giftTo", "action"],
-                  "statusOptions": ["gifted", "available"]
-                },
-                "grid": { "enabled": true, "fields": ["cardImage", "amount", "viewDetails"] }
-              }
-            },
+            // {
+            //   "productName": "E-Gift Code",
+            //   "search": { "enabled": true, "placeholder": "Search by gift code or card number", "searchBy": ["id"] },
+            //   "viewModes": {
+            //     "list": {
+            //       "enabled": true,
+            //       "columns": ["id", "amount", "status", "giftTo", "action"],
+            //       "statusOptions": ["gifted", "available"]
+            //     },
+            //     "grid": { "enabled": true, "fields": ["cardImage", "amount", "viewDetails"] }
+            //   }
+            // },
             {
               "productName": "Third-Party Gift Card",
               "search": { "enabled": true, "placeholder": "Search by merchant name or card number", "searchBy": ["merchantName"] },
@@ -1319,6 +1319,25 @@
                 "grid": { "enabled": true, "fields": ["cardImage", "merchantName", "balance", "viewDetails"] }
               }
             },
+          ]
+        },
+        {
+          "name": "E-Gift Code",
+          "products": [
+
+            {
+              "productName": "E-Gift Code",
+              "search": { "enabled": true, "placeholder": "Search by gift code or card number", "searchBy": ["id"] },
+              "viewModes": {
+                "list": {
+                  "enabled": true,
+                  "columns": ["id", "amount", "status", "giftTo", "action"],
+                  "statusOptions": ["gifted", "available"]
+                },
+                "grid": { "enabled": true, "fields": ["cardImage", "amount", "viewDetails"] }
+              }
+            },
+
           ]
         },
         {
@@ -1439,6 +1458,17 @@
           { "merchantName": "Best Buy", "balance": 90, "createdDate": "May 08, 2025", "status": "active", "action": "view" },
           { "merchantName": "Sephora", "balance": 60, "createdDate": "Jun 05, 2025", "status": "inactive", "action": "view" }
         ],
+        // "E-Gift Code": [
+        //   { "id": "GC-20260324-0001", "amount": 100, "status": "available", "giftTo": "", "action": "view" },
+        //   { "id": "GC-20260324-0002", "amount": 50, "status": "gifted", "giftTo": "anna@gmail.com", "action": "view" },
+        //   { "id": "GC-20260324-0003", "amount": 200, "status": "available", "giftTo": "", "action": "view" },
+        //   { "id": "GC-20260324-0004", "amount": 75, "status": "gifted", "giftTo": "johnsmith@yahoo.com", "action": "view" },
+        //   { "id": "GC-20260324-0005", "amount": 120, "status": "available", "giftTo": "", "action": "view" },
+        //   { "id": "GC-20260324-0006", "amount": 30, "status": "gifted", "giftTo": "emily@outlook.com", "action": "view" }
+        // ]
+      },
+      "E-Gift Code": {
+
         "E-Gift Code": [
           { "id": "GC-20260324-0001", "amount": 100, "status": "available", "giftTo": "", "action": "view" },
           { "id": "GC-20260324-0002", "amount": 50, "status": "gifted", "giftTo": "anna@gmail.com", "action": "view" },
@@ -1795,11 +1825,24 @@
       el.innerHTML = html;
     }
 
+    /** Ẩn product-tabs khi E-Gift Code / Self-Added hoặc platform chỉ có 1 product. */
+    function myCardsV2ShouldShowProductTabs(platform) {
+      if (!platform || !platform.products.length) return false;
+      if (platform.name === 'E-Gift Code' || platform.name === 'Self-Added') return false;
+      if (platform.products.length === 1) return false;
+      return true;
+    }
+
     function myCardsV2RenderProductTabs() {
       var el = document.getElementById('product-tabs');
       if (!el) return;
       var platform = MY_CARDS_V2_CONFIG.platforms[myCardsV2State.platformIndex];
       if (!platform || !platform.products.length) {
+        el.innerHTML = '';
+        el.style.display = 'none';
+        return;
+      }
+      if (!myCardsV2ShouldShowProductTabs(platform)) {
         el.innerHTML = '';
         el.style.display = 'none';
         return;

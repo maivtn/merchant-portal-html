@@ -1627,7 +1627,6 @@
         .reload-summary-row {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
             font-size: 13px;
             padding: 4px 0;
         }
@@ -2938,6 +2937,13 @@
                         <span id="reloadPrice" class="reload-summary-value">-</span>
                     </div>
                     <div class="reload-summary-row">
+                        <span class="reload-summary-label">Amount Reload</span>
+                        <span class="reload-summary-value-stack">
+                            <span id="reloadAmountQty" class="reload-summary-value">-</span>
+                            <span id="reloadAmountUsd" class="reload-summary-subvalue">-</span>
+                        </span>
+                    </div>
+                    <div class="reload-summary-row">
                         <span class="reload-summary-label">Current Balance</span>
                         <span class="reload-summary-value-stack">
                             <span id="reloadCurrentQty" class="reload-summary-value">-</span>
@@ -3784,6 +3790,8 @@
             const assetEl = document.getElementById('reloadAsset');
             const amountEl = document.getElementById('reloadAmount');
             const amountUnitEl = document.getElementById('reloadAmountUnit');
+            const amountQtyEl = document.getElementById('reloadAmountQty');
+            const amountUsdEl = document.getElementById('reloadAmountUsd');
             const currentQtyEl = document.getElementById('reloadCurrentQty');
             const currentUsdEl = document.getElementById('reloadCurrentUsd');
             const afterQtyEl = document.getElementById('reloadAfterQty');
@@ -3793,13 +3801,15 @@
             const transferFeeEl = document.getElementById('reloadTransferFee');
             const totalEl = document.getElementById('reloadTotal');
 
-            if (!assetEl || !amountEl || !amountUnitEl || !currentQtyEl || !currentUsdEl || !afterQtyEl || !afterUsdEl || !priceEl || !platformFeeEl || !transferFeeEl || !totalEl) return;
+            if (!assetEl || !amountEl || !amountUnitEl || !amountQtyEl || !amountUsdEl || !currentQtyEl || !currentUsdEl || !afterQtyEl || !afterUsdEl || !priceEl || !platformFeeEl || !transferFeeEl || !totalEl) return;
 
             const asset = assetEl.value;
             const rawAmount = parseMaskedNumber(amountEl.value);
             const amountUnit = amountUnitEl.value || 'USD';
 
             function setDash() {
+                amountQtyEl.textContent = '-';
+                amountUsdEl.textContent = '-';
                 currentQtyEl.textContent = '-';
                 currentUsdEl.textContent = '-';
                 afterQtyEl.textContent = '-';
@@ -3848,6 +3858,17 @@
             const after = current + deltaCoins;
             const currentUsd = current * rate;
             const afterUsd = after * rate;
+
+            if (!rawAmount || inputAmount <= 0) {
+                amountQtyEl.textContent = '-';
+                amountUsdEl.textContent = '-';
+            } else {
+                amountQtyEl.textContent = deltaCoins.toFixed(8) + ' ' + asset;
+                amountUsdEl.textContent = '$' + usdAmount.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+            }
 
             currentQtyEl.textContent = current.toFixed(8) + ' ' + asset;
             currentUsdEl.textContent = '$' + currentUsd.toLocaleString('en-US', {

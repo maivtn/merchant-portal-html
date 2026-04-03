@@ -14,6 +14,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.5.2/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.5.2/dist/js/tom-select.complete.min.js"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script>
         (function () {
@@ -1679,6 +1681,128 @@
             font-weight: 700;
         }
 
+        .fee-payment-method-tooltip {
+            padding: 16px;
+        }
+
+        .reload-summary-row--payment-method {
+            gap: 20px;
+        }
+
+        .reload-summary-row.reload-summary-row--payment-method .reload-summary-value {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            min-width: 0;
+        }
+
+        .reload-summary-value .ts-wrapper.fee-token-ts {
+            width: 100%;
+            min-width: 0;
+            max-width: none;
+        }
+
+        .reload-summary-value .ts-wrapper.fee-token-ts .ts-control {
+            border: 0;
+            border-radius: 10px;
+            background: transparent;
+            box-shadow: none;
+            min-height: 28px;
+            padding: 0;
+            justify-content: flex-end;
+            cursor: pointer;
+            position: relative;
+            padding-right: 18px !important;
+        }
+
+        .reload-summary-value .ts-wrapper.single.fee-token-ts .ts-control::after,
+        .reload-summary-value .ts-wrapper.single.fee-token-ts.input-active .ts-control::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 5px 4px 0 4px;
+            border-color: #111827 transparent transparent transparent;
+            right: 2px;
+            top: 50%;
+            margin-top: -2px;
+            pointer-events: none;
+        }
+
+        .reload-summary-value .ts-wrapper.fee-token-ts .item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+            color: var(--grey-900);
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.2;
+            padding: 0;
+            background: transparent;
+        }
+
+        .fee-token-item-icon,
+        .fee-token-option-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #f3f4f6;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fee-token-item-icon img,
+        .fee-token-option-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .reload-summary-value .ts-wrapper.fee-token-ts .ts-dropdown {
+            min-width: 220px;
+            border-radius: 12px;
+            border: 1px solid var(--grey-200);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+            overflow: hidden;
+            z-index: 1301;
+        }
+
+        .fee-token-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+        }
+
+        .fee-token-option-text {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .fee-token-option-symbol {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--grey-900);
+        }
+
+        .fee-token-option-qty {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--grey-500);
+            line-height: 1.2;
+            white-space: nowrap;
+            text-align: right;
+        }
+
         .reload-summary-label-inline {
             display: inline-flex;
             align-items: center;
@@ -2760,12 +2884,35 @@
                     </div>
                     <div class="reload-summary-row reload-summary-row--total">
                         <span class="reload-summary-label reload-summary-label-inline">
-                            Total
+                            Total Fee
                             <span id="reloadTotalFeesTipTrigger" class="reload-summary-info-icon" title="Fees overview">
                                 <i data-lucide="info" style="width:12px;height:12px;"></i>
                             </span>
                         </span>
                         <span id="reloadTotal" class="reload-summary-value">-</span>
+                    </div>
+                    <div class="reload-summary-row reload-summary-row--payment-method">
+                        <span class="reload-summary-label reload-summary-label-inline">
+                            Fee Payment Method
+                            <span id="feePaymentMethodTipTrigger" class="reload-summary-info-icon"
+                                title="Fee payment method info">
+                                <i data-lucide="info" style="width:12px;height:12px;"></i>
+                            </span>
+                        </span>
+                        <span class="reload-summary-value">
+                            <select id="feeTokenSelect" class="fee-token-select crypto-select"
+                                aria-label="Pay fees in token">
+                                <option value="USDV">USDV</option>
+                                <option value="BTC">BTC</option>
+                                <option value="ETH">ETH</option>
+                            </select>
+                        </span>
+                    </div>
+                    <div class="reload-summary-row">
+                        <span class="reload-summary-label">
+                            Exchange Rate <span class="small" id="feeEstimatedRateText">1 USDV = $1.00</span>
+                        </span>
+                        <span class="reload-summary-value" id="feeYouPayText">0.00 USDV</span>
                     </div>
                 </div>
             </div>
@@ -2882,6 +3029,7 @@
             BTC: 45000.0, // USD per BTC
             ETH: 2500.0,  // USD per ETH
         };
+        let feeTokenTomSelect = null;
 
         function updateToggleStatus(checkbox, badgeId, checkedText, uncheckedText) {
             const badge = document.getElementById(badgeId);
@@ -3077,6 +3225,13 @@
             }
             updateAssetIcon();
             updateAmountUnitIcon();
+            initReloadFeeTokenSelect();
+            if (feeTokenTomSelect && typeof feeTokenTomSelect.setValue === 'function') {
+                feeTokenTomSelect.setValue('USDV', true);
+            } else {
+                var feeTokenSelectEl = document.getElementById('feeTokenSelect');
+                if (feeTokenSelectEl) feeTokenSelectEl.value = 'USDV';
+            }
             updateReloadSummary();
         }
 
@@ -3452,6 +3607,13 @@
             return String(masked).replace(/,/g, '').trim();
         }
 
+        function parseNumericText(text) {
+            if (text == null) return 0;
+            var cleaned = String(text).replace(/[^0-9.-]/g, '');
+            var n = parseFloat(cleaned);
+            return Number.isFinite(n) ? n : 0;
+        }
+
         function handleReloadAmountInput() {
             const el = document.getElementById('reloadAmount');
             if (!el) return;
@@ -3570,6 +3732,7 @@
                 platformFeeEl.classList.remove('reload-summary-value--free');
                 transferFeeEl.textContent = '-';
                 totalEl.textContent = '-';
+                updateReloadFeeTokenSummary(0);
             }
 
             updateReloadAmountAltValue();
@@ -3627,6 +3790,7 @@
                 platformFeeEl.classList.remove('reload-summary-value--free');
                 transferFeeEl.textContent = '-';
                 totalEl.textContent = '-';
+                updateReloadFeeTokenSummary(0);
                 updateReloadAmountAltValue();
                 return;
             }
@@ -3646,6 +3810,117 @@
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
             });
+            updateReloadFeeTokenSummary(transferFee);
+        }
+
+        function getReloadFeeTokenUsdRate(symbol) {
+            var token = (symbol || '').toUpperCase();
+            if (!token) return 1;
+            if (token === 'USDV' || token === 'USDT' || token === 'USDC' || token === 'USD') return 1;
+            return Number(assetRates[token]) || 1;
+        }
+
+        function updateReloadFeeTokenSummary(feeAmountUsd) {
+            var estimatedEl = document.getElementById('feeEstimatedRateText');
+            var youPayEl = document.getElementById('feeYouPayText');
+            var selectedToken = 'USDV';
+            if (feeTokenTomSelect && typeof feeTokenTomSelect.getValue === 'function') {
+                selectedToken = (feeTokenTomSelect.getValue() || 'USDV');
+            } else {
+                var tokenSelect = document.getElementById('feeTokenSelect');
+                selectedToken = (tokenSelect && tokenSelect.value) ? tokenSelect.value : 'USDV';
+            }
+            var token = (selectedToken || 'USDV').toUpperCase();
+            var usdPerToken = getReloadFeeTokenUsdRate(token);
+            var tokenAmount = usdPerToken > 0 ? ((Number(feeAmountUsd) || 0) / usdPerToken) : 0;
+            if (estimatedEl) {
+                estimatedEl.textContent = '1 ' + token + ' = $' + usdPerToken.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 8
+                });
+            }
+            if (youPayEl) {
+                youPayEl.textContent = tokenAmount.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 8
+                }) + ' ' + token;
+            }
+        }
+
+        function initReloadFeeTokenSelect() {
+            var sel = document.getElementById('feeTokenSelect');
+            if (!sel) return;
+            if (typeof TomSelect === 'undefined') return;
+            if (feeTokenTomSelect) {
+                feeTokenTomSelect.destroy();
+                feeTokenTomSelect = null;
+            }
+
+            var feeAssets = [
+                { id: 'USDV', name: 'USDV', iconUrl: ICONS.USD, balance: 0 },
+                { id: 'BTC', name: 'BTC', iconUrl: ICONS.BTC, balance: assetBalances.BTC || 0 },
+                { id: 'ETH', name: 'ETH', iconUrl: ICONS.ETH, balance: assetBalances.ETH || 0 }
+            ];
+
+            sel.innerHTML = '';
+            feeAssets.forEach(function (a) {
+                var opt = document.createElement('option');
+                opt.value = a.id;
+                opt.textContent = a.name;
+                opt.dataset.iconUrl = a.iconUrl || '';
+                sel.appendChild(opt);
+            });
+
+            var assetMap = {};
+            feeAssets.forEach(function (a) { assetMap[a.id] = a; });
+            feeTokenTomSelect = new TomSelect('#feeTokenSelect', {
+                maxItems: 1,
+                create: false,
+                hideSelected: false,
+                allowEmptyOption: false,
+                searchField: ['text'],
+                dropdownParent: 'body',
+                controlInput: null,
+                items: ['USDV'],
+                render: {
+                    option: function (data, escape) {
+                        var a = assetMap[data.value];
+                        if (!a) return escape(data.text);
+                        var qtyText = (Number(a.balance || 0).toLocaleString('en-US', { maximumFractionDigits: 8 }) + ' ' + a.name);
+                        return '<div class="fee-token-option">' +
+                            '<span class="fee-token-option-icon">' + (a.iconUrl ? ('<img src="' + escape(a.iconUrl) + '" alt="' + escape(a.name) + '">') : '') + '</span>' +
+                            '<span class="fee-token-option-text">' +
+                            '<span class="fee-token-option-symbol">' + escape(a.name) + '</span>' +
+                            '<span class="fee-token-option-qty">' + escape(qtyText) + '</span>' +
+                            '</span></div>';
+                    },
+                    item: function (data, escape) {
+                        var a = assetMap[data.value];
+                        if (!a) return escape(data.text);
+                        return '<div class="item">' +
+                            '<span class="fee-token-item-icon">' + (a.iconUrl ? ('<img src="' + escape(a.iconUrl) + '" alt="' + escape(a.name) + '">') : '') + '</span>' +
+                            '<span>' + escape(a.name) + '</span>' +
+                            '</div>';
+                    }
+                },
+                onChange: function () {
+                    updateReloadSummary();
+                }
+            });
+            if (feeTokenTomSelect && feeTokenTomSelect.wrapper) {
+                feeTokenTomSelect.wrapper.classList.add('fee-token-ts');
+                var control = feeTokenTomSelect.wrapper.querySelector('.ts-control');
+                if (control) {
+                    control.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        if (feeTokenTomSelect && typeof feeTokenTomSelect.open === 'function') {
+                            feeTokenTomSelect.open();
+                        }
+                    });
+                }
+            }
+            sel.value = 'USDV';
+            updateReloadFeeTokenSummary(0);
         }
 
         function toggleSensitiveValue(buttonEl) {
@@ -3716,10 +3991,19 @@
                     updateReloadSummary();
                 });
             }
+            var feeTokenSelect = document.getElementById('feeTokenSelect');
+            if (feeTokenSelect) {
+                feeTokenSelect.addEventListener('change', function () {
+                    var transferFeeEl = document.getElementById('reloadTransferFee');
+                    var feeAmountUsd = transferFeeEl ? parseNumericText(transferFeeEl.textContent) : 0;
+                    updateReloadFeeTokenSummary(feeAmountUsd);
+                });
+            }
 
             // Initial icon state
             updateAssetIcon();
             updateAmountUnitIcon();
+            initReloadFeeTokenSelect();
 
             // Fees Overview tooltip (Tippy) on Total (i) icon
             (function () {
@@ -3755,6 +4039,21 @@
                             if (closeBtn) closeBtn.onclick = function () { i.hide(); };
                         }
                     },
+                });
+            })();
+
+            // Fee Payment Method tooltip
+            (function () {
+                var trigger = document.getElementById('feePaymentMethodTipTrigger');
+                if (!trigger || typeof tippy === 'undefined') return;
+                tippy(trigger, {
+                    content: '<div class="fee-payment-method-tooltip">Select a wallet to pay the transaction fee.</div>',
+                    allowHTML: true,
+                    trigger: 'click',
+                    interactive: true,
+                    theme: 'light',
+                    placement: 'top',
+                    appendTo: document.body
                 });
             })();
 

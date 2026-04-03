@@ -1795,10 +1795,9 @@
       el.innerHTML = html;
     }
 
-    /** Ẩn product-tabs khi E-Gift Code / Self-Added hoặc platform chỉ có 1 product. */
+    /** Ẩn product-tabs khi platform chỉ có 1 product. */
     function myCardsV2ShouldShowProductTabs(platform) {
       if (!platform || !platform.products.length) return false;
-      if (platform.name === 'E-Gift Code' || platform.name === 'Self-Added') return false;
       if (platform.products.length === 1) return false;
       return true;
     }

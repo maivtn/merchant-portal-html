@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My Cards v2 - VLINKPAY</title>
+  <title>My Cards - VLINKPAY</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
@@ -1333,7 +1333,7 @@
               }
             },
             {
-              "productName": "Membership Package",
+              "productName": "Membership",
               "search": { "enabled": true, "placeholder": "Search by merchant name or card number", "searchBy": ["merchantName"] },
               "viewModes": {
                 "list": { "enabled": true, "columns": ["cardNumbers", "merchantName", "amount", "balance", "currency", "cardLocked", "expiryDate", "issueBy", "action"] },
@@ -1473,7 +1473,7 @@
           { "cardNumbers": "8080 **** **** 8080", "productName": "Discount", "merchantName": "Phuc Long", "amount": 22, "balance": 20, "issueBy": "Merchant", "action": "view" },
           { "cardNumbers": "9090 **** **** 9090", "productName": "Discount", "merchantName": "The Coffee House", "amount": 16, "balance": 14, "issueBy": "Admin", "action": "view" }
         ],
-        "Membership Package": [
+        "Membership": [
           { "cardNumbers": "1111 **** **** 1111", "merchantName": "VLINK Salon", "amount": 850, "balance": 850, "currency": "USD", "cardLocked": true, "expiryDate": "Dec 30, 2026", "issueBy": "Admin", "action": "view" },
           { "cardNumbers": "2222 **** **** 2222", "merchantName": "BTC Nail Bar", "amount": 1200, "balance": 900, "currency": "USD", "cardLocked": false, "expiryDate": "Nov 15, 2026", "issueBy": "Admin", "action": "view" },
           { "cardNumbers": "3333 **** **** 3333", "merchantName": "Luxury Nails", "amount": 950, "balance": 950, "currency": "USD", "cardLocked": true, "expiryDate": "Oct 20, 2026", "issueBy": "Merchant", "action": "view" },
@@ -1525,7 +1525,7 @@
     function getDetailHref(product) {
       var key = slugify(product.productName);
       if (key === 'crypto-card') return 'crypto-card-details-owner.html';
-      if (key === 'membership-package') return 'issue-digital-membership-detail-owner.html';
+      if (key === 'membership' || key === 'membership-package') return 'issue-digital-membership-detail-owner.html';
       if (key === 'self-added-gift-card') return 'self-added-gift-card-owner.html';
       return '#';
     }
@@ -1627,7 +1627,7 @@
     function getGridImageSrc(product) {
       var key = slugify(product.productName);
       if (key === 'crypto-card') return 'images/cryptocard-front.png';
-      if (key === 'membership-package') return 'images/membershipcard.png';
+      if (key === 'membership' || key === 'membership-package') return 'images/membershipcard.png';
       if (key === 'gift-card') return 'images/giftcard-front.png';
       if (key === 'promotion') return 'images/promotion-front.png';
       if (key === 'discount') return 'images/discount-front.png';

@@ -11,7 +11,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.css">
-  <link rel="stylesheet" href="global.css">
   <style>
     :root {
       --iou-accent: #0f9f86;
@@ -809,6 +808,22 @@
       display: flex;
     }
 
+    .modal-number {
+      color: #4b5f84;
+      font-weight: 700;
+    }
+
+    .tippy-box[data-theme~='white'] {
+      background-color: #ffffff;
+      color: #1f2937;
+      border: 1px solid #dbe3ef;
+      box-shadow: 0 10px 24px -18px rgba(15, 23, 42, 0.45);
+    }
+
+    .tippy-box[data-theme~='white'] .tippy-content {
+      color: #1f2937;
+    }
+
     .table-responsive-wrap {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
@@ -1061,9 +1076,93 @@
     </section>
   </div>
 
+  <div class="modal fade" id="packageDetailModal" tabindex="-1" aria-labelledby="packageDetailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="packageDetailModalLabel"><i
+              class="bi bi-check-circle-fill text-success me-1"></i>TRANSACTION RECEIPT - <span class="text-primary">I OWE YOU</span><br>PACKAGE 0 USDV</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Status</span>
+            <span id="modalStatusText" class="status-pill secondary">-</span>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Created Date</span>
+            <strong id="modalCreatedDate" class="modal-number">-</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <span class="text-muted">Release Date</span>
+            <strong id="modalReleaseDate" class="modal-number">-</strong>
+          </div>
+
+          <h6 class="fw-bold mb-2">Type</h6>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">VMM</span>
+            <strong id="modalVmmPercentText" class="modal-number">100%</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">VMMC</span>
+            <strong id="modalVmmcPercentText" class="modal-number">0%</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Terms</span>
+            <strong id="modalPeriodText" class="modal-number">-</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Monthly Reward Rate</span>
+            <strong id="modalMonthlyRateText" class="modal-number">10%</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Monthly Reward Distribution</span>
+            <strong id="modalMonthlyDistributionText" class="modal-number">-</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Reward Cycles Completed</span>
+            <strong id="modalRewardCyclesCompletedText" class="modal-number">-</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <span class="text-muted">Remaining</span>
+            <strong id="modalRemainingCyclesText" class="modal-number">-</strong>
+          </div>
+
+          <h6 class="fw-bold mb-2">Reward Summary</h6>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Reward Distributed</span>
+            <strong id="modalRewardDistributedText" class="modal-number">-</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Total Reward</span>
+            <strong id="modalTotalRewardText" class="modal-number">-</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">Total Return</span>
+            <strong id="modalTotalReturnText" class="modal-number">-</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted">VMMC @ <strong id="modalVmmcRateText">$0.000693</strong></span>
+            <span></span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span class="text-muted">Total VMM</span>
+            <strong class="modal-number"><span id="modalTotalVmmValue">-</span> <i id="modalTotalVmmInfo"
+                class="bi bi-info-circle" data-tippy-content=""></i></strong>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-primary w-100" href=https://staging-web-app.vlinkpay.com/lending-hub/create">I OWE YOU
+            MORE</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js"></script>
-  <script src="wallet.js"></script>
   <script>
     (function () {
       "use strict";
@@ -1131,11 +1230,127 @@
         document.body.setAttribute("data-io-account", value === "non-annual" ? "non-annual" : "annual");
       }
 
+      function formatDateTimeInline(value) {
+        var time = parseDateTime(value);
+        if (!time) return "-";
+        var dateObj = new Date(time);
+        return dateObj.toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true
+        });
+      }
+
+      function bindViewDetailModal() {
+        if (!window.bootstrap) return;
+        var VMMC_USD_RATE = 0.000693;
+        var MONTHLY_REWARD_RATE = 10;
+        var modalEl = document.getElementById("packageDetailModal");
+        if (!modalEl) return;
+
+        var modal = new bootstrap.Modal(modalEl);
+        var statusEl = document.getElementById("modalStatusText");
+        var createdDateEl = document.getElementById("modalCreatedDate");
+        var releaseDateEl = document.getElementById("modalReleaseDate");
+        var periodEl = document.getElementById("modalPeriodText");
+        var monthlyRateEl = document.getElementById("modalMonthlyRateText");
+        var monthlyDistributionEl = document.getElementById("modalMonthlyDistributionText");
+        var cyclesCompletedEl = document.getElementById("modalRewardCyclesCompletedText");
+        var remainingCyclesEl = document.getElementById("modalRemainingCyclesText");
+        var rewardDistributedEl = document.getElementById("modalRewardDistributedText");
+        var totalRewardEl = document.getElementById("modalTotalRewardText");
+        var totalReturnEl = document.getElementById("modalTotalReturnText");
+        var vmmcRateEl = document.getElementById("modalVmmcRateText");
+        var totalVmmValueEl = document.getElementById("modalTotalVmmValue");
+        var totalVmmInfoEl = document.getElementById("modalTotalVmmInfo");
+        var titleEl = document.getElementById("packageDetailModalLabel");
+
+        function parseCurrency(value) {
+          return Number(String(value || "").replace(/[^0-9.-]/g, "")) || 0;
+        }
+
+        function formatNumber(amount, digits) {
+          return Number(amount || 0).toLocaleString("en-US", {
+            minimumFractionDigits: digits,
+            maximumFractionDigits: digits
+          });
+        }
+
+        document.querySelectorAll(".iou-table-action").forEach(function (trigger) {
+          trigger.addEventListener("click", function (event) {
+            event.preventDefault();
+            var row = trigger.closest("tr");
+            if (!row) return;
+
+            var typeText = (row.querySelector('td[data-label="Type"]') || {}).textContent || "-";
+            var valueText = (row.querySelector('td[data-label="Value"]') || {}).textContent || "-";
+            var periodText = (row.querySelector('td[data-label="Period"]') || {}).textContent || "-";
+            var dailyInterestText = (row.querySelector('td[data-label="Daily Interest"]') || {}).textContent || "-";
+            var statusText = ((row.querySelector(".status-pill") || {}).textContent || "-").trim();
+            var packageValue = parseCurrency(valueText);
+            var dailyInterest = parseCurrency(dailyInterestText);
+            var termsMonth = Number(String(periodText).replace(/[^0-9]/g, "")) || 0;
+            var totalCycles = termsMonth * 30;
+            var elapsedDays = Math.max(0, Math.floor((Date.now() - parseDateTime(row.getAttribute("data-date"))) / 86400000));
+            var completedCycles = Math.min(totalCycles, elapsedDays);
+            var remainingCycles = Math.max(totalCycles - completedCycles, 0);
+            var monthlyDistribution = packageValue * (MONTHLY_REWARD_RATE / 100);
+            var rewardDistributed = dailyInterest * completedCycles;
+            var totalReward = packageValue * (MONTHLY_REWARD_RATE / 100) * termsMonth;
+            var totalReturn = packageValue + totalReward;
+            var totalVmm = totalReturn / VMMC_USD_RATE;
+
+            titleEl.innerHTML = '<i class="bi bi-check-circle-fill text-success me-1"></i>TRANSACTION RECEIPT - <span class="text-primary">I OWE YOU</span><br>PACKAGE ' + formatNumber(packageValue, 0) + ' USDV';
+            statusEl.textContent = statusText;
+            statusEl.className = "status-pill " + (statusText.toLowerCase() === "active" ? "success" : "secondary");
+            createdDateEl.textContent = formatDateTimeInline(row.getAttribute("data-date"));
+            releaseDateEl.textContent = formatDateTimeInline(row.getAttribute("data-release-date"));
+            periodEl.textContent = periodText.replace("Months", "Month");
+            monthlyRateEl.textContent = MONTHLY_REWARD_RATE + "%";
+            monthlyDistributionEl.textContent = formatNumber(monthlyDistribution, 2) + " USDV";
+            cyclesCompletedEl.innerHTML = '<span class="text-success">' + completedCycles + '</span>/' + totalCycles;
+            remainingCyclesEl.innerHTML = '<span class="text-primary">' + remainingCycles + '</span>/' + totalCycles;
+            rewardDistributedEl.textContent = formatNumber(rewardDistributed, 2) + " USDV";
+            totalRewardEl.textContent = formatNumber(totalReward, 2) + " USDV";
+            totalReturnEl.textContent = formatNumber(totalReturn, 2) + " USDV";
+            vmmcRateEl.textContent = "$" + VMMC_USD_RATE.toFixed(6);
+            totalVmmValueEl.textContent = "-" + formatNumber(totalVmm, 2);
+
+            if (totalVmmInfoEl) {
+              totalVmmInfoEl.setAttribute(
+                "data-tippy-content",
+                "<div><span class='text-muted'>Current Value:</span> <strong class='text-primary'>$" + formatNumber(totalReturn, 2) +
+                "</strong></div><div class='text-end'>VMMC @ " + vmmcRateEl.textContent + "</div>"
+              );
+
+              if (window.tippy) {
+                if (totalVmmInfoEl._tippy) totalVmmInfoEl._tippy.destroy();
+                tippy(totalVmmInfoEl, {
+                  allowHTML: true,
+                  theme: "white",
+                  arrow: false,
+                  trigger: "click",
+                  hideOnClick: true,
+                  interactive: true,
+                  maxWidth: 280
+                });
+              }
+            }
+
+            modal.show();
+          });
+        });
+      }
+
       var params = new URLSearchParams(window.location.search);
       applyAccountMode(params.get("ai") === "false" ? "non-annual" : "annual");
 
       hydrateDateTimes();
       sortIouTable();
+      bindViewDetailModal();
     })();
   </script>
 

@@ -1684,6 +1684,23 @@
             padding: 16px;
         }
 
+        .reload-amount-tooltip {
+            padding: 12px 14px;
+            max-width: 280px;
+            font-size: 12px;
+            line-height: 1.45;
+            color: var(--grey-800);
+        }
+
+        .reload-amount-tooltip-line+.reload-amount-tooltip-line {
+            margin-top: 8px;
+        }
+
+        .reload-amount-tooltip-line strong {
+            color: var(--grey-900);
+            font-weight: 600;
+        }
+
         .reload-summary-row--payment-method {
             gap: 20px;
         }
@@ -2937,7 +2954,13 @@
                 </div>
                 <div class="reload-summary">
                     <div class="reload-summary-row">
-                        <span class="reload-summary-label">Amount Reload</span>
+                        <span class="reload-summary-label reload-summary-label-inline">
+                            Reload Amount
+                            <span id="reloadAmountTipTrigger" class="reload-summary-info-icon"
+                                title="Reload amount info">
+                                <i data-lucide="info" style="width:12px;height:12px;"></i>
+                            </span>
+                        </span>
                         <span class="reload-summary-value-stack">
                             <span id="reloadAmountQty" class="reload-summary-value">-</span>
                         </span>
@@ -2972,7 +2995,7 @@
                     </div>
                     <div class="reload-summary-row reload-summary-row--total">
                         <span class="reload-summary-label reload-summary-label-inline">
-                            Total
+                            Total Fee
                             <span id="reloadTotalFeesTipTrigger" class="reload-summary-info-icon" title="Fees overview">
                                 <i data-lucide="info" style="width:12px;height:12px;"></i>
                             </span>
@@ -3896,7 +3919,7 @@
             // Platform fee: Free (green); transfer fee 1.5% of reload amount in USD
             const transferFeeRate = 0.015;
             const transferFee = usdAmount * transferFeeRate;
-            const total = usdAmount + transferFee;
+            // const total = usdAmount + transferFee;
 
             platformFeeEl.textContent = 'Free';
             platformFeeEl.classList.add('reload-summary-value--free');
@@ -3904,7 +3927,7 @@
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
             });
-            totalEl.textContent = '$' + total.toLocaleString('en-US', {
+            totalEl.textContent = '$' + transferFee.toLocaleString('en-US', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
             });
@@ -4163,6 +4186,25 @@
                 if (!trigger || typeof tippy === 'undefined') return;
                 tippy(trigger, {
                     content: '<div class="fee-payment-method-tooltip">Select a wallet to pay the transaction fee.</div>',
+                    allowHTML: true,
+                    trigger: 'click',
+                    interactive: true,
+                    theme: 'light',
+                    placement: 'top',
+                    appendTo: document.body
+                });
+            })();
+
+            // Reload Amount tooltip (VlinkPay vs External)
+            (function () {
+                var trigger = document.getElementById('reloadAmountTipTrigger');
+                if (!trigger || typeof tippy === 'undefined') return;
+                var html = '<div class="reload-amount-tooltip">' +
+                    '<div class="reload-amount-tooltip-line"><strong>VlinkPay:</strong> deducted from your internal crypto wallet</div>' +
+                    '<div class="reload-amount-tooltip-line"><strong>External:</strong> transfer from an external wallet</div>' +
+                    '</div>';
+                tippy(trigger, {
+                    content: html,
                     allowHTML: true,
                     trigger: 'click',
                     interactive: true,

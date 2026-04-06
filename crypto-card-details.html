@@ -4147,21 +4147,7 @@
             (function () {
                 var trigger = document.getElementById('reloadTotalFeesTipTrigger');
                 if (!trigger || typeof tippy === 'undefined') return;
-                var feesHtml = '<div class="fees-overview-popover">' +
-                    '<div class="fees-overview-header">Fees Overview <button type="button" class="fees-overview-close" aria-label="Close"><iconify-icon icon="eva:close-fill" width="18"></iconify-icon></button></div>' +
-                    '<div class="fees-overview-body">' +
-                    '<div class="fees-overview-section"><div class="fees-overview-icon green"><iconify-icon icon="eva:checkmark-fill" width="14"></iconify-icon></div>' +
-                    '<div class="fees-overview-content"><div class="fees-overview-title">Platform Fee <span class="fees-overview-pill free">Free</span></div></div></div>' +
-                    '<div class="fees-overview-divider"></div>' +
-                    '<div class="fees-overview-section"><div class="fees-overview-icon blue"><iconify-icon icon="eva:swap-fill" width="14"></iconify-icon></div>' +
-                    '<div class="fees-overview-content"><div class="fees-overview-title">Transfer fee</div>' +
-                    '<div class="fees-overview-sublist">' +
-                    '<div>Accounts with a <span class="fees-overview-pill membership">Membership Plan</span></div>' +
-                    '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px;">$5 - $25: <strong>1.5% fee</strong><div class="note">The fee is deducted from USDV. If insufficient, it will be deducted from the reloaded crypto.</div></div>' +
-                    '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px;">Above $25: <span class="fees-overview-pill free">Free</span></div>' +
-                    '<div style="margin-top:8px;">Accounts with a <span class="fees-overview-pill franchise">Franchise Plan</span></div>' +
-                    '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px;">All transfers: <span class="fees-overview-pill free">Free</span></div>' +
-                    '</div></div></div></div></div>';
+                var feesHtml = getFeesOverviewPopoverHtml();
                 var instance = tippy(trigger, {
                     content: feesHtml,
                     allowHTML: true,

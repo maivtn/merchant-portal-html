@@ -516,6 +516,20 @@
       .iou-table-wrap .status-pill {
         margin-left: auto;
       }
+
+      .iou-table-wrap tbody td[data-role="release-date"] {
+        text-align: right !important;
+      }
+
+      .iou-table-wrap tbody td[data-role="release-date"] br {
+        display: none;
+      }
+
+      .iou-table-wrap tbody td[data-role="release-date"] small {
+        margin-left: 6px;
+        font-size: 11px;
+        color: var(--iou-muted);
+      }
     }
 
     .iou-type-cell {
@@ -539,6 +553,13 @@
     .iou-date-stack .time {
       font-size: 11px;
       font-weight: 500;
+      color: var(--iou-muted);
+    }
+
+    td[data-role="package-date"] small {
+      display: block;
+      margin-top: 3px;
+      font-size: 11px;
       color: var(--iou-muted);
     }
 
@@ -599,7 +620,7 @@
       display: none;
     }
 
-    .iou-vmm-accumulate-copy {
+    .iou-vmm-accumulate-item {
       display: none;
       align-items: flex-start;
       justify-content: space-between;
@@ -609,7 +630,7 @@
       font-weight: 500;
     }
 
-    .iou-vmm-accumulate-copy-body {
+    .iou-vmm-accumulate-item-body {
       display: flex;
       align-items: flex-start;
       gap: 12px;
@@ -617,18 +638,18 @@
       min-width: 0;
     }
 
-    .iou-vmm-accumulate-copy i {
+    .iou-vmm-accumulate-item i {
       font-size: 18px;
       color: #22c55e;
       margin-top: 2px;
       flex-shrink: 0;
     }
 
-    .iou-vmm-accumulate-copy p {
+    .iou-vmm-accumulate-item p {
       margin: 0;
     }
 
-    .iou-vmm-accumulate-copy strong {
+    .iou-vmm-accumulate-item strong {
       color: var(--iou-ink);
     }
 
@@ -663,8 +684,9 @@
     }
 
     @media (max-width: 767.98px) {
-      .iou-vmm-accumulate-copy {
+      .iou-vmm-accumulate-item {
         flex-direction: column;
+        font-size: 12px;
       }
 
       .iou-vmm-accumulate-cta {
@@ -678,14 +700,32 @@
       display: block;
     }
 
-    body[data-io-account="annual"] .iou-vmm-accumulate-copy[data-show-mode="annual"],
-    body[data-io-account="non-annual"] .iou-vmm-accumulate-copy[data-show-mode="non-annual"] {
+    body[data-io-account="annual"] .iou-vmm-accumulate-item[data-show-mode="annual"],
+    body[data-io-account="non-annual"] .iou-vmm-accumulate-item[data-show-mode="non-annual"] {
       display: flex;
     }
 
     .table-responsive-wrap {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
+    }
+
+    @media (max-width: 767.98px) {
+      .package-date-wrap br {
+        display: none;
+      }
+
+      .package-date-wrap {
+        display: flex;
+        flex-direction: row;
+        gap: 3px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .package-date-wrap small {
+        margin-top: 0 !important;
+      }
     }
   </style>
 </head>
@@ -747,8 +787,8 @@
     </section>
 
     <div class="iou-vmm-accumulate" aria-live="polite">
-      <div class="iou-vmm-accumulate-copy" data-show-mode="non-annual">
-        <div class="iou-vmm-accumulate-copy-body">
+      <div class="iou-vmm-accumulate-item" data-show-mode="non-annual">
+        <div class="iou-vmm-accumulate-item-body">
           <i class="bi bi-rocket-takeoff-fill" aria-hidden="true"></i>
           <p><strong>Own AI Annual</strong> to start accumulating VMM Allocation Balance every day for the package term.
             Renew anytime to keep your balance and continue accrual.</p>
@@ -758,8 +798,8 @@
             Annual</a>
         </div>
       </div>
-      <div class="iou-vmm-accumulate-copy" data-show-mode="annual">
-        <div class="iou-vmm-accumulate-copy-body">
+      <div class="iou-vmm-accumulate-item" data-show-mode="annual">
+        <div class="iou-vmm-accumulate-item-body">
           <i class="bi bi-patch-check-fill" aria-hidden="true"></i>
           <p><strong>Enjoy the benefits of AI Annual</strong><br>Your VMM Allocation Balance accrues daily throughout
             the active term. When you renew, your current balance is preserved and continues growing from there.</p>
@@ -782,7 +822,7 @@
               <th class="text-end">Value</th>
               <th class="text-end">Daily Interest</th>
               <th class="text-end">VMM Allocation %</th>
-              <th class="text-end">VMM Allocation <br>Amount</th>
+              <th class="text-end">VMM Allocation Amount</th>
               <th>Status</th>
               <th>Release Date</th>
               <th class="text-center">View Details</th>
@@ -880,10 +920,13 @@
     (function () {
       "use strict";
 
-      var dateTimeFormatter = new Intl.DateTimeFormat("en-US", {
+      var dateFormatter = new Intl.DateTimeFormat("en-US", {
         month: "short",
         day: "numeric",
-        year: "numeric",
+        year: "numeric"
+      });
+
+      var timeFormatter = new Intl.DateTimeFormat("en-US", {
         hour: "numeric",
         minute: "2-digit",
         hour12: true
@@ -897,12 +940,10 @@
       function formatDateTime(value) {
         var time = parseDateTime(value);
         if (!time) return "";
-        var formatted = dateTimeFormatter.format(new Date(time));
-        var parts = formatted.split(", ");
-        if (parts.length < 2) return formatted;
-        var timePart = parts.slice(-1)[0];
-        var datePart = parts.slice(0, -1).join(", ");
-        return '<span class="iou-date-stack"><span class="date">' + datePart + '</span><span class="time">' + timePart + '</span></span>';
+        var dateObj = new Date(time);
+        var datePart = dateFormatter.format(dateObj).replace(",", "");
+        var timePart = timeFormatter.format(dateObj);
+        return datePart + '<br><small>' + timePart + '</small>';
       }
 
       function hydrateDateTimes() {
@@ -911,7 +952,7 @@
           var releaseDateCell = row.querySelector('[data-role="release-date"]');
 
           if (packageDateCell) {
-            packageDateCell.innerHTML = formatDateTime(row.getAttribute("data-date"));
+            packageDateCell.innerHTML = '<span class="package-date-wrap">' + formatDateTime(row.getAttribute("data-date")) + '</span>';
           }
 
           if (releaseDateCell) {

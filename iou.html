@@ -229,6 +229,11 @@
       transition: transform .2s ease, border-color .2s;
     }
 
+    .iou-stat-main {
+      position: relative;
+      z-index: 1;
+    }
+
     .iou-stat:hover {
       transform: translateY(-3px);
       border-color: rgba(15, 159, 134, 0.28);
@@ -409,6 +414,28 @@
       font-weight: 600;
     }
 
+    @media (max-width: 767.98px) {
+      .iou-stat-main {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .iou-stat-icon {
+        margin-bottom: 0;
+        flex: 0 0 42px;
+      }
+
+      .iou-stat-copy {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .iou-stat-label {
+        margin-bottom: 4px;
+      }
+    }
+
     /* Packages table */
     .iou-table-wrap {
       border-radius: 16px;
@@ -451,6 +478,76 @@
 
     .iou-table-wrap tbody tr:last-child td {
       border-bottom: none;
+    }
+
+    @media (max-width: 767.98px) {
+      .iou-table-wrap {
+        border: none;
+        background: transparent;
+        box-shadow: none;
+        overflow: visible;
+      }
+
+      .iou-table-wrap table,
+      .iou-table-wrap thead,
+      .iou-table-wrap tbody,
+      .iou-table-wrap tr,
+      .iou-table-wrap td {
+        display: block;
+        width: 100%;
+      }
+
+      .iou-table-wrap table {
+        font-size: 12px;
+      }
+
+      .iou-table-wrap thead {
+        display: none;
+      }
+
+      .iou-table-wrap tbody {
+        display: grid;
+        gap: 12px;
+      }
+
+      .iou-table-wrap tbody tr {
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 1px solid rgba(172, 188, 211, 0.22);
+        background: linear-gradient(180deg, rgba(245, 250, 252, 0.92), rgba(255, 255, 255, 0.98));
+        box-shadow: 0 14px 32px -28px rgba(16, 35, 63, 0.28);
+      }
+
+      .iou-table-wrap tbody td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(174, 192, 214, 0.14);
+        background: transparent;
+        text-align: right !important;
+      }
+
+      .iou-table-wrap tbody tr:last-child td:last-child,
+      .iou-table-wrap tbody td:last-child {
+        border-bottom: none;
+      }
+
+      .iou-table-wrap tbody td::before {
+        content: attr(data-label);
+        color: #6b7280;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        text-align: left;
+        flex: 0 0 110px;
+      }
+
+      .iou-table-wrap .status-pill {
+        margin-left: auto;
+      }
     }
 
     .iou-type-cell {
@@ -567,6 +664,7 @@
 
       .iou-vmm-accumulate-cta {
         margin-left: 0;
+        align-self: flex-end;
       }
     }
 
@@ -601,9 +699,13 @@
       </div>
       <div class="iou-stat-grid">
         <div class="iou-stat stat-amber">
-          <div class="iou-stat-icon purple"><i class="bi bi-collection"></i></div>
-          <div class="iou-stat-label">Total packages</div>
-          <div class="iou-stat-value">12</div>
+          <div class="iou-stat-main">
+            <div class="iou-stat-icon purple"><i class="bi bi-collection"></i></div>
+            <div class="iou-stat-copy">
+              <div class="iou-stat-label">Total packages</div>
+              <div class="iou-stat-value">12</div>
+            </div>
+          </div>
           <div class="iou-stat-sub">
             <span class="dim">8 Active</span>
             <span class="dim">·</span>
@@ -611,18 +713,26 @@
           </div>
         </div>
         <div class="iou-stat stat-emerald">
-          <div class="iou-stat-icon blue"><i class="bi bi-graph-up-arrow"></i></div>
-          <div class="iou-stat-label">Total profit</div>
-          <div class="iou-stat-value">$18,230.00</div>
+          <div class="iou-stat-main">
+            <div class="iou-stat-icon blue"><i class="bi bi-graph-up-arrow"></i></div>
+            <div class="iou-stat-copy">
+              <div class="iou-stat-label">Total profit</div>
+              <div class="iou-stat-value">$18,230.00</div>
+            </div>
+          </div>
           <div class="iou-stat-sub">
             <i class="bi bi-cash-coin"></i>
             $6,420.00 <span class="dim">VMM Allocation</span>
           </div>
         </div>
         <div class="iou-stat stat-cyan">
-          <div class="iou-stat-icon teal"><i class="bi bi-sunrise"></i></div>
-          <div class="iou-stat-label">Today's profit</div>
-          <div class="iou-stat-value">$412.34</div>
+          <div class="iou-stat-main">
+            <div class="iou-stat-icon teal"><i class="bi bi-sunrise"></i></div>
+            <div class="iou-stat-copy">
+              <div class="iou-stat-label">Today's profit</div>
+              <div class="iou-stat-value">$412.34</div>
+            </div>
+          </div>
           <div class="iou-stat-sub">
             <i class="bi bi-cash-coin"></i>
             $98.52 <span class="dim">VMM Allocation</span>
@@ -672,64 +782,64 @@
           </thead>
           <tbody id="iouPackageRows">
             <tr data-status="active" data-date="2026-02-10T00:00:00" data-release-date="2026-03-10T00:00:00">
-              <td data-role="package-date"></td>
-              <td class="iou-type-cell">IOU 50K</td>
-              <td>12 Months</td>
-              <td class="text-end iou-value-cell">$1,200</td>
-              <td class="text-end iou-value-cell">$3.95</td>
-              <td class="text-end iou-value-cell">$3.95</td>
-              <td><span class="status-pill success">Active</span></td>
-              <td data-role="release-date"></td>
+              <td data-role="package-date" data-label="Date"></td>
+              <td class="iou-type-cell" data-label="Type">IOU 50K</td>
+              <td data-label="Period">12 Months</td>
+              <td class="text-end iou-value-cell" data-label="Value">$1,200</td>
+              <td class="text-end iou-value-cell" data-label="Daily Interest">$3.95</td>
+              <td class="text-end iou-value-cell" data-label="VMM Allocation">$3.95</td>
+              <td data-label="Status"><span class="status-pill success">Active</span></td>
+              <td data-role="release-date" data-label="Release Date"></td>
             </tr>
             <tr data-status="active" data-date="2026-02-01T00:00:00" data-release-date="2026-05-01T00:00:00">
-              <td data-role="package-date"></td>
-              <td class="iou-type-cell">IOU 50K</td>
-              <td>42 Months</td>
-              <td class="text-end iou-value-cell">$50,000</td>
-              <td class="text-end iou-value-cell">$164.38</td>
-              <td class="text-end iou-value-cell">$164.38</td>
-              <td><span class="status-pill success">Active</span></td>
-              <td data-role="release-date"></td>
+              <td data-role="package-date" data-label="Date"></td>
+              <td class="iou-type-cell" data-label="Type">IOU 50K</td>
+              <td data-label="Period">42 Months</td>
+              <td class="text-end iou-value-cell" data-label="Value">$50,000</td>
+              <td class="text-end iou-value-cell" data-label="Daily Interest">$164.38</td>
+              <td class="text-end iou-value-cell" data-label="VMM Allocation">$164.38</td>
+              <td data-label="Status"><span class="status-pill success">Active</span></td>
+              <td data-role="release-date" data-label="Release Date"></td>
             </tr>
             <tr data-status="active" data-date="2026-01-15T00:00:00" data-release-date="2026-04-15T00:00:00">
-              <td data-role="package-date"></td>
-              <td class="iou-type-cell">IOU 10K</td>
-              <td>42 Months</td>
-              <td class="text-end iou-value-cell">$10,000</td>
-              <td class="text-end iou-value-cell">$32.88</td>
-              <td class="text-end iou-value-cell">$32.88</td>
-              <td><span class="status-pill success">Active</span></td>
-              <td data-role="release-date"></td>
+              <td data-role="package-date" data-label="Date"></td>
+              <td class="iou-type-cell" data-label="Type">IOU 10K</td>
+              <td data-label="Period">42 Months</td>
+              <td class="text-end iou-value-cell" data-label="Value">$10,000</td>
+              <td class="text-end iou-value-cell" data-label="Daily Interest">$32.88</td>
+              <td class="text-end iou-value-cell" data-label="VMM Allocation">$32.88</td>
+              <td data-label="Status"><span class="status-pill success">Active</span></td>
+              <td data-role="release-date" data-label="Release Date"></td>
             </tr>
             <tr data-status="active" data-date="2026-01-10T00:00:00" data-release-date="2026-04-10T00:00:00">
-              <td data-role="package-date"></td>
-              <td class="iou-type-cell">IOU 1K</td>
-              <td>42 Months</td>
-              <td class="text-end iou-value-cell">$1,000</td>
-              <td class="text-end iou-value-cell">$3.29</td>
-              <td class="text-end iou-value-cell">$3.29</td>
-              <td><span class="status-pill success">Active</span></td>
-              <td data-role="release-date"></td>
+              <td data-role="package-date" data-label="Date"></td>
+              <td class="iou-type-cell" data-label="Type">IOU 1K</td>
+              <td data-label="Period">42 Months</td>
+              <td class="text-end iou-value-cell" data-label="Value">$1,000</td>
+              <td class="text-end iou-value-cell" data-label="Daily Interest">$3.29</td>
+              <td class="text-end iou-value-cell" data-label="VMM Allocation">$3.29</td>
+              <td data-label="Status"><span class="status-pill success">Active</span></td>
+              <td data-role="release-date" data-label="Release Date"></td>
             </tr>
             <tr data-status="completed" data-date="2026-01-20T00:00:00" data-release-date="2026-04-20T00:00:00">
-              <td data-role="package-date"></td>
-              <td class="iou-type-cell">IOU 20K</td>
-              <td>42 Months</td>
-              <td class="text-end iou-value-cell">$20,000</td>
-              <td class="text-end iou-value-cell">$65.75</td>
-              <td class="text-end iou-value-cell">$65.75</td>
-              <td><span class="status-pill secondary">Completed</span></td>
-              <td data-role="release-date"></td>
+              <td data-role="package-date" data-label="Date"></td>
+              <td class="iou-type-cell" data-label="Type">IOU 20K</td>
+              <td data-label="Period">42 Months</td>
+              <td class="text-end iou-value-cell" data-label="Value">$20,000</td>
+              <td class="text-end iou-value-cell" data-label="Daily Interest">$65.75</td>
+              <td class="text-end iou-value-cell" data-label="VMM Allocation">$65.75</td>
+              <td data-label="Status"><span class="status-pill secondary">Completed</span></td>
+              <td data-role="release-date" data-label="Release Date"></td>
             </tr>
             <tr data-status="completed" data-date="2025-12-15T00:00:00" data-release-date="2026-03-15T00:00:00">
-              <td data-role="package-date"></td>
-              <td class="iou-type-cell">IOU 5K</td>
-              <td>42 Months</td>
-              <td class="text-end iou-value-cell">$5,000</td>
-              <td class="text-end iou-value-cell">$16.44</td>
-              <td class="text-end iou-value-cell">$16.44</td>
-              <td><span class="status-pill secondary">Completed</span></td>
-              <td data-role="release-date"></td>
+              <td data-role="package-date" data-label="Date"></td>
+              <td class="iou-type-cell" data-label="Type">IOU 5K</td>
+              <td data-label="Period">42 Months</td>
+              <td class="text-end iou-value-cell" data-label="Value">$5,000</td>
+              <td class="text-end iou-value-cell" data-label="Daily Interest">$16.44</td>
+              <td class="text-end iou-value-cell" data-label="VMM Allocation">$16.44</td>
+              <td data-label="Status"><span class="status-pill secondary">Completed</span></td>
+              <td data-role="release-date" data-label="Release Date"></td>
             </tr>
           </tbody>
         </table>

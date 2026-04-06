@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buy IOU - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.css">
+  <style>
+    .nav-item {
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container py-4">
+    <section class="row justify-content-center">
+      <div class="col-12 col-xl-6">
+        <div class="card shadow-md border-0">
+          <div class="card-body p-4 b">
+            <div class="d-grid gap-4">
+              <div>
+                <label class="form-label fw-semibold" for="packageSelect">
+                  Select Package <span class="text-danger">*</span>
+              <span class="text-muted" data-tippy-content="<strong>Benefits of 3 IOU USDV Packages - Network Bonus</strong><br>Choose the right IOU package to maximize commissions from the Network Bonus system:<br><strong>$20,000</strong> Package earns 5 Levels:<br>&bull; <strong>F1= 50%, F2= 20%, F3= 15%, F4= 10%, F5= 5%</strong><br><strong>$10,000</strong> Package earns 3 Levels:<br>&bull; <strong>F1= 50%, F2= 20%, F3= 15%</strong><br><strong>$5,000</strong> Package earns 1 Level:<br>&bull; <strong>F1= 50%</strong>">
+                    <i class="bi bi-info-circle"></i>
+                  </span>
+                </label>
+                <select id="packageSelect" name="packageSelect" class="form-select"
+                  aria-label="Select Package"></select>
+              </div>
+
+              <div>
+                <label class="form-label fw-semibold" for="planSelect">
+                  Choose a Plan
+                  <span class="text-muted"
+                    data-tippy-content="Plan is automatically selected from the chosen package term.">
+                    <i class="bi bi-info-circle"></i>
+                  </span>
+                </label>
+                <select id="planSelect" name="planSelect" class="form-select" aria-label="Choose a Plan"
+                  disabled></select>
+              </div>
+
+              <div>
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+                  <label class="form-label fw-semibold mb-0">
+                    Select Program <span class="text-danger">*</span>
+                  </label>
+                  <a class="link-primary fw-semibold" href="#">Get more VMM!</a>
+                </div>
+                <ul class="nav nav-pills nav-fill bg-light rounded p-1" role="tablist" aria-label="IOU programs">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" type="button" role="tab" aria-selected="true">Active IOU</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" type="button" role="tab" aria-selected="false">Debt IOU</button>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h2 class="h6 fw-bold mb-3">PACKAGE BENEFITS</h2>
+                <div class="border rounded">
+                  <div class="p-3">
+                    <div class="d-flex justify-content-between gap-3 mb-2"><span class="text-muted">IOU
+                        Package</span><strong>1,000 USDV</strong></div>
+                    <div class="d-flex justify-content-between gap-3 mb-2"><span class="text-muted">Monthly
+                        compensation</span><strong>5%</strong></div>
+                    <div class="d-flex justify-content-between gap-3 mb-2"><span class="text-muted">Daily
+                        payout</span><strong>1.67 USDV</strong></div>
+                    <div class="d-flex justify-content-between gap-3 mb-2"><span class="text-muted">Monthly
+                        payout</span><strong>50 USDV</strong></div>
+                    <div class="d-flex justify-content-between gap-3 mb-3"><span class="text-muted">Total reward
+                        earned</span><strong>600 USDV</strong></div>
+                    <hr class="my-3">
+                    <div class="d-flex justify-content-between gap-3 mb-2"><span class="text-muted">Total
+                        return</span><strong id="totalReturnValue">1,600 USDV</strong></div>
+                    <div class="d-flex justify-content-between gap-3"><span class="text-muted">VMM Equivalent @
+                        <span id="vmmRateText">$0.000608</span></span><strong id="vmmEquivalentValue">2,631,578.9474
+                        VMM</strong></div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h2 class="h6 fw-bold mb-3">PAYMENT INFORMATION</h2>
+                <div class="d-grid gap-3">
+                  <div>
+                    <h3 class="h6 mb-2">Payment Priority</h3>
+                    <p class="text-muted mb-0">
+                      VMM will be used first for package activation.<br>
+                      If VMM is insufficient, the remaining amount will be covered by another
+                      available asset after conversion.
+                    </p>
+                  </div>
+
+                  <div id="paymentWalletList" class="d-grid gap-2"></div>
+
+                  <div class="border rounded p-3">
+                    <div class="d-flex align-items-center justify-content-between gap-3 mb-2">
+                      <span class="fw-semibold">
+                        Slippage Tolerance
+                        <span class="text-muted"
+                          data-tippy-content="<strong>Slippage Tolerance</strong><br><br>Your balance adjustment will be applied within the maximum slippage range you define. For example, a 1% slippage means you're willing to accept up to 1% less due to market fluctuations.">
+                          <i class="bi bi-info-circle"></i>
+                        </span>
+                      </span>
+                      <strong id="slippageToleranceValue">3%</strong>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between gap-3 mb-2">
+                      <span class="fw-semibold">
+                        Service Fee
+                        <span class="text-muted" data-tippy-content="<div class='d-flex justify-content-between'><span>Platform fee</span><strong>$40</strong></div><div class='d-flex justify-content-between'><span><strong>Franchise License</strong> Discount Platform Fee</span><strong class='text-success'>-$40</strong></div><div class='d-flex justify-content-between'><span>Network fee</span><strong>$20</strong></div><div class='d-flex justify-content-between'><span><strong>Franchise License</strong> Discount Network Fee</span><strong class='text-success'>-$20</strong></div><hr class='my-2'><div class='text-success fw-semibold mb-2'>Get Max Annual and Save on Platform Fees!</div><div class='mb-2'>Enjoy a 4% discount on Platform Fees with Max Annual AI. Save <strong class='text-success'>$40</strong> on this transaction.</div><a href='#' class='fw-semibold'>Learn more</a>">
+                          <i class="bi bi-info-circle"></i>
+                        </span>
+                      </span>
+                  <strong class="text-success">Free</strong>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between gap-3">
+                      <span class="fw-semibold">Total Payment</span>
+                      <strong class="fw-bold">$1,030.00</strong>
+                    </div>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="vmmFirst" id="vmmFirst">
+                    <label class="form-check-label text-muted" for="vmmFirst">
+                      Confirm using available VMM first for this activation.<br>
+                      If VMM is not enough, the remaining amount will be converted from the
+                      selected asset to complete package payment.
+                    </label>
+                  </div>
+
+                  <button type="button" class="btn btn-success btn-lg">Place Your Package</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js"></script>
+  <script>
+    const VMM_USD_RATE = 0.000608;
+
+    const iouPackages = [
+      { id: 'iou-1000', label: '1,000 USDV', amount: 1000, currency: 'USDV', termMonths: 12 },
+      { id: 'iou-3000', label: '3,000 USDV', amount: 3000, currency: 'USDV', termMonths: 12 },
+      { id: 'iou-5000', label: '5,000 USDV', amount: 5000, currency: 'USDV', termMonths: 12 },
+      { id: 'iou-10000', label: '10,000 USDV', amount: 10000, currency: 'USDV', termMonths: 12 },
+      { id: 'iou-20000', label: '20,000 USDV', amount: 20000, currency: 'USDV', termMonths: 12 },
+      { id: 'iou-50000', label: '50,000 USDV', amount: 50000, currency: 'USDV', termMonths: 60 },
+      { id: 'iou-100000', label: '100,000 USDV', amount: 100000, currency: 'USDV', termMonths: 60 },
+      { id: 'iou-500000', label: '500,000 USDV', amount: 500000, currency: 'USDV', termMonths: 60 }
+    ];
+
+    const paymentWallets = [
+      {
+        id: 'wallet-vmm',
+        code: 'VMM',
+        name: 'VMM',
+        icon: { src: 'images/vmm.png', alt: 'VMM icon' },
+        quantity: 1644736.8421,
+        displayQuantity: '1,644,736.8421 VMM',
+        availableUsd: 1000,
+        displayAvailable: '$1,000.00',
+        priority: 1,
+        selected: true,
+        disabled: false
+      },
+      {
+        id: 'wallet-usdv',
+        code: 'USDV',
+        name: 'USDV',
+        icon: { src: 'images/usdv.png', alt: 'USDV icon' },
+        quantity: 3900,
+        displayQuantity: '3,900 USDV',
+        availableUsd: 3900,
+        displayAvailable: '$3,900.00',
+        priority: 2,
+        selected: false,
+        disabled: false
+      },
+      {
+        id: 'wallet-usdt',
+        code: 'USDT',
+        name: 'USDT',
+        icon: { src: 'images/usdt.png', alt: 'USDT icon' },
+        quantity: 100,
+        displayQuantity: '100 USDT',
+        availableUsd: 100,
+        displayAvailable: '$100.00',
+        priority: 3,
+        selected: false,
+        disabled: false
+      }
+    ];
+
+    const packageSelect = document.getElementById('packageSelect');
+    const planSelect = document.getElementById('planSelect');
+    const paymentWalletList = document.getElementById('paymentWalletList');
+    const slippageToleranceValue = document.getElementById('slippageToleranceValue');
+    const totalReturnValue = document.getElementById('totalReturnValue');
+    const vmmRateText = document.getElementById('vmmRateText');
+    const vmmEquivalentValue = document.getElementById('vmmEquivalentValue');
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function formatUsd(amount) {
+      return '$' + Number(amount || 0).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function formatRate(rate) {
+      return '$' + Number(rate || 0).toFixed(6);
+    }
+
+    function parseAmount(text) {
+      const cleaned = String(text || '').replace(/[^0-9.-]/g, '');
+      return Number(cleaned || 0);
+    }
+
+    function formatVmmAmount(amount) {
+      return Number(amount || 0).toLocaleString('en-US', {
+        minimumFractionDigits: 4,
+        maximumFractionDigits: 4
+      }) + ' VMM';
+    }
+
+    function syncWalletAmounts() {
+      paymentWallets.forEach(function (wallet) {
+        if (wallet.code !== 'VMM') return;
+        const vmmUsd = Number(wallet.quantity || 0) * VMM_USD_RATE;
+        wallet.availableUsd = vmmUsd;
+        wallet.displayAvailable = formatUsd(vmmUsd);
+      });
+    }
+
+    function syncVmmEquivalent() {
+      if (!totalReturnValue || !vmmRateText || !vmmEquivalentValue) return;
+      const totalReturn = parseAmount(totalReturnValue.textContent);
+      const equivalent = totalReturn / VMM_USD_RATE;
+      vmmRateText.textContent = formatRate(VMM_USD_RATE);
+      vmmEquivalentValue.textContent = formatVmmAmount(equivalent);
+    }
+
+    function syncSlippageTolerance() {
+      if (!slippageToleranceValue) return;
+      const selectedWallet = paymentWallets.find(function (wallet) { return wallet.selected; });
+      slippageToleranceValue.textContent = selectedWallet && selectedWallet.code === 'VMM' ? '0%' : '3%';
+    }
+
+    function renderPackageOptions() {
+      const optionsHtml = iouPackages
+        .map((pkg, index) => '<option value="' + escapeHtml(pkg.id) + '"' + (index === 0 ? ' selected' : '') + '>' +
+          escapeHtml(pkg.label) + '</option>')
+        .join('');
+      packageSelect.innerHTML = optionsHtml;
+    }
+
+    function renderPlanOptions() {
+      const uniqueTerms = [...new Set(iouPackages.map(pkg => pkg.termMonths))].sort((a, b) => b - a);
+      const optionsHtml = uniqueTerms
+        .map((term) => '<option value="' + term + '">' + term + ' MONTHS</option>')
+        .join('');
+      planSelect.innerHTML = optionsHtml;
+    }
+
+    function syncPlanWithSelectedPackage() {
+      const selectedPackage = iouPackages.find(pkg => pkg.id === packageSelect.value);
+      if (!selectedPackage) return;
+      planSelect.value = String(selectedPackage.termMonths);
+    }
+
+    function renderWallets() {
+      const sortedWallets = [...paymentWallets].sort((a, b) => a.priority - b.priority);
+      paymentWalletList.innerHTML = sortedWallets.map((wallet) => {
+        const checked = wallet.selected && !wallet.disabled;
+        const wrapperClasses = [
+          'border',
+          'rounded',
+          'p-3',
+          'd-flex',
+          'gap-3',
+          'align-items-start',
+          checked ? 'border-primary bg-primary-subtle' : '',
+          wallet.disabled ? 'opacity-50' : ''
+        ].join(' ').trim();
+
+        return '<label data-payment-option data-wallet-id="' + escapeHtml(wallet.id) + '" class="' + wrapperClasses + '">' +
+          '<input class="form-check-input mt-1" type="radio" name="paymentAsset" value="' + escapeHtml(wallet.id) + '"' +
+          (checked ? ' checked' : '') + (wallet.disabled ? ' disabled' : '') + '>' +
+          '<img src="' + escapeHtml(wallet.icon.src) + '" alt="' + escapeHtml(wallet.icon.alt) + '" width="24" height="24">' +
+          '<div class="flex-grow-1">' +
+          '<div class="fw-semibold mb-1">' + escapeHtml(wallet.name) + '</div>' +
+          '<div class="d-flex flex-wrap justify-content-between gap-2 small text-muted">' +
+          '<span>Quantity: <strong>' + escapeHtml(wallet.displayQuantity) + '</strong></span>' +
+          '<span>Available: <strong>' + escapeHtml(wallet.displayAvailable) + '</strong></span>' +
+          '</div>' +
+          '</div>' +
+          '</label>';
+      }).join('');
+    }
+
+    function bindWalletEvents() {
+      paymentWalletList.addEventListener('change', function (event) {
+        if (!event.target.matches("input[name='paymentAsset']")) return;
+        const selectedId = event.target.value;
+        paymentWallets.forEach(wallet => {
+          wallet.selected = wallet.id === selectedId;
+        });
+        renderWallets();
+        syncSlippageTolerance();
+      });
+    }
+
+    function initPageData() {
+      syncWalletAmounts();
+      renderPackageOptions();
+      renderPlanOptions();
+      syncPlanWithSelectedPackage();
+      renderWallets();
+      syncSlippageTolerance();
+      syncVmmEquivalent();
+      bindWalletEvents();
+
+      packageSelect.addEventListener('change', function () {
+        syncPlanWithSelectedPackage();
+        syncVmmEquivalent();
+      });
+    }
+
+    initPageData();
+
+    if (window.tippy) {
+      tippy("[data-tippy-content]", {
+        allowHTML: true,
+        theme: "light-border",
+        arrow: false,
+        maxWidth: 420,
+        trigger: "click",
+        hideOnClick: true,
+        interactive: true
+      });
+    }
+  </script>
+</body>
+
+</html>

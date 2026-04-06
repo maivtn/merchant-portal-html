@@ -426,15 +426,20 @@
       color: #6b7280;
       padding: 14px 16px;
       border: none;
-      white-space: nowrap;
       vertical-align: middle;
+
+      @media screen and (max-width: 767.98px) {
+        white-space: nowrap;
+
+      }
     }
 
     .iou-table-wrap tbody td {
-      padding: 14px 16px;
+      padding: 4px 16px;
       vertical-align: middle;
       border-color: rgba(174, 192, 214, 0.14);
       background: rgba(255, 255, 255, 0.92);
+      white-space: nowrap;
     }
 
     .iou-table-wrap tbody tr {
@@ -492,7 +497,7 @@
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        padding: 8px 0;
+        padding: 4px 0;
         border-bottom: 1px solid rgba(174, 192, 214, 0.14);
         background: transparent;
         text-align: right !important;
@@ -528,7 +533,6 @@
       .iou-table-wrap tbody td[data-role="release-date"] small {
         margin-left: 6px;
         font-size: 11px;
-        color: var(--iou-muted);
       }
     }
 
@@ -560,7 +564,6 @@
       display: block;
       margin-top: 3px;
       font-size: 11px;
-      color: var(--iou-muted);
     }
 
     .iou-table-action {
@@ -715,6 +718,10 @@
         display: none;
       }
 
+      .release-date-wrap br {
+        display: none;
+      }
+
       .package-date-wrap {
         display: flex;
         flex-direction: row;
@@ -724,6 +731,18 @@
       }
 
       .package-date-wrap small {
+        margin-top: 0 !important;
+      }
+
+      .release-date-wrap {
+        display: inline-flex;
+        flex-direction: row;
+        gap: 3px;
+        align-items: center;
+        justify-content: flex-end;
+      }
+
+      .release-date-wrap small {
         margin-top: 0 !important;
       }
     }
@@ -956,7 +975,7 @@
           }
 
           if (releaseDateCell) {
-            releaseDateCell.innerHTML = formatDateTime(row.getAttribute("data-release-date"));
+            releaseDateCell.innerHTML = '<span class="release-date-wrap">' + formatDateTime(row.getAttribute("data-release-date")) + '</span>';
           }
         });
       }

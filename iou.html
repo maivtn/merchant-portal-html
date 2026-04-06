@@ -49,6 +49,10 @@
       --bs-btn-disabled-border-color: var(--iou-accent);
     }
 
+    .nav-item {
+      padding: 0;
+    }
+
     @media (max-width: 767.98px) {
       body {
         font-size: 13px;
@@ -104,6 +108,86 @@
       z-index: 1;
       color: var(--iou-ink);
       text-align: left
+    }
+
+    .hub-tabs {
+      border-bottom: 1px solid #dee2e6;
+      margin-bottom: 16px;
+    }
+
+    .hub-tabs .nav-link {
+      white-space: nowrap;
+      color: #6c757d;
+      font-weight: 600;
+    }
+
+    .hub-tabs .nav-link.active {
+      color: #0d6efd;
+    }
+
+    .hub-tabs .nav {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .hub-tabs .nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hub-subtabs {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .hub-subtabs-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      background: #e9ecef;
+      border-radius: 12px;
+      padding: 3px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .hub-subtabs-left::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hub-subtabs-left .nav-link {
+      white-space: nowrap;
+      color: #212529;
+      font-weight: 500;
+      border-radius: 10px;
+      padding: 6px 10px;
+    }
+
+    .hub-subtabs-left .nav-link.active {
+      background: #cfdaf5;
+      color: #2f63d9;
+      font-weight: 600;
+    }
+
+    .hub-subtabs .btn {
+      white-space: nowrap;
+      border-radius: 10px;
+      padding: 7px 14px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 767.98px) {
+      .hub-subtabs {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hub-subtabs .btn {
+        width: 100%;
+      }
     }
 
 
@@ -751,10 +835,38 @@
 
 <body data-io-account="annual">
   <div class="wallet-wrap">
-    <!-- <div class="wallet-top">
+    <div class="wallet-top">
       <a href="#" id="backLink"><i class="bi bi-arrow-left"></i> Back</a>
-      <span class="wallet-top-title">IOU Packages</span>
-    </div> -->
+      <span class="wallet-top-title">Program Hub</span>
+    </div>
+    <div class="hub-tabs">
+      <ul class="nav nav-underline">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">I Owe You</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">BTC Collateral</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">VMM Holding</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">USDV Holding</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Credit Lending</a>
+        </li>
+      </ul>
+    </div>
+    <div class="hub-subtabs">
+      <div class="hub-subtabs-left">
+        <a class="nav-link" href="#">Package History</a>
+        <a class="nav-link" href="#">Reward Distributed</a>
+        <a class="nav-link" href="#">Distribution</a>
+        <a class="nav-link active" aria-current="page" href="#">Statistics</a>
+      </div>
+      <a class="btn btn-primary" href="buy-iou.html">Create Package</a>
+    </div>
 
     <!-- Section 1 — Overview -->
     <section class="iou-section" aria-labelledby="overview-heading">

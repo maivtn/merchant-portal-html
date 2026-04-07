@@ -422,6 +422,21 @@
       line-height: 1.4;
     }
 
+    .cb-benefits-label {
+      display: block;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 3px;
+      font-size: 6.5px;
+    }
+
+    .cb-benefit-item {
+      display: block;
+      line-height: 1.45;
+      margin: 0;
+      padding: 0;
+    }
+
     .cb-contact {
       flex-shrink: 0;
       padding: 0;
@@ -3200,7 +3215,7 @@
       <h1 class="page-title" style="margin:0;">Issue Digital</h1>
       <button class="btn-save-draft" onclick="saveDraft()">
         <i data-lucide="save" style="width:16px;height:16px;"></i>
-        <span class="btn-save-text">Save for Later</span>
+        <span class="btn-save-text">Save for update later</span>
       </button>
     </div>
 
@@ -5844,7 +5859,7 @@ Please present this card before payment.</textarea>
       const ids = Object.keys(mbSelected || {});
       if (!isMembership || ids.length === 0) {
         lineEl.style.display = 'none';
-        lineEl.textContent = '';
+        lineEl.innerHTML = '';
         return;
       }
       const parts = ids.map(id => {
@@ -5861,10 +5876,14 @@ Please present this card before payment.</textarea>
       }).filter(Boolean);
       if (parts.length === 0) {
         lineEl.style.display = 'none';
-        lineEl.textContent = '';
+        lineEl.innerHTML = '';
         return;
       }
-      lineEl.textContent = 'Benefits: ' + parts.join(' · ');
+      lineEl.innerHTML =
+        '<strong class="cb-benefits-label">Benefits:</strong>' +
+        parts.map(function (p) {
+          return '<span class="cb-benefit-item">' + escapeTooltipHtml(p) + '</span>';
+        }).join('');
       lineEl.style.display = '';
     }
 

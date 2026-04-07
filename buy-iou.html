@@ -17,6 +17,8 @@
     }
 
     body {
+      font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
       @media (max-width: 767.98px) {
         font-size: 14px;
       }
@@ -104,9 +106,34 @@
       color: #1d4ed8;
     }
 
+    .buy-iou-wallet-option {
+      cursor: pointer;
+      border-color: #e8ecf2;
+      background-color: #fff;
+      transition: border-color 0.2s ease, box-shadow 0.22s ease, transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .buy-iou-wallet-option:not(.buy-iou-wallet-option-disabled):hover {
+      border-color: #b8d4f0;
+      background-color: #f8fbff;
+      box-shadow: 0 10px 28px -16px rgba(37, 99, 235, 0.28);
+      transform: translateY(-2px);
+    }
+
     .buy-iou-wallet-selected {
       border-color: #cfe0f7;
       background-color: #f4f8ff;
+    }
+
+    .buy-iou-wallet-selected:not(.buy-iou-wallet-option-disabled):hover {
+      border-color: #b8d0ec;
+      background-color: #edf4fc;
+      box-shadow: 0 12px 32px -14px rgba(29, 78, 216, 0.22);
+      transform: translateY(-2px);
+    }
+
+    .buy-iou-wallet-option-disabled {
+      cursor: not-allowed;
     }
 
     .tippy-box[data-theme~='white'] {
@@ -178,7 +205,7 @@
               </div>
 
               <div>
-                <h2 class="h6 fw-bold mb-3 buy-iou-section-title">PACKAGE BENEFITS</h2>
+                <h2 class="h6 fw-bold mb-3 mt-2 buy-iou-section-title">PACKAGE BENEFITS</h2>
                 <div class="border rounded-4">
                   <div class="p-3">
                     <div class="d-flex justify-content-between gap-3 mb-2"><span class="text-muted">IOU
@@ -204,7 +231,7 @@
               </div>
 
               <div>
-                <h2 class="h6 fw-bold mb-3 buy-iou-section-title">PAYMENT INFORMATION</h2>
+                <h2 class="h6 fw-bold mb-3 mt-2 buy-iou-section-title">PAYMENT INFORMATION</h2>
                 <div class="d-grid gap-3">
                   <!-- <div>
                     <h3 class="h6 mb-2">Payment Priority</h3>
@@ -304,10 +331,10 @@
         code: 'USDV',
         name: 'USDV',
         icon: { src: 'images/usdv.png', alt: 'USDV icon' },
-        quantity: 3900,
-        displayQuantity: '3,900 USDV',
-        availableUsd: 3900,
-        displayAvailable: '$3,900.00',
+        quantity: 3300,
+        displayQuantity: '3,300 USDV',
+        availableUsd: 3300,
+        displayAvailable: '$3,300.00',
         priority: 2,
         selected: false,
         disabled: false
@@ -537,14 +564,15 @@
       paymentWalletList.innerHTML = sortedWallets.map((wallet) => {
         const checked = wallet.selected && !wallet.disabled;
         const wrapperClasses = [
+          'buy-iou-wallet-option',
           'border',
           'rounded-4',
           'p-2 p-md-3',
           'd-flex',
           'gap-2 gap-md-3',
           'align-items-start',
-          checked ? 'buy-iou-wallet-selected border-primary' : '',
-          wallet.disabled ? 'opacity-50 pe-none user-select-none' : ''
+          checked ? 'buy-iou-wallet-selected' : '',
+          wallet.disabled ? 'buy-iou-wallet-option-disabled opacity-50 pe-none user-select-none' : ''
         ].join(' ').trim();
 
         return '<label data-payment-option data-wallet-id="' + escapeHtml(wallet.id) + '" class="' + wrapperClasses + '">' +

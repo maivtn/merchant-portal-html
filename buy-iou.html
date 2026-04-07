@@ -86,6 +86,17 @@
         transform: translateX(2px);
       }
     }
+
+    .tippy-box[data-theme~='white'] {
+      background-color: #ffffff;
+      color: #1f2937;
+      border: 1px solid #dbe3ef;
+      box-shadow: 0 10px 24px -18px rgba(15, 23, 42, 0.45);
+    }
+
+    .tippy-box[data-theme~='white'] .tippy-content {
+      color: #1f2937;
+    }
   </style>
 </head>
 
@@ -130,7 +141,8 @@
                   <label class="form-label fw-semibold mb-0">
                     Select Program <span class="text-danger">*</span>
                   </label>
-                  <a class="link-primary fw-semibold" href="#">Get more VMM!</a>
+                  <a class="link-primary fw-semibold"
+                    href="https://staging-web-app.vlinkpay.com/crypto/buy?asset=VMMV2">Get more VMM!</a>
                 </div>
                 <ul class="nav nav-pills nav-fill bg-light rounded-4 p-1" role="tablist" aria-label="IOU programs">
                   <li class="nav-item" role="presentation">
@@ -210,7 +222,7 @@
                     </div>
                   </div>
 
-                  <div class="form-check">
+                  <div id="vmmFirstFormCheckWrap" class="form-check d-none">
                     <input class="form-check-input" type="checkbox" name="vmmFirst" id="vmmFirst">
                     <label class="form-check-label text-muted small" for="vmmFirst">
                       <span id="vmmFirstConfirmText"></span>
@@ -303,6 +315,7 @@
     const totalPaymentValue = document.getElementById('totalPaymentValue');
     const vmmFirstConfirmText = document.getElementById('vmmFirstConfirmText');
     const vmmFirstCheckbox = document.getElementById('vmmFirst');
+    const vmmFirstFormCheckWrap = document.getElementById('vmmFirstFormCheckWrap');
 
     function escapeHtml(value) {
       return String(value)
@@ -370,49 +383,40 @@
       return isVmm ? pkgAmount : pkgAmount * (1 + NON_VMM_SLIPPAGE_RATE);
     }
 
+    /**
+     * Fixed wording (both clauses always): only the amounts and conversion asset name change.
+     * "Confirm a $X in [USDV|USDT] conversion (including fees) and apply your existing $Y in VMM …"
+     */
+    function syncVmmFirstFormCheckVisibility() {
+      if (!vmmFirstFormCheckWrap) return;
+      var w = getSelectedWalletForPayment();
+      var show = w && w.code !== 'VMM';
+      vmmFirstFormCheckWrap.classList.toggle('d-none', !show);
+    }
+
     function syncVmmFirstConfirmText() {
       if (!vmmFirstConfirmText) return;
+      var payWalletEarly = getSelectedWalletForPayment();
+      if (!payWalletEarly || payWalletEarly.code === 'VMM') return;
       var totalDue = getTotalDueUsd();
       var vmmWallet = paymentWallets.find(function (w) { return w.code === 'VMM'; });
       var vmmAvailableUsd = vmmWallet ? Number(vmmWallet.availableUsd || 0) : 0;
       var payWallet = getSelectedWalletForPayment();
-      var isVmmPay = payWallet && payWallet.code === 'VMM';
       var vmmFirstChecked = vmmFirstCheckbox && vmmFirstCheckbox.checked;
 
-      if (isVmmPay) {
-        var vmmUsed = Math.min(vmmAvailableUsd, totalDue);
-        vmmFirstConfirmText.textContent =
-          'Confirm applying ' + formatUsd(vmmUsed) + ' in VMM to activate the package.';
-        return;
-      }
-
-      var assetLabel = payWallet && payWallet.code === 'USDT' ? 'USDT' : 'USDV';
-
-      if (!vmmFirstChecked) {
-        vmmFirstConfirmText.textContent =
-          'Confirm a ' + formatUsd(totalDue) + ' in ' + assetLabel +
-          ' conversion (including fees) to activate the package.';
-        return;
-      }
-
-      var vmmAppliedUsd = Math.min(vmmAvailableUsd, totalDue);
-      var conversionUsd = Math.max(0, totalDue - vmmAppliedUsd);
-
-      if (conversionUsd === 0 && vmmAppliedUsd > 0) {
-        vmmFirstConfirmText.textContent =
-          'Confirm applying ' + formatUsd(vmmAppliedUsd) + ' in VMM to activate the package.';
-        return;
-      }
-
-      if (vmmAppliedUsd === 0) {
-        vmmFirstConfirmText.textContent =
-          'Confirm a ' + formatUsd(conversionUsd) + ' in ' + assetLabel +
-          ' conversion (including fees) to activate the package.';
-        return;
+      var conversionAssetLabel = payWallet && payWallet.code === 'USDT' ? 'USDT' : 'USDV';
+      /** Luôn là số dư ví VMM (USD), không cắt theo totalDue. */
+      var vmmAppliedUsd = vmmAvailableUsd;
+      var conversionUsd;
+      if (vmmFirstChecked) {
+        var vmmUsedTowardDue = Math.min(vmmAvailableUsd, totalDue);
+        conversionUsd = Math.max(0, totalDue - vmmUsedTowardDue);
+      } else {
+        conversionUsd = totalDue - vmmAppliedUsd;
       }
 
       vmmFirstConfirmText.textContent =
-        'Confirm a ' + formatUsd(conversionUsd) + ' in ' + assetLabel +
+        'Confirm a ' + formatUsd(conversionUsd) + ' in ' + conversionAssetLabel +
         ' conversion (including fees) and apply your existing ' + formatUsd(vmmAppliedUsd) +
         ' in VMM to activate the package.';
     }
@@ -431,7 +435,9 @@
       var wallet = getSelectedWalletForPayment();
       var isVmm = wallet && wallet.code === 'VMM';
       var total = isVmm ? pkgAmount : pkgAmount * (1 + NON_VMM_SLIPPAGE_RATE);
-      totalPaymentValue.textContent = formatUsd(total);
+      var vmmWallet = paymentWallets.find(function (w) { return w.code === 'VMM'; });
+      var vmmAvailableUsd = vmmWallet ? Number(vmmWallet.availableUsd || 0) : 0;
+      totalPaymentValue.textContent = isVmm ? formatUsd(total) : formatUsd(total - vmmAvailableUsd);
     }
 
     function applyVmmFirstWalletSelection() {
@@ -466,6 +472,7 @@
       renderWallets();
       syncSlippageTolerance();
       syncTotalPayment();
+      syncVmmFirstFormCheckVisibility();
       syncVmmFirstConfirmText();
     }
 
@@ -531,6 +538,7 @@
         renderWallets();
         syncSlippageTolerance();
         syncTotalPayment();
+        syncVmmFirstFormCheckVisibility();
         syncVmmFirstConfirmText();
       });
     }
@@ -561,7 +569,7 @@
     if (window.tippy) {
       tippy("[data-tippy-content]", {
         allowHTML: true,
-        theme: "light-border",
+        theme: "white",
         arrow: false,
         maxWidth: 420,
         trigger: "click",

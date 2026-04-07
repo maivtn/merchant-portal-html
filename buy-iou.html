@@ -485,7 +485,7 @@
       var total = isVmm ? pkgAmount : pkgAmount * (1 + NON_VMM_SLIPPAGE_RATE);
       var vmmWallet = paymentWallets.find(function (w) { return w.code === 'VMM'; });
       var vmmAvailableUsd = vmmWallet ? Number(vmmWallet.availableUsd || 0) : 0;
-      totalPaymentValue.textContent = isVmm ? formatUsd(total) : formatUsd(total - vmmAvailableUsd);
+      totalPaymentValue.textContent = isVmm ? formatUsd(total) : formatUsd(total);
     }
 
     function applyVmmFirstWalletSelection() {

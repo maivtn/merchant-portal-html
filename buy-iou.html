@@ -87,6 +87,28 @@
       }
     }
 
+    @media (max-width: 767.98px) {
+      .buy-iou-section-title {
+        font-size: 0.8125rem;
+      }
+    }
+
+    .nav-pills .nav-link.active {
+      background-color: #e8f0ff;
+      color: #1d4ed8;
+    }
+
+    .nav-pills .nav-link.active:hover,
+    .nav-pills .nav-link.active:focus {
+      background-color: #e0ebff;
+      color: #1d4ed8;
+    }
+
+    .buy-iou-wallet-selected {
+      border-color: #cfe0f7;
+      background-color: #f4f8ff;
+    }
+
     .tippy-box[data-theme~='white'] {
       background-color: #ffffff;
       color: #1f2937;
@@ -104,14 +126,14 @@
 
   <main class="container py-4">
     <section class="row justify-content-center">
-      <div class="col-12 col-xl-6">
+      <div class="col-12 col-xl-5">
         <div class="wallet-top mb-5">
           <a href="#" id="backLink"><i class="bi bi-arrow-left"></i> Back</a>
           <span class="wallet-top-title">I OWE YOU</span>
         </div>
         <div class="card shadow-md border-0 rounded-4">
           <div class="card-body p-0 b">
-            <div class="d-grid gap-4">
+            <div class="d-grid gap-3 gap-md-4">
               <div>
                 <label class="form-label fw-semibold" for="packageSelect">
                   Select Package <span class="text-danger">*</span>
@@ -156,7 +178,7 @@
               </div>
 
               <div>
-                <h2 class="h6 fw-bold mb-3">PACKAGE BENEFITS</h2>
+                <h2 class="h6 fw-bold mb-3 buy-iou-section-title">PACKAGE BENEFITS</h2>
                 <div class="border rounded-4">
                   <div class="p-3">
                     <div class="d-flex justify-content-between gap-3 mb-2"><span class="text-muted">IOU
@@ -182,7 +204,7 @@
               </div>
 
               <div>
-                <h2 class="h6 fw-bold mb-3">PAYMENT INFORMATION</h2>
+                <h2 class="h6 fw-bold mb-3 buy-iou-section-title">PAYMENT INFORMATION</h2>
                 <div class="d-grid gap-3">
                   <!-- <div>
                     <h3 class="h6 mb-2">Payment Priority</h3>
@@ -229,7 +251,7 @@
                     </label>
                   </div>
 
-                  <button type="button" class="btn btn-primary btn-md pt-2 pb-2">Place Your Package</button>
+                  <button type="button" class="btn btn-primary btn-md pt-2 pb-2 rounded-3">Place Your Package</button>
                   <div class="text-center small">
                     <small>
                       By clicking Place your Package, you have read and agree to the <a href="#"
@@ -415,10 +437,12 @@
         conversionUsd = totalDue - vmmAppliedUsd;
       }
 
-      vmmFirstConfirmText.textContent =
-        'Confirm a ' + formatUsd(conversionUsd) + ' in ' + conversionAssetLabel +
-        ' conversion (including fees) and apply your existing ' + formatUsd(vmmAppliedUsd) +
-        ' in VMM to activate the package.';
+      vmmFirstConfirmText.innerHTML =
+        'Confirm a <strong class="fw-bold text-body">' + formatUsd(conversionUsd) + '</strong> in ' +
+        conversionAssetLabel +
+        ' conversion (including fees) and apply your existing <strong class="fw-bold text-body">' +
+        formatUsd(vmmAppliedUsd) +
+        '</strong> in VMM to activate the package.';
     }
 
     function syncSlippageTolerance() {
@@ -465,9 +489,19 @@
       syncWalletAmounts();
       var selectedPackage = iouPackages.find(function (pkg) { return pkg.id === packageSelect.value; });
       var pkgAmount = selectedPackage ? Number(selectedPackage.amount) : 0;
-      paymentWallets.forEach(function (wallet) {
-        wallet.disabled = pkgAmount > Number(wallet.availableUsd || 0);
-      });
+      var vmmWallet = paymentWallets.find(function (w) { return w.code === 'VMM'; });
+      var vmmAvailableUsd = vmmWallet ? Number(vmmWallet.availableUsd || 0) : 0;
+      var vmmCoversPackage = vmmWallet && vmmAvailableUsd >= pkgAmount;
+
+      if (vmmCoversPackage) {
+        paymentWallets.forEach(function (wallet) {
+          wallet.disabled = wallet.code !== 'VMM';
+        });
+      } else {
+        paymentWallets.forEach(function (wallet) {
+          wallet.disabled = pkgAmount > Number(wallet.availableUsd || 0);
+        });
+      }
       applyVmmFirstWalletSelection();
       renderWallets();
       syncSlippageTolerance();
@@ -509,7 +543,7 @@
           'd-flex',
           'gap-2 gap-md-3',
           'align-items-start',
-          checked ? 'border-primary bg-primary-subtle' : '',
+          checked ? 'buy-iou-wallet-selected' : '',
           wallet.disabled ? 'opacity-50 pe-none user-select-none' : ''
         ].join(' ').trim();
 

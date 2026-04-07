@@ -457,7 +457,7 @@
                     </label>
                   </div>
 
-                  <button type="button" class="btn btn-primary btn-md pt-2 pb-2 rounded-3">Place Your Package</button>
+                  <button type="button" id="placePackageBtn" class="btn btn-primary btn-md pt-2 pb-2 rounded-3">Place Your Package</button>
                   <div class="text-center small">
                     <small>
                       By clicking Place your Package, you have read and agree to the <a href="#"
@@ -544,6 +544,7 @@
     const vmmFirstConfirmText = document.getElementById('vmmFirstConfirmText');
     const vmmFirstCheckbox = document.getElementById('vmmFirst');
     const vmmFirstFormCheckWrap = document.getElementById('vmmFirstFormCheckWrap');
+    const placePackageBtn = document.getElementById('placePackageBtn');
 
     function escapeHtml(value) {
       return String(value)
@@ -691,6 +692,12 @@
       }
     }
 
+    function syncPlacePackageButtonDisabled() {
+      if (!placePackageBtn) return;
+      var hasPayableWallet = paymentWallets.some(function (w) { return !w.disabled; });
+      placePackageBtn.disabled = !hasPayableWallet;
+    }
+
     function syncWalletDisabledAgainstPackage() {
       syncWalletAmounts();
       var selectedPackage = iouPackages.find(function (pkg) { return pkg.id === packageSelect.value; });
@@ -714,6 +721,7 @@
       syncTotalPayment();
       syncVmmFirstFormCheckVisibility();
       syncVmmFirstConfirmText();
+      syncPlacePackageButtonDisabled();
     }
 
     function renderPackageOptions() {

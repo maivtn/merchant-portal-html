@@ -216,7 +216,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 16px 20px;
+      padding: 8px 20px;
       border-bottom: 1px solid var(--c-border);
       cursor: pointer;
       user-select: none;
@@ -242,7 +242,33 @@
       flex: 1;
     }
 
+    .panel-card-header .panel-tooltip-trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--c-text-3);
+      cursor: pointer;
+      border-radius: 6px;
+      padding: 2px;
+      margin-left: 2px;
+      margin-right: 4px;
+      line-height: 0;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .panel-card-header .panel-tooltip-trigger:hover {
+      color: var(--c-primary);
+      background: rgba(145, 158, 171, 0.12);
+    }
+
+    .panel-card-header .panel-tooltip-trigger:focus-visible {
+      outline: 2px solid var(--c-primary);
+      outline-offset: 2px;
+    }
+
     .panel-card-header .chevron {
+      padding: 8px;
       color: var(--c-text-3);
       transition: transform var(--transition-base);
       display: flex;
@@ -832,6 +858,30 @@
       color: var(--c-text-1);
     }
 
+    .adv-accordion-trigger .panel-tooltip-trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: inherit;
+      cursor: pointer;
+      border-radius: 6px;
+      padding: 2px;
+      margin-left: 4px;
+      line-height: 0;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .adv-accordion-trigger .panel-tooltip-trigger:hover {
+      color: var(--c-primary);
+      background: rgba(145, 158, 171, 0.12);
+    }
+
+    .adv-accordion-trigger .panel-tooltip-trigger:focus-visible {
+      outline: 2px solid var(--c-primary);
+      outline-offset: 2px;
+    }
+
     .adv-accordion-body {
       padding: 12px 0 0;
     }
@@ -1264,16 +1314,17 @@
       margin-right: 4px;
     }
 
-    .btn-panel-action {
+    .btn-panel-action,
+    .btn-terms {
       display: flex;
       align-items: center;
       gap: 5px;
-      padding: 6px 12px;
+      padding: 6px 8px;
       border-radius: var(--radius-xs);
       border: 1px solid var(--grey-300);
       background: #fff;
       color: var(--grey-600);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       cursor: pointer;
       transition: var(--transition-base);
@@ -1281,7 +1332,8 @@
       white-space: nowrap;
     }
 
-    .btn-panel-action:hover {
+    .btn-panel-action:hover,
+    .btn-terms:hover {
       border-color: var(--primary-main);
       color: var(--primary-main);
       background: var(--background-hover-opacity);
@@ -1606,7 +1658,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 16px 20px;
+      padding: 8px 20px;
       cursor: pointer;
       user-select: none;
       transition: background var(--transition-base);
@@ -1638,6 +1690,10 @@
 
     .step-title-text {
       flex: 1;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
       font-size: 14px;
       font-weight: 700;
       color: var(--c-text-1);
@@ -1654,11 +1710,43 @@
       margin-left: 2px;
     }
 
+    .step-tooltip-trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--c-text-3);
+      cursor: pointer;
+      border-radius: 6px;
+      padding: 2px;
+      margin: 0;
+      line-height: 0;
+      flex-shrink: 0;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .step-tooltip-trigger:hover {
+      color: var(--c-primary);
+      background: rgba(145, 158, 171, 0.12);
+    }
+
+    .step-tooltip-trigger:focus-visible {
+      outline: 2px solid var(--c-primary);
+      outline-offset: 2px;
+    }
+
+    .step-header-tooltip-content {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.45;
+      color: var(--c-text-2, #374151);
+    }
+
     .step-chevron {
       color: var(--c-text-3);
       transition: transform var(--transition-base);
       display: flex;
       align-items: center;
+      padding: 8px;
     }
 
     .step-header.open .step-chevron {
@@ -1772,12 +1860,16 @@
       color: var(--c-text-1);
     }
 
+    .tippy-box[data-theme~='light'] .tippy-content {
+      padding: 20px;
+    }
+
     .total-card-value-tooltip {
-      padding: 16px;
+      padding: 0;
     }
 
     .fee-payment-method-tooltip {
-      padding: 16px;
+      padding: 0;
     }
 
     /* ═══════════════════════════════════════════════════════
@@ -2434,30 +2526,6 @@
       margin-bottom: 0;
     }
 
-    .btn-terms {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 7px 14px;
-      border-radius: var(--radius-xs);
-      border: 1px solid var(--c-border);
-      background: var(--c-surface);
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--grey-600);
-      cursor: pointer;
-      transition: var(--transition-base);
-      font-family: inherit;
-    }
-
-    .btn-terms:hover {
-      border-color: var(--primary-main);
-      color: var(--primary-main);
-      background: var(--background-hover-opacity);
-      box-shadow: 0 8px 16px 0 var(--background-hover-opacity-strong);
-      transform: translateY(-1px);
-    }
-
     .terms-box {
       border: 1.5px solid var(--c-border);
       border-radius: var(--radius-md);
@@ -2874,7 +2942,7 @@
       }
 
       .step-header {
-        padding: 8px 12px;
+        padding: 0px 12px;
         flex-wrap: wrap;
       }
 
@@ -2888,7 +2956,7 @@
       }
 
       .panel-card-header {
-        padding: 8px 12px;
+        padding: 0px 12px;
         flex-wrap: wrap;
       }
 
@@ -3044,10 +3112,6 @@
       .main {
         padding-bottom: 80px;
       }
-    }
-
-    .total-card-value-tooltip {
-      padding: 16px;
     }
   </style>
 </head>
@@ -3223,7 +3287,11 @@
         <div class="panel-card">
           <div class="panel-card-header open" id="hdr-design" onclick="toggleSection('design-collection','hdr-design')">
             <div class="header-icon"><i data-lucide="palette" style="width:16px;height:16px;"></i></div>
-            <span class="header-title">Design Collection</span>
+            <span class="header-title">Design Collection <span class="panel-tooltip-trigger"
+                data-general-tooltip-id="designCollection" role="button" tabindex="0" aria-label="About this section"
+                onclick="event.stopPropagation()"><i data-lucide="info"
+                  style="width:14px;height:14px;"></i></span></span>
+
             <div class="chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="design-collection">
@@ -3280,10 +3348,13 @@
               </div>
 
               <!-- Advanced Text Colors Accordion -->
-              <button class="adv-accordion-trigger" onclick="toggleSection('adv-text-colors','hdr-adv')">
+              <button class="adv-accordion-trigger">
                 <iconify-icon icon="solar:text-bold-duotone" width="14"></iconify-icon>
                 CUSTOM TEXT COLOR (ADVANCED)
-                <i data-lucide="chevron-down" id="hdr-adv-chevron"
+                <span class="panel-tooltip-trigger" data-general-tooltip-id="customTextColorAdvanced" role="button"
+                  tabindex="0" aria-label="About this section" onclick="event.stopPropagation()"><i data-lucide="info"
+                    style="width:12px;height:12px;"></i></span>
+                <i data-lucide="chevron-down" id="hdr-adv-chevron" onclick="toggleSection('adv-text-colors','hdr-adv')"
                   style="width:14px;height:14px;margin-left:auto;transition:transform 0.2s;"></i>
               </button>
               <div class="collapse-wrap" id="adv-text-colors">
@@ -3344,9 +3415,13 @@
 
         <!-- Card 3: Brand Identity (collapsible) -->
         <div class="panel-card">
-          <div class="panel-card-header open" id="hdr-brand" onclick="toggleSection('brand-identity','hdr-brand')">
+          <div class="panel-card-header open" id="hdr-brand">
             <div class="header-icon"><i data-lucide="badge-check" style="width:16px;height:16px;"></i></div>
-            <span class="header-title">Brand Identity</span>
+            <span class="header-title">Brand Identity <span class="panel-tooltip-trigger"
+                data-general-tooltip-id="brandIdentity" role="button" tabindex="0" aria-label="About this section"
+                onclick="event.stopPropagation()"><i data-lucide="info"
+                  style="width:14px;height:14px;"></i></span></span>
+
             <div class="header-actions" onclick="event.stopPropagation()">
               <button class="btn-panel-action" onclick="openLogoLibrary()">
                 <i data-lucide="folder-open" style="width:13px;height:13px;"></i>Library
@@ -3356,7 +3431,8 @@
                 <input type="file" accept="image/*" style="display:none" onchange="onLogoUpload(this)">
               </label>
             </div>
-            <div class="chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+            <div class="chevron" onclick="toggleSection('brand-identity','hdr-brand')"><i data-lucide="chevron-down"
+                style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="brand-identity">
             <div class="panel-card-body">
@@ -3407,11 +3483,15 @@
 
         <!-- Card 4: Business Information (collapsible) - ẩn khi role=personal -->
         <div class="panel-card" id="panelCardBusinessInfo">
-          <div class="panel-card-header" id="hdr-bizinfo" onclick="toggleSection('business-info','hdr-bizinfo')">
+          <div class="panel-card-header" id="hdr-bizinfo">
             <div class="header-icon"><i data-lucide="building-2" style="width:16px;height:16px;"></i></div>
-            <span class="header-title">Business Information</span>
-            <div class="chevron" style="margin-left:auto;"><i data-lucide="chevron-down"
-                style="width:16px;height:16px;"></i></div>
+            <span class="header-title">Business Information <span class="panel-tooltip-trigger"
+                data-general-tooltip-id="businessInformationAndContact" role="button" tabindex="0"
+                aria-label="About this section" onclick="event.stopPropagation()"><i data-lucide="info"
+                  style="width:14px;height:14px;"></i></span></span>
+
+            <div class="chevron" style="margin-left:auto;" onclick="toggleSection('business-info','hdr-bizinfo')"><i
+                data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap" id="business-info">
             <div class="panel-card-body">
@@ -3509,12 +3589,16 @@
 
         <!-- STEP 1: Select Product - ẩn khi role=personal -->
         <div class="step-card" id="step1SelectProductLine">
-          <div class="step-header open" id="shdr-1" onclick="toggleStep(1)">
+          <div class="step-header open" id="shdr-1">
             <div class="step-badge" id="sbadge-1">Step 1:</div>
             <div class="step-title-text">
               Select Product <span class="step-required">*</span>
+              <span class="step-tooltip-trigger" data-step-tooltip-id="product" role="button" tabindex="0"
+                aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info"
+                  style="width:14px;height:14px;"></i></span>
             </div>
-            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+            <div class="step-chevron" onclick="toggleStep(1)"><i data-lucide="chevron-down"
+                style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="scollapse-1">
             <div class="step-body">
@@ -3574,10 +3658,15 @@
 
         <!-- STEP 2: Customer Details -->
         <div class="step-card" id="step2Card">
-          <div class="step-header open" id="shdr-2" onclick="toggleStep(2)">
+          <div class="step-header open" id="shdr-2">
             <div class="step-badge" id="sbadge-2">Step 2:</div>
-            <div class="step-title-text" id="step2Title">Customer Details</div>
-            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+            <div class="step-title-text" id="step2Title"><span id="step2TitleLabel">Customer Details</span>
+              <span class="step-tooltip-trigger" data-step-tooltip-id="customer" role="button" tabindex="0"
+                aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info"
+                  style="width:14px;height:14px;"></i></span>
+            </div>
+            <div class="step-chevron" onclick="toggleStep(2)"><i data-lucide="chevron-down"
+                style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="scollapse-2">
             <div class="step-body">
@@ -3650,12 +3739,16 @@
 
         <!-- STEP 3: Expiration Date (hidden for Crypto Card) -->
         <div class="step-card" id="step3Card">
-          <div class="step-header open" id="shdr-3" onclick="toggleStep(3)">
+          <div class="step-header open" id="shdr-3">
             <div class="step-badge" id="sbadge-3">Step 3:</div>
             <div class="step-title-text">
               Expiration Date <span class="step-required">*</span>
+              <span class="step-tooltip-trigger" data-step-tooltip-id="expiry" role="button" tabindex="0"
+                aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info"
+                  style="width:14px;height:14px;"></i></span>
             </div>
-            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+            <div class="step-chevron" onclick="toggleStep(3)"><i data-lucide="chevron-down"
+                style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="scollapse-3">
             <div class="step-body">
@@ -3689,12 +3782,16 @@
 
         <!-- STEP 3 (Crypto): Select Crypto Assets -->
         <div class="step-card" id="cryptoStepCard" style="display:none;">
-          <div class="step-header open" id="shdr-crypto" onclick="toggleStep('crypto')">
+          <div class="step-header open" id="shdr-crypto">
             <div class="step-badge" id="sbadge-crypto">Step 3:</div>
             <div class="step-title-text">
               Select Crypto Assets <span class="step-required">*</span>
+              <span class="step-tooltip-trigger" data-step-tooltip-id="crypto-assets" role="button" tabindex="0"
+                aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info"
+                  style="width:14px;height:14px;"></i></span>
             </div>
-            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+            <div class="step-chevron" onclick="toggleStep('crypto')"><i data-lucide="chevron-down"
+                style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="scollapse-crypto">
             <div class="step-body">
@@ -3717,12 +3814,16 @@
 
         <!-- STEP (Crypto only): Card Quantity - sau Select Crypto Assets -->
         <div class="step-card" id="cryptoQuantityStepCard" style="display:none;">
-          <div class="step-header open" id="shdr-crypto-qty" onclick="toggleStep('crypto-qty')">
+          <div class="step-header open" id="shdr-crypto-qty">
             <div class="step-badge" id="sbadge-crypto-qty">Step 4:</div>
             <div class="step-title-text">
               Card Quantity <span class="step-required">*</span>
+              <span class="step-tooltip-trigger" data-step-tooltip-id="crypto-qty" role="button" tabindex="0"
+                aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info"
+                  style="width:14px;height:14px;"></i></span>
             </div>
-            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+            <div class="step-chevron" onclick="toggleStep('crypto-qty')"><i data-lucide="chevron-down"
+                style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="scollapse-crypto-qty">
             <div class="step-body">
@@ -3765,12 +3866,16 @@
 
         <!-- STEP 4: Value / Discount / Benefits -->
         <div class="step-card" id="step4Card">
-          <div class="step-header open" id="shdr-4" onclick="toggleStep(4)">
+          <div class="step-header open" id="shdr-4">
             <div class="step-badge" id="sbadge-4">Step 4:</div>
             <div class="step-title-text" id="step4Title">
               Amount <span class="step-required">*</span>
+              <span class="step-tooltip-trigger" data-step-tooltip-id="amount" role="button" tabindex="0"
+                aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info"
+                  style="width:14px;height:14px;"></i></span>
             </div>
-            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+            <div class="step-chevron" onclick="toggleStep(4)"><i data-lucide="chevron-down"
+                style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="scollapse-4">
             <div class="step-body">
@@ -3848,12 +3953,16 @@
 
         <!-- STEP 5: Purchase Price -->
         <div class="step-card" id="step5Card">
-          <div class="step-header open" id="shdr-5" onclick="toggleStep(5)">
+          <div class="step-header open" id="shdr-5">
             <div class="step-badge" id="sbadge-5">Step 5:</div>
             <div class="step-title-text">
               Purchase Price <span class="step-required">*</span>
+              <span class="step-tooltip-trigger" data-step-tooltip-id="purchase-price" role="button" tabindex="0"
+                aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info"
+                  style="width:14px;height:14px;"></i></span>
             </div>
-            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+            <div class="step-chevron" onclick="toggleStep(5)"><i data-lucide="chevron-down"
+                style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="scollapse-5">
             <div class="step-body">
@@ -3873,9 +3982,13 @@
 
         <!-- STEP 6: Terms & Conditions -->
         <div class="step-card">
-          <div class="step-header open" id="shdr-6" onclick="toggleStep(6)">
+          <div class="step-header open" id="shdr-6">
             <div class="step-badge" id="sbadge-6">Step 6:</div>
-            <div class="step-title-text">Terms & Conditions</div>
+            <div class="step-title-text">Terms & Conditions
+              <span class="step-tooltip-trigger" data-step-tooltip-id="terms" role="button" tabindex="0"
+                aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info"
+                  style="width:14px;height:14px;"></i></span>
+            </div>
             <!-- Terms actions: desktop — in header; mobile — in body -->
             <div class="terms-actions terms-actions-header" id="termsActions" onclick="event.stopPropagation()">
               <button class="btn-terms" onclick="loadTerms()">
@@ -3887,7 +4000,8 @@
                 Save Terms
               </button>
             </div>
-            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+            <div class="step-chevron" onclick="toggleStep(6)"><i data-lucide="chevron-down"
+                style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="scollapse-6">
             <div class="step-body">
@@ -3929,12 +4043,16 @@ Please present this card before payment.</textarea>
 
         <!-- STEP 7: Payment Method -->
         <div class="step-card step-payment">
-          <div class="step-header open" id="shdr-7" onclick="toggleStep(7)">
+          <div class="step-header open" id="shdr-7">
             <div class="step-badge" id="sbadge-7">Step 7:</div>
             <div class="step-title-text">
               Payment Method <span class="step-required">*</span>
+              <span class="step-tooltip-trigger" data-step-tooltip-id="payment" role="button" tabindex="0"
+                aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info"
+                  style="width:14px;height:14px;"></i></span>
             </div>
-            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+            <div class="step-chevron" onclick="toggleStep(7)"><i data-lucide="chevron-down"
+                style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="scollapse-7">
             <div class="step-body">
@@ -3982,9 +4100,14 @@ Please present this card before payment.</textarea>
 
         </div>
         <div class="step-card crypto-summary-step" id="cryptoSummaryStepCard" style="display:none;">
-          <div class="step-header open" id="shdr-crypto-summary" onclick="toggleStep('crypto-summary')">
-            <div class="step-title-text step-title-text--2">Total Crypto Used</div>
-            <div class="step-chevron"><i data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
+          <div class="step-header open" id="shdr-crypto-summary">
+            <div class="step-title-text step-title-text--2">Total Crypto Used
+              <span class="step-tooltip-trigger" data-step-tooltip-id="crypto-summary" role="button" tabindex="0"
+                aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info"
+                  style="width:14px;height:14px;"></i></span>
+            </div>
+            <div class="step-chevron" onclick="toggleStep('crypto-summary')"><i data-lucide="chevron-down"
+                style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="scollapse-crypto-summary">
             <div class="step-body crypto-summary-body" id="cryptoSummaryBody">
@@ -4047,6 +4170,145 @@ Please present this card before payment.</textarea>
 
   <script>
     lucide.createIcons();
+
+    const TOOLTIP_COPY = {
+      generalInformation: {
+        designCollection: 'Choose a background color for your gift card.',
+        customTextColorAdvanced: 'Adjust the text color to match your brand.',
+        brandIdentity: 'Select a style to help generate a design that fits your brand.',
+        uploadLogo: 'Upload your logo to display on the gift card. PNG or JPG recommended.',
+        generateLogoWithAI: 'Let AI create a logo based on your brand description.',
+        businessInformationAndContact: 'Enter your business details as they should appear on the gift card.'
+      },
+      egiftCard: {
+        selectProductLine: 'Choose the type of product you want to issue. Each option serves a different purpose.',
+        customerInformation: 'Enter the customer information.',
+        amount: 'Pick a preset amount or enter your own value for the gift card, or enter a valid amount.',
+        termsAndConditions: 'Add the terms and conditions that customers should know when using this gift card.',
+        paymentMethod: 'Select how the customer will pay for this card.',
+        platformServiceFee: 'This is the service fee charged by the platform for this transaction.'
+      },
+      membership: {
+        selectProductLine: 'Choose the type of product you want to issue. Each option serves a different purpose.',
+        customerInformation: 'Enter the customer information.',
+        expiration: 'Select how long the membership or card will remain valid.',
+        benefitSetup: 'Configure the benefits included in this membership.',
+        purchasePrice: 'Set the price customers will pay.',
+        termsAndConditions: 'Add the terms and conditions that customers should know when using this gift card.',
+        paymentMethod: 'Select how the customer will pay for this card.',
+        platformServiceFee: 'This is the service fee charged by the platform for this transaction.'
+      },
+      prepaidCard: {
+        selectProductLine: 'Choose the type of product you want to issue. Each option serves a different purpose.',
+        customerInformation: 'Enter the customer information.',
+        amount: 'Pick a preset amount or enter your own value for the gift card, or enter a valid amount.',
+        termsAndConditions: 'Add the terms and conditions that customers should know when using this gift card.',
+        paymentMethod: 'Select how the customer will pay for this card.',
+        platformServiceFee: 'This is the service fee charged by the platform for this transaction.'
+      },
+      discount: {
+        selectProductLine: 'Choose the type of product you want to issue. Each option serves a different purpose.',
+        customerInformation: 'Enter the customer information.',
+        expiration: 'Select how long this offer will remain valid.',
+        discount: 'Set the discount percentage customers will receive.',
+        purchasePrice: 'Set the price customers will pay.',
+        termsAndConditions: 'Add the terms and conditions that customers should know when using this gift card.',
+        paymentMethod: 'Select how the customer will pay for this card.',
+        platformServiceFee: 'This is the service fee charged by the platform for this transaction.'
+      },
+      promotion: {
+        selectProductLine: 'Choose the type of product you want to issue. Each option serves a different purpose.',
+        customerInformation: 'Enter the customer information.',
+        expiration: 'Select how long this offer will remain valid.',
+        amountOrDiscount: 'Select whether this promotion gives a fixed amount or a percentage discount.',
+        purchasePrice: 'Set the price customers will pay.',
+        termsAndConditions: 'Add the terms and conditions that customers should know when using this gift card.',
+        paymentMethod: 'Select how the customer will pay for this card.',
+        platformServiceFee: 'This is the service fee charged by the platform for this transaction.'
+      },
+      cryptoCard: {
+        selectProductLine: 'Choose the type of product you want to issue. Each option serves a different purpose.',
+        customerInformation: 'Enter the recipient information where required for delivery or activation.',
+        selectCryptoAssets: 'Select one or more cryptocurrencies to fund this card, then enter the amount to use from each wallet.',
+        cardQuantity: 'Set how many cards to issue for this order. Use Send as a gift to add recipient name and email.',
+        termsAndConditions: 'Add the terms and conditions that customers should know when using this card.',
+        platformServiceFee: 'This is the service fee charged by the platform for this transaction.',
+        paymentMethod: 'Select how the customer will pay for this card.',
+        totalCryptoUsed: 'Review the total crypto allocated from your wallets for this issuance before you confirm.',
+        amountDeductionNote: 'Each amount will be deducted from its respective cryptocurrency wallet.'
+      },
+      feePaymentMethod: 'Select a wallet to pay the transaction fee.'
+    };
+
+    function escapeTooltipHtml(str) {
+      if (str == null) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function getTooltipCategoryKey() {
+      switch (String(currentTypeId)) {
+        case '0': return 'egiftCard';
+        case '1': return 'promotion';
+        case '2': return 'membership';
+        case '3': return 'discount';
+        case '4': return 'prepaidCard';
+        case '5': return 'cryptoCard';
+        default: return 'egiftCard';
+      }
+    }
+
+    function getStepTooltipHtml(stepId) {
+      var cat = getTooltipCategoryKey();
+      var pack = TOOLTIP_COPY[cat] || TOOLTIP_COPY.egiftCard;
+      var html = '';
+      switch (stepId) {
+        case 'product':
+          html = pack.selectProductLine;
+          break;
+        case 'customer':
+          html = pack.customerInformation;
+          break;
+        case 'expiry':
+          if (currentTypeId === '2') html = TOOLTIP_COPY.membership.expiration;
+          else if (currentTypeId === '3') html = TOOLTIP_COPY.discount.expiration;
+          else if (currentTypeId === '1') html = TOOLTIP_COPY.promotion.expiration;
+          else html = (pack.expiration || TOOLTIP_COPY.membership.expiration);
+          break;
+        case 'crypto-assets':
+          html = TOOLTIP_COPY.cryptoCard.selectCryptoAssets;
+          break;
+        case 'crypto-qty':
+          html = TOOLTIP_COPY.cryptoCard.cardQuantity;
+          break;
+        case 'amount':
+          if (currentTypeId === '0') html = TOOLTIP_COPY.egiftCard.amount;
+          else if (currentTypeId === '4') html = TOOLTIP_COPY.prepaidCard.amount;
+          else if (currentTypeId === '3') html = TOOLTIP_COPY.discount.discount;
+          else if (currentTypeId === '1') html = TOOLTIP_COPY.promotion.amountOrDiscount;
+          else if (currentTypeId === '2') html = TOOLTIP_COPY.membership.benefitSetup;
+          else html = TOOLTIP_COPY.egiftCard.amount;
+          break;
+        case 'purchase-price':
+          html = pack.purchasePrice || TOOLTIP_COPY.membership.purchasePrice;
+          break;
+        case 'terms':
+          html = pack.termsAndConditions;
+          break;
+        case 'payment':
+          html = pack.paymentMethod || TOOLTIP_COPY.egiftCard.paymentMethod;
+          break;
+        case 'crypto-summary':
+          html = TOOLTIP_COPY.cryptoCard.totalCryptoUsed;
+          break;
+        default:
+          html = '';
+      }
+      return html;
+    }
 
     /* ──────────────────────────────────────────────
        CURRENT STATE
@@ -4725,6 +4987,8 @@ Please present this card before payment.</textarea>
 
     let currentTypeId = '0';
 
+    var STEP4_TITLE_TOOLTIP_SUFFIX = '<span class="step-tooltip-trigger" data-step-tooltip-id="amount" role="button" tabindex="0" aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info" style="width:14px;height:14px;"></i></span>';
+
     function selectCardType(el, name, typeId) {
       if (el.classList.contains('disabled')) return;
       document.querySelectorAll('.card-type-item').forEach(i => i.classList.remove('active'));
@@ -4778,13 +5042,13 @@ Please present this card before payment.</textarea>
       const s4t = document.getElementById('step4Title');
       [vg, dg, pg, mb].forEach(el => el && (el.style.display = 'none'));
       if (typeId === '0' || typeId === '4') {
-        vg.style.display = ''; s4t.innerHTML = 'Amount <span class="step-required">*</span>';
+        vg.style.display = ''; s4t.innerHTML = 'Amount <span class="step-required">*</span>' + STEP4_TITLE_TOOLTIP_SUFFIX;
       } else if (typeId === '3') {
-        dg.style.display = ''; s4t.innerHTML = 'Discount Value <span class="step-required">*</span>';
+        dg.style.display = ''; s4t.innerHTML = 'Discount Value <span class="step-required">*</span>' + STEP4_TITLE_TOOLTIP_SUFFIX;
       } else if (typeId === '1') {
-        pg.style.display = ''; s4t.innerHTML = 'Promotion Value <span class="step-required">*</span>';
+        pg.style.display = ''; s4t.innerHTML = 'Promotion Value <span class="step-required">*</span>' + STEP4_TITLE_TOOLTIP_SUFFIX;
       } else if (typeId === '2') {
-        mb.style.display = ''; s4t.innerHTML = 'Membership Benefits <span class="step-required">*</span>';
+        mb.style.display = ''; s4t.innerHTML = 'Membership Benefits <span class="step-required">*</span>' + STEP4_TITLE_TOOLTIP_SUFFIX;
       }
 
       // Crypto Step: show only when Crypto Card
@@ -4825,7 +5089,6 @@ Please present this card before payment.</textarea>
       if (step2) step2.style.display = isCrypto ? 'none' : '';
 
       // Step 2 title + fields based on card type
-      const step2Title = document.getElementById('step2Title');
       const nameInput = document.getElementById('holderName');
       const emailInput = document.getElementById('holderEmail');
       const membershipContactRow = document.getElementById('membershipContactRow');
@@ -4845,16 +5108,17 @@ Please present this card before payment.</textarea>
         }
       }
 
+      const step2TitleLabel = document.getElementById('step2TitleLabel');
       if (isCrypto) {
-        if (step2Title) step2Title.textContent = 'Recipient';
+        if (step2TitleLabel) step2TitleLabel.textContent = 'Recipient';
         if (nameInput) nameInput.placeholder = 'Recipient Name';
         if (emailInput) emailInput.placeholder = 'Recipient Email';
       } else if (isMembership) {
-        if (step2Title) step2Title.textContent = 'Customer Details';
+        if (step2TitleLabel) step2TitleLabel.textContent = 'Customer Details';
         if (nameInput) nameInput.placeholder = 'Enter full name (optional)';
         if (emailInput) emailInput.placeholder = 'Enter member email (optional)';
       } else {
-        if (step2Title) step2Title.textContent = 'Customer Details';
+        if (step2TitleLabel) step2TitleLabel.textContent = 'Customer Details';
         if (nameInput) nameInput.placeholder = 'Enter full name (optional)';
         if (emailInput) emailInput.placeholder = 'Enter email address';
       }
@@ -4875,6 +5139,7 @@ Please present this card before payment.</textarea>
       if (mobileLabel) mobileLabel.textContent = text;
       renderCryptoSummaryCollapse();
       updateFeeDisplay();
+      initStepHeaderTooltips();
 
       // Auto-close "Select Product Line" collapse after 1s (mobile only)
       if (window.innerWidth <= 767) {
@@ -5228,7 +5493,7 @@ Please present this card before payment.</textarea>
       if (!trigger || typeof tippy === 'undefined') return;
       if (trigger._tippy) trigger._tippy.destroy();
       tippy(trigger, {
-        content: '<div class="total-card-value-tooltip">Each amount will be deducted from its respective cryptocurrency wallet.</div>',
+        content: '<div class="total-card-value-tooltip">' + escapeTooltipHtml(TOOLTIP_COPY.cryptoCard.amountDeductionNote) + '</div>',
         allowHTML: true,
         trigger: 'click',
         interactive: true,
@@ -5678,6 +5943,8 @@ Please present this card before payment.</textarea>
       // Init crypto assets select (Tom Select)
       initCryptoSelect();
       initFeeTokenSelect();
+      initStepHeaderTooltips();
+      initGeneralPanelTooltips();
       renderCryptoSummaryCollapse();
       // Init step visibility for current card type
       const step3 = document.getElementById('step3Card');
@@ -5991,6 +6258,50 @@ Please present this card before payment.</textarea>
         showConfirmButton: false
       });
     }
+    function initGeneralPanelTooltips() {
+      if (typeof tippy === 'undefined') return;
+      var gi = TOOLTIP_COPY.generalInformation;
+      if (!gi) return;
+      document.querySelectorAll('.panel-tooltip-trigger[data-general-tooltip-id]').forEach(function (el) {
+        if (el._tippy) el._tippy.destroy();
+        var id = el.getAttribute('data-general-tooltip-id');
+        var text = gi[id];
+        if (!text) return;
+        tippy(el, {
+          content: '<div class="step-header-tooltip-content">' + escapeTooltipHtml(text) + '</div>',
+          allowHTML: true,
+          trigger: 'click',
+          interactive: true,
+          theme: 'light',
+          placement: 'top-start',
+          maxWidth: 320,
+          appendTo: document.body
+        });
+      });
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function initStepHeaderTooltips() {
+      if (typeof tippy === 'undefined') return;
+      document.querySelectorAll('.step-tooltip-trigger[data-step-tooltip-id]').forEach(function (el) {
+        if (el._tippy) el._tippy.destroy();
+        var id = el.getAttribute('data-step-tooltip-id');
+        var text = getStepTooltipHtml(id);
+        if (!text) return;
+        tippy(el, {
+          content: '<div class="step-header-tooltip-content">' + escapeTooltipHtml(text) + '</div>',
+          allowHTML: true,
+          trigger: 'click',
+          interactive: true,
+          theme: 'light',
+          placement: 'top-start',
+          maxWidth: 320,
+          appendTo: document.body
+        });
+      });
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
     // Fees Overview tooltip (Tippy) on Total (i) icon
     (function () {
       var trigger = document.getElementById('reloadTotalFeesTipTrigger');
@@ -6019,7 +6330,7 @@ Please present this card before payment.</textarea>
       var trigger = document.getElementById('feePaymentMethodTipTrigger');
       if (!trigger || typeof tippy === 'undefined') return;
       tippy(trigger, {
-        content: '<div class="fee-payment-method-tooltip">Select a wallet to pay the transaction fee.</div>',
+        content: '<div class="fee-payment-method-tooltip">' + escapeTooltipHtml(TOOLTIP_COPY.feePaymentMethod) + '</div>',
         allowHTML: true,
         trigger: 'click',
         interactive: true,

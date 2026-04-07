@@ -215,7 +215,7 @@
     .panel-card-header {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
       padding: 8px 12px;
       border-bottom: 1px solid var(--c-border);
       cursor: pointer;
@@ -1861,7 +1861,7 @@
     }
 
     .tippy-box[data-theme~='light'] .tippy-content {
-      padding: 20px;
+      padding: 12px;
     }
 
     .total-card-value-tooltip {
@@ -1870,6 +1870,51 @@
 
     .fee-payment-method-tooltip {
       padding: 0;
+    }
+
+    .reload-summary-info-icon {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      vertical-align: middle;
+    }
+
+    .fees-overview-popover {
+      position: relative;
+      padding-right: 28px;
+    }
+
+    .fees-overview-popover-title {
+      font-weight: 700;
+      font-size: 13px;
+      margin: 0 0 8px;
+      color: var(--c-text-1, #111827);
+    }
+
+    .fees-overview-popover-hint {
+      font-size: 12px;
+      color: var(--c-text-3, #6b7280);
+      margin: 10px 0 0;
+      line-height: 1.45;
+    }
+
+    .fees-overview-close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      border: none;
+      background: transparent;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      color: var(--c-text-3, #9ca3af);
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    .fees-overview-close:hover {
+      color: var(--c-text-1, #111827);
+      background: rgba(0, 0, 0, 0.05);
     }
 
     /* ═══════════════════════════════════════════════════════
@@ -6305,26 +6350,42 @@ Please present this card before payment.</textarea>
       if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
+    function getFeesOverviewPopoverHtml() {
+      var cat = getTooltipCategoryKey();
+      var pack = TOOLTIP_COPY[cat] || TOOLTIP_COPY.egiftCard;
+      var platformText = pack.platformServiceFee || TOOLTIP_COPY.egiftCard.platformServiceFee;
+      var body = escapeTooltipHtml(platformText);
+      return (
+        '<div class="fees-overview-popover">' +
+        '<button type="button" class="fees-overview-close" aria-label="Close">&times;</button>' +
+        '<div class="fees-overview-popover-title">Fees overview</div>' +
+        '<div class="step-header-tooltip-content">' + body + '</div>' +
+        '<p class="fees-overview-popover-hint">Includes Platform Service Fee and Transfer Fee where applicable.</p>' +
+        '</div>'
+      );
+    }
+
     // Fees Overview tooltip (Tippy) on Total (i) icon
     (function () {
       var trigger = document.getElementById('reloadTotalFeesTipTrigger');
       if (!trigger || typeof tippy === 'undefined') return;
-      var feesHtml = getFeesOverviewPopoverHtml();
-      var instance = tippy(trigger, {
-        content: feesHtml,
+      tippy(trigger, {
+        content: getFeesOverviewPopoverHtml(),
         allowHTML: true,
         trigger: 'click',
         interactive: true,
         theme: 'light',
         placement: 'top',
+        maxWidth: 340,
         appendTo: document.body,
-        onShow: function (i) {
-          var box = i.popper.querySelector('.fees-overview-popover');
+        onShow: function (instance) {
+          instance.setContent(getFeesOverviewPopoverHtml());
+          var box = instance.popper && instance.popper.querySelector('.fees-overview-popover');
           if (box) {
             var closeBtn = box.querySelector('.fees-overview-close');
-            if (closeBtn) closeBtn.onclick = function () { i.hide(); };
+            if (closeBtn) closeBtn.onclick = function () { instance.hide(); };
           }
-        },
+        }
       });
     })();
 

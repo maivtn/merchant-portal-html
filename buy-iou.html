@@ -15,20 +15,97 @@
     .nav-item {
       padding: 0;
     }
+
+    body {
+      @media (max-width: 767.98px) {
+        font-size: 14px;
+      }
+    }
+
+    .wallet-top {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-weight: 500;
+      color: var(--iou-ink);
+      margin-bottom: 28px;
+      font-size: 18px;
+      position: relative;
+      padding-left: 70px;
+    }
+
+
+
+    .wallet-top a {
+      color: var(--iou-ink-soft);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      transition: transform .2s ease, box-shadow .2s ease, color .2s;
+      font-size: 13px;
+      position: absolute;
+      left: 0;
+      z-index: 2;
+    }
+
+    .wallet-top a:hover {
+      color: var(--iou-accent);
+      box-shadow: 0 18px 32px -20px rgba(15, 159, 134, 0.5);
+      transform: translateY(-50%) translateX(2px);
+    }
+
+    .wallet-top-title {
+      flex: 1;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      position: relative;
+      z-index: 1;
+      color: var(--iou-ink);
+      text-align: left
+    }
+
+    @media screen and (max-width: 767.98px) {
+      .wallet-top {
+        padding-left: 70px;
+        padding-right: 70px;
+      }
+
+      .wallet-top-title {
+        text-align: center;
+        font-size: 16px;
+      }
+
+      .wallet-top a {
+        transform: none;
+      }
+
+      .wallet-top a:hover {
+        transform: translateX(2px);
+      }
+    }
   </style>
 </head>
 
 <body>
+
   <main class="container py-4">
     <section class="row justify-content-center">
       <div class="col-12 col-xl-6">
-        <div class="card shadow-md border-0">
-          <div class="card-body p-4 b">
+        <div class="wallet-top mb-5">
+          <a href="#" id="backLink"><i class="bi bi-arrow-left"></i> Back</a>
+          <span class="wallet-top-title">I OWE YOU</span>
+        </div>
+        <div class="card shadow-md border-0 rounded-4">
+          <div class="card-body p-0 b">
             <div class="d-grid gap-4">
               <div>
                 <label class="form-label fw-semibold" for="packageSelect">
                   Select Package <span class="text-danger">*</span>
-              <span class="text-muted" data-tippy-content="<strong>Benefits of 3 IOU USDV Packages - Network Bonus</strong><br>Choose the right IOU package to maximize commissions from the Network Bonus system:<br><strong>$20,000</strong> Package earns 5 Levels:<br>&bull; <strong>F1= 50%, F2= 20%, F3= 15%, F4= 10%, F5= 5%</strong><br><strong>$10,000</strong> Package earns 3 Levels:<br>&bull; <strong>F1= 50%, F2= 20%, F3= 15%</strong><br><strong>$5,000</strong> Package earns 1 Level:<br>&bull; <strong>F1= 50%</strong>">
+                  <span class="text-muted"
+                    data-tippy-content="<strong>Benefits of 3 IOU USDV Packages - Network Bonus</strong><br>Choose the right IOU package to maximize commissions from the Network Bonus system:<br><strong>$20,000</strong> Package earns 5 Levels:<br>&bull; <strong>F1= 50%, F2= 20%, F3= 15%, F4= 10%, F5= 5%</strong><br><strong>$10,000</strong> Package earns 3 Levels:<br>&bull; <strong>F1= 50%, F2= 20%, F3= 15%</strong><br><strong>$5,000</strong> Package earns 1 Level:<br>&bull; <strong>F1= 50%</strong>">
                     <i class="bi bi-info-circle"></i>
                   </span>
                 </label>
@@ -55,19 +132,20 @@
                   </label>
                   <a class="link-primary fw-semibold" href="#">Get more VMM!</a>
                 </div>
-                <ul class="nav nav-pills nav-fill bg-light rounded p-1" role="tablist" aria-label="IOU programs">
+                <ul class="nav nav-pills nav-fill bg-light rounded-4 p-1" role="tablist" aria-label="IOU programs">
                   <li class="nav-item" role="presentation">
                     <button class="nav-link active" type="button" role="tab" aria-selected="true">Active IOU</button>
                   </li>
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link" type="button" role="tab" aria-selected="false">Debt IOU</button>
+                    <button class="nav-link disabled" type="button" role="tab" aria-selected="false" disabled
+                      aria-disabled="true" tabindex="-1">Debt IOU</button>
                   </li>
                 </ul>
               </div>
 
               <div>
                 <h2 class="h6 fw-bold mb-3">PACKAGE BENEFITS</h2>
-                <div class="border rounded">
+                <div class="border rounded-4">
                   <div class="p-3">
                     <div class="d-flex justify-content-between gap-3 mb-2"><span class="text-muted">IOU
                         Package</span><strong>1,000 USDV</strong></div>
@@ -82,7 +160,9 @@
                     <hr class="my-3">
                     <div class="d-flex justify-content-between gap-3 mb-2"><span class="text-muted">Total
                         return</span><strong id="totalReturnValue">1,600 USDV</strong></div>
-                    <div class="d-flex justify-content-between gap-3"><span class="text-muted">VMM Equivalent @
+                    <div class="d-flex justify-content-between  align-items-center gap-3"><span
+                        class="text-muted small">Exchange Rate <br class="d-inline d-md-none"> 1
+                        VMM =
                         <span id="vmmRateText">$0.000608</span></span><strong id="vmmEquivalentValue">2,631,578.9474
                         VMM</strong></div>
                   </div>
@@ -92,53 +172,58 @@
               <div>
                 <h2 class="h6 fw-bold mb-3">PAYMENT INFORMATION</h2>
                 <div class="d-grid gap-3">
-                  <div>
+                  <!-- <div>
                     <h3 class="h6 mb-2">Payment Priority</h3>
                     <p class="text-muted mb-0">
                       VMM will be used first for package activation.<br>
                       If VMM is insufficient, the remaining amount will be covered by another
                       available asset after conversion.
                     </p>
-                  </div>
+                  </div> -->
 
                   <div id="paymentWalletList" class="d-grid gap-2"></div>
 
-                  <div class="border rounded p-3">
+                  <div class="border rounded-4 p-3">
                     <div class="d-flex align-items-center justify-content-between gap-3 mb-2">
-                      <span class="fw-semibold">
+                      <span class="">
                         Slippage Tolerance
                         <span class="text-muted"
                           data-tippy-content="<strong>Slippage Tolerance</strong><br><br>Your balance adjustment will be applied within the maximum slippage range you define. For example, a 1% slippage means you're willing to accept up to 1% less due to market fluctuations.">
                           <i class="bi bi-info-circle"></i>
                         </span>
                       </span>
-                      <strong id="slippageToleranceValue">3%</strong>
+                      <strong id="slippageToleranceValue">0%</strong>
                     </div>
                     <div class="d-flex align-items-center justify-content-between gap-3 mb-2">
-                      <span class="fw-semibold">
+                      <span class="">
                         Service Fee
-                        <span class="text-muted" data-tippy-content="<div class='d-flex justify-content-between'><span>Platform fee</span><strong>$40</strong></div><div class='d-flex justify-content-between'><span><strong>Franchise License</strong> Discount Platform Fee</span><strong class='text-success'>-$40</strong></div><div class='d-flex justify-content-between'><span>Network fee</span><strong>$20</strong></div><div class='d-flex justify-content-between'><span><strong>Franchise License</strong> Discount Network Fee</span><strong class='text-success'>-$20</strong></div><hr class='my-2'><div class='text-success fw-semibold mb-2'>Get Max Annual and Save on Platform Fees!</div><div class='mb-2'>Enjoy a 4% discount on Platform Fees with Max Annual AI. Save <strong class='text-success'>$40</strong> on this transaction.</div><a href='#' class='fw-semibold'>Learn more</a>">
+                        <span class="text-muted"
+                          data-tippy-content="<div class='d-flex justify-content-between'><span>Platform fee</span><strong>$40</strong></div><div class='d-flex justify-content-between'><span><strong>Franchise License</strong> Discount Platform Fee</span><strong class='text-success'>-$40</strong></div><div class='d-flex justify-content-between'><span>Network fee</span><strong>$20</strong></div><div class='d-flex justify-content-between'><span><strong>Franchise License</strong> Discount Network Fee</span><strong class='text-success'>-$20</strong></div><hr class='my-2'><div class='text-success fw-semibold mb-2'>Get Max Annual and Save on Platform Fees!</div><div class='mb-2'>Enjoy a 4% discount on Platform Fees with Max Annual AI. Save <strong class='text-success'>$40</strong> on this transaction.</div><a href='#' class='fw-semibold'>Learn more</a>">
                           <i class="bi bi-info-circle"></i>
                         </span>
                       </span>
-                  <strong class="text-success">Free</strong>
+                      <strong class="text-success">Free</strong>
                     </div>
                     <div class="d-flex align-items-center justify-content-between gap-3">
-                      <span class="fw-semibold">Total Payment</span>
-                      <strong class="fw-bold">$1,030.00</strong>
+                      <span class="">Total Payment</span>
+                      <strong class="fw-bold" id="totalPaymentValue">$1,000.00</strong>
                     </div>
                   </div>
 
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="vmmFirst" id="vmmFirst">
-                    <label class="form-check-label text-muted" for="vmmFirst">
-                      Confirm using available VMM first for this activation.<br>
-                      If VMM is not enough, the remaining amount will be converted from the
-                      selected asset to complete package payment.
+                    <label class="form-check-label text-muted small" for="vmmFirst">
+                      <span id="vmmFirstConfirmText"></span>
                     </label>
                   </div>
 
-                  <button type="button" class="btn btn-success btn-lg">Place Your Package</button>
+                  <button type="button" class="btn btn-primary btn-md pt-2 pb-2">Place Your Package</button>
+                  <div class="text-center small">
+                    <small>
+                      By clicking Place your Package, you have read and agree to the <a href="#"
+                        class="link-primary">Terms and Conditions</a>.
+                    </small>
+                  </div>
                 </div>
               </div>
             </div>
@@ -152,6 +237,8 @@
   <script src="https://cdn.jsdelivr.net/npm/tippy.js@6/dist/tippy.umd.min.js"></script>
   <script>
     const VMM_USD_RATE = 0.000608;
+    const NON_VMM_SLIPPAGE_RATE = 0.03;
+    const VMM_WALLET_AVAILABLE_USD = 1300;
 
     const iouPackages = [
       { id: 'iou-1000', label: '1,000 USDV', amount: 1000, currency: 'USDV', termMonths: 12 },
@@ -170,10 +257,10 @@
         code: 'VMM',
         name: 'VMM',
         icon: { src: 'images/vmm.png', alt: 'VMM icon' },
-        quantity: 1644736.8421,
-        displayQuantity: '1,644,736.8421 VMM',
-        availableUsd: 1000,
-        displayAvailable: '$1,000.00',
+        quantity: VMM_WALLET_AVAILABLE_USD / VMM_USD_RATE,
+        displayQuantity: formatVmmAmount(VMM_WALLET_AVAILABLE_USD / VMM_USD_RATE),
+        availableUsd: VMM_WALLET_AVAILABLE_USD,
+        displayAvailable: formatUsd(VMM_WALLET_AVAILABLE_USD),
         priority: 1,
         selected: true,
         disabled: false
@@ -196,10 +283,10 @@
         code: 'USDT',
         name: 'USDT',
         icon: { src: 'images/usdt.png', alt: 'USDT icon' },
-        quantity: 100,
-        displayQuantity: '100 USDT',
-        availableUsd: 100,
-        displayAvailable: '$100.00',
+        quantity: 25000,
+        displayQuantity: '25,000 USDT',
+        availableUsd: 25000,
+        displayAvailable: formatUsd(25000),
         priority: 3,
         selected: false,
         disabled: false
@@ -213,6 +300,9 @@
     const totalReturnValue = document.getElementById('totalReturnValue');
     const vmmRateText = document.getElementById('vmmRateText');
     const vmmEquivalentValue = document.getElementById('vmmEquivalentValue');
+    const totalPaymentValue = document.getElementById('totalPaymentValue');
+    const vmmFirstConfirmText = document.getElementById('vmmFirstConfirmText');
+    const vmmFirstCheckbox = document.getElementById('vmmFirst');
 
     function escapeHtml(value) {
       return String(value)
@@ -263,10 +353,120 @@
       vmmEquivalentValue.textContent = formatVmmAmount(equivalent);
     }
 
+    function getSelectedWalletForPayment() {
+      var checkedInput = paymentWalletList.querySelector("input[name='paymentAsset']:checked:not(:disabled)");
+      if (checkedInput) {
+        return paymentWallets.find(function (w) { return w.id === checkedInput.value; });
+      }
+      return paymentWallets.find(function (w) { return w.selected && !w.disabled; });
+    }
+
+    /** Total due in USD terms — same basis as Total Payment (slippage when not paying with VMM only). */
+    function getTotalDueUsd() {
+      var selectedPackage = iouPackages.find(function (pkg) { return pkg.id === packageSelect.value; });
+      var pkgAmount = selectedPackage ? Number(selectedPackage.amount) : 0;
+      var wallet = getSelectedWalletForPayment();
+      var isVmm = wallet && wallet.code === 'VMM';
+      return isVmm ? pkgAmount : pkgAmount * (1 + NON_VMM_SLIPPAGE_RATE);
+    }
+
+    function syncVmmFirstConfirmText() {
+      if (!vmmFirstConfirmText) return;
+      var totalDue = getTotalDueUsd();
+      var vmmWallet = paymentWallets.find(function (w) { return w.code === 'VMM'; });
+      var vmmAvailableUsd = vmmWallet ? Number(vmmWallet.availableUsd || 0) : 0;
+      var payWallet = getSelectedWalletForPayment();
+      var isVmmPay = payWallet && payWallet.code === 'VMM';
+      var vmmFirstChecked = vmmFirstCheckbox && vmmFirstCheckbox.checked;
+
+      if (isVmmPay) {
+        var vmmUsed = Math.min(vmmAvailableUsd, totalDue);
+        vmmFirstConfirmText.textContent =
+          'Confirm applying ' + formatUsd(vmmUsed) + ' in VMM to activate the package.';
+        return;
+      }
+
+      var assetLabel = payWallet && payWallet.code === 'USDT' ? 'USDT' : 'USDV';
+
+      if (!vmmFirstChecked) {
+        vmmFirstConfirmText.textContent =
+          'Confirm a ' + formatUsd(totalDue) + ' in ' + assetLabel +
+          ' conversion (including fees) to activate the package.';
+        return;
+      }
+
+      var vmmAppliedUsd = Math.min(vmmAvailableUsd, totalDue);
+      var conversionUsd = Math.max(0, totalDue - vmmAppliedUsd);
+
+      if (conversionUsd === 0 && vmmAppliedUsd > 0) {
+        vmmFirstConfirmText.textContent =
+          'Confirm applying ' + formatUsd(vmmAppliedUsd) + ' in VMM to activate the package.';
+        return;
+      }
+
+      if (vmmAppliedUsd === 0) {
+        vmmFirstConfirmText.textContent =
+          'Confirm a ' + formatUsd(conversionUsd) + ' in ' + assetLabel +
+          ' conversion (including fees) to activate the package.';
+        return;
+      }
+
+      vmmFirstConfirmText.textContent =
+        'Confirm a ' + formatUsd(conversionUsd) + ' in ' + assetLabel +
+        ' conversion (including fees) and apply your existing ' + formatUsd(vmmAppliedUsd) +
+        ' in VMM to activate the package.';
+    }
+
     function syncSlippageTolerance() {
       if (!slippageToleranceValue) return;
-      const selectedWallet = paymentWallets.find(function (wallet) { return wallet.selected; });
-      slippageToleranceValue.textContent = selectedWallet && selectedWallet.code === 'VMM' ? '0%' : '3%';
+      var wallet = getSelectedWalletForPayment();
+      var isVmm = wallet && wallet.code === 'VMM';
+      slippageToleranceValue.textContent = isVmm ? '0%' : '3%';
+    }
+
+    function syncTotalPayment() {
+      if (!totalPaymentValue) return;
+      var selectedPackage = iouPackages.find(function (pkg) { return pkg.id === packageSelect.value; });
+      var pkgAmount = selectedPackage ? Number(selectedPackage.amount) : 0;
+      var wallet = getSelectedWalletForPayment();
+      var isVmm = wallet && wallet.code === 'VMM';
+      var total = isVmm ? pkgAmount : pkgAmount * (1 + NON_VMM_SLIPPAGE_RATE);
+      totalPaymentValue.textContent = formatUsd(total);
+    }
+
+    function applyVmmFirstWalletSelection() {
+      var vmm = paymentWallets.find(function (w) { return w.code === 'VMM'; });
+      if (vmm && !vmm.disabled) {
+        paymentWallets.forEach(function (w) {
+          w.selected = w.id === vmm.id;
+        });
+        return;
+      }
+      var ordered = [...paymentWallets].sort(function (a, b) { return a.priority - b.priority; });
+      var fallback = ordered.find(function (w) { return !w.disabled; });
+      if (fallback) {
+        paymentWallets.forEach(function (w) {
+          w.selected = w.id === fallback.id;
+        });
+      } else {
+        paymentWallets.forEach(function (w) {
+          w.selected = false;
+        });
+      }
+    }
+
+    function syncWalletDisabledAgainstPackage() {
+      syncWalletAmounts();
+      var selectedPackage = iouPackages.find(function (pkg) { return pkg.id === packageSelect.value; });
+      var pkgAmount = selectedPackage ? Number(selectedPackage.amount) : 0;
+      paymentWallets.forEach(function (wallet) {
+        wallet.disabled = pkgAmount > Number(wallet.availableUsd || 0);
+      });
+      applyVmmFirstWalletSelection();
+      renderWallets();
+      syncSlippageTolerance();
+      syncTotalPayment();
+      syncVmmFirstConfirmText();
     }
 
     function renderPackageOptions() {
@@ -297,13 +497,13 @@
         const checked = wallet.selected && !wallet.disabled;
         const wrapperClasses = [
           'border',
-          'rounded',
-          'p-3',
+          'rounded-4',
+          'p-2 p-md-3',
           'd-flex',
-          'gap-3',
+          'gap-2 gap-md-3',
           'align-items-start',
           checked ? 'border-primary bg-primary-subtle' : '',
-          wallet.disabled ? 'opacity-50' : ''
+          wallet.disabled ? 'opacity-50 pe-none user-select-none' : ''
         ].join(' ').trim();
 
         return '<label data-payment-option data-wallet-id="' + escapeHtml(wallet.id) + '" class="' + wrapperClasses + '">' +
@@ -312,7 +512,7 @@
           '<img src="' + escapeHtml(wallet.icon.src) + '" alt="' + escapeHtml(wallet.icon.alt) + '" width="24" height="24">' +
           '<div class="flex-grow-1">' +
           '<div class="fw-semibold mb-1">' + escapeHtml(wallet.name) + '</div>' +
-          '<div class="d-flex flex-wrap justify-content-between gap-2 small text-muted">' +
+          '<div class="d-flex flex-wrap justify-content-between gap-0 gap-md-2 small flex-column flex-md-row">' +
           '<span>Quantity: <strong>' + escapeHtml(wallet.displayQuantity) + '</strong></span>' +
           '<span>Available: <strong>' + escapeHtml(wallet.displayAvailable) + '</strong></span>' +
           '</div>' +
@@ -330,23 +530,30 @@
         });
         renderWallets();
         syncSlippageTolerance();
+        syncTotalPayment();
+        syncVmmFirstConfirmText();
       });
     }
 
     function initPageData() {
-      syncWalletAmounts();
       renderPackageOptions();
       renderPlanOptions();
       syncPlanWithSelectedPackage();
-      renderWallets();
-      syncSlippageTolerance();
+      syncWalletDisabledAgainstPackage();
       syncVmmEquivalent();
       bindWalletEvents();
 
       packageSelect.addEventListener('change', function () {
         syncPlanWithSelectedPackage();
         syncVmmEquivalent();
+        syncWalletDisabledAgainstPackage();
       });
+
+      if (vmmFirstCheckbox) {
+        vmmFirstCheckbox.addEventListener('change', function () {
+          syncVmmFirstConfirmText();
+        });
+      }
     }
 
     initPageData();

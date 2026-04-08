@@ -23,7 +23,9 @@
     }
 
     body {
-      background: #fff;
+      background:
+        radial-gradient(circle at top right, rgba(254, 243, 199, 0.8), transparent 24%),
+        linear-gradient(180deg, #fffdf9 0%, #ffffff 32%, #fff 100%);
       color: var(--text-main);
       min-height: 100vh;
       font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
@@ -598,12 +600,55 @@
         margin-bottom: 0 !important;
       }
     }
+
+    .ticket-top {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      margin-bottom: 0.5rem;
+      padding-bottom: 3rem;
+
+      @media (max-width: 768px) {
+        padding-bottom: 1rem;
+      }
+    }
+
+    .ticket-back {
+      color: var(--text-main);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .ticket-back:hover {
+      color: var(--brand-primary);
+    }
+
+    .ticket-page-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+      text-align: left;
+    }
+
+    @media (max-width: 576px) {
+      .ticket-page-title {
+        text-align: left;
+      }
+
+
+    }
   </style>
 </head>
 
 <body>
   <main class="container py-4 py-md-5">
     <div class="page-wrap mx-auto px-2 px-md-0">
+      <div class="ticket-top">
+        <a href="#" id="backLink" class="ticket-back"><i class="bi bi-arrow-left"></i> Back</a>
+        <h1 class="ticket-page-title ">Help Center</h1>
+      </div>
       <section class="help-ai">
         <!-- <span class="ai-badge">AI-powered support</span> -->
         <h1 class="help-ai-title">What can <span class="help-ai-brand">VLINKPAY</span> help you with?</h1>
@@ -628,7 +673,8 @@
             </div>
             <div class="ai-response-body is-loading" id="aiResponseBody">AI is processing…</div>
             <div class="ai-response-footer">
-              <a class="ai-ticket-link" href="submit-ticket.html"><i class="bi bi-ticket-perforated"></i> Create a ticket</a>
+              <a class="ai-ticket-link" href="submit-ticket.html"><i class="bi bi-ticket-perforated"></i> Create a
+                ticket</a>
             </div>
           </div>
         </div>
@@ -650,7 +696,9 @@
             <h2>Need more help?</h2>
             <p>Our support team is ready 24/7 to help you.</p>
             <div class="d-flex flex-wrap gap-2 justify-content-center">
-              <a href="submit-ticket.html" class="btn btn-ticket text-decoration-none d-inline-flex align-items-center justify-content-center" role="button">Submit a Ticket</a>
+              <a href="submit-ticket.html"
+                class="btn btn-ticket text-decoration-none d-inline-flex align-items-center justify-content-center"
+                role="button">Submit a Ticket</a>
               <button class="btn btn-chat" type="button">Live Chat</button>
             </div>
           </div>

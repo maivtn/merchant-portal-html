@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact Us - VLINKPAY</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <style>
+    :root {
+      --brand-primary: #d97706;
+      --brand-orange: #e67e22;
+      --text-main: #221f1f;
+      --text-muted: #757575;
+      --border-soft: #e0e0e0;
+      --accent-cream: #fef3c7;
+      --accent-warm-text: #92400e;
+      --help-cta-bg: #26211f;
+      --help-cta-border: #44403c;
+      --help-cta-muted: #8c857e;
+      --card-shadow: 0 14px 32px rgba(34, 31, 31, 0.08);
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top right, rgba(254, 243, 199, 0.8), transparent 24%),
+        linear-gradient(180deg, #fffdf9 0%, #ffffff 32%, #fff 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    .page-wrap {
+      max-width: 1160px;
+    }
+
+    .ticket-top {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      margin-bottom: 1rem;
+      padding-bottom: 2rem;
+    }
+
+    .ticket-back {
+      color: var(--text-main);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .ticket-back:hover {
+      color: var(--brand-primary);
+    }
+
+    .ticket-page-title {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0;
+      text-align: left;
+    }
+
+    .hero-card {
+      border: 1px solid rgba(217, 119, 6, 0.14);
+      border-radius: 1.75rem;
+      background: linear-gradient(135deg, #fffaf0 0%, #ffffff 62%);
+      box-shadow: var(--card-shadow);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      border-radius: 999px;
+      padding: 0.4rem 0.85rem;
+      background: var(--accent-cream);
+      color: var(--accent-warm-text);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.08;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.9rem;
+      max-width: 10ch;
+    }
+
+    .hero-title span {
+      color: var(--brand-primary);
+    }
+
+    .hero-text {
+      color: #5f5b57;
+      font-size: 1rem;
+      line-height: 1.65;
+      max-width: 580px;
+      margin-bottom: 0;
+    }
+
+    .contact-points {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-card {
+      height: 100%;
+      border-radius: 1.25rem;
+      border: 1px solid var(--border-soft);
+      background: #fff;
+      padding: 1.25rem;
+      box-shadow: 0 8px 22px rgba(34, 31, 31, 0.05);
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(217, 119, 6, 0.35);
+      box-shadow: 0 14px 28px rgba(217, 119, 6, 0.12);
+    }
+
+    .contact-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #fffbeb;
+      color: var(--brand-primary);
+      font-size: 1.35rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .contact-card h2 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+
+    .contact-card p {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+      line-height: 1.6;
+      margin-bottom: 0.7rem;
+    }
+
+    .contact-meta {
+      min-width: 0;
+    }
+
+    .contact-link {
+      color: var(--brand-primary);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.94rem;
+    }
+
+    .contact-link:hover {
+      color: #b45309;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .ticket-form-card,
+    .info-panel {
+      border-radius: 1.5rem;
+      border: 1px solid var(--border-soft);
+      background: #fff;
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .section-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+    }
+
+    .section-text {
+      color: var(--text-muted);
+      font-size: 0.96rem;
+      line-height: 1.6;
+      margin-bottom: 1.35rem;
+    }
+
+    .ticket-form-card .form-label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-main);
+      margin-bottom: 0.4rem;
+    }
+
+    .ticket-form-card .form-control,
+    .ticket-form-card .form-select {
+      border-radius: 0.8rem;
+      border: 1px solid var(--border-soft);
+      padding: 0.7rem 0.9rem;
+      font-size: 0.95rem;
+    }
+
+    .ticket-form-card .form-control:focus,
+    .ticket-form-card .form-select:focus {
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.15);
+    }
+
+    .ticket-form-card textarea.form-control {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .btn-ticket,
+    .btn-cancel {
+      min-width: 160px;
+      padding: 0.72rem 1.2rem;
+      border-radius: 0.9rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .btn-ticket::after,
+    .btn-cancel::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -130%;
+      width: 65%;
+      height: 100%;
+      transform: skewX(-20deg);
+      background: rgba(255, 255, 255, 0.22);
+      transition: left 0.45s ease;
+    }
+
+    .btn-ticket {
+      color: #ffffff;
+      background: #df810b;
+      border: 1px solid #df810b;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-cancel {
+      color: #ffffff;
+      background: #44403c;
+      border: 1px solid #44403c;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .btn-ticket:hover,
+    .btn-cancel:hover {
+      transform: translateY(-2px);
+      color: #fff;
+    }
+
+    .btn-ticket:hover::after,
+    .btn-cancel:hover::after {
+      left: 145%;
+    }
+
+    .btn-ticket:hover {
+      background: #c47309;
+      border-color: #c47309;
+    }
+
+    .btn-ticket-outline {
+      color: var(--brand-orange);
+      background: transparent;
+      border-color: var(--brand-orange);
+      box-shadow: none;
+    }
+
+    .btn-ticket-outline::after {
+      background: rgba(230, 126, 34, 0.14);
+    }
+
+    .btn-ticket-outline:hover {
+      color: var(--brand-orange);
+      background: rgba(230, 126, 34, 0.08);
+      border-color: var(--brand-orange);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.14);
+    }
+
+    .btn-cancel:hover {
+      background: #55514d;
+      border-color: #55514d;
+    }
+
+    .btn-ticket:active,
+    .btn-cancel:active {
+      transform: translateY(0);
+    }
+
+    .ticket-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .info-list {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .info-item {
+      border-radius: 1rem;
+      background: #fffaf0;
+      border: 1px solid rgba(217, 119, 6, 0.15);
+      padding: 1rem;
+    }
+
+    .info-item small {
+      display: block;
+      color: var(--accent-warm-text);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.3rem;
+    }
+
+    .info-item strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .info-item span,
+    .info-item p {
+      color: #5f5b57;
+      margin: 0;
+      line-height: 1.6;
+      font-size: 0.93rem;
+    }
+
+    .help-cta {
+      border-radius: 1.75rem;
+      margin-top: 1.5rem;
+      padding: 2rem 1.4rem;
+      color: #ffffff;
+      background: var(--help-cta-bg);
+      border: 1px solid var(--help-cta-border);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+    }
+
+    .help-cta h2 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      margin-bottom: 0.6rem;
+    }
+
+    .help-cta p {
+      color: var(--help-cta-muted);
+      font-size: 0.96rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .channel-card {
+      margin-top: 1rem;
+      border-radius: 1.5rem;
+      border: 1px solid var(--border-soft);
+      background: #ffffff;
+      padding: 1.25rem;
+      box-shadow: 0 12px 28px rgba(34, 31, 31, 0.08);
+    }
+
+    .channel-card h2 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 0.35rem;
+    }
+
+    .channel-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 0.85rem;
+    }
+
+    .channel-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.65rem;
+    }
+
+    .channel-item {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      align-items: center;
+      gap: 0.7rem;
+      border-radius: 1rem;
+      padding: 0.75rem 0.9rem;
+      text-decoration: none;
+      color: var(--text-main);
+      background: #fffaf0;
+      border: 1px solid rgba(217, 119, 6, 0.14);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .channel-item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(217, 119, 6, 0.32);
+      box-shadow: 0 10px 24px rgba(217, 119, 6, 0.12);
+      color: var(--brand-orange);
+    }
+
+    .channel-item:hover .channel-meta,
+    .channel-item:hover strong,
+    .channel-item:hover .channel-icon {
+      color: var(--brand-orange);
+    }
+
+    .channel-icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-orange);
+      font-size: 1.35rem;
+      flex: 0 0 28px;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .channel-icon i {
+      display: block;
+      line-height: 1;
+      margin: 0 auto;
+    }
+
+    .channel-item strong {
+      display: block;
+      font-size: 0.96rem;
+      margin-bottom: 0;
+      line-height: 1;
+    }
+
+    .channel-item span {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .channel-item .channel-meta {
+      display: flex;
+      align-items: center;
+      min-height: 28px;
+      color: var(--text-main);
+    }
+
+    @media (max-width: 991px) {
+
+      .contact-points,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-title {
+        max-width: none;
+      }
+
+    }
+
+    @media (max-width: 576px) {
+      body {
+        font-size: 12px;
+      }
+
+      .ticket-top {
+        padding-bottom: 1rem;
+      }
+
+      .hero-card,
+      .ticket-form-card,
+      .info-panel,
+      .help-cta {
+        padding: 1.25rem;
+      }
+
+      .hero-text,
+      .section-text,
+      .help-cta p,
+      .channel-card p {
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
+      .ticket-actions .btn {
+        width: 100%;
+      }
+
+      .ticket-form-card .form-control,
+      .ticket-form-card .form-select {
+        padding: 0.55rem 0.75rem;
+        font-size: 0.88rem;
+      }
+
+      .ticket-form-card textarea.form-control {
+        min-height: 110px;
+      }
+
+      .ticket-form-card .section-text {
+        margin-bottom: 0.85rem;
+      }
+
+      .ticket-form-card .row.g-3 {
+        --bs-gutter-x: 0.75rem;
+        --bs-gutter-y: 0.75rem;
+      }
+
+      .ticket-actions.mt-4 {
+        margin-top: 0.85rem !important;
+      }
+
+      .contact-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 0.85rem;
+      }
+
+      .contact-icon {
+        flex: 0 0 50px;
+        margin-bottom: 0;
+      }
+
+      .contact-meta h2 {
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .contact-meta p,
+      .contact-meta .contact-link {
+        font-size: 11px;
+        line-height: 1.45;
+      }
+
+      .contact-meta h2,
+      .contact-meta p {
+        margin-bottom: 0.25rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container py-4 py-md-5">
+    <div class="page-wrap mx-auto px-2 px-md-0">
+      <div class="ticket-top">
+        <a href="#" id="backLink" class="ticket-back"><i class="bi bi-arrow-left"></i> Back</a>
+        <h1 class="ticket-page-title">Contact Us</h1>
+      </div>
+
+      <section class="hero-card">
+        <span class="hero-badge"><i class="bi bi-headset"></i> Support team</span>
+        <h2 class="hero-title">We are here to help your <span>business grow</span>.</h2>
+        <p class="hero-text">
+          Reach out to VLINKPAY for product questions, merchant support, onboarding assistance, or general feedback.
+          Choose the contact method that works best for you, or send us a message directly below.
+        </p>
+      </section>
+      <section class="contact-points mt-4">
+        <article class="contact-card">
+          <div class="contact-icon"><i class="bi bi-envelope-paper"></i></div>
+          <div class="contact-meta">
+            <h2>Email Support</h2>
+            <p>Share your questions and our team will follow up with the right guidance.</p>
+            <a class="contact-link" href="mailto:support@vlinkpay.com">support@vlinkpay.com</a>
+          </div>
+        </article>
+        <article class="contact-card">
+          <div class="contact-icon"><i class="bi bi-life-preserver"></i></div>
+          <div class="contact-meta">
+            <h2>Help Center</h2>
+            <p>Browse guides and common answers before reaching out to the support team.</p>
+            <a class="contact-link" href="help-center.html">Visit help center</a>
+          </div>
+        </article>
+        <article class="contact-card">
+          <div class="contact-icon"><i class="bi bi-chat-dots"></i></div>
+          <div class="contact-meta">
+            <h2>Live Chat</h2>
+            <p>Need a quick answer? Connect with our support team during business hours.</p>
+            <a class="contact-link" href="javascript:void(0)">Start a conversation</a>
+          </div>
+        </article>
+
+
+      </section>
+
+
+      <section class="content-grid">
+        <form class="ticket-form-card" id="contactForm" action="#" method="post" novalidate>
+          <h2 class="section-title">Send Us a Message</h2>
+          <p class="section-text">Fill out the form and we will get back to you as soon as possible.</p>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="fullName">Full Name</label>
+              <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name"
+                autocomplete="name" required />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="email">Email Address</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address"
+                autocomplete="email" required />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="phone">Phone Number</label>
+              <input type="tel" class="form-control" id="phone" name="phone" placeholder="Optional"
+                autocomplete="tel" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="topic">Topic</label>
+              <select class="form-select" id="topic" name="topic" required>
+                <option value="" selected disabled>Select a topic</option>
+                <option value="general">General inquiry</option>
+                <option value="merchant">Merchant support</option>
+                <option value="technical">Technical issue</option>
+                <option value="billing">Billing</option>
+                <option value="partnership">Partnership</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="message">Message</label>
+              <textarea class="form-control" id="message" name="message" rows="6" placeholder="Tell us how we can help"
+                required></textarea>
+            </div>
+          </div>
+
+          <div class="ticket-actions mt-4 justify-content-center">
+            <button type="submit" class="btn btn-ticket">Send Message</button>
+          </div>
+        </form>
+
+        <aside>
+          <!-- <div class="info-panel">
+            <h2 class="section-title">Support Information</h2>
+            <p class="section-text">A few helpful details before you contact us.</p>
+
+            <div class="info-list">
+              <div class="info-item">
+                <small>Response time</small>
+                <strong>Within 24 hours</strong>
+                <span>Most inquiries are answered during the same business day.</span>
+              </div>
+
+              <div class="info-item">
+                <small>Business hours</small>
+                <strong>Mon to Fri</strong>
+                <span>08:30 AM to 06:00 PM</span>
+              </div>
+
+              <div class="info-item">
+                <small>Priority support</small>
+                <strong>For urgent technical issues</strong>
+                <p>Please include your merchant ID, screenshots, and the time the issue occurred.</p>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="help-cta  mt-0">
+            <h2>Need detailed support?</h2>
+            <p>If your case requires tracking and attachments, creating a ticket is the fastest way for us to help.</p>
+            <a href="submit-ticket.html"
+              class="btn btn-ticket btn-ticket-outline text-decoration-none d-inline-flex align-items-center justify-content-center"
+              role="button">Submit a Ticket</a>
+          </div>
+
+          <div class="channel-card">
+            <h2>Official Channels</h2>
+            <p>Follow VLINKPAY on these platforms.</p>
+
+            <div class="channel-list">
+              <a class="channel-item" href="https://www.facebook.com/vlinkpay.official" target="_blank"
+                rel="noopener noreferrer">
+                <span class="channel-icon"><i class="bi bi-facebook"></i></span>
+                <span class="channel-meta">
+                  <strong>Facebook</strong>
+                </span>
+              </a>
+
+              <a class="channel-item" href="https://www.youtube.com/@vlinkpay.official" target="_blank"
+                rel="noopener noreferrer">
+                <span class="channel-icon"><i class="bi bi-youtube"></i></span>
+                <span class="channel-meta">
+                  <strong>YouTube</strong>
+                </span>
+              </a>
+
+              <a class="channel-item" href="https://t.me/VLinkPayOfficial" target="_blank" rel="noopener noreferrer">
+                <span class="channel-icon"><i class="bi bi-telegram"></i></span>
+                <span class="channel-meta">
+                  <strong>Telegram</strong>
+                </span>
+              </a>
+
+              <a class="channel-item" href="https://x.com/vlinkpay" target="_blank" rel="noopener noreferrer">
+                <span class="channel-icon"><i class="bi bi-twitter-x"></i></span>
+                <span class="channel-meta">
+                  <strong>X</strong>
+                </span>
+              </a>
+
+            </div>
+          </div>
+        </aside>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var backLink = document.getElementById("backLink");
+      if (backLink) {
+        backLink.addEventListener("click", function (event) {
+          event.preventDefault();
+          if (window.history.length > 1) {
+            window.history.back();
+            return;
+          }
+          window.location.href = "help-center.html";
+        });
+      }
+
+      var fullNameInput = document.getElementById("fullName");
+      var emailInput = document.getElementById("email");
+      if (!fullNameInput || !emailInput) return;
+
+      function safeParseJson(raw) {
+        if (!raw) return null;
+        try {
+          return JSON.parse(raw);
+        } catch (_) {
+          return null;
+        }
+      }
+
+      function firstNonEmpty(values) {
+        for (var i = 0; i < values.length; i++) {
+          var value = values[i];
+          if (typeof value === "string" && value.trim()) return value.trim();
+        }
+        return "";
+      }
+
+      function getProfileFromStorage() {
+        var candidateKeys = [
+          "user",
+          "userInfo",
+          "profile",
+          "currentUser",
+          "authUser",
+          "merchantUser",
+          "loginUser"
+        ];
+
+        for (var i = 0; i < candidateKeys.length; i++) {
+          var key = candidateKeys[i];
+          var parsed =
+            safeParseJson(localStorage.getItem(key)) ||
+            safeParseJson(sessionStorage.getItem(key));
+          if (parsed && typeof parsed === "object") return parsed;
+        }
+        return null;
+      }
+
+      function autofillUserInfo() {
+        var profile =
+          (window.currentUser && typeof window.currentUser === "object" && window.currentUser) ||
+          (window.user && typeof window.user === "object" && window.user) ||
+          getProfileFromStorage() ||
+          {};
+
+        var fullName = firstNonEmpty([
+          profile.fullName,
+          profile.name,
+          profile.displayName,
+          profile.username,
+          document.body.getAttribute("data-user-name")
+        ]);
+
+        var email = firstNonEmpty([
+          profile.email,
+          profile.userEmail,
+          profile.mail,
+          document.body.getAttribute("data-user-email")
+        ]);
+
+        if (fullName) fullNameInput.value = fullName;
+        if (email) emailInput.value = email;
+      }
+
+      autofillUserInfo();
+    })();
+  </script>
+</body>
+
+</html>

@@ -40,6 +40,10 @@
       flex-wrap: wrap;
       margin-bottom: 0.5rem;
       padding-bottom: 3rem;
+
+      @media (max-width: 768px) {
+        padding-bottom: 1rem;
+      }
     }
 
     .ticket-back {
@@ -368,12 +372,11 @@
   <main class="container py-4 py-md-5">
     <div class="page-wrap mx-auto px-2 px-md-0">
       <div class="ticket-top">
-        <a href="help-center-bootstrap.html" class="ticket-back">&larr; Back</a>
-        <h1 class="ticket-page-title">Submit a Ticket</h1>
+        <h1 class="ticket-page-title ">Submit a Ticket</h1>
       </div>
 
       <p class="ticket-subtitle">
-        Send your request to the support team for further assistance.
+        Let us know how we can help, and our support team will get back to you as soon as possible.
       </p>
 
       <form class="ticket-form-card" id="ticketForm" action="#" method="post" novalidate>
@@ -420,12 +423,7 @@
             <div class="form-text text-danger small mt-2" id="attachmentFeedback" hidden></div>
           </div>
         </div>
-
-        <div class="ticket-note mb-4">
-          <b>Note</b> : Please use your registered VlinkPay email so our team can verify your account faster.
-        </div>
-
-        <div class="ticket-actions">
+        <div class="ticket-actions mt-4">
           <button type="submit" class="btn btn-ticket">Submit Ticket</button>
           <a href="help-center-bootstrap.html"
             class="btn btn-cancel text-decoration-none text-center d-inline-flex align-items-center justify-content-center">Cancel</a>
@@ -439,7 +437,6 @@
     crossorigin="anonymous"></script>
   <script>
     const ticketCategories = [
-      { value: "introduction", label: "Introduction" },
       { value: "account", label: "Account" },
       { value: "wallet-hub", label: "Wallet Hub" },
       { value: "exchange-hub", label: "Exchange Hub" },
@@ -449,12 +446,14 @@
       { value: "other", label: "Other" },
     ];
     (function () {
+      var fullNameInput = document.getElementById("fullName");
+      var emailInput = document.getElementById("email");
       var categorySelect = document.getElementById("category");
       var input = document.getElementById("attachment");
       var previews = document.getElementById("attachmentPreviews");
       var zone = document.getElementById("attachmentZone");
       var feedback = document.getElementById("attachmentFeedback");
-      if (!input || !previews || !zone || !categorySelect) return;
+      if (!input || !previews || !zone || !categorySelect || !fullNameInput || !emailInput) return;
 
       function renderTicketCategories() {
         for (var i = 0; i < ticketCategories.length; i++) {
@@ -466,6 +465,75 @@
         }
       }
       renderTicketCategories();
+
+      function safeParseJson(raw) {
+        if (!raw) return null;
+        try {
+          return JSON.parse(raw);
+        } catch (_) {
+          return null;
+        }
+      }
+
+      function firstNonEmpty(values) {
+        for (var i = 0; i < values.length; i++) {
+          var v = values[i];
+          if (typeof v === "string" && v.trim()) return v.trim();
+        }
+        return "";
+      }
+
+      function getProfileFromStorage() {
+        var candidateKeys = [
+          "user",
+          "userInfo",
+          "profile",
+          "currentUser",
+          "authUser",
+          "merchantUser",
+          "loginUser",
+        ];
+        for (var i = 0; i < candidateKeys.length; i++) {
+          var key = candidateKeys[i];
+          var parsed =
+            safeParseJson(localStorage.getItem(key)) ||
+            safeParseJson(sessionStorage.getItem(key));
+          if (parsed && typeof parsed === "object") return parsed;
+        }
+        return null;
+      }
+
+      function autofillUserInfo() {
+        var profile =
+          (window.currentUser && typeof window.currentUser === "object" && window.currentUser) ||
+          (window.user && typeof window.user === "object" && window.user) ||
+          getProfileFromStorage() ||
+          {};
+
+        var fullName = firstNonEmpty([
+          profile.fullName,
+          profile.name,
+          profile.displayName,
+          profile.username,
+          document.body.getAttribute("data-user-name"),
+        ]);
+        var email = firstNonEmpty([
+          profile.email,
+          profile.userEmail,
+          profile.mail,
+          document.body.getAttribute("data-user-email"),
+        ]);
+
+        if (fullName) {
+          fullNameInput.value = fullName;
+          fullNameInput.readOnly = true;
+        }
+        if (email) {
+          emailInput.value = email;
+          emailInput.readOnly = true;
+        }
+      }
+      autofillUserInfo();
 
       var dt = new DataTransfer();
       var dragDepth = 0;

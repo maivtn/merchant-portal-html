@@ -402,7 +402,7 @@
     .channel-list {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.65rem;
+      gap: 1rem;
     }
 
     .channel-item {
@@ -582,37 +582,8 @@
           Choose the contact method that works best for you, or send us a message directly below.
         </p>
       </section>
-      <section class="contact-points mt-4">
-        <article class="contact-card">
-          <div class="contact-icon"><i class="bi bi-envelope-paper"></i></div>
-          <div class="contact-meta">
-            <h2>Email Support</h2>
-            <p>Share your questions and our team will follow up with the right guidance.</p>
-            <a class="contact-link" href="mailto:support@vlinkpay.com">support@vlinkpay.com</a>
-          </div>
-        </article>
-        <article class="contact-card">
-          <div class="contact-icon"><i class="bi bi-life-preserver"></i></div>
-          <div class="contact-meta">
-            <h2>Help Center</h2>
-            <p>Browse guides and common answers before reaching out to the support team.</p>
-            <a class="contact-link" href="help-center.html">Visit help center</a>
-          </div>
-        </article>
-        <article class="contact-card">
-          <div class="contact-icon"><i class="bi bi-chat-dots"></i></div>
-          <div class="contact-meta">
-            <h2>Live Chat</h2>
-            <p>Need a quick answer? Connect with our support team during business hours.</p>
-            <a class="contact-link" href="javascript:void(0)">Start a conversation</a>
-          </div>
-        </article>
 
-
-      </section>
-
-
-      <section class="content-grid">
+      <section class="content-grid mt-4">
         <form class="ticket-form-card" id="contactForm" action="#" method="post" novalidate>
           <h2 class="section-title">Send Us a Message</h2>
           <p class="section-text">Fill out the form and we will get back to you as soon as possible.</p>
@@ -627,22 +598,6 @@
               <label class="form-label" for="email">Email Address</label>
               <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address"
                 autocomplete="email" required />
-            </div>
-            <div class="col-md-6">
-              <label class="form-label" for="phone">Phone Number</label>
-              <input type="tel" class="form-control" id="phone" name="phone" placeholder="Optional"
-                autocomplete="tel" />
-            </div>
-            <div class="col-md-6">
-              <label class="form-label" for="topic">Topic</label>
-              <select class="form-select" id="topic" name="topic" required>
-                <option value="" selected disabled>Select a topic</option>
-                <option value="general">General inquiry</option>
-                <option value="merchant">Merchant support</option>
-                <option value="technical">Technical issue</option>
-                <option value="billing">Billing</option>
-                <option value="partnership">Partnership</option>
-              </select>
             </div>
             <div class="col-12">
               <label class="form-label" for="message">Message</label>
@@ -729,7 +684,32 @@
           </div>
         </aside>
       </section>
-
+      <section class="contact-points mt-4">
+        <article class="contact-card">
+          <div class="contact-icon"><i class="bi bi-envelope-paper"></i></div>
+          <div class="contact-meta">
+            <h2>Email Support</h2>
+            <p>Share your questions and our team will follow up with the right guidance.</p>
+            <a class="contact-link" href="mailto:support@vlinkpay.com">support@vlinkpay.com</a>
+          </div>
+        </article>
+        <article class="contact-card">
+          <div class="contact-icon"><i class="bi bi-life-preserver"></i></div>
+          <div class="contact-meta">
+            <h2>Help Center</h2>
+            <p>Browse guides and common answers before reaching out to the support team.</p>
+            <a class="contact-link" href="help-center.html">Visit help center</a>
+          </div>
+        </article>
+        <article class="contact-card">
+          <div class="contact-icon"><i class="bi bi-chat-dots"></i></div>
+          <div class="contact-meta">
+            <h2>Live Chat</h2>
+            <p>Need a quick answer? Connect with our support team during business hours.</p>
+            <a class="contact-link" href="javascript:void(0)">Start a conversation</a>
+          </div>
+        </article>
+      </section>
     </div>
   </main>
 
@@ -790,6 +770,8 @@
       }
 
       function autofillUserInfo() {
+        var demoFullName = "John Merchant";
+        var demoEmail = "john.merchant@example.com";
         var profile =
           (window.currentUser && typeof window.currentUser === "object" && window.currentUser) ||
           (window.user && typeof window.user === "object" && window.user) ||
@@ -811,8 +793,8 @@
           document.body.getAttribute("data-user-email")
         ]);
 
-        if (fullName) fullNameInput.value = fullName;
-        if (email) emailInput.value = email;
+        fullNameInput.value = fullName || demoFullName;
+        emailInput.value = email || demoEmail;
       }
 
       autofillUserInfo();

@@ -504,6 +504,8 @@
       }
 
       function autofillUserInfo() {
+        var demoFullName = "John Merchant";
+        var demoEmail = "john.merchant@example.com";
         var profile =
           (window.currentUser && typeof window.currentUser === "object" && window.currentUser) ||
           (window.user && typeof window.user === "object" && window.user) ||
@@ -531,6 +533,13 @@
         if (email) {
           emailInput.value = email;
           emailInput.readOnly = true;
+        }
+
+        if (!fullNameInput.value) {
+          fullNameInput.value = demoFullName;
+        }
+        if (!emailInput.value) {
+          emailInput.value = demoEmail;
         }
       }
       autofillUserInfo();

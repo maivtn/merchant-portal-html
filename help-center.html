@@ -849,11 +849,11 @@
       //   answer:
       //     "Token Hub is grouped under Wallet Hub, which indicates it is meant to support token-related guidance alongside general wallet functions. If your question is about token-specific behavior rather than general wallet balances, Token Hub is the better place to start.",
       // },
-      {
-        question: "What is Platform Exchange?",
-        answer:
-          "Platform Exchange is the main page currently surfaced under Exchange Hub. This means Exchange Hub is centered around the platform exchange flow, and users who need exchange-related instructions should start there rather than searching through wallet or program sections.",
-      },
+      // {
+      //   question: "What is Platform Exchange?",
+      //   answer:
+      //     "Platform Exchange is the main page currently surfaced under Exchange Hub. This means Exchange Hub is centered around the platform exchange flow, and users who need exchange-related instructions should start there rather than searching through wallet or program sections.",
+      // },
 
       {
         question: "How do I become an ATM Partner?",
@@ -916,15 +916,14 @@
     function renderFaqList(items) {
       const faqHtml = items.map(function (item, index) {
         const collapseId = "faq" + (index + 1);
-        const isFirst = index === 0;
         return `
           <div class="accordion-item">
             <h3 class="accordion-header">
-              <button class="accordion-button ${isFirst ? "" : "collapsed"}" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
                 ${item.question}
               </button>
             </h3>
-            <div id="${collapseId}" class="accordion-collapse collapse ${isFirst ? "show" : ""}" data-bs-parent="#faqAccordion">
+            <div id="${collapseId}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
               <div class="accordion-body small text-secondary">
                 ${item.answer}
               </div>

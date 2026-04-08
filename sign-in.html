@@ -215,6 +215,27 @@
       background: var(--primary-dark);
     }
 
+    .signin-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .signin-actions .signin-btn {
+      flex: 1;
+    }
+
+    .signin-btn-outline {
+      background: #fff;
+      color: var(--primary-main);
+      border: 1.5px solid var(--primary-main);
+    }
+
+    .signin-btn-outline:hover {
+      background: var(--primary-50);
+      color: var(--primary-dark);
+      border-color: var(--primary-dark);
+    }
+
     .signin-create {
       margin-top: 20px;
       text-align: center;
@@ -370,7 +391,10 @@
           <div class="signin-forgot">
             <a href="#" onclick="openForgotPinModal(); return false;">Forgot PIN?</a>
           </div>
-          <button type="button" class="signin-btn" onclick="submitCardSignIn()">Sign in</button>
+          <div class="signin-actions">
+            <button type="button" class="signin-btn signin-btn-outline" onclick="openActiveAccountModal()">Active account</button>
+            <button type="button" class="signin-btn" onclick="submitCardSignIn()">Sign in</button>
+          </div>
         </div>
       </div>
     </div>
@@ -418,6 +442,26 @@
         </div>
         <button type="button" class="signin-btn" id="sendForgotPinOtpBtn" onclick="sendForgotPinOtp()"
           style="margin-bottom:16px;">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Active Account -->
+  <div id="activeAccountModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-content" onclick="event.stopPropagation()" style="max-width:420px;">
+      <div class="modal-header">
+        <span class="modal-title">Active account</span>
+        <button type="button" class="modal-close-btn" onclick="closeActiveAccountModal()" aria-label="Close">
+          <i data-lucide="x" style="width:20px;height:20px;"></i>
+        </button>
+      </div>
+      <p class="modal-subtitle" style="margin-top:0;">Enter your email to activate your account.</p>
+      <div class="modal-body">
+        <div class="signin-field">
+          <label for="activeAccountEmail">Email <span style="color:var(--error-main);">*</span></label>
+          <input type="email" id="activeAccountEmail" placeholder="Enter your email" />
+        </div>
+        <button type="button" class="signin-btn" onclick="submitActiveAccount()">Active</button>
       </div>
     </div>
   </div>
@@ -510,6 +554,40 @@
       if (newPin !== confirmPin) { alert('New PIN and confirmation do not match.'); return; }
       alert('PIN has been reset successfully (demo).');
       closeForgotPinModal();
+    }
+
+    function openActiveAccountModal() {
+      var el = document.getElementById('activeAccountModal');
+      el.classList.add('active');
+      el.style.display = 'flex';
+      el.setAttribute('aria-hidden', 'false');
+      document.getElementById('activeAccountEmail').value = '';
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+    function closeActiveAccountModal() {
+      var el = document.getElementById('activeAccountModal');
+      el.classList.remove('active');
+      el.style.display = 'none';
+      el.setAttribute('aria-hidden', 'true');
+    }
+    document.getElementById('activeAccountModal').addEventListener('click', function (e) {
+      if (e.target === this) closeActiveAccountModal();
+    });
+    function submitActiveAccount() {
+      var email = (document.getElementById('activeAccountEmail').value || '').trim();
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email) { alert('Please enter your email.'); return; }
+      if (!emailRegex.test(email)) { alert('Please enter a valid email address.'); return; }
+      closeActiveAccountModal();
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Active successful',
+          text: 'Your account has been activated successfully.'
+        });
+      } else {
+        alert('Your account has been activated successfully.');
+      }
     }
 
     function switchSignInTab(tabId) {

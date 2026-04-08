@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Submit a Ticket - VLINKPAY</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <style>
+    :root {
+      --brand-primary: #d97706;
+      --brand-orange: #e67e22;
+      --text-main: #221f1f;
+      --text-muted: #757575;
+      --border-soft: #e0e0e0;
+      --accent-cream: #fef3c7;
+      --accent-warm-text: #92400e;
+      --help-cta-bg: #26211f;
+      --help-cta-border: #44403c;
+      --help-cta-muted: #8c857e;
+    }
+
+    body {
+      background: #fff;
+      color: var(--text-main);
+      min-height: 100vh;
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    .page-wrap {
+      max-width: 720px;
+    }
+
+    .ticket-top {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+      padding-bottom: 3rem;
+    }
+
+    .ticket-back {
+      color: var(--text-main);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .ticket-back:hover {
+      color: var(--brand-primary);
+    }
+
+    .ticket-page-title {
+      font-size: clamp(1.35rem, 3vw, 1.85rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0;
+      text-align: right;
+    }
+
+    .ticket-page-title .brand {
+      color: var(--brand-primary);
+    }
+
+    .ticket-subtitle {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .ticket-form-card {
+      border: none;
+      background: #fff;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .ticket-form-card .form-label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-main);
+      margin-bottom: 0.4rem;
+    }
+
+    .ticket-form-card .form-control,
+    .ticket-form-card .form-select {
+      border-radius: 0.65rem;
+      border: 1px solid var(--border-soft);
+      padding: 0.6rem 0.85rem;
+      font-size: 0.95rem;
+    }
+
+    .ticket-form-card .form-control:focus,
+    .ticket-form-card .form-select:focus {
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.15);
+    }
+
+    .ticket-form-card textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .ticket-upload-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .ticket-upload-zone {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 148px;
+      margin: 0;
+      border: 2px dashed var(--border-soft);
+      border-radius: 0.75rem;
+      padding: 1.35rem 1.25rem;
+      background: linear-gradient(180deg, #fafafa 0%, #fff 100%);
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .ticket-upload-zone:hover {
+      border-color: rgba(217, 119, 6, 0.55);
+      background: #fffbeb;
+      box-shadow: 0 4px 18px rgba(217, 119, 6, 0.08);
+    }
+
+    .ticket-upload-zone.is-dragging {
+      border-color: var(--brand-primary);
+      background: #fffbeb;
+      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
+    }
+
+    .ticket-upload-input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .ticket-upload-visual {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .ticket-upload-icon {
+      font-size: 2.35rem;
+      line-height: 1;
+      color: var(--brand-primary);
+      opacity: 0.92;
+    }
+
+    .ticket-upload-title {
+      font-weight: 700;
+      font-size: 0.98rem;
+      color: var(--text-main);
+    }
+
+    .ticket-upload-hint {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      max-width: 280px;
+    }
+
+    .ticket-upload-hint kbd {
+      font-size: 0.78em;
+      padding: 0.1em 0.35em;
+      border-radius: 0.25rem;
+      background: #f3f4f6;
+      border: 1px solid var(--border-soft);
+    }
+
+    .ticket-upload-previews {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: 0.75rem;
+    }
+
+    .ticket-upload-previews:empty {
+      display: none;
+    }
+
+    .ticket-upload-preview-item {
+      position: relative;
+      width: 88px;
+      height: 88px;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .ticket-upload-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ticket-upload-preview-item .file-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 0.35rem;
+      font-size: 0.62rem;
+      font-weight: 600;
+      text-align: center;
+      word-break: break-all;
+      color: var(--text-muted);
+      line-height: 1.25;
+      gap: 0.2rem;
+    }
+
+    .ticket-upload-preview-item .file-badge .bi {
+      font-size: 1.65rem;
+      color: #b91c1c;
+    }
+
+    .ticket-upload-preview-remove {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 22px;
+      height: 22px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(34, 31, 31, 0.72);
+      color: #fff;
+      font-size: 0.85rem;
+      line-height: 1;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+
+    .ticket-upload-preview-remove:hover {
+      background: #b45309;
+    }
+
+    .ticket-note {
+      border-radius: 0.65rem;
+      padding: 0.9rem 1rem;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      font-size: 0.9rem;
+      color: var(--accent-warm-text);
+      line-height: 1.55;
+    }
+
+    .ticket-note strong {
+      display: block;
+      margin-bottom: 0.35rem;
+      color: var(--text-main);
+    }
+
+    .btn-ticket,
+    .btn-cancel {
+      min-width: 160px;
+      padding: 0.72rem 1.2rem;
+      border-radius: 0.9rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .btn-ticket::after,
+    .btn-cancel::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -130%;
+      width: 65%;
+      height: 100%;
+      transform: skewX(-20deg);
+      background: rgba(255, 255, 255, 0.22);
+      transition: left 0.45s ease;
+    }
+
+    .btn-ticket {
+      color: #ffffff;
+      background: #df810b;
+      border: 1px solid #df810b;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-cancel {
+      color: #ffffff;
+      background: #44403c;
+      border: 1px solid #44403c;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .btn-ticket:hover,
+    .btn-cancel:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-ticket:hover::after,
+    .btn-cancel:hover::after {
+      left: 145%;
+    }
+
+    .btn-ticket:hover {
+      background: #c47309;
+      border-color: #c47309;
+      color: #fff;
+    }
+
+    .btn-cancel:hover {
+      background: #55514d;
+      border-color: #55514d;
+      color: #fff;
+    }
+
+    .btn-ticket:active,
+    .btn-cancel:active {
+      transform: translateY(0);
+    }
+
+    .ticket-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 576px) {
+      .ticket-page-title {
+        text-align: left;
+        width: 100%;
+      }
+
+      .ticket-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container py-4 py-md-5">
+    <div class="page-wrap mx-auto px-2 px-md-0">
+      <div class="ticket-top">
+        <a href="help-center-bootstrap.html" class="ticket-back">&larr; Back</a>
+        <h1 class="ticket-page-title">Submit a Ticket</h1>
+      </div>
+
+      <p class="ticket-subtitle">
+        Send your request to the support team for further assistance.
+      </p>
+
+      <form class="ticket-form-card" id="ticketForm" action="#" method="post" novalidate>
+        <div class="mb-3">
+          <label class="form-label" for="fullName">Full Name</label>
+          <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name"
+            autocomplete="name" required />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="email">Email Address</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Enter your registered email"
+            autocomplete="email" required />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="category">Category</label>
+          <select class="form-select" id="category" name="category" required>
+            <option value="" selected disabled>Select issue type</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="message">Message</label>
+          <textarea class="form-control" id="message" name="message" rows="5" placeholder="Describe your issue"
+            required></textarea>
+        </div>
+
+        <div class="mb-3">
+          <div class="form-label">Attachments</div>
+          <div class="ticket-upload-wrap">
+            <label class="ticket-upload-zone" for="attachment" id="attachmentZone">
+              <input type="file" class="ticket-upload-input" id="attachment" name="attachments[]"
+                accept="image/png,image/jpeg,.png,.jpg,.jpeg,.pdf,application/pdf" multiple />
+              <span class="ticket-upload-visual">
+                <i class="bi bi-cloud-arrow-up ticket-upload-icon" aria-hidden="true"></i>
+                <span class="ticket-upload-title">Upload images or PDF</span>
+                <span class="ticket-upload-hint" id="attachmentHint">
+                  Drag &amp; drop here or click to browse. PNG, JPG, or PDF only — max 5&nbsp;MB per file.
+                </span>
+              </span>
+            </label>
+            <div class="ticket-upload-previews mt-2" id="attachmentPreviews" aria-live="polite"></div>
+            <div class="form-text text-danger small mt-2" id="attachmentFeedback" hidden></div>
+          </div>
+        </div>
+
+        <div class="ticket-note mb-4">
+          <b>Note</b> : Please use your registered VlinkPay email so our team can verify your account faster.
+        </div>
+
+        <div class="ticket-actions">
+          <button type="submit" class="btn btn-ticket">Submit Ticket</button>
+          <a href="help-center-bootstrap.html"
+            class="btn btn-cancel text-decoration-none text-center d-inline-flex align-items-center justify-content-center">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script>
+    const ticketCategories = [
+      { value: "introduction", label: "Introduction" },
+      { value: "account", label: "Account" },
+      { value: "wallet-hub", label: "Wallet Hub" },
+      { value: "exchange-hub", label: "Exchange Hub" },
+      { value: "program-hub", label: "Program Hub" },
+      { value: "p2p-cash-hub", label: "P2P Cash Hub" },
+      { value: "merchant-hub", label: "Merchant Hub" },
+      { value: "other", label: "Other" },
+    ];
+    (function () {
+      var categorySelect = document.getElementById("category");
+      var input = document.getElementById("attachment");
+      var previews = document.getElementById("attachmentPreviews");
+      var zone = document.getElementById("attachmentZone");
+      var feedback = document.getElementById("attachmentFeedback");
+      if (!input || !previews || !zone || !categorySelect) return;
+
+      function renderTicketCategories() {
+        for (var i = 0; i < ticketCategories.length; i++) {
+          var item = ticketCategories[i];
+          var opt = document.createElement("option");
+          opt.value = item.value;
+          opt.textContent = item.label;
+          categorySelect.appendChild(opt);
+        }
+      }
+      renderTicketCategories();
+
+      var dt = new DataTransfer();
+      var dragDepth = 0;
+      var MAX_BYTES = 5 * 1024 * 1024;
+
+      function syncInputFiles() {
+        input.files = dt.files;
+      }
+
+      function isPngOrJpg(file) {
+        var t = file.type || "";
+        if (t === "image/png" || t === "image/jpeg") return true;
+        return /\.(png|jpe?g)$/i.test(file.name || "");
+      }
+
+      function isImageFile(file) {
+        return isPngOrJpg(file);
+      }
+
+      function isPdfFile(file) {
+        return file.type === "application/pdf" || /\.pdf$/i.test(file.name || "");
+      }
+
+      function isAllowedFile(file) {
+        return isPngOrJpg(file) || isPdfFile(file);
+      }
+
+      function setAttachmentFeedback(messages) {
+        if (!feedback) return;
+        if (!messages || !messages.length) {
+          feedback.textContent = "";
+          feedback.hidden = true;
+          return;
+        }
+        feedback.textContent = messages.join(" ");
+        feedback.hidden = false;
+      }
+
+      function addFiles(fileList) {
+        var rejected = [];
+        for (var i = 0; i < fileList.length; i++) {
+          var f = fileList[i];
+          if (!isAllowedFile(f)) {
+            rejected.push('Skipped "' + f.name + '" (use PNG, JPG, or PDF only).');
+            continue;
+          }
+          if (f.size > MAX_BYTES) {
+            rejected.push('Skipped "' + f.name + '" (larger than 5 MB).');
+            continue;
+          }
+          dt.items.add(f);
+        }
+        syncInputFiles();
+        renderPreviews();
+        setAttachmentFeedback(rejected);
+      }
+
+      function removeAt(index) {
+        var next = new DataTransfer();
+        for (var i = 0; i < dt.files.length; i++) {
+          if (i !== index) next.items.add(dt.files[i]);
+        }
+        dt = next;
+        syncInputFiles();
+        renderPreviews();
+      }
+
+      function renderPreviews() {
+        previews.innerHTML = "";
+        for (var i = 0; i < dt.files.length; i++) {
+          (function (idx) {
+            var file = dt.files[idx];
+            var wrap = document.createElement("div");
+            wrap.className = "ticket-upload-preview-item";
+
+            var btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "ticket-upload-preview-remove";
+            btn.setAttribute("aria-label", "Remove file");
+            btn.innerHTML = "&times;";
+            btn.addEventListener("click", function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+              removeAt(idx);
+            });
+
+            if (isImageFile(file)) {
+              var img = document.createElement("img");
+              img.alt = "";
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                img.src = e.target.result;
+              };
+              reader.readAsDataURL(file);
+              wrap.appendChild(img);
+            } else {
+              var badge = document.createElement("div");
+              badge.className = "file-badge";
+              if (isPdfFile(file)) {
+                var icon = document.createElement("i");
+                icon.className = "bi bi-file-earmark-pdf";
+                icon.setAttribute("aria-hidden", "true");
+                badge.appendChild(icon);
+              }
+              var nameEl = document.createElement("span");
+              nameEl.textContent = file.name;
+              badge.appendChild(nameEl);
+              wrap.appendChild(badge);
+            }
+
+            wrap.appendChild(btn);
+            previews.appendChild(wrap);
+          })(i);
+        }
+      }
+
+      input.addEventListener("change", function () {
+        addFiles(input.files);
+      });
+
+      zone.addEventListener("dragenter", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dragDepth++;
+        zone.classList.add("is-dragging");
+      });
+
+      zone.addEventListener("dragleave", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dragDepth--;
+        if (dragDepth <= 0) {
+          dragDepth = 0;
+          zone.classList.remove("is-dragging");
+        }
+      });
+
+      zone.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+
+      zone.addEventListener("drop", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dragDepth = 0;
+        zone.classList.remove("is-dragging");
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+          addFiles(e.dataTransfer.files);
+        }
+      });
+    })();
+  </script>
+</body>
+
+</html>

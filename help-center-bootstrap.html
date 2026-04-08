@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Help Center - Bootstrap</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <style>
+    :root {
+      --brand-primary: #d97706;
+      --brand-orange: #e67e22;
+      --text-main: #221f1f;
+      --text-muted: #757575;
+      --border-soft: #e0e0e0;
+      --accent-cream: #fef3c7;
+      --accent-warm-text: #92400e;
+      --help-cta-bg: #26211f;
+      --help-cta-border: #44403c;
+      --help-cta-muted: #8c857e;
+    }
+
+    body {
+      background: #fff;
+      color: var(--text-main);
+      min-height: 100vh;
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    .page-wrap {
+      max-width: 1220px;
+    }
+
+    .help-ai {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 0.32rem 0.8rem;
+      background: var(--accent-cream);
+      color: var(--accent-warm-text);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .help-ai-title {
+      margin: 0.9rem 0 1.3rem;
+      font-size: clamp(1.65rem, 3vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .help-ai-title .help-ai-brand {
+      color: var(--brand-primary);
+    }
+
+    .ai-search {
+      max-width: 920px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 1rem;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 14px 34px rgba(34, 31, 31, 0.06);
+      padding: 0.75rem;
+    }
+
+    .ai-search .form-control {
+      border: none;
+      box-shadow: none;
+      height: 48px;
+      padding-left: 1rem;
+      font-size: 1rem;
+      color: var(--text-main);
+    }
+
+    .ai-search .form-control::placeholder {
+      color: #9ca3af;
+    }
+
+    .btn-ai {
+      border: 0;
+      border-radius: 4px;
+      padding: 0.7rem 1.25rem;
+      color: #fff;
+      font-size: 0.98rem;
+      font-weight: 700;
+      background: var(--brand-primary);
+      transition: background-color 0.2s ease, filter 0.2s ease;
+    }
+
+    .btn-ai:hover {
+      background: #b45309;
+      color: #fff;
+    }
+
+    .btn-ai:active {
+      filter: brightness(0.95);
+    }
+
+    .ai-search .input-group>.btn-ai {
+      border-radius: 4px !important;
+      margin-left: 0.45rem;
+    }
+
+    /* AI response panel */
+    .ai-response {
+      max-width: 920px;
+      margin: 1.5rem auto 0;
+      text-align: left;
+      display: none;
+    }
+
+    .ai-response.is-visible {
+      display: block;
+      animation: aiPanelIn 0.35s ease;
+    }
+
+    @keyframes aiPanelIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .ai-response-inner {
+      border-radius: 1.1rem;
+      overflow: hidden;
+      box-shadow: 0 14px 40px rgba(34, 31, 31, 0.1);
+      border: 1px solid rgba(217, 119, 6, 0.22);
+    }
+
+    .ai-response-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.1rem;
+      background: #d97706;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .ai-response-header-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ai-response-header-title i {
+      font-size: 1.1rem;
+    }
+
+    .btn-close-ai {
+      border: none;
+      background: transparent;
+      color: #fff;
+      padding: 0.25rem;
+      line-height: 1;
+      opacity: 0.95;
+      transition: opacity 0.2s ease;
+    }
+
+    .btn-close-ai:hover {
+      opacity: 1;
+    }
+
+    .ai-response-body {
+      background: #fff;
+      padding: 1.25rem 1.25rem 1.1rem;
+      min-height: 4.5rem;
+      color: #4b5563;
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+
+    .ai-response-body.is-loading {
+      color: #9ca3af;
+    }
+
+    .ai-response-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0.65rem 1.1rem;
+      background: #fffbeb;
+      border-top: 1px solid #fde68a;
+    }
+
+    .ai-ticket-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--brand-primary);
+      text-decoration: none;
+    }
+
+    .ai-ticket-link:hover {
+      color: #b45309;
+    }
+
+    .section-title {
+      font-size: clamp(1.25rem, 2vw, 1.8rem);
+      font-weight: 800;
+      margin-bottom: 1.4rem;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-title::before {
+      font-family: "bootstrap-icons";
+      font-size: 1rem;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-primary);
+      background: #fef3c7;
+    }
+
+    .section-title.icon-category::before {
+      content: "\F46E";
+      background: none;
+      border-radius: 0;
+      width: auto;
+      height: auto;
+      min-width: 0;
+      padding: 0;
+      font-size: 1.35rem;
+      color: var(--brand-orange);
+    }
+
+    .section-title.icon-articles::before {
+      content: "\F194";
+    }
+
+    .section-title.icon-faq::before {
+      content: "\F505";
+      background: none;
+      border-radius: 0;
+      width: auto;
+      height: auto;
+      min-width: 0;
+      padding: 0;
+      font-size: 1.35rem;
+      color: var(--brand-orange);
+    }
+
+    .category-card {
+      border: 1px solid var(--border-soft);
+      border-radius: 1.1rem;
+      padding: 1.2rem;
+      height: 100%;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(34, 31, 31, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .category-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--brand-primary);
+      box-shadow: 0 16px 30px rgba(217, 119, 6, 0.14);
+    }
+
+    .category-chip-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .category-chip-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .category-card:hover .category-chip-icon {
+      transform: scale(1.04);
+    }
+
+    .category-chip-icon--1 {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .category-chip-icon--2 {
+      background: #ffedd5;
+      color: #ea580c;
+    }
+
+    .category-chip-icon--3 {
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    .category-chip-icon--4 {
+      background: #fef9c3;
+      color: #b45309;
+    }
+
+    .category-chip-icon--5 {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .category-chip-icon--6 {
+      background: #fae8ff;
+      color: #a21caf;
+    }
+
+    .category-chip {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      margin-bottom: 0;
+      display: inline-block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      line-height: 1.25;
+    }
+
+    .category-list {
+      list-style: none;
+      margin: 0;
+      padding-left: 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+
+    .category-list li+li {
+      margin-top: 0.08rem;
+    }
+
+    .category-list a {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 0.18rem 1.05rem 0.18rem 0;
+      color: #6b7280;
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .category-list a::after {
+      content: "\2192";
+      position: absolute;
+      right: 0;
+      color: #a8a29e;
+      opacity: 0;
+      transform: translateX(-5px);
+      transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+    }
+
+    .category-list a:hover {
+      color: var(--brand-primary);
+      transform: translateX(2px);
+    }
+
+    .category-list a:hover::after {
+      opacity: 1;
+      transform: translateX(0);
+      color: var(--brand-orange);
+    }
+
+    .article-link {
+      display: flex;
+      align-items: center;
+      min-height: 58px;
+      border: 1px solid var(--border-soft);
+      border-radius: 0.9rem;
+      color: var(--text-main);
+      text-decoration: none;
+      padding: 0.75rem 2rem 0.75rem 1rem;
+      font-size: 0.96rem;
+      background: #fff;
+      position: relative;
+      transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .article-link::after {
+      content: "\2192";
+      position: absolute;
+      right: 0.95rem;
+      color: #a8a29e;
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+    }
+
+    .article-link:hover {
+      border-color: #fcd34d;
+      color: #221f1f;
+      background: #fffbeb;
+      transform: translateX(2px);
+    }
+
+    .article-link:hover::after {
+      opacity: 1;
+      transform: translateX(0);
+      color: var(--brand-orange);
+    }
+
+    .faq-accordion .accordion-item {
+      border: 1px solid var(--border-soft);
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(17, 28, 52, 0.03);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+    }
+
+    .faq-accordion .accordion-button {
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 1rem 1.15rem;
+      box-shadow: none;
+      background: #fff;
+    }
+
+    .faq-accordion .accordion-button::after {
+      background-size: 1rem;
+      transition: transform 0.25s ease;
+    }
+
+    .faq-accordion .accordion-button:not(.collapsed) {
+      color: #221f1f;
+      background: #fffbeb;
+      box-shadow: none;
+    }
+
+    .faq-accordion .accordion-item:has(.accordion-collapse.show) {
+      border-color: #f59e0b;
+      box-shadow: 0 10px 28px rgba(217, 119, 6, 0.12);
+      background: #fffbeb;
+    }
+
+    .faq-accordion .accordion-body {
+      color: #6b7280;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      padding: 0.25rem 1.15rem 1.1rem;
+    }
+
+    .help-cta {
+      border-radius: 2rem;
+      margin-top: 2rem;
+      padding: 3.6rem 1.5rem;
+      text-align: center;
+      color: #ffffff;
+      background: var(--help-cta-bg);
+      border: 1px solid var(--help-cta-border);
+      box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .help-cta h2 {
+      font-size: clamp(1.5rem, 2.8vw, 2.15rem);
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      color: #ffffff;
+      text-shadow: none;
+    }
+
+    .help-cta p {
+      color: var(--help-cta-muted);
+      font-size: 1rem;
+      margin-bottom: 1.7rem;
+    }
+
+    .btn-ticket,
+    .btn-chat {
+      min-width: 180px;
+      padding: 0.72rem 1.2rem;
+      border-radius: 0.9rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .btn-ticket::after,
+    .btn-chat::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -130%;
+      width: 65%;
+      height: 100%;
+      transform: skewX(-20deg);
+      background: rgba(255, 255, 255, 0.22);
+      transition: left 0.45s ease;
+    }
+
+    .btn-ticket {
+      color: #ffffff;
+      background: #df810b;
+      border: 1px solid #df810b;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-chat {
+      color: #ffffff;
+      background: #44403c;
+      border: 1px solid #44403c;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .btn-ticket:hover,
+    .btn-chat:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-ticket:hover::after,
+    .btn-chat:hover::after {
+      left: 145%;
+    }
+
+    .btn-ticket:hover {
+      color: #ffffff;
+      background: #c47309;
+      border-color: #c47309;
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-chat:hover {
+      color: #ffffff;
+      border-color: #55514d;
+      background: #55514d;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+    }
+
+    .btn-ticket:active,
+    .btn-chat:active {
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .faq-accordion .accordion-button {
+        font-size: 0.95rem;
+      }
+
+      .category-chip {
+        font-size: 1.1rem;
+      }
+
+      .ai-search .form-control {
+        font-size: 0.92rem;
+      }
+
+      .btn-ai {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .help-ai {
+        margin-bottom: 4rem;
+      }
+
+      .page-wrap .px-md-1>section {
+        margin-bottom: 3rem !important;
+      }
+
+      .page-wrap .px-md-1>section:last-child {
+        margin-bottom: 0 !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container py-4 py-md-5">
+    <div class="page-wrap mx-auto px-2 px-md-0">
+      <section class="help-ai">
+        <!-- <span class="ai-badge">AI-powered support</span> -->
+        <h1 class="help-ai-title">What can <span class="help-ai-brand">VLINKPAY</span> help you with?</h1>
+        <div class="ai-search">
+          <div class="input-group align-items-center">
+            <input id="searchInput" type="text" class="form-control"
+              placeholder="Ask the AI anything about VLINKPAY..." />
+            <button class="btn btn-ai" id="btnAskAi" type="button"><i class="bi bi-magic me-1"></i>Ask AI</button>
+          </div>
+        </div>
+
+        <div class="ai-response" id="aiResponsePanel" aria-live="polite">
+          <div class="ai-response-inner">
+            <div class="ai-response-header">
+              <span class="ai-response-header-title">
+                <i class="bi bi-robot"></i>
+                VLINKPAY AI Assistant
+              </span>
+              <button type="button" class="btn-close-ai" id="btnCloseAiPanel" aria-label="Close">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+            <div class="ai-response-body is-loading" id="aiResponseBody">AI is processing…</div>
+            <div class="ai-response-footer">
+              <a class="ai-ticket-link" href="submit-ticket.html"><i class="bi bi-ticket-perforated"></i> Create a ticket</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="px-md-1">
+        <section class="mb-4">
+          <h2 class="section-title icon-category">Browse by Category</h2>
+          <div class="row g-3" id="categoryList"></div>
+        </section>
+
+        <section class="mb-4">
+          <h2 class="section-title icon-faq">Frequently Asked Questions</h2>
+          <div class="accordion faq-accordion" id="faqAccordion"></div>
+        </section>
+
+        <section>
+          <div class="help-cta">
+            <h2>Need more help?</h2>
+            <p>Our support team is ready 24/7 to help you.</p>
+            <div class="d-flex flex-wrap gap-2 justify-content-center">
+              <a href="submit-ticket.html" class="btn btn-ticket text-decoration-none d-inline-flex align-items-center justify-content-center" role="button">Submit a Ticket</a>
+              <button class="btn btn-chat" type="button">Live Chat</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const categoryList = document.getElementById("categoryList");
+    const faqAccordion = document.getElementById("faqAccordion");
+    let categoryItems = [];
+    const categoryData = [
+      {
+        title: "Introduction",
+        icon: "bi-journal-text",
+        links: [
+          {
+            title: "Overview of VLINKPAY",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide",
+          },
+          {
+            title: "Privacy Policy",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide",
+          },
+
+        ],
+      },
+      {
+        title: "Account",
+        icon: "bi-person-check",
+        links: [
+          {
+            title: "KYC/KYB account",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide/account/kyc-kyb-account",
+          },
+          {
+            title: "Link KYC/KYB",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide/account/link-kyc-kyb",
+          },
+        ],
+      },
+      {
+        title: "Wallet Hub",
+        icon: "bi-wallet2",
+        links: [
+          {
+            title: "My Wallet",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide/wallet-hub/my-wallet",
+          },
+          {
+            title: "Token Hub",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide/wallet-hub/token-hub",
+          },
+        ],
+      },
+      {
+        title: "Program Hub",
+        icon: "bi-diagram-3",
+        links: [
+          {
+            title: "Franchise License",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide/program-hub/franchise-license",
+          },
+          {
+            title: "I Owe You",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide/program-hub/i-owe-you",
+          },
+          {
+            title: "BTC Collateral",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide/program-hub/btc-collateral",
+          },
+
+        ],
+      },
+
+
+      {
+        title: "P2P Cash Hub",
+        icon: "bi-cash-stack",
+        links: [
+          {
+            title: "Become ATM Partner",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide/p2p-cash-hub/become-atm-partner",
+          },
+          {
+            title: "Buy gift cash",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide/p2p-cash-hub/buy-gift-cash",
+          },
+          {
+            title: "Sell gift cash",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide/p2p-cash-hub/sell-gift-cash",
+          },
+        ],
+      },
+      {
+        title: "Merchant Hub",
+        icon: "bi-shop-window",
+        links: [
+          {
+            title: "Create Gifts and Vouchers",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide/merchant-hub/create-gifts-and-vouchers",
+          },
+          {
+            title: "Receive Payment Setup",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide/merchant-hub/receive-payment-setup",
+          },
+          {
+            title: "Payment Processing",
+            url: "https://vlinkpay-llc.gitbook.io/en-user-guide/merchant-hub/payment-processing",
+          },
+        ],
+      },
+    ];
+
+
+    const faqItems = [
+      {
+        question: "What is VLINKPAY?",
+        answer:
+          "VLINKPAY is organized into multiple service areas in the User Guide, including Account, Exchange Hub, Wallet Hub, Program Hub, P2P Cash Hub, and Merchant Hub. If you are new, start with the Introduction section to understand the platform structure before moving into feature-specific guides.",
+      },
+
+      {
+        question: "How do I complete KYC verification?",
+        answer:
+          "The KYC Now guide states that members are required to complete KYC in order to access some system functions. The guide points users to the left-side menu under the KYC area and then continues with the verification flow from there. In practice, this means KYC should be treated as an account activation step, not just an optional profile update.",
+      },
+      {
+        question: "What is the KYC/KYB account section used for?",
+        answer:
+          "The KYC/KYB account section is the main account-verification area in the guide. It groups identity and business verification flows, so this is where users should go when they need to review verification requirements, start KYC, or manage account-verification related setup.",
+      },
+      {
+        question: "How does Link KYC/KYB work?",
+        answer:
+          "The guide separates Link KYC/KYB from the main KYC/KYB account area and also includes dedicated pages such as Approve Link KYC and Approve Link KYB. That structure suggests this section is used when a user needs to connect and approve an existing linked KYC or KYB relationship rather than starting a brand-new verification from scratch.",
+      },
+      {
+        question: "What can I do in Wallet Hub?",
+        answer:
+          "Wallet Hub includes My Wallet and Token Hub. Based on the guide structure, My Wallet is the main place to review wallet-related information, while Token Hub is intended for token-specific guidance. A user looking for balances, wallet details, or wallet navigation should start with My Wallet first.",
+      },
+
+      {
+        question: "What is Token Hub for?",
+        answer:
+          "Token Hub is grouped under Wallet Hub, which indicates it is meant to support token-related guidance alongside general wallet functions. If your question is about token-specific behavior rather than general wallet balances, Token Hub is the better place to start.",
+      },
+      {
+        question: "What is Platform Exchange?",
+        answer:
+          "Platform Exchange is the main page currently surfaced under Exchange Hub. This means Exchange Hub is centered around the platform exchange flow, and users who need exchange-related instructions should start there rather than searching through wallet or program sections.",
+      },
+
+      {
+        question: "How do I become an ATM Partner?",
+        answer:
+          "Go to P2P Cash Hub and open Become ATM Partner. Because this page is positioned as a primary item inside P2P Cash Hub, it appears to be the onboarding entry point for users who want to participate in ATM-partner related functions rather than only perform regular end-user actions.",
+      },
+
+      {
+        question: "How do I buy or sell gift cash?",
+        answer:
+          "Both Buy gift cash and Sell gift cash are listed under P2P Cash Hub, so they should be treated as dedicated flows with separate guidance. Users should enter the matching page depending on whether they are buying or selling, instead of expecting one combined instruction page for both actions.",
+      },
+
+      {
+        question: "How do I create gifts and vouchers?",
+        answer:
+          "Go to Merchant Hub and open Create Gifts and Vouchers. Since this is a dedicated merchant guide entry, it should be the primary reference for setup and usage when a merchant wants to issue or manage gift-related products on the platform.",
+      },
+      {
+        question: "How do I set up payment receiving as a merchant?",
+        answer:
+          "Go to Merchant Hub and open Receive Payment Setup. This page is positioned separately from Payment Processing, which suggests setup and operational payment flow are documented as two different concerns: one for configuration, and one for how payments work after setup is completed.",
+      },
+      {
+        question: "What is Payment Processing used for?",
+        answer:
+          "Payment Processing is a dedicated page in Merchant Hub. Based on the guide structure, it is the correct place to learn how merchant payment handling works after configuration, rather than using it as the initial setup page.",
+      },
+    ];
+    function renderCategoryList(items) {
+      const categoryHtml = items.map(function (item, index) {
+        const linksHtml = item.links.map(function (link) {
+          return `<li><a href="${link.url}">${link.title}</a></li>`;
+        }).join("");
+
+        const iconClass = item.icon || "bi-folder";
+        const variant = (index % 6) + 1;
+
+        return `
+          <div class="col-12 col-md-6 category-item">
+            <div class="category-card">
+              <div class="category-chip-row">
+                <span class="category-chip-icon category-chip-icon--${variant}" aria-hidden="true">
+                  <i class="bi ${iconClass}"></i>
+                </span>
+                <span class="badge category-chip">${item.title}</span>
+              </div>
+              <ul class="category-list">
+                ${linksHtml}
+              </ul>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      categoryList.innerHTML = categoryHtml;
+      categoryItems = Array.from(categoryList.querySelectorAll(".category-item"));
+    }
+
+    function renderFaqList(items) {
+      const faqHtml = items.map(function (item, index) {
+        const collapseId = "faq" + (index + 1);
+        const isFirst = index === 0;
+        return `
+          <div class="accordion-item">
+            <h3 class="accordion-header">
+              <button class="accordion-button ${isFirst ? "" : "collapsed"}" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
+                ${item.question}
+              </button>
+            </h3>
+            <div id="${collapseId}" class="accordion-collapse collapse ${isFirst ? "show" : ""}" data-bs-parent="#faqAccordion">
+              <div class="accordion-body small text-secondary">
+                ${item.answer}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      faqAccordion.innerHTML = faqHtml;
+    }
+
+    renderCategoryList(categoryData);
+    renderFaqList(faqItems);
+
+    const aiResponsePanel = document.getElementById("aiResponsePanel");
+    const aiResponseBody = document.getElementById("aiResponseBody");
+    const btnAskAi = document.getElementById("btnAskAi");
+    const btnCloseAiPanel = document.getElementById("btnCloseAiPanel");
+
+    const aiDefaultReply =
+      "I’m not sure I understand yet. What do you need help with on VLINKPAY?";
+
+    function showAiPanel() {
+      aiResponsePanel.classList.add("is-visible");
+    }
+
+    function hideAiPanel() {
+      aiResponsePanel.classList.remove("is-visible");
+    }
+
+    btnAskAi.addEventListener("click", function () {
+      const q = searchInput.value.trim();
+      showAiPanel();
+      aiResponseBody.classList.add("is-loading");
+      aiResponseBody.textContent = "AI is processing…";
+
+      window.setTimeout(function () {
+        aiResponseBody.classList.remove("is-loading");
+        if (q.length === 0) {
+          aiResponseBody.textContent = aiDefaultReply;
+        } else {
+          aiResponseBody.textContent =
+            "You asked: \"" +
+            q +
+            "\". " +
+            aiDefaultReply;
+        }
+      }, 1200);
+    });
+
+    btnCloseAiPanel.addEventListener("click", hideAiPanel);
+
+    searchInput.addEventListener("input", function () {
+      const key = this.value.trim().toLowerCase();
+      categoryItems.forEach(function (item) {
+        item.style.display = item.textContent.toLowerCase().includes(key) ? "" : "none";
+      });
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -49,6 +49,67 @@
       padding: 0.75rem 1.25rem 1.25rem;
     }
 
+    /* Custom overlay modal: re-apply global modal look after Bootstrap overrides */
+    #activeAccountModal {
+      position: fixed;
+      inset: 0;
+      background: rgba(22, 28, 36, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(6px);
+    }
+
+    #activeAccountModal.active,
+    #activeAccountModal.open,
+    #activeAccountModal[style*="display: flex"] {
+      display: flex !important;
+    }
+
+    #activeAccountModal .modal-content {
+      background: #fff;
+      width: 100%;
+      max-width: 420px;
+      border: none;
+      border-radius: 24px;
+      padding: 0;
+      position: relative;
+      box-shadow: 0 24px 48px -8px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    #activeAccountModal .modal-header {
+      padding: 24px 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-bottom: none;
+    }
+
+    #activeAccountModal .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin: 0;
+      flex: 1;
+    }
+
+    #activeAccountModal .modal-subtitle {
+      padding: 8px 24px 16px;
+      margin: 0;
+      font-size: 14px;
+      color: var(--grey-600);
+      line-height: 1.5;
+    }
+
+    #activeAccountModal .modal-body {
+      padding: 24px;
+      font-size: 14px;
+      color: var(--grey-800);
+    }
+
     /* Select Card Type modal — themed options */
     #selectCardTypeModal .modal-content {
       overflow: hidden;
@@ -1019,6 +1080,57 @@
       }
     }
 
+    .signin-field {
+      margin-bottom: 16px;
+    }
+
+    .signin-field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey-800);
+      margin-bottom: 6px;
+    }
+
+    .signin-field input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--grey-300);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--grey-900);
+      background: #fff;
+      box-sizing: border-box;
+    }
+
+    .signin-field input:focus {
+      outline: none;
+      border-color: var(--primary-main);
+    }
+
+    .signin-field input::placeholder {
+      color: var(--grey-500);
+    }
+
+    .signin-btn {
+      width: 100%;
+      padding: 12px 24px;
+      background: var(--primary-main);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .signin-btn:hover {
+      background: var(--primary-dark);
+    }
+
     @media screen and (max-width: 768px) {
       .mcv2-page-header {
         flex-direction: column !important;
@@ -1080,6 +1192,11 @@
       <div class="page-header page-header--between mcv2-page-header">
         <h1 class="page-title">My Cards</h1>
         <div class="page-header-actions">
+          <button type="button" id="mcv2-btn-active-card" class="btn-outline btn-add-card"
+            onclick="openActiveAccountModal()" style="display:none">
+            <i data-lucide="credit-card" style="width:20px;height:20px;"></i>
+            <span class="btn-add-card-label">Active Card</span>
+          </button>
           <button type="button" id="mcv2-btn-master-qr" class="btn-outline btn-add-card" data-bs-toggle="modal"
             data-bs-target="#modal-master-qr-verify" style="display:none">
             <i data-lucide="qr-code" style="width:20px;height:20px;"></i>
@@ -1267,6 +1384,25 @@
           </div>
           <button type="button" class="btn-submit" onclick="ecdContinue()">Add</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="activeAccountModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-content" onclick="event.stopPropagation()" style="max-width:420px;">
+      <div class="modal-header">
+        <span class="modal-title">Active account</span>
+        <button type="button" class="modal-close-btn" onclick="closeActiveAccountModal()" aria-label="Close">
+          <i data-lucide="x" style="width:20px;height:20px;"></i>
+        </button>
+      </div>
+      <p class="modal-subtitle" style="margin-top:0;">Enter your email to activate your account.</p>
+      <div class="modal-body">
+        <div class="signin-field">
+          <label for="activeAccountEmail">Email <span style="color:var(--error-main);">*</span></label>
+          <input type="email" id="activeAccountEmail" placeholder="Enter your email" />
+        </div>
+        <button type="button" class="signin-btn" onclick="submitActiveAccount()">Active</button>
       </div>
     </div>
   </div>
@@ -2071,6 +2207,59 @@
       }
     }
 
+    function mcv2ToggleActiveCardButtonFromUrl() {
+      var btn = document.getElementById('mcv2-btn-active-card');
+      if (!btn) return;
+      var params = new URLSearchParams(window.location.search);
+      btn.style.display = params.get('via') === 'card' ? 'inline-flex' : 'none';
+    }
+
+    function openActiveAccountModal() {
+      var el = document.getElementById('activeAccountModal');
+      if (!el) return;
+      el.classList.add('active');
+      el.style.display = 'flex';
+      el.setAttribute('aria-hidden', 'false');
+      var input = document.getElementById('activeAccountEmail');
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+      renderLucideIcons();
+    }
+
+    function closeActiveAccountModal() {
+      var el = document.getElementById('activeAccountModal');
+      if (!el) return;
+      el.classList.remove('active');
+      el.style.display = 'none';
+      el.setAttribute('aria-hidden', 'true');
+    }
+
+    function submitActiveAccount() {
+      var input = document.getElementById('activeAccountEmail');
+      var email = input ? input.value.trim() : '';
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email) {
+        alert('Please enter your email.');
+        return;
+      }
+      if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+      closeActiveAccountModal();
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Active successful',
+          text: 'Your account has been activated successfully.'
+        });
+      } else {
+        alert('Your account has been activated successfully.');
+      }
+    }
+
     function bindSelectCardTypeModal() {
       document.querySelectorAll('[data-mcv2-card-type]').forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -2117,7 +2306,14 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
+      var activeAccountModal = document.getElementById('activeAccountModal');
+      if (activeAccountModal) {
+        activeAccountModal.addEventListener('click', function (e) {
+          if (e.target === this) closeActiveAccountModal();
+        });
+      }
       myCardsV2InitFromUrl();
+      mcv2ToggleActiveCardButtonFromUrl();
       mcv2NotifyCardAddedSuccessFromUrl();
       myCardsV2RenderPlatformTabs();
       myCardsV2RenderProductTabs();

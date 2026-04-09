@@ -392,7 +392,6 @@
             <a href="#" onclick="openForgotPinModal(); return false;">Forgot PIN?</a>
           </div>
           <div class="signin-actions">
-            <button type="button" class="signin-btn signin-btn-outline" onclick="openActiveAccountModal()">Active account</button>
             <button type="button" class="signin-btn" onclick="submitCardSignIn()">Sign in</button>
           </div>
         </div>
@@ -631,6 +630,7 @@
       if (!cardNumber) { alert('Please enter card number.'); return; }
       if (!pin) { alert('Please enter PIN.'); return; }
       console.log('Card sign in', { cardNumber: cardNumber });
+      window.location.href = 'my-cards.html?platform=store-issued&product=crypto-card&via=card';
     }
   </script>
 </body>

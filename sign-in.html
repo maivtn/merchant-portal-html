@@ -478,10 +478,6 @@
       el.style.display = 'none';
     }
 
-    document.getElementById('signInModal').addEventListener('click', function (e) {
-      if (e.target === this) closeSignInModal();
-    });
-
     function openSignInScanModal() {
       var el = document.getElementById('signInScanModal');
       el.classList.add('active');
@@ -500,10 +496,6 @@
       el.style.display = 'none';
       el.setAttribute('aria-hidden', 'true');
     }
-    document.getElementById('signInScanModal').addEventListener('click', function (e) {
-      if (e.target === this) closeSignInScanModal();
-    });
-
     function openForgotPinModal() {
       var el = document.getElementById('forgotPinModal');
       el.classList.add('active');
@@ -521,9 +513,6 @@
       el.classList.remove('active');
       el.style.display = 'none';
     }
-    document.getElementById('forgotPinModal').addEventListener('click', function (e) {
-      if (e.target === this) closeForgotPinModal();
-    });
     function sendForgotPinOtp() {
       var email = (document.getElementById('forgotPinEmail').value || '').trim();
       if (!email) { alert('Please enter your email to receive OTP.'); return; }
@@ -569,9 +558,6 @@
       el.style.display = 'none';
       el.setAttribute('aria-hidden', 'true');
     }
-    document.getElementById('activeAccountModal').addEventListener('click', function (e) {
-      if (e.target === this) closeActiveAccountModal();
-    });
     function submitActiveAccount() {
       var email = (document.getElementById('activeAccountEmail').value || '').trim();
       var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

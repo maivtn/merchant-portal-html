@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>News - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="global.css" />
+  <style>
+    :root {
+      --news-bg: linear-gradient(180deg, #f7fafc 0%, #eef4f8 100%);
+      --news-panel: rgba(255, 255, 255, 0.88);
+      --news-border: rgba(145, 158, 171, 0.22);
+      --news-shadow: 0 24px 50px -26px rgba(22, 28, 36, 0.24);
+      --news-accent: #00a76f;
+      --news-accent-soft: rgba(0, 167, 111, 0.12);
+      --news-accent-strong: #007867;
+      --news-text-soft: #637381;
+      --news-dark: #161c24;
+      --news-gold: #ffab00;
+      --news-gold-soft: rgba(255, 171, 0, 0.14);
+      --news-sky: #00b8d9;
+      --news-sky-soft: rgba(0, 184, 217, 0.14);
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(0, 167, 111, 0.08), transparent 24%),
+        radial-gradient(circle at top right, rgba(0, 184, 217, 0.08), transparent 24%),
+        var(--news-bg);
+      color: var(--news-dark);
+    }
+
+    .news-page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+
+    .news-shell {
+      background: var(--news-panel);
+      border: 1px solid var(--news-border);
+      border-radius: 32px;
+      box-shadow: var(--news-shadow);
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+    }
+
+    .news-header {
+      padding: 28px 28px 22px;
+      border-bottom: 1px solid rgba(145, 158, 171, 0.16);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(247, 250, 252, 0.96)),
+        linear-gradient(120deg, rgba(0, 167, 111, 0.05), transparent 55%);
+    }
+
+    .news-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .back-btn {
+      margin-bottom: 0;
+      font-weight: 500;
+    }
+
+    .news-title {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    .news-subtitle {
+      max-width: 620px;
+      margin: 0;
+      color: var(--news-text-soft);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .news-toolbar {
+      padding: 20px 28px 24px;
+      border-bottom: 1px solid rgba(145, 158, 171, 0.16);
+      display: grid;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    .news-search {
+      position: relative;
+    }
+
+    .news-search input {
+      width: 100%;
+      padding: 15px 18px 15px 48px;
+      border-radius: 18px;
+      border: 1px solid rgba(145, 158, 171, 0.24);
+      background: #fff;
+      font-size: 14px;
+      color: var(--news-dark);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .news-search input:focus {
+      border-color: rgba(0, 167, 111, 0.42);
+      box-shadow: 0 0 0 4px rgba(0, 167, 111, 0.1);
+    }
+
+    .news-search i {
+      position: absolute;
+      top: 50%;
+      left: 18px;
+      transform: translateY(-50%);
+      color: var(--grey-500);
+      font-size: 16px;
+    }
+
+    .news-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .filter-chip {
+      border: 1px solid rgba(145, 158, 171, 0.24);
+      background: #fff;
+      color: var(--grey-700);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1;
+      transition: 0.2s ease;
+      cursor: pointer;
+    }
+
+    .filter-chip:hover,
+    .filter-chip.is-active {
+      background: var(--news-accent);
+      border-color: var(--news-accent);
+      color: #fff;
+      box-shadow: 0 12px 24px -18px rgba(0, 167, 111, 0.8);
+    }
+
+    .news-section {
+      padding: 28px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .section-note {
+      margin: 0;
+      color: var(--news-text-soft);
+      font-size: 13px;
+    }
+
+    .featured-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(240px, 0.92fr) minmax(0, 1.08fr);
+      gap: 0;
+      overflow: hidden;
+      border-radius: 28px;
+      background: #fff;
+      border: 1px solid rgba(145, 158, 171, 0.18);
+      box-shadow: 0 28px 50px -34px rgba(22, 28, 36, 0.4);
+    }
+
+    .featured-media {
+      min-height: 280px;
+      padding: 24px;
+      background:
+        linear-gradient(160deg, rgba(0, 167, 111, 0.92), rgba(0, 120, 103, 0.96)),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.14), transparent);
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .featured-media::before,
+    .featured-media::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .featured-media::before {
+      width: 180px;
+      height: 180px;
+      top: -32px;
+      right: -40px;
+    }
+
+    .featured-media::after {
+      width: 110px;
+      height: 110px;
+      bottom: 32px;
+      left: -20px;
+    }
+
+    .featured-visual {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      border-radius: 24px;
+      padding: 22px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      backdrop-filter: blur(4px);
+    }
+
+    .featured-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .featured-stat {
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .featured-stat strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .featured-stat span {
+      display: block;
+      font-size: 11px;
+      line-height: 1.5;
+      opacity: 0.82;
+    }
+
+    .featured-content {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .featured-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .news-tag,
+    .news-date {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .news-tag {
+      background: var(--news-accent-soft);
+      color: var(--news-accent-strong);
+    }
+
+    .news-date {
+      background: rgba(145, 158, 171, 0.12);
+      color: var(--grey-700);
+    }
+
+    .featured-title {
+      font-size: 30px;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 12px;
+    }
+
+    .featured-desc {
+      color: var(--news-text-soft);
+      font-size: 14px;
+      line-height: 1.75;
+      margin-bottom: 22px;
+      max-width: 48ch;
+    }
+
+    .btn-read {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 18px;
+      background: var(--news-dark);
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn-read:hover {
+      transform: translateY(-1px);
+      background: #0d1117;
+      color: #fff;
+      box-shadow: 0 14px 26px -18px rgba(22, 28, 36, 0.8);
+    }
+
+    .articles-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .news-item {
+      display: grid;
+      grid-template-columns: 132px minmax(0, 1fr);
+      gap: 18px;
+      padding: 18px;
+      border-radius: 24px;
+      border: 1px solid rgba(145, 158, 171, 0.18);
+      background: #fff;
+      box-shadow: 0 18px 34px -30px rgba(22, 28, 36, 0.45);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .news-item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(0, 167, 111, 0.24);
+      box-shadow: 0 24px 34px -28px rgba(22, 28, 36, 0.5);
+    }
+
+    .news-thumb {
+      min-height: 132px;
+      border-radius: 20px;
+      padding: 16px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .news-thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.12));
+    }
+
+    .news-thumb > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .thumb-product {
+      background: linear-gradient(145deg, #00a76f, #007867);
+    }
+
+    .thumb-events {
+      background: linear-gradient(145deg, #00b8d9, #006c9c);
+    }
+
+    .thumb-announcements {
+      background: linear-gradient(145deg, #ffab00, #b76e00);
+    }
+
+    .thumb-partner {
+      background: linear-gradient(145deg, #7a5af8, #4c1d95);
+    }
+
+    .thumb-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.16);
+      margin-bottom: auto;
+      font-size: 18px;
+    }
+
+    .thumb-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.88;
+    }
+
+    .article-body {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .article-title {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.3;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .article-desc {
+      margin: 0;
+      color: var(--news-text-soft);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .article-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .article-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--news-accent-strong);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .article-link:hover {
+      color: var(--news-accent);
+    }
+
+    .article-date {
+      color: var(--grey-600);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .news-item[hidden] {
+      display: none;
+    }
+
+    .load-more-wrap {
+      padding: 0 28px 32px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .btn-load-more {
+      border: 1px solid rgba(145, 158, 171, 0.28);
+      background: #fff;
+      color: var(--news-dark);
+      border-radius: 16px;
+      padding: 13px 22px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .btn-load-more:hover {
+      border-color: rgba(0, 167, 111, 0.3);
+      color: var(--news-accent-strong);
+      box-shadow: 0 18px 28px -22px rgba(0, 167, 111, 0.65);
+      transform: translateY(-1px);
+    }
+
+    .btn-load-more[hidden] {
+      display: none;
+    }
+
+    @media (max-width: 991px) {
+      .featured-card {
+        grid-template-columns: 1fr;
+      }
+
+      .featured-media {
+        min-height: 240px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .news-page {
+        padding: 18px 12px 32px;
+      }
+
+      .news-header,
+      .news-toolbar,
+      .news-section,
+      .load-more-wrap {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .news-title {
+        font-size: 24px;
+      }
+
+      .news-item {
+        grid-template-columns: 1fr;
+      }
+
+      .news-thumb {
+        min-height: 160px;
+      }
+
+      .featured-title {
+        font-size: 24px;
+      }
+
+      .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="news-page">
+    <section class="news-shell">
+      <header class="news-header">
+        <div class="news-topline">
+          <a class="back-btn" href="javascript:void(0)">
+            <span class="icon-back" aria-hidden="true"></span>
+            <span>Back</span>
+          </a>
+        </div>
+        <h1 class="news-title">News</h1>
+        <p class="news-subtitle">Stay updated with the latest product news, announcements, and events across the
+          VLINKPAY ecosystem.</p>
+      </header>
+
+      <section class="news-toolbar">
+        <label class="news-search" for="news-search">
+          <i class="bi bi-search" aria-hidden="true"></i>
+          <input id="news-search" type="search" placeholder="Search news..." />
+        </label>
+
+        <div class="news-filters" aria-label="News filters">
+          <button class="filter-chip is-active" type="button" data-filter="all">All</button>
+          <button class="filter-chip" type="button" data-filter="product">Product</button>
+          <button class="filter-chip" type="button" data-filter="partner">Partner</button>
+          <button class="filter-chip" type="button" data-filter="events">Events</button>
+          <button class="filter-chip" type="button" data-filter="announcements">Announcements</button>
+        </div>
+      </section>
+
+      <section class="news-section">
+        <div class="section-heading">
+          <div>
+            <h2 class="section-title">Featured News</h2>
+            <p class="section-note">Highlighted ecosystem update</p>
+          </div>
+        </div>
+
+        <article class="featured-card">
+          <div class="featured-media">
+            <div class="featured-visual">
+              <div class="featured-pill">
+                <i class="bi bi-stars" aria-hidden="true"></i>
+                Ecosystem Update
+              </div>
+              <div class="featured-grid">
+                <div class="featured-stat">
+                  <strong>Gift Card Hub</strong>
+                  <span>New digital issuance and campaign tools</span>
+                </div>
+                <div class="featured-stat">
+                  <strong>Merchant ATM</strong>
+                  <span>Expanded cash-in and cash-out partner coverage</span>
+                </div>
+                <div class="featured-stat">
+                  <strong>Crypto Gateway</strong>
+                  <span>Faster acceptance flow and wallet support updates</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="featured-content">
+            <div class="featured-meta">
+              <span class="news-tag"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i> Product</span>
+              <span class="news-date"><i class="bi bi-calendar3" aria-hidden="true"></i> Apr 09, 2026</span>
+            </div>
+            <h3 class="featured-title">VLINKPAY Ecosystem Update</h3>
+            <p class="featured-desc">Explore the latest updates across Gift Card Hub, Mobile Merchant ATM, and Crypto
+              Payment Gateway with new partner-ready workflows, improved activation flow, and broader ecosystem
+              support.</p>
+            <a class="btn-read" href="javascript:void(0)">Read More <i class="bi bi-arrow-right-short"
+                aria-hidden="true"></i></a>
+          </div>
+        </article>
+      </section>
+
+      <section class="news-section">
+        <div class="section-heading">
+          <div>
+            <h2 class="section-title">Latest Articles</h2>
+            <p class="section-note">Product updates, partner news, and launch announcements</p>
+          </div>
+        </div>
+
+        <div class="articles-grid" id="articles-grid">
+          <article class="news-item" data-category="product">
+            <div class="news-thumb thumb-product">
+              <span class="thumb-icon"><i class="bi bi-gift" aria-hidden="true"></i></span>
+              <span class="thumb-label">Product Update</span>
+            </div>
+            <div class="article-body">
+              <div>
+                <div class="article-meta">
+                  <span class="news-tag">Product</span>
+                  <span class="article-date">Apr 07, 2026</span>
+                </div>
+                <h3 class="article-title">New Gift Card Hub Features</h3>
+                <p class="article-desc">Learn about new digital gift card tools for businesses, including improved bulk
+                  issuance, campaign setup, and better redemption tracking.</p>
+              </div>
+              <div class="article-footer">
+                <a class="article-link" href="javascript:void(0)">Read More <i class="bi bi-arrow-right"
+                    aria-hidden="true"></i></a>
+              </div>
+            </div>
+          </article>
+
+          <article class="news-item" data-category="events">
+            <div class="news-thumb thumb-events">
+              <span class="thumb-icon"><i class="bi bi-phone" aria-hidden="true"></i></span>
+              <span class="thumb-label">Event Rollout</span>
+            </div>
+            <div class="article-body">
+              <div>
+                <div class="article-meta">
+                  <span class="news-tag">Events</span>
+                  <span class="article-date">Apr 05, 2026</span>
+                </div>
+                <h3 class="article-title">Mobile Merchant ATM Expansion</h3>
+                <p class="article-desc">Explore how ATM Partner features now support more cash-in and cash-out use
+                  cases, with smoother onboarding for field operations and new service areas.</p>
+              </div>
+              <div class="article-footer">
+                <a class="article-link" href="javascript:void(0)">Read More <i class="bi bi-arrow-right"
+                    aria-hidden="true"></i></a>
+              </div>
+            </div>
+          </article>
+
+          <article class="news-item" data-category="product">
+            <div class="news-thumb thumb-product">
+              <span class="thumb-icon"><i class="bi bi-currency-bitcoin" aria-hidden="true"></i></span>
+              <span class="thumb-label">Gateway Update</span>
+            </div>
+            <div class="article-body">
+              <div>
+                <div class="article-meta">
+                  <span class="news-tag">Product</span>
+                  <span class="article-date">Apr 03, 2026</span>
+                </div>
+                <h3 class="article-title">Crypto Payment Gateway Updates</h3>
+                <p class="article-desc">Review the latest improvements in crypto payment acceptance with a clearer
+                  checkout flow, broader token support, and refreshed settlement controls.</p>
+              </div>
+              <div class="article-footer">
+                <a class="article-link" href="javascript:void(0)">Read More <i class="bi bi-arrow-right"
+                    aria-hidden="true"></i></a>
+              </div>
+            </div>
+          </article>
+
+          <article class="news-item" data-category="partner" hidden>
+            <div class="news-thumb thumb-partner">
+              <span class="thumb-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+              <span class="thumb-label">Partner Network</span>
+            </div>
+            <div class="article-body">
+              <div>
+                <div class="article-meta">
+                  <span class="news-tag">Partner</span>
+                  <span class="article-date">Apr 01, 2026</span>
+                </div>
+                <h3 class="article-title">Partner Program Announcements</h3>
+                <p class="article-desc">See the latest program updates for ecosystem partners, including enablement
+                  support, rollout priorities, and new participation opportunities.</p>
+              </div>
+              <div class="article-footer">
+                <a class="article-link" href="javascript:void(0)">Read More <i class="bi bi-arrow-right"
+                    aria-hidden="true"></i></a>
+              </div>
+            </div>
+          </article>
+
+          <article class="news-item" data-category="announcements" hidden>
+            <div class="news-thumb thumb-announcements">
+              <span class="thumb-icon"><i class="bi bi-megaphone" aria-hidden="true"></i></span>
+              <span class="thumb-label">Announcement</span>
+            </div>
+            <div class="article-body">
+              <div>
+                <div class="article-meta">
+                  <span class="news-tag">Announcements</span>
+                  <span class="article-date">Mar 29, 2026</span>
+                </div>
+                <h3 class="article-title">Service Notice for Merchant Releases</h3>
+                <p class="article-desc">Stay informed about scheduled release windows, platform refinements, and
+                  operational updates prepared for the next merchant cycle.</p>
+              </div>
+              <div class="article-footer">
+                <a class="article-link" href="javascript:void(0)">Read More <i class="bi bi-arrow-right"
+                    aria-hidden="true"></i></a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <div class="load-more-wrap">
+        <button class="btn-load-more" id="load-more-btn" type="button">Load More</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const chips = document.querySelectorAll('.filter-chip');
+      const searchInput = document.getElementById('news-search');
+      const loadMoreButton = document.getElementById('load-more-btn');
+      const articles = Array.from(document.querySelectorAll('.news-item'));
+
+      let activeFilter = 'all';
+      let visibleCount = 3;
+
+      function getMatchingArticles() {
+        const term = searchInput.value.trim().toLowerCase();
+
+        return articles.filter((article) => {
+          const category = article.dataset.category;
+          const text = article.textContent.toLowerCase();
+          const matchesFilter = activeFilter === 'all' || category === activeFilter;
+          const matchesSearch = !term || text.includes(term);
+          return matchesFilter && matchesSearch;
+        });
+      }
+
+      function renderArticles() {
+        const matches = getMatchingArticles();
+
+        articles.forEach((article) => {
+          article.hidden = true;
+        });
+
+        matches.slice(0, visibleCount).forEach((article) => {
+          article.hidden = false;
+        });
+
+        loadMoreButton.hidden = matches.length <= visibleCount;
+      }
+
+      chips.forEach((chip) => {
+        chip.addEventListener('click', function () {
+          activeFilter = chip.dataset.filter;
+          visibleCount = 3;
+
+          chips.forEach((item) => item.classList.remove('is-active'));
+          chip.classList.add('is-active');
+          renderArticles();
+        });
+      });
+
+      searchInput.addEventListener('input', function () {
+        visibleCount = 3;
+        renderArticles();
+      });
+
+      loadMoreButton.addEventListener('click', function () {
+        visibleCount += 3;
+        renderArticles();
+      });
+
+      renderArticles();
+    }());
+  </script>
+</body>
+
+</html>

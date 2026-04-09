@@ -1666,11 +1666,20 @@
       return '#';
     }
 
+    function mcv2IsViaCardFlow() {
+      var params = new URLSearchParams(window.location.search);
+      return params.get('via') === 'card';
+    }
+
     function getSampleRows(platform, product) {
       var byPlat = MY_CARDS_V2_SAMPLE_DATA[platform.name];
       if (!byPlat) return [];
       var rows = byPlat[product.productName];
-      return Array.isArray(rows) ? rows : [];
+      if (!Array.isArray(rows)) return [];
+      if (mcv2IsViaCardFlow() && slugify(product.productName) === 'crypto-card') {
+        return rows.slice(0, 1);
+      }
+      return rows;
     }
 
     /** Master QR chỉ hiện khi tab platform đang chọn là Issued on VLINKPAY. */
@@ -2214,6 +2223,15 @@
       btn.style.display = params.get('via') === 'card' ? 'inline-flex' : 'none';
     }
 
+    function mcv2ClearViaCardState() {
+      var url = new URL(window.location.href);
+      url.searchParams.delete('via');
+      history.replaceState({}, '', url);
+      var btn = document.getElementById('mcv2-btn-active-card');
+      if (btn) btn.style.display = 'none';
+      myCardsV2RenderActiveProductPane();
+    }
+
     function openActiveAccountModal() {
       var el = document.getElementById('activeAccountModal');
       if (!el) return;
@@ -2249,6 +2267,7 @@
         return;
       }
       closeActiveAccountModal();
+      mcv2ClearViaCardState();
       if (typeof Swal !== 'undefined') {
         Swal.fire({
           icon: 'success',

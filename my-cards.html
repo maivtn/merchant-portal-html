@@ -1207,7 +1207,7 @@
             <i data-lucide="shopping-cart" style="width:20px;height:20px;"></i>
             <span class="btn-add-card-label">Buy Egift Voucher</span>
           </button>
-          <button type="button" class="btn-outline btn-add-card" data-bs-toggle="modal"
+          <button type="button" id="mcv2-btn-add-card" class="btn-outline btn-add-card" data-bs-toggle="modal"
             data-bs-target="#selectCardTypeModal">
             <i data-lucide="plus" style="width:20px;height:20px;"></i>
             <span class="btn-add-card-label">Add Card</span>
@@ -2217,10 +2217,11 @@
     }
 
     function mcv2ToggleActiveCardButtonFromUrl() {
-      var btn = document.getElementById('mcv2-btn-active-card');
-      if (!btn) return;
-      var params = new URLSearchParams(window.location.search);
-      btn.style.display = params.get('via') === 'card' ? 'inline-flex' : 'none';
+      var activeBtn = document.getElementById('mcv2-btn-active-card');
+      var addBtn = document.getElementById('mcv2-btn-add-card');
+      var showActiveCard = mcv2IsViaCardFlow();
+      if (activeBtn) activeBtn.style.display = showActiveCard ? 'inline-flex' : 'none';
+      if (addBtn) addBtn.style.display = showActiveCard ? 'none' : 'inline-flex';
     }
 
     function mcv2ClearViaCardState() {

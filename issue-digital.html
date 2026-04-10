@@ -1331,6 +1331,9 @@
     }
 
     .crypto-placement-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-size: 13px;
       font-weight: 600;
       color: var(--c-text-1);
@@ -4121,7 +4124,10 @@
                   <span>Require VlinkPay account to use card</span>
                 </label>
                 <div class="crypto-placement-wrap" id="cryptoPlacementWrap" style="display:none;">
-                  <div class="crypto-placement-label">Select Placement Leg <span class="text-danger">*</span></span>
+                  <div class="crypto-placement-label">Select Placement Leg <span class="text-danger">*</span>
+                    <span class="step-tooltip-trigger" data-step-tooltip-id="placement-leg" role="button" tabindex="0"
+                      aria-label="About placement leg" onclick="event.stopPropagation()"><i data-lucide="info"
+                        style="width:14px;height:14px;"></i></span>
                   </div>
                   <div class="crypto-placement-options">
                     <label class="crypto-placement-option">
@@ -4356,6 +4362,7 @@ Please present this card before payment.</textarea>
         selectCryptoAssets: 'Select one or more cryptocurrencies to fund this card, then enter the amount to use from each wallet.',
         cardQuantity: 'Set how many cards to issue for this order. Use Send as a gift to add recipient name and email.',
         termsAndConditions: 'Add the terms and conditions that customers should know when using this card.',
+        placementLeg: 'Choose which leg to place the new member on when inviting them to join your network.',
         platformServiceFee: 'This is the service fee charged by the platform for this transaction.',
         paymentMethod: 'Select how the customer will pay for this card.',
         totalCryptoUsed: 'Review the total crypto allocated from your wallets for this issuance before you confirm.',
@@ -4421,6 +4428,9 @@ Please present this card before payment.</textarea>
           break;
         case 'terms':
           html = pack.termsAndConditions;
+          break;
+        case 'placement-leg':
+          html = TOOLTIP_COPY.cryptoCard.placementLeg;
           break;
         case 'payment':
           html = pack.paymentMethod || TOOLTIP_COPY.egiftCard.paymentMethod;

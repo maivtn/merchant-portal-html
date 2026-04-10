@@ -4094,7 +4094,11 @@
                     }
                 }).then(function (result) {
                     if (!result.isConfirmed) return;
-                    return;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Account activated successfully',
+                        text: 'Your account has been activated successfully.'
+                    });
                 });
             } else {
                 var fallbackOtp = prompt('We sent an OTP to ' + email + '. Please enter the 6-digit OTP.');
@@ -4102,7 +4106,7 @@
                     alert('Invalid OTP. Please enter a valid 6-digit OTP.');
                     return;
                 }
-                return;
+                alert('Your account has been activated successfully.');
             }
         }
 

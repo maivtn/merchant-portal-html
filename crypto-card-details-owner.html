@@ -32,7 +32,7 @@
         .product-main-layout {
             display: grid;
             grid-template-columns: 400px 1fr;
-            gap: 32px;
+            gap: 24px;
             align-items: start;
         }
 
@@ -41,7 +41,7 @@
             background: #fff;
             border-radius: 24px;
             box-shadow: var(--shadow-z1);
-            padding: 32px;
+            padding: 24px;
         }
 
         .product-visual-column {
@@ -178,7 +178,7 @@
         }
 
         .crypto-list-section {
-            margin-top: 32px;
+            margin-top: 24px;
             background: #fff;
             border-radius: 16px;
             box-shadow: var(--shadow-z1);
@@ -316,8 +316,8 @@
         }
 
         .crypto-icon {
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             background: var(--grey-200);
             display: flex;
@@ -334,44 +334,31 @@
         }
 
         .term-section {
-            margin-top: 32px;
+            margin-top: 24px;
             background: #fff;
             border-radius: 16px;
             box-shadow: var(--shadow-z1);
             padding: 24px;
         }
 
-        .term-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--grey-800);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
 
-        .term-content {
-            font-size: 14px;
-            line-height: 1.8;
-            color: var(--grey-600);
-        }
 
-        /* Collapse chevron: always visible, down = open, up = collapsed */
+        /* Collapse chevron: always visible, up = open, down = collapsed */
         .section-chevron,
         .term-chevron {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             margin-left: auto;
+            transform: rotate(180deg);
             transition: transform 0.2s;
             flex-shrink: 0;
         }
 
-        /* Expanded (default): chevron down. Collapsed: chevron up */
+        /* Expanded: chevron up. Collapsed: chevron down */
         .crypto-list-section.collapsed .section-chevron,
         .term-section.collapsed .term-chevron {
-            transform: rotate(180deg);
+            transform: rotate(0deg);
         }
 
         /* Collapse content: works on all viewports */
@@ -612,6 +599,60 @@
         /* Modal: dùng global.css (modal-overlay, modal-header, modal-title, close-btn, modal-body, modal-footer-centered) */
         .form-group {
             margin-bottom: 12px;
+        }
+
+        .signin-field {
+            margin-bottom: 16px;
+        }
+
+        .signin-field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--grey-700);
+            margin-bottom: 8px;
+        }
+
+        .signin-field input {
+            width: 100%;
+            height: 48px;
+            border: 1px solid var(--grey-300);
+            border-radius: 12px;
+            padding: 0 14px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--grey-900);
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .signin-field input:focus {
+            border-color: var(--primary-main);
+            box-shadow: 0 0 0 3px rgba(0, 167, 111, 0.12);
+        }
+
+        .signin-field input::placeholder {
+            color: var(--grey-500);
+        }
+
+        .signin-btn {
+            width: 100%;
+            height: 48px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary-main);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .signin-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
         }
 
         .form-label {
@@ -1262,8 +1303,8 @@
         }
 
         .redeem-filter-close {
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
             border: 1px solid #dfe3e8;
             border-radius: 8px;
             background: #fff;
@@ -1539,7 +1580,7 @@
         }
 
         .pag-select {
-            height: 32px;
+            height: 24px;
             border: 1px solid #dfe3e8;
             border-radius: 6px;
             font-size: 13px;
@@ -1559,8 +1600,8 @@
         }
 
         .pag-btn {
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
             border: 1px solid #dfe3e8;
             border-radius: 6px;
             background: #fff;
@@ -2104,7 +2145,7 @@
                         </button>
 
 
-                        <button class="action-bar__item action-bar__item--withdraw" type="button"
+                        <button class="action-bar__item action-bar__item--withdraw" type="button" id="withdrawButton"
                             onclick="openModal('modal-withdraw-crypto')">
                             <span class="action-bar__icon">
                                 <img src="assets/icons/actions/withdraw.svg" alt="Withdraw" />
@@ -2118,6 +2159,15 @@
                             </span>
                             <span class="action-bar__label">View QR</span>
                         </button>
+
+                        <button class="action-bar__item action-bar__item--download" type="button" id="activeAccount"
+                            onclick="openActiveAccountModal()" style="display:none;">
+                            <span class="action-bar__icon">
+                                <img src="assets/icons/actions/account.svg" alt="Active Account" />
+                            </span>
+                            <span class="action-bar__label">Active Account</span>
+                        </button>
+
 
                     </div>
 
@@ -2210,8 +2260,7 @@
 
                                 <div class="info-item">
                                     <span class="info-label">Recipient Email</span>
-                                    <span class="info-value"
-                                        id="recipientEmailValue">carlota.monteiro@vlinkpay.com</span>
+                                    <span class="info-value" id="recipientEmailValue">-</span>
                                 </div>
                                 <div class="info-item">
                                     <span class="info-label">Issued Date</span>
@@ -3099,6 +3148,25 @@
         </div>
     </div>
 
+    <div id="activeAccountModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content" onclick="event.stopPropagation()" style="max-width:420px;">
+            <div class="modal-header">
+                <span class="modal-title">Active account</span>
+                <button type="button" class="modal-close-btn" onclick="closeActiveAccountModal()" aria-label="Close">
+                    <i data-lucide="x" style="width:20px;height:20px;"></i>
+                </button>
+            </div>
+            <p class="modal-subtitle" style="margin-top:0;">Enter your email to activate your account.</p>
+            <div class="modal-body">
+                <div class="signin-field">
+                    <label for="activeAccountEmail">Email <span style="color:var(--error-main);">*</span></label>
+                    <input type="email" id="activeAccountEmail" placeholder="Enter your email" />
+                </div>
+                <button type="button" class="signin-btn" onclick="submitActiveAccount()">Active</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         function updateToggleStatus(checkbox, badgeId, checkedText, uncheckedText) {
             const badge = document.getElementById(badgeId);
@@ -3836,19 +3904,94 @@
             });
         }
 
+        function isViaCardFlow() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('via') === 'card';
+        }
+
+        function toggleViaCardActiveAccountButton() {
+            var btn = document.getElementById('activeAccount');
+            if (!btn) return;
+            btn.style.display = isViaCardFlow() ? 'inline-flex' : 'none';
+        }
+
+        function toggleViaCardWithdrawButton() {
+            var btn = document.getElementById('withdrawButton');
+            if (!btn) return;
+            btn.style.display = isViaCardFlow() ? 'none' : 'inline-flex';
+        }
+
+        function openActiveAccountModal() {
+            var el = document.getElementById('activeAccountModal');
+            if (!el || !isViaCardFlow()) return;
+            el.classList.add('active');
+            el.style.display = 'flex';
+            el.setAttribute('aria-hidden', 'false');
+            var input = document.getElementById('activeAccountEmail');
+            if (input) {
+                input.value = '';
+                input.focus();
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function closeActiveAccountModal() {
+            var el = document.getElementById('activeAccountModal');
+            if (!el) return;
+            el.classList.remove('active');
+            el.style.display = 'none';
+            el.setAttribute('aria-hidden', 'true');
+        }
+
+        function submitActiveAccount() {
+            var input = document.getElementById('activeAccountEmail');
+            var email = input ? input.value.trim() : '';
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!email) {
+                alert('Please enter your email.');
+                return;
+            }
+
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            closeActiveAccountModal();
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Active account request submitted',
+                    text:
+                        email +
+                        '. Please check your email to log in with your email account. Your card account will no longer be valid for login.'
+                });
+            } else {
+                alert(
+                    'Active account request submitted for ' +
+                    email +
+                    '. Please check your email to log in with your email account. Your card account will no longer be valid for login.'
+                );
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             if (typeof lucide !== 'undefined') lucide.createIcons();
+            toggleViaCardActiveAccountButton();
+            toggleViaCardWithdrawButton();
             const params = new URLSearchParams(window.location.search);
             const statusParam = params.get('status');
             const hasEmailParam = params.get('hasEmail');
             const recipientEmailValue = document.getElementById('recipientEmailValue');
 
             if (recipientEmailValue) {
-                if (hasEmailParam === '0') {
-                    recipientEmailValue.textContent = '-';
-                } else {
-                    const emailText = recipientEmailValue.textContent.trim();
+                const hasRecipientEmail = hasEmailParam === 'true' || hasEmailParam === '1';
+                if (hasRecipientEmail) {
+                    const emailText = "carlota.monteiro@vlinkpay.com";
                     recipientEmailValue.textContent = emailText || '-';
+                } else {
+                    recipientEmailValue.textContent = '-';
                 }
             }
 
@@ -3994,8 +4137,17 @@
                     if (overlay && overlay.classList.contains('open')) closeRedeemFilterModal();
                     var qrModal = document.getElementById('qrModal');
                     if (qrModal && qrModal.classList.contains('active')) closeQrModal();
+                    var activeAccountModal = document.getElementById('activeAccountModal');
+                    if (activeAccountModal && activeAccountModal.classList.contains('active')) closeActiveAccountModal();
                 }
             });
+
+            var activeAccountModal = document.getElementById('activeAccountModal');
+            if (activeAccountModal) {
+                activeAccountModal.addEventListener('click', function (e) {
+                    if (e.target === this) closeActiveAccountModal();
+                });
+            }
         });
     </script>
 </body>

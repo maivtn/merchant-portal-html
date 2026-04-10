@@ -220,18 +220,38 @@
   // INIT
   // ═══════════════════════════════════════════════════════════════════════════
   document.addEventListener("DOMContentLoaded", function () {
+    applyLayoutModes();
     applyThemeMode();
-    renderSidebarNav();
-    updateSidebarUserRole();
-    injectHamburger();
-    injectMobileLogo();
-    injectOverlay();
-    bindNavLinks();
-    bindKeyboard();
-    handleResize();
+    if (!isViaCardStandaloneMode()) {
+      renderSidebarNav();
+      updateSidebarUserRole();
+      injectHamburger();
+      injectMobileLogo();
+      injectOverlay();
+      bindNavLinks();
+      bindKeyboard();
+      handleResize();
+      window.addEventListener("resize", handleResize);
+    }
     initDatePlaceholders();
-    window.addEventListener("resize", handleResize);
   });
+
+  function isViaCardStandaloneMode() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("via") === "card";
+  }
+
+  function applyLayoutModes() {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("mode") === "public") {
+      document.body.classList.add("mode-public");
+    }
+
+    if (isViaCardStandaloneMode()) {
+      document.body.classList.add("mode-via-card");
+    }
+  }
 
   function applyThemeMode() {
     const role = (new URLSearchParams(window.location.search).get("role") || "")
@@ -625,7 +645,6 @@
     if (params.get("mode") === "public") {
       const gridInfo = document.querySelector(".grid-info");
       const actionButtons = document.querySelector(".action-buttons");
-      document.body.classList.add("mode-public");
 
       if (actionButtons) actionButtons.style.display = "none";
       if (gridInfo) gridInfo.style.display = "none";

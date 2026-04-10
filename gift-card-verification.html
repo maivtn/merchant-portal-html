@@ -32,6 +32,7 @@
       gap: 12px;
       box-shadow: var(--shadow-z1);
       border-bottom: 1px dashed var(--grey-200);
+      opacity: 0;
     }
 
     .topbar-left {
@@ -41,8 +42,8 @@
     }
 
     .hamburger-btn {
-      width: 32px;
-      height: 32px;
+      width: 24px;
+      height: 24px;
       border-radius: 999px;
       background: #ffffff;
       display: flex;
@@ -104,8 +105,8 @@
     }
 
     .topbar-icon-btn {
-      width: 32px;
-      height: 32px;
+      width: 24px;
+      height: 24px;
       border-radius: 999px;
       border: 1px solid rgba(145, 158, 171, 0.4);
       background: #ffffff;
@@ -246,7 +247,7 @@
     }
 
     .store-badge {
-      height: 32px;
+      height: 24px;
       border-radius: 6px;
       overflow: hidden;
     }
@@ -407,7 +408,6 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 16px;
       gap: 12px;
     }
 
@@ -473,7 +473,7 @@
     .product-main-layout {
       display: grid;
       grid-template-columns: 400px 1fr;
-      gap: 32px;
+      gap: 24px;
       align-items: start;
     }
 
@@ -482,7 +482,7 @@
       background: #fff;
       border-radius: 24px;
       box-shadow: var(--shadow-z1);
-      padding: 32px;
+      padding: 24px;
     }
 
     .product-visual-column {
@@ -557,12 +557,12 @@
     }
 
     .details-header {
-      margin-bottom: 24px;
-      padding-bottom: 20px;
-      border-bottom: 1px dashed var(--grey-200);
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+      border-bottom: 0 !important;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
     }
 
     .product-info-header h1 {
@@ -621,7 +621,7 @@
     }
 
     .crypto-list-section {
-      margin-top: 32px;
+      margin-top: 24px;
       background: #fff;
       border-radius: 16px;
       box-shadow: var(--shadow-z1);
@@ -632,7 +632,7 @@
       font-size: 16px;
       font-weight: 700;
       color: var(--grey-800);
-      margin-bottom: 20px;
+      margin-bottom: 0;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -760,8 +760,8 @@
     }
 
     .crypto-icon {
-      width: 32px;
-      height: 32px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       background: var(--grey-200);
       display: flex;
@@ -778,7 +778,7 @@
     }
 
     .term-section {
-      margin-top: 32px;
+      margin-top: 24px;
       background: #fff;
       border-radius: 16px;
       box-shadow: var(--shadow-z1);
@@ -789,7 +789,7 @@
       font-size: 16px;
       font-weight: 700;
       color: var(--grey-800);
-      margin-bottom: 16px;
+      margin-bottom: 0;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -801,21 +801,22 @@
       color: var(--grey-600);
     }
 
-    /* Collapse chevron: always visible, down = open, up = collapsed */
+    /* Collapse chevron: always visible, up = open, down = collapsed */
     .section-chevron,
     .term-chevron {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       margin-left: auto;
+      transform: rotate(180deg);
       transition: transform 0.2s;
       flex-shrink: 0;
     }
 
-    /* Expanded (default): chevron down. Collapsed: chevron up */
+    /* Expanded: chevron up. Collapsed: chevron down */
     .crypto-list-section.collapsed .section-chevron,
     .term-section.collapsed .term-chevron {
-      transform: rotate(180deg);
+      transform: rotate(0deg);
     }
 
     /* Collapse content: works on all viewports */
@@ -1551,8 +1552,8 @@
     }
 
     .redeem-filter-close {
-      width: 32px;
-      height: 32px;
+      width: 24px;
+      height: 24px;
       border: 1px solid #dfe3e8;
       border-radius: 8px;
       background: #fff;
@@ -1828,7 +1829,7 @@
     }
 
     .pag-select {
-      height: 32px;
+      height: 24px;
       border: 1px solid #dfe3e8;
       border-radius: 6px;
       font-size: 13px;
@@ -1848,8 +1849,8 @@
     }
 
     .pag-btn {
-      width: 32px;
-      height: 32px;
+      width: 24px;
+      height: 24px;
       border: 1px solid #dfe3e8;
       border-radius: 6px;
       background: #fff;
@@ -2192,9 +2193,7 @@
       }
 
       .details-header {
-        align-items: flex-start;
         gap: 8px;
-        margin-bottom: 10px;
       }
 
       .product-info-header h1 {
@@ -2392,105 +2391,13 @@
           <div class="tabs-header">
             <div class="tab-item active" onclick="switchTab('card-info')">Card Info</div>
             <div class="tab-item" onclick="switchTab('redeem-history')">Redeem History</div>
-            <!-- <div class="tab-item" onclick="switchTab('product-history')">Product History</div> -->
           </div>
 
           <!-- Tab: Card Info -->
           <div id="card-info" class="tab-content active">
             <div class="details-card">
               <div class="action-buttons">
-                <div class="am-menu" style="width: 100%;">
-                  <div class="am-button am-button--download" onclick="openModal('modal-withdraw-crypto')">
-                    <div class="am-button-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path
-                          d="M15.7792 11.621L15.2209 8.581C14.9792 7.26766 14.8584 6.611 14.3809 6.22266C13.9034 5.83433 13.2167 5.8335 11.8442 5.8335H8.15591C6.78341 5.8335 6.09758 5.8335 5.61925 6.22266C5.14175 6.611 5.02091 7.26766 4.77925 8.581L4.22091 11.621C3.72091 14.3468 3.47008 15.7102 4.24091 16.6043C5.01175 17.5002 6.43675 17.5002 9.28508 17.5002H10.7151C13.5634 17.5002 14.9884 17.5002 15.7592 16.6052C16.5301 15.7102 16.2801 14.3468 15.7792 11.6218V11.621Z"
-                          stroke="#009689" stroke-width="1.5" stroke-linecap="round" />
-                        <path d="M9.99984 8.75V14.1667M7.9165 12.5L9.99984 14.5833L12.0832 12.5" stroke="#009689"
-                          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        <path
-                          d="M17.4998 9.16667C17.6286 9.10243 17.7453 9.01645 17.8448 8.9125C18.3332 8.4075 18.3332 7.59167 18.3332 5.96C18.3332 4.32833 18.3332 3.51333 17.8448 3.00667C17.3565 2.5 16.5715 2.5 14.9998 2.5H4.99984C3.42817 2.5 2.64317 2.5 2.15484 3.00667C1.6665 3.51333 1.6665 4.32917 1.6665 5.96C1.6665 7.59083 1.6665 8.40667 2.15484 8.9125C2.25484 9.01694 2.36984 9.10167 2.49984 9.16667"
-                          stroke="#009689" stroke-width="1.5" stroke-linecap="round" />
-                      </svg>
-                    </div>
-                    <div class="am-button-label">Withdraw</div>
-                  </div>
-                  <div class="am-button am-button--qrcode" onclick="openQrModal()">
-                    <div class="am-button-icon">
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" preserveAspectRatio="none">
-                        <g id="Icon">
-                          <path
-                            d="M5.83333 2.5H3.33333C2.8731 2.5 2.5 2.8731 2.5 3.33333V5.83333C2.5 6.29357 2.8731 6.66667 3.33333 6.66667H5.83333C6.29357 6.66667 6.66667 6.29357 6.66667 5.83333V3.33333C6.66667 2.8731 6.29357 2.5 5.83333 2.5Z"
-                            stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                          <path
-                            d="M16.6667 2.5H14.1667C13.7064 2.5 13.3333 2.8731 13.3333 3.33333V5.83333C13.3333 6.29357 13.7064 6.66667 14.1667 6.66667H16.6667C17.1269 6.66667 17.5 6.29357 17.5 5.83333V3.33333C17.5 2.8731 17.1269 2.5 16.6667 2.5Z"
-                            stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                          <path
-                            d="M5.83333 13.3333H3.33333C2.8731 13.3333 2.5 13.7064 2.5 14.1667V16.6667C2.5 17.1269 2.8731 17.5 3.33333 17.5H5.83333C6.29357 17.5 6.66667 17.1269 6.66667 16.6667V14.1667C6.66667 13.7064 6.29357 13.3333 5.83333 13.3333Z"
-                            stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                          <path
-                            d="M17.5 13.3333H15C14.558 13.3333 14.134 13.5089 13.8215 13.8215C13.5089 14.134 13.3333 14.558 13.3333 15V17.5"
-                            stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                          <path d="M17.5 17.5V17.5083" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.5" />
-                          <path
-                            d="M10 5.83333V8.33333C10 8.77536 9.82441 9.19928 9.51184 9.51184C9.19928 9.82441 8.77536 10 8.33333 10H5.83333"
-                            stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                          <path d="M2.5 10H2.50833" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.5" />
-                          <path d="M10 2.5H10.0083" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.5" />
-                          <path d="M10 13.3333V13.3417" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.5" />
-                          <path d="M13.3333 10H14.1667" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.5" />
-                          <path d="M17.5 10V10.0083" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.5" />
-                          <path d="M10 17.5V16.6667" stroke="#C800DE" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.5" />
-                        </g>
-                      </svg>
-                    </div>
-                    <div class="am-button-label">View QR</div>
-                  </div>
-                  <div class="am-button am-button--reload" id="btnReload" onclick="openModal('modal-show-wallet')">
-                    <div class="am-button-icon">
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" preserveAspectRatio="none">
-                        <g id="Icon">
-                          <path
-                            d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5"
-                            stroke="#155DFC" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                          <path d="M5.83333 8.33333L10 12.5L14.1667 8.33333" stroke="#155DFC" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="1.5" />
-                          <path d="M10 12.5V2.5" stroke="#155DFC" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="1.5" />
-                        </g>
-                      </svg>
-                    </div>
-                    <div class="am-button-label">Receive</div>
-                  </div>
-                  <!-- <div class="am-button am-button--edit" id="btnEdit">
-                                        <div class="am-button-icon">
-                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                                preserveAspectRatio="none">
-                                                <g clip-path="url(#clip0_am_edit)" id="Icon">
-                                                    <path
-                                                        d="M17.645 5.67667C18.0856 5.23619 18.3332 4.63872 18.3332 4.01571C18.3333 3.3927 18.0859 2.79517 17.6454 2.35458C17.2049 1.91399 16.6075 1.66643 15.9845 1.66635C15.3614 1.66627 14.7639 1.91369 14.3233 2.35417L3.20167 13.4783C3.00818 13.6713 2.86509 13.9088 2.785 14.17L1.68417 17.7967C1.66263 17.8687 1.661 17.9453 1.67946 18.0182C1.69792 18.0911 1.73577 18.1577 1.789 18.2108C1.84223 18.264 1.90885 18.3017 1.9818 18.3201C2.05475 18.3384 2.1313 18.3367 2.20333 18.315L5.83083 17.215C6.09181 17.1356 6.32931 16.9934 6.5225 16.8008L17.645 5.67667Z"
-                                                        stroke="#4F39F6" stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="1.5" />
-                                                    <path d="M12.5 4.16667L15.8333 7.5" stroke="#4F39F6" stroke-linecap="round"
-                                                        stroke-linejoin="round" stroke-width="1.5" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_am_edit">
-                                                        <rect fill="white" width="20" height="20" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>
-                                        </div>
-                                        <div class="am-button-label">Edit</div>
-                                    </div> -->
-                </div>
+
               </div>
 
               <div class="product-main-layout">
@@ -2519,8 +2426,8 @@
                   <div class="details-header">
                     <div class="product-info-header">
                       <h1>Crypto card</h1>
-                      <!-- <span id="cryptoStatusBadge" class="status-badge status-completed"
-                                                style="margin-top: 4px; text-transform: capitalize;">Unlocked</span> -->
+                      <span id="cryptoStatusBadge" class="status-badge status-completed"
+                        style="margin-top: 4px; text-transform: capitalize;">Unlocked</span>
                     </div>
                     <div class="price-tag">
                       <span class="label" style="letter-spacing: 0.08em;">BALANCE</span>
@@ -2717,9 +2624,8 @@
                 • Beauty Spa Center<br>
                 • Luxury Nail Spa<br>
                 • Partner merchants that display the VLINKPAY or Crypto Card acceptance mark.<br>
-                For full and updated list of applicable stores, please check your VLINKPAY portal or contact
-                our
-                support team.
+                For full and updated list of applicable stores, please check your VLINKPAY portal or contact our support
+                team.
               </div>
             </div>
           </div>
@@ -2734,8 +2640,8 @@
                 <div class="field-container">
                   <iconify-icon icon="solar:magnifer-linear" class="field-icon-left"
                     style="cursor: default;"></iconify-icon>
-                  <input type="text" id="redeemSearchInput" class="field-input"
-                    placeholder="Transaction ID / Card Number..." oninput="applyRedeemFilters()">
+                  <input type="text" id="redeemSearchInput" class="field-input" placeholder="Transaction ID"
+                    oninput="applyRedeemFilters()">
                 </div>
               </div>
               <div class="field-root date-field">

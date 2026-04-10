@@ -77,6 +77,7 @@
             background: var(--brand-primary);
             color: #fff;
             box-shadow: 0 14px 28px rgba(217, 119, 6, 0.16);
+            cursor: pointer;
         }
 
         .warm-button:hover {
@@ -86,6 +87,7 @@
         .warm-button-soft {
             background: #fff7ed;
             color: var(--brand-primary);
+            cursor: pointer;
         }
 
         .warm-button-soft:hover {
@@ -95,6 +97,7 @@
         .warm-button-neutral {
             background: #f7f2ec;
             color: #5f5b57;
+            cursor: pointer;
         }
 
         .warm-button-neutral:hover {
@@ -111,8 +114,90 @@
             color: var(--brand-primary);
         }
 
+        a,
+        button,
+        [role="button"] {
+            cursor: pointer;
+        }
+
         .schedule-highlight {
             border-left: 4px solid var(--brand-primary);
+        }
+
+        .faq-accordion {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .faq-accordion details {
+            border: 1px solid var(--border-soft);
+            border-radius: 1rem;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 6px 20px rgba(17, 28, 52, 0.03);
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+        }
+
+        .faq-accordion details[open] {
+            border-color: #f59e0b;
+            box-shadow: 0 10px 28px rgba(217, 119, 6, 0.12);
+            background: #fffbeb;
+        }
+
+        .faq-accordion summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem 1.15rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            background: #fff;
+        }
+
+        .faq-accordion summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-accordion details[open] summary {
+            background: #fffbeb;
+        }
+
+        .faq-accordion .faq-icon {
+            color: #9ca3af;
+            transition: transform 0.25s ease, color 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .faq-accordion details[open] .faq-icon {
+            transform: rotate(180deg);
+            color: var(--brand-primary);
+        }
+
+        .faq-accordion .faq-body {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            padding: 0.25rem 1.15rem 1.1rem;
+        }
+
+        .load-more-item {
+            animation: loadMoreFadeIn 0.28s ease;
+        }
+
+        @keyframes loadMoreFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
@@ -137,363 +222,467 @@
                 <button onclick="switchTab('news')" id="tab-news"
                     class="nav-active whitespace-nowrap pb-2 pt-2 font-medium transition-all">News</button>
                 <button onclick="switchTab('plan')" id="tab-plan"
-                    class="whitespace-nowrap pb-2 pt-2 font-medium text-slate-500 hover:text-[var(--text-main)] transition-all">Compensation Plan</button>
+                    class="whitespace-nowrap pb-2 pt-2 font-medium text-slate-500 hover:text-[var(--text-main)] transition-all">Compensation
+                    Plan</button>
                 <button onclick="switchTab('content')" id="tab-content"
-                    class="whitespace-nowrap pb-2 pt-2 font-medium text-slate-500 hover:text-[var(--text-main)] transition-all">Presentation & Video</button>
+                    class="whitespace-nowrap pb-2 pt-2 font-medium text-slate-500 hover:text-[var(--text-main)] transition-all">Presentation
+                    & Video</button>
                 <button onclick="switchTab('events')" id="tab-events"
-                    class="whitespace-nowrap pb-2 pt-2 font-medium text-slate-500 hover:text-[var(--text-main)] transition-all">Event & Zoom Schedule</button>
+                    class="whitespace-nowrap pb-2 pt-2 font-medium text-slate-500 hover:text-[var(--text-main)] transition-all">Event
+                    & Zoom Schedule</button>
             </nav>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto p-4 md:p-6">
+    <main class="max-w-4xl mx-auto py-4 md:py-6">
 
         <!-- 1. NEWS SECTION -->
         <section id="sec-news" class="space-y-6">
-            <div class="warm-hero text-[var(--text-main)] rounded-2xl p-6 mb-8">
-                <h1 class="text-2xl font-bold mb-2">Ecosystem News</h1>
-                <p class="text-[#5f5b57] opacity-90">Stay updated with the latest product news, announcements, and
-                    events.</p>
-            </div>
-
-            <div class="relative mb-4">
-                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                <input type="text" placeholder="Search news..."
-                    class="warm-focus w-full pl-12 pr-4 py-3 bg-white border rounded-xl outline-none transition-all shadow-sm"
-                    style="border-color: var(--border-soft);">
-            </div>
-
-            <div class="flex flex-wrap gap-2 mb-8">
-                <button class="px-4 py-1.5 rounded-full warm-button text-sm font-medium category-pill">All</button>
-                <button
-                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3] category-pill"
-                    style="border-color: var(--border-soft);">Product</button>
-                <button
-                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3] category-pill"
-                    style="border-color: var(--border-soft);">Partner</button>
-                <button
-                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3] category-pill"
-                    style="border-color: var(--border-soft);">Events</button>
-                <button
-                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3] category-pill"
-                    style="border-color: var(--border-soft);">Announcements</button>
-            </div>
-
-            <h3 class="text-lg font-bold text-slate-800 mb-4">Featured News</h3>
-            <div
-                class="glass-card rounded-2xl overflow-hidden mb-8 group cursor-pointer transition-transform hover:-translate-y-1">
-                <div class="h-48 bg-slate-200 relative">
-                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800"
-                        alt="Ecosystem" class="w-full h-full object-cover">
-                    <div class="absolute top-4 left-4 warm-badge text-xs font-bold px-2 py-1 rounded">NEW
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h2
-                        class="text-xl font-bold text-slate-900 mb-2 transition-colors group-hover:text-[var(--brand-primary)]">
-                        VLINKPAY Ecosystem Update</h2>
-                    <p class="text-slate-600 mb-4 leading-relaxed">Explore new updates across Gift Card Hub, Mobile
-                        Merchant ATM, and Crypto Payment Gateway.</p>
-                    <button class="font-bold inline-flex items-center hover:underline text-[var(--brand-primary)]">
-                        Read More <i class="fas fa-chevron-right ml-2 text-sm"></i>
-                    </button>
-                </div>
-            </div>
-
-            <h3 class="text-lg font-bold text-slate-800 mb-4">Latest Articles</h3>
-            <div class="space-y-4">
-                <div class="flex gap-4 p-4 glass-card rounded-xl hover:bg-[#fffaf3] transition-colors cursor-pointer">
-                    <div class="w-12 h-12 warm-icon rounded-lg flex items-center justify-center shrink-0">
-                        <i class="fas fa-gift"></i>
-                    </div>
+            <div class="hidden warm-hero text-[var(--text-main)] rounded-2xl p-6 mb-8">
+                <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h4 class="font-bold text-slate-900">New Gift Card Hub Features</h4>
-                        <p class="text-sm text-slate-500">Learn about new digital gift card tools for businesses.</p>
+                        <h1 class="text-2xl font-bold mb-2">Welcome Member</h1>
+                        <p class="text-[#5f5b57] opacity-90">Cập nhật nhanh những video mới từ VLINKPAY để bạn dễ theo
+                            dõi tin tức, sản phẩm và các nội dung quan trọng dành cho member.</p>
                     </div>
-                </div>
-                <div class="flex gap-4 p-4 glass-card rounded-xl hover:bg-[#fffaf3] transition-colors cursor-pointer">
-                    <div class="w-12 h-12 rounded-lg flex items-center justify-center shrink-0"
-                        style="background: #fff7ed; color: var(--brand-secondary);">
-                        <i class="fas fa-money-bill-transfer"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-slate-900">Mobile Merchant ATM Expansion</h4>
-                        <p class="text-sm text-slate-500">Explore how ATM Partner features support cash-in and cash-out
-                            use.</p>
-                    </div>
-                </div>
-                <div class="flex gap-4 p-4 glass-card rounded-xl hover:bg-[#fffaf3] transition-colors cursor-pointer">
-                    <div class="w-12 h-12 rounded-lg flex items-center justify-center shrink-0"
-                        style="background: #fff8e8; color: #c66a11;">
-                        <i class="fab fa-bitcoin"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-slate-900">Crypto Payment Gateway Updates</h4>
-                        <p class="text-sm text-slate-500">Review the latest improvements in crypto payment acceptance.
-                        </p>
-                    </div>
+                    <a href="https://www.youtube.com/@vlinkpay.official/videos" target="_blank"
+                        rel="noopener noreferrer"
+                        class="warm-button inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-bold text-sm">
+                        <i class="fab fa-youtube"></i>
+                        Open YouTube Channel
+                    </a>
                 </div>
             </div>
 
-            <button
-                class="warm-outline w-full py-4 mt-4 border-2 border-dashed rounded-xl text-slate-500 font-medium transition-all"
+            <!-- <div class="flex flex-wrap gap-2 mb-8">
+                <span class="px-4 py-1.5 rounded-full warm-button text-sm font-medium category-pill">YouTube
+                    Videos</span>
+                <span class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium category-pill"
+                    style="border-color: var(--border-soft);">CryptoMap360</span>
+                <span class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium category-pill"
+                    style="border-color: var(--border-soft);">P2P Exchange</span>
+                <span class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium category-pill"
+                    style="border-color: var(--border-soft);">Merchant ATM</span>
+                <span class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium category-pill"
+                    style="border-color: var(--border-soft);">Compensation</span>
+            </div> -->
+
+            <h3 class="text-lg font-bold text-slate-800 mb-4">Featured Videos</h3>
+            <div class="grid gap-6 md:grid-cols-2">
+                <a href="https://www.youtube.com/watch?v=N3DhFh90eG4" target="_blank" rel="noopener noreferrer"
+                    class="glass-card rounded-2xl overflow-hidden group transition-transform hover:-translate-y-1">
+                    <div class="h-52 bg-slate-200 relative">
+                        <img src="https://i.ytimg.com/vi/N3DhFh90eG4/hqdefault.jpg"
+                            alt="CryptoMap360: Bản Đồ Tìm Nơi Chấp Nhận Thanh Toán Crypto"
+                            class="w-full h-full object-cover">
+                        <div class="absolute top-4 left-4 warm-badge text-xs font-bold px-2 py-1 rounded">FEATURED
+                        </div>
+                        <div
+                            class="absolute bottom-4 right-4 bg-[#26211f] text-white text-xs font-bold px-2 py-1 rounded">
+                            4:38
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-3 text-xs font-bold text-[var(--brand-primary)] mb-3">
+                            <span>3 tháng trước</span>
+                            <span class="text-slate-300">|</span>
+                            <span>60 lượt xem</span>
+                        </div>
+                        <h2
+                            class="text-xl font-bold text-slate-900 mb-2 transition-colors group-hover:text-[var(--brand-primary)]">
+                            CryptoMap360: Bản Đồ Tìm Nơi Chấp Nhận Thanh Toán Crypto</h2>
+                        <p class="text-slate-600 mb-4 leading-relaxed">Chào mừng đến với CryptoMap360, bản đồ giúp bạn
+                            tìm các địa điểm chấp nhận thanh toán bằng crypto một cách nhanh và trực quan.</p>
+                        <span class="font-bold inline-flex items-center text-[var(--brand-primary)]">
+                            Watch on YouTube <i class="fas fa-chevron-right ml-2 text-sm"></i>
+                        </span>
+                    </div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=1y-voVaCRrI" target="_blank" rel="noopener noreferrer"
+                    class="glass-card rounded-2xl overflow-hidden group transition-transform hover:-translate-y-1">
+                    <div class="h-52 bg-slate-200 relative">
+                        <img src="https://i.ytimg.com/vi/1y-voVaCRrI/hqdefault.jpg" alt="CryptoMap360.com"
+                            class="w-full h-full object-cover">
+                        <div class="absolute top-4 left-4 warm-badge text-xs font-bold px-2 py-1 rounded">LATEST
+                        </div>
+                        <div
+                            class="absolute bottom-4 right-4 bg-[#26211f] text-white text-xs font-bold px-2 py-1 rounded">
+                            5:16
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-3 text-xs font-bold text-[var(--brand-primary)] mb-3">
+                            <span>3 tháng trước</span>
+                            <span class="text-slate-300">|</span>
+                            <span>103 lượt xem</span>
+                        </div>
+                        <h2
+                            class="text-xl font-bold text-slate-900 mb-2 transition-colors group-hover:text-[var(--brand-primary)]">
+                            CryptoMap360.com</h2>
+                        <p class="text-slate-600 mb-4 leading-relaxed">Video giới thiệu bản đồ directory giúp người dùng
+                            tìm nơi chấp nhận crypto ngoài đời thực và giúp merchant được tìm thấy dễ hơn.</p>
+                        <span class="font-bold inline-flex items-center text-[var(--brand-primary)]">
+                            Watch on YouTube <i class="fas fa-chevron-right ml-2 text-sm"></i>
+                        </span>
+                    </div>
+                </a>
+            </div>
+
+            <h3 class="text-lg font-bold text-slate-800 mb-4">More From The Channel</h3>
+            <div class="space-y-4" id="news-list">
+                <a href="https://www.youtube.com/watch?v=UiXE6MHRDZg" target="_blank" rel="noopener noreferrer"
+                    class="flex gap-4 p-4 glass-card rounded-xl hover:bg-[#fffaf3] transition-colors">
+                    <div class="w-28 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-200 relative">
+                        <img src="https://i.ytimg.com/vi/UiXE6MHRDZg/hqdefault.jpg" alt="fjgfg"
+                            class="w-full h-full object-cover">
+                        <span
+                            class="absolute bottom-2 right-2 bg-[#26211f] text-white text-[11px] font-bold px-2 py-1 rounded">6:07</span>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-3 text-xs font-bold text-[var(--brand-primary)] mb-2">
+                            <span>3 tháng trước</span>
+                            <span class="text-slate-300">|</span>
+                            <span>46 lượt xem</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 mb-1">Bitcoin Nail Bar</h4>
+                        <p class="text-sm text-slate-500">Video giới thiệu mô hình salon chấp nhận crypto payment với
+                            nội
+                            dung hiện đang xuất hiện trên channel.</p>
+                    </div>
+                </a>
+                <a href="https://www.youtube.com/watch?v=EhFv5mTWuQw" target="_blank" rel="noopener noreferrer"
+                    class="flex gap-4 p-4 glass-card rounded-xl hover:bg-[#fffaf3] transition-colors">
+                    <div class="w-28 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-200 relative">
+                        <img src="https://i.ytimg.com/vi/EhFv5mTWuQw/hqdefault.jpg"
+                            alt="VLINKPAY Korean Mobile Merchant ATM" class="w-full h-full object-cover">
+                        <span
+                            class="absolute bottom-2 right-2 bg-[#26211f] text-white text-[11px] font-bold px-2 py-1 rounded">5:52</span>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-3 text-xs font-bold text-[var(--brand-primary)] mb-2">
+                            <span>3 tháng trước</span>
+                            <span class="text-slate-300">|</span>
+                            <span>43 lượt xem</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 mb-1">VLINKPAY Partner Opportunity In Korean</h4>
+                        <p class="text-sm text-slate-500">Giới thiệu mô hình Mobile Merchant ATM và mạng lưới P2P cash
+                            ↔ crypto cho đối tác Hàn Quốc.</p>
+                    </div>
+                </a>
+                <a href="https://www.youtube.com/watch?v=zOtGaFmg-Eo" target="_blank" rel="noopener noreferrer"
+                    class="flex gap-4 p-4 glass-card rounded-xl hover:bg-[#fffaf3] transition-colors">
+                    <div class="w-28 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-200 relative">
+                        <img src="https://i.ytimg.com/vi/zOtGaFmg-Eo/hqdefault.jpg" alt="P2P Exchange Cash to Crypto"
+                            class="w-full h-full object-cover">
+                        <span
+                            class="absolute bottom-2 right-2 bg-[#26211f] text-white text-[11px] font-bold px-2 py-1 rounded">6:26</span>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-3 text-xs font-bold text-[var(--brand-primary)] mb-2">
+                            <span>3 tháng trước</span>
+                            <span class="text-slate-300">|</span>
+                            <span>20 lượt xem</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 mb-1">P2P Exchange Cash ↔ Crypto | Mobile Merchant ATM</h4>
+                        <p class="text-sm text-slate-500">Video tiếng Anh giải thích mô hình P2P Exchange kết hợp
+                            Mobile Merchant ATM cho cash, crypto và gift card.</p>
+                    </div>
+                </a>
+                <a href="https://www.youtube.com/watch?v=wNJ3RUjsnrw" target="_blank" rel="noopener noreferrer"
+                    class="flex gap-4 p-4 glass-card rounded-xl hover:bg-[#fffaf3] transition-colors">
+                    <div class="w-28 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-200 relative">
+                        <img src="https://i.ytimg.com/vi/wNJ3RUjsnrw/hqdefault.jpg"
+                            alt="Merchant and Mobile Merchant ATM" class="w-full h-full object-cover">
+                        <span
+                            class="absolute bottom-2 right-2 bg-[#26211f] text-white text-[11px] font-bold px-2 py-1 rounded">5:44</span>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-3 text-xs font-bold text-[var(--brand-primary)] mb-2">
+                            <span>3 tháng trước</span>
+                            <span class="text-slate-300">|</span>
+                            <span>4 lượt xem</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 mb-1">La diferencia entre un Merchant y un Mobile Merchant
+                            ATM</h4>
+                        <p class="text-sm text-slate-500">Phiên bản tiếng Tây Ban Nha giúp giải thích rõ khác biệt giữa
+                            Merchant cố định và Mobile Merchant ATM.</p>
+                    </div>
+                </a>
+                <a href="https://www.youtube.com/watch?v=Tb1uhh7-t7Q" target="_blank" rel="noopener noreferrer"
+                    class="hidden load-more-item news-extra-item flex gap-4 p-4 glass-card rounded-xl hover:bg-[#fffaf3] transition-colors">
+                    <div class="w-28 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-200 relative">
+                        <img src="https://i.ytimg.com/vi/Tb1uhh7-t7Q/hqdefault.jpg" alt="P2P Exchange la gi"
+                            class="w-full h-full object-cover">
+                        <span
+                            class="absolute bottom-2 right-2 bg-[#26211f] text-white text-[11px] font-bold px-2 py-1 rounded">5:35</span>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-3 text-xs font-bold text-[var(--brand-primary)] mb-2">
+                            <span>3 tháng trước</span>
+                            <span class="text-slate-300">|</span>
+                            <span>13 lượt xem</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 mb-1">P2P Exchange là gì? Mua/Bán Crypto bằng TIỀN MẶT với
+                            Mobile Merchant ATM</h4>
+                        <p class="text-sm text-slate-500">Phiên bản tiếng Việt giải thích rõ mô hình P2P Exchange và
+                            cách giao dịch cash với crypto.</p>
+                    </div>
+                </a>
+                <a href="https://www.youtube.com/watch?v=uDz1XfU7pZs" target="_blank" rel="noopener noreferrer"
+                    class="hidden load-more-item news-extra-item flex gap-4 p-4 glass-card rounded-xl hover:bg-[#fffaf3] transition-colors">
+                    <div class="w-28 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-200 relative">
+                        <img src="https://i.ytimg.com/vi/uDz1XfU7pZs/hqdefault.jpg" alt="Bi Mat Doanh Thu On Dinh"
+                            class="w-full h-full object-cover">
+                        <span
+                            class="absolute bottom-2 right-2 bg-[#26211f] text-white text-[11px] font-bold px-2 py-1 rounded">4:52</span>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-3 text-xs font-bold text-[var(--brand-primary)] mb-2">
+                            <span>3 tháng trước</span>
+                            <span class="text-slate-300">|</span>
+                            <span>15 lượt xem</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 mb-1">Bí Mật Doanh Thu Ổn Định Mà Ít Ai Nhìn Ra</h4>
+                        <p class="text-sm text-slate-500">Video về prepaid revenue và cách gift card giúp doanh nghiệp
+                            tạo doanh thu trước khi cung cấp dịch vụ.</p>
+                    </div>
+                </a>
+                <a href="https://www.youtube.com/watch?v=cbOnP7rlHNo" target="_blank" rel="noopener noreferrer"
+                    class="hidden load-more-item news-extra-item flex gap-4 p-4 glass-card rounded-xl hover:bg-[#fffaf3] transition-colors">
+                    <div class="w-28 h-20 rounded-xl overflow-hidden shrink-0 bg-slate-200 relative">
+                        <img src="https://i.ytimg.com/vi/cbOnP7rlHNo/hqdefault.jpg" alt="VLINKPAY Gift Card"
+                            class="w-full h-full object-cover">
+                        <span
+                            class="absolute bottom-2 right-2 bg-[#26211f] text-white text-[11px] font-bold px-2 py-1 rounded">5:20</span>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-3 text-xs font-bold text-[var(--brand-primary)] mb-2">
+                            <span>3 tháng trước</span>
+                            <span class="text-slate-300">|</span>
+                            <span>32 lượt xem</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 mb-1">VLINKPAY Gift Card | Secure, Flexible & Easy Digital
+                            Gift Card Solution</h4>
+                        <p class="text-sm text-slate-500">Giới thiệu giải pháp gift card số với trải nghiệm thanh toán
+                            linh hoạt và thuận tiện hơn cho người dùng.</p>
+                    </div>
+                </a>
+            </div>
+
+            <a id="news-view-more-toggle" role="button"
+                class="warm-outline flex w-full items-center justify-center gap-2 py-4 mt-4 border-2 border-dashed rounded-xl text-slate-500 font-medium transition-all"
                 style="border-color: #dcc6ad;">
-                Load More Articles
-            </button>
+                Load More
+            </a>
         </section>
 
         <!-- 2. PARTNER PLAN SECTION -->
         <section id="sec-plan" class="hidden space-y-6">
-            <div class="warm-hero text-[var(--text-main)] rounded-2xl p-6">
-                <h1 class="text-2xl font-bold mb-2">Compensation & Partner Plan</h1>
-                <p class="text-[#5f5b57] opacity-90">Learn how rewards, partner benefits, and program-based
-                    opportunities work.</p>
+            <div class="hidden warm-hero text-[var(--text-main)] rounded-2xl p-6">
+                <h1 class="text-2xl font-bold mb-2">Compensation Plan</h1>
+                <p class="text-[#5f5b57] opacity-90">Xem nhanh các nội dung quan trọng của Compensation Plan, bao gồm
+                    PV, BV, IOU, Binary và Franchise License.</p>
             </div>
 
-            <div class="p-5 glass-card rounded-2xl border-l-4" style="border-left-color: var(--brand-primary);">
-                <h3 class="text-lg font-bold text-slate-900 mb-2">Overview</h3>
-                <p class="text-slate-600 leading-relaxed">
-                    VLINKPAY offers multiple opportunities through partner programs, merchant growth tools, and
-                    program-based models designed to scale with your commitment.
-                </p>
-            </div>
-
-            <h3 class="text-lg font-bold text-slate-800 mt-8 mb-4">Plan Categories</h3>
+            <h3 class="text-lg font-bold text-slate-800 mt-8 mb-4">Core Topics</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="p-6 glass-card rounded-2xl hover:border-[#e6b98a] transition-all cursor-pointer group">
+                <a href="https://www.youtube.com/watch?v=-9NqPtuWVL8" target="_blank" rel="noopener noreferrer"
+                    class="p-6 glass-card rounded-2xl hover:border-[#e6b98a] transition-all cursor-pointer group">
                     <div
                         class="w-10 h-10 rounded-full flex items-center justify-center mb-4 transition-all warm-icon group-hover:text-white group-hover:bg-[var(--brand-primary)]">
-                        <i class="fas fa-users"></i>
+                        <i class="fas fa-sitemap"></i>
                     </div>
-                    <h4 class="font-bold text-slate-900 mb-1">Affiliate / Partner Plan</h4>
-                    <p class="text-sm text-slate-500">Learn how referrals and partner growth opportunities are
-                        structured.</p>
-                </div>
-                <div class="p-6 glass-card rounded-2xl hover:border-[#e6b98a] transition-all cursor-pointer group">
-                    <div
-                        class="w-10 h-10 rounded-full flex items-center justify-center mb-4 transition-all warm-icon group-hover:text-white group-hover:bg-[var(--brand-primary)]">
-                        <i class="fas fa-landmark"></i>
-                    </div>
-                    <h4 class="font-bold text-slate-900 mb-1">ATM Partner Opportunity</h4>
-                    <p class="text-sm text-slate-500">Explore how Become ATM Partner fits within the P2P Cash Hub model.
-                    </p>
-                </div>
-                <div class="p-6 glass-card rounded-2xl hover:border-[#e6b98a] transition-all cursor-pointer group">
+                    <h4 class="font-bold text-slate-900 mb-1">6 Global Income Streams</h4>
+                    <p class="text-sm text-slate-500">Video giải thích tổng quan Compensation Plan, Franchise License,
+                        PV, BV và 6 dòng thu nhập.</p>
+                </a>
+                <a href="https://www.youtube.com/watch?v=4-B0qVrzE_Y" target="_blank" rel="noopener noreferrer"
+                    class="p-6 glass-card rounded-2xl hover:border-[#e6b98a] transition-all cursor-pointer group">
                     <div
                         class="w-10 h-10 rounded-full flex items-center justify-center mb-4 transition-all warm-icon group-hover:text-white group-hover:bg-[var(--brand-primary)]">
                         <i class="fas fa-chart-line"></i>
                     </div>
-                    <h4 class="font-bold text-slate-900 mb-1">Merchant Growth</h4>
-                    <p class="text-sm text-slate-500">Review merchant-focused earning and payment-related opportunities.
-                    </p>
-                </div>
-                <div class="p-6 glass-card rounded-2xl hover:border-[#e6b98a] transition-all cursor-pointer group">
+                    <h4 class="font-bold text-slate-900 mb-1">PV & BV Breakdown</h4>
+                    <p class="text-sm text-slate-500">Giải thích cách PV, BV, Unilevel và Binary hoạt động trong hệ
+                        thống VLINKPAY.</p>
+                </a>
+                <a href="https://www.youtube.com/watch?v=wp_B3q5JYGA" target="_blank" rel="noopener noreferrer"
+                    class="p-6 glass-card rounded-2xl hover:border-[#e6b98a] transition-all cursor-pointer group">
                     <div
                         class="w-10 h-10 rounded-full flex items-center justify-center mb-4 transition-all warm-icon group-hover:text-white group-hover:bg-[var(--brand-primary)]">
-                        <i class="fas fa-cubes"></i>
+                        <i class="fas fa-people-arrows"></i>
                     </div>
-                    <h4 class="font-bold text-slate-900 mb-1">Program Hub</h4>
-                    <p class="text-sm text-slate-500">Browse Franchise, BTC Collateral, and related program guides.</p>
-                </div>
+                    <h4 class="font-bold text-slate-900 mb-1">IOU & Binary Policy</h4>
+                    <p class="text-sm text-slate-500">Nội dung tiếng Việt về chính sách trả thưởng IOU và phát triển đội
+                        nhóm bền vững.</p>
+                </a>
+                <a href="https://www.youtube.com/watch?v=2j5-VjScsFk" target="_blank" rel="noopener noreferrer"
+                    class="p-6 glass-card rounded-2xl hover:border-[#e6b98a] transition-all cursor-pointer group">
+                    <div
+                        class="w-10 h-10 rounded-full flex items-center justify-center mb-4 transition-all warm-icon group-hover:text-white group-hover:bg-[var(--brand-primary)]">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 mb-1">Passive Income Intro</h4>
+                    <p class="text-sm text-slate-500">Video ngắn tóm tắt Franchise License, Direct Bonus 20%, PV và BV
+                        trong 5 phút.</p>
+                </a>
             </div>
 
-            <div class="mt-8">
-                <h3 class="text-lg font-bold text-slate-800 mb-4">Quick Questions</h3>
-                <div class="space-y-2">
-                    <details class="group border rounded-xl bg-white overflow-hidden"
-                        style="border-color: var(--border-soft);">
-                        <summary
-                            class="p-4 cursor-pointer flex justify-between items-center list-none font-medium text-slate-700">
-                            How does the partner plan work?
-                            <i
-                                class="fas fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
-                        </summary>
-                        <div class="p-4 pt-0 text-slate-600 text-sm border-t bg-[#fffaf3]"
-                            style="border-color: #f5ede4;">
-                            Our partner plan is built on a multi-tier referral system. Partners earn commission based on
-                            merchant onboarding and transaction volumes generated through their network.
-                        </div>
-                    </details>
-                    <details class="group border rounded-xl bg-white overflow-hidden"
-                        style="border-color: var(--border-soft);">
-                        <summary
-                            class="p-4 cursor-pointer flex justify-between items-center list-none font-medium text-slate-700">
-                            How do I become an ATM Partner?
-                            <i
-                                class="fas fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
-                        </summary>
-                        <div class="p-4 pt-0 text-slate-600 text-sm border-t bg-[#fffaf3]"
-                            style="border-color: #f5ede4;">
-                            To become an ATM Partner, you must register through the ATM Partner portal, complete the KYC
-                            verification, and have a designated physical location for cash services.
-                        </div>
-                    </details>
-                </div>
-            </div>
 
-            <button class="w-full warm-button py-4 rounded-xl font-bold transition-all mt-4">
-                View Full Guide (PDF)
-            </button>
+
         </section>
 
         <!-- 3. PRESENTATION & VIDEO SECTION -->
         <section id="sec-content" class="hidden space-y-6">
-            <div class="warm-hero text-[var(--text-main)] rounded-2xl p-6 shadow-lg">
+            <div class="hidden warm-hero text-[var(--text-main)] rounded-2xl p-6 shadow-lg">
                 <h1 class="text-2xl font-bold mb-2">Presentation & Video</h1>
-                <p class="text-[#5f5b57] opacity-90">Watch platform videos and explore presentation materials by
-                    solution.</p>
+                <p class="text-[#5f5b57] opacity-90">Member có thể xem nhanh các video giới thiệu sản phẩm, giải pháp
+                    và hướng dẫn thực tế để hiểu rõ hơn cách VLINKPAY đang vận hành.</p>
             </div>
 
-            <div class="relative">
-                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                <input type="text" placeholder="Search materials..."
-                    class="warm-focus w-full pl-12 pr-4 py-3 bg-white border rounded-xl outline-none transition-all shadow-sm"
-                    style="border-color: var(--border-soft);">
-            </div>
-
-            <div class="flex flex-wrap gap-2 mb-6">
-                <button class="px-4 py-1.5 rounded-full warm-button text-sm font-medium">All</button>
-                <button
-                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3]"
-                    style="border-color: var(--border-soft);">Videos</button>
-                <button
-                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3]"
-                    style="border-color: var(--border-soft);">Decks</button>
-                <button
-                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3]"
-                    style="border-color: var(--border-soft);">Training</button>
-            </div>
+            <!-- <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-4 py-1.5 rounded-full warm-button text-sm font-medium">Presentation</span>
+                <span class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium"
+                    style="border-color: var(--border-soft);">Gift Card</span>
+                <span class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium"
+                    style="border-color: var(--border-soft);">Crypto</span>
+                <span class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium"
+                    style="border-color: var(--border-soft);">P2P Exchange</span>
+            </div> -->
 
             <h3 class="text-lg font-bold text-slate-800 mb-4">Featured Content</h3>
-            <div class="glass-card rounded-2xl overflow-hidden mb-8">
+            <a href="https://www.youtube.com/watch?v=efLkAhXheV8" target="_blank" rel="noopener noreferrer"
+                class="glass-card rounded-2xl overflow-hidden mb-8 block">
                 <div class="aspect-video bg-slate-900 relative flex items-center justify-center">
-                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800"
-                        alt="Video" class="absolute inset-0 w-full h-full object-cover opacity-60">
-                    <button
+                    <img src="https://i.ytimg.com/vi/efLkAhXheV8/hqdefault.jpg" alt="VLINKPAY overview"
+                        class="absolute inset-0 w-full h-full object-cover opacity-75">
+                    <div
                         class="w-16 h-16 warm-button rounded-full flex items-center justify-center text-xl hover:scale-110 transition-transform relative z-10">
                         <i class="fas fa-play ml-1"></i>
-                    </button>
-                </div>
-                <div class="p-6">
-                    <h2 class="text-xl font-bold text-slate-900 mb-1">VLINKPAY Platform Overview</h2>
-                    <p class="text-slate-600 mb-4">A quick introduction to the payment ecosystem and its core services.
-                    </p>
-                    <div class="flex items-center text-slate-400 text-sm">
-                        <i class="far fa-clock mr-2"></i> 5:24
-                        <span class="mx-3">•</span>
-                        <i class="far fa-eye mr-2"></i> 12.4k views
                     </div>
                 </div>
-            </div>
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-slate-900 mb-1">VLINKPAY – Unlocking Upfront Revenue and Driving
+                        Global Growth</h2>
+                    <p class="text-slate-600 mb-4">Video overview ngắn gọn để giới thiệu nhanh hệ sinh thái, cash flow
+                        model và định hướng mở rộng toàn cầu của VLINKPAY.
+                    </p>
+                    <div class="flex items-center text-slate-400 text-sm">
+                        <i class="far fa-clock mr-2"></i> 2:29
+                        <span class="mx-3">•</span>
+                        <i class="far fa-eye mr-2"></i> 35 lượt xem
+                    </div>
+                </div>
+            </a>
 
             <h3 class="text-lg font-bold text-slate-800 mb-4">Solution Presentations</h3>
             <div class="space-y-3">
-                <div class="p-4 glass-card rounded-xl flex items-center justify-between">
+                <a href="https://www.youtube.com/watch?v=cbOnP7rlHNo" target="_blank" rel="noopener noreferrer"
+                    class="p-4 glass-card rounded-xl flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div
                             class="w-10 h-10 bg-[#fff8e8] rounded flex items-center justify-center text-[var(--brand-primary)]">
                             <i class="far fa-file-pdf text-xl"></i>
                         </div>
                         <div>
-                            <h4 class="font-bold text-slate-900 text-sm">Gift Card Hub Overview</h4>
-                            <p class="text-xs text-slate-500">Updated Apr 2026 • 2.4 MB</p>
+                            <h4 class="font-bold text-slate-900 text-sm">VLINKPAY Gift Card | Secure, Flexible & Easy
+                                Digital Gift Card Solution</h4>
+                            <p class="text-xs text-slate-500">YouTube Video • 5:20 • 32 lượt xem</p>
                         </div>
                     </div>
                     <div class="flex gap-2">
-                        <button
-                            class="px-3 py-1.5 warm-button-neutral text-xs font-bold rounded-lg transition-all">View</button>
-                        <button
-                            class="px-3 py-1.5 warm-button-soft text-xs font-bold rounded-lg transition-all">Download</button>
+                        <span
+                            class="px-3 py-1.5 warm-button-neutral text-xs font-bold rounded-lg transition-all">Watch</span>
+                        <span
+                            class="px-3 py-1.5 warm-button-soft text-xs font-bold rounded-lg transition-all">Open</span>
                     </div>
-                </div>
-                <div class="p-4 glass-card rounded-xl flex items-center justify-between">
+                </a>
+                <a href="https://www.youtube.com/watch?v=rhcIdcfnDxg" target="_blank" rel="noopener noreferrer"
+                    class="p-4 glass-card rounded-xl flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div
                             class="w-10 h-10 bg-[#fff8e8] rounded flex items-center justify-center text-[var(--brand-primary)]">
                             <i class="far fa-file-pdf text-xl"></i>
                         </div>
                         <div>
-                            <h4 class="font-bold text-slate-900 text-sm">Mobile Merchant ATM Overview</h4>
-                            <p class="text-xs text-slate-500">Updated Mar 2026 • 1.8 MB</p>
+                            <h4 class="font-bold text-slate-900 text-sm">Bridging Cash and Crypto | VLINKPAY P2P
+                                Exchange for Merchant & Mobile ATM</h4>
+                            <p class="text-xs text-slate-500">YouTube Video • 6:22 • 37 lượt xem</p>
                         </div>
                     </div>
                     <div class="flex gap-2">
-                        <button
-                            class="px-3 py-1.5 warm-button-neutral text-xs font-bold rounded-lg transition-all">View</button>
-                        <button
-                            class="px-3 py-1.5 warm-button-soft text-xs font-bold rounded-lg transition-all">Download</button>
+                        <span
+                            class="px-3 py-1.5 warm-button-neutral text-xs font-bold rounded-lg transition-all">Watch</span>
+                        <span
+                            class="px-3 py-1.5 warm-button-soft text-xs font-bold rounded-lg transition-all">Open</span>
                     </div>
-                </div>
+                </a>
             </div>
 
             <h3 class="text-lg font-bold text-slate-800 mt-8 mb-4">Training Videos</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="group cursor-pointer">
+                <a href="https://www.youtube.com/watch?v=Tb1uhh7-t7Q" target="_blank" rel="noopener noreferrer"
+                    class="group cursor-pointer">
                     <div class="aspect-video bg-slate-200 rounded-xl mb-2 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=400"
-                            class="w-full h-full object-cover">
+                        <img src="https://i.ytimg.com/vi/Tb1uhh7-t7Q/hqdefault.jpg" class="w-full h-full object-cover">
                         <div
                             class="absolute inset-0 bg-black/20 group-hover:bg-black/40 flex items-center justify-center transition-all">
                             <i
                                 class="fas fa-play text-white opacity-0 group-hover:opacity-100 transition-all text-2xl"></i>
                         </div>
                     </div>
-                    <h5 class="font-bold text-slate-900 text-sm">How to Become an ATM Partner</h5>
-                    <p class="text-xs text-slate-500">Video Guide • 12:40</p>
-                </div>
-                <div class="group cursor-pointer">
+                    <h5 class="font-bold text-slate-900 text-sm">P2P Exchange là gì? Mua/Bán Crypto bằng TIỀN MẶT với
+                        Mobile Merchant ATM</h5>
+                    <p class="text-xs text-slate-500">Video Guide • 5:35</p>
+                </a>
+                <a href="https://www.youtube.com/watch?v=C8pRpnWFt9Y" target="_blank" rel="noopener noreferrer"
+                    class="group cursor-pointer">
                     <div class="aspect-video bg-slate-200 rounded-xl mb-2 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=400"
-                            class="w-full h-full object-cover">
+                        <img src="https://i.ytimg.com/vi/C8pRpnWFt9Y/hqdefault.jpg" class="w-full h-full object-cover">
                         <div
                             class="absolute inset-0 bg-black/20 group-hover:bg-black/40 flex items-center justify-center transition-all">
                             <i
                                 class="fas fa-play text-white opacity-0 group-hover:opacity-100 transition-all text-2xl"></i>
                         </div>
                     </div>
-                    <h5 class="font-bold text-slate-900 text-sm">Merchant Payment Setup</h5>
-                    <p class="text-xs text-slate-500">Video Guide • 08:15</p>
-                </div>
+                    <h5 class="font-bold text-slate-900 text-sm">Prepaid Revenue Through Gift Cards</h5>
+                    <p class="text-xs text-slate-500">Video Guide • 5:42</p>
+                </a>
             </div>
         </section>
 
         <!-- 4. EVENT & ZOOM SCHEDULE SECTION -->
         <section id="sec-events" class="hidden space-y-6">
-            <div class="warm-hero text-[var(--text-main)] rounded-2xl p-6">
-                <h1 class="text-2xl font-bold mb-2">Event & Zoom Schedule</h1>
-                <p class="text-[#5f5b57] opacity-90">Join live sessions, onboarding events, and product training.</p>
-            </div>
-
-            <div class="flex p-1 rounded-xl" style="background: #f7f2ec;">
+            <!-- <div class="flex p-1 rounded-xl" style="background: #f7f2ec;">
                 <button
-                    class="flex-1 py-2 text-sm font-bold bg-white rounded-lg shadow-sm text-[var(--brand-primary)]">This
-                    Week</button>
-                <button class="flex-1 py-2 text-sm font-medium text-slate-500 hover:text-[var(--text-main)]">This
-                    Month</button>
+                    class="flex-1 py-2 text-sm font-bold bg-white rounded-lg shadow-sm text-[var(--brand-primary)]">Upcoming</button>
                 <button
-                    class="flex-1 py-2 text-sm font-medium text-slate-500 hover:text-[var(--text-main)]">All</button>
-            </div>
+                    class="flex-1 py-2 text-sm font-medium text-slate-500 hover:text-[var(--text-main)]">This Week</button>
+                <button
+                    class="flex-1 py-2 text-sm font-medium text-slate-500 hover:text-[var(--text-main)]">Archive</button>
+            </div> -->
 
-            <h3 class="text-lg font-bold text-slate-800 mt-6 mb-4">Upcoming Sessions</h3>
+            <h3 class="text-lg font-bold text-slate-800 mt-6 mb-4">Upcoming Zoom Sessions</h3>
             <div class="space-y-4">
                 <div class="p-6 glass-card rounded-2xl schedule-highlight">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div class="flex gap-4">
                             <div class="w-14 h-14 rounded-xl flex flex-col items-center justify-center shrink-0 border"
                                 style="background: #fff7ed; border-color: #f6d6ae;">
-                                <span class="text-xs font-bold uppercase text-[var(--brand-primary)]">Apr</span>
-                                <span class="text-xl font-bold text-slate-800">10</span>
+                                <span class="text-xs font-bold uppercase text-[var(--brand-primary)]">Mon</span>
+                                <span class="text-xl font-bold text-slate-800">14</span>
                             </div>
                             <div>
                                 <div class="flex items-center text-xs font-bold mb-1 text-[var(--brand-primary)]">
-                                    <i class="far fa-clock mr-1"></i> 09:00 AM (EST)
+                                    <i class="far fa-clock mr-1"></i> 08:00 PM EST
                                     <span class="mx-2 text-slate-300">|</span>
-                                    <i class="fas fa-video mr-1"></i> Zoom Session
+                                    <i class="fas fa-video mr-1"></i> Zoom Webinar
                                 </div>
-                                <h4 class="text-lg font-bold text-slate-900 leading-tight">VLINKPAY Platform Overview
-                                    Webinar</h4>
-                                <p class="text-sm text-slate-500 mt-1">Foundational training for new partners and
-                                    merchants.</p>
+                                <h4 class="text-lg font-bold text-slate-900 leading-tight">Compensation Plan Overview
+                                    Session</h4>
+                                <p class="text-sm text-slate-500 mt-1">Tổng quan về Compensation Plan, PV, BV và các
+                                    điểm chính dành cho member mới.</p>
                             </div>
                         </div>
                         <div class="flex gap-2 shrink-0">
@@ -511,26 +700,25 @@
                         <div class="flex gap-4">
                             <div class="w-14 h-14 rounded-xl flex flex-col items-center justify-center shrink-0 border"
                                 style="background: #fff7ed; border-color: #f6d6ae;">
-                                <span class="text-xs font-bold uppercase text-[var(--brand-primary)]">Apr</span>
-                                <span class="text-xl font-bold text-slate-800">12</span>
+                                <span class="text-xs font-bold uppercase text-[var(--brand-primary)]">Wed</span>
+                                <span class="text-xl font-bold text-slate-800">16</span>
                             </div>
                             <div>
                                 <div class="flex items-center text-xs font-bold mb-1 text-[var(--brand-primary)]">
-                                    <i class="far fa-clock mr-1"></i> 07:00 PM (EST)
+                                    <i class="far fa-clock mr-1"></i> 09:00 PM EST
                                     <span class="mx-2 text-slate-300">|</span>
-                                    <i class="fas fa-video mr-1"></i> Zoom Session
+                                    <i class="fas fa-video mr-1"></i> Live Training
                                 </div>
-                                <h4 class="text-lg font-bold text-slate-900 leading-tight">ATM Partner Orientation</h4>
-                                <p class="text-sm text-slate-500 mt-1">Comprehensive guide for the Become ATM Partner
-                                    program.</p>
+                                <h4 class="text-lg font-bold text-slate-900 leading-tight">Member Orientation & Q&A</h4>
+                                <p class="text-sm text-slate-500 mt-1">Buổi hướng dẫn dành cho member cần nắm quy trình,
+                                    công cụ và các bước bắt đầu.</p>
                             </div>
                         </div>
                         <div class="flex gap-2 shrink-0">
                             <button
-                                class="flex-1 md:flex-none px-4 py-2 warm-button rounded-lg font-bold text-sm transition-all">Join
-                                Zoom</button>
+                                class="flex-1 md:flex-none px-4 py-2 warm-button rounded-lg font-bold text-sm transition-all">Register</button>
                             <button
-                                class="px-4 py-2 warm-button-neutral rounded-lg font-bold text-sm transition-all">Details</button>
+                                class="px-4 py-2 warm-button-neutral rounded-lg font-bold text-sm transition-all">Agenda</button>
                         </div>
                     </div>
                 </div>
@@ -540,19 +728,19 @@
                         <div class="flex gap-4">
                             <div class="w-14 h-14 rounded-xl flex flex-col items-center justify-center shrink-0 border"
                                 style="background: #fff7ed; border-color: #f6d6ae;">
-                                <span class="text-xs font-bold uppercase text-[var(--brand-primary)]">Apr</span>
-                                <span class="text-xl font-bold text-slate-800">15</span>
+                                <span class="text-xs font-bold uppercase text-[var(--brand-primary)]">Fri</span>
+                                <span class="text-xl font-bold text-slate-800">18</span>
                             </div>
                             <div>
                                 <div class="flex items-center text-xs font-bold mb-1 text-[var(--brand-primary)]">
-                                    <i class="far fa-clock mr-1"></i> 08:00 PM (EST)
+                                    <i class="far fa-clock mr-1"></i> 07:30 PM EST
                                     <span class="mx-2 text-slate-300">|</span>
-                                    <i class="fas fa-video mr-1"></i> Zoom Session
+                                    <i class="fas fa-video mr-1"></i> Partner Zoom
                                 </div>
-                                <h4 class="text-lg font-bold text-slate-900 leading-tight">Merchant Payment Setup
+                                <h4 class="text-lg font-bold text-slate-900 leading-tight">Merchant & ATM Partner
                                     Training</h4>
-                                <p class="text-sm text-slate-500 mt-1">Deep dive into integrating the Crypto Payment
-                                    Gateway.</p>
+                                <p class="text-sm text-slate-500 mt-1">Buổi training chuyên sâu cho nội dung merchant,
+                                    mobile merchant ATM và phần hỏi đáp cuối buổi.</p>
                             </div>
                         </div>
                         <div class="flex gap-2 shrink-0">
@@ -567,31 +755,33 @@
             </div>
 
             <div class="mt-8">
-                <h3 class="text-lg font-bold text-slate-800 mb-4">Past Sessions</h3>
+                <h3 class="text-lg font-bold text-slate-800 mb-4">Recent Sessions</h3>
                 <div class="bg-white border rounded-2xl overflow-hidden" style="border-color: var(--border-soft);">
                     <div class="p-4 flex items-center justify-between hover:bg-[#fffaf3] cursor-pointer border-b"
                         style="border-color: #f5ede4;">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-history text-[#cf8a54]"></i>
-                            <span class="text-slate-700 font-medium">Gift Card Hub Demo</span>
+                            <span class="text-slate-700 font-medium">Weekly Compensation Q&A</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
+                    </div>
+                    <div class="p-4 flex items-center justify-between hover:bg-[#fffaf3] cursor-pointer border-b"
+                        style="border-color: #f5ede4;">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-history text-[#cf8a54]"></i>
+                            <span class="text-slate-700 font-medium">Member Onboarding Session</span>
                         </div>
                         <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
                     </div>
                     <div class="p-4 flex items-center justify-between hover:bg-[#fffaf3] cursor-pointer">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-history text-[#cf8a54]"></i>
-                            <span class="text-slate-700 font-medium">Crypto Payment Gateway Walkthrough</span>
+                            <span class="text-slate-700 font-medium">Merchant Partner Zoom Training</span>
                         </div>
                         <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
                     </div>
                 </div>
             </div>
-
-            <button
-                class="w-full py-4 font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-white"
-                style="background: #26211f;">
-                <i class="far fa-calendar-alt"></i> Open Full Calendar
-            </button>
         </section>
 
     </main>
@@ -634,6 +824,19 @@
                 });
             }
         });
+
+        const newsViewMoreToggle = document.getElementById('news-view-more-toggle');
+        const newsMoreItems = document.querySelectorAll('.news-extra-item');
+
+        if (newsViewMoreToggle && newsMoreItems.length) {
+            newsViewMoreToggle.addEventListener('click', function (event) {
+                event.preventDefault();
+                newsMoreItems.forEach(function (item) {
+                    item.classList.remove('hidden');
+                });
+                newsViewMoreToggle.classList.add('hidden');
+            });
+        }
     </script>
 </body>
 

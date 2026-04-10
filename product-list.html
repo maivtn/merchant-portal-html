@@ -1295,7 +1295,7 @@
       <h1 class="page-title">Product Management</h1>
       <button class="btn-issue-desktop" onclick="openIssueCardModal()">
         <i data-lucide="plus" style="width:20px;height:20px;"></i>
-        Issue Card
+        <span id="issueCardDesktopLabel">Issue Card</span>
       </button>
       <button class="btn-issue-mobile" onclick="openIssueCardModal()">
         <i data-lucide="plus" style="width:20px;height:20px;"></i>
@@ -1797,6 +1797,7 @@
       container.innerHTML = cats.map(c =>
         `<button class="category-chip${c === categoryTab ? ' active' : ''}" data-cat="${c}">${c}</button>`
       ).join('');
+      updateIssueCardButtonLabel();
     }
     let searchQuery = '';
     let statusFilter = '';
@@ -2121,6 +2122,7 @@
       document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
       categoryTab = chip.dataset.cat;
+      updateIssueCardButtonLabel();
       currentPage = 1;
       render();
     });
@@ -2165,6 +2167,19 @@
     }
     function closeIssueCardModal() {
       document.getElementById('issueCardModal').classList.remove('open');
+    }
+
+    function updateIssueCardButtonLabel() {
+      const label = document.getElementById('issueCardDesktopLabel');
+      if (!label) return;
+      const activeCategoryChip = document.querySelector('.category-chip.active');
+      const isCryptoCategoryActive = (activeCategoryChip && activeCategoryChip.dataset.cat === 'Crypto Card')
+        || categoryTab === 'Crypto Card';
+      const params = new URLSearchParams(window.location.search);
+      const isCryptoCard = (params.get('type') || '').toLowerCase() === 'crypto-card'
+        || window.location.pathname.toLowerCase().includes('crypto-card')
+        || isCryptoCategoryActive;
+      label.textContent = isCryptoCard ? 'Create Card' : 'Issue Card';
     }
 
     // ===== Mobile Filter Modal =====
@@ -2242,6 +2257,7 @@
     // ===== Init =====
     document.addEventListener('DOMContentLoaded', function () {
       lucide.createIcons();
+      updateIssueCardButtonLabel();
 
       // Init Flatpickr for Created date range (desktop)
       if (window.flatpickr) {

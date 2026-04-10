@@ -1870,6 +1870,36 @@
             color: var(--grey-500);
         }
 
+        .page-header-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .via-card-logout-btn {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 10px 16px;
+            border: 1px solid var(--grey-300);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--grey-800);
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .via-card-logout-btn:hover {
+            background: var(--grey-100);
+            border-color: var(--grey-400);
+            color: var(--grey-900);
+        }
+
         /* ─── Responsive: iPad (max-width: 1023px) ─── */
         @media (max-width: 1023px) {
             .page-title {
@@ -1933,6 +1963,16 @@
         @media (max-width: 767px) {
             .page-title {
                 font-size: 18px !important;
+            }
+
+            .page-header-actions {
+                margin-left: 0;
+            }
+
+            .via-card-logout-btn {
+                min-height: 34px;
+                padding: 8px 12px;
+                font-size: 12px;
             }
 
             .product-main-layout {
@@ -2130,6 +2170,12 @@
                     Back
                 </a>
                 <h1 class="page-title">Crypto Card Details</h1>
+                <div class="page-header-actions">
+                    <button type="button" class="via-card-logout-btn" id="viaCardLogoutButton"
+                        onclick="handleViaCardLogout()">
+                        Logout
+                    </button>
+                </div>
             </div>
 
             <div class="tabs-container">
@@ -3964,6 +4010,16 @@
             btn.style.display = isViaCardFlow() ? 'none' : 'inline-flex';
         }
 
+        function toggleViaCardLogoutButton() {
+            var btn = document.getElementById('viaCardLogoutButton');
+            if (!btn) return;
+            btn.style.display = isViaCardFlow() ? 'inline-flex' : 'none';
+        }
+
+        function handleViaCardLogout() {
+            window.location.href = 'crypto-card-list.html';
+        }
+
         function openActiveAccountModal() {
             var el = document.getElementById('activeAccountModal');
             if (!el || !isViaCardFlow()) return;
@@ -4115,6 +4171,7 @@
             toggleViaCardActiveAccountButton();
             toggleViaCardWithdrawButton();
             toggleViaCardBackButton();
+            toggleViaCardLogoutButton();
             const params = new URLSearchParams(window.location.search);
             const statusParam = params.get('status');
             const hasEmailParam = params.get('hasEmail');

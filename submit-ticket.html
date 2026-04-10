@@ -371,7 +371,7 @@
   <main class="container py-4 py-md-5">
     <div class="page-wrap mx-auto px-2 px-md-0">
       <div class="ticket-top">
-        <a href="#" id="backLink" class="ticket-back"><i class="bi bi-arrow-left"></i> Back</a>
+        <a href="help-center.html" id="backLink" class="ticket-back"><i class="bi bi-arrow-left"></i> Back</a>
         <h1 class="ticket-page-title ">Submit a Ticket</h1>
       </div>
 
@@ -446,6 +446,7 @@
       { value: "other", label: "Other" },
     ];
     (function () {
+      var backLink = document.getElementById("backLink");
       var fullNameInput = document.getElementById("fullName");
       var emailInput = document.getElementById("email");
       var categorySelect = document.getElementById("category");
@@ -453,6 +454,18 @@
       var previews = document.getElementById("attachmentPreviews");
       var zone = document.getElementById("attachmentZone");
       var feedback = document.getElementById("attachmentFeedback");
+
+      if (backLink) {
+        backLink.addEventListener("click", function (event) {
+          event.preventDefault();
+          if (window.history.length > 1) {
+            window.history.back();
+            return;
+          }
+          window.location.href = backLink.getAttribute("href") || "help-center.html";
+        });
+      }
+
       if (!input || !previews || !zone || !categorySelect || !fullNameInput || !emailInput) return;
 
       function renderTicketCategories() {

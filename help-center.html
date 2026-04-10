@@ -646,7 +646,7 @@
   <main class="container py-4 py-md-5">
     <div class="page-wrap mx-auto px-2 px-md-0">
       <div class="ticket-top">
-        <a href="#" id="backLink" class="ticket-back"><i class="bi bi-arrow-left"></i> Back</a>
+        <a href="index.html" id="backLink" class="ticket-back"><i class="bi bi-arrow-left"></i> Back</a>
         <h1 class="ticket-page-title ">Help Center</h1>
       </div>
       <section class="help-ai">
@@ -708,6 +708,7 @@
   </main>
 
   <script>
+    const backLink = document.getElementById("backLink");
     const searchInput = document.getElementById("searchInput");
     const categoryList = document.getElementById("categoryList");
     const faqAccordion = document.getElementById("faqAccordion");
@@ -937,6 +938,17 @@
 
     renderCategoryList(categoryData);
     renderFaqList(faqItems);
+
+    if (backLink) {
+      backLink.addEventListener("click", function (event) {
+        event.preventDefault();
+        if (window.history.length > 1) {
+          window.history.back();
+          return;
+        }
+        window.location.href = backLink.getAttribute("href") || "index.html";
+      });
+    }
 
     const aiResponsePanel = document.getElementById("aiResponsePanel");
     const aiResponseBody = document.getElementById("aiResponseBody");

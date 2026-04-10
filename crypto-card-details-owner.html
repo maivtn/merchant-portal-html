@@ -2124,7 +2124,7 @@
     <main class="main">
         <div class="container">
             <div class="page-header">
-                <a href="#" class="back-btn" title="Back"
+                <a href="#" class="back-btn" id="pageBackButton" title="Back"
                     onclick="event.preventDefault(); window.history.back(); return false;">
                     <i class="icon-back"></i>
                     Back
@@ -2912,8 +2912,9 @@
                     <a href="#" class="change-pin-back-link"
                         onclick="closeModal('modal-reset-pin'); openModal('modal-change-pin'); return false;">← Back
                         to Change PIN</a>
+                    <p>If you forgot your PIN, we will email you instructions to reset it.</p>
                     <div class="form-group change-pin-email-at-bottom">
-                        <label class="form-label">Email to receive OTP <span>*</span></label>
+                        <label class="form-label">Email<span>*</span></label>
                         <input type="email" class="change-pin-input" id="resetPinEmailInput"
                             placeholder="Enter email to receive OTP" autocomplete="email">
                     </div>
@@ -2921,7 +2922,7 @@
                         <button type="button" class="btn-secondary"
                             onclick="closeModal('modal-reset-pin')">Cancel</button>
                         <button type="button" class="btn-primary-rounded change-pin-send-code-btn"
-                            id="resetPinSendOtpBtn" onclick="sendOtpForResetPin()">Send verification code</button>
+                            id="resetPinSendOtpBtn" onclick="sendOtpForResetPin()">Reset PIN</button>
                     </div>
                 </form>
             </div>
@@ -3960,6 +3961,12 @@
             btn.style.display = isViaCardFlow() ? 'none' : 'inline-flex';
         }
 
+        function toggleViaCardBackButton() {
+            var btn = document.getElementById('pageBackButton');
+            if (!btn) return;
+            btn.style.display = isViaCardFlow() ? 'none' : 'inline-flex';
+        }
+
         function openActiveAccountModal() {
             var el = document.getElementById('activeAccountModal');
             if (!el || !isViaCardFlow()) return;
@@ -3999,14 +4006,50 @@
 
             closeActiveAccountModal();
             if (typeof Swal !== 'undefined') {
+                var otpHooks = otpResendSwalHooks();
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Active account request submitted',
-                    text:
-                        email +
-                        '. Please check your email to log in with your email account. Your card account will no longer be valid for login.'
+                    title: 'Enter OTP',
+                    text: 'We sent an OTP to ' + email + '. Please enter the OTP sent to your email to continue.',
+                    input: 'text',
+                    inputPlaceholder: 'Enter OTP',
+                    confirmButtonText: 'Verify',
+                    showCancelButton: true,
+                    reverseButtons: true,
+                    allowOutsideClick: false,
+                    didOpen: otpHooks.didOpen,
+                    willClose: otpHooks.willClose,
+                    preConfirm: function (otp) {
+                        var value = (otp || '').trim();
+                        if (!value) {
+                            Swal.showValidationMessage('OTP is required.');
+                            return false;
+                        }
+                        if (!/^\d+$/.test(value)) {
+                            Swal.showValidationMessage('OTP must contain digits only.');
+                            return false;
+                        }
+                        if (value.length !== 4) {
+                            Swal.showValidationMessage('OTP must be exactly 4 digits.');
+                            return false;
+                        }
+                        return value;
+                    }
+                }).then(function (result) {
+                    if (!result.isConfirmed) return;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Active account request submitted',
+                        text:
+                            email +
+                            '. Please check your email to log in with your email account. Your card account will no longer be valid for login.'
+                    });
                 });
             } else {
+                var fallbackOtp = prompt('We sent an OTP to ' + email + '. Please enter the 4-digit OTP.');
+                if (!/^\d{4}$/.test((fallbackOtp || '').trim())) {
+                    alert('Invalid OTP. Please enter a valid 4-digit OTP.');
+                    return;
+                }
                 alert(
                     'Active account request submitted for ' +
                     email +
@@ -4019,6 +4062,7 @@
             if (typeof lucide !== 'undefined') lucide.createIcons();
             toggleViaCardActiveAccountButton();
             toggleViaCardWithdrawButton();
+            toggleViaCardBackButton();
             const params = new URLSearchParams(window.location.search);
             const statusParam = params.get('status');
             const hasEmailParam = params.get('hasEmail');

@@ -2952,9 +2952,6 @@
                                     <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
                                 </button>
                             </div>
-                            <a href="#" class="forgot-pin-link"
-                                onclick="openModal('modal-reset-pin'); closeModal('modal-change-pin');">Forgot
-                                current PIN?</a>
                         </div>
                     </div>
 
@@ -3184,7 +3181,7 @@
                     <label for="activeAccountEmail">Email <span style="color:var(--error-main);">*</span></label>
                     <input type="email" id="activeAccountEmail" placeholder="Enter your email" />
                 </div>
-                <button type="button" class="signin-btn" onclick="submitActiveAccount()">Active</button>
+                <button type="button" class="signin-btn" onclick="submitActiveAccount()">Create Account</button>
             </div>
         </div>
     </div>
@@ -3989,6 +3986,67 @@
             el.setAttribute('aria-hidden', 'true');
         }
 
+        function createOtpResendSwalHooks() {
+            var otpResendTimer = null;
+            return {
+                didOpen: function () {
+                    var input = Swal.getInput();
+                    if (!input) return;
+                    var wrap = document.createElement('div');
+                    wrap.className = 'swal-otp-resend-wrap';
+                    wrap.setAttribute('style', 'margin-top:12px;text-align:center;font-size:14px; margin-bottom:12px;');
+                    var link = document.createElement('a');
+                    link.href = '#';
+                    link.className = 'swal-otp-resend-link';
+                    var seconds = 59;
+
+                    function updateDisplay() {
+                        if (seconds > 0) {
+                            link.textContent = 'Resend OTP (' + seconds + 's)';
+                            link.style.pointerEvents = 'none';
+                            link.style.opacity = '0.6';
+                            link.style.cursor = 'default';
+                        } else {
+                            link.textContent = 'Resend OTP';
+                            link.style.pointerEvents = '';
+                            link.style.opacity = '1';
+                            link.style.cursor = 'pointer';
+                            if (otpResendTimer) {
+                                clearInterval(otpResendTimer);
+                                otpResendTimer = null;
+                            }
+                        }
+                    }
+
+                    updateDisplay();
+                    otpResendTimer = setInterval(function () {
+                        seconds--;
+                        updateDisplay();
+                    }, 1000);
+
+                    link.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        if (seconds > 0) return;
+                        seconds = 59;
+                        updateDisplay();
+                        otpResendTimer = setInterval(function () {
+                            seconds--;
+                            updateDisplay();
+                        }, 1000);
+                    });
+
+                    wrap.appendChild(link);
+                    input.parentNode.insertBefore(wrap, input.nextSibling);
+                },
+                willClose: function () {
+                    if (otpResendTimer) {
+                        clearInterval(otpResendTimer);
+                        otpResendTimer = null;
+                    }
+                }
+            };
+        }
+
         function submitActiveAccount() {
             var input = document.getElementById('activeAccountEmail');
             var email = input ? input.value.trim() : '';
@@ -4006,7 +4064,7 @@
 
             closeActiveAccountModal();
             if (typeof Swal !== 'undefined') {
-                var otpHooks = otpResendSwalHooks();
+                var otpHooks = createOtpResendSwalHooks();
                 Swal.fire({
                     title: 'Enter OTP',
                     text: 'We sent an OTP to ' + email + '. Please enter the OTP sent to your email to continue.',
@@ -4028,33 +4086,23 @@
                             Swal.showValidationMessage('OTP must contain digits only.');
                             return false;
                         }
-                        if (value.length !== 4) {
-                            Swal.showValidationMessage('OTP must be exactly 4 digits.');
+                        if (value.length !== 6) {
+                            Swal.showValidationMessage('OTP must be exactly 6 digits.');
                             return false;
                         }
                         return value;
                     }
                 }).then(function (result) {
                     if (!result.isConfirmed) return;
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Active account request submitted',
-                        text:
-                            email +
-                            '. Please check your email to log in with your email account. Your card account will no longer be valid for login.'
-                    });
+                    return;
                 });
             } else {
-                var fallbackOtp = prompt('We sent an OTP to ' + email + '. Please enter the 4-digit OTP.');
-                if (!/^\d{4}$/.test((fallbackOtp || '').trim())) {
+                var fallbackOtp = prompt('We sent an OTP to ' + email + '. Please enter the 6-digit OTP.');
+                if (!/^\d{6}$/.test((fallbackOtp || '').trim())) {
                     alert('Invalid OTP. Please enter a valid 6-digit OTP.');
                     return;
                 }
-                alert(
-                    'Active account request submitted for ' +
-                    email +
-                    '. Please check your email to log in with your email account. Your card account will no longer be valid for login.'
-                );
+                return;
             }
         }
 

@@ -1319,6 +1319,49 @@
       box-shadow: none !important;
     }
 
+    .crypto-placement-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid var(--c-border);
+    }
+
+    .crypto-placement-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c-text-1);
+    }
+
+    .crypto-placement-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .crypto-placement-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--c-border);
+      background: var(--c-surface-subtle);
+      cursor: pointer;
+      color: var(--c-text-1);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .crypto-placement-option input[type="radio"] {
+      margin: 0;
+      cursor: pointer;
+      accent-color: var(--primary-main);
+    }
+
     /* ═══════════════════════════════════════════════════════
        BRAND IDENTITY
     ═══════════════════════════════════════════════════════ */
@@ -3173,6 +3216,10 @@
         padding-bottom: 80px;
       }
     }
+
+    .text-danger {
+      color: #dc2626;
+    }
   </style>
 </head>
 
@@ -4073,6 +4120,20 @@
                   <input type="checkbox" id="chkRequireVlp" />
                   <span>Require VlinkPay account to use card</span>
                 </label>
+                <div class="crypto-placement-wrap" id="cryptoPlacementWrap" style="display:none;">
+                  <div class="crypto-placement-label">Select Placement Leg <span class="text-danger">*</span></span>
+                  </div>
+                  <div class="crypto-placement-options">
+                    <label class="crypto-placement-option">
+                      <input type="radio" name="cryptoPlacementLeg" value="left" checked />
+                      <span>Left Leg</span>
+                    </label>
+                    <label class="crypto-placement-option">
+                      <input type="radio" name="cryptoPlacementLeg" value="right" />
+                      <span>Right Leg</span>
+                    </label>
+                  </div>
+                </div>
               </div>
               <div class="terms-box" id="termsBox">
                 <textarea class="terms-textarea" id="termsTextarea" rows="3" placeholder="Enter terms and conditions..."
@@ -4422,7 +4483,7 @@ Please present this card before payment.</textarea>
       } else if (isMobile) {
         if (n === 6) {
           const ta = document.getElementById('termsActions');
-          if (ta) ta.style.display = '';
+          if (ta) ta.style.display = currentTypeId === '5' ? 'none' : '';
         }
       }
     }
@@ -5135,6 +5196,7 @@ Please present this card before payment.</textarea>
       if (vlpRow) {
         vlpRow.style.display = (typeId === '5') ? '' : 'none';
       }
+      toggleCryptoPlacementLeg();
       const termsStepTitle = document.getElementById('termsStepTitle');
       const cbTermsSectionTitle = document.getElementById('cbTermsSectionTitle');
       const termsBox = document.getElementById('termsBox');
@@ -5207,8 +5269,8 @@ Please present this card before payment.</textarea>
         if (emailInput) emailInput.placeholder = 'Enter email address';
       }
 
-      // T&C load/save buttons: always visible regardless of card type
-      if (termsActions) termsActions.style.display = '';
+      // T&C load/save buttons: hidden for Crypto Card, visible for other card types
+      if (termsActions) termsActions.style.display = isCrypto ? 'none' : '';
 
       renumberSteps();
       updateCardBenefitsLine();
@@ -6023,6 +6085,11 @@ Please present this card before payment.</textarea>
         giftChk.addEventListener('change', () => toggleCryptoGiftFields());
         toggleCryptoGiftFields(false);
       }
+      const requireVlpChk = document.getElementById('chkRequireVlp');
+      if (requireVlpChk) {
+        requireVlpChk.addEventListener('change', toggleCryptoPlacementLeg);
+        toggleCryptoPlacementLeg();
+      }
 
       // Init AI prompt list with default category
       renderAiPrompts();
@@ -6069,6 +6136,13 @@ Please present this card before payment.</textarea>
       const ta = document.getElementById('termsTextarea');
       const cb = document.getElementById('cbMerchantTC');
       if (ta && cb) cb.textContent = ta.value || '{{Terms & Conditions của Merchant tự nhập khi tạo card}}';
+    }
+
+    function toggleCryptoPlacementLeg() {
+      const wrap = document.getElementById('cryptoPlacementWrap');
+      const chk = document.getElementById('chkRequireVlp');
+      if (!wrap || !chk) return;
+      wrap.style.display = (currentTypeId === '5' && chk.checked) ? '' : 'none';
     }
 
     function addTerm(text) {

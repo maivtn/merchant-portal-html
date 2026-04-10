@@ -10,21 +10,39 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+        :root {
+            --brand-primary: #d97706;
+            --brand-primary-dark: #b45309;
+            --brand-secondary: #e67e22;
+            --text-main: #221f1f;
+            --text-muted: #757575;
+            --border-soft: #e7ded4;
+            --accent-cream: #fef3c7;
+            --accent-warm: #fff7ed;
+            --accent-warm-text: #92400e;
+            --surface-soft: #fffaf0;
+            --surface-card: rgba(255, 255, 255, 0.94);
+            --shadow-soft: 0 14px 32px rgba(34, 31, 31, 0.08);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
+            color: var(--text-main);
+            background:
+                radial-gradient(circle at top right, rgba(254, 243, 199, 0.82), transparent 24%),
+                linear-gradient(180deg, #fffdf9 0%, #ffffff 32%, #fff 100%);
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--surface-card);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(217, 119, 6, 0.12);
+            box-shadow: var(--shadow-soft);
         }
 
         .nav-active {
-            color: #2563eb;
-            border-bottom: 2px solid #2563eb;
+            color: var(--brand-primary);
+            border-bottom: 2px solid var(--brand-primary);
         }
 
         .category-pill {
@@ -38,34 +56,92 @@
         .scroll-hide::-webkit-scrollbar {
             display: none;
         }
+
+        .warm-hero {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 68%);
+            border: 1px solid rgba(217, 119, 6, 0.14);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .warm-icon {
+            background: #fffbeb;
+            color: var(--brand-primary);
+        }
+
+        .warm-badge {
+            background: var(--accent-cream);
+            color: var(--accent-warm-text);
+        }
+
+        .warm-button {
+            background: var(--brand-primary);
+            color: #fff;
+            box-shadow: 0 14px 28px rgba(217, 119, 6, 0.16);
+        }
+
+        .warm-button:hover {
+            background: var(--brand-primary-dark);
+        }
+
+        .warm-button-soft {
+            background: #fff7ed;
+            color: var(--brand-primary);
+        }
+
+        .warm-button-soft:hover {
+            background: #ffedd5;
+        }
+
+        .warm-button-neutral {
+            background: #f7f2ec;
+            color: #5f5b57;
+        }
+
+        .warm-button-neutral:hover {
+            background: #efe6dc;
+        }
+
+        .warm-focus:focus {
+            box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.15);
+            border-color: var(--brand-primary);
+        }
+
+        .warm-outline:hover {
+            border-color: rgba(217, 119, 6, 0.35);
+            color: var(--brand-primary);
+        }
+
+        .schedule-highlight {
+            border-left: 4px solid var(--brand-primary);
+        }
     </style>
 </head>
 
 <body class="pb-12">
 
     <!-- App Header & Navigation -->
-    <header class="sticky top-0 z-50 bg-white border-b border-slate-200 px-4 pt-4">
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b px-4 pt-4"
+        style="border-color: rgba(217, 119, 6, 0.12);">
         <div class="max-w-4xl mx-auto">
             <div class="flex items-center justify-between mb-4">
-                <button class="flex items-center text-slate-600 font-medium hover:text-blue-600 transition-colors">
+                <button
+                    class="flex items-center font-medium transition-colors text-[var(--text-main)] hover:text-[var(--brand-primary)]">
                     <i class="fas fa-arrow-left mr-2"></i> Back
                 </button>
-                <div class="text-xl font-bold text-slate-900 tracking-tight">VLINKPAY <span
-                        class="text-blue-600">HUB</span></div>
-                <div class="w-8"></div> <!-- Spacer for centering -->
+                <div class="text-xl font-bold tracking-tight text-[var(--text-main)]">VLINKPAY <span
+                        class="text-[var(--brand-primary)]">HUB</span></div>
+                <div class="w-8"></div>
             </div>
 
-            <nav class="flex space-x-6 overflow-x-auto scroll-hide pb-2">
+            <nav class="flex space-x-6 overflow-x-auto scroll-hide">
                 <button onclick="switchTab('news')" id="tab-news"
-                    class="nav-active whitespace-nowrap pb-2 font-medium transition-all">News</button>
+                    class="nav-active whitespace-nowrap pb-2 pt-2 font-medium transition-all">News</button>
                 <button onclick="switchTab('plan')" id="tab-plan"
-                    class="whitespace-nowrap pb-2 font-medium text-slate-500 hover:text-slate-800 transition-all">Partner
-                    Plan</button>
+                    class="whitespace-nowrap pb-2 pt-2 font-medium text-slate-500 hover:text-[var(--text-main)] transition-all">Compensation Plan</button>
                 <button onclick="switchTab('content')" id="tab-content"
-                    class="whitespace-nowrap pb-2 font-medium text-slate-500 hover:text-slate-800 transition-all">Videos
-                    & Decks</button>
+                    class="whitespace-nowrap pb-2 pt-2 font-medium text-slate-500 hover:text-[var(--text-main)] transition-all">Presentation & Video</button>
                 <button onclick="switchTab('events')" id="tab-events"
-                    class="whitespace-nowrap pb-2 font-medium text-slate-500 hover:text-slate-800 transition-all">Schedule</button>
+                    class="whitespace-nowrap pb-2 pt-2 font-medium text-slate-500 hover:text-[var(--text-main)] transition-all">Event & Zoom Schedule</button>
             </nav>
         </div>
     </header>
@@ -74,29 +150,33 @@
 
         <!-- 1. NEWS SECTION -->
         <section id="sec-news" class="space-y-6">
-            <div class="bg-blue-600 text-white rounded-2xl p-6 shadow-lg shadow-blue-100 mb-8">
+            <div class="warm-hero text-[var(--text-main)] rounded-2xl p-6 mb-8">
                 <h1 class="text-2xl font-bold mb-2">Ecosystem News</h1>
-                <p class="text-blue-100 opacity-90">Stay updated with the latest product news, announcements, and
+                <p class="text-[#5f5b57] opacity-90">Stay updated with the latest product news, announcements, and
                     events.</p>
             </div>
 
             <div class="relative mb-4">
                 <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                 <input type="text" placeholder="Search news..."
-                    class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all shadow-sm">
+                    class="warm-focus w-full pl-12 pr-4 py-3 bg-white border rounded-xl outline-none transition-all shadow-sm"
+                    style="border-color: var(--border-soft);">
             </div>
 
             <div class="flex flex-wrap gap-2 mb-8">
+                <button class="px-4 py-1.5 rounded-full warm-button text-sm font-medium category-pill">All</button>
                 <button
-                    class="px-4 py-1.5 rounded-full bg-blue-600 text-white text-sm font-medium category-pill">All</button>
+                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3] category-pill"
+                    style="border-color: var(--border-soft);">Product</button>
                 <button
-                    class="px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 category-pill">Product</button>
+                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3] category-pill"
+                    style="border-color: var(--border-soft);">Partner</button>
                 <button
-                    class="px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 category-pill">Partner</button>
+                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3] category-pill"
+                    style="border-color: var(--border-soft);">Events</button>
                 <button
-                    class="px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 category-pill">Events</button>
-                <button
-                    class="px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 category-pill">Announcements</button>
+                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3] category-pill"
+                    style="border-color: var(--border-soft);">Announcements</button>
             </div>
 
             <h3 class="text-lg font-bold text-slate-800 mb-4">Featured News</h3>
@@ -105,15 +185,16 @@
                 <div class="h-48 bg-slate-200 relative">
                     <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800"
                         alt="Ecosystem" class="w-full h-full object-cover">
-                    <div class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">NEW
+                    <div class="absolute top-4 left-4 warm-badge text-xs font-bold px-2 py-1 rounded">NEW
                     </div>
                 </div>
                 <div class="p-6">
-                    <h2 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                    <h2
+                        class="text-xl font-bold text-slate-900 mb-2 transition-colors group-hover:text-[var(--brand-primary)]">
                         VLINKPAY Ecosystem Update</h2>
                     <p class="text-slate-600 mb-4 leading-relaxed">Explore new updates across Gift Card Hub, Mobile
                         Merchant ATM, and Crypto Payment Gateway.</p>
-                    <button class="text-blue-600 font-bold inline-flex items-center hover:underline">
+                    <button class="font-bold inline-flex items-center hover:underline text-[var(--brand-primary)]">
                         Read More <i class="fas fa-chevron-right ml-2 text-sm"></i>
                     </button>
                 </div>
@@ -121,9 +202,8 @@
 
             <h3 class="text-lg font-bold text-slate-800 mb-4">Latest Articles</h3>
             <div class="space-y-4">
-                <div class="flex gap-4 p-4 glass-card rounded-xl hover:bg-slate-50 transition-colors cursor-pointer">
-                    <div
-                        class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center shrink-0">
+                <div class="flex gap-4 p-4 glass-card rounded-xl hover:bg-[#fffaf3] transition-colors cursor-pointer">
+                    <div class="w-12 h-12 warm-icon rounded-lg flex items-center justify-center shrink-0">
                         <i class="fas fa-gift"></i>
                     </div>
                     <div>
@@ -131,9 +211,9 @@
                         <p class="text-sm text-slate-500">Learn about new digital gift card tools for businesses.</p>
                     </div>
                 </div>
-                <div class="flex gap-4 p-4 glass-card rounded-xl hover:bg-slate-50 transition-colors cursor-pointer">
-                    <div
-                        class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center shrink-0">
+                <div class="flex gap-4 p-4 glass-card rounded-xl hover:bg-[#fffaf3] transition-colors cursor-pointer">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center shrink-0"
+                        style="background: #fff7ed; color: var(--brand-secondary);">
                         <i class="fas fa-money-bill-transfer"></i>
                     </div>
                     <div>
@@ -142,9 +222,9 @@
                             use.</p>
                     </div>
                 </div>
-                <div class="flex gap-4 p-4 glass-card rounded-xl hover:bg-slate-50 transition-colors cursor-pointer">
-                    <div
-                        class="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center shrink-0">
+                <div class="flex gap-4 p-4 glass-card rounded-xl hover:bg-[#fffaf3] transition-colors cursor-pointer">
+                    <div class="w-12 h-12 rounded-lg flex items-center justify-center shrink-0"
+                        style="background: #fff8e8; color: #c66a11;">
                         <i class="fab fa-bitcoin"></i>
                     </div>
                     <div>
@@ -156,20 +236,21 @@
             </div>
 
             <button
-                class="w-full py-4 mt-4 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 font-medium hover:border-blue-400 hover:text-blue-500 transition-all">
+                class="warm-outline w-full py-4 mt-4 border-2 border-dashed rounded-xl text-slate-500 font-medium transition-all"
+                style="border-color: #dcc6ad;">
                 Load More Articles
             </button>
         </section>
 
         <!-- 2. PARTNER PLAN SECTION -->
         <section id="sec-plan" class="hidden space-y-6">
-            <div class="bg-indigo-600 text-white rounded-2xl p-6 shadow-lg shadow-indigo-100">
+            <div class="warm-hero text-[var(--text-main)] rounded-2xl p-6">
                 <h1 class="text-2xl font-bold mb-2">Compensation & Partner Plan</h1>
-                <p class="text-indigo-100 opacity-90">Learn how rewards, partner benefits, and program-based
+                <p class="text-[#5f5b57] opacity-90">Learn how rewards, partner benefits, and program-based
                     opportunities work.</p>
             </div>
 
-            <div class="p-5 glass-card rounded-2xl border-l-4 border-indigo-500">
+            <div class="p-5 glass-card rounded-2xl border-l-4" style="border-left-color: var(--brand-primary);">
                 <h3 class="text-lg font-bold text-slate-900 mb-2">Overview</h3>
                 <p class="text-slate-600 leading-relaxed">
                     VLINKPAY offers multiple opportunities through partner programs, merchant growth tools, and
@@ -179,36 +260,36 @@
 
             <h3 class="text-lg font-bold text-slate-800 mt-8 mb-4">Plan Categories</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="p-6 glass-card rounded-2xl hover:border-indigo-300 transition-all cursor-pointer group">
+                <div class="p-6 glass-card rounded-2xl hover:border-[#e6b98a] transition-all cursor-pointer group">
                     <div
-                        class="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center mb-4 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                        class="w-10 h-10 rounded-full flex items-center justify-center mb-4 transition-all warm-icon group-hover:text-white group-hover:bg-[var(--brand-primary)]">
                         <i class="fas fa-users"></i>
                     </div>
                     <h4 class="font-bold text-slate-900 mb-1">Affiliate / Partner Plan</h4>
                     <p class="text-sm text-slate-500">Learn how referrals and partner growth opportunities are
                         structured.</p>
                 </div>
-                <div class="p-6 glass-card rounded-2xl hover:border-indigo-300 transition-all cursor-pointer group">
+                <div class="p-6 glass-card rounded-2xl hover:border-[#e6b98a] transition-all cursor-pointer group">
                     <div
-                        class="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center mb-4 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                        class="w-10 h-10 rounded-full flex items-center justify-center mb-4 transition-all warm-icon group-hover:text-white group-hover:bg-[var(--brand-primary)]">
                         <i class="fas fa-landmark"></i>
                     </div>
                     <h4 class="font-bold text-slate-900 mb-1">ATM Partner Opportunity</h4>
                     <p class="text-sm text-slate-500">Explore how Become ATM Partner fits within the P2P Cash Hub model.
                     </p>
                 </div>
-                <div class="p-6 glass-card rounded-2xl hover:border-indigo-300 transition-all cursor-pointer group">
+                <div class="p-6 glass-card rounded-2xl hover:border-[#e6b98a] transition-all cursor-pointer group">
                     <div
-                        class="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center mb-4 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                        class="w-10 h-10 rounded-full flex items-center justify-center mb-4 transition-all warm-icon group-hover:text-white group-hover:bg-[var(--brand-primary)]">
                         <i class="fas fa-chart-line"></i>
                     </div>
                     <h4 class="font-bold text-slate-900 mb-1">Merchant Growth</h4>
                     <p class="text-sm text-slate-500">Review merchant-focused earning and payment-related opportunities.
                     </p>
                 </div>
-                <div class="p-6 glass-card rounded-2xl hover:border-indigo-300 transition-all cursor-pointer group">
+                <div class="p-6 glass-card rounded-2xl hover:border-[#e6b98a] transition-all cursor-pointer group">
                     <div
-                        class="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center mb-4 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                        class="w-10 h-10 rounded-full flex items-center justify-center mb-4 transition-all warm-icon group-hover:text-white group-hover:bg-[var(--brand-primary)]">
                         <i class="fas fa-cubes"></i>
                     </div>
                     <h4 class="font-bold text-slate-900 mb-1">Program Hub</h4>
@@ -219,26 +300,30 @@
             <div class="mt-8">
                 <h3 class="text-lg font-bold text-slate-800 mb-4">Quick Questions</h3>
                 <div class="space-y-2">
-                    <details class="group border border-slate-200 rounded-xl bg-white overflow-hidden">
+                    <details class="group border rounded-xl bg-white overflow-hidden"
+                        style="border-color: var(--border-soft);">
                         <summary
                             class="p-4 cursor-pointer flex justify-between items-center list-none font-medium text-slate-700">
                             How does the partner plan work?
                             <i
                                 class="fas fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
                         </summary>
-                        <div class="p-4 pt-0 text-slate-600 text-sm border-t border-slate-50 bg-slate-50">
+                        <div class="p-4 pt-0 text-slate-600 text-sm border-t bg-[#fffaf3]"
+                            style="border-color: #f5ede4;">
                             Our partner plan is built on a multi-tier referral system. Partners earn commission based on
                             merchant onboarding and transaction volumes generated through their network.
                         </div>
                     </details>
-                    <details class="group border border-slate-200 rounded-xl bg-white overflow-hidden">
+                    <details class="group border rounded-xl bg-white overflow-hidden"
+                        style="border-color: var(--border-soft);">
                         <summary
                             class="p-4 cursor-pointer flex justify-between items-center list-none font-medium text-slate-700">
                             How do I become an ATM Partner?
                             <i
                                 class="fas fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
                         </summary>
-                        <div class="p-4 pt-0 text-slate-600 text-sm border-t border-slate-50 bg-slate-50">
+                        <div class="p-4 pt-0 text-slate-600 text-sm border-t bg-[#fffaf3]"
+                            style="border-color: #f5ede4;">
                             To become an ATM Partner, you must register through the ATM Partner portal, complete the KYC
                             verification, and have a designated physical location for cash services.
                         </div>
@@ -246,34 +331,37 @@
                 </div>
             </div>
 
-            <button
-                class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all mt-4">
+            <button class="w-full warm-button py-4 rounded-xl font-bold transition-all mt-4">
                 View Full Guide (PDF)
             </button>
         </section>
 
         <!-- 3. PRESENTATION & VIDEO SECTION -->
         <section id="sec-content" class="hidden space-y-6">
-            <div class="bg-rose-600 text-white rounded-2xl p-6 shadow-lg shadow-rose-100">
+            <div class="warm-hero text-[var(--text-main)] rounded-2xl p-6 shadow-lg">
                 <h1 class="text-2xl font-bold mb-2">Presentation & Video</h1>
-                <p class="text-rose-100 opacity-90">Watch platform videos and explore presentation materials by
+                <p class="text-[#5f5b57] opacity-90">Watch platform videos and explore presentation materials by
                     solution.</p>
             </div>
 
             <div class="relative">
                 <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                 <input type="text" placeholder="Search materials..."
-                    class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none transition-all shadow-sm">
+                    class="warm-focus w-full pl-12 pr-4 py-3 bg-white border rounded-xl outline-none transition-all shadow-sm"
+                    style="border-color: var(--border-soft);">
             </div>
 
             <div class="flex flex-wrap gap-2 mb-6">
-                <button class="px-4 py-1.5 rounded-full bg-rose-600 text-white text-sm font-medium">All</button>
+                <button class="px-4 py-1.5 rounded-full warm-button text-sm font-medium">All</button>
                 <button
-                    class="px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50">Videos</button>
+                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3]"
+                    style="border-color: var(--border-soft);">Videos</button>
                 <button
-                    class="px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50">Decks</button>
+                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3]"
+                    style="border-color: var(--border-soft);">Decks</button>
                 <button
-                    class="px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50">Training</button>
+                    class="px-4 py-1.5 rounded-full bg-white border text-slate-600 text-sm font-medium hover:bg-[#fffaf3]"
+                    style="border-color: var(--border-soft);">Training</button>
             </div>
 
             <h3 class="text-lg font-bold text-slate-800 mb-4">Featured Content</h3>
@@ -282,7 +370,7 @@
                     <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800"
                         alt="Video" class="absolute inset-0 w-full h-full object-cover opacity-60">
                     <button
-                        class="w-16 h-16 bg-rose-600 text-white rounded-full flex items-center justify-center text-xl shadow-xl hover:scale-110 transition-transform relative z-10">
+                        class="w-16 h-16 warm-button rounded-full flex items-center justify-center text-xl hover:scale-110 transition-transform relative z-10">
                         <i class="fas fa-play ml-1"></i>
                     </button>
                 </div>
@@ -302,7 +390,8 @@
             <div class="space-y-3">
                 <div class="p-4 glass-card rounded-xl flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-slate-100 rounded flex items-center justify-center text-rose-600">
+                        <div
+                            class="w-10 h-10 bg-[#fff8e8] rounded flex items-center justify-center text-[var(--brand-primary)]">
                             <i class="far fa-file-pdf text-xl"></i>
                         </div>
                         <div>
@@ -312,14 +401,15 @@
                     </div>
                     <div class="flex gap-2">
                         <button
-                            class="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs font-bold rounded-lg hover:bg-slate-200">View</button>
+                            class="px-3 py-1.5 warm-button-neutral text-xs font-bold rounded-lg transition-all">View</button>
                         <button
-                            class="px-3 py-1.5 bg-rose-50 text-rose-600 text-xs font-bold rounded-lg hover:bg-rose-100">Download</button>
+                            class="px-3 py-1.5 warm-button-soft text-xs font-bold rounded-lg transition-all">Download</button>
                     </div>
                 </div>
                 <div class="p-4 glass-card rounded-xl flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-slate-100 rounded flex items-center justify-center text-rose-600">
+                        <div
+                            class="w-10 h-10 bg-[#fff8e8] rounded flex items-center justify-center text-[var(--brand-primary)]">
                             <i class="far fa-file-pdf text-xl"></i>
                         </div>
                         <div>
@@ -329,9 +419,9 @@
                     </div>
                     <div class="flex gap-2">
                         <button
-                            class="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs font-bold rounded-lg hover:bg-slate-200">View</button>
+                            class="px-3 py-1.5 warm-button-neutral text-xs font-bold rounded-lg transition-all">View</button>
                         <button
-                            class="px-3 py-1.5 bg-rose-50 text-rose-600 text-xs font-bold rounded-lg hover:bg-rose-100">Download</button>
+                            class="px-3 py-1.5 warm-button-soft text-xs font-bold rounded-lg transition-all">Download</button>
                     </div>
                 </div>
             </div>
@@ -369,31 +459,33 @@
 
         <!-- 4. EVENT & ZOOM SCHEDULE SECTION -->
         <section id="sec-events" class="hidden space-y-6">
-            <div class="bg-emerald-600 text-white rounded-2xl p-6 shadow-lg shadow-emerald-100">
+            <div class="warm-hero text-[var(--text-main)] rounded-2xl p-6">
                 <h1 class="text-2xl font-bold mb-2">Event & Zoom Schedule</h1>
-                <p class="text-emerald-100 opacity-90">Join live sessions, onboarding events, and product training.</p>
+                <p class="text-[#5f5b57] opacity-90">Join live sessions, onboarding events, and product training.</p>
             </div>
 
-            <div class="flex p-1 bg-slate-100 rounded-xl">
-                <button class="flex-1 py-2 text-sm font-bold bg-white text-emerald-600 rounded-lg shadow-sm">This
+            <div class="flex p-1 rounded-xl" style="background: #f7f2ec;">
+                <button
+                    class="flex-1 py-2 text-sm font-bold bg-white rounded-lg shadow-sm text-[var(--brand-primary)]">This
                     Week</button>
-                <button class="flex-1 py-2 text-sm font-medium text-slate-500 hover:text-slate-800">This Month</button>
-                <button class="flex-1 py-2 text-sm font-medium text-slate-500 hover:text-slate-800">All</button>
+                <button class="flex-1 py-2 text-sm font-medium text-slate-500 hover:text-[var(--text-main)]">This
+                    Month</button>
+                <button
+                    class="flex-1 py-2 text-sm font-medium text-slate-500 hover:text-[var(--text-main)]">All</button>
             </div>
 
             <h3 class="text-lg font-bold text-slate-800 mt-6 mb-4">Upcoming Sessions</h3>
             <div class="space-y-4">
-                <!-- Event 1 -->
-                <div class="p-6 glass-card rounded-2xl border-l-4 border-emerald-500">
+                <div class="p-6 glass-card rounded-2xl schedule-highlight">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div class="flex gap-4">
-                            <div
-                                class="w-14 h-14 bg-emerald-50 rounded-xl flex flex-col items-center justify-center shrink-0 border border-emerald-100">
-                                <span class="text-xs font-bold text-emerald-600 uppercase">Apr</span>
+                            <div class="w-14 h-14 rounded-xl flex flex-col items-center justify-center shrink-0 border"
+                                style="background: #fff7ed; border-color: #f6d6ae;">
+                                <span class="text-xs font-bold uppercase text-[var(--brand-primary)]">Apr</span>
                                 <span class="text-xl font-bold text-slate-800">10</span>
                             </div>
                             <div>
-                                <div class="flex items-center text-xs font-bold text-emerald-600 mb-1">
+                                <div class="flex items-center text-xs font-bold mb-1 text-[var(--brand-primary)]">
                                     <i class="far fa-clock mr-1"></i> 09:00 AM (EST)
                                     <span class="mx-2 text-slate-300">|</span>
                                     <i class="fas fa-video mr-1"></i> Zoom Session
@@ -406,25 +498,24 @@
                         </div>
                         <div class="flex gap-2 shrink-0">
                             <button
-                                class="flex-1 md:flex-none px-4 py-2 bg-emerald-600 text-white rounded-lg font-bold text-sm hover:bg-emerald-700 shadow-md shadow-emerald-100 transition-all">Join
+                                class="flex-1 md:flex-none px-4 py-2 warm-button rounded-lg font-bold text-sm transition-all">Join
                                 Zoom</button>
                             <button
-                                class="flex-1 md:flex-none px-4 py-2 bg-slate-100 text-slate-600 rounded-lg font-bold text-sm hover:bg-slate-200 transition-all">Details</button>
+                                class="flex-1 md:flex-none px-4 py-2 warm-button-neutral rounded-lg font-bold text-sm transition-all">Details</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Event 2 -->
-                <div class="p-6 glass-card rounded-2xl border-l-4 border-blue-500">
+                <div class="p-6 glass-card rounded-2xl schedule-highlight">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div class="flex gap-4">
-                            <div
-                                class="w-14 h-14 bg-blue-50 rounded-xl flex flex-col items-center justify-center shrink-0 border border-blue-100">
-                                <span class="text-xs font-bold text-blue-600 uppercase">Apr</span>
+                            <div class="w-14 h-14 rounded-xl flex flex-col items-center justify-center shrink-0 border"
+                                style="background: #fff7ed; border-color: #f6d6ae;">
+                                <span class="text-xs font-bold uppercase text-[var(--brand-primary)]">Apr</span>
                                 <span class="text-xl font-bold text-slate-800">12</span>
                             </div>
                             <div>
-                                <div class="flex items-center text-xs font-bold text-blue-600 mb-1">
+                                <div class="flex items-center text-xs font-bold mb-1 text-[var(--brand-primary)]">
                                     <i class="far fa-clock mr-1"></i> 07:00 PM (EST)
                                     <span class="mx-2 text-slate-300">|</span>
                                     <i class="fas fa-video mr-1"></i> Zoom Session
@@ -436,25 +527,24 @@
                         </div>
                         <div class="flex gap-2 shrink-0">
                             <button
-                                class="flex-1 md:flex-none px-4 py-2 bg-blue-600 text-white rounded-lg font-bold text-sm hover:bg-blue-700 shadow-md shadow-blue-100 transition-all">Join
+                                class="flex-1 md:flex-none px-4 py-2 warm-button rounded-lg font-bold text-sm transition-all">Join
                                 Zoom</button>
                             <button
-                                class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg font-bold text-sm hover:bg-slate-200 transition-all">Details</button>
+                                class="px-4 py-2 warm-button-neutral rounded-lg font-bold text-sm transition-all">Details</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Event 3 -->
-                <div class="p-6 glass-card rounded-2xl border-l-4 border-indigo-500">
+                <div class="p-6 glass-card rounded-2xl schedule-highlight">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div class="flex gap-4">
-                            <div
-                                class="w-14 h-14 bg-indigo-50 rounded-xl flex flex-col items-center justify-center shrink-0 border border-indigo-100">
-                                <span class="text-xs font-bold text-indigo-600 uppercase">Apr</span>
+                            <div class="w-14 h-14 rounded-xl flex flex-col items-center justify-center shrink-0 border"
+                                style="background: #fff7ed; border-color: #f6d6ae;">
+                                <span class="text-xs font-bold uppercase text-[var(--brand-primary)]">Apr</span>
                                 <span class="text-xl font-bold text-slate-800">15</span>
                             </div>
                             <div>
-                                <div class="flex items-center text-xs font-bold text-indigo-600 mb-1">
+                                <div class="flex items-center text-xs font-bold mb-1 text-[var(--brand-primary)]">
                                     <i class="far fa-clock mr-1"></i> 08:00 PM (EST)
                                     <span class="mx-2 text-slate-300">|</span>
                                     <i class="fas fa-video mr-1"></i> Zoom Session
@@ -467,10 +557,10 @@
                         </div>
                         <div class="flex gap-2 shrink-0">
                             <button
-                                class="flex-1 md:flex-none px-4 py-2 bg-indigo-600 text-white rounded-lg font-bold text-sm hover:bg-indigo-700 shadow-md shadow-indigo-100 transition-all">Join
+                                class="flex-1 md:flex-none px-4 py-2 warm-button rounded-lg font-bold text-sm transition-all">Join
                                 Zoom</button>
                             <button
-                                class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg font-bold text-sm hover:bg-slate-200 transition-all">Details</button>
+                                class="px-4 py-2 warm-button-neutral rounded-lg font-bold text-sm transition-all">Details</button>
                         </div>
                     </div>
                 </div>
@@ -478,18 +568,18 @@
 
             <div class="mt-8">
                 <h3 class="text-lg font-bold text-slate-800 mb-4">Past Sessions</h3>
-                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
-                    <div
-                        class="p-4 flex items-center justify-between hover:bg-slate-50 cursor-pointer border-b border-slate-100">
+                <div class="bg-white border rounded-2xl overflow-hidden" style="border-color: var(--border-soft);">
+                    <div class="p-4 flex items-center justify-between hover:bg-[#fffaf3] cursor-pointer border-b"
+                        style="border-color: #f5ede4;">
                         <div class="flex items-center gap-3">
-                            <i class="fas fa-history text-slate-400"></i>
+                            <i class="fas fa-history text-[#cf8a54]"></i>
                             <span class="text-slate-700 font-medium">Gift Card Hub Demo</span>
                         </div>
                         <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
                     </div>
-                    <div class="p-4 flex items-center justify-between hover:bg-slate-50 cursor-pointer">
+                    <div class="p-4 flex items-center justify-between hover:bg-[#fffaf3] cursor-pointer">
                         <div class="flex items-center gap-3">
-                            <i class="fas fa-history text-slate-400"></i>
+                            <i class="fas fa-history text-[#cf8a54]"></i>
                             <span class="text-slate-700 font-medium">Crypto Payment Gateway Walkthrough</span>
                         </div>
                         <i class="fas fa-chevron-right text-slate-300 text-xs"></i>
@@ -498,42 +588,38 @@
             </div>
 
             <button
-                class="w-full py-4 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2">
+                class="w-full py-4 font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-white"
+                style="background: #26211f;">
                 <i class="far fa-calendar-alt"></i> Open Full Calendar
             </button>
         </section>
 
     </main>
 
-    <!-- Simple Notification Toast -->
     <div id="toast"
-        class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-full text-sm font-medium shadow-2xl opacity-0 translate-y-4 transition-all z-[100] pointer-events-none">
+        class="fixed bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full text-sm font-medium shadow-2xl opacity-0 translate-y-4 transition-all z-[100] pointer-events-none text-white"
+        style="background: #26211f;">
         Feature coming soon!
     </div>
 
     <script>
         function switchTab(tab) {
-            // Sections
             const sections = ['news', 'plan', 'content', 'events'];
             sections.forEach(s => {
                 document.getElementById(`sec-${s}`).classList.add('hidden');
-                document.getElementById(`tab-${s}`).classList.remove('nav-active', 'text-blue-600', 'text-slate-900');
+                document.getElementById(`tab-${s}`).classList.remove('nav-active', 'text-slate-900');
                 document.getElementById(`tab-${s}`).classList.add('text-slate-500');
             });
 
-            // Show active section
             document.getElementById(`sec-${tab}`).classList.remove('hidden');
 
-            // Set active tab style
             const activeTab = document.getElementById(`tab-${tab}`);
             activeTab.classList.add('nav-active', 'text-slate-900');
             activeTab.classList.remove('text-slate-500');
 
-            // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Add dummy event listeners to buttons
         document.querySelectorAll('button').forEach(btn => {
             if (!btn.hasAttribute('onclick')) {
                 btn.addEventListener('click', () => {

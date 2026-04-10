@@ -3433,7 +3433,13 @@
                     Swal.fire({
                         icon: 'warning',
                         title: 'Notice',
-                        text: 'You must active account to use this feature!'
+                        text: 'You must active account to use this feature!',
+                        showCancelButton: true,
+                        confirmButtonText: 'Active Account',
+                        cancelButtonText: 'OK',
+                        reverseButtons: true
+                    }).then(function (result) {
+                        if (result.isConfirmed) openActiveAccountModal();
                     });
                 } else {
                     alert('You must active account to use this feature!');

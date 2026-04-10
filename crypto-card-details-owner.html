@@ -2114,695 +2114,708 @@
     </header>
 
     <main class="main">
-        <div class="page-header">
-            <a href="#" class="back-btn" title="Back"
-                onclick="event.preventDefault(); window.history.back(); return false;">
-                <i class="icon-back"></i>
-                Back
-            </a>
-            <h1 class="page-title">Crypto Card Details</h1>
-        </div>
-
-        <div class="tabs-container">
-            <div class="tabs-header">
-                <div class="tab-item active" onclick="switchTab('card-info')">Card Info</div>
-                <div class="tab-item" onclick="switchTab('redeem-history')">Redeem History</div>
-                <div class="tab-item" onclick="switchTab('product-history')" style="display: none;">Product History
-                </div>
+        <div class="container">
+            <div class="page-header">
+                <a href="#" class="back-btn" title="Back"
+                    onclick="event.preventDefault(); window.history.back(); return false;">
+                    <i class="icon-back"></i>
+                    Back
+                </a>
+                <h1 class="page-title">Crypto Card Details</h1>
             </div>
 
-            <!-- Tab: Card Info -->
-            <div id="card-info" class="tab-content active">
-                <div class="details-card">
-                    <div class="action-bar">
-
-                        <button class="action-bar__item action-bar__item--reload" type="button"
-                            onclick="openModal('modal-show-wallet')">
-                            <span class="action-bar__icon">
-                                <img src="assets/icons/actions/reload.svg" alt="Reload" />
-                            </span>
-                            <span class="action-bar__label">Receive</span>
-                        </button>
-
-
-                        <button class="action-bar__item action-bar__item--withdraw" type="button" id="withdrawButton"
-                            onclick="openModal('modal-withdraw-crypto')">
-                            <span class="action-bar__icon">
-                                <img src="assets/icons/actions/withdraw.svg" alt="Withdraw" />
-                            </span>
-                            <span class="action-bar__label">Withdraw</span>
-                        </button>
-
-                        <button class="action-bar__item action-bar__item--qr" type="button" onclick="openQrModal()">
-                            <span class="action-bar__icon">
-                                <img src="assets/icons/actions/qrcode.svg" alt="View QR" />
-                            </span>
-                            <span class="action-bar__label">View QR</span>
-                        </button>
-
-                        <button class="action-bar__item action-bar__item--download" type="button" id="activeAccount"
-                            onclick="openActiveAccountModal()" style="display:none;">
-                            <span class="action-bar__icon">
-                                <img src="assets/icons/actions/account.svg" alt="Active Account" />
-                            </span>
-                            <span class="action-bar__label">Active Account</span>
-                        </button>
-
-
+            <div class="tabs-container">
+                <div class="tabs-header">
+                    <div class="tab-item active" onclick="switchTab('card-info')">Card Info</div>
+                    <div class="tab-item" onclick="switchTab('redeem-history')">Redeem History</div>
+                    <div class="tab-item" onclick="switchTab('product-history')" style="display: none;">Product History
                     </div>
+                </div>
 
-                    <div class="product-main-layout">
-                        <!-- Left Column: Visual & Actions -->
-                        <div class="product-visual-column">
-                            <div class="product-card-visual-large">
-                                <div class="card-preview-flip" id="cryptoPreviewFlip"
-                                    onclick="toggleCryptoPreviewFlip()">
-                                    <div class="card-preview-face front">
-                                        <img src="images/cryptocard-front.png" alt="Crypto Card Front">
-                                    </div>
-                                    <div class="card-preview-face back">
-                                        <img src="images/cryptocard-back.png" alt="Crypto Card Back">
-                                    </div>
-                                    <div class="card-preview-label">
-                                        <iconify-icon icon="solar:refresh-bold" width="14"></iconify-icon>
-                                        Tap to flip
-                                    </div>
-                                </div>
-                            </div>
+                <!-- Tab: Card Info -->
+                <div id="card-info" class="tab-content active">
+                    <div class="details-card">
+                        <div class="action-bar">
 
-                            <div class="switch-wrapper">
-                                <span class="switch-label">
-                                    Card Locked
-                                    <span id="card-locked-badge" class="status-badge status-active"
-                                        style="text-transform: capitalize;">Unlocked</span>
+                            <button class="action-bar__item action-bar__item--reload" type="button"
+                                onclick="openModal('modal-show-wallet')">
+                                <span class="action-bar__icon">
+                                    <img src="assets/icons/actions/reload.svg" alt="Reload" />
                                 </span>
-                                <label class="switch">
-                                    <input type="checkbox"
-                                        onchange="updateToggleStatus(this, 'card-locked-badge', 'Locked', 'Unlocked')">
-                                    <span class="slider"></span>
-                                </label>
+                                <span class="action-bar__label">Receive</span>
+                            </button>
 
-                            </div>
+
+                            <button class="action-bar__item action-bar__item--withdraw" type="button"
+                                id="withdrawButton" onclick="openModal('modal-withdraw-crypto')">
+                                <span class="action-bar__icon">
+                                    <img src="assets/icons/actions/withdraw.svg" alt="Withdraw" />
+                                </span>
+                                <span class="action-bar__label">Withdraw</span>
+                            </button>
+
+                            <button class="action-bar__item action-bar__item--qr" type="button" onclick="openQrModal()">
+                                <span class="action-bar__icon">
+                                    <img src="assets/icons/actions/qrcode.svg" alt="View QR" />
+                                </span>
+                                <span class="action-bar__label">View QR</span>
+                            </button>
+
+                            <button class="action-bar__item action-bar__item--download" type="button" id="activeAccount"
+                                onclick="openActiveAccountModal()" style="display:none;">
+                                <span class="action-bar__icon">
+                                    <img src="assets/icons/actions/account.svg" alt="Active Account" />
+                                </span>
+                                <span class="action-bar__label">Active Account</span>
+                            </button>
+
+
                         </div>
 
+                        <div class="product-main-layout">
+                            <!-- Left Column: Visual & Actions -->
+                            <div class="product-visual-column">
+                                <div class="product-card-visual-large">
+                                    <div class="card-preview-flip" id="cryptoPreviewFlip"
+                                        onclick="toggleCryptoPreviewFlip()">
+                                        <div class="card-preview-face front">
+                                            <img src="images/cryptocard-front.png" alt="Crypto Card Front">
+                                        </div>
+                                        <div class="card-preview-face back">
+                                            <img src="images/cryptocard-back.png" alt="Crypto Card Back">
+                                        </div>
+                                        <div class="card-preview-label">
+                                            <iconify-icon icon="solar:refresh-bold" width="14"></iconify-icon>
+                                            Tap to flip
+                                        </div>
+                                    </div>
+                                </div>
 
-                        <!-- Right Column: Information -->
-                        <div class="product-info-column">
-                            <div class="details-header">
-                                <div class="product-info-header">
-                                    <h1>Crypto card</h1>
-                                    <!-- <span id="cryptoStatusBadge" class="status-badge status-completed"
+                                <div class="switch-wrapper">
+                                    <span class="switch-label">
+                                        Card Locked
+                                        <span id="card-locked-badge" class="status-badge status-active"
+                                            style="text-transform: capitalize;">Unlocked</span>
+                                    </span>
+                                    <label class="switch">
+                                        <input type="checkbox"
+                                            onchange="updateToggleStatus(this, 'card-locked-badge', 'Locked', 'Unlocked')">
+                                        <span class="slider"></span>
+                                    </label>
+
+                                </div>
+                            </div>
+
+
+                            <!-- Right Column: Information -->
+                            <div class="product-info-column">
+                                <div class="details-header">
+                                    <div class="product-info-header">
+                                        <h1>Crypto card</h1>
+                                        <!-- <span id="cryptoStatusBadge" class="status-badge status-completed"
                                         style="margin-top: 4px; text-transform: capitalize;">Unlocked</span> -->
+                                    </div>
+                                    <div class="price-tag">
+                                        <span class="label" style="letter-spacing: 0.08em;">BALANCE</span>
+                                        <span class="amount">$200</span>
+                                    </div>
                                 </div>
-                                <div class="price-tag">
-                                    <span class="label" style="letter-spacing: 0.08em;">BALANCE</span>
-                                    <span class="amount">$200</span>
+
+                                <div class="grid-info">
+                                    <div class="info-item">
+                                        <span class="info-label">Card Number</span>
+                                        <span class="info-value" style="font-family: monospace;">
+                                            <span id="ownerCardNumberMasked">1234 **** **** 1234</span>
+                                            <span id="ownerCardNumberFull" style="display:none;">1234 5678 9012
+                                                3456</span>
+                                            <button type="button" id="toggleOwnerCardNumber"
+                                                style="border:none;background:none;padding:0;margin-left:6px;cursor:pointer;vertical-align:middle;">
+                                                <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">PIN
+                                            <button type="button" onclick="openChangePinModal()"
+                                                style="border:none;background:none;padding:0;margin-left:4px;cursor:pointer;color:var(--primary-main);font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
+                                                <iconify-icon icon="solar:key-bold" width="14"></iconify-icon>
+                                                <span>Change PIN</span>
+                                            </button>
+                                        </span>
+
+                                        <span class="info-value">
+                                            <span id="ownerPinMasked">****</span>
+                                            <span id="ownerPinFull" style="display:none;">1234</span>
+                                            <button type="button" id="toggleOwnerPin"
+                                                style="border:none;background:none;padding:0;margin-left:6px;cursor:pointer;vertical-align:middle;">
+                                                <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
+                                            </button>
+                                        </span>
+                                    </div>
+
+
+                                    <div class="info-item">
+                                        <span class="info-label">Recipient Name</span>
+                                        <span class="info-value">CARLOTA MONTEIRO</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Recipient Email</span>
+                                        <span class="info-value" id="recipientEmailValue">-</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Issued Date</span>
+                                        <span class="info-value">Jun 15, 2024</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Received Via</span>
+                                        <span class="info-value">SMS</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Phone Number</span>
+                                        <span class="info-value">+1 (408) 555-1234</span>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="grid-info">
-                                <div class="info-item">
-                                    <span class="info-label">Card Number</span>
-                                    <span class="info-value" style="font-family: monospace;">
-                                        <span id="ownerCardNumberMasked">1234 **** **** 1234</span>
-                                        <span id="ownerCardNumberFull" style="display:none;">1234 5678 9012
-                                            3456</span>
-                                        <button type="button" id="toggleOwnerCardNumber"
-                                            style="border:none;background:none;padding:0;margin-left:6px;cursor:pointer;vertical-align:middle;">
-                                            <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
-                                        </button>
-                                    </span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">PIN
-                                        <button type="button" onclick="openChangePinModal()"
-                                            style="border:none;background:none;padding:0;margin-left:4px;cursor:pointer;color:var(--primary-main);font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
-                                            <iconify-icon icon="solar:key-bold" width="14"></iconify-icon>
-                                            <span>Change PIN</span>
-                                        </button>
-                                    </span>
+                        </div>
 
-                                    <span class="info-value">
-                                        <span id="ownerPinMasked">****</span>
-                                        <span id="ownerPinFull" style="display:none;">1234</span>
-                                        <button type="button" id="toggleOwnerPin"
-                                            style="border:none;background:none;padding:0;margin-left:6px;cursor:pointer;vertical-align:middle;">
-                                            <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
-                                        </button>
-                                    </span>
-                                </div>
+                        <!-- Assets Section -->
+                        <div class="crypto-list-section" id="sectionCryptoList">
+                            <div class="section-title" onclick="toggleSection('sectionCryptoList')" role="button"
+                                tabindex="0" aria-expanded="true" aria-controls="cryptoListBody">
+                                <img src="images/assets.svg" alt="" width="20" height="20" class="section-title-icon" />
+                                Assets
+                                <svg class="section-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
 
-
-                                <div class="info-item">
-                                    <span class="info-label">Recipient Name</span>
-                                    <span class="info-value">CARLOTA MONTEIRO</span>
-                                </div>
-
-                                <div class="info-item">
-                                    <span class="info-label">Recipient Email</span>
-                                    <span class="info-value" id="recipientEmailValue">-</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Issued Date</span>
-                                    <span class="info-value">Jun 15, 2024</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Received Via</span>
-                                    <span class="info-value">SMS</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Phone Number</span>
-                                    <span class="info-value">+1 (408) 555-1234</span>
-                                </div>
+                            <div class="assets-table-wrap">
+                                <table class="crypto-table assets-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="assets-col-asset">Assets</th>
+                                            <th class="assets-col-balance">Balance</th>
+                                            <th class="assets-col-amount">Amount</th>
+                                            <th class="assets-col-price">Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="assets-cell-asset">
+                                                <div class="asset-main">
+                                                    <div class="crypto-icon"><img
+                                                            src="https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
+                                                            alt="BTC"></div>
+                                                    <div class="asset-text">
+                                                        <div class="asset-name">Bitcoin</div>
+                                                        <div class="asset-balance-mobile">0.0003593 BTC</div>
+                                                        <div class="asset-amount-mobile">$25</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="assets-cell-balance">
+                                                <div class="asset-balance">0.0003593</div>
+                                            </td>
+                                            <td class="assets-cell-amount">
+                                                <div class="asset-amount">$25</div>
+                                            </td>
+                                            <td class="assets-cell-price">
+                                                <div class="asset-price">$69,583.615</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="assets-cell-asset">
+                                                <div class="asset-main">
+                                                    <div class="crypto-icon"><img
+                                                            src="https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png"
+                                                            alt="ETH"></div>
+                                                    <div class="asset-text">
+                                                        <div class="asset-name">Ethereum</div>
+                                                        <div class="asset-balance-mobile">0.01214 ETH</div>
+                                                        <div class="asset-amount-mobile">$25</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="assets-cell-balance">
+                                                <div class="asset-balance">0.01214</div>
+                                            </td>
+                                            <td class="assets-cell-amount">
+                                                <div class="asset-amount">$25</div>
+                                            </td>
+                                            <td class="assets-cell-price">
+                                                <div class="asset-price">$2,059.61</div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
+                        <!-- Terms & Conditions Section -->
+                        <div class="term-section collapsed" id="sectionTerm">
+                            <div class="term-title" onclick="toggleSection('sectionTerm')" role="button" tabindex="0"
+                                aria-expanded="false" aria-controls="termContent">
+                                <img src="images/term.svg" alt="" width="20" height="20" class="section-title-icon" />
+                                Terms & Conditions
+                                <svg class="term-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                            <div class="term-content" id="termContent">
+                                1. This Crypto Card can be used for cryptocurrency transactions and payments.<br>
+                                2. Transfer fees apply based on the amount and network conditions.<br>
+                                3. Platform fees may be waived for membership accounts.<br>
+                                4. All transactions are subject to blockchain confirmation.<br>
+                                5. Please keep your PIN secure and do not share it with anyone.<br>
+                                6. The card can be locked/unlocked at any time through your account settings.
+                            </div>
+                        </div>
+                        <!-- How to Use Section -->
+                        <div class="term-section collapsed" id="sectionHowToUse">
+                            <div class="term-title" onclick="toggleSection('sectionHowToUse')" role="button"
+                                tabindex="0" aria-expanded="false" aria-controls="howToUseContent">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    style="color: var(--grey-600); flex-shrink: 0;">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M10 10.5a2 2 0 0 1 4 0c0 2-2 2-2 4" />
+                                    <line x1="12" y1="17" x2="12" y2="17" />
+                                </svg>
+                                How to Use
+                                <svg class="term-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                            <div class="term-content" id="howToUseContent">
+                                1. Present this Crypto Card at participating merchants or online checkout pages that
+                                support
+                                VLINKPAY Crypto Cards.<br>
+                                2. Merchant scans your card QR or enters the full card number and PIN to verify
+                                balance.<br>
+                                3. Confirm the payment amount before authorizing the transaction.<br>
+                                4. Remaining balance (if any) will stay on the card for future use until expiry.<br>
+                                5. You can view full card details and transaction history in your VLINKPAY account.
+                            </div>
+                        </div>
+                        <!-- Applicable Stores Section -->
+                        <div class="term-section collapsed" id="sectionStores">
+                            <div class="term-title" onclick="toggleSection('sectionStores')" role="button" tabindex="0"
+                                aria-expanded="false" aria-controls="storesContent">
+                                <img src="images/applicable.svg" alt="" width="20" height="20"
+                                    class="section-title-icon" />
+                                Applicable Stores
+                                <svg class="term-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                            <div class="term-content" id="storesContent">
+                                • Tech Haven Store (Online &amp; In-store)<br>
+                                • Beauty Spa Center<br>
+                                • Luxury Nail Spa<br>
+                                • Partner merchants that display the VLINKPAY or Crypto Card acceptance mark.<br>
+                                For full and updated list of applicable stores, please check your VLINKPAY portal or
+                                contact
+                                our
+                                support team.
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Assets Section -->
-                    <div class="crypto-list-section" id="sectionCryptoList">
-                        <div class="section-title" onclick="toggleSection('sectionCryptoList')" role="button"
-                            tabindex="0" aria-expanded="true" aria-controls="cryptoListBody">
-                            <img src="images/assets.svg" alt="" width="20" height="20" class="section-title-icon" />
-                            Assets
-                            <svg class="section-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
+                <!-- Tab: Redeem History -->
+                <div id="redeem-history" class="tab-content">
+                    <div
+                        style="background: #fff; border-radius: 16px; box-shadow: var(--shadow-z1); overflow: hidden; border: 1px solid var(--grey-200);">
+                        <div class="filter-bar">
+                            <div class="field-root search-field redeem-search-wrap">
+                                <div class="field-container">
+                                    <iconify-icon icon="solar:magnifer-linear" class="field-icon-left"
+                                        style="cursor: default;"></iconify-icon>
+                                    <input type="text" id="redeemSearchInput" class="field-input"
+                                        placeholder="Transaction ID / Card Number..." oninput="applyRedeemFilters()">
+                                </div>
+                            </div>
+                            <div class="field-root date-field">
+                                <label class="field-label">From date</label>
+                                <div class="field-container flatpickr-clear-wrap">
+                                    <input type="text" id="redeemFromDate" class="field-input" placeholder="Pick a date"
+                                        readonly>
+                                    <button type="button" class="date-clear" id="redeemFromDateClear"
+                                        aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg"
+                                            width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18" />
+                                            <line x1="6" y1="6" x2="18" y2="18" />
+                                        </svg></button>
+                                    <iconify-icon icon="solar:calendar-minimalistic-linear" class="field-chevron"
+                                        style="width:16px;height:16px;"></iconify-icon>
+                                </div>
+                            </div>
+                            <div class="field-root date-field">
+                                <label class="field-label">To date</label>
+                                <div class="field-container flatpickr-clear-wrap">
+                                    <input type="text" id="redeemToDate" class="field-input" placeholder="Pick a date"
+                                        readonly>
+                                    <button type="button" class="date-clear" id="redeemToDateClear"
+                                        aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg"
+                                            width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18" />
+                                            <line x1="6" y1="6" x2="18" y2="18" />
+                                        </svg></button>
+                                    <iconify-icon icon="solar:calendar-minimalistic-linear" class="field-chevron"
+                                        style="width:16px;height:16px;"></iconify-icon>
+                                </div>
+                            </div>
+                            <button type="button" class="redeem-btn-filter" onclick="openRedeemFilterModal()">
+                                <iconify-icon icon="solar:filter-linear"></iconify-icon>
+                                Filter
+                            </button>
                         </div>
 
-                        <div class="assets-table-wrap">
-                            <table class="crypto-table assets-table">
+                        <div class="table-container">
+                            <table>
                                 <thead>
                                     <tr>
-                                        <th class="assets-col-asset">Assets</th>
-                                        <th class="assets-col-balance">Balance</th>
-                                        <th class="assets-col-amount">Amount</th>
-                                        <th class="assets-col-price">Price</th>
+                                        <th>Transaction ID</th>
+                                        <th>Card Number</th>
+                                        <th>Transaction Type</th>
+                                        <th>Amount</th>
+                                        <th>Currency</th>
+                                        <th>Crypto Amount</th>
+                                        <th>Crypto Balance</th>
+                                        <th>Transaction Date</th>
+                                        <th>Transaction Status</th>
+                                        <th>Description</th>
+                                        <th>Failure Reason</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="assets-cell-asset">
-                                            <div class="asset-main">
-                                                <div class="crypto-icon"><img
-                                                        src="https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
-                                                        alt="BTC"></div>
-                                                <div class="asset-text">
-                                                    <div class="asset-name">Bitcoin</div>
-                                                    <div class="asset-balance-mobile">0.0003593 BTC</div>
-                                                    <div class="asset-amount-mobile">$25</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="assets-cell-balance">
-                                            <div class="asset-balance">0.0003593</div>
-                                        </td>
-                                        <td class="assets-cell-amount">
-                                            <div class="asset-amount">$25</div>
-                                        </td>
-                                        <td class="assets-cell-price">
-                                            <div class="asset-price">$69,583.615</div>
-                                        </td>
+                                        <td style="font-weight: 600;">#TXN-88001</td>
+                                        <td style="font-family: monospace;">8829 **** **** 3456</td>
+                                        <td>Redeem</td>
+                                        <td>$50.00</td>
+                                        <td>USD</td>
+                                        <td>0.0012 BTC</td>
+                                        <td>0.0088 BTC</td>
+                                        <td>Jan 25, 2026 03:15 PM</td>
+                                        <td><span class="status-pill status-approved">Completed</span></td>
+                                        <td>Card reload</td>
+                                        <td>—</td>
                                     </tr>
                                     <tr>
-                                        <td class="assets-cell-asset">
-                                            <div class="asset-main">
-                                                <div class="crypto-icon"><img
-                                                        src="https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png"
-                                                        alt="ETH"></div>
-                                                <div class="asset-text">
-                                                    <div class="asset-name">Ethereum</div>
-                                                    <div class="asset-balance-mobile">0.01214 ETH</div>
-                                                    <div class="asset-amount-mobile">$25</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="assets-cell-balance">
-                                            <div class="asset-balance">0.01214</div>
-                                        </td>
-                                        <td class="assets-cell-amount">
-                                            <div class="asset-amount">$25</div>
-                                        </td>
-                                        <td class="assets-cell-price">
-                                            <div class="asset-price">$2,059.61</div>
-                                        </td>
+                                        <td style="font-weight: 600;">#TXN-88002</td>
+                                        <td style="font-family: monospace;">8829 **** **** 3456</td>
+                                        <td>Redeem</td>
+                                        <td>$30.00</td>
+                                        <td>USD</td>
+                                        <td>0.0008 BTC</td>
+                                        <td>0.0100 BTC</td>
+                                        <td>Jan 20, 2026 11:20 AM</td>
+                                        <td><span class="status-pill status-approved">Completed</span></td>
+                                        <td>Payment</td>
+                                        <td>—</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: 600;">#TXN-88003</td>
+                                        <td style="font-family: monospace;">8829 **** **** 3456</td>
+                                        <td>Redeem</td>
+                                        <td>$20.00</td>
+                                        <td>USD</td>
+                                        <td>—</td>
+                                        <td>—</td>
+                                        <td>Jan 18, 2026 02:45 PM</td>
+                                        <td><span class="status-pill status-cancelled">Failed</span></td>
+                                        <td>Declined</td>
+                                        <td>Insufficient balance</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                    </div>
 
-                    <!-- Terms & Conditions Section -->
-                    <div class="term-section collapsed" id="sectionTerm">
-                        <div class="term-title" onclick="toggleSection('sectionTerm')" role="button" tabindex="0"
-                            aria-expanded="false" aria-controls="termContent">
-                            <img src="images/term.svg" alt="" width="20" height="20" class="section-title-icon" />
-                            Terms & Conditions
-                            <svg class="term-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </div>
-                        <div class="term-content" id="termContent">
-                            1. This Crypto Card can be used for cryptocurrency transactions and payments.<br>
-                            2. Transfer fees apply based on the amount and network conditions.<br>
-                            3. Platform fees may be waived for membership accounts.<br>
-                            4. All transactions are subject to blockchain confirmation.<br>
-                            5. Please keep your PIN secure and do not share it with anyone.<br>
-                            6. The card can be locked/unlocked at any time through your account settings.
-                        </div>
-                    </div>
-                    <!-- How to Use Section -->
-                    <div class="term-section collapsed" id="sectionHowToUse">
-                        <div class="term-title" onclick="toggleSection('sectionHowToUse')" role="button" tabindex="0"
-                            aria-expanded="false" aria-controls="howToUseContent">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                style="color: var(--grey-600); flex-shrink: 0;">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="M10 10.5a2 2 0 0 1 4 0c0 2-2 2-2 4" />
-                                <line x1="12" y1="17" x2="12" y2="17" />
-                            </svg>
-                            How to Use
-                            <svg class="term-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </div>
-                        <div class="term-content" id="howToUseContent">
-                            1. Present this Crypto Card at participating merchants or online checkout pages that support
-                            VLINKPAY Crypto Cards.<br>
-                            2. Merchant scans your card QR or enters the full card number and PIN to verify balance.<br>
-                            3. Confirm the payment amount before authorizing the transaction.<br>
-                            4. Remaining balance (if any) will stay on the card for future use until expiry.<br>
-                            5. You can view full card details and transaction history in your VLINKPAY account.
-                        </div>
-                    </div>
-                    <!-- Applicable Stores Section -->
-                    <div class="term-section collapsed" id="sectionStores">
-                        <div class="term-title" onclick="toggleSection('sectionStores')" role="button" tabindex="0"
-                            aria-expanded="false" aria-controls="storesContent">
-                            <img src="images/applicable.svg" alt="" width="20" height="20" class="section-title-icon" />
-                            Applicable Stores
-                            <svg class="term-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </div>
-                        <div class="term-content" id="storesContent">
-                            • Tech Haven Store (Online &amp; In-store)<br>
-                            • Beauty Spa Center<br>
-                            • Luxury Nail Spa<br>
-                            • Partner merchants that display the VLINKPAY or Crypto Card acceptance mark.<br>
-                            For full and updated list of applicable stores, please check your VLINKPAY portal or contact
-                            our
-                            support team.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab: Redeem History -->
-            <div id="redeem-history" class="tab-content">
-                <div
-                    style="background: #fff; border-radius: 16px; box-shadow: var(--shadow-z1); overflow: hidden; border: 1px solid var(--grey-200);">
-                    <div class="filter-bar">
-                        <div class="field-root search-field redeem-search-wrap">
-                            <div class="field-container">
-                                <iconify-icon icon="solar:magnifer-linear" class="field-icon-left"
-                                    style="cursor: default;"></iconify-icon>
-                                <input type="text" id="redeemSearchInput" class="field-input"
-                                    placeholder="Transaction ID / Card Number..." oninput="applyRedeemFilters()">
+                        <!-- Redeem History: mobile cards (product-list style) -->
+                        <div class="redeem-mobile-cards" id="redeemHistoryMobileCards">
+                            <div class="redeem-product-card product-card" data-transaction-id="TXN-88001"
+                                data-date="2026-01-25">
+                                <div class="product-card-header">
+                                    <span class="product-card-name">#TXN-88001</span>
+                                    <span class="product-card-amount">$50.00</span>
+                                </div>
+                                <div class="product-card-header" style="margin-bottom:0;">
+                                    <span class="status-pill status-approved">Completed</span>
+                                </div>
+                                <div class="product-card-info">
+                                    <div class="info-field"><span class="info-field-label">Card Number</span><span
+                                            class="info-field-value" style="font-family:monospace;">8829 **** ****
+                                            3456</span></div>
+                                    <div class="info-field"><span class="info-field-label">Transaction Type</span><span
+                                            class="info-field-value">Redeem</span></div>
+                                    <div class="info-field"><span class="info-field-label">Currency</span><span
+                                            class="info-field-value">USD</span></div>
+                                    <div class="info-field"><span class="info-field-label">Crypto Amount</span><span
+                                            class="info-field-value">0.0012 BTC</span></div>
+                                    <div class="info-field"><span class="info-field-label">Transaction Date</span><span
+                                            class="info-field-value">Jan 25, 2026 03:15 PM</span></div>
+                                    <div class="info-field"><span class="info-field-label">Description</span><span
+                                            class="info-field-value">Card reload</span></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="field-root date-field">
-                            <label class="field-label">From date</label>
-                            <div class="field-container flatpickr-clear-wrap">
-                                <input type="text" id="redeemFromDate" class="field-input" placeholder="Pick a date"
-                                    readonly>
-                                <button type="button" class="date-clear" id="redeemFromDateClear"
-                                    aria-label="Clear date" title="Clear"><svg xmlns="http://www.w3.org/2000/svg"
-                                        width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="18" y1="6" x2="6" y2="18" />
-                                        <line x1="6" y1="6" x2="18" y2="18" />
-                                    </svg></button>
-                                <iconify-icon icon="solar:calendar-minimalistic-linear" class="field-chevron"
-                                    style="width:16px;height:16px;"></iconify-icon>
+                            <div class="redeem-product-card product-card" data-transaction-id="TXN-88002"
+                                data-date="2026-01-20">
+                                <div class="product-card-header">
+                                    <span class="product-card-name">#TXN-88002</span>
+                                    <span class="product-card-amount">$30.00</span>
+                                </div>
+                                <div class="product-card-header" style="margin-bottom:0;">
+                                    <span class="status-pill status-approved">Completed</span>
+                                </div>
+                                <div class="product-card-info">
+                                    <div class="info-field"><span class="info-field-label">Card Number</span><span
+                                            class="info-field-value" style="font-family:monospace;">8829 **** ****
+                                            3456</span></div>
+                                    <div class="info-field"><span class="info-field-label">Transaction Type</span><span
+                                            class="info-field-value">Redeem</span></div>
+                                    <div class="info-field"><span class="info-field-label">Currency</span><span
+                                            class="info-field-value">USD</span></div>
+                                    <div class="info-field"><span class="info-field-label">Crypto Amount</span><span
+                                            class="info-field-value">0.0008 BTC</span></div>
+                                    <div class="info-field"><span class="info-field-label">Transaction Date</span><span
+                                            class="info-field-value">Jan 20, 2026 11:20 AM</span></div>
+                                    <div class="info-field"><span class="info-field-label">Description</span><span
+                                            class="info-field-value">Payment</span></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="field-root date-field">
-                            <label class="field-label">To date</label>
-                            <div class="field-container flatpickr-clear-wrap">
-                                <input type="text" id="redeemToDate" class="field-input" placeholder="Pick a date"
-                                    readonly>
-                                <button type="button" class="date-clear" id="redeemToDateClear" aria-label="Clear date"
-                                    title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="18" y1="6" x2="6" y2="18" />
-                                        <line x1="6" y1="6" x2="18" y2="18" />
-                                    </svg></button>
-                                <iconify-icon icon="solar:calendar-minimalistic-linear" class="field-chevron"
-                                    style="width:16px;height:16px;"></iconify-icon>
-                            </div>
-                        </div>
-                        <button type="button" class="redeem-btn-filter" onclick="openRedeemFilterModal()">
-                            <iconify-icon icon="solar:filter-linear"></iconify-icon>
-                            Filter
-                        </button>
-                    </div>
-
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Transaction ID</th>
-                                    <th>Card Number</th>
-                                    <th>Transaction Type</th>
-                                    <th>Amount</th>
-                                    <th>Currency</th>
-                                    <th>Crypto Amount</th>
-                                    <th>Crypto Balance</th>
-                                    <th>Transaction Date</th>
-                                    <th>Transaction Status</th>
-                                    <th>Description</th>
-                                    <th>Failure Reason</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="font-weight: 600;">#TXN-88001</td>
-                                    <td style="font-family: monospace;">8829 **** **** 3456</td>
-                                    <td>Redeem</td>
-                                    <td>$50.00</td>
-                                    <td>USD</td>
-                                    <td>0.0012 BTC</td>
-                                    <td>0.0088 BTC</td>
-                                    <td>Jan 25, 2026 03:15 PM</td>
-                                    <td><span class="status-pill status-approved">Completed</span></td>
-                                    <td>Card reload</td>
-                                    <td>—</td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: 600;">#TXN-88002</td>
-                                    <td style="font-family: monospace;">8829 **** **** 3456</td>
-                                    <td>Redeem</td>
-                                    <td>$30.00</td>
-                                    <td>USD</td>
-                                    <td>0.0008 BTC</td>
-                                    <td>0.0100 BTC</td>
-                                    <td>Jan 20, 2026 11:20 AM</td>
-                                    <td><span class="status-pill status-approved">Completed</span></td>
-                                    <td>Payment</td>
-                                    <td>—</td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: 600;">#TXN-88003</td>
-                                    <td style="font-family: monospace;">8829 **** **** 3456</td>
-                                    <td>Redeem</td>
-                                    <td>$20.00</td>
-                                    <td>USD</td>
-                                    <td>—</td>
-                                    <td>—</td>
-                                    <td>Jan 18, 2026 02:45 PM</td>
-                                    <td><span class="status-pill status-cancelled">Failed</span></td>
-                                    <td>Declined</td>
-                                    <td>Insufficient balance</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Redeem History: mobile cards (product-list style) -->
-                    <div class="redeem-mobile-cards" id="redeemHistoryMobileCards">
-                        <div class="redeem-product-card product-card" data-transaction-id="TXN-88001"
-                            data-date="2026-01-25">
-                            <div class="product-card-header">
-                                <span class="product-card-name">#TXN-88001</span>
-                                <span class="product-card-amount">$50.00</span>
-                            </div>
-                            <div class="product-card-header" style="margin-bottom:0;">
-                                <span class="status-pill status-approved">Completed</span>
-                            </div>
-                            <div class="product-card-info">
-                                <div class="info-field"><span class="info-field-label">Card Number</span><span
-                                        class="info-field-value" style="font-family:monospace;">8829 **** ****
-                                        3456</span></div>
-                                <div class="info-field"><span class="info-field-label">Transaction Type</span><span
-                                        class="info-field-value">Redeem</span></div>
-                                <div class="info-field"><span class="info-field-label">Currency</span><span
-                                        class="info-field-value">USD</span></div>
-                                <div class="info-field"><span class="info-field-label">Crypto Amount</span><span
-                                        class="info-field-value">0.0012 BTC</span></div>
-                                <div class="info-field"><span class="info-field-label">Transaction Date</span><span
-                                        class="info-field-value">Jan 25, 2026 03:15 PM</span></div>
-                                <div class="info-field"><span class="info-field-label">Description</span><span
-                                        class="info-field-value">Card reload</span></div>
-                            </div>
-                        </div>
-                        <div class="redeem-product-card product-card" data-transaction-id="TXN-88002"
-                            data-date="2026-01-20">
-                            <div class="product-card-header">
-                                <span class="product-card-name">#TXN-88002</span>
-                                <span class="product-card-amount">$30.00</span>
-                            </div>
-                            <div class="product-card-header" style="margin-bottom:0;">
-                                <span class="status-pill status-approved">Completed</span>
-                            </div>
-                            <div class="product-card-info">
-                                <div class="info-field"><span class="info-field-label">Card Number</span><span
-                                        class="info-field-value" style="font-family:monospace;">8829 **** ****
-                                        3456</span></div>
-                                <div class="info-field"><span class="info-field-label">Transaction Type</span><span
-                                        class="info-field-value">Redeem</span></div>
-                                <div class="info-field"><span class="info-field-label">Currency</span><span
-                                        class="info-field-value">USD</span></div>
-                                <div class="info-field"><span class="info-field-label">Crypto Amount</span><span
-                                        class="info-field-value">0.0008 BTC</span></div>
-                                <div class="info-field"><span class="info-field-label">Transaction Date</span><span
-                                        class="info-field-value">Jan 20, 2026 11:20 AM</span></div>
-                                <div class="info-field"><span class="info-field-label">Description</span><span
-                                        class="info-field-value">Payment</span></div>
-                            </div>
-                        </div>
-                        <div class="redeem-product-card product-card" data-transaction-id="TXN-88003"
-                            data-date="2026-01-18">
-                            <div class="product-card-header">
-                                <span class="product-card-name">#TXN-88003</span>
-                                <span class="product-card-amount">$20.00</span>
-                            </div>
-                            <div class="product-card-header" style="margin-bottom:0;">
-                                <span class="status-pill status-cancelled">Failed</span>
-                            </div>
-                            <div class="product-card-info">
-                                <div class="info-field"><span class="info-field-label">Card Number</span><span
-                                        class="info-field-value" style="font-family:monospace;">8829 **** ****
-                                        3456</span></div>
-                                <div class="info-field"><span class="info-field-label">Transaction Type</span><span
-                                        class="info-field-value">Redeem</span></div>
-                                <div class="info-field"><span class="info-field-label">Transaction Date</span><span
-                                        class="info-field-value">Jan 18, 2026 02:45 PM</span></div>
-                                <div class="info-field"><span class="info-field-label">Description</span><span
-                                        class="info-field-value">Declined</span></div>
-                                <div class="info-field"><span class="info-field-label">Failure Reason</span><span
-                                        class="info-field-value" style="color:var(--grey-700);">Insufficient
-                                        balance</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="pagination">
-                        <div class="pag-rows">
-                            <span>Rows per page:</span>
-                            <select class="pag-select">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                            </select>
-                        </div>
-                        <div class="pag-info">1–3 of 3</div>
-                        <button type="button" class="pag-btn" disabled>
-                            <iconify-icon icon="eva:chevron-left-fill" width="18"></iconify-icon>
-                        </button>
-                        <button type="button" class="pag-btn">
-                            <iconify-icon icon="eva:chevron-right-fill" width="18"></iconify-icon>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab: Product History (tạm ẩn) -->
-            <div id="product-history" class="tab-content" style="display: none;">
-                <div
-                    style="background: #fff; border-radius: 16px; box-shadow: var(--shadow-z1); overflow: hidden; border: 1px solid var(--grey-200);">
-                    <div class="table-toolbar">
-                        <div class="field-root product-history-search-wrap" style="width: 260px;">
-                            <div class="field-container">
-                                <iconify-icon icon="solar:magnifer-linear" class="field-icon-left"
-                                    style="cursor: default;"></iconify-icon>
-                                <input type="text" class="field-input" placeholder="Search logs...">
+                            <div class="redeem-product-card product-card" data-transaction-id="TXN-88003"
+                                data-date="2026-01-18">
+                                <div class="product-card-header">
+                                    <span class="product-card-name">#TXN-88003</span>
+                                    <span class="product-card-amount">$20.00</span>
+                                </div>
+                                <div class="product-card-header" style="margin-bottom:0;">
+                                    <span class="status-pill status-cancelled">Failed</span>
+                                </div>
+                                <div class="product-card-info">
+                                    <div class="info-field"><span class="info-field-label">Card Number</span><span
+                                            class="info-field-value" style="font-family:monospace;">8829 **** ****
+                                            3456</span></div>
+                                    <div class="info-field"><span class="info-field-label">Transaction Type</span><span
+                                            class="info-field-value">Redeem</span></div>
+                                    <div class="info-field"><span class="info-field-label">Transaction Date</span><span
+                                            class="info-field-value">Jan 18, 2026 02:45 PM</span></div>
+                                    <div class="info-field"><span class="info-field-label">Description</span><span
+                                            class="info-field-value">Declined</span></div>
+                                    <div class="info-field"><span class="info-field-label">Failure Reason</span><span
+                                            class="info-field-value" style="color:var(--grey-700);">Insufficient
+                                            balance</span></div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="product-history-action-field" style="width: 130px;">
-                            <label class="field-label">Action</label>
-                            <div class="field-container">
-                                <select class="field-input field-select">
-                                    <option value="">All Actions</option>
-                                    <option value="created">Created</option>
-                                    <option value="updated">Updated</option>
-                                    <option value="change-pin">Đổi mã PIN</option>
+                        <div class="pagination">
+                            <div class="pag-rows">
+                                <span>Rows per page:</span>
+                                <select class="pag-select">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
                                 </select>
-                                <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
                             </div>
+                            <div class="pag-info">1–3 of 3</div>
+                            <button type="button" class="pag-btn" disabled>
+                                <iconify-icon icon="eva:chevron-left-fill" width="18"></iconify-icon>
+                            </button>
+                            <button type="button" class="pag-btn">
+                                <iconify-icon icon="eva:chevron-right-fill" width="18"></iconify-icon>
+                            </button>
                         </div>
                     </div>
+                </div>
 
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Action</th>
-                                    <th>Changed Fields</th>
-                                    <th>Old Value</th>
-                                    <th>New Value</th>
-                                    <th>Updated At</th>
-                                    <th>Updated By</th>
-                                    <th>Remark</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="card-lock-hidden">
-                                    <td><span class="status-pill status-updated">Updated</span></td>
-                                    <td style="font-weight: 500; color: var(--grey-900);">Card Lock</td>
-                                    <td>Locked</td>
-                                    <td><span style="color: #00A76F; font-weight: 600;">Unlocked</span></td>
-                                    <td>Jan 22, 2026 10:30:42</td>
-                                    <td>
-                                        <div class="user-reference">
-                                            <div class="user-avatar">CM</div>
-                                            <span>carlota.monteiro@vlinkpay.com</span>
-                                        </div>
-                                    </td>
-                                    <td>User requested unlock</td>
-                                </tr>
-                                <tr class="card-lock-hidden">
-                                    <td><span class="status-pill status-updated">Updated</span></td>
-                                    <td style="font-weight: 500; color: var(--grey-900);">Card Lock</td>
-                                    <td>Unlocked</td>
-                                    <td><span style="color: #FF5630; font-weight: 600;">Locked</span></td>
-                                    <td>Jan 20, 2026 02:15:05</td>
-                                    <td>
-                                        <div class="user-reference">
-                                            <div class="user-avatar"
-                                                style="background: var(--primary-lighter); color: var(--primary-dark);">
-                                                S</div>
-                                            <span>System</span>
-                                        </div>
-                                    </td>
-                                    <td>Security measure</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="status-pill status-created">Created</span></td>
-                                    <td style="font-weight: 500; color: var(--grey-900);">-</td>
-                                    <td>-</td>
-                                    <td>New Product Record</td>
-                                    <td>Jan 15, 2026 09:30:00</td>
-                                    <td>
-                                        <div class="user-reference">
-                                            <div class="user-avatar">CM</div>
-                                            <span>carlota.monteiro@vlinkpay.com</span>
-                                        </div>
-                                    </td>
-                                    <td>Initial card creation</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Product History: mobile cards -->
-                    <div class="product-history-mobile-cards">
-                        <div class="product-history-card">
-                            <div class="product-card-header">
-                                <span class="product-card-name">Updated</span>
-                            </div>
-                            <div class="product-card-info">
-                                <div class="info-field"><span class="info-field-label">Changed Fields</span><span
-                                        class="info-field-value">Card Lock</span></div>
-                                <div class="info-field"><span class="info-field-label">Old Value</span><span
-                                        class="info-field-value">Locked</span></div>
-                                <div class="info-field"><span class="info-field-label">New Value</span><span
-                                        class="info-field-value" style="color:#00A76F;font-weight:600;">Unlocked</span>
+                <!-- Tab: Product History (tạm ẩn) -->
+                <div id="product-history" class="tab-content" style="display: none;">
+                    <div
+                        style="background: #fff; border-radius: 16px; box-shadow: var(--shadow-z1); overflow: hidden; border: 1px solid var(--grey-200);">
+                        <div class="table-toolbar">
+                            <div class="field-root product-history-search-wrap" style="width: 260px;">
+                                <div class="field-container">
+                                    <iconify-icon icon="solar:magnifer-linear" class="field-icon-left"
+                                        style="cursor: default;"></iconify-icon>
+                                    <input type="text" class="field-input" placeholder="Search logs...">
                                 </div>
-                                <div class="info-field"><span class="info-field-label">Updated At</span><span
-                                        class="info-field-value">Jan 22, 2026 10:30:42</span></div>
-                                <div class="info-field"><span class="info-field-label">Updated By</span><span
-                                        class="info-field-value">carlota.monteiro@vlinkpay.com</span></div>
-                                <div class="info-field"><span class="info-field-label">Remark</span><span
-                                        class="info-field-value">User requested unlock</span></div>
                             </div>
-                        </div>
-                        <div class="product-history-card">
-                            <div class="product-card-header">
-                                <span class="product-card-name">Updated</span>
-                            </div>
-                            <div class="product-card-info">
-                                <div class="info-field"><span class="info-field-label">Changed Fields</span><span
-                                        class="info-field-value">Card Lock</span></div>
-                                <div class="info-field"><span class="info-field-label">Old Value</span><span
-                                        class="info-field-value">Unlocked</span></div>
-                                <div class="info-field"><span class="info-field-label">New Value</span><span
-                                        class="info-field-value" style="color:#FF5630;font-weight:600;">Locked</span>
-                                </div>
-                                <div class="info-field"><span class="info-field-label">Updated At</span><span
-                                        class="info-field-value">Jan 20, 2026 02:15:05</span></div>
-                                <div class="info-field"><span class="info-field-label">Updated By</span><span
-                                        class="info-field-value">System</span></div>
-                                <div class="info-field"><span class="info-field-label">Remark</span><span
-                                        class="info-field-value">Security measure</span></div>
-                            </div>
-                        </div>
-                        <div class="product-history-card">
-                            <div class="product-card-header">
-                                <span class="product-card-name">Created</span>
-                            </div>
-                            <div class="product-card-info">
-                                <div class="info-field"><span class="info-field-label">Changed Fields</span><span
-                                        class="info-field-value">-</span></div>
-                                <div class="info-field"><span class="info-field-label">New Value</span><span
-                                        class="info-field-value">New Product Record</span></div>
-                                <div class="info-field"><span class="info-field-label">Updated At</span><span
-                                        class="info-field-value">Jan 15, 2026 09:30:00</span></div>
-                                <div class="info-field"><span class="info-field-label">Updated By</span><span
-                                        class="info-field-value">carlota.monteiro@vlinkpay.com</span></div>
-                                <div class="info-field"><span class="info-field-label">Remark</span><span
-                                        class="info-field-value">Initial card creation</span></div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="pagination">
-                        <div class="pag-rows">
-                            <span>Rows per page:</span>
-                            <select class="pag-select">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                            </select>
+                            <div class="product-history-action-field" style="width: 130px;">
+                                <label class="field-label">Action</label>
+                                <div class="field-container">
+                                    <select class="field-input field-select">
+                                        <option value="">All Actions</option>
+                                        <option value="created">Created</option>
+                                        <option value="updated">Updated</option>
+                                        <option value="change-pin">Đổi mã PIN</option>
+                                    </select>
+                                    <iconify-icon icon="eva:chevron-down-fill" class="field-chevron"></iconify-icon>
+                                </div>
+                            </div>
                         </div>
-                        <div class="pag-info">1–4 of 4</div>
-                        <button type="button" class="pag-btn">
-                            <iconify-icon icon="eva:chevron-left-fill" width="18"></iconify-icon>
-                        </button>
-                        <button type="button" class="pag-btn">
-                            <iconify-icon icon="eva:chevron-right-fill" width="18"></iconify-icon>
-                        </button>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Action</th>
+                                        <th>Changed Fields</th>
+                                        <th>Old Value</th>
+                                        <th>New Value</th>
+                                        <th>Updated At</th>
+                                        <th>Updated By</th>
+                                        <th>Remark</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="card-lock-hidden">
+                                        <td><span class="status-pill status-updated">Updated</span></td>
+                                        <td style="font-weight: 500; color: var(--grey-900);">Card Lock</td>
+                                        <td>Locked</td>
+                                        <td><span style="color: #00A76F; font-weight: 600;">Unlocked</span></td>
+                                        <td>Jan 22, 2026 10:30:42</td>
+                                        <td>
+                                            <div class="user-reference">
+                                                <div class="user-avatar">CM</div>
+                                                <span>carlota.monteiro@vlinkpay.com</span>
+                                            </div>
+                                        </td>
+                                        <td>User requested unlock</td>
+                                    </tr>
+                                    <tr class="card-lock-hidden">
+                                        <td><span class="status-pill status-updated">Updated</span></td>
+                                        <td style="font-weight: 500; color: var(--grey-900);">Card Lock</td>
+                                        <td>Unlocked</td>
+                                        <td><span style="color: #FF5630; font-weight: 600;">Locked</span></td>
+                                        <td>Jan 20, 2026 02:15:05</td>
+                                        <td>
+                                            <div class="user-reference">
+                                                <div class="user-avatar"
+                                                    style="background: var(--primary-lighter); color: var(--primary-dark);">
+                                                    S</div>
+                                                <span>System</span>
+                                            </div>
+                                        </td>
+                                        <td>Security measure</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="status-pill status-created">Created</span></td>
+                                        <td style="font-weight: 500; color: var(--grey-900);">-</td>
+                                        <td>-</td>
+                                        <td>New Product Record</td>
+                                        <td>Jan 15, 2026 09:30:00</td>
+                                        <td>
+                                            <div class="user-reference">
+                                                <div class="user-avatar">CM</div>
+                                                <span>carlota.monteiro@vlinkpay.com</span>
+                                            </div>
+                                        </td>
+                                        <td>Initial card creation</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Product History: mobile cards -->
+                        <div class="product-history-mobile-cards">
+                            <div class="product-history-card">
+                                <div class="product-card-header">
+                                    <span class="product-card-name">Updated</span>
+                                </div>
+                                <div class="product-card-info">
+                                    <div class="info-field"><span class="info-field-label">Changed Fields</span><span
+                                            class="info-field-value">Card Lock</span></div>
+                                    <div class="info-field"><span class="info-field-label">Old Value</span><span
+                                            class="info-field-value">Locked</span></div>
+                                    <div class="info-field"><span class="info-field-label">New Value</span><span
+                                            class="info-field-value"
+                                            style="color:#00A76F;font-weight:600;">Unlocked</span>
+                                    </div>
+                                    <div class="info-field"><span class="info-field-label">Updated At</span><span
+                                            class="info-field-value">Jan 22, 2026 10:30:42</span></div>
+                                    <div class="info-field"><span class="info-field-label">Updated By</span><span
+                                            class="info-field-value">carlota.monteiro@vlinkpay.com</span></div>
+                                    <div class="info-field"><span class="info-field-label">Remark</span><span
+                                            class="info-field-value">User requested unlock</span></div>
+                                </div>
+                            </div>
+                            <div class="product-history-card">
+                                <div class="product-card-header">
+                                    <span class="product-card-name">Updated</span>
+                                </div>
+                                <div class="product-card-info">
+                                    <div class="info-field"><span class="info-field-label">Changed Fields</span><span
+                                            class="info-field-value">Card Lock</span></div>
+                                    <div class="info-field"><span class="info-field-label">Old Value</span><span
+                                            class="info-field-value">Unlocked</span></div>
+                                    <div class="info-field"><span class="info-field-label">New Value</span><span
+                                            class="info-field-value"
+                                            style="color:#FF5630;font-weight:600;">Locked</span>
+                                    </div>
+                                    <div class="info-field"><span class="info-field-label">Updated At</span><span
+                                            class="info-field-value">Jan 20, 2026 02:15:05</span></div>
+                                    <div class="info-field"><span class="info-field-label">Updated By</span><span
+                                            class="info-field-value">System</span></div>
+                                    <div class="info-field"><span class="info-field-label">Remark</span><span
+                                            class="info-field-value">Security measure</span></div>
+                                </div>
+                            </div>
+                            <div class="product-history-card">
+                                <div class="product-card-header">
+                                    <span class="product-card-name">Created</span>
+                                </div>
+                                <div class="product-card-info">
+                                    <div class="info-field"><span class="info-field-label">Changed Fields</span><span
+                                            class="info-field-value">-</span></div>
+                                    <div class="info-field"><span class="info-field-label">New Value</span><span
+                                            class="info-field-value">New Product Record</span></div>
+                                    <div class="info-field"><span class="info-field-label">Updated At</span><span
+                                            class="info-field-value">Jan 15, 2026 09:30:00</span></div>
+                                    <div class="info-field"><span class="info-field-label">Updated By</span><span
+                                            class="info-field-value">carlota.monteiro@vlinkpay.com</span></div>
+                                    <div class="info-field"><span class="info-field-label">Remark</span><span
+                                            class="info-field-value">Initial card creation</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pagination">
+                            <div class="pag-rows">
+                                <span>Rows per page:</span>
+                                <select class="pag-select">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                            <div class="pag-info">1–4 of 4</div>
+                            <button type="button" class="pag-btn">
+                                <iconify-icon icon="eva:chevron-left-fill" width="18"></iconify-icon>
+                            </button>
+                            <button type="button" class="pag-btn">
+                                <iconify-icon icon="eva:chevron-right-fill" width="18"></iconify-icon>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </main>
 
     <!-- QR Code Modal (from issue-digital-membership-details) -->

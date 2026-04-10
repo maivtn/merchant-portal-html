@@ -3284,7 +3284,7 @@
                   <div class="cb-body">
                     <div class="cb-main">
                       <!-- Terms -->
-                      <div class="cb-section-title">TERMS &amp; CONDITIONS:</div>
+                      <div class="cb-section-title" id="cbTermsSectionTitle">TERMS &amp; CONDITIONS:</div>
                       <div class="cb-terms-text">
                         This card is issued by [MERCHANT NAME] for use in the merchant's program.
                         VLINKPAY provides technology services only and is not the issuer of this card.
@@ -4047,7 +4047,7 @@
         <div class="step-card">
           <div class="step-header open" id="shdr-6">
             <div class="step-badge" id="sbadge-6">Step 6:</div>
-            <div class="step-title-text">Terms & Conditions
+            <div class="step-title-text" id="termsStepTitle">Terms & Conditions
               <span class="step-tooltip-trigger" data-step-tooltip-id="terms" role="button" tabindex="0"
                 aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info"
                   style="width:14px;height:14px;"></i></span>
@@ -4074,15 +4074,15 @@
                   <span>Require VlinkPay account to use card</span>
                 </label>
               </div>
-              <div class="terms-box">
+              <div class="terms-box" id="termsBox">
                 <textarea class="terms-textarea" id="termsTextarea" rows="3" placeholder="Enter terms and conditions..."
                   oninput="syncTermsToCard()">Valid for services only. Not applicable to products.
 No cash value.
 Valid for one-time use per invoice.
 Please present this card before payment.</textarea>
               </div>
-              <div class="suggested-label">Suggested Terms</div>
-              <div class="suggested-terms">
+              <div class="suggested-label" id="suggestedTermsLabel">Suggested Terms</div>
+              <div class="suggested-terms" id="suggestedTermsBox">
                 <div class="term-chip" onclick="addTerm('Valid for services only. Not applicable to products.')">
                   <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
                   Valid for services only...
@@ -5051,6 +5051,7 @@ Please present this card before payment.</textarea>
     let currentTypeId = '0';
 
     var STEP4_TITLE_TOOLTIP_SUFFIX = '<span class="step-tooltip-trigger" data-step-tooltip-id="amount" role="button" tabindex="0" aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info" style="width:14px;height:14px;"></i></span>';
+    var TERMS_TITLE_TOOLTIP_SUFFIX = '<span class="step-tooltip-trigger" data-step-tooltip-id="terms" role="button" tabindex="0" aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info" style="width:14px;height:14px;"></i></span>';
 
     function selectCardType(el, name, typeId) {
       if (el.classList.contains('disabled')) return;
@@ -5133,6 +5134,26 @@ Please present this card before payment.</textarea>
       const vlpRow = document.getElementById('cryptoVlpRow');
       if (vlpRow) {
         vlpRow.style.display = (typeId === '5') ? '' : 'none';
+      }
+      const termsStepTitle = document.getElementById('termsStepTitle');
+      const cbTermsSectionTitle = document.getElementById('cbTermsSectionTitle');
+      const termsBox = document.getElementById('termsBox');
+      const suggestedTermsLabel = document.getElementById('suggestedTermsLabel');
+      const suggestedTermsBox = document.getElementById('suggestedTermsBox');
+      if (termsStepTitle) {
+        termsStepTitle.innerHTML = (typeId === '5' ? 'Terms of Use' : 'Terms & Conditions') + TERMS_TITLE_TOOLTIP_SUFFIX;
+      }
+      if (cbTermsSectionTitle) {
+        cbTermsSectionTitle.textContent = (typeId === '5') ? 'TERMS OF USE:' : 'TERMS & CONDITIONS:';
+      }
+      if (termsBox) {
+        termsBox.style.display = (typeId === '5') ? 'none' : '';
+      }
+      if (suggestedTermsLabel) {
+        suggestedTermsLabel.style.display = (typeId === '5') ? 'none' : '';
+      }
+      if (suggestedTermsBox) {
+        suggestedTermsBox.style.display = (typeId === '5') ? 'none' : '';
       }
 
       // Payment methods: hide payment grid when Crypto Card

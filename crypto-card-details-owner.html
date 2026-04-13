@@ -3227,6 +3227,10 @@
                     <label for="activeAccountEmail">Email <span style="color:var(--error-main);">*</span></label>
                     <input type="email" id="activeAccountEmail" placeholder="Enter your email" />
                 </div>
+                <div class="signin-field">
+                    <label for="activeAccountPassword">Password <span style="color:var(--error-main);">*</span></label>
+                    <input type="password" id="activeAccountPassword" placeholder="Enter your password" />
+                </div>
                 <button type="button" class="signin-btn" onclick="submitActiveAccount()">Create Account</button>
             </div>
         </div>
@@ -4026,10 +4030,14 @@
             el.classList.add('active');
             el.style.display = 'flex';
             el.setAttribute('aria-hidden', 'false');
-            var input = document.getElementById('activeAccountEmail');
-            if (input) {
-                input.value = '';
-                input.focus();
+            var emailInput = document.getElementById('activeAccountEmail');
+            var passwordInput = document.getElementById('activeAccountPassword');
+            if (emailInput) {
+                emailInput.value = '';
+                emailInput.focus();
+            }
+            if (passwordInput) {
+                passwordInput.value = '';
             }
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
@@ -4105,7 +4113,9 @@
 
         function submitActiveAccount() {
             var input = document.getElementById('activeAccountEmail');
+            var passwordInput = document.getElementById('activeAccountPassword');
             var email = input ? input.value.trim() : '';
+            var password = passwordInput ? passwordInput.value : '';
             var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             if (!email) {
@@ -4115,6 +4125,11 @@
 
             if (!emailRegex.test(email)) {
                 alert('Please enter a valid email address.');
+                return;
+            }
+
+            if (!password.trim()) {
+                alert('Please enter your password.');
                 return;
             }
 

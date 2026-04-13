@@ -5253,7 +5253,10 @@ Please present this card before payment.</textarea>
 
       // Birthday: only for Membership
       if (birthdayField) birthdayField.style.display = isMembership ? '' : 'none';
-      if (isMembership) syncBirthdayRequired();
+      if (isMembership) {
+        applyBirthdayConstraints();
+        syncBirthdayRequired();
+      }
 
       // Membership-only: show phone/address, otherwise hide + clear
       if (membershipContactRow) {
@@ -6031,6 +6034,38 @@ Please present this card before payment.</textarea>
       return date;
     }
 
+    let fpBirthdayInstance = null;
+
+    function getBirthdayDefaultDate() {
+      return createYearsAgoDate(20);
+    }
+
+    function getBirthdayMaxDate() {
+      return createYearsAgoDate(16);
+    }
+
+    function applyBirthdayConstraints() {
+      const birthdayInput = document.getElementById('holderBirthday');
+      const birthdayClear = document.getElementById('holderBirthdayClear');
+      if (!birthdayInput) return;
+
+      const defaultDate = getBirthdayDefaultDate();
+      const maxDate = getBirthdayMaxDate();
+
+      if (fpBirthdayInstance) {
+        fpBirthdayInstance.set('maxDate', maxDate);
+        if (!birthdayInput.value) {
+          fpBirthdayInstance.setDate(defaultDate, true);
+        }
+      } else if (!birthdayInput.value) {
+        birthdayInput.value = flatpickr.formatDate(defaultDate, 'M j, Y');
+      }
+
+      if (birthdayClear) {
+        birthdayClear.classList.toggle('visible', !!birthdayInput.value);
+      }
+    }
+
     function isAtLeastAge(dateValue, minAge) {
       const birthday = new Date(dateValue);
       if (Number.isNaN(birthday.getTime())) return false;
@@ -6062,11 +6097,11 @@ Please present this card before payment.</textarea>
         if (el) el.textContent = '—';
       });
 
-      const birthdayDefaultDate = createYearsAgoDate(20);
-      const birthdayMaxDate = createYearsAgoDate(16);
+      const birthdayDefaultDate = getBirthdayDefaultDate();
+      const birthdayMaxDate = getBirthdayMaxDate();
 
       // ── Flatpickr: Birthday (must be at least 16 years old) ──
-      const fpBirthday = flatpickr('#holderBirthday', {
+      fpBirthdayInstance = flatpickr('#holderBirthday', {
         dateFormat: 'M j, Y',
         defaultDate: birthdayDefaultDate,
         maxDate: birthdayMaxDate,
@@ -6077,9 +6112,9 @@ Please present this card before payment.</textarea>
           document.getElementById('holderBirthdayClear').classList.toggle('visible', !!dateStr);
         }
       });
-      document.getElementById('holderBirthdayClear').classList.toggle('visible', !!document.getElementById('holderBirthday').value);
+      applyBirthdayConstraints();
       document.getElementById('holderBirthdayClear').addEventListener('click', function () {
-        fpBirthday.clear();
+        fpBirthdayInstance.clear();
         this.classList.remove('visible');
       });
 

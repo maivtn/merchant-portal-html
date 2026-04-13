@@ -6024,6 +6024,20 @@ Please present this card before payment.</textarea>
     }
     window.addEventListener('resize', updateMobilePreviewCardPadding);
 
+    function createYearsAgoDate(yearsAgo) {
+      const date = new Date();
+      date.setHours(0, 0, 0, 0);
+      date.setFullYear(date.getFullYear() - yearsAgo);
+      return date;
+    }
+
+    function isAtLeastAge(dateValue, minAge) {
+      const birthday = new Date(dateValue);
+      if (Number.isNaN(birthday.getTime())) return false;
+      const cutoff = createYearsAgoDate(minAge);
+      return birthday.getTime() <= cutoff.getTime();
+    }
+
     // Set today as min date for custom expiry
     document.addEventListener('DOMContentLoaded', () => {
       updateMobilePreviewCardPadding();
@@ -6048,10 +6062,14 @@ Please present this card before payment.</textarea>
         if (el) el.textContent = '—';
       });
 
-      // ── Flatpickr: Birthday (no min date) ──
+      const birthdayDefaultDate = createYearsAgoDate(20);
+      const birthdayMaxDate = createYearsAgoDate(16);
+
+      // ── Flatpickr: Birthday (must be at least 16 years old) ──
       const fpBirthday = flatpickr('#holderBirthday', {
         dateFormat: 'M j, Y',
-        maxDate: 'today',
+        defaultDate: birthdayDefaultDate,
+        maxDate: birthdayMaxDate,
         disableMobile: true,
         allowInput: false,
         onChange(selectedDates, dateStr) {
@@ -6059,6 +6077,7 @@ Please present this card before payment.</textarea>
           document.getElementById('holderBirthdayClear').classList.toggle('visible', !!dateStr);
         }
       });
+      document.getElementById('holderBirthdayClear').classList.toggle('visible', !!document.getElementById('holderBirthday').value);
       document.getElementById('holderBirthdayClear').addEventListener('click', function () {
         fpBirthday.clear();
         this.classList.remove('visible');
@@ -6376,6 +6395,21 @@ Please present this card before payment.</textarea>
               });
             } else {
               alert('Please enter Birthday when Birthday Gift benefit is selected.');
+            }
+            setTimeout(() => { birthdayInput.style.borderColor = ''; }, 3000);
+            return;
+          }
+          if (!isAtLeastAge(bdayVal, 16)) {
+            birthdayInput.style.borderColor = '#ff5630';
+            birthdayInput.focus();
+            if (typeof Swal !== 'undefined') {
+              Swal.fire({
+                icon: 'warning',
+                title: 'Invalid birthday',
+                text: 'Card holder must be at least 16 years old.'
+              });
+            } else {
+              alert('Card holder must be at least 16 years old.');
             }
             setTimeout(() => { birthdayInput.style.borderColor = ''; }, 3000);
             return;

@@ -640,6 +640,14 @@
             color: var(--grey-500);
         }
 
+        .signin-password-wrap {
+            position: relative;
+        }
+
+        .signin-password-wrap input {
+            padding-right: 42px;
+        }
+
         .signin-btn {
             width: 100%;
             height: 48px;
@@ -3229,7 +3237,13 @@
                 </div>
                 <div class="signin-field">
                     <label for="activeAccountPassword">Password <span style="color:var(--error-main);">*</span></label>
-                    <input type="password" id="activeAccountPassword" placeholder="Enter your password" />
+                    <div class="signin-password-wrap">
+                        <input type="password" id="activeAccountPassword" placeholder="Enter your password" />
+                        <button type="button" class="pin-eye-btn"
+                            onclick="togglePinVisibility('activeAccountPassword', this)" aria-label="Show or hide password">
+                            <iconify-icon icon="lucide:eye" width="16"></iconify-icon>
+                        </button>
+                    </div>
                 </div>
                 <button type="button" class="signin-btn" onclick="submitActiveAccount()">Create Account</button>
             </div>

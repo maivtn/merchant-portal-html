@@ -435,6 +435,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     const ticketCategories = [
       { value: "account", label: "Account" },
@@ -447,9 +448,11 @@
     ];
     (function () {
       var backLink = document.getElementById("backLink");
+      var form = document.getElementById("ticketForm");
       var fullNameInput = document.getElementById("fullName");
       var emailInput = document.getElementById("email");
       var categorySelect = document.getElementById("category");
+      var messageInput = document.getElementById("message");
       var input = document.getElementById("attachment");
       var previews = document.getElementById("attachmentPreviews");
       var zone = document.getElementById("attachmentZone");
@@ -466,7 +469,7 @@
         });
       }
 
-      if (!input || !previews || !zone || !categorySelect || !fullNameInput || !emailInput) return;
+      if (!form || !input || !previews || !zone || !categorySelect || !fullNameInput || !emailInput || !messageInput) return;
 
       function renderTicketCategories() {
         for (var i = 0; i < ticketCategories.length; i++) {
@@ -706,6 +709,32 @@
         if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
           addFiles(e.dataTransfer.files);
         }
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        if (typeof Swal !== "undefined") {
+          Swal.fire({
+            icon: "success",
+            title: "Submitted successfully",
+            text: "Your ticket has been sent successfully."
+          });
+        } else {
+          window.alert("Your ticket has been sent successfully.");
+        }
+
+        form.reset();
+        dt = new DataTransfer();
+        syncInputFiles();
+        renderPreviews();
+        setAttachmentFeedback([]);
+        autofillUserInfo();
       });
     })();
   </script>

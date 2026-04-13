@@ -758,10 +758,12 @@
     </div>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     (function () {
       var backLink = document.getElementById("backLink");
       var startConversationLink = document.getElementById("startConversationLink");
+      var form = document.getElementById("contactForm");
       var pageToastTimer = null;
 
       function showToastMessage(label) {
@@ -804,7 +806,7 @@
 
       var fullNameInput = document.getElementById("fullName");
       var emailInput = document.getElementById("email");
-      if (!fullNameInput || !emailInput) return;
+      if (!form || !fullNameInput || !emailInput) return;
 
       function safeParseJson(raw) {
         if (!raw) return null;
@@ -873,6 +875,28 @@
       }
 
       autofillUserInfo();
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        if (typeof Swal !== "undefined") {
+          Swal.fire({
+            icon: "success",
+            title: "Submitted successfully",
+            text: "Your message has been sent successfully."
+          });
+        } else {
+          window.alert("Your message has been sent successfully.");
+        }
+
+        form.reset();
+        autofillUserInfo();
+      });
     })();
   </script>
 </body>

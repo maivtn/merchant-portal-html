@@ -173,6 +173,51 @@
       color: #b45309;
     }
 
+    #page-toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 1080;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-width: 200px;
+      max-width: min(320px, calc(100vw - 32px));
+      padding: 0.85rem 1rem;
+      border-radius: 0.95rem;
+      background: rgba(34, 31, 31, 0.96);
+      color: #fff;
+      box-shadow: 0 16px 36px rgba(34, 31, 31, 0.22);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    #page-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #page-toast .toast-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    #page-toast .toast-check svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+
     .content-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
@@ -706,7 +751,7 @@
           <div class="contact-meta">
             <h2>Live Chat</h2>
             <p>Need a quick answer? Connect with our support team during business hours.</p>
-            <a class="contact-link" href="javascript:void(0)">Start a conversation</a>
+            <a class="contact-link" id="startConversationLink" href="javascript:void(0)">Start a conversation</a>
           </div>
         </article>
       </section>
@@ -716,6 +761,33 @@
   <script>
     (function () {
       var backLink = document.getElementById("backLink");
+      var startConversationLink = document.getElementById("startConversationLink");
+      var pageToastTimer = null;
+
+      function showToastMessage(label) {
+        if (typeof window.showCopyToast === "function") {
+          window.showCopyToast(label);
+          return;
+        }
+
+        var toast = document.getElementById("page-toast");
+        if (!toast) {
+          toast = document.createElement("div");
+          toast.id = "page-toast";
+          toast.innerHTML =
+            '<span class="toast-check"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"></polyline></svg></span>' +
+            '<span id="page-toast-msg"></span>';
+          document.body.appendChild(toast);
+        }
+
+        document.getElementById("page-toast-msg").textContent = label || "Coming soon";
+        toast.classList.add("show");
+        if (pageToastTimer) clearTimeout(pageToastTimer);
+        pageToastTimer = setTimeout(function () {
+          toast.classList.remove("show");
+        }, 2200);
+      }
+
       if (backLink) {
         backLink.addEventListener("click", function (event) {
           event.preventDefault();
@@ -724,6 +796,13 @@
             return;
           }
           window.location.href = backLink.getAttribute("href") || "help-center.html";
+        });
+      }
+
+      if (startConversationLink) {
+        startConversationLink.addEventListener("click", function (event) {
+          event.preventDefault();
+          showToastMessage("Coming soon");
         });
       }
 

@@ -607,12 +607,12 @@
           <div class="ticket-upload-wrap">
             <label class="ticket-upload-zone" for="attachment" id="attachmentZone">
               <input type="file" class="ticket-upload-input" id="attachment" name="attachments[]"
-                accept="image/png,image/jpeg,.png,.jpg,.jpeg,.pdf,application/pdf" multiple />
+                accept="image/png,image/jpeg,video/mp4,.png,.jpg,.jpeg,.mp4" multiple />
               <span class="ticket-upload-visual">
                 <i class="bi bi-cloud-arrow-up ticket-upload-icon" aria-hidden="true"></i>
-                <span class="ticket-upload-title">Upload images or PDF</span>
+                <span class="ticket-upload-title">Upload PNG, JPG, or MP4</span>
                 <span class="ticket-upload-hint" id="attachmentHint">
-                  Drag &amp; drop here or click to browse. PNG, JPG, or PDF only — max 5&nbsp;MB per file.
+                  Drag &amp; drop here or click to browse. PNG, JPG, or MP4 only — up to 5 files, max 5&nbsp;MB per file.
                 </span>
               </span>
             </label>
@@ -814,6 +814,7 @@
 
       var dt = new DataTransfer();
       var dragDepth = 0;
+      var MAX_FILES = 5;
       var MAX_BYTES = 5 * 1024 * 1024;
 
       function syncInputFiles() {
@@ -830,12 +831,12 @@
         return isPngOrJpg(file);
       }
 
-      function isPdfFile(file) {
-        return file.type === "application/pdf" || /\.pdf$/i.test(file.name || "");
+      function isMp4File(file) {
+        return file.type === "video/mp4" || /\.mp4$/i.test(file.name || "");
       }
 
       function isAllowedFile(file) {
-        return isPngOrJpg(file) || isPdfFile(file);
+        return isPngOrJpg(file) || isMp4File(file);
       }
 
       function setAttachmentFeedback(messages) {
@@ -853,8 +854,12 @@
         var rejected = [];
         for (var i = 0; i < fileList.length; i++) {
           var f = fileList[i];
+          if (dt.files.length >= MAX_FILES) {
+            rejected.push("You can upload up to 5 files only.");
+            break;
+          }
           if (!isAllowedFile(f)) {
-            rejected.push('Skipped "' + f.name + '" (use PNG, JPG, or PDF only).');
+            rejected.push('Skipped "' + f.name + '" (use PNG, JPG, or MP4 only).');
             continue;
           }
           if (f.size > MAX_BYTES) {
@@ -909,9 +914,9 @@
             } else {
               var badge = document.createElement("div");
               badge.className = "file-badge";
-              if (isPdfFile(file)) {
+              if (isMp4File(file)) {
                 var icon = document.createElement("i");
-                icon.className = "bi bi-file-earmark-pdf";
+                icon.className = "bi bi-file-earmark-play";
                 icon.setAttribute("aria-hidden", "true");
                 badge.appendChild(icon);
               }

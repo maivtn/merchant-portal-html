@@ -5689,11 +5689,17 @@ Please present this card before payment.</textarea>
         `;
       }).join('');
       const totalQtyFmt = totalQty.toLocaleString('en-US', { maximumFractionDigits: 8 });
+      const cardValueUsd = qty > 0 ? (totalValueUsd / qty) : 0;
+      const cardValueUsdFmt = cardValueUsd.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
       const totalValueUsdFmt = totalValueUsd.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
       body.innerHTML = `
         <div class="crypto-summary-list">
           ${rowsHtml}
+        </div>
+        <div class="crypto-summary-card-qty">
+          <span>Card value</span>
+          <strong>$${cardValueUsdFmt}</strong>
         </div>
        
         <div class="crypto-summary-card-qty">
@@ -5715,14 +5721,31 @@ Please present this card before payment.</textarea>
       var trigger = document.getElementById('totalCardValueTipTrigger');
       if (!trigger || typeof tippy === 'undefined') return;
       if (trigger._tippy) trigger._tippy.destroy();
+      var getTotalCardValueTooltipHtml = function () {
+        const valuePerCard = Number(getActiveTransferBaseAmount()) || 0;
+        const qtyInput = document.getElementById('cryptoCardQuantity');
+        const qty = Math.max(1, parseInt(qtyInput && qtyInput.value, 10) || 1);
+        const totalValue = valuePerCard * qty;
+        const totalValueText = '$' + totalValue.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        const cardText = qty > 1 ? 'cards' : 'card';
+        return (
+          '<div class="total-card-value-tooltip">' +
+          '<div><strong>Total value: ' + totalValueText + ' for ' + qty + ' ' + cardText + '</strong></div>' +
+          '<div style="margin-top:6px;">This amount will be deducted from your selected crypto wallet.</div>' +
+          '</div>'
+        );
+      };
       tippy(trigger, {
-        content: '<div class="total-card-value-tooltip">' + escapeTooltipHtml(TOOLTIP_COPY.cryptoCard.amountDeductionNote) + '</div>',
+        content: getTotalCardValueTooltipHtml(),
         allowHTML: true,
         trigger: 'click',
         interactive: true,
         theme: 'light',
         placement: 'top',
-        appendTo: document.body
+        appendTo: document.body,
+        onShow: function (instance) {
+          instance.setContent(getTotalCardValueTooltipHtml());
+        }
       });
     }
 

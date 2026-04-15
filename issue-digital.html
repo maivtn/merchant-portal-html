@@ -4252,7 +4252,12 @@ Please present this card before payment.</textarea>
               <span class="fee-value"> <span class="fee-free">Free</span></span></span>
             </div>
             <div class="fee-row">
-              <span class="fee-label" id="transferFeeLabel">Transfer Fee (0%)</span>
+              <span class="fee-label">
+                <span id="transferFeeLabel">Transfer Fee (0%)</span>
+                <span id="transferFeeTipTrigger" class="reload-summary-info-icon" title="Transfer fee formula">
+                  <i data-lucide="info" style="width:12px;height:12px;"></i>
+                </span>
+              </span>
               <span class="fee-value" data-fee-display>$0.00</span>
             </div>
             <div class=" divider">
@@ -5048,6 +5053,42 @@ Please present this card before payment.</textarea>
       const feeNodes = document.querySelectorAll('[data-fee-display]');
       if (!feeNodes.length) return;
       const transferFeeLabelEl = document.getElementById('transferFeeLabel');
+      const transferFeeTipTriggerEl = document.getElementById('transferFeeTipTrigger');
+      const baseAmountPerCard = getActiveTransferBaseAmount();
+      const isCryptoCard = currentTypeId === '5';
+      let transferFeeRate = 0;
+      let feeAmount = 0;
+
+      if (isCryptoCard) {
+        const qtyInput = document.getElementById('cryptoCardQuantity');
+        const cardQty = Math.max(1, parseInt(qtyInput && qtyInput.value, 10) || 1);
+        transferFeeRate = (baseAmountPerCard > 0 && baseAmountPerCard < 25) ? 0.015 : 0;
+        const feePerCard = baseAmountPerCard * transferFeeRate;
+        feeAmount = feePerCard * cardQty;
+      } else {
+        transferFeeRate = 0.015;
+        feeAmount = baseAmountPerCard > 0 ? (baseAmountPerCard * transferFeeRate) : 0;
+      }
+
+      if (transferFeeLabelEl) {
+        transferFeeLabelEl.textContent = isCryptoCard
+          ? `Transfer Fee (${transferFeeRate === 0 ? '0%' : '1.5%'})`
+          : 'Transfer Fee (1.5%)';
+      }
+      if (transferFeeTipTriggerEl) {
+        transferFeeTipTriggerEl.style.display = isCryptoCard ? '' : 'none';
+      }
+      const feeText = '$' + feeAmount.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+      feeNodes.forEach(node => {
+        node.textContent = feeText;
+      });
+      updateFeeTokenSummary(feeAmount);
+    }
+
+    function getTransferFeeTooltipHtml() {
+      if (currentTypeId !== '5') {
+        return '<div class="fee-payment-method-tooltip">Applies to Crypto Card only.</div>';
+      }
       const baseAmountPerCard = getActiveTransferBaseAmount();
       const qtyInput = document.getElementById('cryptoCardQuantity');
       const cardQty = currentTypeId === '5'
@@ -5055,15 +5096,27 @@ Please present this card before payment.</textarea>
         : 1;
       const transferFeeRate = (baseAmountPerCard > 0 && baseAmountPerCard < 25) ? 0.015 : 0;
       const feePerCard = baseAmountPerCard * transferFeeRate;
-      const feeAmount = feePerCard * cardQty;
-      if (transferFeeLabelEl) {
-        transferFeeLabelEl.textContent = `Transfer Fee (${transferFeeRate === 0 ? '0%' : '1.5%'})`;
+      const totalFee = feePerCard * cardQty;
+      const safeBaseAmountPerCard = Number.isFinite(baseAmountPerCard) ? baseAmountPerCard : 0;
+      const amountText = safeBaseAmountPerCard === 0
+        ? '0'
+        : ('$' + safeBaseAmountPerCard.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 }));
+      const feePerCardText = '$' + feePerCard.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+      const totalFeeText = '$' + totalFee.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+      const rateText = transferFeeRate === 0 ? '0%' : '1.5%';
+      if (transferFeeRate > 0) {
+        return (
+          '<div class="fee-payment-method-tooltip">' +
+          '<div style="margin-top:6px;">Fee per card: <strong>' + feePerCardText + '</strong> (' + rateText + ' of ' + amountText + ') </div>' +
+          '</div>'
+        );
       }
-      const feeText = '$' + feeAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      feeNodes.forEach(node => {
-        node.textContent = feeText;
-      });
-      updateFeeTokenSummary(feeAmount);
+      else
+        return (
+          '<div class="fee-payment-method-tooltip">' +
+          '<div style="margin-top:6px;">Fee per card: <strong class="fee-free">(Free)</strong>  </div>' +
+          '</div>'
+        );
     }
 
     function getFeeTokenUsdRate(symbol) {
@@ -5086,8 +5139,8 @@ Please present this card before payment.</textarea>
       const token = (tokenSelect.value || 'USDV').toUpperCase();
       const usdPerToken = getFeeTokenUsdRate(token);
       const tokenAmount = usdPerToken > 0 ? ((Number(feeAmountUsd) || 0) / usdPerToken) : 0;
-      estimatedEl.textContent = `1 ${token} = $${usdPerToken.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`;
-      youPayEl.textContent = `${tokenAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })} ${token}`;
+      estimatedEl.textContent = `1 ${token} = $${usdPerToken.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 8 })}`;
+      youPayEl.textContent = `${tokenAmount.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 8 })} ${token}`;
     }
 
     function updateCardValueBadge() {
@@ -5609,7 +5662,7 @@ Please present this card before payment.</textarea>
         const totalCryptoQty = cryptoQtyPlusCardQty.toLocaleString('en-US', { maximumFractionDigits: 8 });
         const cryptoQtyFmt = cryptoQty.toLocaleString('en-US', { maximumFractionDigits: 8 });
         const tokenValueUsd = cryptoQtyPlusCardQty * usdPerCoin;
-        const tokenValueUsdFmt = tokenValueUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const tokenValueUsdFmt = tokenValueUsd.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
         totalQty += amountNumber;
         if (unit === 'USD') {
           totalValueUsd += amountNumber;
@@ -5633,7 +5686,7 @@ Please present this card before payment.</textarea>
         `;
       }).join('');
       const totalQtyFmt = totalQty.toLocaleString('en-US', { maximumFractionDigits: 8 });
-      const totalValueUsdFmt = totalValueUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const totalValueUsdFmt = totalValueUsd.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
       body.innerHTML = `
         <div class="crypto-summary-list">
@@ -5696,7 +5749,7 @@ Please present this card before payment.</textarea>
             if (!a) return escape(data.text);
             const fullName = CRYPTO_ASSET_NAMES[a.id] || a.name;
             const availableFmt = typeof a.available === 'number'
-              ? '$' + a.available.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 })
+              ? '$' + a.available.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 3 })
               : '';
             return `
               <div class="option option-crypto">
@@ -5771,7 +5824,7 @@ Please present this card before payment.</textarea>
             if (!a) return escape(data.text);
             const fullName = CRYPTO_ASSET_NAMES[a.id] || a.name;
             const availableFmt = typeof a.available === 'number'
-              ? '$' + a.available.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 })
+              ? '$' + a.available.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 3 })
               : '';
             return `
               <div class="option option-crypto">
@@ -6602,6 +6655,25 @@ Please present this card before payment.</textarea>
         theme: 'light',
         placement: 'top',
         appendTo: document.body
+      });
+    })();
+
+    // Transfer Fee formula tooltip
+    (function () {
+      var trigger = document.getElementById('transferFeeTipTrigger');
+      if (!trigger || typeof tippy === 'undefined') return;
+      tippy(trigger, {
+        content: getTransferFeeTooltipHtml(),
+        allowHTML: true,
+        trigger: 'click',
+        interactive: true,
+        theme: 'light',
+        placement: 'top',
+        maxWidth: 360,
+        appendTo: document.body,
+        onShow: function (instance) {
+          instance.setContent(getTransferFeeTooltipHtml());
+        }
       });
     })();
 

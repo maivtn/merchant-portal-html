@@ -2990,7 +2990,13 @@
                         <span id="reloadPlatformFee" class="reload-summary-value">-</span>
                     </div>
                     <div class="reload-summary-row">
-                        <span id="reloadTransferFeeLabel" class="reload-summary-label">Transfer Fee (0%)</span>
+                        <span class="reload-summary-label reload-summary-label-inline">
+                            <span id="reloadTransferFeeLabel">Transfer Fee (0%)</span>
+                            <span id="reloadTransferFeeTipTrigger" class="reload-summary-info-icon"
+                                title="Transfer fee formula">
+                                <i data-lucide="info" style="width:12px;height:12px;"></i>
+                            </span>
+                        </span>
                         <span id="reloadTransferFee" class="reload-summary-value">-</span>
                     </div>
                     <div class="reload-summary-row reload-summary-row--total">
@@ -3973,6 +3979,31 @@
             }
         }
 
+        function getReloadTransferFeeTooltipHtml() {
+            var amountUsdEl = document.getElementById('reloadAmountUsd');
+            var amountUsd = amountUsdEl ? parseNumericText(amountUsdEl.textContent) : 0;
+            var transferFeeRate = amountUsd > 0 && amountUsd < 25 ? 0.015 : 0;
+            var transferFee = amountUsd * transferFeeRate;
+            var safeAmountUsd = Number.isFinite(amountUsd) ? amountUsd : 0;
+            var amountText = safeAmountUsd === 0
+                ? '0'
+                : ('$' + safeAmountUsd.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }));
+            var feeText = '$' + transferFee.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            var rateText = transferFeeRate === 0 ? '0%' : '1.5%';
+            return (
+                '<div class="fee-payment-method-tooltip">' +
+                '<div><strong>Formula:</strong> <div>Fee = Transfer amount x Rate</div></div>' +
+                '<div style="margin-top:6px;">Current: ' + amountText + ' x ' + rateText + ' = <strong>' + feeText + '</strong></div>' +
+                '</div>'
+            );
+        }
+
         function initReloadFeeTokenSelect() {
             var sel = document.getElementById('feeTokenSelect');
             if (!sel) return;
@@ -4183,6 +4214,25 @@
                     theme: 'light',
                     placement: 'top',
                     appendTo: document.body
+                });
+            })();
+
+            // Transfer Fee formula tooltip
+            (function () {
+                var trigger = document.getElementById('reloadTransferFeeTipTrigger');
+                if (!trigger || typeof tippy === 'undefined') return;
+                tippy(trigger, {
+                    content: getReloadTransferFeeTooltipHtml(),
+                    allowHTML: true,
+                    trigger: 'click',
+                    interactive: true,
+                    theme: 'light',
+                    placement: 'top',
+                    maxWidth: 360,
+                    appendTo: document.body,
+                    onShow: function (i) {
+                        i.setContent(getReloadTransferFeeTooltipHtml());
+                    }
                 });
             })();
 

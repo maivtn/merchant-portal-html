@@ -5668,9 +5668,9 @@ Please present this card before payment.</textarea>
         const tokenValueUsdFmt = tokenValueUsd.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
         totalQty += amountNumber;
         if (unit === 'USD') {
-          totalValueUsd += amountNumber;
+          totalValueUsd += amountNumber * qty;
         } else {
-          totalValueUsd += amountNumber * usdPerCoin;
+          totalValueUsd += amountNumber * usdPerCoin * qty;
         }
 
         return `

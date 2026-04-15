@@ -626,8 +626,8 @@
       '<div class="fees-overview-content"><div class="fees-overview-title">Transfer fee</div>' +
       '<div class="fees-overview-sublist">' +
       '<div>Accounts with a <span class="fees-overview-pill membership">AI Annual</span></div>' +
-      '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px; "><span style="display: flex; flex-direction:row; justify-content: space-between;">$5 - $25: <strong>1.5% fee</strong></span><div class="note">The fee is deducted from USDV. If insufficient, it will be deducted from the reloaded crypto.</div></div>' +
-      '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px; display: flex; flex-direction:row; justify-content: space-between;">Above $25: <span class="fees-overview-pill free">Free</span></div>' +
+      '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px; "><span style="display: flex; flex-direction:row; justify-content: space-between;">Below $25 (per card): <strong>1.5% fee</strong></span><div class="note">The fee is deducted from USDV. If insufficient, it will be deducted from the reloaded crypto.</div></div>' +
+      '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px; display: flex; flex-direction:row; justify-content: space-between;">$25 and above (per card): <span class="fees-overview-pill free">Free</span></div>' +
       '<div style="margin-top:8px;">Accounts with a <span class="fees-overview-pill franchise">Franchise Plan</span></div>' +
       '<div style="padding: 12px; background-color: #F8F9FA;border-radius: 12px; display: flex; flex-direction:row; justify-content: space-between;">All transfers: <span class="fees-overview-pill free">Free</span></div>' +
       "</div></div></div></div></div>"

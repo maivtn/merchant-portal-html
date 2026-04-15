@@ -2990,7 +2990,7 @@
                         <span id="reloadPlatformFee" class="reload-summary-value">-</span>
                     </div>
                     <div class="reload-summary-row">
-                        <span class="reload-summary-label">Transfer Fee (1.5%)</span>
+                        <span id="reloadTransferFeeLabel" class="reload-summary-label">Transfer Fee (0%)</span>
                         <span id="reloadTransferFee" class="reload-summary-value">-</span>
                     </div>
                     <div class="reload-summary-row reload-summary-row--total">
@@ -3822,6 +3822,7 @@
             const priceEl = document.getElementById('reloadPrice');
             const platformFeeEl = document.getElementById('reloadPlatformFee');
             const transferFeeEl = document.getElementById('reloadTransferFee');
+            const transferFeeLabelEl = document.getElementById('reloadTransferFeeLabel');
             const totalEl = document.getElementById('reloadTotal');
 
             if (!assetEl || !amountEl || !amountUnitEl || !amountQtyEl || !amountUsdEl || !currentQtyEl || !currentUsdEl || !afterQtyEl || !afterUsdEl || !priceEl || !platformFeeEl || !transferFeeEl || !totalEl) return;
@@ -3910,19 +3911,23 @@
                 platformFeeEl.textContent = '-';
                 platformFeeEl.classList.remove('reload-summary-value--free');
                 transferFeeEl.textContent = '-';
+                if (transferFeeLabelEl) transferFeeLabelEl.textContent = 'Transfer Fee (0%)';
                 totalEl.textContent = '-';
                 updateReloadFeeTokenSummary(0);
                 updateReloadAmountAltValue();
                 return;
             }
 
-            // Platform fee: Free (green); transfer fee 1.5% of reload amount in USD
-            const transferFeeRate = 0.015;
+            // Platform fee: Free (green). Transfer fee: 0% if amount >= $25, otherwise 1.5%.
+            const transferFeeRate = usdAmount >= 25 ? 0 : 0.015;
             const transferFee = usdAmount * transferFeeRate;
             // const total = usdAmount + transferFee;
 
             platformFeeEl.textContent = 'Free';
             platformFeeEl.classList.add('reload-summary-value--free');
+            if (transferFeeLabelEl) {
+                transferFeeLabelEl.textContent = 'Transfer Fee (' + (transferFeeRate === 0 ? '0%' : '1.5%') + ')';
+            }
             transferFeeEl.textContent = '$' + transferFee.toLocaleString('en-US', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,

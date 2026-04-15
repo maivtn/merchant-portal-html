@@ -5101,7 +5101,7 @@ Please present this card before payment.</textarea>
       const amountText = safeBaseAmountPerCard === 0
         ? '0'
         : ('$' + safeBaseAmountPerCard.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 }));
-      const feePerCardText = '$' + feePerCard.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+      const feePerCardText = '$' + feePerCard.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
       const totalFeeText = '$' + totalFee.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
       const rateText = transferFeeRate === 0 ? '0%' : '1.5%';
       if (transferFeeRate > 0) {
@@ -5114,7 +5114,7 @@ Please present this card before payment.</textarea>
       else
         return (
           '<div class="fee-payment-method-tooltip">' +
-          '<div style="margin-top:6px;">Fee per card: <strong>' + feePerCardText + '(Free)</strong>  </div>' +
+          '<div style="margin-top:6px;">Fee per card: <strong>' + feePerCardText + ' (Free)</strong>  </div>' +
           '</div>'
         );
     }

@@ -253,7 +253,7 @@
                             class="text-red-500 ml-1.5">*</span></label>
                     <div class="space-y-3">
                         <div
-                            class="atm-type-option selected border-2 border-[color:var(--brand-primary)] bg-[#fffaf0] rounded-xl p-4 flex items-center gap-3 cursor-pointer"
+                            class="atm-type-option selected border-2 border-[rgba(217,119,6,0.14)] bg-white rounded-xl p-4 flex items-center gap-3 cursor-pointer"
                             role="button" tabindex="0" data-atm-type="mobile"
                             onclick="selectAtmType('mobile', this)"
                             onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectAtmType('mobile', this); }">
@@ -265,7 +265,7 @@
                             </div>
                         </div>
                         <div
-                            class="atm-type-option brand-card-soft rounded-xl p-4 flex items-center gap-3 cursor-pointer hover:bg-[#fff7ed] transition-colors"
+                            class="atm-type-option rounded-xl p-4 flex items-center gap-3 cursor-pointer border border-[rgba(217,119,6,0.14)] bg-white hover:bg-[#fff7ed] transition-colors"
                             role="button" tabindex="0" data-atm-type="merchant"
                             onclick="selectAtmType('merchant', this)"
                             onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectAtmType('merchant', this); }">
@@ -377,7 +377,7 @@
                 </div>
 
                 <div class="mb-auto">
-                    <label class="block text-[15px] font-bold text-slate-800 mb-2">Note for Mobile ATM</label>
+                    <label id="note-label" class="block text-[15px] font-bold text-slate-800 mb-2">Note for Mobile ATM</label>
                     <textarea
                         class="brand-card-soft w-full rounded-lg p-3 font-medium text-[15px] text-slate-700 outline-none focus:border-[color:var(--brand-primary)] resize-none"
                         rows="3"></textarea>
@@ -409,6 +409,10 @@
                         <div class="flex justify-between">
                             <span class="text-slate-500">Service Type</span>
                             <span class="font-bold text-slate-800">Buy USDV with Cash</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">ATM Type</span>
+                            <span id="review-atm-type" class="font-bold text-[color:var(--brand-primary)]">Mobile ATM</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-slate-500">Amount</span>
@@ -491,9 +495,9 @@
             <main class="flex-1 overflow-y-auto px-4 pb-8 brand-surface">
                 <!-- Main Card representing the Broadcasting state -->
                 <div class="brand-card rounded-[20px] p-5 mb-6 mt-2">
-                    <h3 class="font-bold text-[18px] text-center mb-3 text-slate-900">Searching for Mobile ATM...</h3>
+                    <h3 id="searching-title" class="font-bold text-[18px] text-center mb-3 text-slate-900">Searching for Mobile ATM...</h3>
                     <p class="text-[13.5px] text-slate-900 text-center mb-5 leading-relaxed font-medium">
-                        VlinkPay system is broadcasting your request to the nearest Mobile ATMs.
+                        <span id="searching-copy">VlinkPay system is broadcasting your request to the nearest Mobile ATMs.</span>
                     </p>
                     <div
                         class="brand-card-soft rounded-xl py-3 flex justify-center items-center gap-2 mb-6">
@@ -711,10 +715,46 @@
         let timerInterval;
         let selectedAtmType = 'mobile';
 
+        function getAtmTypeLabel(type) {
+            return type === 'merchant' ? 'Merchant ATM' : 'Mobile ATM';
+        }
+
+        function getAtmTypePluralLabel(type) {
+            return type === 'merchant' ? 'Merchant ATMs' : 'Mobile ATMs';
+        }
+
+        function updateAtmDependentText() {
+            const hasSelection = !!selectedAtmType;
+            const label = hasSelection ? getAtmTypeLabel(selectedAtmType) : 'ATM Type';
+            const pluralLabel = hasSelection ? getAtmTypePluralLabel(selectedAtmType) : 'ATM Types';
+            const reviewAtmType = document.getElementById('review-atm-type');
+            const searchingTitle = document.getElementById('searching-title');
+            const searchingCopy = document.getElementById('searching-copy');
+            const noteLabel = document.getElementById('note-label');
+
+            if (reviewAtmType) {
+                reviewAtmType.textContent = hasSelection ? label : 'Not selected';
+            }
+
+            if (searchingTitle) {
+                searchingTitle.textContent = hasSelection ? `Searching for ${label}...` : 'Select an ATM Type';
+            }
+
+            if (searchingCopy) {
+                searchingCopy.textContent = hasSelection
+                    ? `VlinkPay system is broadcasting your request to the nearest ${pluralLabel}.`
+                    : 'VlinkPay system will broadcast your request after you choose an ATM type.';
+            }
+
+            if (noteLabel) {
+                noteLabel.textContent = hasSelection ? `Note for ${label}` : 'Note for ATM';
+            }
+        }
+
         function selectAtmType(type, el) {
             selectedAtmType = type;
             document.querySelectorAll('[data-atm-type]').forEach((option) => {
-                const isActive = option.getAttribute('data-atm-type') === type;
+                const isActive = option.getAttribute('data-atm-type') === selectedAtmType;
                 option.classList.toggle('selected', isActive);
                 option.setAttribute('aria-pressed', isActive ? 'true' : 'false');
             });
@@ -722,12 +762,16 @@
             if (el && typeof el.scrollIntoView === 'function') {
                 el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
             }
+
+            updateAtmDependentText();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('[data-atm-type]').forEach((option) => {
                 option.setAttribute('aria-pressed', option.getAttribute('data-atm-type') === selectedAtmType ? 'true' : 'false');
             });
+
+            updateAtmDependentText();
         });
 
         function goToStep(stepIndex) {

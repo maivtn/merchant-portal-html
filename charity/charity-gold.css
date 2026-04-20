@@ -33,6 +33,32 @@ select {
   background-image: none;
 }
 
+#app input:not([type="checkbox"]):not([type="radio"]),
+#app select,
+#app textarea {
+  background-color: #ffffff !important;
+  color: #221f1f !important;
+  border-color: #e0e0e0 !important;
+  box-shadow: none !important;
+}
+
+#app input:not([type="checkbox"]):not([type="radio"])::placeholder,
+#app textarea::placeholder {
+  color: #8c857e !important;
+}
+
+#app input:not([type="checkbox"]):not([type="radio"]):focus,
+#app select:focus,
+#app textarea:focus {
+  border-color: #d97706 !important;
+  box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.15) !important;
+  outline: none !important;
+}
+
+#app select {
+  color-scheme: light;
+}
+
 .bg-base {
   background-color: #fffdf9 !important;
 }
@@ -42,7 +68,7 @@ select {
 }
 
 .bg-gold {
-  background-color: #d97706 !important;
+  background-color: #df810b !important;
 }
 
 .bg-gold2 {
@@ -107,7 +133,7 @@ select {
 }
 
 .hover\:text-gold2:hover {
-  color: #b45309 !important;
+  color: #c47309 !important;
 }
 
 .hover\:border-gold\/70:hover {
@@ -120,4 +146,144 @@ select {
 
 .shadow-gold {
   box-shadow: 0 14px 28px rgba(217, 119, 6, 0.12) !important;
+}
+
+.btn-action,
+.btn-action-secondary,
+.btn-action-outline {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.9rem;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.btn-action::after,
+.btn-action-secondary::after,
+.btn-action-outline::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 65%;
+  height: 100%;
+  transform: skewX(-20deg);
+  background: rgba(255, 255, 255, 0.22);
+  transition: left 0.45s ease;
+}
+
+.btn-action {
+  color: #ffffff !important;
+  background: #df810b !important;
+  border: 1px solid #df810b !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+.btn-action:hover {
+  transform: translateY(-2px);
+  background: #c47309 !important;
+  border-color: #c47309 !important;
+  color: #ffffff !important;
+}
+
+.btn-action:hover::after,
+.btn-action-secondary:hover::after,
+.btn-action-outline:hover::after {
+  left: 145%;
+}
+
+.btn-action-secondary {
+  color: #ffffff !important;
+  background: #44403c !important;
+  border: 1px solid #44403c !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+.btn-action-secondary:hover {
+  transform: translateY(-2px);
+  background: #55514d !important;
+  border-color: #55514d !important;
+  color: #ffffff !important;
+}
+
+.btn-action-outline {
+  color: #e67e22 !important;
+  background: transparent !important;
+  border: 1px solid #e67e22 !important;
+  box-shadow: none !important;
+}
+
+.btn-action-outline:hover {
+  transform: translateY(-2px);
+  color: #e67e22 !important;
+  background: rgba(230, 126, 34, 0.08) !important;
+  border-color: #e67e22 !important;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.14) !important;
+}
+
+.btn-action-flat {
+  color: #e67e22 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.btn-action-flat:hover {
+  transform: translateY(-2px);
+  color: #e67e22 !important;
+  background: rgba(230, 126, 34, 0.08) !important;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.14) !important;
+}
+
+.btn-action-flat::after {
+  display: none;
+}
+
+.btn-action-sm {
+  min-width: 0;
+}
+
+.btn-action-disabled {
+  color: #a8a29e !important;
+  background: #f5f5f4 !important;
+  border: 1px solid #e0e0e0 !important;
+  box-shadow: none !important;
+}
+
+.btn-action-disabled:hover {
+  transform: none;
+  background: #f5f5f4 !important;
+  border-color: #e0e0e0 !important;
+  color: #a8a29e !important;
+}
+
+.btn-action-disabled::after {
+  display: none;
+}
+
+#app .uppercase {
+  text-transform: none !important;
+}
+
+#app [class*="tracking-"] {
+  letter-spacing: normal !important;
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 17px;
+  }
+
+  #app #buy-view label,
+  #app #buy-view h4,
+  #app #buy-view h6,
+  #app #buy-view .text-xs,
+  #app #buy-view .text-\[11px\],
+  #app #buy-view .text-\[12px\] {
+    font-size: 14px !important;
+  }
 }

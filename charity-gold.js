@@ -188,7 +188,7 @@ function cardDetailsContent() {
 }
 
 function paymentContent() {
-  return `<div class="space-y-8"><div><h4 class="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-cream">Payment Method</h4><div id="payment-list" class="space-y-3"></div></div><div class="rounded-2xl border border-line bg-black/20 p-6"><div class="mb-5 flex items-center gap-3 text-gold">${icon('shield-check','w-5 h-5')}<h4 class="bg-gradient-to-r from-gold to-gold2 bg-clip-text text-[11px] font-bold uppercase tracking-[0.2em] text-transparent sm:text-[13px]">Invoice Summary</h4></div><div id="invoice-summary"></div></div><button id="confirm-payment-btn" data-action="confirm-payment" class="mx-auto block rounded-lg px-12 py-3.5 text-[13px] font-extrabold uppercase tracking-[0.16em] transition sm:text-[15px]"></button></div>`;
+  return `<div class="space-y-8"><div><div id="payment-list" class="space-y-3"></div></div><div class="rounded-2xl border border-line bg-black/20 p-6"><div class="mb-5 flex items-center gap-3 text-gold">${icon('shield-check','w-5 h-5')}<h4 class="bg-gradient-to-r from-gold to-gold2 bg-clip-text text-[11px] font-bold uppercase tracking-[0.2em] text-transparent sm:text-[13px]">Invoice Summary</h4></div><div id="invoice-summary"></div></div><button id="confirm-payment-btn" data-action="confirm-payment" class="mx-auto block rounded-lg px-12 py-3.5 text-[13px] font-extrabold uppercase tracking-[0.16em] transition sm:text-[15px]"></button></div>`;
 }
 
 function buildBuyView() {

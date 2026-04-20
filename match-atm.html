@@ -9,9 +9,23 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --brand-primary: #d97706;
+            --brand-orange: #e67e22;
+            --text-main: #221f1f;
+            --text-muted: #757575;
+            --border-soft: #e0e0e0;
+            --accent-cream: #fef3c7;
+            --accent-warm-text: #92400e;
+            --card-shadow: 0 14px 32px rgba(34, 31, 31, 0.08);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #333;
+            background:
+                radial-gradient(circle at top right, rgba(254, 243, 199, 0.82), transparent 24%),
+                linear-gradient(180deg, #fffdf9 0%, #ffffff 32%, #fff 100%);
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -24,12 +38,12 @@
             max-width: 414px;
             height: 100vh;
             max-height: 896px;
-            background-color: #f4f7fb;
+            background-color: #fffdf9;
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--card-shadow);
         }
 
         @media (min-width: 415px) {
@@ -53,7 +67,7 @@
             inset: 0;
             display: flex;
             flex-direction: column;
-            background-color: #f4f7fb;
+            background-color: #fffdf9;
             transition: opacity 0.3s ease, transform 0.3s ease;
             opacity: 0;
             pointer-events: none;
@@ -71,6 +85,56 @@
         .step-container.previous {
             transform: translateX(-20px);
         }
+
+        .brand-title {
+            color: var(--text-main);
+        }
+
+        .brand-link {
+            color: var(--brand-primary);
+        }
+
+        .brand-link:hover {
+            color: #b45309;
+        }
+
+        .brand-pill {
+            background: var(--accent-cream);
+            color: var(--accent-warm-text);
+        }
+
+        .brand-panel {
+            background: linear-gradient(135deg, #fffaf0 0%, #ffffff 62%);
+            border-color: rgba(217, 119, 6, 0.14);
+        }
+
+        .brand-panel-soft {
+            background: rgba(255, 251, 235, 0.72);
+            border-color: rgba(217, 119, 6, 0.12);
+        }
+
+        .brand-button {
+            background: var(--brand-primary);
+            border-color: var(--brand-primary);
+            color: #fff;
+        }
+
+        .brand-button:hover {
+            background: #c47309;
+            border-color: #c47309;
+        }
+
+        .brand-outline {
+            color: var(--brand-primary);
+            border-color: var(--brand-primary);
+            background: #fff;
+        }
+
+        .brand-outline:hover {
+            color: var(--brand-primary);
+            background: rgba(230, 126, 34, 0.08);
+            border-color: var(--brand-primary);
+        }
     </style>
 </head>
 
@@ -81,17 +145,17 @@
 
         <!-- STEP 1: P2P Exchange (Form) -->
         <div id="step-1" class="step-container active bg-white">
-            <header class="bg-white px-4 pt-12 pb-3 flex items-center justify-between border-b border-slate-100">
-                <button class="text-blue-600 flex items-center gap-1 font-medium" disabled>
+            <header class="bg-white px-4 pt-12 pb-3 flex items-center justify-between border-b border-[rgba(217,119,6,0.12)]">
+                <button class="brand-link flex items-center gap-1 font-medium" disabled>
                     <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
                 </button>
-                <h1 class="text-[17px] font-bold text-slate-800">P2P Exchange</h1>
+                <h1 class="brand-title text-[17px] font-bold">P2P Exchange</h1>
                 <div class="w-16"></div>
             </header>
 
-            <div class="flex overflow-x-auto border-b border-slate-200 px-2 hide-scrollbar bg-white">
+            <div class="flex overflow-x-auto border-b border-[rgba(217,119,6,0.14)] px-2 hide-scrollbar bg-white">
                 <button
-                    class="px-4 py-3 text-[14px] font-bold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap">Buy
+                    class="px-4 py-3 text-[14px] font-bold text-[color:var(--brand-primary)] border-b-2 border-[color:var(--brand-primary)] whitespace-nowrap">Buy
                     Crypto (USDV)</button>
                 <button class="px-4 py-3 text-[14px] font-medium text-slate-500 whitespace-nowrap">Sell Crypto
                     (USDV)</button>
@@ -105,7 +169,7 @@
                             class="text-red-500 ml-1.5">*</span></label>
                     <div class="relative">
                         <select
-                            class="w-full border border-slate-300 rounded-lg p-3 pl-10 appearance-none font-medium bg-white outline-none focus:border-blue-500">
+                            class="w-full border border-slate-300 rounded-lg p-3 pl-10 appearance-none font-medium bg-white outline-none focus:border-[color:var(--brand-primary)]">
                             <option>USDV</option>
                         </select>
                         <img src="https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/USDV.png"
@@ -119,7 +183,7 @@
                     <label class="block text-sm font-bold text-slate-700 mb-2">Enter Amount <span
                             class="text-red-500 ml-1.5">*</span></label>
                     <div
-                        class="flex items-center border border-slate-300 rounded-lg overflow-hidden focus-within:border-blue-500">
+                        class="flex items-center border border-slate-300 rounded-lg overflow-hidden focus-within:border-[color:var(--brand-primary)]">
                         <input type="number" value="100" class="w-full p-3 font-medium outline-none">
                         <div
                             class="bg-slate-50 border-l border-slate-300 px-3 py-3 flex items-center gap-2 cursor-pointer">
@@ -137,7 +201,7 @@
                             class="text-red-500 ml-1.5">*</span></label>
                     <div class="relative">
                         <select
-                            class="w-full border border-slate-300 rounded-lg p-3 appearance-none font-medium bg-white outline-none focus:border-blue-500">
+                            class="w-full border border-slate-300 rounded-lg p-3 appearance-none font-medium bg-white outline-none focus:border-[color:var(--brand-primary)]">
                             <option>Cash</option>
                         </select>
                         <i data-lucide="chevron-down"
@@ -150,12 +214,12 @@
                             class="text-red-500 ml-1.5">*</span></label>
                     <div class="space-y-3">
                         <div
-                            class="border-2 border-blue-600 bg-blue-50 rounded-xl p-4 flex items-center gap-3 cursor-pointer">
+                            class="border-2 border-[color:var(--brand-primary)] bg-[#fffaf0] rounded-xl p-4 flex items-center gap-3 cursor-pointer">
                             <img src="https://vlinkpay.com/assets/icons/atm/mobile.png" class="w-10 h-10 object-contain"
                                 alt="Mobile ATM">
                             <div>
-                                <div class="font-bold text-[15px] text-blue-800">Mobile ATM</div>
-                                <div class="text-xs text-blue-600/80 mt-0.5">ATM will come to you</div>
+                                <div class="font-bold text-[15px] text-[#92400e]">Mobile ATM</div>
+                                <div class="text-xs text-[#b45309] mt-0.5">ATM will come to you</div>
                             </div>
                         </div>
                         <div
@@ -171,7 +235,7 @@
                 </div>
 
                 <button onclick="goToStep(2)"
-                    class="w-full bg-blue-600 text-white font-semibold py-3.5 rounded-xl shadow-md active:scale-95 transition-all text-[15px]">
+                    class="w-full brand-button font-semibold py-3.5 rounded-xl shadow-md active:scale-95 transition-all text-[15px]">
                     Continue
                 </button>
             </main>
@@ -180,42 +244,42 @@
         <!-- STEP 2: Select a Merchant ATM (Empty/Broadcast) -->
         <div id="step-2" class="step-container bg-white">
             <header class="bg-white px-4 pt-12 pb-3 flex items-center justify-between shadow-sm relative z-10">
-                <button onclick="goToStep(1)" class="text-blue-600 flex items-center gap-1 font-medium">
+                <button onclick="goToStep(1)" class="brand-link flex items-center gap-1 font-medium">
                     <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
                 </button>
-                <h1 class="text-[17px] font-bold text-slate-800">Select a Merchant ATM</h1>
+                <h1 class="brand-title text-[17px] font-bold">Select a Merchant ATM</h1>
                 <div class="w-16"></div>
             </header>
 
             <main class="flex-1 flex flex-col justify-center items-center relative p-4 bg-white">
                 <div class="flex flex-col items-center justify-center -mt-20">
-                    <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-6">
+                    <div class="w-20 h-20 bg-[#fffaf0] rounded-full flex items-center justify-center mb-6">
                         <img src="https://vlinkpay.com/assets/icons/atm/merchant.png"
                             class="w-10 h-10 object-contain grayscale opacity-60" alt="No Merchant Found">
                     </div>
-                    <h2 class="text-[17px] font-bold text-slate-800 text-center">No suitable Merchant ATM found</h2>
+                    <h2 class="brand-title text-[17px] font-bold text-center">No suitable Merchant ATM found</h2>
                 </div>
 
                 <div class="absolute bottom-6 left-4 right-4">
                     <div
-                        class="bg-blue-50/70 border border-blue-100 rounded-2xl p-5 shadow-sm relative overflow-hidden">
-                        <div class="flex items-center gap-2 text-blue-700 font-bold mb-3">
+                        class="brand-panel-soft border rounded-2xl p-5 shadow-sm relative overflow-hidden">
+                        <div class="flex items-center gap-2 text-[#b45309] font-bold mb-3">
                             <i data-lucide="car-front" class="w-5 h-5"></i> On-Demand Delivery Service
                         </div>
                         <p class="text-[13px] text-slate-600 mb-4 leading-relaxed relative z-10">
                             Would you like Vlinkpay to broadcast your request to dispatch a Mobile ATM directly to your
                             location?
                         </p>
-                        <div class="text-[12px] font-bold text-blue-600 mb-4 relative z-10">
+                        <div class="text-[12px] font-bold text-[color:var(--brand-primary)] mb-4 relative z-10">
                             * Service fee: 5%
                         </div>
                         <button onclick="goToStep(3)"
-                            class="w-full bg-blue-600 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-blue-200 active:scale-95 transition-all text-[15px] relative z-10">
+                            class="w-full brand-button font-semibold py-3.5 rounded-xl shadow-lg active:scale-95 transition-all text-[15px] relative z-10">
                             Send On-Demand Request
                         </button>
                         <!-- Background decoration -->
                         <i data-lucide="zap"
-                            class="absolute -right-4 -bottom-4 w-32 h-32 text-blue-500 opacity-[0.03] rotate-12"></i>
+                            class="absolute -right-4 -bottom-4 w-32 h-32 text-[color:var(--brand-primary)] opacity-[0.03] rotate-12"></i>
                     </div>
                 </div>
             </main>
@@ -224,22 +288,22 @@
         <!-- STEP 3: Confirm meeting location -->
         <div id="step-3" class="step-container bg-white">
             <header class="bg-white px-4 pt-12 pb-3 flex items-center justify-between shadow-sm relative z-10">
-                <button onclick="goToStep(2)" class="text-blue-600 flex items-center gap-1 font-medium">
+                <button onclick="goToStep(2)" class="brand-link flex items-center gap-1 font-medium">
                     <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
                 </button>
-                <h1 class="text-[17px] font-bold text-slate-800">Confirm meeting location</h1>
+                <h1 class="brand-title text-[17px] font-bold">Confirm meeting location</h1>
                 <div class="w-16"></div>
             </header>
 
             <main class="flex-1 flex flex-col p-4 overflow-y-auto bg-white">
                 <div
-                    class="flex items-center border border-slate-300 rounded-lg p-3 bg-white mb-4 focus-within:border-blue-500">
+                    class="flex items-center border border-slate-300 rounded-lg p-3 bg-white mb-4 focus-within:border-[color:var(--brand-primary)]">
                     <input type="text" value="Hcm, Ho Chi Minh City, Ho Chi Minh, Vietnam"
                         class="w-full outline-none text-sm font-medium text-slate-700">
-                    <i data-lucide="search" class="w-5 h-5 text-blue-600"></i>
+                    <i data-lucide="search" class="w-5 h-5 text-[color:var(--brand-primary)]"></i>
                 </div>
 
-                <button class="flex items-center justify-center gap-2 text-blue-600 font-bold text-[15px] mb-4">
+                <button class="flex items-center justify-center gap-2 text-[color:var(--brand-primary)] font-bold text-[15px] mb-4">
                     <i data-lucide="locate-fixed" class="w-5 h-5"></i> Use my current location
                 </button>
 
@@ -252,7 +316,7 @@
                 <div class="mb-5">
                     <label class="block text-[15px] font-bold text-slate-800 mb-2">Phone Number</label>
                     <div
-                        class="flex border border-slate-300 rounded-lg overflow-hidden focus-within:border-blue-500 bg-white">
+                        class="flex border border-slate-300 rounded-lg overflow-hidden focus-within:border-[color:var(--brand-primary)] bg-white">
                         <div class="relative flex-shrink-0 border-r border-slate-300">
                             <select
                                 class="appearance-none bg-transparent pl-4 pr-9 py-3 text-[15px] font-medium text-slate-700 outline-none w-full h-full cursor-pointer">
@@ -270,14 +334,14 @@
                 <div class="mb-auto">
                     <label class="block text-[15px] font-bold text-slate-800 mb-2">Note for Mobile ATM</label>
                     <textarea
-                        class="w-full border border-slate-300 rounded-lg p-3 font-medium text-[15px] text-slate-700 outline-none focus:border-blue-500 resize-none"
+                        class="w-full border border-slate-300 rounded-lg p-3 font-medium text-[15px] text-slate-700 outline-none focus:border-[color:var(--brand-primary)] resize-none"
                         rows="3"></textarea>
                     <div class="text-right text-[13px] text-slate-400 mt-1 font-medium">0/100</div>
                 </div>
 
                 <div class="pt-4 mt-6">
                     <button onclick="goToStep(4)"
-                        class="w-full bg-blue-600 text-white font-semibold py-3.5 rounded-xl shadow-md active:scale-95 transition-all text-[15px]">
+                        class="w-full brand-button font-semibold py-3.5 rounded-xl shadow-md active:scale-95 transition-all text-[15px]">
                         OK
                     </button>
                 </div>
@@ -285,12 +349,12 @@
         </div>
 
         <!-- STEP 4: Review Details -->
-        <div id="step-4" class="step-container bg-[#f4f7fb]">
+        <div id="step-4" class="step-container bg-[#fffdf9]">
             <header class="bg-white px-4 pt-12 pb-3 flex items-center justify-between shadow-sm">
-                <button onclick="goToStep(3)" class="text-blue-600 flex items-center gap-1 font-medium">
+                <button onclick="goToStep(3)" class="brand-link flex items-center gap-1 font-medium">
                     <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
                 </button>
-                <h1 class="text-[17px] font-bold text-slate-800">Review Details</h1>
+                <h1 class="brand-title text-[17px] font-bold">Review Details</h1>
                 <div class="w-16"></div>
             </header>
 
@@ -324,7 +388,7 @@
                     <div class="flex justify-between items-start mb-2">
                         <div class="flex gap-2">
                             <input type="checkbox"
-                                class="mt-1 w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                                class="mt-1 w-5 h-5 rounded border-slate-300 text-[color:var(--brand-primary)] focus:ring-[color:var(--brand-primary)]">
                             <span class="font-bold text-[14px]">Transaction insurance</span>
                         </div>
                         <span class="font-bold text-[14px]">$1</span>
@@ -356,7 +420,7 @@
                         Cancel
                     </button>
                     <button onclick="goToStep(5)"
-                        class="flex-1 bg-blue-600 text-white font-bold py-3.5 rounded-xl shadow-md active:scale-95 transition-all text-[15px]">
+                        class="flex-1 brand-button font-bold py-3.5 rounded-xl shadow-md active:scale-95 transition-all text-[15px]">
                         Confirm
                     </button>
                 </div>
@@ -364,15 +428,15 @@
         </div>
 
         <!-- STEP 5: P2P Request Details (Pending / Waiting) -->
-        <div id="step-5" class="step-container bg-[#f4f7fb]">
-            <header class="bg-[#f4f7fb] px-4 pt-12 pb-3 flex items-center justify-between">
-                <button onclick="goToStep(4)" class="text-blue-600 flex items-center gap-1 font-medium">
+        <div id="step-5" class="step-container bg-[#fffdf9]">
+            <header class="bg-[#fffdf9] px-4 pt-12 pb-3 flex items-center justify-between">
+                <button onclick="goToStep(4)" class="brand-link flex items-center gap-1 font-medium">
                     <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
                 </button>
                 <div class="text-center absolute left-1/2 -translate-x-1/2">
-                    <h1 class="text-[17px] font-bold text-slate-800 leading-tight">P2P Request Details</h1>
+                    <h1 class="brand-title text-[17px] font-bold leading-tight">P2P Request Details</h1>
                     <div
-                        class="inline-block px-3 py-0.5 border border-blue-400 text-blue-600 rounded-md text-[11px] font-bold mt-1 bg-white">
+                        class="inline-block px-3 py-0.5 border border-[color:var(--brand-primary)] text-[color:var(--brand-primary)] rounded-md text-[11px] font-bold mt-1 bg-white">
                         Buyer - Individual
                     </div>
                 </div>
@@ -398,7 +462,7 @@
                     <div class="flex justify-between items-center mb-5">
                         <h2 class="font-bold text-[16px] text-slate-800">Buy USDV with Cash</h2>
                         <span
-                            class="bg-[#fef3c7] text-amber-900 px-4 py-1.5 rounded-full text-[13px] font-medium">Searching</span>
+                            class="bg-[#fef3c7] text-[#92400e] px-4 py-1.5 rounded-full text-[13px] font-medium">Searching</span>
                     </div>
 
                     <div class="border border-slate-200 rounded-xl p-3.5 mb-5 bg-white flex gap-3 items-start">
@@ -412,7 +476,7 @@
 
                     <div class="flex justify-between items-center text-[13px] text-slate-500 mb-3 px-1">
                         <span class="font-medium">Tx ID: <b class="text-slate-800">J5YN...ECHL</b> <i data-lucide="copy"
-                                class="inline w-3.5 h-3.5 ml-0.5 cursor-pointer text-blue-600"></i></span>
+                                class="inline w-3.5 h-3.5 ml-0.5 cursor-pointer text-[color:var(--brand-primary)]"></i></span>
                         <span class="font-medium">Apr 17, 2026, 2:44 PM</span>
                     </div>
 
@@ -445,7 +509,7 @@
                 </div>
 
                 <div class="text-center mt-6">
-                    <button onclick="goToStep(6)" class="text-xs text-blue-500 underline ">View accepted screen</button>
+                    <button onclick="goToStep(6)" class="text-xs text-[color:var(--brand-primary)] underline ">View accepted screen</button>
                     <p class="text-[11px] text-slate-400 mt-2 px-6 leading-relaxed">
                         * Note: The "View accepted screen" link is for demo purposes only. In the live app, the system
                         will automatically find and match you with an ATM.
@@ -455,15 +519,15 @@
         </div>
 
         <!-- STEP 6: P2P Request Details (Accepted) -->
-        <div id="step-6" class="step-container bg-[#f4f7fb]">
-            <header class="bg-[#f4f7fb] px-4 pt-12 pb-3 flex items-center justify-between shadow-sm relative z-10">
-                <button onclick="goToStep(5)" class="text-blue-600 flex items-center gap-1 font-medium">
+        <div id="step-6" class="step-container bg-[#fffdf9]">
+            <header class="bg-[#fffdf9] px-4 pt-12 pb-3 flex items-center justify-between shadow-sm relative z-10">
+                <button onclick="goToStep(5)" class="brand-link flex items-center gap-1 font-medium">
                     <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
                 </button>
                 <div class="text-center absolute left-1/2 -translate-x-1/2">
-                    <h1 class="text-[17px] font-bold text-slate-800 leading-tight">P2P Request Details</h1>
+                    <h1 class="brand-title text-[17px] font-bold leading-tight">P2P Request Details</h1>
                     <div
-                        class="inline-block px-3 py-0.5 border border-blue-400 text-blue-600 rounded-md text-[11px] font-bold mt-1 bg-white">
+                        class="inline-block px-3 py-0.5 border border-[color:var(--brand-primary)] text-[color:var(--brand-primary)] rounded-md text-[11px] font-bold mt-1 bg-white">
                         Buyer - Individual
                     </div>
                 </div>
@@ -475,7 +539,7 @@
                     <div class="flex justify-between items-center dashed-border-bottom pb-4 mb-4">
                         <h2 class="font-bold text-[15px] text-slate-900">Buy USDV with Cash</h2>
                         <span
-                            class="bg-[#e0e7ff] text-[#4f46e5] px-4 py-1 rounded-full text-[13px] font-bold">Accepted</span>
+                            class="bg-[#fff7ed] text-[#c2410c] px-4 py-1 rounded-full text-[13px] font-bold">Accepted</span>
                     </div>
 
                     <!-- Seller info -->
@@ -492,7 +556,7 @@
                         <div class="text-right">
                             <div class="flex items-center justify-end gap-1.5 text-[13px] font-bold text-slate-800">
                                 5.0 <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i> <span
-                                    class="text-blue-600 font-medium ml-1">(8 rating)</span>
+                                    class="text-[color:var(--brand-primary)] font-medium ml-1">(8 rating)</span>
                             </div>
                         </div>
                     </div>
@@ -506,7 +570,7 @@
                                 Ben Thanh, Ho Chi Minh
                                 City, Ho Chi Minh, Vietnam
                                 <a href="#"
-                                    class="inline-flex items-center gap-1 text-blue-600 text-[13px] font-medium ml-1">
+                                    class="inline-flex items-center gap-1 text-[color:var(--brand-primary)] text-[13px] font-medium ml-1">
                                     <i data-lucide="map" class="w-3.5 h-3.5"></i> View Map
                                 </a>
                             </div>
@@ -516,7 +580,7 @@
                     <!-- Transaction Info -->
                     <div class="flex justify-between items-center text-[13px] text-slate-500 mb-5 px-1">
                         <span class="font-medium">Tx ID: <b class="text-slate-800">KYC0...COS8</b> <i data-lucide="copy"
-                                class="inline w-3.5 h-3.5 ml-0.5 cursor-pointer text-blue-600"></i></span>
+                                class="inline w-3.5 h-3.5 ml-0.5 cursor-pointer text-[color:var(--brand-primary)]"></i></span>
                         <span class="font-medium">Apr 17, 2026, 2:57 PM</span>
                     </div>
 
@@ -547,7 +611,7 @@
                     <!-- View More Details (Expanded) -->
                     <div class="bg-white border border-slate-200 rounded-xl overflow-hidden mt-2">
                         <button
-                            class="w-full bg-[#e0e7ff] p-3 flex justify-between items-center text-[14px] font-bold text-blue-600">
+                            class="w-full bg-[#fff7ed] p-3 flex justify-between items-center text-[14px] font-bold text-[color:var(--brand-primary)]">
                             View More Details <i data-lucide="chevron-up" class="w-5 h-5"></i>
                         </button>
                         <div class="p-4 space-y-2 text-[13.5px] bg-white">
@@ -583,11 +647,11 @@
                     Cancel
                 </button>
                 <button
-                    class="flex-[1.2] bg-blue-600 text-white font-bold py-2.5 rounded-xl shadow-md shadow-blue-200 active:scale-95 transition-all flex justify-center items-center gap-2 text-[14px]">
+                    class="flex-[1.2] brand-button font-bold py-2.5 rounded-xl shadow-md active:scale-95 transition-all flex justify-center items-center gap-2 text-[14px]">
                     <i data-lucide="qr-code" class="w-5 h-5"></i> Show QR
                 </button>
                 <button
-                    class="flex-[1.2] bg-white text-blue-600 border border-blue-600 font-bold py-2.5 rounded-xl active:scale-95 transition-all flex justify-center items-center gap-2 text-[14px]">
+                    class="flex-[1.2] brand-outline border font-bold py-2.5 rounded-xl active:scale-95 transition-all flex justify-center items-center gap-2 text-[14px]">
                     <i data-lucide="more-horizontal" class="w-5 h-5"></i> More Actions
                 </button>
             </div>

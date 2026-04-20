@@ -208,10 +208,10 @@
                             class="text-red-500 ml-1.5">*</span></label>
                     <div class="relative">
                         <select
-                            class="w-full rounded-lg border border-[rgba(217,119,6,0.12)] bg-[#fff7ed] p-3 pl-10 appearance-none font-medium outline-none focus:border-[color:var(--brand-primary)]">
-                            <option>USDV</option>
+                            id="crypto-type-select"
+                            class="w-full rounded-lg border border-[rgba(217,119,6,0.12)] bg-white p-3 pl-10 appearance-none font-medium outline-none focus:border-[color:var(--brand-primary)]">
                         </select>
-                        <img src="https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/USDV.png"
+                        <img id="crypto-type-icon" src="images/usdv.png"
                             class="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] pointer-events-none" alt="USDV">
                         <i data-lucide="chevron-down"
                             class="w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
@@ -222,17 +222,22 @@
                     <label class="block text-sm font-bold text-slate-700 mb-2">Enter Amount <span
                             class="text-red-500 ml-1.5">*</span></label>
                     <div
-                        class="brand-card-soft flex items-center rounded-lg overflow-hidden focus-within:border-[color:var(--brand-primary)]">
-                        <input type="number" value="100" class="w-full p-3 font-medium outline-none">
-                        <div
-                            class="bg-[#fff7ed] border-l border-[rgba(217,119,6,0.12)] px-3 py-3 flex items-center gap-2 cursor-pointer">
-                            <img src="https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/Usd.png"
-                                class="w-[18px] object-contain" alt="USD">
-                            <span class="font-medium text-sm">USD</span>
-                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400"></i>
+                        class="brand-card-soft flex items-center rounded-lg overflow-hidden focus-within:border-[color:var(--brand-primary)] bg-white">
+                        <input type="number" value="100" class="w-full p-3 font-medium outline-none bg-white">
+                        <div class="relative bg-white border-l border-[rgba(217,119,6,0.12)]">
+                            <select
+                                id="amount-currency-select"
+                                class="h-full min-w-[104px] appearance-none bg-white py-3 pl-11 pr-8 font-medium text-sm outline-none cursor-pointer">
+                                <option value="USD" selected>USD</option>
+                            </select>
+                            <img id="amount-currency-icon" src="images/usd.png"
+                                class="w-[18px] object-contain absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
+                                alt="USD">
+                            <i data-lucide="chevron-down"
+                                class="w-4 h-4 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                         </div>
                     </div>
-                    <div class="text-[13px] text-slate-500 mt-2">100 USDV ≈ $100</div>
+                    <div id="crypto-rate-text" class="text-[13px] text-slate-500 mt-2">100 USDV ≈ $100</div>
                 </div>
 
                 <div class="mb-5">
@@ -240,7 +245,7 @@
                             class="text-red-500 ml-1.5">*</span></label>
                     <div class="relative">
                         <select
-                            class="w-full rounded-lg border border-[rgba(217,119,6,0.12)] bg-[#fff7ed] p-3 appearance-none font-medium outline-none focus:border-[color:var(--brand-primary)]">
+                            class="w-full rounded-lg border border-[rgba(217,119,6,0.12)] bg-white p-3 appearance-none font-medium outline-none focus:border-[color:var(--brand-primary)]">
                             <option>Cash</option>
                         </select>
                         <i data-lucide="chevron-down"
@@ -344,7 +349,7 @@
                 <div
                     class="brand-card-soft flex items-center rounded-lg p-3 bg-white mb-4 focus-within:border-[color:var(--brand-primary)]">
                     <input type="text" value="Hcm, Ho Chi Minh City, Ho Chi Minh, Vietnam"
-                        class="w-full outline-none text-sm font-medium text-slate-700">
+                        class="w-full outline-none text-sm font-medium text-slate-700 bg-white">
                     <i data-lucide="search" class="w-5 h-5 text-[color:var(--brand-primary)]"></i>
                 </div>
 
@@ -364,7 +369,7 @@
                         class="brand-card-soft flex rounded-lg overflow-hidden focus-within:border-[color:var(--brand-primary)] bg-white">
                         <div class="relative flex-shrink-0 border-r border-[rgba(217,119,6,0.12)]">
                             <select
-                                class="appearance-none bg-transparent pl-4 pr-9 py-3 text-[15px] font-medium text-slate-700 outline-none w-full h-full cursor-pointer">
+                                class="appearance-none bg-white pl-4 pr-9 py-3 text-[15px] font-medium text-slate-700 outline-none w-full h-full cursor-pointer">
                                 <option>+1</option>
                                 <option>+84</option>
                             </select>
@@ -372,7 +377,7 @@
                                 class="w-4 h-4 text-slate-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                         </div>
                         <input type="tel" value="(123)-456-7890"
-                            class="w-full py-3 px-3 outline-none text-[15px] placeholder-slate-400">
+                            class="w-full py-3 px-3 outline-none text-[15px] placeholder-slate-400 bg-white">
                     </div>
                 </div>
 
@@ -710,6 +715,112 @@
 
     <script>
         lucide.createIcons();
+        const CRYPTO_ASSETS = [
+      {
+        id: 'USDV',
+        name: 'USDV',
+        iconUrl: 'images/usdv.png',
+        available: 1000000,
+        balance: 1000000
+      },
+      {
+        id: 'BTC',
+        name: 'BTC',
+        iconUrl: 'images/btc.png',
+        available: 200.55,
+        balance: 0.0003593
+      },
+      {
+        id: 'ETH',
+        name: 'ETH',
+        iconUrl: 'images/eth.png',
+        available: 200.55,
+        balance: 0.052
+      },
+      {
+        id: 'USDT',
+        name: 'USDT',
+        iconUrl: 'images/usdt.png',
+        available: 500.00,
+        balance: 500
+      },
+      {
+        id: 'SHIB',
+        name: 'SHIB',
+        iconUrl: 'images/shiba.png',
+        available: 1000.00,
+        balance: 12500000
+      },
+      {
+        id: 'DOGE',
+        name: 'DOGE',
+        iconUrl: 'images/doge.png',
+        available: 750.00,
+        balance: 2500
+      }
+    ];
+
+        function populateCryptoTypeSelect() {
+            const select = document.getElementById('crypto-type-select');
+            const icon = document.getElementById('crypto-type-icon');
+            const rateText = document.getElementById('crypto-rate-text');
+            const amountSelect = document.getElementById('amount-currency-select');
+            const amountIcon = document.getElementById('amount-currency-icon');
+
+            if (!select) return;
+
+            select.innerHTML = CRYPTO_ASSETS.map((asset) => (
+                `<option value="${asset.id}">${asset.name}</option>`
+            )).join('');
+
+            const updateAmountCurrencySelect = (selectedAsset) => {
+                if (!amountSelect || !selectedAsset) return;
+
+                const previousValue = amountSelect.value || 'USD';
+                amountSelect.innerHTML = `
+                    <option value="USD">USD</option>
+                    <option value="${selectedAsset.id}">${selectedAsset.name}</option>
+                `;
+
+                const nextValue = previousValue === 'USD' ? 'USD' : selectedAsset.id;
+                amountSelect.value = nextValue;
+
+                if (amountIcon) {
+                    amountIcon.src = nextValue === 'USD' ? 'images/usd.png' : selectedAsset.iconUrl;
+                    amountIcon.alt = nextValue === 'USD' ? 'USD' : selectedAsset.name;
+                }
+            };
+
+            const updateCryptoTypeUI = () => {
+                const selectedAsset = CRYPTO_ASSETS.find((asset) => asset.id === select.value) || CRYPTO_ASSETS[0];
+
+                if (icon && selectedAsset) {
+                    icon.src = selectedAsset.iconUrl;
+                    icon.alt = selectedAsset.name;
+                }
+
+                if (rateText && selectedAsset) {
+                    rateText.textContent = `100 ${selectedAsset.id} ≈ $100`;
+                }
+
+                updateAmountCurrencySelect(selectedAsset);
+            };
+
+            select.value = CRYPTO_ASSETS[0]?.id || '';
+            updateCryptoTypeUI();
+            select.addEventListener('change', updateCryptoTypeUI);
+
+            if (amountSelect) {
+                amountSelect.addEventListener('change', () => {
+                    const selectedAsset = CRYPTO_ASSETS.find((asset) => asset.id === select.value) || CRYPTO_ASSETS[0];
+
+                    if (amountIcon && selectedAsset) {
+                        amountIcon.src = amountSelect.value === 'USD' ? 'images/usd.png' : selectedAsset.iconUrl;
+                        amountIcon.alt = amountSelect.value === 'USD' ? 'USD' : selectedAsset.name;
+                    }
+                });
+            }
+        }
 
         let currentStep = 1;
         let timerInterval;
@@ -767,6 +878,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            populateCryptoTypeSelect();
+
             document.querySelectorAll('[data-atm-type]').forEach((option) => {
                 option.setAttribute('aria-pressed', option.getAttribute('data-atm-type') === selectedAtmType ? 'true' : 'false');
             });

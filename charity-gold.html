@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gift Charity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
+                    colors: {
+                        gold: '#D4AF37',
+                        gold2: '#F3E5AB',
+                        panel: '#121212',
+                        line: '#262626',
+                        base: '#0A0A0A',
+                        soft: '#A3A3A3',
+                        cream: '#E8DCC4'
+                    },
+                    boxShadow: {
+                        luxury: '0 8px 30px rgba(0,0,0,0.35)',
+                        gold: '0 0 24px rgba(212,175,55,0.12)'
+                    },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    },
+                    animation: {
+                        fadeUp: 'fadeUp .35s ease-out'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="./charity-gold.css" />
+</head>
+
+<body class="bg-base text-cream font-sans min-h-screen selection:bg-gold selection:text-black">
+    <div class="pointer-events-none fixed inset-0 overflow-hidden">
+        <div class="absolute -top-24 left-[8%] h-[26rem] w-[26rem] rounded-full bg-gold/10 blur-3xl"></div>
+        <div class="absolute bottom-[-8rem] right-[8%] h-[28rem] w-[28rem] rounded-full bg-gold/5 blur-3xl"></div>
+    </div>
+
+    <div id="app" class="relative z-10"></div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="./charity-gold.js"></script>
+</body>
+
+</html>

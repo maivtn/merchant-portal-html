@@ -139,7 +139,7 @@ function renderHeader() {
   el.innerHTML = `
     <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
       <div class="w-28">${['batch','dist','cardDetail','qr','proof'].includes(state.viewMode) ? `<button data-action="back" class="inline-flex items-center gap-2 text-sm font-bold text-gold transition hover:text-gold2">${icon('arrow-left','w-4 h-4')} Back</button>` : ''}</div>
-      <h1 class="bg-gradient-to-r from-gold via-yellow-100 to-gold bg-clip-text text-center text-sm font-extrabold uppercase tracking-[0.18em] text-transparent sm:text-base">${getHeaderTitle()}</h1>
+      <h1 class="bg-gradient-to-r from-gold via-yellow-100 to-gold bg-clip-text text-center text-sm font-extrabold uppercase tracking-[0.18em]">${getHeaderTitle()}</h1>
       <div class="w-28"></div>
     </div>`;
 }

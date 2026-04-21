@@ -349,9 +349,9 @@ function buildHistory() {
           <span class="text-xs font-semibold tracking-[0.16em] text-gold sm:text-sm">${month}</span>
           <span class="text-xs text-soft sm:text-sm">(${items.length})</span>
         </div>
-        <div class="space-y-1">
+        <div class="space-y-3">
           ${items.map(item => `<div class="cursor-pointer border-b border-line p-5 transition hover:bg-zinc-950 last:border-b-0 rounded-2xl border border-line bg-panel shadow-luxury mt-1">
-            <div class="mb-2 flex items-center justify-between">
+            <div class="mb-1 flex items-center justify-between">
               <div class="text-[11px] tracking-[0.12em] text-soft sm:text-[13px]">
                 Tx ID <span class="ml-1 font-semibold text-cream">${item.id}</span>
               </div>

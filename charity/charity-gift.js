@@ -41,6 +41,16 @@ const mockGiftCards = [
   { id: 'GC-04', maskedNumber: '7624 **** **** 7561', value: 50, currency: 'USD', createdDate: 'Oct 15, 2025', status: 'Redeemed', redeemerName: 'Nguyen A', redeemerId: '1234 **** **** 6789', redeemerAddress: '568 National Highway 91, Thot Not, Can Tho', redeemedDate: 'Oct 30, 2025 09:00', redeemedAmount: 50, merchant: 'Phuong Nam Bookstore', location: 'Can Tho', hasProof: true }
 ];
 
+const mockHistoryTransactions = [
+  { id: 'TX-2411-001', type: 'E-Voucher', amount: 5000, currency: 'USD', date: 'Nov 27, 2024 09:09 PM', status: 'Completed', month: 'November, 2024' },
+  { id: 'TX-2411-002', type: 'E-Gift Card', amount: 1200, currency: 'USD', date: 'Nov 18, 2024 01:15 PM', status: 'Completed', month: 'November, 2024' },
+  { id: 'TX-2411-003', type: 'E-Voucher', amount: 2500000, currency: 'VND', date: 'Nov 08, 2024 10:20 AM', status: 'Completed', month: 'November, 2024' },
+  { id: 'TX-2410-001', type: 'E-Gift Card', amount: 300, currency: 'USD', date: 'Oct 21, 2024 04:45 PM', status: 'Completed', month: 'October, 2024' },
+  { id: 'TX-2410-002', type: 'E-Voucher', amount: 750, currency: 'USD', date: 'Oct 12, 2024 11:24 AM', status: 'Completed', month: 'October, 2024' },
+  { id: 'TX-2409-001', type: 'E-Gift Card', amount: 5000000, currency: 'VND', date: 'Sep 22, 2024 08:10 AM', status: 'Completed', month: 'September, 2024' },
+  { id: 'TX-2409-002', type: 'E-Voucher', amount: 1250, currency: 'USD', date: 'Sep 06, 2024 03:30 PM', status: 'Completed', month: 'September, 2024' }
+];
+
 const state = {
   viewMode: 'buy',
   activeTab: 'all',
@@ -321,7 +331,45 @@ function buildCardList() {
 }
 
 function buildHistory() {
-  document.getElementById('main-slot').innerHTML = `<div class="space-y-6 animate-fadeUp"><div class="mb-2 flex items-center justify-between"><span class="text-xs text-soft sm:text-sm">79 results</span><div class="relative"><select id="history-filter" class="appearance-none rounded-md border border-line bg-black/30 py-2 pl-3 pr-8 text-[11px] font-semibold tracking-[0.12em] text-cream outline-none focus:border-gold sm:text-[13px]"><option value="ALL">Filter type: All</option><option value="E-Voucher">E-Voucher</option><option value="E-Gift Card">E-Gift Card</option></select><span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-soft">${icon('chevron-down','w-4 h-4')}</span></div></div><div class="flex items-center justify-between border-b border-zinc-800 pb-2 text-cream"><span class="text-xs font-semibold tracking-[0.16em] text-gold sm:text-sm">November, 2024</span><span class="text-xs text-soft sm:text-sm">(3)</span></div><div class="overflow-hidden rounded-2xl border border-line bg-panel shadow-luxury">${[1,2,3].map(() => `<div class="cursor-pointer border-b border-line p-5 transition hover:bg-zinc-950 last:border-b-0"><div class="mb-2 flex items-center justify-between"><div class="text-[11px] tracking-[0.12em] text-soft sm:text-[13px]">Tx ID <span class="ml-1 font-semibold text-cream">1760****7179</span></div><div class="text-sm font-semibold text-gold sm:text-base-1">$5,000</div></div><div class="flex items-center justify-between"><div class="text-[11px] text-zinc-500 sm:text-[13px]">Nov 27, 2024 09:09 PM</div><div class="rounded px-2.5 py-1 text-[10px] font-semibold tracking-[0.12em] sm:text-[12px] ${badgeClasses('Completed')}">Completed</div></div><div class="mt-3 flex justify-end"><button class="btn-action-flat btn-action-sm inline-flex items-center gap-1.5 text-[11px] font-semibold sm:text-[13px]">${icon('eye','w-4 h-4')} View Details</button></div></div>`).join('')}</div></div>`;
+  const filtered = state.historyFilter === 'ALL'
+    ? mockHistoryTransactions
+    : mockHistoryTransactions.filter(item => item.type === state.historyFilter);
+  const grouped = filtered.reduce((acc, item) => {
+    if (!acc[item.month]) acc[item.month] = [];
+    acc[item.month].push(item);
+    return acc;
+  }, {});
+  const monthOrder = [...new Set(mockHistoryTransactions.map(item => item.month))];
+  const sections = monthOrder
+    .filter(month => grouped[month]?.length)
+    .map(month => {
+      const items = grouped[month];
+      return `<section>
+        <div class="flex items-center justify-between pb-2 text-cream">
+          <span class="text-xs font-semibold tracking-[0.16em] text-gold sm:text-sm">${month}</span>
+          <span class="text-xs text-soft sm:text-sm">(${items.length})</span>
+        </div>
+        <div class="space-y-1">
+          ${items.map(item => `<div class="cursor-pointer border-b border-line p-5 transition hover:bg-zinc-950 last:border-b-0 rounded-2xl border border-line bg-panel shadow-luxury mt-1">
+            <div class="mb-2 flex items-center justify-between">
+              <div class="text-[11px] tracking-[0.12em] text-soft sm:text-[13px]">
+                Tx ID <span class="ml-1 font-semibold text-cream">${item.id}</span>
+              </div>
+              <div class="text-sm font-semibold text-gold sm:text-base-1">${formatNumber(item.amount)} <span class="text-[11px] sm:text-[13px]">${item.currency}</span></div>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="text-[11px] text-zinc-500 sm:text-[13px]">${item.date}</div>
+              <div class="rounded px-2.5 py-1 text-[10px] font-semibold tracking-[0.12em] sm:text-[12px] ${badgeClasses(item.status)}">${item.status}</div>
+            </div>
+            <div class="mt-1 flex justify-between">
+                <div class="mt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-soft sm:text-[12px]">${item.type}</div>
+              <button class="btn-action-flat btn-action-sm inline-flex items-center gap-1.5 text-[11px] font-semibold sm:text-[13px]">${icon('eye','w-4 h-4')} View Details</button>
+            </div>
+          </div>`).join('')}
+        </div>
+      </section>`;
+    }).join('');
+  document.getElementById('main-slot').innerHTML = `<div class="space-y-6 animate-fadeUp"><div class="mb-2 flex items-center justify-between"><span class="text-xs text-soft sm:text-sm">${filtered.length} results</span><div class="relative"><select id="history-filter" class="appearance-none rounded-md border border-line bg-black/30 py-2 pl-3 pr-8 text-[11px] font-semibold tracking-[0.12em] text-cream outline-none focus:border-gold sm:text-[13px]"><option value="ALL">Filter type: All</option><option value="E-Voucher">E-Voucher</option><option value="E-Gift Card">E-Gift Card</option></select><span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-soft">${icon('chevron-down','w-4 h-4')}</span></div></div>${sections}</div>`;
   document.getElementById('history-filter').value = state.historyFilter;
   safeCreateIcons();
 }
@@ -517,7 +565,7 @@ app.addEventListener('change', (event) => {
   if (t.id === 'send-directly-check') { state.sendDirectly = t.checked; syncBuyView(); }
   if (t.id === 'batch-filter') { state.filterStatus = t.value; renderRoute(true); }
   if (t.id === 'card-filter') { state.cardFilterStatus = t.value; renderRoute(true); }
-  if (t.id === 'history-filter') { state.historyFilter = t.value; }
+  if (t.id === 'history-filter') { state.historyFilter = t.value; renderRoute(true); }
 });
 
 ensureShell();

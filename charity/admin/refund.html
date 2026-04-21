@@ -13,14 +13,138 @@
     <main class="main">
       <header id="topbar-root"></header>
       <div class="layout">
-<section class="hero-panel"><div class="section-head"><div><div class="eyebrow">Refund logic</div><h2 class="section-title">Refund request form</h2><p class="section-desc">Cho phép hoàn tiền với lý do cụ thể. Mọi yêu cầu hoàn trả phải ghi audit trail và không thay thế cho lệnh điều chỉnh kế toán.</p></div><span class="badge danger">Audit required</span></div></section>
-<section class="panel"><div class="panel-inner"><div class="form-grid"><div class="form-row"><label>Transaction ID</label><input class="input" value="#TX-2026-001X" /></div><div class="form-row"><label>Requested by role</label><select class="select"><option>Customer Support</option><option>Accountant</option></select></div><div class="form-row"><label>Refund reason</label><select class="select"><option>System mint failure</option><option>User cancelled before redeem</option><option>Suspicious payment</option><option>Other</option></select></div><div class="form-row"><label>Refund amount</label><input class="input" value="$100.00" /></div><div class="form-row" style="grid-column:1/-1"><label>Audit note</label><textarea class="textarea" placeholder="Nêu rõ nguyên nhân, người yêu cầu, điều kiện hoàn trả, bằng chứng liên quan..."></textarea></div></div><div class="info-note" style="margin-top:20px"><div>ℹ️</div><div>CSKH chỉ được tạo yêu cầu refund và tra cứu. Không có quyền duyệt chi hoặc đóng batch payout.</div></div><div style="margin-top:18px;display:flex;gap:12px"><button class="btn">Save request</button><button class="btn btn-gold">Submit refund case</button></div></div></section>
+        <section class="hero-panel">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Refund request center</div>
+              <h2 class="section-title">Refund management</h2>
+              <p class="section-desc">Track refund requests across voucher, gift card, and merchant-related transactions with a clean approval flow and status visibility.</p>
+            </div>
+            <span class="badge gold">Approval flow</span>
+          </div>
+          <div class="chip-row">
+            <span class="workflow-chip">Draft</span>
+            <span class="workflow-chip active">Pending Approval</span>
+            <span class="workflow-chip">Approved</span>
+            <span class="workflow-chip">Rejected</span>
+            <span class="workflow-chip">Refunded</span>
+            <span class="workflow-chip">Failed</span>
+          </div>
+        </section>
+
+        <section class="summary-grid">
+          <div class="card summary-card">
+            <div class="summary-eyebrow">Total refund requests</div>
+            <div class="summary-value">128</div>
+            <div class="summary-note">Across all refund types in the current operating window.</div>
+            <div class="summary-trend">+12 this week</div>
+          </div>
+          <div class="card summary-card">
+            <div class="summary-eyebrow">Pending approval</div>
+            <div class="summary-value">14</div>
+            <div class="summary-note">Requests waiting on checker review or finance confirmation.</div>
+            <div class="summary-trend">5 urgent</div>
+          </div>
+          <div class="card summary-card gold">
+            <div class="summary-eyebrow">Refunded amount this month</div>
+            <div class="summary-value">$12,480</div>
+            <div class="summary-note">Net refunded value after approved requests were posted.</div>
+            <div class="summary-trend">+8.4%</div>
+          </div>
+          <div class="card summary-card">
+            <div class="summary-eyebrow">Failed refunds</div>
+            <div class="summary-value">3</div>
+            <div class="summary-note">Requires retry or manual intervention before closure.</div>
+            <div class="summary-trend">2 linked to gateway</div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-inner refund-toolbar">
+            <div class="table-head">
+              <div>
+                <h2 class="section-title">Refund queue</h2>
+                <p class="table-subtext">Search by TxID, Card ID, Batch ID, user, or merchant. Filter by type, status, and date window.</p>
+              </div>
+              <div class="badge info">Ops + Support visible</div>
+            </div>
+            <div class="refund-toolbar-grid">
+              <div class="form-row" style="grid-column:span 1">
+                <label>Search by TxID / Card ID / Batch ID / User / Merchant</label>
+                <input class="input" placeholder="Search refund requests..." />
+              </div>
+              <div class="form-row">
+                <label>Refund type</label>
+                <select class="select">
+                  <option>All</option>
+                  <option>Voucher</option>
+                  <option>Gift Card</option>
+                  <option>Settlement Adjustment</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label>Status</label>
+                <select class="select">
+                  <option>All</option>
+                  <option>Draft</option>
+                  <option>Pending Approval</option>
+                  <option>Approved</option>
+                  <option>Rejected</option>
+                  <option>Refunded</option>
+                  <option>Failed</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label>Date range</label>
+                <input class="input" placeholder="01 Apr 2026 - 21 Apr 2026" />
+              </div>
+            </div>
+            <div class="refund-toolbar-actions">
+              <button class="btn">Export CSV</button>
+              <button class="btn btn-gold">Create refund request</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-inner">
+            <div class="table-head" style="margin-bottom:12px">
+              <div>
+                <h2 class="section-title">Refund requests</h2>
+                <p class="table-subtext">Clear status markers and direct actions for review, approval, rejection, or retry.</p>
+              </div>
+              <span class="badge">6 records</span>
+            </div>
+            <div class="table-wrap">
+              <table data-admin-table="refund-management">
+                <thead>
+                  <tr>
+                    <th>Refund ID</th>
+                    <th>Source Type</th>
+                    <th>Reference</th>
+                    <th>Requested By</th>
+                    <th>Amount</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Created Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div class="info-note note-gold" style="margin-top:18px">
+              <div>ℹ️</div>
+              <div>Refund actions are intentionally scoped: view details for all roles, approve/reject for approvers, and retry only for failed refunds.</div>
+            </div>
+          </div>
+        </section>
       </div>
       <div class="footer-note">Charity Gift Admin • Modern Luxury Gold • Responsive desktop/tablet • Export-ready views</div>
     </main>
   </div>
   <script>
-    window.__PAGE_CONFIG__ = {"title": "Refund", "meta": "Refund with reason • audit log required • no payout approval permission for CSKH", "current": "refund"};
+    window.__PAGE_CONFIG__ = {"title": "Refund", "meta": "Refund request • approval flow • status tracking", "current": "refund"};
   </script>
   <script src="assets/common.js"></script>
   <script src="assets/layout.js"></script>

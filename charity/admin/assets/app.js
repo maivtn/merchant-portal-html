@@ -26,6 +26,14 @@
       ['#TX-2026-002X', 'user_donation_2@demo.app', '$100.00', '<span class="badge gold">Voucher</span>', '<span class="badge success">Successful</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="transaction-detail.html">View details</a><a class="btn" href="refund.html">Refund</a></div>'],
       ['#TX-2026-003X', 'user_donation_3@demo.app', '$50.00', '<span class="badge info">Gift Card</span>', '<span class="badge success">Redeemed</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="transaction-detail.html">View details</a></div>'],
     ],
+    'refund-management': [
+      ['RF-2026-001', '<span class="badge info">Gift Card</span>', 'TX-2026-001X', 'support_01', '$100', 'Duplicate charge', '<span class="badge info">Pending Approval</span>', '21 Apr 2026, 09:20', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="refund-detail.html">View details</a><a class="btn btn-gold" href="#">Approve</a><a class="btn" href="#">Reject</a></div>'],
+      ['RF-2026-002', '<span class="badge gold">Voucher</span>', 'B-2026-901', 'manager_a', '$50', 'User cancellation', '<span class="badge success">Approved</span>', '21 Apr 2026, 08:55', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="refund-detail.html">View details</a></div>'],
+      ['RF-2026-003', '<span class="badge">Settlement Adjustment</span>', 'Merchant Highlands', 'accountant_1', '$60', 'Payout correction', '<span class="badge danger">Failed</span>', '20 Apr 2026, 17:15', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="refund-detail.html">View details</a><a class="btn btn-gold" href="#">Retry</a></div>'],
+      ['RF-2026-004', '<span class="badge gold">Voucher</span>', 'VCH-2026-118', 'support_03', '$35', 'Cancelled before redeem', '<span class="badge">Draft</span>', '20 Apr 2026, 16:02', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="refund-detail.html">View details</a><a class="btn btn-gold" href="#">Approve</a><a class="btn" href="#">Reject</a></div>'],
+      ['RF-2026-005', '<span class="badge info">Gift Card</span>', 'TX-2026-008Q', 'support_12', '$120', 'Payment reversal', '<span class="badge success">Refunded</span>', '19 Apr 2026, 13:40', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="refund-detail.html">View details</a></div>'],
+      ['RF-2026-006', '<span class="badge">Settlement Adjustment</span>', 'Merchant Central Mall', 'finance_ops', '$240', 'Settlement mismatch', '<span class="badge danger">Rejected</span>', '18 Apr 2026, 11:30', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="refund-detail.html">View details</a></div>'],
+    ],
     'redeemed-cards': [
       ['VLP-GF-001X9', '16/04/2026 14:30', '#USR-881-B', '$50.00', '<a class="btn btn-outline-gold" href="transaction-detail.html">View details</a>'],
       ['VLP-GF-002X9', '16/04/2026 14:40', '#USR-882-B', '$50.00', '<a class="btn btn-outline-gold" href="transaction-detail.html">View details</a>'],
@@ -37,6 +45,47 @@
       ['14:15:33', 'manager_a', 'APPROVE_BATCH', 'Batch #B-9021', '10.10.12.12'],
       ['10:00:12', 'support_01', 'REQUEST_REFUND', 'Tx #TX-991', '10.10.20.67'],
       ['09:12:05', 'system_auto', 'ALERT_SETTLEMENT_OVERDUE', 'Merchant Highlands', 'internal'],
+    ],
+    'refund-audit-log': [
+      ['09:20:14', 'support_01', 'REQUEST_CREATED', 'Refund RF-2026-001 created from TX-2026-001X', '10.10.18.21'],
+      ['09:24:01', 'manager_a', 'UNDER_REVIEW', 'Checker opened refund detail and validated evidence', '10.10.12.12'],
+      ['09:31:55', 'manager_a', 'APPROVAL_DECISION', 'Status moved to Pending Approval for finance sign-off', '10.10.12.12'],
+      ['09:38:08', 'system_auto', 'STATUS_SYNC', 'Refund linked to settlement queue and notification sent', 'internal'],
+    ],
+    'beneficiary-management': [
+      ['BEN-001', 'Trường Tiểu học Ánh Dương', '<span class="badge gold">School</span>', 'VCB • 0123 456 789', '<span class="badge success">Verified</span>', '14/04/2026', '<span class="badge success">Low</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="beneficiary-detail.html">View detail</a></div>'],
+      ['BEN-002', 'Quỹ Học bổng Mùa Hè', '<span class="badge info">NGO</span>', 'ACB • 9988 1221 33', '<span class="badge info">Pending</span>', '-', '<span class="badge">Medium</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="beneficiary-detail.html">View detail</a></div>'],
+      ['BEN-003', 'Nhóm Sách Cho Em', '<span class="badge">Community Group</span>', 'MB • 5678 999 123', '<span class="badge danger">Suspended</span>', '10/03/2026', '<span class="badge danger">High</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="beneficiary-detail.html">View detail</a></div>'],
+      ['BEN-004', 'Bệnh viện Chợ Rẫy', '<span class="badge info">Hospital</span>', 'VietinBank • 1122 3344 55', '<span class="badge success">Verified</span>', '18/04/2026', '<span class="badge success">Low</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="beneficiary-detail.html">View detail</a></div>'],
+      ['BEN-005', 'Hội Cứu trợ Miền Trung', '<span class="badge">Relief Partner</span>', 'Techcombank • 7788 9900 11', '<span class="badge info">Pending</span>', '-', '<span class="badge">Medium</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="beneficiary-detail.html">View detail</a></div>'],
+      ['BEN-006', 'Nhóm Tình Nguyện Xanh', '<span class="badge">Community Group</span>', 'MB • 5566 7788 99', '<span class="badge danger">Blacklisted</span>', '05/02/2026', '<span class="badge danger">High</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="beneficiary-detail.html">View detail</a></div>'],
+    ],
+    'beneficiary-payout-history': [
+      ['#B-2026-901', '14/04/2026', '$15,000', '<span class="badge success">Distributed</span>', '<a class="btn btn-outline-gold" href="batch-detail.html">View batch</a>'],
+      ['#B-2026-885', '02/04/2026', '$8,000', '<span class="badge success">Distributed</span>', '<a class="btn btn-outline-gold" href="batch-detail.html">View batch</a>'],
+      ['#B-2026-762', '15/03/2026', '$12,000', '<span class="badge info">Scheduled</span>', '<a class="btn btn-outline-gold" href="batch-detail.html">View batch</a>'],
+    ],
+    'beneficiary-documents': [
+      ['KYB registration certificate', 'Uploaded 20/04/2026', '<span class="badge success">Verified</span>'],
+      ['Bank account proof', 'Uploaded 20/04/2026', '<span class="badge success">Matched</span>'],
+      ['Tax / legal letter', 'Uploaded 19/04/2026', '<span class="badge info">Under review</span>'],
+    ],
+    'beneficiary-audit-notes': [
+      ['09:14', 'compliance_01', 'KYB_CHECK', 'Documents match organization profile and payout ownership', '10.10.11.14'],
+      ['10:02', 'bank_ops_02', 'ACCOUNT_VERIFY', 'Bank account matched to beneficiary legal name', '10.10.11.18'],
+      ['11:20', 'manager_a', 'PAYOUT_READY', 'Beneficiary marked eligible for next distribution window', '10.10.11.22'],
+    ],
+    'proof-review-queue': [
+      ['PR-001', 'Batch #B-9021', '<span class="badge gold">Batch Payout</span>', 'accountant_1', '14:20 17/04/2026', 'PDF', '<span class="badge info">Pending Review</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="proof-review.html">View</a></div>'],
+      ['PR-002', 'Merchant Phương Nam', '<span class="badge info">Settlement</span>', 'admin_accountant_1', '11:10 16/04/2026', 'JPG', '<span class="badge success">Verified</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="proof-review.html">View</a></div>'],
+      ['PR-003', 'RF-2026-003', '<span class="badge">Refund</span>', 'support_01', '09:15 15/04/2026', 'PNG', '<span class="badge danger">Rejected</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="proof-review.html">View</a></div>'],
+      ['PR-004', 'Batch #B-9028', '<span class="badge gold">Adjustment</span>', 'accountant_2', '16:05 14/04/2026', 'PDF', '<span class="badge info">Pending Review</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="proof-review.html">View</a></div>'],
+      ['PR-005', 'Merchant Highlands', '<span class="badge info">Settlement</span>', 'finance_ops', '10:30 13/04/2026', 'JPG', '<span class="badge">Replaced</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="proof-review.html">View</a></div>'],
+    ],
+    'proof-review-activity': [
+      ['PR-001', 'Batch #B-9021', 'PDF', 'accountant_1', 'Pending Review', 'Open preview'],
+      ['PR-002', 'Merchant Phương Nam', 'JPG', 'admin_accountant_1', 'Verified', 'Open preview'],
+      ['PR-003', 'RF-2026-003', 'PNG', 'support_01', 'Rejected', 'Open preview'],
     ],
     'rbac-matrix': [
       ['Accountant (Maker)', 'Create payout order, upload proof', 'Final approve batch'],

@@ -11,7 +11,9 @@
         items: [
           { key: 'dashboard', label: 'Dashboard', href: 'index.html' },
           { key: 'pools', label: 'Pool Management', href: 'pools.html' },
+          { key: 'beneficiaries', label: 'Beneficiary Management', href: 'beneficiaries.html' },
           { key: 'batch-distribution', label: 'Batch Distribution', href: 'batch-distribution.html' },
+          { key: 'proof-review', label: 'Proof Review', href: 'proof-review.html' },
           { key: 'settlement', label: 'Merchant Settlement', href: 'settlement.html' },
           { key: 'transactions', label: 'Transactions', href: 'transactions.html' },
         ],
@@ -20,6 +22,8 @@
         label: 'Security & Audit',
         items: [
           { key: 'refund', label: 'Refund', href: 'refund.html' },
+          { key: 'proof-review', label: 'Proof Review', href: 'proof-review.html' },
+          { key: 'exception-center', label: 'Exception Center', href: 'exception-center.html' },
           { key: 'audit', label: 'Audit Trail', href: 'audit.html' },
           { key: 'rbac', label: 'RBAC & Security', href: 'rbac.html' },
         ],
@@ -30,6 +34,11 @@
       'pool-detail': 'pools',
       'merchant-detail': 'settlement',
       'transaction-detail': 'transactions',
+      'refund-detail': 'refund',
+      'beneficiaries': 'beneficiaries',
+      'beneficiary-detail': 'beneficiaries',
+      'proof-review': 'proof-review',
+      'exception-center': 'exception-center',
     },
   };
 

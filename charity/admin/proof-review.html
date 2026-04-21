@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proof Review - Charity Gift Admin</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body data-page="proof-review">
+  <div class="app-shell">
+    <aside id="sidebar-root"></aside>
+    <main class="main">
+      <header id="topbar-root"></header>
+      <div class="layout">
+        <section class="hero-panel">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Uploaded proof</div>
+              <h2 class="section-title">Proof Review</h2>
+              <p class="section-desc">Uploaded proof • verification • approval status</p>
+            </div>
+            <span class="badge gold">Finance review</span>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-inner proof-toolbar">
+            <div class="table-head">
+              <div>
+                <h2 class="section-title">Proof review queue</h2>
+                <p class="table-subtext">Search by batch ID, settlement ID, merchant, or uploader. Filter by type, status, and date range before reviewing a file.</p>
+              </div>
+              <div class="badge info">Split view ready</div>
+            </div>
+            <div class="proof-toolbar-grid">
+              <div class="form-row" style="grid-column:span 1">
+                <label>Search by batch ID / settlement ID / merchant / uploader</label>
+                <input class="input" placeholder="Search proof records..." />
+              </div>
+              <div class="form-row">
+                <label>Proof type</label>
+                <select class="select">
+                  <option>All</option>
+                  <option>Batch Payout</option>
+                  <option>Settlement</option>
+                  <option>Refund</option>
+                  <option>Adjustment</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label>Status</label>
+                <select class="select">
+                  <option>All</option>
+                  <option>Pending Review</option>
+                  <option>Verified</option>
+                  <option>Rejected</option>
+                  <option>Replaced</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label>Date range</label>
+                <input class="input" placeholder="13 Apr 2026 - 17 Apr 2026" />
+              </div>
+            </div>
+            <div class="proof-toolbar-actions">
+              <button class="btn">Export</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="queue-split">
+          <div class="panel">
+            <div class="panel-inner">
+              <div class="table-head" style="margin-bottom:12px">
+                <div>
+                  <h3 class="section-title" style="font-size:20px">Queue list</h3>
+                  <p class="table-subtext">Desktop queue with proof metadata and review actions.</p>
+                </div>
+                <span class="badge">5 records</span>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Proof ID</th>
+                      <th>Linked Record</th>
+                      <th>Type</th>
+                      <th>Uploaded By</th>
+                      <th>Uploaded Date</th>
+                      <th>File Type</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="table-row-active" data-proof-id="PR-001">
+                      <td>PR-001</td>
+                      <td>Batch #B-9021</td>
+                      <td><span class="badge gold">Batch Payout</span></td>
+                      <td>accountant_1</td>
+                      <td>14:20 17/04/2026</td>
+                      <td>PDF</td>
+                      <td><span class="badge info">Pending Review</span></td>
+                      <td><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="#">View</a></div></td>
+                    </tr>
+                    <tr>
+                      <td>PR-002</td>
+                      <td>Merchant Phương Nam</td>
+                      <td><span class="badge info">Settlement</span></td>
+                      <td>admin_accountant_1</td>
+                      <td>11:10 16/04/2026</td>
+                      <td>JPG</td>
+                      <td><span class="badge success">Verified</span></td>
+                      <td><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="#">View</a></div></td>
+                    </tr>
+                    <tr>
+                      <td>PR-003</td>
+                      <td>RF-2026-003</td>
+                      <td><span class="badge">Refund</span></td>
+                      <td>support_01</td>
+                      <td>09:15 15/04/2026</td>
+                      <td>PNG</td>
+                      <td><span class="badge danger">Rejected</span></td>
+                      <td><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="#">View</a></div></td>
+                    </tr>
+                    <tr>
+                      <td>PR-004</td>
+                      <td>Batch #B-9028</td>
+                      <td><span class="badge gold">Adjustment</span></td>
+                      <td>accountant_2</td>
+                      <td>16:05 14/04/2026</td>
+                      <td>PDF</td>
+                      <td><span class="badge info">Pending Review</span></td>
+                      <td><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="#">View</a></div></td>
+                    </tr>
+                    <tr>
+                      <td>PR-005</td>
+                      <td>Merchant Highlands</td>
+                      <td><span class="badge info">Settlement</span></td>
+                      <td>finance_ops</td>
+                      <td>10:30 13/04/2026</td>
+                      <td>JPG</td>
+                      <td><span class="badge">Replaced</span></td>
+                      <td><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="#">View</a></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="preview-shell">
+            <div class="panel">
+              <div class="panel-inner">
+                <div class="section-head">
+                  <div>
+                    <h3 class="section-title" style="font-size:20px">Proof preview</h3>
+                    <p class="section-desc">Selected item preview with metadata and review actions.</p>
+                  </div>
+                  <span class="badge info">PR-001</span>
+                </div>
+                <div class="preview-frame" style="margin-top:18px">
+                  <div class="preview-doc">
+                    <div class="preview-lines">
+                      <div class="preview-line long"></div>
+                      <div class="preview-line mid"></div>
+                      <div class="preview-line short"></div>
+                      <div class="preview-line long"></div>
+                      <div class="preview-line mid"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="meta-grid" style="margin-top:18px">
+                  <div class="meta-item">
+                    <div class="meta-label">Linked record</div>
+                    <div class="meta-value">Batch #B-9021</div>
+                  </div>
+                  <div class="meta-item">
+                    <div class="meta-label">Uploaded by</div>
+                    <div class="meta-value">accountant_1</div>
+                  </div>
+                  <div class="meta-item">
+                    <div class="meta-label">File type</div>
+                    <div class="meta-value">PDF</div>
+                  </div>
+                  <div class="meta-item">
+                    <div class="meta-label">Status</div>
+                    <div class="meta-value"><span class="badge info">Pending Review</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-inner">
+                <div class="section-head">
+                  <div>
+                    <h3 class="section-title" style="font-size:20px">Review metadata</h3>
+                    <p class="section-desc">Quick confirmation before approval or rejection.</p>
+                  </div>
+                  <span class="badge">Verified queue</span>
+                </div>
+                <div class="meta-grid" style="margin-top:18px">
+                  <div class="meta-item">
+                    <div class="meta-label">Proof ID</div>
+                    <div class="meta-value">PR-001</div>
+                  </div>
+                  <div class="meta-item">
+                    <div class="meta-label">Uploaded date</div>
+                    <div class="meta-value">14:20 17/04/2026</div>
+                  </div>
+                  <div class="meta-item">
+                    <div class="meta-label">Type</div>
+                    <div class="meta-value">Batch Payout</div>
+                  </div>
+                  <div class="meta-item">
+                    <div class="meta-label">Source</div>
+                    <div class="meta-value">Finance team</div>
+                  </div>
+                </div>
+                <div class="detail-note" style="margin-top:18px">
+                  <div class="eyebrow">Current assessment</div>
+                  <div style="margin-top:8px;font-weight:800;line-height:1.6">File is legible and tied to the correct batch. Mark verified after confirming line items and settlement amount against the ledger.</div>
+                </div>
+                <div class="action-stack" style="margin-top:18px">
+                  <button class="btn btn-gold">Approve proof</button>
+                  <button class="btn">Reject proof</button>
+                  <button class="btn btn-outline-gold">Request re-upload</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="footer-note">Charity Gift Admin • Modern Luxury Gold • Responsive desktop/tablet • Export-ready views</div>
+    </main>
+  </div>
+  <script>
+    window.__PAGE_CONFIG__ = {"title": "Proof Review", "meta": "Uploaded proof • verification • approval status", "current": "proof-review"};
+  </script>
+  <script src="assets/common.js"></script>
+  <script src="assets/layout.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

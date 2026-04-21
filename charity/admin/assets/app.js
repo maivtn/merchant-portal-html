@@ -16,10 +16,10 @@
       ['#B-2026-762', '15/03/2026', '$45,000', '<span class="badge success">Distributed</span>', '<a class="link" href="batch-detail.html">View</a>'],
     ],
     'settlement-ledger': [
-      ['Bệnh viện Chợ Rẫy', '24', '$1,200', '<span class="badge info">3 days</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="merchant-detail.html">View details</a><a class="btn" href="merchant-detail.html">Create payout</a></div>'],
-      ['Nhà sách Phương Nam', '88', '$3,400', '<span class="badge danger">12 days</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="merchant-detail.html">View details</a><a class="btn" href="merchant-detail.html">Create payout</a></div>'],
-      ['Co.op Mart', '156', '$7,800', '<span class="badge info">1 day</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="merchant-detail.html">View details</a><a class="btn" href="merchant-detail.html">Create payout</a></div>'],
-      ['Highlands', '12', '$60', '<span class="badge">0 day</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="merchant-detail.html">View details</a><a class="btn" href="merchant-detail.html">Create payout</a></div>'],
+      ['Bệnh viện Chợ Rẫy', '24', '$1,200', '<span class="badge info">3 days</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="merchant-detail.html">View details</a><a class="btn" href="merchant-detail.html">Create payout</a><a class="btn" href="settlement-dispute.html">Dispute</a></div>'],
+      ['Nhà sách Phương Nam', '88', '$3,400', '<span class="badge danger">12 days</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="merchant-detail.html">View details</a><a class="btn" href="merchant-detail.html">Create payout</a><a class="btn" href="settlement-dispute.html">Dispute</a></div>'],
+      ['Co.op Mart', '156', '$7,800', '<span class="badge info">1 day</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="merchant-detail.html">View details</a><a class="btn" href="merchant-detail.html">Create payout</a><a class="btn" href="settlement-dispute.html">Dispute</a></div>'],
+      ['Highlands', '12', '$60', '<span class="badge">0 day</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="merchant-detail.html">View details</a><a class="btn" href="merchant-detail.html">Create payout</a><a class="btn" href="settlement-dispute.html">Dispute</a></div>'],
     ],
     'transactions': [
       ['#TX-2026-001X', 'user_donation_1@demo.app', '$100.00', '<span class="badge info">Gift Card</span>', '<span class="badge success">Successful</span>', '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="transaction-detail.html">View details</a><a class="btn" href="refund.html">Refund</a></div>'],
@@ -86,6 +86,26 @@
       ['PR-001', 'Batch #B-9021', 'PDF', 'accountant_1', 'Pending Review', 'Open preview'],
       ['PR-002', 'Merchant Phương Nam', 'JPG', 'admin_accountant_1', 'Verified', 'Open preview'],
       ['PR-003', 'RF-2026-003', 'PNG', 'support_01', 'Rejected', 'Open preview'],
+    ],
+    'settlement-dispute-transactions': [
+      ['TX-2026-044A', 'Redeemed card adjustment', '$120', '<span class="badge success">Matched</span>'],
+      ['TX-2026-057C', 'Duplicate settlement line', '$80', '<span class="badge gold">Pending review</span>'],
+      ['TX-2026-059D', 'Missing fee allocation', '$0', '<span class="badge danger">Flagged</span>'],
+    ],
+    'settlement-dispute-adjustments': [
+      ['Fee correction', '$150', 'Correct fee split after settlement review', 'finance_ops'],
+      ['Merchant reserve hold', '$50', 'Temporary hold pending evidence review', 'manager_a'],
+      ['Balance reconciliation', '$0', 'No change until dispute decision is finalized', 'accountant_1'],
+    ],
+    'settlement-dispute-timeline': [
+      ['09:12', 'merchant_ops', 'DISPUTE_CREATED', 'Merchant opened dispute for settlement cycle 16/04/2026', '10.10.12.44'],
+      ['10:05', 'finance_ops', 'REVIEW_STARTED', 'Finance reviewed payable variance and matched dispute reason', '10.10.12.19'],
+      ['11:30', 'checker_b', 'AWAITING_DECISION', 'Final decision pending after adjustment history check', '10.10.12.31'],
+    ],
+    'settlement-dispute-files': [
+      ['settlement-ledger.pdf', 'Uploaded 16/04/2026', '<span class="badge success">Verified</span>'],
+      ['merchant-email-thread.jpg', 'Uploaded 16/04/2026', '<span class="badge info">Attached</span>'],
+      ['adjustment-notes.xlsx', 'Uploaded 16/04/2026', '<span class="badge gold">Review</span>'],
     ],
     'rbac-matrix': [
       ['Accountant (Maker)', 'Create payout order, upload proof', 'Final approve batch'],

@@ -33,6 +33,7 @@
       'batch-detail': 'pools',
       'pool-detail': 'pools',
       'merchant-detail': 'settlement',
+      'settlement-dispute': 'settlement',
       'transaction-detail': 'transactions',
       'refund-detail': 'refund',
       'beneficiaries': 'beneficiaries',

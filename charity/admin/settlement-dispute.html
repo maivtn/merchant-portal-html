@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settlement Dispute - Charity Gift Admin</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body data-page="settlement-dispute">
+  <div class="app-shell">
+    <aside id="sidebar-root"></aside>
+    <main class="main">
+      <header id="topbar-root"></header>
+      <div class="layout">
+        <section class="detail-topbar">
+          <a class="back-link" href="settlement.html">← Back to Merchant Settlement</a>
+        </section>
+
+        <section class="hero-panel">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Dispute review</div>
+              <h2 class="section-title">Settlement Dispute</h2>
+              <p class="section-desc">Payable dispute • adjustment history • resolution workflow</p>
+            </div>
+            <span class="badge info">Under Review</span>
+          </div>
+        </section>
+
+        <section class="dispute-summary">
+          <div class="metric">
+            <span class="label">Merchant</span>
+            <span class="value">Nhà sách Phương Nam</span>
+          </div>
+          <div class="metric">
+            <span class="label">Settlement cycle</span>
+            <span class="value">16/04/2026</span>
+          </div>
+          <div class="metric">
+            <span class="label">Current payable</span>
+            <span class="value">$3,400</span>
+          </div>
+          <div class="metric">
+            <span class="label">Disputed amount</span>
+            <span class="value">$200</span>
+          </div>
+          <div class="metric">
+            <span class="label">Status</span>
+            <span class="value"><span class="badge info">Under Review</span></span>
+          </div>
+        </section>
+
+        <section class="dispute-grid">
+          <div class="dispute-stack">
+            <div class="panel">
+              <div class="panel-inner">
+                <div class="section-head">
+                  <div>
+                    <h3 class="section-title" style="font-size:20px">Dispute details</h3>
+                    <p class="section-desc">Summary of the merchant claim and the affected settlement items.</p>
+                  </div>
+                  <span class="badge gold">Operational case</span>
+                </div>
+                <div class="detail-block" style="margin-top:18px">
+                  <div class="grid-2" style="gap:16px">
+                    <div class="metric"><span class="label">Dispute ID</span><span class="value" style="font-size:20px">SD-2026-014</span></div>
+                    <div class="metric"><span class="label">Created by</span><span class="value" style="font-size:20px">merchant_ops</span></div>
+                    <div class="metric"><span class="label">Reason category</span><span class="value" style="font-size:20px">Payable variance</span></div>
+                    <div class="metric"><span class="label">Description</span><span class="value" style="font-size:20px">Merchant disputes a $200 reduction in the settled payable due to missing fee allocation and duplicate line handling.</span></div>
+                  </div>
+                </div>
+                <div style="margin-top:18px">
+                  <div class="eyebrow">Affected transactions list</div>
+                  <div class="table-wrap" style="margin-top:12px">
+                    <table data-admin-table="settlement-dispute-transactions">
+                      <thead>
+                        <tr>
+                          <th>Transaction ID</th>
+                          <th>Description</th>
+                          <th>Amount</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-inner">
+                <div class="section-head">
+                  <div>
+                    <h3 class="section-title" style="font-size:20px">Adjustment history</h3>
+                    <p class="section-desc">Historical entries used to reconcile the dispute amount.</p>
+                  </div>
+                  <span class="badge">3 adjustments</span>
+                </div>
+                <div class="table-wrap" style="margin-top:18px">
+                  <table data-admin-table="settlement-dispute-adjustments">
+                    <thead>
+                      <tr>
+                        <th>Adjustment type</th>
+                        <th>Amount</th>
+                        <th>Note</th>
+                        <th>Created by</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dispute-stack">
+            <div class="panel">
+              <div class="panel-inner note-panel">
+                <div class="section-head">
+                  <div>
+                    <h3 class="section-title" style="font-size:20px">Resolution workflow</h3>
+                    <p class="section-desc">Finish with a decision that is explicit and traceable.</p>
+                  </div>
+                  <span class="badge gold">Finance review</span>
+                </div>
+                <div class="form-row">
+                  <label>Review note</label>
+                  <textarea class="textarea" placeholder="Write the review note...">Merchant claims the deduction is inconsistent with the settlement breakdown. The payable variance has been matched against line-item adjustments and needs final finance confirmation.</textarea>
+                </div>
+                <div class="form-row">
+                  <label>Finance comment</label>
+                  <textarea class="textarea" placeholder="Add finance comment...">Pending final check of fee allocation and any duplicated settlement entries before releasing the dispute decision.</textarea>
+                </div>
+                <div class="workflow-select">
+                  <label>Final decision</label>
+                  <select class="select">
+                    <option>Approve adjustment</option>
+                    <option>Reject dispute</option>
+                    <option>Partial adjustment</option>
+                  </select>
+                </div>
+                <div class="action-stack">
+                  <button class="btn">Save</button>
+                  <button class="btn">Reject dispute</button>
+                  <button class="btn btn-gold">Approve adjustment</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-inner">
+                <div class="section-head">
+                  <div>
+                    <h3 class="section-title" style="font-size:20px">Timeline</h3>
+                    <p class="section-desc">Chronological activity for the dispute case.</p>
+                  </div>
+                  <span class="badge">Audit trail</span>
+                </div>
+                <div class="timeline-mini" style="margin-top:18px">
+                  <div class="timeline-item done">
+                    <div class="eyebrow">09:12</div>
+                    <div style="margin-top:6px;font-weight:800">Dispute created by merchant operations.</div>
+                  </div>
+                  <div class="timeline-item active">
+                    <div class="eyebrow">10:05</div>
+                    <div style="margin-top:6px;font-weight:800">Finance team reviewed payable variance.</div>
+                  </div>
+                  <div class="timeline-item">
+                    <div class="eyebrow">11:30</div>
+                    <div style="margin-top:6px;font-weight:800">Decision pending before adjustment is finalized.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-inner">
+                <div class="section-head">
+                  <div>
+                    <h3 class="section-title" style="font-size:20px">Attached evidence files</h3>
+                    <p class="section-desc">Supporting files attached to the dispute case.</p>
+                  </div>
+                  <span class="badge">3 files</span>
+                </div>
+                <div class="attachment-list" style="margin-top:18px">
+                  <div class="attachment-row">
+                    <div class="attachment-meta">
+                      <div class="attachment-title">settlement-breakdown.pdf</div>
+                      <div class="attachment-sub">Uploaded 16/04/2026 • 1.1 MB</div>
+                    </div>
+                    <span class="badge success">Verified</span>
+                  </div>
+                  <div class="attachment-row">
+                    <div class="attachment-meta">
+                      <div class="attachment-title">merchant-email-thread.jpg</div>
+                      <div class="attachment-sub">Uploaded 16/04/2026 • 940 KB</div>
+                    </div>
+                    <span class="badge info">Attached</span>
+                  </div>
+                  <div class="attachment-row">
+                    <div class="attachment-meta">
+                      <div class="attachment-title">adjustment-notes.xlsx</div>
+                      <div class="attachment-sub">Uploaded 16/04/2026 • 180 KB</div>
+                    </div>
+                    <span class="badge gold">Review</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="footer-note">Charity Gift Admin • Modern Luxury Gold • Responsive desktop/tablet • Export-ready views</div>
+    </main>
+  </div>
+  <script>
+    window.__PAGE_CONFIG__ = {"title": "Settlement Dispute", "meta": "Payable dispute • adjustment history • resolution workflow", "current": "settlement-dispute"};
+  </script>
+  <script src="assets/common.js"></script>
+  <script src="assets/layout.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -7,7 +7,7 @@
     <title>Gift Charity</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -174,28 +174,32 @@
     </template>
     <template id="tpl-qr-view">
         <div class="mx-auto max-w-[420px] animate-fadeUp">
-            <div class="rounded-[22px] border border-line bg-[#fffaf0] p-4 text-center text-cream sm:p-6 shadow-luxury">
-                <p class="text-[12px] font-semibold uppercase tracking-[0.34em] text-soft sm:text-[13px]">
+            <div class="relative overflow-hidden rounded-[22px] border border-[#2a2a2a] bg-[#111111] p-4 text-center text-[#f5efe2] shadow-[0_18px_42px_rgba(0,0,0,0.24)] sm:p-6">
+                <div class="absolute inset-x-0 top-0 h-[4px] bg-gold"></div>
+                <div class="h-1"></div>
+                <p class="qr-title text-[11px] font-semibold uppercase tracking-[0.46em] text-[#b8b0a5] sm:text-[13px]">
                     CHARITY E-GIFT CARD</p>
                 <div class="mt-4 flex items-end justify-center gap-3 sm:mt-5">
-                    <span class="text-5xl font-semibold leading-none text-gold sm:text-6xl">${{amount}}</span>
+                    <span class="qr-currency pb-2 text-[17px] font-semibold tracking-[0.34em] text-[#f4e7c6] sm:text-[21px]">$</span>
+                    <span class="qr-amount text-[52px] font-semibold leading-none tracking-[-0.08em] text-gold sm:text-[64px]">{{amount}}</span>
                 </div>
-                <div class="my-5 border-t border-dashed border-line sm:my-6"></div>
-                <div
-                    class="mx-auto w-full max-w-[240px] rounded-[18px] border-2 border-gold bg-white p-2.5 shadow-[0_10px_24px_rgba(34,31,31,0.12)] sm:max-w-[260px] sm:p-3">
-                    <img src="{{qrSrc}}" alt="QR code" class="block h-auto w-full rounded-[12px] bg-white">
+                <div class="my-6 border-t border-dashed border-[#343434] sm:my-7"></div>
+                <div class="mx-auto w-full max-w-[208px] rounded-[18px] border-2 border-gold bg-[#fbfbfb] p-2 shadow-[0_12px_28px_rgba(0,0,0,0.18)] sm:max-w-[210px] sm:p-2.5">
+                    <div class="rounded-[12px] border border-[#e8e1cf] bg-white p-2">
+                        <img src="{{qrSrc}}" alt="QR code" class="block h-auto w-full rounded-[10px] bg-white">
+                    </div>
                 </div>
-                <p class="mt-4 text-[11px] font-extrabold uppercase tracking-[0.26em] text-gold sm:mt-5 sm:text-[13px]">
+                <p class="qr-label mt-6 text-[11px] font-extrabold uppercase tracking-[0.34em] text-gold sm:mt-7 sm:text-[13px]">
                     REDEEM CODE</p>
-                <div
-                    class="mx-auto mt-2.5 max-w-[320px] rounded-xl border border-line bg-panel px-5 py-3 text-center text-[18px] font-semibold tracking-[0.32em] text-cream sm:mt-3 sm:py-4 sm:text-[20px]">
+                <div class="qr-code mx-auto mt-3 max-w-[330px] rounded-[12px] border border-[#2d2d2d] bg-[#080808] px-5 py-4 text-center text-[20px] font-semibold tracking-[0.34em] text-[#efe6cc] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] sm:mt-3.5 sm:py-4 sm:text-[22px]">
                     {{redeemCode}}</div>
-                <p
-                    class="mt-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-500 sm:mt-5 sm:text-[12px]">
+                <p class="mt-4 text-[10px] font-semibold uppercase tracking-[0.38em] text-[#878787] sm:mt-5 sm:text-[12px]">
                     FROM VLINKPAY FOUNDATION</p>
-                <div class="mt-6 sm:mt-8"><button data-action="download-receipt"
-                        class="btn-action-outline w-full py-3 text-[11px] font-extrabold uppercase tracking-[0.16em] sm:py-3.5 sm:text-[13px]">DOWNLOAD
-                        QR</button></div>
+                <div class="mt-7 sm:mt-8">
+                    <button data-action="download-receipt"
+                        class="btn-action-outline w-full py-3 text-[11px] font-extrabold uppercase tracking-[0.22em] sm:py-3.5 sm:text-[13px]">DOWNLOAD
+                        QR</button>
+                </div>
             </div>
         </div>
     </template>

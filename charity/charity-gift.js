@@ -226,9 +226,9 @@ function renderHeader() {
   const showBack = ['batch','dist','cardDetail','qr','proof'].includes(state.viewMode);
   el.innerHTML = `
     <div class="flex items-center justify-between py-4">
-      ${showBack ? `<div class="w-18"><button data-action="back" class="btn-action-flat btn-action-sm inline-flex items-center gap-2 text-sm font-bold">${icon('arrow-left','w-4 h-4')} Back</button></div>` : ''}
+      ${showBack ? `<div class="w-18 md:w-28"><button data-action="back" class="btn-action-flat btn-action-sm inline-flex items-center gap-2 text-sm font-bold">${icon('arrow-left','w-4 h-4')} Back</button></div>` : ''}
       <h1 class="flex-1 text-center md:text-left text-[16px] font-extrabold uppercase tracking-[0.18em] text-cream md:text-[20px]">${getHeaderTitle()}</h1>
-      ${showBack ? '<div class="w-18"></div>' : ''}
+      ${showBack ? '<div class="w-18 md:w-28"></div>' : ''}
     </div>`;
 }
 

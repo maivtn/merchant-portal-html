@@ -22,7 +22,7 @@
         label: 'Security & Audit',
         items: [
           { key: 'refund', label: 'Refund', href: 'refund.html' },
-          { key: 'proof-review', label: 'Proof Review', href: 'proof-review.html' },
+          // { key: 'proof-review', label: 'Proof Review', href: 'proof-review.html' },
           { key: 'exception-center', label: 'Exception Center', href: 'exception-center.html' },
           { key: 'permission-matrix', label: 'Permission Matrix', href: 'permission-matrix.html' },
           { key: 'alert-center', label: 'Alert Center', href: 'alert-center.html' },

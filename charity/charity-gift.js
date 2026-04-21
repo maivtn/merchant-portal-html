@@ -1,10 +1,10 @@
 const purposes = [
-  { id: 'food', icon: 'shopping-basket', label: 'Food Support' },
-  { id: 'children', icon: 'hand-heart', label: 'Children Education' },
-  { id: 'healthcare', icon: 'activity', label: 'Healthcare & Medicine' },
-  { id: 'elderly', icon: 'heart', label: 'Elderly Care' },
-  { id: 'disaster', icon: 'flame', label: 'Disaster Relief' },
-  { id: 'scholarship', icon: 'graduation-cap', label: 'Scholarship Programs' },
+  { id: 'food', icon: 'shopping-basket', label: 'Food Support', imageUrl: '../assets/charity/food.png' },
+  { id: 'children', icon: 'school', label: 'Children Education', imageUrl: '../assets/charity/education-children.png' },
+  { id: 'healthcare', icon: 'activity', label: 'Healthcare & Medicine', imageUrl: '../assets/charity/medicine.png' },
+  { id: 'elderly', icon: 'heart', label: 'Elderly Care', imageUrl: '../assets/charity/elderly.png' },
+  { id: 'disaster', icon: 'flame', label: 'Disaster Relief', imageUrl: '../assets/charity/disaster-lelief.png' },
+  { id: 'scholarship', icon: 'graduation-cap', label: 'Scholarship Programs', imageUrl: '../assets/charity/scholarship.png' },
 ];
 
 const paymentMethods = [
@@ -196,6 +196,14 @@ function panel(step, title, body, id='') {
   });
 }
 
+function purposeMedia(item) {
+  const img = item.imageUrl
+    ? `<img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.label)}" class="h-8 w-8 object-contain" onerror="this.style.display='none'; this.nextElementSibling?.classList.remove('hidden')">`
+    : '';
+  const fallback = `<span class="${item.imageUrl ? 'hidden' : ''}">${icon(item.icon, 'w-6 h-6')}</span>`;
+  return `${img}${fallback}`;
+}
+
 function ensureShell() {
   if (shellReady) return;
   app.innerHTML = `
@@ -307,8 +315,8 @@ function giftTypeContent() {
     cardClass: state.flowType === 'card' ? 'border-gold bg-gold/5 shadow-gold' : 'border-line hover:-translate-y-1 hover:border-gold/70 hover:bg-gold/5',
     voucherIconClass: state.flowType === 'voucher' ? 'bg-gold/10 text-gold' : 'bg-zinc-900 text-soft',
     cardIconClass: state.flowType === 'card' ? 'bg-gold/10 text-gold' : 'bg-zinc-900 text-soft',
-    voucherIcon: icon('package','w-5 h-5'),
-    cardIcon: icon('gift','w-5 h-5')
+    voucherMedia: `<img src="../assets/charity/charity-voucher.png" alt="Charity Voucher" class="h-8 w-8 object-contain" onerror="this.style.display='none'; this.nextElementSibling?.classList.remove('hidden')"><span class="hidden">${icon('package','w-8 h-8')}</span>`,
+    cardMedia: `<img src="../assets/charity/charity-gift-card.png" alt="Charity Gift Card" class="h-8 w-8 object-contain" onerror="this.style.display='none'; this.nextElementSibling?.classList.remove('hidden')"><span class="hidden">${icon('gift','w-8 h-8')}</span>`
   });
 }
 
@@ -346,7 +354,7 @@ function buildBuyView() {
 function syncBuyView() {
   const purposeGrid = document.getElementById('purpose-grid');
   if (purposeGrid) {
-    purposeGrid.innerHTML = purposes.map(item => `<button data-action="set-purpose" data-purpose="${item.id}" class="relative rounded-2xl border p-2 md:p-4 text-center transition ${state.purpose === item.id ? 'border-gold bg-gold/5 shadow-gold' : 'border-line hover:border-gold/70 hover:bg-gold/5'}"><div class="mx-auto mb-1 md:mb-3 grid h-11 w-11 place-items-center rounded-xl ${state.purpose === item.id ? 'bg-gold/10 text-gold' : 'bg-zinc-900 text-soft'}">${icon(item.icon,'w-5 h-5')}</div><div class="text-[11px] font-semibold uppercase tracking-[0.08em] sm:text-xs">${item.label}</div>${state.purpose === item.id ? `<div class="absolute right-3 top-3 grid h-4 w-4 place-items-center rounded-full bg-gold text-black">${icon('check','w-3 h-3')}</div>` : ''}</button>`).join('');
+    purposeGrid.innerHTML = purposes.map(item => `<button data-action="set-purpose" data-purpose="${item.id}" class="relative rounded-2xl border p-2 md:p-4 text-center transition ${state.purpose === item.id ? 'border-gold bg-gold/5 shadow-gold' : 'border-line hover:border-gold/70 hover:bg-gold/5'}"><div class="mx-auto mb-1 md:mb-3 grid h-11 w-11 place-items-center rounded-xl ${state.purpose === item.id ? 'bg-gold/10 text-gold' : 'bg-zinc-900 text-soft'}">${purposeMedia(item)}</div><div class="text-[11px] font-semibold uppercase tracking-[0.08em] sm:text-xs">${item.label}</div>${state.purpose === item.id ? `<div class="absolute right-3 top-3 grid h-4 w-4 place-items-center rounded-full bg-gold text-black">${icon('check','w-3 h-3')}</div>` : ''}</button>`).join('');
   }
   const currencySelect = document.getElementById('currency-select');
   if (currencySelect) currencySelect.value = state.currency;

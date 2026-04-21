@@ -25,6 +25,7 @@
           { key: 'proof-review', label: 'Proof Review', href: 'proof-review.html' },
           { key: 'exception-center', label: 'Exception Center', href: 'exception-center.html' },
           { key: 'permission-matrix', label: 'Permission Matrix', href: 'permission-matrix.html' },
+          { key: 'alert-center', label: 'Alert Center', href: 'alert-center.html' },
           { key: 'audit', label: 'Audit Trail', href: 'audit.html' },
           { key: 'rbac', label: 'RBAC & Security', href: 'rbac.html' },
         ],
@@ -42,6 +43,7 @@
       'proof-review': 'proof-review',
       'exception-center': 'exception-center',
       'permission-matrix': 'permission-matrix',
+      'alert-center': 'alert-center',
     },
   };
 

@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exception Center - Charity Gift Admin</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body data-page="exception-center">
+  <div class="app-shell">
+    <aside id="sidebar-root"></aside>
+    <main class="main">
+      <header id="topbar-root"></header>
+      <div class="layout">
+        <section class="hero-panel">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">Operational issues</div>
+              <h2 class="section-title">Exception Center</h2>
+              <p class="section-desc">Operational issues • failed payout • overdue actions</p>
+            </div>
+            <span class="badge danger">Active exceptions</span>
+          </div>
+        </section>
+
+        <section class="summary-grid">
+          <div class="card summary-card">
+            <div class="summary-eyebrow">Failed payouts</div>
+            <div class="summary-value">12</div>
+            <div class="summary-note">Payout attempts that need a retry or manual intervention.</div>
+            <div class="summary-trend">3 urgent</div>
+          </div>
+          <div class="card summary-card">
+            <div class="summary-eyebrow">Missing proof</div>
+            <div class="summary-value">8</div>
+            <div class="summary-note">Records waiting for proof upload before they can close.</div>
+            <div class="summary-trend">Awaiting upload</div>
+          </div>
+          <div class="card summary-card gold">
+            <div class="summary-eyebrow">Overdue settlement</div>
+            <div class="summary-value">5</div>
+            <div class="summary-note">Settlements that have crossed the expected processing window.</div>
+            <div class="summary-trend">Breached SLA</div>
+          </div>
+          <div class="card summary-card">
+            <div class="summary-eyebrow">Pending checker approval</div>
+            <div class="summary-value">19</div>
+            <div class="summary-note">Items waiting on checker sign-off before execution.</div>
+            <div class="summary-trend">Review queue</div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-inner exception-toolbar">
+            <div class="table-head">
+              <div>
+                <h2 class="section-title">Exception queue</h2>
+                <p class="table-subtext">Search and filter issues by record, severity, and SLA before assigning or escalating.</p>
+              </div>
+              <div class="badge info">Ops command center</div>
+            </div>
+            <div class="exception-toolbar-grid">
+              <div class="form-row" style="grid-column:span 1">
+                <label>Search by batch ID / settlement ID / merchant / uploader</label>
+                <input class="input" placeholder="Search exceptions..." />
+              </div>
+              <div class="form-row">
+                <label>Category</label>
+                <select class="select">
+                  <option>All</option>
+                  <option>Failed payout</option>
+                  <option>Missing proof</option>
+                  <option>Overdue settlement</option>
+                  <option>Pending approval</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label>Severity</label>
+                <select class="select">
+                  <option>All</option>
+                  <option>High</option>
+                  <option>Medium</option>
+                  <option>Low</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label>Date range</label>
+                <input class="input" placeholder="13 Apr 2026 - 17 Apr 2026" />
+              </div>
+            </div>
+            <div class="exception-toolbar-actions">
+              <button class="btn">Export</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="exception-split">
+          <div class="panel">
+            <div class="panel-inner">
+              <div class="table-head" style="margin-bottom:12px">
+                <div>
+                  <h3 class="section-title" style="font-size:20px">Exception list</h3>
+                  <p class="table-subtext">Clear operational queue with one action per issue.</p>
+                </div>
+                <span class="badge">3 records</span>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Exception ID</th>
+                      <th>Category</th>
+                      <th>Reference</th>
+                      <th>Severity</th>
+                      <th>Owner</th>
+                      <th>Created Time</th>
+                      <th>SLA</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="table-row-active">
+                      <td>EX-001</td>
+                      <td>Failed Payout</td>
+                      <td>Batch #B-9021</td>
+                      <td><span class="badge danger">High</span></td>
+                      <td>accountant_1</td>
+                      <td>10:32</td>
+                      <td>4h left</td>
+                      <td><span class="badge info">Open</span></td>
+                      <td><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="#">View</a></div></td>
+                    </tr>
+                    <tr>
+                      <td>EX-002</td>
+                      <td>Missing Proof</td>
+                      <td>Merchant Phương Nam</td>
+                      <td><span class="badge gold">Medium</span></td>
+                      <td>manager_a</td>
+                      <td>09:15</td>
+                      <td>1 day left</td>
+                      <td><span class="badge info">Open</span></td>
+                      <td><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="#">View</a></div></td>
+                    </tr>
+                    <tr>
+                      <td>EX-003</td>
+                      <td>Overdue Approval</td>
+                      <td>Batch #B-9030</td>
+                      <td><span class="badge danger">High</span></td>
+                      <td>checker_b</td>
+                      <td>08:05</td>
+                      <td>Breached</td>
+                      <td><span class="badge danger">Escalated</span></td>
+                      <td><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-outline-gold" href="#">View</a></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="exception-detail">
+            <div class="panel">
+              <div class="panel-inner exception-panel">
+                <div class="section-head">
+                  <div>
+                    <h3 class="section-title" style="font-size:20px">Selected exception</h3>
+                    <p class="section-desc">Focused details for the current queue item.</p>
+                  </div>
+                  <span class="badge info">EX-001</span>
+                </div>
+                <div class="detail-block">
+                  <div class="exception-metric-grid">
+                    <div class="metric"><span class="label">Category</span><span class="value" style="font-size:20px">Failed Payout</span></div>
+                    <div class="metric"><span class="label">Reference</span><span class="value" style="font-size:20px">Batch #B-9021</span></div>
+                    <div class="metric"><span class="label">Owner</span><span class="value" style="font-size:20px">accountant_1</span></div>
+                    <div class="metric"><span class="label">SLA</span><span class="value" style="font-size:20px">4h left</span></div>
+                  </div>
+                  <div class="exception-badge-row">
+                    <span class="badge danger">High severity</span>
+                    <span class="badge info">Open issue</span>
+                    <span class="badge">Needs action</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-inner exception-card">
+                <div class="section-head">
+                  <div>
+                    <h3 class="section-title" style="font-size:20px">Resolution actions</h3>
+                    <p class="section-desc">Keep the response direct and audit-friendly.</p>
+                  </div>
+                  <span class="badge gold">Priority</span>
+                </div>
+                <div class="resolution-list">
+                  <div class="resolution-item">
+                    <div>
+                      <div class="res-label">Retry payout</div>
+                      <div class="res-value">Re-run the payout after verifying the account state.</div>
+                    </div>
+                    <button class="btn btn-gold">Run</button>
+                  </div>
+                  <div class="resolution-item">
+                    <div>
+                      <div class="res-label">Assign owner</div>
+                      <div class="res-value">Move the issue to the accountable operator.</div>
+                    </div>
+                    <button class="btn">Assign</button>
+                  </div>
+                  <div class="resolution-item">
+                    <div>
+                      <div class="res-label">Escalate</div>
+                      <div class="res-value">Push into urgent review with higher visibility.</div>
+                    </div>
+                    <button class="btn">Escalate</button>
+                  </div>
+                  <div class="resolution-item">
+                    <div>
+                      <div class="res-label">Close issue</div>
+                      <div class="res-value">Mark resolved after confirmation and notes.</div>
+                    </div>
+                    <button class="btn btn-outline-gold">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="footer-note">Charity Gift Admin • Modern Luxury Gold • Responsive desktop/tablet • Export-ready views</div>
+    </main>
+  </div>
+  <script>
+    window.__PAGE_CONFIG__ = {"title": "Exception Center", "meta": "Operational issues • failed payout • overdue actions", "current": "exception-center"};
+  </script>
+  <script src="assets/common.js"></script>
+  <script src="assets/layout.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

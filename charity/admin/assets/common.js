@@ -26,6 +26,7 @@
       },
     ],
     pageAliases: {
+      'batch-detail': 'pools',
       'pool-detail': 'pools',
       'merchant-detail': 'settlement',
       'transaction-detail': 'transactions',

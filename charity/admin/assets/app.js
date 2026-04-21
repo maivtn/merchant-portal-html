@@ -107,6 +107,14 @@
       ['merchant-email-thread.jpg', 'Uploaded 16/04/2026', '<span class="badge info">Attached</span>'],
       ['adjustment-notes.xlsx', 'Uploaded 16/04/2026', '<span class="badge gold">Review</span>'],
     ],
+    'ledger-reconciliation-entries': [
+      ['LE-2026-001', 'Donations received', 'POOLED-APR-16', '', '$2,840,000', '<span class="badge success">Matched</span>', '16/04/2026', '<a class="btn btn-outline-gold" href="#">View</a>'],
+      ['LE-2026-002', 'Batch distributed', 'B-2026-901', '$1,920,500', '', '<span class="badge success">Matched</span>', '16/04/2026', '<a class="btn btn-outline-gold" href="#">View</a>'],
+      ['LE-2026-003', 'Merchant payable', 'SET-2026-044', '$3,400', '', '<span class="badge info">Pending</span>', '16/04/2026', '<a class="btn btn-outline-gold" href="#">View</a>'],
+      ['LE-2026-004', 'Refund processed', 'RF-2026-003', '$60', '', '<span class="badge success">Matched</span>', '15/04/2026', '<a class="btn btn-outline-gold" href="#">View</a>'],
+      ['LE-2026-005', 'Platform fee', 'FEE-APR-16', '', '$28,400', '<span class="badge success">Matched</span>', '16/04/2026', '<a class="btn btn-outline-gold" href="#">View</a>'],
+      ['LE-2026-006', 'Recon difference', 'INV-2026-007', '$12', '', '<span class="badge danger">Unresolved</span>', '16/04/2026', '<a class="btn btn-outline-gold" href="#">View</a>'],
+    ],
     'rbac-matrix': [
       ['Accountant (Maker)', 'Create payout order, upload proof', 'Final approve batch'],
       ['Manager (Checker)', 'Approve / reject distribution', 'Edit immutable settled data'],
@@ -184,6 +192,77 @@
             pointHoverRadius: 4,
             borderDash: [6, 6],
             tension: 0.25,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#111111',
+            titleColor: '#f8fafc',
+            bodyColor: '#e5e7eb',
+            borderColor: '#2a2a2a',
+            borderWidth: 1,
+          },
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            ticks: { color: '#94a3b8' },
+          },
+          y: {
+            grid: { color: 'rgba(255,255,255,0.06)' },
+            ticks: { color: '#94a3b8' },
+          },
+        },
+        elements: {
+          line: { borderWidth: 2.5 },
+        },
+      },
+    });
+  }
+
+  const ledgerChartEl = document.getElementById('ledgerReconciliationChart');
+  if (ledgerChartEl && window.Chart) {
+    new Chart(ledgerChartEl, {
+      type: 'line',
+      data: {
+        labels: ['01/04', '03/04', '05/04', '07/04', '09/04', '11/04', '13/04', '15/04', '16/04'],
+        datasets: [
+          {
+            label: 'Cash flow',
+            data: [38, 42, 45, 51, 49, 57, 61, 66, 68],
+            borderColor: '#ffd700',
+            backgroundColor: 'rgba(255, 215, 0, 0.12)',
+            pointBackgroundColor: '#ffd700',
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            tension: 0.34,
+            fill: true,
+          },
+          {
+            label: 'Reconciliation diff',
+            data: [4, 3, 5, 2, 4, 3, 2, 1, 1],
+            borderColor: '#f59e0b',
+            backgroundColor: 'rgba(245, 158, 11, 0.08)',
+            pointBackgroundColor: '#f59e0b',
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            borderDash: [6, 6],
+            tension: 0.3,
+          },
+          {
+            label: 'Matched ratio',
+            data: [92, 93, 91, 95, 94, 96, 97, 98, 98],
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.08)',
+            pointBackgroundColor: '#10b981',
+            pointRadius: 2,
+            pointHoverRadius: 4,
+            tension: 0.28,
           },
         ],
       },

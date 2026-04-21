@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ledger & Reconciliation - Charity Gift Admin</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body data-page="ledger-reconciliation">
+  <div class="app-shell">
+    <aside id="sidebar-root"></aside>
+    <main class="main">
+      <header id="topbar-root"></header>
+      <div class="layout">
+        <section class="section-head">
+          <div>
+            <a class="back-link" href="settlement.html">← Back to Merchant Settlement</a>
+            <h2 class="section-title" style="margin-top:14px">Ledger & Reconciliation</h2>
+            <p class="section-desc">Cash movement • ledger entries • reconciliation result</p>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn btn-outline-gold">Export CSV</button>
+            <button class="btn btn-gold">Run reconciliation</button>
+          </div>
+        </section>
+
+        <section class="grid-5">
+          <div class="card">
+            <div class="kpi-title">Total inflow</div>
+            <div class="kpi-value">$2,840,000</div>
+            <div class="kpi-trend">Donations received</div>
+          </div>
+          <div class="card">
+            <div class="kpi-title">Total outflow</div>
+            <div class="kpi-value">$1,920,500</div>
+            <div class="kpi-trend">Batch distributed + payout</div>
+          </div>
+          <div class="card">
+            <div class="kpi-title">Open payable</div>
+            <div class="kpi-value">$3,400</div>
+            <div class="kpi-trend">Merchant settlement due</div>
+          </div>
+          <div class="card">
+            <div class="kpi-title">Refund amount</div>
+            <div class="kpi-value">$2,480</div>
+            <div class="kpi-trend">Approved / refunded</div>
+          </div>
+          <div class="card">
+            <div class="kpi-title">Reconciliation difference</div>
+            <div class="kpi-value">$12</div>
+            <div class="kpi-trend">1 unresolved difference</div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-inner">
+            <div class="section-head">
+              <div>
+                <h2 class="section-title">Cash flow and reconciliation trend</h2>
+                <p class="section-desc">Theo dõi biến động inflow, outflow và sai lệch đối soát trong cùng một biểu đồ.</p>
+              </div>
+              <div class="trend-legend">
+                <span class="trend-tag"><span class="dot"></span>Cash flow</span>
+                <span class="trend-tag outflow"><span class="dot"></span>Reconciliation diff</span>
+                <span class="trend-tag balance"><span class="dot"></span>Matched ratio</span>
+              </div>
+            </div>
+            <div class="chart-shell">
+              <div class="chart-area" style="height:340px">
+                <canvas id="ledgerReconciliationChart" aria-label="Ledger and reconciliation trend chart" role="img"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid-2">
+          <div class="panel">
+            <div class="panel-inner">
+              <div class="section-head">
+                <div>
+                  <h2 class="section-title">Ledger Summary</h2>
+                  <p class="section-desc">Tổng hợp các biến động chính trong kỳ đối soát hiện tại.</p>
+                </div>
+                <span class="badge gold">16/04/2026</span>
+              </div>
+              <div class="ledger-summary-list" style="margin-top:24px">
+                <div class="ledger-summary-item">
+                  <span class="label">Opening balance</span>
+                  <span class="value">$1,258,400</span>
+                </div>
+                <div class="ledger-summary-item">
+                  <span class="label">Donations received</span>
+                  <span class="value">$2,840,000</span>
+                </div>
+                <div class="ledger-summary-item">
+                  <span class="label">Batch distributed</span>
+                  <span class="value">-$1,920,500</span>
+                </div>
+                <div class="ledger-summary-item">
+                  <span class="label">Merchant payable</span>
+                  <span class="value">-$3,400</span>
+                </div>
+                <div class="ledger-summary-item">
+                  <span class="label">Refund processed</span>
+                  <span class="value">-$2,480</span>
+                </div>
+                <div class="ledger-summary-item">
+                  <span class="label">Platform fee</span>
+                  <span class="value">-$28,400</span>
+                </div>
+                <div class="ledger-summary-item">
+                  <span class="label">Closing balance</span>
+                  <span class="value">$2,143,620</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-inner">
+              <div class="section-head">
+                <div>
+                  <h2 class="section-title">Reconciliation Status</h2>
+                  <p class="section-desc">Tình trạng khớp số liệu và lần chạy đối soát cuối cùng.</p>
+                </div>
+                <span class="badge info">Last run 16:30</span>
+              </div>
+              <div class="recon-status-list" style="margin-top:24px">
+                <div class="recon-status-item">
+                  <span class="label">Matched records</span>
+                  <span class="value">1,284</span>
+                </div>
+                <div class="recon-status-item">
+                  <span class="label">Unmatched records</span>
+                  <span class="value"><span class="badge danger">3</span></span>
+                </div>
+                <div class="recon-status-item">
+                  <span class="label">Pending investigation</span>
+                  <span class="value"><span class="badge gold">2</span></span>
+                </div>
+                <div class="recon-status-item">
+                  <span class="label">Last reconciliation run</span>
+                  <span class="value">16/04/2026, 16:30</span>
+                </div>
+              </div>
+              <div class="recon-status-note" style="margin-top:16px">
+                Tổng sai lệch hiện tại vẫn nằm trong ngưỡng kiểm soát, nhưng có 2 bản ghi chờ xác minh liên quan đến settlement payable và refund.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-inner">
+            <div class="section-head">
+              <div>
+                <h2 class="section-title">Ledger entries</h2>
+                <p class="section-desc">Các bút toán chính dùng để audit inflow, outflow, payable và reconciliation difference.</p>
+              </div>
+              <span class="badge">Audit-ready</span>
+            </div>
+            <div class="table-wrap" style="margin-top:18px">
+              <table data-admin-table="ledger-reconciliation-entries">
+                <thead>
+                  <tr>
+                    <th>Entry ID</th>
+                    <th>Entry Type</th>
+                    <th>Source Ref</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="footer-note">Charity Gift Admin • Modern Luxury Gold • Responsive desktop/tablet • Export-ready views</div>
+    </main>
+  </div>
+  <script>
+    window.__PAGE_CONFIG__ = { "title": "Ledger & Reconciliation", "meta": "Cash movement • ledger entries • reconciliation result", "current": "ledger-reconciliation" };
+  </script>
+  <script src="assets/common.js"></script>
+  <script src="assets/layout.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+
+</html>

@@ -53,7 +53,7 @@
       .join('');
 
     return `
-    <aside class="sidebar">
+    <aside class="sidebar" id="adminSidebar">
       <div class="brand">
         <div class="brand-badge">${ADMIN_UI.brand.initials}</div>
         <div>
@@ -71,9 +71,16 @@
   function renderTopbar(title, meta) {
     return `
     <header class="topbar">
-      <div>
-        <h1 class="page-title">${title}</h1>
-        <div class="page-meta">${meta}</div>
+      <div class="topbar-left">
+        <button class="hamburger-btn" id="adminSidebarToggle" type="button" aria-label="Open menu" aria-controls="adminSidebar" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="topbar-heading">
+          <h1 class="page-title">${title}</h1>
+          <div class="page-meta">${meta}</div>
+        </div>
       </div>
       <div class="search-box">🔎 <span>${ADMIN_UI.searchPlaceholder}</span></div>
     </header>`;

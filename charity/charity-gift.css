@@ -248,6 +248,52 @@ select {
   min-width: 0;
 }
 
+.tabs-swiper {
+  overflow: hidden;
+}
+
+.tabs-nav-button {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  height: 2rem;
+  width: 2rem;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid #e0e0e0;
+  background: rgba(255, 250, 240, 0.96);
+  color: #d97706;
+  transform: translateY(-50%);
+  box-shadow: 0 10px 20px rgba(34, 31, 31, 0.08);
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.tabs-nav-button:hover {
+  transform: translateY(-50%) scale(1.05);
+  background: #fff7eb;
+  border-color: rgba(217, 119, 6, 0.35);
+}
+
+.tabs-nav-button:disabled,
+.tabs-nav-button.swiper-button-disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: translateY(-50%);
+}
+
+.tabs-nav-button-left {
+  left: 0.5rem;
+}
+
+.tabs-nav-button-right {
+  right: 0.5rem;
+}
+
 .btn-action-disabled {
   color: #a8a29e !important;
   background: #f5f5f4 !important;

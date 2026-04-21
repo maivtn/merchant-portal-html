@@ -79,6 +79,7 @@ const state = {
 const app = document.getElementById('app');
 let shellReady = false;
 let currentRouteKey = '';
+let tabsSwiper = null;
 
 function icon(name, classes = 'w-4 h-4') { return `<i data-lucide="${name}" class="${classes}"></i>`; }
 function escapeHtml(str) { return String(str ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])); }
@@ -205,6 +206,13 @@ function ensureShell() {
   shellReady = true;
 }
 
+function destroyTabsSwiper() {
+  if (tabsSwiper && !tabsSwiper.destroyed) {
+    tabsSwiper.destroy(true, true);
+  }
+  tabsSwiper = null;
+}
+
 function renderHeader() {
   const el = document.getElementById('header-slot');
   const showBack = ['batch','dist','cardDetail','qr','proof'].includes(state.viewMode);
@@ -218,14 +226,75 @@ function renderHeader() {
 
 function renderTabs() {
   const slot = document.getElementById('tabs-slot');
-  if (!showTabs()) { slot.innerHTML = ''; return; }
+  if (!showTabs()) {
+    destroyTabsSwiper();
+    slot.innerHTML = '';
+    return;
+  }
   const list = [
     { id: 'all', label: 'Buy Gift Charity' },
     { id: 'voucher', label: 'Charity E-Voucher' },
     { id: 'card', label: 'Charity E-Gift Card' },
     { id: 'history', label: 'Transaction History' },
   ];
-  slot.innerHTML = `<div class="sticky top-[73px] z-20 border-b border-line bg-transparent"><div class="flex justify-start gap-4 overflow-x-auto pt-4">${list.map(tab => `<button data-action="switch-tab" data-tab="${tab.id}" class="relative whitespace-nowrap px-3 pb-4 text-[12px] font-semibold uppercase tracking-[0.12em] transition sm:text-[14px] ${state.activeTab === tab.id ? 'text-gold' : 'text-soft hover:text-cream'}">${tab.label}${state.activeTab === tab.id ? '<span class="absolute inset-x-0 bottom-0 h-0.5 bg-gold"></span>' : ''}</button>`).join('')}</div></div>`;
+  slot.innerHTML = `
+    <div class="sticky top-[73px] z-20 border-b border-line">
+      <div class="relative px-10 py-3 pb-0 sm:px-12 md:px-0">
+        <button
+          type="button"
+          data-action="tabs-prev"
+          aria-label="Scroll tabs left"
+          class="tabs-nav-button tabs-nav-button-left md:hidden"
+        >
+          ${icon('chevron-left', 'h-4 w-4')}
+        </button>
+        <div class="tabs-swiper swiper">
+          <div class="swiper-wrapper">
+            ${list.map(tab => `
+              <div class="swiper-slide !w-auto">
+                <button
+                  data-action="switch-tab"
+                  data-tab="${tab.id}"
+                  class="relative whitespace-nowrap px-3 pb-4 pt-1 text-[12px] font-semibold uppercase tracking-[0.12em] transition sm:text-[14px] ${state.activeTab === tab.id ? 'text-gold' : 'text-soft hover:text-cream'}"
+                >
+                  ${tab.label}
+                  ${state.activeTab === tab.id ? '<span class="absolute inset-x-0 bottom-0 h-0.5 bg-gold"></span>' : ''}
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <button
+          type="button"
+          data-action="tabs-next"
+          aria-label="Scroll tabs right"
+          class="tabs-nav-button tabs-nav-button-right md:hidden"
+        >
+          ${icon('chevron-right', 'h-4 w-4')}
+        </button>
+      </div>
+    </div>`;
+  destroyTabsSwiper();
+  if (window.Swiper) {
+    const tabsEl = slot.querySelector('.tabs-swiper');
+    const prevEl = slot.querySelector('[data-action="tabs-prev"]');
+    const nextEl = slot.querySelector('[data-action="tabs-next"]');
+    tabsSwiper = new window.Swiper(tabsEl, {
+      slidesPerView: 'auto',
+      spaceBetween: 16,
+      freeMode: true,
+      watchOverflow: true,
+      slideToClickedSlide: true,
+      speed: 350,
+      navigation: {
+        prevEl,
+        nextEl,
+      }
+    });
+    const activeIndex = list.findIndex(tab => tab.id === state.activeTab);
+    if (activeIndex >= 0) tabsSwiper.slideTo(activeIndex, 0);
+  }
+  safeCreateIcons();
 }
 
 function buyRouteShell() {
@@ -507,6 +576,14 @@ app.addEventListener('click', (event) => {
   if (!target) return;
   const { action } = target.dataset;
   if (action === 'back') return handleBack();
+  if (action === 'tabs-prev') {
+    tabsSwiper?.slidePrev();
+    return;
+  }
+  if (action === 'tabs-next') {
+    tabsSwiper?.slideNext();
+    return;
+  }
   if (action === 'switch-tab') return switchTab(target.dataset.tab);
   if (action === 'set-flow') {
     state.flowType = target.dataset.flow;

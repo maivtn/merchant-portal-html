@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vlinkpay - On-Demand Mobile ATM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-primary: #d97706;
+            --brand-orange: #e67e22;
+            --text-main: #221f1f;
+            --text-muted: #757575;
+            --border-soft: #e0e0e0;
+            --accent-cream: #fef3c7;
+            --accent-warm-text: #92400e;
+            --card-shadow: 0 14px 32px rgba(34, 31, 31, 0.08);
+            --desktop-rail-width: 380px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background:
+                radial-gradient(circle at top right, rgba(254, 243, 199, 0.82), transparent 24%),
+                linear-gradient(180deg, #fffdf9 0%, #ffffff 32%, #fff 100%);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            min-height: 100vh;
+            padding: 24px;
+            margin: 0;
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 1440px;
+            min-height: calc(100vh - 48px);
+            background-color: #fffdf9;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+            border-radius: 32px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .desktop-rail {
+            width: var(--desktop-rail-width);
+            flex-shrink: 0;
+            padding: 32px 28px;
+            background:
+                linear-gradient(180deg, rgba(255, 247, 237, 0.98) 0%, rgba(255, 253, 249, 0.96) 100%),
+                radial-gradient(circle at top left, rgba(254, 243, 199, 0.72), transparent 40%);
+            border-right: 1px solid rgba(217, 119, 6, 0.12);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            overflow: auto;
+        }
+
+        .desktop-brand {
+            padding: 18px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(217, 119, 6, 0.12);
+            box-shadow: 0 10px 24px rgba(34, 31, 31, 0.04);
+        }
+
+        .desktop-brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: var(--accent-cream);
+            color: var(--accent-warm-text);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .desktop-brand-title {
+            font-size: 26px;
+            line-height: 1.2;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0 0 10px;
+        }
+
+        .desktop-brand-copy {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .desktop-rail-card {
+            padding: 18px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid rgba(217, 119, 6, 0.12);
+            box-shadow: 0 10px 24px rgba(34, 31, 31, 0.04);
+        }
+
+        .desktop-section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-warm-text);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 14px;
+        }
+
+        .desktop-progress-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .desktop-progress-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(217, 119, 6, 0.1);
+            background: rgba(255, 250, 240, 0.65);
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.5;
+            transition: all 0.2s ease;
+        }
+
+        .desktop-progress-item .step-dot {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            background: #fff;
+            color: var(--accent-warm-text);
+            border: 1px solid rgba(217, 119, 6, 0.16);
+            margin-top: 1px;
+        }
+
+        .desktop-progress-item.active {
+            background: #fffaf0;
+            border-color: rgba(217, 119, 6, 0.24);
+            color: var(--text-main);
+            box-shadow: 0 8px 18px rgba(217, 119, 6, 0.09);
+        }
+
+        .desktop-progress-item.active .step-dot {
+            background: var(--brand-primary);
+            color: #fff;
+            border-color: var(--brand-primary);
+        }
+
+        .desktop-summary-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .desktop-summary-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: #fff;
+            border: 1px solid rgba(217, 119, 6, 0.08);
+            font-size: 13px;
+        }
+
+        .desktop-summary-row span:first-child {
+            color: var(--text-muted);
+        }
+
+        .desktop-summary-row strong {
+            color: var(--text-main);
+            font-size: 14px;
+        }
+
+        .desktop-pane {
+            background: #fff;
+        }
+
+        .request-details-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .request-details-card {
+            background: #fff;
+            border: 1px solid rgba(217, 119, 6, 0.12);
+            border-radius: 24px;
+            box-shadow: 0 14px 30px rgba(34, 31, 31, 0.05);
+            overflow: hidden;
+        }
+
+        .request-details-card .card-head {
+            padding: 18px 20px 0;
+        }
+
+        .request-details-card .card-body {
+            padding: 20px;
+        }
+
+        .request-details-card .card-foot {
+            padding: 0 20px 20px;
+        }
+
+        .request-stats-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .request-stat {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: #fffaf5;
+            border: 1px solid rgba(217, 119, 6, 0.08);
+        }
+
+        .request-stat .label {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .request-stat .value {
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .request-side-stack {
+            display: grid;
+            gap: 16px;
+        }
+
+        .compact-info-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .compact-info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: flex-start;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: #fff;
+            border: 1px solid rgba(217, 119, 6, 0.08);
+        }
+
+        .compact-info-row .label {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .compact-info-row .value {
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 700;
+            text-align: right;
+            line-height: 1.45;
+        }
+
+        .compact-info-row .value a {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .request-actions .action-btn {
+            display: inline-flex;
+            flex: 0 0 auto;
+            width: fit-content;
+            min-width: 0;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .step-action {
+            display: block;
+            justify-content: center;
+            text-align: center;
+            width: fit-content;
+            min-width: 160px;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            float: none;
+        }
+
+        .step-actions-row .step-action {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .desktop-stage {
+            flex: 1;
+            position: relative;
+            min-width: 0;
+            padding: 24px;
+            background:
+                radial-gradient(circle at top left, rgba(254, 243, 199, 0.24), transparent 30%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 253, 249, 0.96) 100%);
+            overflow: hidden;
+        }
+
+        .dashed-border-bottom {
+            border-bottom: 1px dashed #cbd5e1;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .step-container {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            background-color: #fffdf9;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(20px);
+            z-index: 10;
+            padding: 0;
+        }
+
+        .step-container.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+            z-index: 20;
+        }
+
+        .step-container.previous {
+            transform: translateX(-20px);
+        }
+
+        .brand-title {
+            color: var(--text-main);
+        }
+
+        .brand-link {
+            color: var(--brand-primary);
+        }
+
+        .brand-link:hover {
+            color: #b45309;
+        }
+
+        .brand-pill {
+            background: var(--accent-cream);
+            color: var(--accent-warm-text);
+        }
+
+        .brand-panel {
+            background: linear-gradient(135deg, #fffaf0 0%, #ffffff 62%);
+            border-color: rgba(217, 119, 6, 0.14);
+        }
+
+        .brand-panel-soft {
+            background: rgba(255, 251, 235, 0.72);
+            border-color: rgba(217, 119, 6, 0.12);
+        }
+
+        .brand-card {
+            background: #ffffff;
+            border: 1px solid rgba(217, 119, 6, 0.14);
+            box-shadow: 0 10px 22px rgba(34, 31, 31, 0.05);
+        }
+
+        .brand-card-soft {
+            background: #fffaf0;
+            border: 1px solid rgba(217, 119, 6, 0.12);
+            box-shadow: 0 8px 18px rgba(34, 31, 31, 0.04);
+        }
+
+        .brand-surface {
+            background: linear-gradient(180deg, #fffaf3 0%, #ffffff 100%);
+        }
+
+        .brand-button {
+            background: var(--brand-primary);
+            border-color: var(--brand-primary);
+            color: #fff;
+        }
+
+        .brand-button:hover {
+            background: #c47309;
+            border-color: #c47309;
+        }
+
+        .brand-outline {
+            color: var(--brand-primary);
+            border-color: var(--brand-primary);
+            background: #fff;
+        }
+
+        .brand-outline:hover {
+            color: var(--brand-primary);
+            background: rgba(230, 126, 34, 0.08);
+            border-color: var(--brand-primary);
+        }
+
+        .atm-type-option {
+            transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            user-select: none;
+        }
+
+        .atm-type-option:hover {
+            transform: translateY(-1px);
+        }
+
+        .atm-type-option.selected {
+            border-color: var(--brand-primary);
+            background: #fffaf0;
+            box-shadow: 0 10px 24px rgba(217, 119, 6, 0.12);
+        }
+
+        .atm-type-option.selected .atm-type-title {
+            color: #92400e;
+        }
+
+        .atm-type-option.selected .atm-type-subtitle {
+            color: #b45309;
+        }
+
+        @media (min-width: 1024px) {
+            .step-container {
+                padding: 28px;
+                align-items: center;
+                justify-content: flex-start;
+            }
+
+            .step-container header,
+            .step-container main,
+            .step-container .desktop-pane,
+            .step-container .absolute.bottom-0 {
+                width: min(960px, calc(100% - 16px));
+            }
+
+            .step-container header {
+                border-radius: 24px 24px 0 0;
+                border: 1px solid rgba(217, 119, 6, 0.12);
+                border-bottom: 0;
+                background: rgba(255, 255, 255, 0.92);
+                backdrop-filter: blur(8px);
+                box-shadow: 0 10px 24px rgba(34, 31, 31, 0.04);
+                padding-inline: 24px;
+                padding-top: 22px;
+                padding-bottom: 18px;
+            }
+
+            .step-container main {
+                border-radius: 0 0 24px 24px;
+                border: 1px solid rgba(217, 119, 6, 0.12);
+                border-top: 0;
+                background: rgba(255, 255, 255, 0.96);
+                box-shadow: 0 18px 40px rgba(34, 31, 31, 0.06);
+                padding: 24px;
+                margin-bottom: 0;
+            }
+
+            #step-2 main,
+            #step-3 main,
+            #step-4 main,
+            #step-5 main,
+            #step-6 main {
+                overflow-y: auto;
+            }
+
+            #step-2 main,
+            #step-3 main {
+                min-height: 620px;
+            }
+
+            #step-5 main,
+            #step-6 main {
+                min-height: 660px;
+                padding-bottom: 96px;
+            }
+
+            #step-5 .absolute.bottom-6 {
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                width: min(960px, calc(100% - 56px));
+            }
+
+            #step-6 .absolute.bottom-0 {
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                width: min(960px, calc(100% - 56px));
+                border-radius: 0 0 24px 24px;
+            }
+
+            #step-6 .absolute.bottom-0 button {
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+
+            .request-details-grid {
+                grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+                gap: 20px;
+                align-items: start;
+            }
+
+            .request-details-card {
+                min-width: 0;
+            }
+
+            .request-actions {
+                justify-content: flex-end;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            body {
+                padding: 0;
+                align-items: stretch;
+            }
+
+            .mobile-container {
+                border-radius: 0;
+                min-height: 100vh;
+                flex-direction: column;
+            }
+
+            .desktop-rail {
+                display: none;
+            }
+
+            .desktop-stage {
+                padding: 0;
+            }
+
+            .step-container header,
+            .step-container main {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="text-slate-800 antialiased">
+
+    <!-- Mobile App Container -->
+    <div class="mobile-container relative">
+        <aside class="desktop-rail">
+            <div class="desktop-brand">
+                <div class="desktop-brand-badge">
+                    <i data-lucide="route" class="w-4 h-4"></i>
+                    On-demand ATM
+                </div>
+                <h2 class="desktop-brand-title">Match cash buyers with the right ATM flow.</h2>
+                <p class="desktop-brand-copy">
+                    Chọn loại ATM, xác nhận điểm hẹn và theo dõi trạng thái broadcast trên một layout desktop rõ ràng hơn.
+                </p>
+            </div>
+
+            <div class="desktop-rail-card">
+                <div class="desktop-section-label">
+                    <i data-lucide="list-checks" class="w-4 h-4"></i>
+                    Journey
+                </div>
+                <div class="desktop-progress-list" id="desktop-progress-list">
+                    <div class="desktop-progress-item active" data-step-progress="1">
+                        <div class="step-dot">1</div>
+                        <div>Chọn loại giao dịch, số tiền và ATM type.</div>
+                    </div>
+                    <div class="desktop-progress-item" data-step-progress="2">
+                        <div class="step-dot">2</div>
+                        <div>Gửi broadcast hoặc tiếp tục sang Merchant ATM.</div>
+                    </div>
+                    <div class="desktop-progress-item" data-step-progress="3">
+                        <div class="step-dot">3</div>
+                        <div>Xác nhận vị trí hẹn gặp và thông tin liên hệ.</div>
+                    </div>
+                    <div class="desktop-progress-item" data-step-progress="4">
+                        <div class="step-dot">4</div>
+                        <div>Review tổng tiền, phí và tuỳ chọn bảo hiểm.</div>
+                    </div>
+                    <div class="desktop-progress-item" data-step-progress="5">
+                        <div class="step-dot">5</div>
+                        <div>Chờ hệ thống match ATM phù hợp.</div>
+                    </div>
+                    <div class="desktop-progress-item" data-step-progress="6">
+                        <div class="step-dot">6</div>
+                        <div>Đơn được chấp nhận, sẵn sàng hành động tiếp.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="desktop-rail-card">
+                <div class="desktop-section-label">
+                    <i data-lucide="info" class="w-4 h-4"></i>
+                    Current setup
+                </div>
+                <div class="desktop-summary-grid">
+                    <div class="desktop-summary-row">
+                        <span>Service</span>
+                        <strong>Buy USDV with Cash</strong>
+                    </div>
+                    <div class="desktop-summary-row">
+                        <span>Default ATM</span>
+                        <strong id="desktop-atm-type">Mobile ATM</strong>
+                    </div>
+                    <div class="desktop-summary-row">
+                        <span>Amount</span>
+                        <strong>$100</strong>
+                    </div>
+                    <div class="desktop-summary-row">
+                        <span>Estimated total</span>
+                        <strong id="desktop-total">$106</strong>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="desktop-stage">
+
+        <!-- STEP 1: P2P Exchange (Form) -->
+        <div id="step-1" class="step-container active bg-white">
+            <header class="bg-white px-4 pt-12 pb-3 flex items-center justify-between border-b border-[rgba(217,119,6,0.12)]">
+                <button class="brand-link flex items-center gap-1 font-medium" disabled>
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
+                </button>
+                <h1 class="brand-title text-[17px] font-bold">P2P Exchange</h1>
+                <div class="w-16"></div>
+            </header>
+
+            <div class="flex border-b border-[rgba(217,119,6,0.14)] px-2 hide-scrollbar bg-white desktop-pane">
+                <button
+                    class="px-4 py-3 text-[14px] font-bold text-[color:var(--brand-primary)] border-b-2 border-[color:var(--brand-primary)] whitespace-nowrap">Buy
+                    Crypto (USDV)</button>
+                <button class="px-4 py-3 text-[14px] font-medium text-slate-500 whitespace-nowrap">Sell Crypto
+                    (USDV)</button>
+                <button class="px-4 py-3 text-[14px] font-medium text-slate-500 whitespace-nowrap">History</button>
+                <button class="px-4 py-3 text-[14px] font-medium text-slate-500 whitespace-nowrap">Rating</button>
+            </div>
+
+            <main class="flex-1 overflow-y-auto p-4 brand-surface">
+                <div class="mb-5">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Select Type <span
+                            class="text-red-500 ml-1.5">*</span></label>
+                    <div class="relative">
+                        <select
+                            id="crypto-type-select"
+                            class="w-full rounded-lg border border-[rgba(217,119,6,0.12)] bg-white p-3 pl-10 appearance-none font-medium outline-none focus:border-[color:var(--brand-primary)]">
+                        </select>
+                        <img id="crypto-type-icon" src="images/usdv.png"
+                            class="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] pointer-events-none" alt="USDV">
+                        <i data-lucide="chevron-down"
+                            class="w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Enter Amount <span
+                            class="text-red-500 ml-1.5">*</span></label>
+                    <div
+                        class="brand-card-soft flex items-center rounded-lg overflow-hidden focus-within:border-[color:var(--brand-primary)] bg-white">
+                        <input type="number" value="100" class="w-full p-3 font-medium outline-none bg-white">
+                        <div class="relative bg-white border-l border-[rgba(217,119,6,0.12)]">
+                            <select
+                                id="amount-currency-select"
+                                class="h-full min-w-[104px] appearance-none bg-white py-3 pl-11 pr-8 font-medium text-sm outline-none cursor-pointer">
+                                <option value="USD" selected>USD</option>
+                            </select>
+                            <img id="amount-currency-icon" src="images/usd.png"
+                                class="w-[18px] object-contain absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
+                                alt="USD">
+                            <i data-lucide="chevron-down"
+                                class="w-4 h-4 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        </div>
+                    </div>
+                    <div id="crypto-rate-text" class="text-[13px] text-slate-500 mt-2">100 USDV ≈ $100</div>
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Payment Method <span
+                            class="text-red-500 ml-1.5">*</span></label>
+                    <div class="relative">
+                        <select
+                            class="w-full rounded-lg border border-[rgba(217,119,6,0.12)] bg-white p-3 appearance-none font-medium outline-none focus:border-[color:var(--brand-primary)]">
+                            <option>Cash</option>
+                        </select>
+                        <i data-lucide="chevron-down"
+                            class="w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Select ATM Type <span
+                            class="text-red-500 ml-1.5">*</span></label>
+                    <div class="space-y-3">
+                        <div
+                            class="atm-type-option selected border border-[rgba(217,119,6,0.14)] bg-white rounded-xl p-4 flex items-center gap-3 cursor-pointer"
+                            role="button" tabindex="0" data-atm-type="mobile"
+                            onclick="selectAtmType('mobile', this)"
+                            onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectAtmType('mobile', this); }">
+                            <img src="assets/icons/mobile.png" class="w-10 h-10 object-contain"
+                                alt="Mobile ATM">
+                            <div>
+                                <div class="atm-type-title font-bold text-[15px] text-[#92400e]">Mobile ATM</div>
+                                <div class="atm-type-subtitle text-xs text-[#b45309] mt-0.5">ATM will come to you</div>
+                            </div>
+                        </div>
+                        <div
+                            class="atm-type-option rounded-xl p-4 flex items-center gap-3 cursor-pointer border border-[rgba(217,119,6,0.14)] bg-white hover:bg-[#fff7ed] transition-colors"
+                            role="button" tabindex="0" data-atm-type="merchant"
+                            onclick="selectAtmType('merchant', this)"
+                            onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectAtmType('merchant', this); }">
+                            <img src="assets/icons/merchant.png"
+                                class="w-10 h-10 object-contain" alt="Merchant ATM">
+                            <div>
+                                <div class="atm-type-title font-bold text-[15px] text-slate-700">Merchant ATM</div>
+                                <div class="atm-type-subtitle text-xs text-slate-500 mt-0.5">Visit nearby merchant</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="goToStep(2)"
+                    class="step-action brand-button font-semibold py-3.5 rounded-xl shadow-md active:scale-95 transition-all text-[15px]">
+                    Continue
+                </button>
+            </main>
+        </div>
+
+        <!-- STEP 2: Select a Merchant ATM (Empty/Broadcast) -->
+        <div id="step-2" class="step-container bg-white">
+            <header class="bg-white px-4 pt-12 pb-3 flex items-center justify-between shadow-sm relative z-10">
+                <button onclick="goToStep(1)" class="brand-link flex items-center gap-1 font-medium">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
+                </button>
+                <h1 class="brand-title text-[17px] font-bold">Select a Merchant ATM</h1>
+                <div class="w-16"></div>
+            </header>
+
+            <main class="flex-1 flex flex-col justify-center items-center relative p-4 brand-surface">
+                <div class="flex flex-col items-center justify-center -mt-20">
+                    <div class="w-20 h-20 bg-[#fffaf0] rounded-full flex items-center justify-center mb-6">
+                        <img src="assets/icons/merchant.png"
+                            class="w-10 h-10 object-contain grayscale opacity-60" alt="No Merchant Found">
+                    </div>
+                    <h2 class="brand-title text-[17px] font-bold text-center">No suitable Merchant ATM found</h2>
+                </div>
+
+                <div class="absolute bottom-6 left-4 right-4">
+                    <div
+                        class="brand-panel-soft border rounded-2xl p-5 shadow-sm relative overflow-hidden">
+                        <div class="flex items-center gap-2 text-[#b45309] font-bold mb-3">
+                            <i data-lucide="car-front" class="w-5 h-5"></i> On-Demand Delivery Service
+                        </div>
+                        <p class="text-[13px] text-slate-600 mb-4 leading-relaxed relative z-10">
+                            Would you like Vlinkpay to broadcast your request to dispatch a Mobile ATM directly to your
+                            location?
+                        </p>
+                        <div class="text-[12px] font-bold text-[color:var(--brand-primary)] mb-4 relative z-10">
+                            * Service fee: 5%
+                        </div>
+                        <button onclick="goToStep(3)"
+                            class="step-action brand-button font-semibold py-3.5 rounded-xl shadow-lg active:scale-95 transition-all text-[15px] relative z-10">
+                            Send On-Demand Request
+                        </button>
+                        <!-- Background decoration -->
+                        <i data-lucide="zap"
+                            class="absolute -right-4 -bottom-4 w-32 h-32 text-[color:var(--brand-primary)] opacity-[0.03] rotate-12"></i>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- STEP 3: Confirm meeting location -->
+        <div id="step-3" class="step-container bg-white">
+            <header class="bg-white px-4 pt-12 pb-3 flex items-center justify-between shadow-sm relative z-10">
+                <button onclick="goToStep(2)" class="brand-link flex items-center gap-1 font-medium">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
+                </button>
+                <h1 class="brand-title text-[17px] font-bold">Confirm meeting location</h1>
+                <div class="w-16"></div>
+            </header>
+
+            <main class="flex-1 flex flex-col p-4 overflow-y-auto brand-surface">
+                <div
+                    class="brand-card-soft flex items-center rounded-lg p-3 bg-white mb-4 focus-within:border-[color:var(--brand-primary)]">
+                    <input type="text" value="Hcm, Ho Chi Minh City, Ho Chi Minh, Vietnam"
+                        class="w-full outline-none text-sm font-medium text-slate-700 bg-white">
+                    <i data-lucide="search" class="w-5 h-5 text-[color:var(--brand-primary)]"></i>
+                </div>
+
+                <button class="flex items-center justify-center gap-2 text-[color:var(--brand-primary)] font-bold text-[15px] mb-4">
+                    <i data-lucide="locate-fixed" class="w-5 h-5"></i> Use my current location
+                </button>
+
+                <div
+                    class="w-full h-48 rounded-xl border border-[rgba(217,119,6,0.12)] relative mb-5 overflow-hidden flex justify-center items-center brand-surface">
+                    <img src="https://i.ibb.co/RG2pyKYP/Screenshot-2026-04-17-at-16-30-08.png"
+                        class="w-full h-full object-cover" alt="Map View">
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-[15px] font-bold text-slate-800 mb-2">Phone Number</label>
+                    <div
+                        class="brand-card-soft flex rounded-lg overflow-hidden focus-within:border-[color:var(--brand-primary)] bg-white">
+                        <div class="relative flex-shrink-0 border-r border-[rgba(217,119,6,0.12)]">
+                            <select
+                                class="appearance-none bg-white pl-4 pr-9 py-3 text-[15px] font-medium text-slate-700 outline-none w-full h-full cursor-pointer">
+                                <option>+1</option>
+                                <option>+84</option>
+                            </select>
+                            <i data-lucide="chevron-down"
+                                class="w-4 h-4 text-slate-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                        </div>
+                        <input type="tel" value="(123)-456-7890"
+                            class="w-full py-3 px-3 outline-none text-[15px] placeholder-slate-400 bg-white">
+                    </div>
+                </div>
+
+                <div class="mb-auto">
+                    <label id="note-label" class="block text-[15px] font-bold text-slate-800 mb-2">Note for Mobile ATM</label>
+                    <textarea
+                        class="w-full rounded-lg border border-[rgba(217,119,6,0.14)] bg-white p-3 font-medium text-[15px] text-slate-700 outline-none focus:border-[color:var(--brand-primary)] resize-none"
+                        rows="3"></textarea>
+                    <div class="text-right text-[13px] text-slate-400 mt-1 font-medium">0/100</div>
+                </div>
+
+                <div class="pt-4 mt-6">
+                    <button onclick="goToStep(4)"
+                        class="step-action brand-button font-semibold py-3.5 rounded-xl shadow-md active:scale-95 transition-all text-[15px]">
+                        OK
+                    </button>
+                </div>
+            </main>
+        </div>
+
+        <!-- STEP 4: Review Details -->
+        <div id="step-4" class="step-container bg-[#fffdf9]">
+            <header class="bg-white px-4 pt-12 pb-3 flex items-center justify-between shadow-sm">
+                <button onclick="goToStep(3)" class="brand-link flex items-center gap-1 font-medium">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
+                </button>
+                <h1 class="brand-title text-[17px] font-bold">Review Details</h1>
+                <div class="w-16"></div>
+            </header>
+
+            <main class="flex-1 p-4 overflow-y-auto brand-surface">
+                <div class="brand-card rounded-xl p-4 mb-4">
+                    <div class="space-y-3 text-[14px]">
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Service Type</span>
+                            <span class="font-bold text-slate-800">Buy USDV with Cash</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">ATM Type</span>
+                            <span id="review-atm-type" class="font-bold text-[color:var(--brand-primary)]">Mobile ATM</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Amount</span>
+                            <span class="font-bold text-slate-800">$100</span>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <span class="text-slate-500">Quantity</span>
+                            <div class="text-right">
+                                <div class="font-bold text-slate-800">100 USDV</div>
+                                <div class="text-slate-500 text-[12px]">@ $1.00</div>
+                            </div>
+                        </div>
+                        <div class="pt-1">
+                            <span class="text-slate-500 block mb-1">Meeting location</span>
+                            <span class="font-bold text-slate-800 leading-snug block">Bến Thành, Ho Chi Minh City, Ho
+                                Chi Minh, Vietnam</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="brand-card rounded-xl p-4 mb-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="flex gap-2">
+                            <input id="transaction-insurance-toggle" type="checkbox"
+                                class="mt-1 w-5 h-5 rounded border-slate-300 text-[color:var(--brand-primary)] focus:ring-[color:var(--brand-primary)]">
+                            <span class="font-bold text-[14px]">Transaction insurance</span>
+                        </div>
+                        <span id="transaction-insurance-fee" class="font-bold text-[14px]">$1</span>
+                    </div>
+                    <p class="text-[12px] text-slate-500 leading-relaxed ml-7 mb-4">
+                        You only need to pay 1% of the transaction value to activate insurance and add extra protection
+                        for your transaction.
+                    </p>
+
+                    <div class="space-y-3 pt-4 border-t border-[rgba(217,119,6,0.1)] text-[14px]">
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">System fee (1%)</span>
+                            <span id="system-fee-value" class="font-bold">$1</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Mobile fee (5%)</span>
+                            <span id="mobile-fee-value" class="font-bold">$5</span>
+                        </div>
+                        <div id="transaction-insurance-row" class="justify-between" style="display: none;">
+                            <span class="text-slate-500">Insurance Fee (1%)</span>
+                            <span id="transaction-insurance-value" class="font-bold">$1</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-2 mt-2 border-t border-[rgba(217,119,6,0.1)]">
+                            <span class="font-bold text-[16px]">Total</span>
+                            <span id="review-total" class="font-bold text-[18px] text-slate-800">$106</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-actions-row flex gap-3 pt-2 justify-center">
+                    <button onclick="goToStep(3)"
+                        class="step-action bg-white border border-slate-200 text-slate-700 font-bold py-3.5 rounded-xl shadow-sm active:scale-95 transition-all text-[15px]">
+                        Cancel
+                    </button>
+                    <button onclick="goToStep(5)"
+                        class="step-action brand-button font-bold py-3.5 rounded-xl shadow-md active:scale-95 transition-all text-[15px]">
+                        Confirm
+                    </button>
+                </div>
+            </main>
+        </div>
+
+        <!-- STEP 5: P2P Request Details (Pending / Waiting) -->
+        <div id="step-5" class="step-container bg-[#fffdf9]">
+            <header class="bg-[#fffdf9] px-4 pt-12 pb-3 flex items-center justify-between">
+                <button onclick="goToStep(4)" class="brand-link flex items-center gap-1 font-medium">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
+                </button>
+                <div class="text-center absolute left-1/2 -translate-x-1/2">
+                    <h1 class="brand-title text-[17px] font-bold leading-tight">P2P Request Details</h1>
+                    <div
+                        class="inline-block px-3 py-0.5 border border-[color:var(--brand-primary)] text-[color:var(--brand-primary)] rounded-md text-[11px] font-bold mt-1 bg-white">
+                        Buyer - Individual
+                    </div>
+                </div>
+                <div class="w-16"></div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto px-4 pb-8 brand-surface">
+                <div class="request-details-grid mt-2">
+                    <section class="request-details-card">
+                        <div class="card-head">
+                            <div class="flex items-center justify-between gap-3">
+                                <div>
+                                    <div class="text-[12px] font-bold uppercase tracking-[0.08em] text-[color:var(--brand-primary)] mb-1">
+                                        Request status
+                                    </div>
+                                    <h3 id="searching-title" class="font-bold text-[20px] text-slate-900 leading-tight">
+                                        Searching for Mobile ATM...
+                                    </h3>
+                                </div>
+                                <span class="bg-[#fef3c7] text-[#92400e] px-4 py-1.5 rounded-full text-[13px] font-medium">
+                                    Searching
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-[13.5px] text-slate-700 leading-relaxed font-medium mb-4">
+                                <span id="searching-copy">VlinkPay system is broadcasting your request to the nearest Mobile ATMs.</span>
+                            </p>
+                            <div class="brand-card-soft rounded-xl py-3 px-4 flex justify-center items-center gap-2">
+                                <i data-lucide="clock" class="w-4 h-4 text-slate-500"></i>
+                                <span class="text-[14px] font-bold text-slate-700">Time left <span class="text-red-500 ml-1"
+                                        id="broadcast-timer">15:00s</span></span>
+                            </div>
+                        </div>
+                        <div class="card-foot">
+                            <div class="brand-panel-soft border rounded-2xl p-4 relative overflow-hidden">
+                                <div class="flex items-center gap-2 text-[#b45309] font-bold mb-2">
+                                    <i data-lucide="car-front" class="w-5 h-5"></i> On-Demand Delivery Service
+                                </div>
+                                <p class="text-[13px] text-slate-600 mb-3 leading-relaxed relative z-10">
+                                    Would you like Vlinkpay to broadcast your request to dispatch a Mobile ATM directly to your location?
+                                </p>
+                                <div class="text-[12px] font-bold text-[color:var(--brand-primary)] relative z-10">
+                                    * Service fee: 5%
+                                </div>
+                                <i data-lucide="zap"
+                                    class="absolute -right-4 -bottom-4 w-32 h-32 text-[color:var(--brand-primary)] opacity-[0.03] rotate-12"></i>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="request-side-stack">
+                        <section class="request-details-card">
+                            <div class="card-head">
+                                <div class="text-[12px] font-bold uppercase tracking-[0.08em] text-[color:var(--brand-primary)] mb-1">
+                                    Request snapshot
+                                </div>
+                                <h4 class="font-bold text-[18px] text-slate-900">Buy USDV with Cash</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="compact-info-list">
+                                    <div class="compact-info-row">
+                                        <span class="label">Meeting location</span>
+                                        <span class="value">Ben Thanh, Ho Chi Minh City, Ho Chi Minh, Vietnam</span>
+                                    </div>
+                                    <div class="compact-info-row">
+                                        <span class="label">Tx ID</span>
+                                        <span class="value">J5YN...ECHL</span>
+                                    </div>
+                                    <div class="compact-info-row">
+                                        <span class="label">Time</span>
+                                        <span class="value">Apr 17, 2026, 2:44 PM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="request-details-card">
+                            <div class="card-head">
+                                <div class="text-[12px] font-bold uppercase tracking-[0.08em] text-[color:var(--brand-primary)] mb-1">
+                                    Cost summary
+                                </div>
+                                <h4 class="font-bold text-[18px] text-slate-900">Transaction breakdown</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="request-stats-grid">
+                                    <div class="request-stat">
+                                        <span class="label">Amount</span>
+                                        <span class="value">$100</span>
+                                    </div>
+                                    <div class="request-stat">
+                                        <span class="label">System Fee (1%) <i data-lucide="info" class="inline w-4 h-4 ml-0.5 text-slate-400"></i></span>
+                                        <span class="value">$1</span>
+                                    </div>
+                                    <div class="request-stat">
+                                        <span class="label">Mobile Fee (5%) <i data-lucide="info" class="inline w-4 h-4 ml-0.5 text-slate-400"></i></span>
+                                        <span class="value">$5</span>
+                                    </div>
+                                    <div id="pending-insurance-row" class="request-stat" style="display: none;">
+                                        <span class="label">Transaction Insurance (1%) <i data-lucide="info" class="inline w-4 h-4 ml-0.5 text-slate-400"></i></span>
+                                        <span class="value">$1</span>
+                                    </div>
+                                    <div class="request-stat">
+                                        <span class="label font-bold text-[16px] text-slate-900">Total</span>
+                                        <span id="pending-total" class="value text-[18px]">$106</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex flex-col items-center gap-4">
+                    <button onclick="goToStep(4)"
+                        class="step-action bg-white text-[#ff4d4f] border border-[#ff4d4f] font-bold py-2.5 rounded-xl active:scale-95 transition-all text-[15px] shadow-sm">
+                        Cancel
+                    </button>
+
+                    <div class="text-center">
+                        <button onclick="goToStep(6)" class="step-action text-sm text-[color:var(--brand-primary)] underline font-medium py-0 px-0">
+                            View accepted screen
+                        </button>
+                        <p class="text-[11px] text-slate-400 mt-2 px-6 leading-relaxed max-w-[540px]">
+                            * Note: The "View accepted screen" link is for demo purposes only. In the live app, the system will automatically find and match you with an ATM.
+                        </p>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- STEP 6: P2P Request Details (Accepted) -->
+        <div id="step-6" class="step-container bg-[#fffdf9]">
+            <header class="bg-[#fffdf9] px-4 pt-12 pb-3 flex items-center justify-between shadow-sm relative z-10">
+                <button onclick="goToStep(5)" class="brand-link flex items-center gap-1 font-medium">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
+                </button>
+                <div class="text-center absolute left-1/2 -translate-x-1/2">
+                    <h1 class="brand-title text-[17px] font-bold leading-tight">P2P Request Details</h1>
+                    <div
+                        class="inline-block px-3 py-0.5 border border-[color:var(--brand-primary)] text-[color:var(--brand-primary)] rounded-md text-[11px] font-bold mt-1 bg-white">
+                        Buyer - Individual
+                    </div>
+                </div>
+                <div class="w-16"></div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto px-4 pt-6 pb-24 brand-surface">
+                <div class="request-details-grid mt-2">
+                    <section class="request-details-card">
+                        <div class="card-head">
+                            <div class="flex items-center justify-between gap-3">
+                                <div>
+                                    <div class="text-[12px] font-bold uppercase tracking-[0.08em] text-[color:var(--brand-primary)] mb-1">
+                                        Accepted request
+                                    </div>
+                                    <h3 class="font-bold text-[20px] text-slate-900 leading-tight">
+                                        Buy USDV with Cash
+                                    </h3>
+                                </div>
+                                <span class="bg-[#fff7ed] text-[#c2410c] px-4 py-1 rounded-full text-[13px] font-bold">
+                                    Accepted
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="compact-info-list mb-4">
+                                <div class="brand-card-soft rounded-xl p-3.5 flex justify-between items-center bg-white">
+                                    <div class="flex items-center gap-3">
+                                        <img src="assets/icons/mobile.png" class="w-10 h-10 object-contain" alt="Mobile ATM">
+                                        <div>
+                                            <div class="text-[12px] text-slate-500 font-medium">Member ID (Seller)</div>
+                                            <div class="font-bold text-[14px] text-slate-900">0D2E1454</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="flex items-center justify-end gap-1.5 text-[13px] font-bold text-slate-800">
+                                            5.0 <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i>
+                                            <span class="text-[color:var(--brand-primary)] font-medium ml-1">(8 rating)</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="compact-info-row">
+                                    <span class="label">Meeting location</span>
+                                    <span class="value">
+                                        Ben Thanh, Ho Chi Minh City, Ho Chi Minh, Vietnam
+                                        <a href="#"
+                                            class="inline-flex items-center gap-1 text-[color:var(--brand-primary)]">
+                                            <i data-lucide="map" class="w-3.5 h-3.5"></i> View Map
+                                        </a>
+                                    </span>
+                                </div>
+
+                                <div class="compact-info-row">
+                                    <span class="label">Tx ID</span>
+                                    <span class="value">KYC0...COS8</span>
+                                </div>
+
+                                <div class="compact-info-row">
+                                    <span class="label">Time</span>
+                                    <span class="value">Apr 17, 2026, 2:57 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="request-side-stack">
+                        <section class="request-details-card">
+                            <div class="card-head">
+                                <div class="text-[12px] font-bold uppercase tracking-[0.08em] text-[color:var(--brand-primary)] mb-1">
+                                    Summary
+                                </div>
+                                <h4 class="font-bold text-[18px] text-slate-900">Transaction breakdown</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="request-stats-grid">
+                                    <div class="request-stat">
+                                        <span class="label">Amount</span>
+                                        <span class="value">$100</span>
+                                    </div>
+                                    <div class="request-stat">
+                                        <span class="label">System Fee (1%) <i data-lucide="info" class="inline w-4 h-4 ml-0.5 text-slate-400"></i></span>
+                                        <span class="value">$1</span>
+                                    </div>
+                                    <div class="request-stat">
+                                        <span class="label">Mobile Fee (5%) <i data-lucide="info" class="inline w-4 h-4 ml-0.5 text-slate-400"></i></span>
+                                        <span class="value">$5</span>
+                                    </div>
+                                    <div id="accepted-insurance-row" class="request-stat" style="display: none;">
+                                        <span class="label">Transaction Insurance (1%) <i data-lucide="info" class="inline w-4 h-4 ml-0.5 text-slate-400"></i></span>
+                                        <span class="value">$1</span>
+                                    </div>
+                                    <div class="request-stat">
+                                        <span class="label font-bold text-[16px] text-slate-900">Total</span>
+                                        <span id="accepted-total" class="value text-[18px]">$106</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="request-details-card">
+                            <div class="card-head">
+                                <div class="text-[12px] font-bold uppercase tracking-[0.08em] text-[color:var(--brand-primary)] mb-1">
+                                    More details
+                                </div>
+                                <h4 class="font-bold text-[18px] text-slate-900">Payout view</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="compact-info-list">
+                                    <div class="compact-info-row">
+                                        <span class="label">Buyer Pays <span class="text-slate-500 font-normal text-[12px]">(in cash)</span></span>
+                                        <span id="buyer-pays" class="value">$106</span>
+                                    </div>
+                                    <div class="compact-info-row">
+                                        <span class="label">Seller Receives <span class="text-slate-500 font-normal text-[12px]">(in cash)</span></span>
+                                        <span class="value">$105</span>
+                                    </div>
+                                    <div class="compact-info-row">
+                                        <span class="label">Seller collected for Platform <span class="text-slate-500 font-normal text-[12px]">(in cash)</span></span>
+                                        <span id="platform-collection" class="value">$1</span>
+                                    </div>
+                                    <div class="compact-info-row">
+                                        <span class="label">Buyer Receives</span>
+                                        <span class="value">100 USDV</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div class="request-actions">
+                            <button onclick="goToStep(5)"
+                                class="action-btn bg-white text-[#ff4d4f] border border-[#ff4d4f] font-bold py-2.5 rounded-xl active:scale-95 transition-all text-[14px] shadow-sm">
+                                Cancel
+                            </button>
+                            <button
+                                class="action-btn brand-button font-bold py-2.5 rounded-xl shadow-md active:scale-95 transition-all flex justify-center items-center gap-2 text-[14px]">
+                                <i data-lucide="qr-code" class="w-5 h-5"></i> Show QR
+                            </button>
+                            <button
+                                class="action-btn brand-outline border font-bold py-2.5 rounded-xl active:scale-95 transition-all flex justify-center items-center gap-2 text-[14px]">
+                                <i data-lucide="more-horizontal" class="w-5 h-5"></i> More Actions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        const CRYPTO_ASSETS = [
+      {
+        id: 'USDV',
+        name: 'USDV',
+        iconUrl: 'images/usdv.png',
+        available: 1000000,
+        balance: 1000000
+      },
+      {
+        id: 'BTC',
+        name: 'BTC',
+        iconUrl: 'images/btc.png',
+        available: 200.55,
+        balance: 0.0003593
+      },
+      {
+        id: 'ETH',
+        name: 'ETH',
+        iconUrl: 'images/eth.png',
+        available: 200.55,
+        balance: 0.052
+      },
+      {
+        id: 'USDT',
+        name: 'USDT',
+        iconUrl: 'images/usdt.png',
+        available: 500.00,
+        balance: 500
+      },
+      {
+        id: 'SHIB',
+        name: 'SHIB',
+        iconUrl: 'images/shiba.png',
+        available: 1000.00,
+        balance: 12500000
+      },
+      {
+        id: 'DOGE',
+        name: 'DOGE',
+        iconUrl: 'images/doge.png',
+        available: 750.00,
+        balance: 2500
+      }
+    ];
+
+        function populateCryptoTypeSelect() {
+            const select = document.getElementById('crypto-type-select');
+            const icon = document.getElementById('crypto-type-icon');
+            const rateText = document.getElementById('crypto-rate-text');
+            const amountSelect = document.getElementById('amount-currency-select');
+            const amountIcon = document.getElementById('amount-currency-icon');
+
+            if (!select) return;
+
+            select.innerHTML = CRYPTO_ASSETS.map((asset) => (
+                `<option value="${asset.id}">${asset.name}</option>`
+            )).join('');
+
+            const updateAmountCurrencySelect = (selectedAsset) => {
+                if (!amountSelect || !selectedAsset) return;
+
+                const previousValue = amountSelect.value || 'USD';
+                amountSelect.innerHTML = `
+                    <option value="USD">USD</option>
+                    <option value="${selectedAsset.id}">${selectedAsset.name}</option>
+                `;
+
+                const nextValue = previousValue === 'USD' ? 'USD' : selectedAsset.id;
+                amountSelect.value = nextValue;
+
+                if (amountIcon) {
+                    amountIcon.src = nextValue === 'USD' ? 'images/usd.png' : selectedAsset.iconUrl;
+                    amountIcon.alt = nextValue === 'USD' ? 'USD' : selectedAsset.name;
+                }
+            };
+
+            const updateCryptoTypeUI = () => {
+                const selectedAsset = CRYPTO_ASSETS.find((asset) => asset.id === select.value) || CRYPTO_ASSETS[0];
+
+                if (icon && selectedAsset) {
+                    icon.src = selectedAsset.iconUrl;
+                    icon.alt = selectedAsset.name;
+                }
+
+                if (rateText && selectedAsset) {
+                    rateText.textContent = `100 ${selectedAsset.id} ≈ $100`;
+                }
+
+                updateAmountCurrencySelect(selectedAsset);
+            };
+
+            select.value = CRYPTO_ASSETS[0]?.id || '';
+            updateCryptoTypeUI();
+            select.addEventListener('change', updateCryptoTypeUI);
+
+            if (amountSelect) {
+                amountSelect.addEventListener('change', () => {
+                    const selectedAsset = CRYPTO_ASSETS.find((asset) => asset.id === select.value) || CRYPTO_ASSETS[0];
+
+                    if (amountIcon && selectedAsset) {
+                        amountIcon.src = amountSelect.value === 'USD' ? 'images/usd.png' : selectedAsset.iconUrl;
+                        amountIcon.alt = amountSelect.value === 'USD' ? 'USD' : selectedAsset.name;
+                    }
+                });
+            }
+        }
+
+        let currentStep = 1;
+        let timerInterval;
+        let selectedAtmType = 'mobile';
+        let step2MerchantTemplate = '';
+        let step3ConfirmTemplate = '';
+
+        function getAtmTypeLabel(type) {
+            return type === 'merchant' ? 'Merchant ATM' : 'Mobile ATM';
+        }
+
+        function getAtmTypePluralLabel(type) {
+            return type === 'merchant' ? 'Merchant ATMs' : 'Mobile ATMs';
+        }
+
+        function updateAtmDependentText() {
+            const hasSelection = !!selectedAtmType;
+            const label = hasSelection ? getAtmTypeLabel(selectedAtmType) : 'ATM Type';
+            const pluralLabel = hasSelection ? getAtmTypePluralLabel(selectedAtmType) : 'ATM Types';
+            const reviewAtmType = document.getElementById('review-atm-type');
+            const searchingTitle = document.getElementById('searching-title');
+            const searchingCopy = document.getElementById('searching-copy');
+            const noteLabel = document.getElementById('note-label');
+            const desktopAtmType = document.getElementById('desktop-atm-type');
+
+            if (reviewAtmType) {
+                reviewAtmType.textContent = hasSelection ? label : 'Not selected';
+            }
+
+            if (desktopAtmType) {
+                desktopAtmType.textContent = hasSelection ? label : 'ATM Type';
+            }
+
+            if (searchingTitle) {
+                searchingTitle.textContent = hasSelection ? `Searching for ${label}...` : 'Select an ATM Type';
+            }
+
+            if (searchingCopy) {
+                searchingCopy.textContent = hasSelection
+                    ? `VlinkPay system is broadcasting your request to the nearest ${pluralLabel}.`
+                    : 'VlinkPay system will broadcast your request after you choose an ATM type.';
+            }
+
+            if (noteLabel) {
+                noteLabel.textContent = hasSelection ? `Note for ${label}` : 'Note for ATM';
+            }
+        }
+
+        function selectAtmType(type, el) {
+            selectedAtmType = type;
+            document.querySelectorAll('[data-atm-type]').forEach((option) => {
+                const isActive = option.getAttribute('data-atm-type') === selectedAtmType;
+                option.classList.toggle('selected', isActive);
+                option.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+
+            if (el && typeof el.scrollIntoView === 'function') {
+                el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            }
+
+            renderStepFlow();
+            updateAtmDependentText();
+        }
+
+        function getTransactionAmounts() {
+            const amount = 100;
+            const systemFee = amount * 0.01;
+            const mobileFee = amount * 0.05;
+            const insuranceFee = amount * 0.01;
+            const insuranceEnabled = document.getElementById('transaction-insurance-toggle')?.checked || false;
+            const total = amount + systemFee + mobileFee + (insuranceEnabled ? insuranceFee : 0);
+
+            return {
+                amount,
+                systemFee,
+                mobileFee,
+                insuranceFee,
+                insuranceEnabled,
+                total
+            };
+        }
+
+        function formatUsd(value) {
+            return `$${value.toFixed(0)}`;
+        }
+
+        function updateTransactionSummary() {
+            const summary = getTransactionAmounts();
+            const insuranceRowIds = ['transaction-insurance-row', 'pending-insurance-row', 'accepted-insurance-row'];
+
+            const setText = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = value;
+            };
+
+            setText('transaction-insurance-fee', formatUsd(summary.insuranceFee));
+            setText('system-fee-value', formatUsd(summary.systemFee));
+            setText('mobile-fee-value', formatUsd(summary.mobileFee));
+            setText('transaction-insurance-value', formatUsd(summary.insuranceFee));
+            setText('review-total', formatUsd(summary.total));
+            setText('pending-total', formatUsd(summary.total));
+            setText('accepted-total', formatUsd(summary.total));
+            setText('buyer-pays', formatUsd(summary.total));
+            setText('platform-collection', formatUsd(summary.systemFee));
+
+            insuranceRowIds.forEach((id) => {
+                const row = document.getElementById(id);
+                if (!row) return;
+                row.style.display = summary.insuranceEnabled ? 'flex' : 'none';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            captureStepTemplates();
+            renderStepFlow();
+            populateCryptoTypeSelect();
+
+            document.querySelectorAll('[data-atm-type]').forEach((option) => {
+                option.setAttribute('aria-pressed', option.getAttribute('data-atm-type') === selectedAtmType ? 'true' : 'false');
+            });
+
+            updateAtmDependentText();
+            updateDesktopProgress();
+            updateTransactionSummary();
+
+            const insuranceToggle = document.getElementById('transaction-insurance-toggle');
+            if (insuranceToggle) {
+                insuranceToggle.addEventListener('change', updateTransactionSummary);
+            }
+        });
+
+        function goToStep(stepIndex) {
+            // Determine direction for animation
+            const isNext = stepIndex > currentStep;
+
+            // Hide all
+            document.querySelectorAll('.step-container').forEach((el, index) => {
+                const elStep = index + 1;
+                el.classList.remove('active', 'previous');
+                if (elStep < stepIndex) {
+                    el.classList.add('previous');
+                } else if (elStep > stepIndex) {
+                    el.style.transform = 'translateX(20px)';
+                }
+            });
+
+            // Show target
+            const targetEl = document.getElementById(`step-${stepIndex}`);
+            if (targetEl) {
+                targetEl.style.transform = 'translateX(0)';
+                targetEl.classList.add('active');
+            }
+
+            currentStep = stepIndex;
+            updateDesktopProgress();
+
+            // Handle timers
+            if (stepIndex === 5) {
+                startPendingTimer();
+            } else {
+                if (timerInterval) clearInterval(timerInterval);
+            }
+        }
+
+        function startPendingTimer() {
+            let seconds = 15 * 60; // 15:00s
+            const autoMatchThreshold = 10 * 60; // Switch to accepted screen at 10:00 remaining
+            const timerEl = document.getElementById('broadcast-timer');
+            if (timerInterval) clearInterval(timerInterval);
+            timerEl.innerText = `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}s`;
+            timerInterval = setInterval(() => {
+                seconds--;
+                if (seconds <= autoMatchThreshold) {
+                    clearInterval(timerInterval);
+                    goToStep(6);
+                    return;
+                }
+                const m = Math.floor(seconds / 60);
+                const s = seconds % 60;
+                timerEl.innerText = `${m}:${s.toString().padStart(2, '0')}s`;
+                if (seconds <= 0) clearInterval(timerInterval);
+            }, 1000);
+        }
+
+        function updateDesktopProgress() {
+            const activeStep = String(currentStep);
+            document.querySelectorAll('[data-step-progress]').forEach((item) => {
+                item.classList.toggle('active', item.getAttribute('data-step-progress') === activeStep);
+            });
+
+            const desktopTotal = document.getElementById('desktop-total');
+            if (desktopTotal) {
+                const total = getTransactionAmounts().total;
+                desktopTotal.textContent = formatUsd(total);
+            }
+        }
+
+        function captureStepTemplates() {
+            if (!step2MerchantTemplate) {
+                const step2Main = document.querySelector('#step-2 main');
+                if (step2Main) {
+                    step2MerchantTemplate = step2Main.innerHTML;
+                }
+            }
+
+            if (!step3ConfirmTemplate) {
+                const step3Main = document.querySelector('#step-3 main');
+                if (step3Main) {
+                    step3ConfirmTemplate = step3Main.innerHTML;
+                }
+            }
+        }
+
+        function renderStepFlow() {
+            const step2 = document.getElementById('step-2');
+            const step3 = document.getElementById('step-3');
+            const step2Main = step2?.querySelector('main');
+            const step3Main = step3?.querySelector('main');
+            const step2Title = step2?.querySelector('header h1');
+            const step3Title = step3?.querySelector('header h1');
+
+            if (!step2Main || !step3Main || !step2MerchantTemplate || !step3ConfirmTemplate) return;
+
+            const isMobileFlow = selectedAtmType === 'mobile';
+
+            if (isMobileFlow) {
+                if (step2Title) step2Title.textContent = 'Confirm meeting location';
+                if (step3Title) step3Title.textContent = 'Select a Merchant ATM';
+                step2Main.innerHTML = step3ConfirmTemplate
+                    .replace(/goToStep\(2\)/g, 'goToStep(1)')
+                    .replace(/goToStep\(4\)/g, 'goToStep(3)');
+                step3Main.innerHTML = step2MerchantTemplate
+                    .replace(/goToStep\(1\)/g, 'goToStep(2)')
+                    .replace(/goToStep\(3\)/g, 'goToStep(4)');
+            } else {
+                if (step2Title) step2Title.textContent = 'Select a Merchant ATM';
+                if (step3Title) step3Title.textContent = 'Confirm meeting location';
+                step2Main.innerHTML = step2MerchantTemplate;
+                step3Main.innerHTML = step3ConfirmTemplate;
+            }
+
+            lucide.createIcons();
+        }
+    </script>
+</body>
+
+</html>

@@ -24,6 +24,7 @@
           { key: 'refund', label: 'Refund', href: 'refund.html' },
           { key: 'proof-review', label: 'Proof Review', href: 'proof-review.html' },
           { key: 'exception-center', label: 'Exception Center', href: 'exception-center.html' },
+          { key: 'permission-matrix', label: 'Permission Matrix', href: 'permission-matrix.html' },
           { key: 'audit', label: 'Audit Trail', href: 'audit.html' },
           { key: 'rbac', label: 'RBAC & Security', href: 'rbac.html' },
         ],
@@ -40,6 +41,7 @@
       'beneficiary-detail': 'beneficiaries',
       'proof-review': 'proof-review',
       'exception-center': 'exception-center',
+      'permission-matrix': 'permission-matrix',
     },
   };
 
@@ -95,10 +97,6 @@
     addTailwindClasses('.nav-item', ADMIN_TW.control.navItem);
     addTailwindClasses('.search-box', ADMIN_TW.control.search);
     addTailwindClasses('.workflow-chip', ADMIN_TW.control.chip);
-  }
-
-  function buildClassList(base, extra) {
-    return [base, ...extra].join(' ');
   }
 
   function bootTailwind() {

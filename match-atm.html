@@ -441,11 +441,11 @@
                 <div class="brand-card rounded-xl p-4 mb-4">
                     <div class="flex justify-between items-start mb-2">
                         <div class="flex gap-2">
-                            <input type="checkbox"
+                            <input id="transaction-insurance-toggle" type="checkbox"
                                 class="mt-1 w-5 h-5 rounded border-slate-300 text-[color:var(--brand-primary)] focus:ring-[color:var(--brand-primary)]">
                             <span class="font-bold text-[14px]">Transaction insurance</span>
                         </div>
-                        <span class="font-bold text-[14px]">$1</span>
+                        <span id="transaction-insurance-fee" class="font-bold text-[14px]">$1</span>
                     </div>
                     <p class="text-[12px] text-slate-500 leading-relaxed ml-7 mb-4">
                         You only need to pay 1% of the transaction value to activate insurance and add extra protection
@@ -455,15 +455,19 @@
                     <div class="space-y-3 pt-4 border-t border-[rgba(217,119,6,0.1)] text-[14px]">
                         <div class="flex justify-between">
                             <span class="text-slate-500">System fee (1%)</span>
-                            <span class="font-bold">$1</span>
+                            <span id="system-fee-value" class="font-bold">$1</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-slate-500">Mobile fee (5%)</span>
-                            <span class="font-bold">$5</span>
+                            <span id="mobile-fee-value" class="font-bold">$5</span>
+                        </div>
+                        <div id="transaction-insurance-row" class="justify-between" style="display: none;">
+                            <span class="text-slate-500">Insurance Fee (1%)</span>
+                            <span id="transaction-insurance-value" class="font-bold">$1</span>
                         </div>
                         <div class="flex justify-between items-center pt-2 mt-2 border-t border-[rgba(217,119,6,0.1)]">
                             <span class="font-bold text-[16px]">Total</span>
-                            <span class="font-bold text-[18px] text-slate-800">$106</span>
+                            <span id="review-total" class="font-bold text-[18px] text-slate-800">$106</span>
                         </div>
                     </div>
                 </div>
@@ -547,10 +551,14 @@
                                     class="text-slate-700 font-medium flex items-center gap-1.5">Mobile Fee (5%) <i
                                         data-lucide="info" class="w-4 h-4 text-slate-400"></i></span><span
                                     class="font-bold text-[15px]">$5</span></div>
+                            <div id="pending-insurance-row" class="justify-between items-center" style="display: none;"><span
+                                    class="text-slate-700 font-medium flex items-center gap-1.5">Transaction Insurance (1%) <i
+                                        data-lucide="info" class="w-4 h-4 text-slate-400"></i></span><span
+                                    class="font-bold text-[15px]">$1</span></div>
                             <div class="dashed-border-bottom -mx-4 pb-1"></div>
                             <div class="flex justify-between items-center"><span
                                     class="font-bold text-[17px] text-slate-900">Total</span><span
-                                    class="font-bold text-[18px] text-slate-900">$106</span></div>
+                                    id="pending-total" class="font-bold text-[18px] text-slate-900">$106</span></div>
                         </div>
                     </div>
                 </div>
@@ -655,9 +663,14 @@
                                         data-lucide="info" class="w-4 h-4 text-slate-400"></i></span>
                                 <span class="font-bold text-[15px]">$5</span>
                             </div>
+                            <div id="accepted-insurance-row" class="justify-between items-center" style="display: none;">
+                                <span class="text-slate-700 font-medium flex items-center gap-1.5">Transaction Insurance (1%) <i
+                                        data-lucide="info" class="w-4 h-4 text-slate-400"></i></span>
+                                <span class="font-bold text-[15px]">$1</span>
+                            </div>
                             <div class="flex justify-between items-center pt-3 border-t border-[rgba(217,119,6,0.1)]">
                                 <span class="font-bold text-[16px] text-slate-900">Total</span>
-                                <span class="font-bold text-[17px] text-slate-900">$106</span>
+                                <span id="accepted-total" class="font-bold text-[17px] text-slate-900">$106</span>
                             </div>
                         </div>
                     </div>
@@ -672,7 +685,7 @@
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-800 font-medium">Buyer Pays <span
                                         class="text-slate-500 font-normal text-[12px] ml-0.5">(in cash)</span></span>
-                                <span class="font-bold text-[14.5px]">$106</span>
+                                <span id="buyer-pays" class="font-bold text-[14.5px]">$106</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-800 font-medium">Seller Receives <span
@@ -682,7 +695,7 @@
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-800 font-medium">Seller collected for Platform <span
                                         class="text-slate-500 font-normal text-[12px] ml-0.5">(in cash)</span></span>
-                                <span class="font-bold text-[14.5px]">$1</span>
+                                <span id="platform-collection" class="font-bold text-[14.5px]">$1</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-800 font-medium">Buyer Receives</span>
@@ -877,6 +890,54 @@
             updateAtmDependentText();
         }
 
+        function getTransactionAmounts() {
+            const amount = 100;
+            const systemFee = amount * 0.01;
+            const mobileFee = amount * 0.05;
+            const insuranceFee = amount * 0.01;
+            const insuranceEnabled = document.getElementById('transaction-insurance-toggle')?.checked || false;
+            const total = amount + systemFee + mobileFee + (insuranceEnabled ? insuranceFee : 0);
+
+            return {
+                amount,
+                systemFee,
+                mobileFee,
+                insuranceFee,
+                insuranceEnabled,
+                total
+            };
+        }
+
+        function formatUsd(value) {
+            return `$${value.toFixed(0)}`;
+        }
+
+        function updateTransactionSummary() {
+            const summary = getTransactionAmounts();
+            const insuranceRowIds = ['transaction-insurance-row', 'pending-insurance-row', 'accepted-insurance-row'];
+
+            const setText = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = value;
+            };
+
+            setText('transaction-insurance-fee', formatUsd(summary.insuranceFee));
+            setText('system-fee-value', formatUsd(summary.systemFee));
+            setText('mobile-fee-value', formatUsd(summary.mobileFee));
+            setText('transaction-insurance-value', formatUsd(summary.insuranceFee));
+            setText('review-total', formatUsd(summary.total));
+            setText('pending-total', formatUsd(summary.total));
+            setText('accepted-total', formatUsd(summary.total));
+            setText('buyer-pays', formatUsd(summary.total));
+            setText('platform-collection', formatUsd(summary.systemFee));
+
+            insuranceRowIds.forEach((id) => {
+                const row = document.getElementById(id);
+                if (!row) return;
+                row.style.display = summary.insuranceEnabled ? 'flex' : 'none';
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             populateCryptoTypeSelect();
 
@@ -885,6 +946,12 @@
             });
 
             updateAtmDependentText();
+            updateTransactionSummary();
+
+            const insuranceToggle = document.getElementById('transaction-insurance-toggle');
+            if (insuranceToggle) {
+                insuranceToggle.addEventListener('change', updateTransactionSummary);
+            }
         });
 
         function goToStep(stepIndex) {

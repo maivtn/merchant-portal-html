@@ -58,7 +58,9 @@ const state = {
   selectedBatch: null,
   selectedDist: null,
   selectedCard: null,
+  selectedTransaction: null,
   proofKind: 'voucher',
+  proofReturnMode: null,
   batchTab: 'overview',
   cardSubTab: 'egift',
   filterStatus: 'ALL',
@@ -170,7 +172,8 @@ function badgeClasses(status) {
   }
 }
 function getHeaderTitle() {
-  if (state.activeTab === 'history') return 'Transaction History';
+  if (state.viewMode === 'transactionDetail') return 'Transaction Detail';
+  if (state.viewMode === 'history') return 'Transaction History';
   switch (state.viewMode) {
     case 'buy': return state.activeTab === 'card' ? 'Buy Charity Gift Cards' : 'Gift Charity';
     case 'list': return 'Charity E-Voucher';
@@ -184,7 +187,7 @@ function getHeaderTitle() {
   }
 }
 function routeKey() {
-  return [state.viewMode, state.activeTab, state.batchTab, state.cardSubTab, state.selectedBatch?.id || '', state.selectedCard?.id || '', state.selectedDist?.id || ''].join('|');
+  return [state.viewMode, state.activeTab, state.batchTab, state.cardSubTab, state.selectedBatch?.id || '', state.selectedCard?.id || '', state.selectedDist?.id || '', state.selectedTransaction?.id || ''].join('|');
 }
 function showTabs() { return ['buy', 'list', 'cardList', 'history'].includes(state.viewMode); }
 function panel(step, title, body, id='') {
@@ -223,7 +226,7 @@ function destroyTabsSwiper() {
 
 function renderHeader() {
   const el = document.getElementById('header-slot');
-  const showBack = ['batch','dist','cardDetail','qr','proof'].includes(state.viewMode);
+  const showBack = ['batch','dist','cardDetail','qr','proof','transactionDetail'].includes(state.viewMode);
   el.innerHTML = `
     <div class="flex items-center justify-between py-4">
       ${showBack ? `<div class="w-18 md:w-28"><button data-action="back" class="btn-action-flat btn-action-sm inline-flex items-center gap-2 text-sm font-bold">${icon('arrow-left','w-4 h-4')} Back</button></div>` : ''}
@@ -440,7 +443,7 @@ function buildHistory() {
             </div>
             <div class="mt-1 flex justify-between">
                 <div class="mt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-soft sm:text-[12px]">${item.type}</div>
-              <button class="btn-action-flat btn-action-sm inline-flex items-center gap-1.5 text-[11px] font-semibold sm:text-[13px]">${icon('eye','w-4 h-4')} View Details</button>
+              <button data-action="open-transaction" data-tx-id="${item.id}" class="btn-action-flat btn-action-sm inline-flex items-center gap-1.5 text-[11px] font-semibold sm:text-[13px]">${icon('eye','w-4 h-4')} View Details</button>
             </div>
           </div>`).join('')}
         </div>
@@ -500,6 +503,121 @@ function buildProofView() {
   safeCreateIcons();
 }
 
+function buildTransactionDetail() {
+  const tx = state.selectedTransaction;
+  if (!tx) {
+    document.getElementById('main-slot').innerHTML = `<div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury"><p class="text-sm text-soft">Transaction not found.</p></div>`;
+    return;
+  }
+
+  const meta = getTransactionDetailMeta(tx);
+  const steps = transactionTimeline(tx);
+  const proofLabel = tx.type === 'E-Gift Card' ? 'Proof of redemption' : 'Proof of payout';
+  const proofAction = tx.type === 'E-Gift Card' ? 'gift-card' : 'voucher';
+  const detailNote = tx.type === 'E-Gift Card'
+    ? 'Gift card payment is locked to a redeemable card record and the lifecycle can later be expanded from API data.'
+    : 'Voucher payment is tied to a donation batch, ready for distribution and tax documentation.';
+
+  document.getElementById('main-slot').innerHTML = `
+    <div class="mx-auto max-w-5xl space-y-6 animate-fadeUp">
+      <section class="rounded-2xl border border-line bg-panel p-6 shadow-luxury sm:p-8">
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <div class="mb-2 text-[11px] uppercase tracking-[0.22em] text-gold sm:text-[13px]">Transaction #${tx.id}</div>
+            <h3 class="text-2xl font-semibold text-cream sm:text-3xl">${tx.type}</h3>
+            <p class="mt-2 max-w-3xl text-sm leading-6 text-soft sm:text-[15px]">${detailNote}</p>
+          </div>
+          <span class="rounded px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] ${badgeClasses(tx.status)}">${tx.status}</span>
+        </div>
+      </section>
+
+      <section class="grid gap-4 lg:grid-cols-2">
+        <div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury">
+          <h4 class="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-gold">Business detail</h4>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="rounded-xl border border-line bg-black/20 p-4">
+              <div class="text-[10px] uppercase tracking-[0.18em] text-soft">Owner</div>
+              <div class="mt-1 text-base font-semibold text-cream">${meta.owner}</div>
+            </div>
+            <div class="rounded-xl border border-line bg-black/20 p-4">
+              <div class="text-[10px] uppercase tracking-[0.18em] text-soft">Beneficiary</div>
+              <div class="mt-1 text-base font-semibold text-cream">${meta.beneficiary}</div>
+            </div>
+            <div class="rounded-xl border border-line bg-black/20 p-4">
+              <div class="text-[10px] uppercase tracking-[0.18em] text-soft">Amount</div>
+              <div class="mt-1 text-base font-semibold text-gold">${formatNumber(tx.amount)} ${tx.currency}</div>
+            </div>
+            <div class="rounded-xl border border-line bg-black/20 p-4">
+              <div class="text-[10px] uppercase tracking-[0.18em] text-soft">Payment asset</div>
+              <div class="mt-1 text-base font-semibold text-cream">${meta.paymentAsset}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury">
+          <h4 class="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-gold">Settlement detail</h4>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between gap-4">
+              <span class="text-sm text-soft">Date</span>
+              <span class="font-semibold text-cream">${tx.date}</span>
+            </div>
+            <div class="flex items-center justify-between gap-4">
+              <span class="text-sm text-soft">Wallet address</span>
+              <span class="font-semibold text-cream">${meta.walletAddress}</span>
+            </div>
+            <div class="flex items-center justify-between gap-4">
+              <span class="text-sm text-soft">Reference</span>
+              <span class="font-semibold text-cream">${meta.reference}</span>
+            </div>
+            <div class="flex items-center justify-between gap-4">
+              <span class="text-sm text-soft">Currency</span>
+              <span class="font-semibold text-cream">${tx.currency}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="rounded-2xl border border-line bg-panel p-6 shadow-luxury sm:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h4 class="text-sm font-semibold uppercase tracking-[0.16em] text-gold">Lifecycle tracking</h4>
+            <p class="mt-2 text-sm text-soft">Màn hình này dùng cho tra cứu trước khi nối API thật.</p>
+          </div>
+          <button data-action="download-receipt" class="btn-action-outline rounded-lg px-5 py-3 text-[11px] font-extrabold uppercase tracking-[0.16em] sm:text-[13px]">Download Receipt</button>
+        </div>
+        <div class="mt-6 space-y-3">
+          ${steps.map((step, index) => `
+            <div class="flex gap-4 rounded-2xl border border-line bg-black/20 p-4">
+              <div class="grid h-10 w-10 shrink-0 place-items-center rounded-full ${index < steps.length - 1 ? 'bg-gold/10 text-gold' : 'bg-black/10 text-soft'}">
+                ${icon(index < steps.length - 1 ? 'check' : 'clock', 'w-4 h-4')}
+              </div>
+              <div class="min-w-0">
+                <div class="text-[11px] uppercase tracking-[0.18em] text-soft">${step.time}</div>
+                <div class="mt-1 text-base font-semibold text-cream">${step.title}</div>
+                <div class="mt-1 text-sm text-soft">${step.note}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+
+      <section class="grid gap-4 lg:grid-cols-2">
+        <div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury">
+          <h4 class="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-gold">Audit snapshot</h4>
+          <p class="text-sm leading-6 text-soft">Các mốc, giá trị quy đổi và proof attachment ở đây đang là dữ liệu mô phỏng. Khi nối API, chúng ta chỉ cần thay nguồn dữ liệu mà không đổi layout.</p>
+        </div>
+        <div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury">
+          <h4 class="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-gold">${proofLabel}</h4>
+          <button data-action="open-proof" data-proof-kind="${proofAction}" class="btn-action mx-auto block w-full rounded-lg px-6 py-3.5 text-[11px] font-extrabold uppercase tracking-[0.16em] sm:text-[13px]">
+            View Proof
+          </button>
+        </div>
+      </section>
+    </div>
+  `;
+  safeCreateIcons();
+}
+
 function renderModal() {
   const slot = document.getElementById('modal-slot');
   if (!state.isSuccess) { slot.innerHTML = ''; return; }
@@ -512,6 +630,106 @@ function renderModal() {
 
 function safeCreateIcons() {
   if (window.lucide?.createIcons) window.lucide.createIcons();
+}
+
+function buildFileName(prefix, ext = 'txt') {
+  return `${prefix}-${new Date().toISOString().slice(0, 10)}.${ext}`;
+}
+
+function triggerTextDownload(filename, content) {
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+function getTransactionDetailMeta(tx) {
+  const isCard = tx?.type === 'E-Gift Card';
+  const isVnd = tx?.currency === 'VND';
+  return {
+    owner: 'Nguyen Van A',
+    beneficiary: isCard ? 'tranb@example.com' : 'Children Education Program',
+    paymentAsset: isCard ? (isVnd ? 'VND' : 'USDT') : (isVnd ? 'VND' : 'USDV'),
+    walletAddress: isCard ? '0x71C...3E4D' : '0xA83F...9C21',
+    reference: isCard ? 'NFT-8812' : 'BATCH-2025-014',
+    proofKind: isCard ? 'gift-card' : 'voucher',
+  };
+}
+
+function transactionTimeline(tx) {
+  const isCard = tx?.type === 'E-Gift Card';
+  return isCard
+    ? [
+        { time: '09:00:21', title: 'Transaction created', note: 'Gift card order initialized' },
+        { time: '09:00:45', title: 'Payment confirmed', note: 'Funds captured and balance locked' },
+        { time: '09:01:10', title: 'Gift card issued', note: 'Card token and QR receipt generated' },
+        { time: tx?.status === 'Redeemed' ? '22/03/2026' : 'Pending', title: tx?.status === 'Redeemed' ? 'Redeemed at merchant' : 'Waiting for redemption', note: tx?.status === 'Redeemed' ? 'Redeem proof is available' : 'No redemption event yet' },
+      ]
+    : [
+        { time: '08:55:10', title: 'Donation created', note: 'Voucher flow initialized' },
+        { time: '08:56:02', title: 'Payment confirmed', note: 'Crypto or fiat settlement captured' },
+        { time: '08:57:30', title: 'Voucher issued', note: 'Purpose and amount locked to receipt' },
+        { time: tx?.status === 'Completed' ? 'Distributed' : 'Pending', title: tx?.status === 'Completed' ? 'Funds distributed' : 'Awaiting distribution', note: tx?.status === 'Completed' ? 'Batch moved to foundation ledger' : 'Distribution will appear after settlement' },
+      ];
+}
+
+function downloadCurrentReceipt() {
+  let filename = buildFileName('charity-receipt');
+  let content = '';
+
+  if (state.viewMode === 'transactionDetail' && state.selectedTransaction) {
+    const tx = state.selectedTransaction;
+    const meta = getTransactionDetailMeta(tx);
+    filename = buildFileName(tx.id, 'txt');
+    content = [
+      'Transaction Receipt',
+      `ID: ${tx.id}`,
+      `Type: ${tx.type}`,
+      `Status: ${tx.status}`,
+      `Date: ${tx.date}`,
+      `Amount: ${formatNumber(tx.amount)} ${tx.currency}`,
+      `Owner: ${meta.owner}`,
+      `Beneficiary: ${meta.beneficiary}`,
+      `Payment asset: ${meta.paymentAsset}`,
+      `Wallet address: ${meta.walletAddress}`,
+      `Reference: ${meta.reference}`,
+    ].join('\n');
+  } else if (state.viewMode === 'qr' && state.selectedCard) {
+    const card = state.selectedCard;
+    filename = buildFileName(card.id, 'txt');
+    content = [
+      'Charity Gift Card Receipt',
+      `Card ID: ${card.id}`,
+      `Masked Number: ${card.maskedNumber}`,
+      `Value: ${formatNumber(card.value)} ${card.currency}`,
+      `Redeem Code: ${buildRedeemCode(card.id)}`,
+      `Status: ${card.status}`,
+    ].join('\n');
+  } else if (state.viewMode === 'batch' && state.selectedBatch) {
+    const batch = state.selectedBatch;
+    filename = buildFileName(batch.id, 'txt');
+    content = [
+      'Donation Receipt',
+      `Batch ID: ${batch.id}`,
+      `Purpose: ${batch.purpose}`,
+      `Status: ${batch.status}`,
+      `Date: ${batch.date}`,
+      `Amount: ${formatNumber(batch.amount)} ${batch.currency}`,
+      `Distributed: ${formatNumber(batch.distributed)} ${batch.currency}`,
+    ].join('\n');
+  } else {
+    content = [
+      'Charity Gift Receipt',
+      `Generated at: ${new Date().toISOString()}`,
+    ].join('\n');
+  }
+
+  triggerTextDownload(filename, `${content}\n`);
 }
 
 function renderRoute(force = false) {
@@ -533,6 +751,7 @@ function renderRoute(force = false) {
   else if (state.viewMode === 'cardDetail') buildCardDetail();
   else if (state.viewMode === 'qr') buildQrView();
   else if (state.viewMode === 'proof') buildProofView();
+  else if (state.viewMode === 'transactionDetail') buildTransactionDetail();
 }
 
 function switchTab(tabId) {
@@ -559,7 +778,11 @@ function handleBack() {
   else if (state.viewMode === 'dist') state.viewMode = 'batch';
   else if (state.viewMode === 'cardDetail') state.viewMode = 'cardList';
   else if (state.viewMode === 'qr') state.viewMode = 'cardDetail';
-  else if (state.viewMode === 'proof') state.viewMode = state.activeTab === 'card' ? 'cardDetail' : 'dist';
+  else if (state.viewMode === 'proof') {
+    state.viewMode = state.proofReturnMode || (state.activeTab === 'card' ? 'cardDetail' : 'dist');
+    state.proofReturnMode = null;
+  }
+  else if (state.viewMode === 'transactionDetail') state.viewMode = 'history';
   renderRoute(true);
 }
 
@@ -627,13 +850,20 @@ app.addEventListener('click', (event) => {
     renderRoute(true);
     return;
   }
+  if (action === 'open-transaction') {
+    state.selectedTransaction = mockHistoryTransactions.find(t => t.id === target.dataset.txId) || null;
+    state.viewMode = 'transactionDetail';
+    renderRoute(true);
+    return;
+  }
   if (action === 'open-qr') { state.viewMode = 'qr'; return renderRoute(true); }
   if (action === 'open-proof') {
+    state.proofReturnMode = state.viewMode;
     state.proofKind = target.dataset.proofKind || (state.viewMode === 'cardDetail' ? 'gift-card' : 'voucher');
     state.viewMode = 'proof';
     return renderRoute(true);
   }
-  if (action === 'download-receipt') { alert('Downloading Receipt...'); return; }
+  if (action === 'download-receipt') { downloadCurrentReceipt(); return; }
 });
 
 app.addEventListener('input', (event) => {

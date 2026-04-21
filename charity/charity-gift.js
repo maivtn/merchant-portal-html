@@ -350,7 +350,7 @@ function buildBuyView() {
   main.innerHTML = buyRouteShell();
   document.getElementById('buy-step-type').innerHTML = panel('01', 'Gift Type', giftTypeContent());
   document.getElementById('buy-step-details').innerHTML = panel('02', state.flowType === 'card' ? 'Gift Card Details' : 'Donation Details', state.flowType === 'card' ? cardDetailsContent() : voucherDetailsContent());
-  document.getElementById('buy-step-payment').innerHTML = panel('03', 'Payment', paymentContent());
+  document.getElementById('buy-step-payment').innerHTML = panel('03', 'Payment Methods', paymentContent());
   syncBuyView();
 }
 
@@ -512,11 +512,11 @@ function buildTransactionDetail() {
 
   const meta = getTransactionDetailMeta(tx);
   const steps = transactionTimeline(tx);
-  const proofLabel = tx.type === 'E-Gift Card' ? 'Proof of redemption' : 'Proof of payout';
+  const proofLabel = tx.type === 'E-Gift Card' ? 'Redemption proof' : 'Payout proof';
   const proofAction = tx.type === 'E-Gift Card' ? 'gift-card' : 'voucher';
   const detailNote = tx.type === 'E-Gift Card'
-    ? 'Gift card payment is locked to a redeemable card record and the lifecycle can later be expanded from API data.'
-    : 'Voucher payment is tied to a donation batch, ready for distribution and tax documentation.';
+    ? 'Gift card purchase details, payout reference, and redemption status are shown in one place for quick lookup.'
+    : 'Donation details, settlement reference, and distribution status are shown in one place for quick lookup.';
 
   document.getElementById('main-slot').innerHTML = `
     <div class="mx-auto max-w-5xl space-y-6 animate-fadeUp">
@@ -533,7 +533,7 @@ function buildTransactionDetail() {
 
       <section class="grid gap-4 lg:grid-cols-2">
         <div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury">
-          <h4 class="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-gold">Business detail</h4>
+          <h4 class="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-gold">Transaction detail</h4>
           <div class="grid gap-4 sm:grid-cols-2">
             <div class="rounded-xl border border-line bg-black/20 p-4">
               <div class="text-[10px] uppercase tracking-[0.18em] text-soft">Owner</div>
@@ -580,8 +580,7 @@ function buildTransactionDetail() {
       <section class="rounded-2xl border border-line bg-panel p-6 shadow-luxury sm:p-8">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h4 class="text-sm font-semibold uppercase tracking-[0.16em] text-gold">Lifecycle tracking</h4>
-            <p class="mt-2 text-sm text-soft">Màn hình này dùng cho tra cứu trước khi nối API thật.</p>
+            <h4 class="text-sm font-semibold uppercase tracking-[0.16em] text-gold">Lifecycle</h4>
           </div>
           <button data-action="download-receipt" class="btn-action-outline rounded-lg px-5 py-3 text-[11px] font-extrabold uppercase tracking-[0.16em] sm:text-[13px]">Download Receipt</button>
         </div>
@@ -603,8 +602,12 @@ function buildTransactionDetail() {
 
       <section class="grid gap-4 lg:grid-cols-2">
         <div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury">
-          <h4 class="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-gold">Audit snapshot</h4>
-          <p class="text-sm leading-6 text-soft">Các mốc, giá trị quy đổi và proof attachment ở đây đang là dữ liệu mô phỏng. Khi nối API, chúng ta chỉ cần thay nguồn dữ liệu mà không đổi layout.</p>
+          <h4 class="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-gold">Reference</h4>
+          <div class="space-y-3 text-sm leading-6 text-soft">
+            <p>Transaction reference: <span class="font-semibold text-cream">${meta.reference}</span></p>
+            <p>Wallet address: <span class="font-semibold text-cream">${meta.walletAddress}</span></p>
+            <p>Payment asset: <span class="font-semibold text-cream">${meta.paymentAsset}</span></p>
+          </div>
         </div>
         <div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury">
           <h4 class="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-gold">${proofLabel}</h4>

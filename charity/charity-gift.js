@@ -61,6 +61,11 @@ const state = {
   selectedTransaction: null,
   proofKind: 'voucher',
   proofReturnMode: null,
+  buyStepCollapsed: {
+    type: false,
+    details: false,
+    payment: false,
+  },
   batchTab: 'overview',
   cardSubTab: 'egift',
   filterStatus: 'ALL',
@@ -190,12 +195,35 @@ function routeKey() {
   return [state.viewMode, state.activeTab, state.batchTab, state.cardSubTab, state.selectedBatch?.id || '', state.selectedCard?.id || '', state.selectedDist?.id || '', state.selectedTransaction?.id || ''].join('|');
 }
 function showTabs() { return ['buy', 'list', 'cardList', 'history'].includes(state.viewMode); }
-function panel(step, title, body, id='') {
+function panel(step, title, body, id='', extra = {}) {
   return fillTemplate('tpl-panel', {
     idAttr: id ? `id="${id}"` : '',
     step,
     title: escapeHtml(title),
-    body
+    body,
+    collapseButton: extra.collapseButton || '',
+    bodyClass: extra.bodyClass || ''
+  });
+}
+
+function buyPanel(step, title, body, key, id='') {
+  const collapsed = !!state.buyStepCollapsed[key];
+  const collapseButton = key === 'payment'
+    ? ''
+    : `
+    <button
+      type="button"
+      data-action="toggle-buy-step"
+      data-step="${key}"
+      aria-expanded="${String(!collapsed)}"
+      aria-label="${collapsed ? 'Expand' : 'Collapse'} ${escapeHtml(title)}"
+      class="grid h-8 w-8 place-items-center rounded-full border border-line bg-black/20 text-soft transition hover:border-gold/70 hover:text-gold"
+    >
+      ${icon(collapsed ? 'chevron-down' : 'chevron-up', 'h-4 w-4')}
+    </button>`;
+  return panel(step, title, body, id, {
+    collapseButton,
+    bodyClass: collapsed ? 'hidden' : ''
   });
 }
 
@@ -345,12 +373,11 @@ function paymentContent() {
 }
 
 function buildBuyView() {
-  state.sendDirectly = false;
   const main = document.getElementById('main-slot');
   main.innerHTML = buyRouteShell();
-  document.getElementById('buy-step-type').innerHTML = panel('01', 'Gift Type', giftTypeContent());
-  document.getElementById('buy-step-details').innerHTML = panel('02', state.flowType === 'card' ? 'Gift Card Details' : 'Donation Details', state.flowType === 'card' ? cardDetailsContent() : voucherDetailsContent());
-  document.getElementById('buy-step-payment').innerHTML = panel('03', 'Payment Methods', paymentContent());
+  document.getElementById('buy-step-type').innerHTML = buyPanel('01', 'Gift Type', giftTypeContent(), 'type');
+  document.getElementById('buy-step-details').innerHTML = buyPanel('02', state.flowType === 'card' ? 'Gift Card Details' : 'Donation Details', state.flowType === 'card' ? cardDetailsContent() : voucherDetailsContent(), 'details');
+  document.getElementById('buy-step-payment').innerHTML =  buyPanel('03', 'Payment Methods', paymentContent(), 'payment');
   syncBuyView();
 }
 
@@ -773,6 +800,9 @@ function startNewDonation(type) {
   state.viewMode = 'buy';
   state.activeTab = 'all';
   state.flowType = type || 'voucher';
+  state.sendDirectly = false;
+  state.recipientName = '';
+  state.recipientEmail = '';
   renderRoute(true);
 }
 
@@ -822,6 +852,14 @@ app.addEventListener('click', (event) => {
   if (action === 'set-flow') {
     state.flowType = target.dataset.flow;
     renderRoute(true);
+    return;
+  }
+  if (action === 'toggle-buy-step') {
+    const key = target.dataset.step;
+    if (key && Object.prototype.hasOwnProperty.call(state.buyStepCollapsed, key)) {
+      state.buyStepCollapsed[key] = !state.buyStepCollapsed[key];
+      renderRoute(true);
+    }
     return;
   }
   if (action === 'set-purpose') { state.purpose = target.dataset.purpose; return syncBuyView(); }

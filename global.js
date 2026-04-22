@@ -6,6 +6,11 @@
 (function () {
   "use strict";
 
+  const sidebarScript = document.currentScript;
+  const PORTAL_BASE_URL = sidebarScript && sidebarScript.src
+    ? new URL("./", sidebarScript.src).href
+    : new URL("./", window.location.href).href;
+
   // ═══════════════════════════════════════════════════════════════════════════
   // SIDEBAR MENU DATA  ← Edit here to update sidebar across ALL pages
   // ═══════════════════════════════════════════════════════════════════════════
@@ -296,6 +301,15 @@
       return false;
     }
 
+    function resolvePortalHref(href) {
+      if (!href || href === "#") return "#";
+      try {
+        return new URL(href, PORTAL_BASE_URL).href;
+      } catch (error) {
+        return href;
+      }
+    }
+
     function getGroupHref(item) {
       if (item.href && item.href !== "#") return item.href;
       const firstChild = (item.children || []).find((child) => child.href && child.href !== "#");
@@ -327,7 +341,7 @@
         const badge = item.badge
           ? `<span class="badge-outlined">${item.badge}</span>`
           : "";
-        html += `<a href="${item.href}" class="nav-item${active ? " active" : ""}">
+        html += `<a href="${resolvePortalHref(item.href)}" class="nav-item${active ? " active" : ""}">
           <div class="nav-icon"><iconify-icon icon="${item.icon}" width="${item.iconWidth || 24}"></iconify-icon></div>
           <span>${item.label}</span>${badge}
         </a>\n`;
@@ -337,7 +351,7 @@
         const parentCls = activeChild ? " parent-active" : "";
         const groupHref = getGroupHref(item);
 
-        html += `<a href="${groupHref}" class="nav-item${parentCls}">
+        html += `<a href="${resolvePortalHref(groupHref)}" class="nav-item${parentCls}">
           <div class="nav-icon"><iconify-icon icon="${item.icon}" width="${item.iconWidth || 24}"></iconify-icon></div>
           <span>${item.label}</span>${CHEVRON_SVG}
         </a>
@@ -345,7 +359,7 @@
 
         for (const child of item.children || []) {
           const childActive = isItemActive(child);
-          html += `  <a href="${child.href}" class="sub-item${childActive ? " active" : ""}">
+          html += `  <a href="${resolvePortalHref(child.href)}" class="sub-item${childActive ? " active" : ""}">
             <span class="dot"></span>${child.label}
           </a>\n`;
         }

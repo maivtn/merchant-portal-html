@@ -11,7 +11,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans:wght@400;700;900&display=swap"
         rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
     <style>
         :root {
@@ -213,6 +213,11 @@
             color: #2563eb;
         }
 
+        .back-link .bi {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
         .brand-title {
             font-size: clamp(1.15rem, 1.8vw, 1.45rem);
             font-weight: 800;
@@ -269,9 +274,13 @@
         }
 
         .summary-icon {
-            width: 18px;
-            height: 18px;
+            font-size: 1.15rem;
+            line-height: 1;
             flex: 0 0 auto;
+        }
+
+        .summary-card .bi {
+            line-height: 1;
         }
 
         .card-glow {
@@ -330,6 +339,11 @@
             justify-content: center;
             border: 1px solid rgba(255, 255, 255, 0.06);
             transition: transform 0.25s ease, background-color 0.25s ease;
+        }
+
+        .privilege-icon-bg .bi {
+            font-size: 1.7rem;
+            line-height: 1;
         }
 
         .privilege-item:hover .privilege-icon-bg {
@@ -573,7 +587,7 @@
         class="sticky-top px-3 px-lg-5 d-flex justify-content-between align-items-center font-sans-normal fw-black fst-italic">
         <div class="d-flex align-items-center header-left">
             <a href="javascript:history.back()" class="back-link">
-                <i data-lucide="arrow-left" width="22" height="22"></i>
+                <i class="bi bi-arrow-left"></i>
                 <span>Back</span>
             </a>
             <span class="brand-title text-capitalize fw-black fst-italic">
@@ -583,14 +597,14 @@
 
         <div class="header-summary">
             <div class="summary-card dark">
-                <i data-lucide="award" class="summary-icon text-info"></i>
+                <i class="bi bi-award summary-icon text-info"></i>
                 <div class="d-flex flex-column">
                     <span class="summary-label lang-commitment-label font-sans-normal">Live Commitment (x3)</span>
                     <span class="summary-value font-sans-normal" id="nav-commitment">$90,000</span>
                 </div>
             </div>
             <div class="summary-card light">
-                <i data-lucide="wallet" class="summary-icon text-primary"></i>
+                <i class="bi bi-wallet2 summary-icon text-primary"></i>
                 <span class="summary-value font-sans-normal">$208,328</span>
             </div>
         </div>
@@ -629,7 +643,7 @@
                 </div>
                 <button onclick="toggleModal('package', true)"
                     class="btn btn-primary rounded-pill px-5 py-3 text-uppercase text-xs tracking-widest shadow transition-all d-flex align-items-center gap-2 fw-black">
-                    <i data-lucide="plus-circle"></i>
+                    <i class="bi bi-plus-circle"></i>
                     <span class="lang-new-debt font-sans-normal">New Debt Sale</span>
                 </button>
             </div>
@@ -705,7 +719,7 @@
                     style="background-color: rgba(255,255,255,0.5); backdrop-filter: blur(16px);">
                     <h3
                         class="section-heading fs-3 text-uppercase text-dark mb-4 d-flex align-items-center gap-3 px-2 fw-black fst-italic font-sans-normal">
-                        <i data-lucide="combine" class="text-primary font-sans-normal" width="32" height="32"></i>
+                        <i class="bi bi-layers text-primary fs-2"></i>
                         <span class="lang-sequence font-sans-normal fst-italic">IOU Recording Schedule 1x3 (42 Months)</span>
                     </h3>
                     <div id="dash-fifo-list" class="d-flex flex-column gap-3"></div>
@@ -759,7 +773,7 @@
         <div id="section-license" class="d-none slide-in mt-5">
             <div class="mx-auto license-container fw-black fst-italic shadow-lg" style="max-width: 600px;">
                 <div class="d-flex align-items-center gap-3 mb-5 px-2 fst-italic fw-black">
-                    <i data-lucide="star" class="text-warning" width="32" height="32" style="fill: #ffc107;"></i>
+                    <i class="bi bi-star-fill text-warning fs-2"></i>
                     <h2
                         class="section-kicker fs-4 text-uppercase tracking-widest text-white lang-license-title-photo font-sans-normal fst-italic fw-black mb-0">
                         LICENSE PRIVILEGES</h2>
@@ -767,8 +781,7 @@
 
                 <div class="d-flex flex-column gap-4 fw-black fst-italic font-sans-normal">
                     <div class="d-flex align-items-start gap-4 privilege-item">
-                        <div class="privilege-icon-bg"><i data-lucide="banknote" class="text-warning" width="40"
-                                height="40"></i></div>
+                        <div class="privilege-icon-bg"><i class="bi bi-cash-coin text-warning"></i></div>
                         <div class="d-flex flex-column justify-content-center">
                             <h4
                                 class="fs-4 text-white text-uppercase tracking-tighter fst-italic font-sans-normal lang-priv-1-title mb-1">
@@ -779,8 +792,7 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-start gap-4 privilege-item">
-                        <div class="privilege-icon-bg"><i data-lucide="users" class="text-white opacity-75" width="40"
-                                height="40"></i></div>
+                        <div class="privilege-icon-bg"><i class="bi bi-people text-white opacity-75"></i></div>
                         <div class="d-flex flex-column justify-content-center">
                             <h4
                                 class="fs-4 text-white text-uppercase tracking-tighter fst-italic font-sans-normal lang-priv-2-title mb-1">
@@ -791,8 +803,7 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-start gap-4 privilege-item">
-                        <div class="privilege-icon-bg"><i data-lucide="gift" class="text-warning" width="40"
-                                height="40"></i></div>
+                        <div class="privilege-icon-bg"><i class="bi bi-gift text-warning"></i></div>
                         <div class="d-flex flex-column justify-content-center">
                             <h4
                                 class="fs-4 text-white text-uppercase tracking-tighter fst-italic font-sans-normal lang-priv-3-title mb-1">
@@ -803,8 +814,7 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-start gap-4 privilege-item">
-                        <div class="privilege-icon-bg"><i data-lucide="zap" class="text-white opacity-75" width="40"
-                                height="40"></i></div>
+                        <div class="privilege-icon-bg"><i class="bi bi-lightning-fill text-white opacity-75"></i></div>
                         <div class="d-flex flex-column justify-content-center">
                             <h4
                                 class="fs-4 text-white text-uppercase tracking-tighter fst-italic font-sans-normal lang-priv-4-title mb-1">
@@ -815,8 +825,7 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-start gap-4 privilege-item">
-                        <div class="privilege-icon-bg"><i data-lucide="gem" class="text-warning" width="40"
-                                height="40"></i></div>
+                        <div class="privilege-icon-bg"><i class="bi bi-gem text-warning"></i></div>
                         <div class="d-flex flex-column justify-content-center">
                             <h4
                                 class="fs-4 text-white text-uppercase tracking-tighter fst-italic font-sans-normal lang-priv-5-title mb-1">
@@ -850,7 +859,7 @@
                     <p class="text-primary text-xxs text-uppercase fw-black font-sans-normal mb-0">(PLACE PACKAGE)</p>
                 </div>
                 <button onclick="toggleModal('package', false)"
-                    class="btn btn-link text-secondary p-0 text-decoration-none"><i data-lucide="x"></i></button>
+                    class="btn btn-link text-secondary p-0 text-decoration-none"><i class="bi bi-x-lg"></i></button>
             </div>
 
             <div class="p-4 p-lg-5 overflow-auto no-scrollbar d-flex flex-column gap-4 font-sans-normal fw-black fst-italic"
@@ -874,7 +883,7 @@
                             Term</label>
                         <div class="w-100 p-3 bg-light border border-2 rounded-2xl d-flex justify-content-between align-items-center font-sans-normal fw-black fst-italic"
                             style="height: calc(100% - 22px);">
-                            <span>42 Months</span> <i data-lucide="lock" width="18"></i>
+                            <span>42 Months</span> <i class="bi bi-lock"></i>
                         </div>
                     </div>
                 </div>
@@ -921,7 +930,7 @@
                             <div class="d-flex align-items-center gap-3">
                                 <div id="m-icon-usdv"
                                     class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white shadow"
-                                    style="width: 40px; height: 40px;"><i data-lucide="check"></i></div>
+                                    style="width: 40px; height: 40px;"><i class="bi bi-check-lg fs-5"></i></div>
                                 <span
                                     class="fs-4 fw-black text-uppercase tracking-tighter fst-italic font-sans-normal mb-0">USDV</span>
                             </div>
@@ -952,7 +961,7 @@
                     <button id="btn-place" onclick="deployPackage()"
                         class="btn btn-light text-secondary w-100 py-3 rounded-pill fs-4 fw-black text-uppercase tracking-widest shadow d-flex align-items-center justify-content-center gap-3 fst-italic font-sans-normal"
                         disabled>
-                        <i data-lucide="rocket"></i> <span class="lang-btn-place font-sans-normal fst-italic">ENTER
+                        <i class="bi bi-rocket-takeoff"></i> <span class="lang-btn-place font-sans-normal fst-italic">ENTER
                             PACKAGE NOW</span>
                     </button>
                 </div>
@@ -969,7 +978,7 @@
             <div class="p-4 d-flex align-items-start gap-3 border-bottom bg-white position-relative">
                 <div class="bg-success rounded-circle d-flex align-items-center justify-content-center text-white flex-shrink-0 shadow"
                     style="width: 40px; height: 40px; box-shadow: 0 4px 15px rgba(25,135,84,0.3) !important;">
-                    <i data-lucide="check" stroke-width="4"></i>
+                    <i class="bi bi-check-lg fs-4"></i>
                 </div>
                 <div>
                     <h3 class="text-xxs text-uppercase fw-black tracking-tighter lh-sm text-dark font-sans-normal mb-0 mt-2"
@@ -977,7 +986,7 @@
                 </div>
                 <button onclick="toggleModal('receipt', false)"
                     class="btn btn-link text-secondary position-absolute top-0 end-0 m-3 p-0"><i
-                        data-lucide="x"></i></button>
+                        class="bi bi-x-lg"></i></button>
             </div>
             <div class="p-4 p-lg-5 d-flex flex-column gap-3">
                 <div class="d-flex flex-column gap-2 pb-3 border-bottom border-secondary-subtle border-dashed">
@@ -1042,7 +1051,7 @@
                         <div class="d-flex align-items-center gap-1">
                             <p class="fs-5 text-dark fw-black tracking-tighter font-sans-normal mb-0"
                                 id="receipt-total-vmm">-</p>
-                            <i data-lucide="info" class="text-secondary" width="16" height="16"></i>
+                            <i class="bi bi-info-circle text-secondary"></i>
                         </div>
                     </div>
                 </div>
@@ -1076,14 +1085,6 @@
             if (el) el.innerText = text;
         }
 
-        function refreshIcons() {
-            if (window.lucide && typeof window.lucide.createIcons === 'function') {
-                window.lucide.createIcons();
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', refreshIcons);
-
         function toggleModal(id, show) {
             const m = document.getElementById('modal-' + id);
             if (m) {
@@ -1105,7 +1106,6 @@
             const iou = document.getElementById('section-iou'); if (iou) iou.classList.toggle('d-none', idx !== 0);
             const lend = document.getElementById('section-lending'); if (lend) lend.classList.toggle('d-none', idx !== 3);
             const lic = document.getElementById('section-license'); if (lic) lic.classList.toggle('d-none', idx !== 4);
-            if (idx === 4) refreshIcons();
         }
 
         function switchSubTab(type) {
@@ -1146,17 +1146,16 @@
                     <div class="bg-white p-4 p-lg-5 rounded-custom-lg border shadow-sm transition-all h-100 card-glow font-black fst-italic">
                        <div class="d-flex justify-content-between align-items-start mb-4">
                            <div class="bg-dark-custom rounded-3xl d-flex align-items-center justify-content-center text-white shadow" style="width: 64px; height: 64px;">
-                               <i data-lucide="receipt"></i>
+                               <i class="bi bi-receipt fs-3"></i>
                            </div>
                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2 text-xxs fw-black text-uppercase tracking-widest font-sans-normal fst-italic">${pkg.status}</span>
                        </div>
                        <p class="text-xs text-secondary text-uppercase tracking-widest mb-2 font-sans-normal fw-bold">Package Value</p>
                        <p class="fs-2 text-dark font-sans-normal fw-black fst-italic mb-4">$${pkg.value.toLocaleString()} <span class="fs-5 text-secondary fw-black fst-italic">USDV</span></p>
-                       <button onclick="showReceipt('${pkg.id}')" class="btn btn-light border w-100 mt-auto py-3 rounded-pill text-xxs text-uppercase tracking-widest transition-all d-flex align-items-center justify-content-center gap-2 fst-italic fw-black font-sans-normal shadow-sm btn-hover-primary">VIEW RECEIPT <i data-lucide="arrow-up-right"></i></button>
+                       <button onclick="showReceipt('${pkg.id}')" class="btn btn-light border w-100 mt-auto py-3 rounded-pill text-xxs text-uppercase tracking-widest transition-all d-flex align-items-center justify-content-center gap-2 fst-italic fw-black font-sans-normal shadow-sm btn-hover-primary">VIEW RECEIPT <i class="bi bi-arrow-up-right"></i></button>
                     </div>
                 </div>
             `).join('');
-            refreshIcons();
 
             // Add hover effects for buttons generated
             document.querySelectorAll('.btn-hover-primary').forEach(btn => {
@@ -1171,7 +1170,7 @@
                 <div class="p-4 p-lg-5 rounded-custom border bg-white d-flex flex-column flex-lg-row align-items-center justify-content-between shadow-sm position-relative transition-all font-black fst-italic" style="transform-origin: center; transition: transform 0.2s;">
                     <div class="d-flex align-items-center gap-4 ms-lg-3 font-sans-normal fw-black fst-italic">
                         <div class="rounded-3xl d-flex align-items-center justify-content-center text-white shadow bg-primary" style="width: 64px; height: 64px;">
-                            <i data-lucide="box" width="32" height="32"></i>
+                            <i class="bi bi-box-seam fs-3"></i>
                         </div>
                         <div>
                             <p class="fs-3 fw-black fst-italic font-sans-normal mb-0">$${pkg.value.toLocaleString()} USDV</p>
@@ -1184,12 +1183,11 @@
                             <p class="fs-4 text-info fw-black fst-italic font-sans-normal mb-0">$${(pkg.value * 3).toLocaleString()}</p>
                         </div>
                         <button onclick="showReceipt('${pkg.id}')" class="btn btn-light border p-3 rounded-3xl transition-all shadow-sm btn-hover-primary">
-                            <i data-lucide="receipt"></i>
+                            <i class="bi bi-currency-dollar fs-5"></i>
                         </button>
                     </div>
                 </div>
             `).join('');
-            refreshIcons();
 
             document.querySelectorAll('.btn-hover-primary').forEach(btn => {
                 btn.addEventListener('mouseenter', function () { this.classList.remove('btn-light', 'text-dark'); this.classList.add('btn-primary', 'text-white'); });
@@ -1226,7 +1224,7 @@
                     <div class="bg-white rounded-custom p-4 border transition-all fst-italic fw-black font-sans-normal card-glow tier-card shadow-sm ${tier.amount === 20000 ? 'tier-card-featured' : ''}" style="${tier.amount === 20000 ? 'transform: scale(1.03);' : ''}">
                         <div class="d-flex justify-content-between align-items-start mb-4 fst-italic fw-black">
                             <div class="rounded-3xl d-flex align-items-center justify-content-center ${tier.amount >= 20000 ? 'bg-primary text-white shadow' : 'bg-light text-secondary'}" style="width: 56px; height: 56px;">
-                                <i data-lucide="star"></i>
+                                <i class="bi bi-star-fill fs-3"></i>
                             </div>
                             <div class="text-end fst-italic fw-black font-sans-normal">
                                 <p class="text-xxs text-secondary text-uppercase font-sans-normal fw-bold mb-0">PACKAGE</p>
@@ -1250,7 +1248,6 @@
                     </div>
                 </div>
             `).join('');
-            refreshIcons();
         }
 
         function updateModalCalc() {
@@ -1276,17 +1273,15 @@
             const amount = parseInt(document.getElementById('select-pkg').value);
             const btn = document.getElementById('btn-place');
             btn.innerHTML = `<div class="spinner-border spinner-border-sm me-2" role="status"></div> <span>PROCESSING...</span>`;
-            refreshIcons();
             setTimeout(() => {
                 const now = new Date();
                 userPackages.unshift({ id: 'DEBT-' + (amount / 1000) + 'K-' + Math.floor(Math.random() * 999), value: amount, received: 0, status: 'Active', createdDate: now.toLocaleDateString(), releaseDate: now.toLocaleDateString(), totalReturn: amount * 3, cycles: 0 });
                 toggleModal('package', false);
-                btn.innerHTML = `<i data-lucide="rocket"></i> <span class="lang-btn-place font-sans-normal fst-italic">ENTER PACKAGE NOW</span>`;
+                btn.innerHTML = `<i class="bi bi-rocket-takeoff"></i> <span class="lang-btn-place font-sans-normal fst-italic">ENTER PACKAGE NOW</span>`;
                 updateDashboardStats();
                 renderDashboardList();
                 renderTiers();
                 updateModalCalc();
-                refreshIcons();
                 alert("Activation successful!");
             }, 1500);
         }
@@ -1297,7 +1292,6 @@
             renderDashboardList();
             renderTiers();
             updateModalCalc();
-            refreshIcons();
 
             const checkboxWrapper = document.getElementById('btn-confirm-wrapper');
             const checkboxUi = document.getElementById('checkbox-ui');
@@ -1307,7 +1301,7 @@
                     isConfirmed = !isConfirmed;
                     if (isConfirmed) {
                         checkboxUi.className = "border border-2 rounded-3 d-flex align-items-center justify-content-center transition-all border-primary bg-primary shadow";
-                        checkboxUi.innerHTML = '<i data-lucide="check" class="text-white fst-italic fw-black font-sans-normal" width="20" height="20"></i>';
+                        checkboxUi.innerHTML = '<i class="bi bi-check-lg text-white fs-6"></i>';
                         btnPlace.disabled = false;
                         btnPlace.className = "btn btn-primary w-100 py-3 rounded-pill fs-4 fw-black text-uppercase tracking-widest shadow-lg d-flex align-items-center justify-content-center gap-3 fst-italic font-sans-normal";
                     } else {
@@ -1316,7 +1310,6 @@
                         btnPlace.disabled = true;
                         btnPlace.className = "btn btn-light text-secondary w-100 py-3 rounded-pill fs-4 fw-black text-uppercase tracking-widest shadow d-flex align-items-center justify-content-center gap-3 fst-italic font-sans-normal";
                     }
-                    refreshIcons();
                 };
             }
         });

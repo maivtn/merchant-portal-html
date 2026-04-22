@@ -118,7 +118,7 @@
       children: [
         {
           label: "Sales Orders",
-          href: "#",
+          href: "sales-order-list.html",
           relatedPages: ["sales-order-details.html"],
         },
         {
@@ -296,6 +296,12 @@
       return false;
     }
 
+    function getGroupHref(item) {
+      if (item.href && item.href !== "#") return item.href;
+      const firstChild = (item.children || []).find((child) => child.href && child.href !== "#");
+      return firstChild ? firstChild.href : "#";
+    }
+
     // Remove all nav-related nodes that were previously in the sidebar HTML
     // (everything from the first .nav-section-title onwards)
     const firstSection = sc.querySelector(".nav-section-title");
@@ -329,8 +335,9 @@
         // Check if any child (or their relatedPages) matches current page
         const activeChild = (item.children || []).find((c) => isItemActive(c));
         const parentCls = activeChild ? " parent-active" : "";
+        const groupHref = getGroupHref(item);
 
-        html += `<a href="#" class="nav-item${parentCls}">
+        html += `<a href="${groupHref}" class="nav-item${parentCls}">
           <div class="nav-icon"><iconify-icon icon="${item.icon}" width="${item.iconWidth || 24}"></iconify-icon></div>
           <span>${item.label}</span>${CHEVRON_SVG}
         </a>

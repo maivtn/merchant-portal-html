@@ -502,7 +502,7 @@
     /* ── Card Front Layout ── */
     .cf-top {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 14px;
     }
 
@@ -533,6 +533,15 @@
       display: flex;
       flex-direction: column;
       gap: 3px;
+    }
+
+    .cf-top-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+      margin-left: auto;
     }
 
     .cf-brand-name {
@@ -643,6 +652,12 @@
       letter-spacing: 1px;
     }
 
+    .cf-rank-badge {
+      padding-top: 2px;
+      text-align: right;
+      white-space: nowrap;
+    }
+
     /* Right column: type label + pill */
     .cf-right-col {
       display: flex;
@@ -700,6 +715,10 @@
         letter-spacing: 1px;
       }
 
+      .cf-top-right {
+        gap: 4px;
+      }
+
       .cf-value-badge {
         font-size: 11px;
         padding: 3px 10px;
@@ -737,6 +756,10 @@
 
       .cf-holder-rank {
         font-size: 10px;
+      }
+
+      .cf-rank-badge {
+        padding-top: 1px;
       }
 
       .cf-type-label {
@@ -3295,7 +3318,10 @@
                       <div class="cf-brand-name" id="previewCardTitle">E-GIFT CARD</div>
                       <div class="cf-slogan" id="previewSlogan">LUXURY BEAUTY INNOVATION</div>
                     </div>
-                    <div class="cf-value-badge" id="cfValueBadge" style="display:none;">$50</div>
+                    <div class="cf-top-right">
+                      <div class="cf-value-badge" id="cfValueBadge" style="display:none;">$50</div>
+                      <span class="cf-holder-rank cf-rank-badge" id="previewRank">PLATINUM</span>
+                    </div>
                   </div>
 
                   <!-- MIDDLE: Card Number + VALID THRU -->
@@ -3313,11 +3339,10 @@
                     </div>
                   </div>
 
-                  <!-- BOTTOM: Holder + Rank (left)  |  Type label + Pill (right) -->
+                  <!-- BOTTOM: Holder (left)  |  Type label + Pill (right) -->
                   <div class="cf-bottom">
                     <div class="cf-holder">
                       <span class="cf-holder-name" id="previewHolderName"></span>
-                      <span class="cf-holder-rank" id="previewRank">PLATINUM</span>
                     </div>
                     <div class="cf-right-col">
                       <div class="cf-type-label" id="cardTypeBadge">GIFT CARD</div>

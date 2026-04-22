@@ -1,4 +1,7 @@
 (function (window) {
+  const adminScript = document.currentScript;
+  const ADMIN_BASE_URL = adminScript && adminScript.src ? new URL('../', adminScript.src).href : new URL('./', window.location.href).href;
+
   const ADMIN_UI = {
     brand: {
       initials: 'CG',
@@ -143,6 +146,14 @@
     return ADMIN_UI.pageAliases[page] || page;
   }
 
+  function resolveAdminHref(href) {
+    try {
+      return new URL(href, ADMIN_BASE_URL).href;
+    } catch (error) {
+      return href;
+    }
+  }
+
   function renderSidebar(currentPage) {
     const activeKey = getActiveNav(currentPage);
     const groups = ADMIN_UI.navGroups
@@ -151,7 +162,7 @@
         const items = group.items
           .map((item) => {
             const activeClass = item.key === activeKey ? ' active' : '';
-            return `<a class="nav-item${activeClass}" data-nav="${item.key}" href="${item.href}">${item.label}</a>`;
+            return `<a class="nav-item${activeClass}" data-nav="${item.key}" href="${resolveAdminHref(item.href)}">${item.label}</a>`;
           })
           .join('');
 
@@ -200,6 +211,7 @@
     renderSidebar,
     renderTopbar,
   };
+  window.ADMIN_BASE_URL = ADMIN_BASE_URL;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {

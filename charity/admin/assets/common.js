@@ -1,6 +1,26 @@
 (function (window) {
   const adminScript = document.currentScript;
-  const ADMIN_BASE_URL = adminScript && adminScript.src ? new URL('../', adminScript.src).href : new URL('./', window.location.href).href;
+  const ADMIN_ROUTE_BASE = window.ADMIN_ROUTE_BASE
+    || (window.location.protocol === 'file:'
+      ? (adminScript && adminScript.src ? new URL('../', adminScript.src).href : new URL('./', window.location.href).href)
+      : '/charity/admin/');
+  const ADMIN_BASE_URL = new URL(
+    ADMIN_ROUTE_BASE,
+    window.location.protocol === 'file:' ? window.location.href : window.location.origin,
+  ).href;
+
+  function ensureBaseTag() {
+    if (document.querySelector('base[data-admin-base]')) return;
+    const base = document.createElement('base');
+    base.setAttribute('data-admin-base', 'true');
+    base.href = ADMIN_BASE_URL;
+    const head = document.head || document.getElementsByTagName('head')[0];
+    if (head) {
+      head.insertBefore(base, head.firstChild);
+    }
+  }
+
+  ensureBaseTag();
 
   const ADMIN_UI = {
     brand: {
@@ -148,7 +168,11 @@
 
   function resolveAdminHref(href) {
     try {
-      return new URL(href, ADMIN_BASE_URL).href;
+      if (!href || href === '#') return '#';
+      if (/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(href)) return href;
+      if (href.startsWith('/charity/admin/')) return href;
+      const cleanHref = href.replace(/^\.?\//, '');
+      return `/charity/admin/${cleanHref}`;
     } catch (error) {
       return href;
     }
@@ -212,6 +236,7 @@
     renderTopbar,
   };
   window.ADMIN_BASE_URL = ADMIN_BASE_URL;
+  window.ADMIN_ROUTE_BASE = ADMIN_ROUTE_BASE;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {

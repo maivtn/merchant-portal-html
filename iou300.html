@@ -8,11 +8,10 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans:wght@400;700;900&display=swap"
         rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
 
     <style>
         :root {
@@ -37,6 +36,10 @@
             font-style: normal;
             font-weight: 400;
             line-height: 1.55;
+            background:
+                radial-gradient(circle at top left, rgba(13, 110, 253, 0.08), transparent 30%),
+                radial-gradient(circle at top right, rgba(56, 189, 248, 0.08), transparent 26%),
+                linear-gradient(180deg, #ffffff 0%, var(--page-bg) 100%);
             overflow-x: hidden;
             color: var(--ink);
             -webkit-font-smoothing: antialiased;
@@ -276,8 +279,13 @@
         }
 
         .card-glow:hover {
-            box-shadow: 0 18px 40px rgba(59, 130, 246, 0.16);
+            box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
             transform: translateY(-4px);
+        }
+
+        .tier-card:hover {
+            border-color: var(--brand) !important;
+            box-shadow: 0 18px 40px rgba(13, 110, 253, 0.18) !important;
         }
 
         .tab-main {
@@ -560,9 +568,6 @@
 
 <body>
 
-    <div id="hero-3d" class="position-fixed top-0 start-0 w-100 h-100 opacity-25"
-        style="z-index: -1; pointer-events: none;"></div>
-
     <!-- Navigation -->
     <nav
         class="sticky-top px-3 px-lg-5 d-flex justify-content-between align-items-center font-sans-normal fw-black fst-italic">
@@ -580,7 +585,7 @@
             <div class="summary-card dark">
                 <i data-lucide="award" class="summary-icon text-info"></i>
                 <div class="d-flex flex-column">
-                    <span class="summary-label lang-commitment-label font-sans-normal">Cam Kết Live (x3)</span>
+                    <span class="summary-label lang-commitment-label font-sans-normal">Live Commitment (x3)</span>
                     <span class="summary-value font-sans-normal" id="nav-commitment">$90,000</span>
                 </div>
             </div>
@@ -598,11 +603,11 @@
             style="top: 80px; z-index: 90; backdrop-filter: blur(12px);">
             <div
                 class="container-fluid max-w-7xl px-0 d-flex gap-4 gap-lg-5 overflow-auto no-scrollbar fw-black fst-italic">
-                <button onclick="switchMainTab(0)" class="tab-main active">Bán Nợ (IOU)</button>
-                <button onclick="switchMainTab(1)" class="tab-main">Thế Chấp BTC</button>
+                <button onclick="switchMainTab(0)" class="tab-main active">Debt Sale (IOU)</button>
+                <button onclick="switchMainTab(1)" class="tab-main">BTC Collateral</button>
                 <button onclick="switchMainTab(2)" class="tab-main">VMM Holding</button>
-                <button onclick="switchMainTab(3)" class="tab-main">Cho Vay Tín Dụng</button>
-                <button onclick="switchMainTab(4)" class="tab-main">Giấy Phép</button>
+                <button onclick="switchMainTab(3)" class="tab-main">Credit Lending</button>
+                <button onclick="switchMainTab(4)" class="tab-main">License</button>
             </div>
         </div>
     </div>
@@ -616,19 +621,16 @@
                 class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-5 gap-4 font-sans-normal fw-black fst-italic">
                 <div class="d-flex bg-light p-1 rounded-pill gap-1 shadow-sm border">
                     <button onclick="switchSubTab('dashboard')" id="sub-dash"
-                        class="btn btn-light rounded-pill px-4 py-2 text-xxs text-uppercase tracking-widest fw-black shadow-sm font-sans-normal">Bảng
-                        Điều Khiển</button>
+                        class="btn btn-light rounded-pill px-4 py-2 text-xxs text-uppercase tracking-widest fw-black shadow-sm font-sans-normal">Dashboard</button>
                     <button onclick="switchSubTab('history')" id="sub-hist"
-                        class="btn rounded-pill px-4 py-2 text-xxs text-uppercase tracking-widest fw-bold text-secondary font-sans-normal">Lịch
-                        Sử Bán Nợ</button>
+                        class="btn rounded-pill px-4 py-2 text-xxs text-uppercase tracking-widest fw-bold text-secondary font-sans-normal">Package History</button>
                     <button onclick="switchSubTab('benefits')" id="sub-bene"
-                        class="btn rounded-pill px-4 py-2 text-xxs text-uppercase tracking-widest fw-bold text-secondary font-sans-normal">Quyền
-                        Lợi Tier</button>
+                        class="btn rounded-pill px-4 py-2 text-xxs text-uppercase tracking-widest fw-bold text-secondary font-sans-normal">Tier Benefits</button>
                 </div>
                 <button onclick="toggleModal('package', true)"
                     class="btn btn-primary rounded-pill px-5 py-3 text-uppercase text-xs tracking-widest shadow transition-all d-flex align-items-center gap-2 fw-black">
                     <i data-lucide="plus-circle"></i>
-                    <span class="lang-new-debt font-sans-normal">Create Package</span>
+                    <span class="lang-new-debt font-sans-normal">New Debt Sale</span>
                 </button>
             </div>
 
@@ -640,7 +642,7 @@
                             style="min-height: 160px;">
                             <p
                                 class="text-xxs text-secondary text-uppercase tracking-widest mb-2 lang-principal font-sans-normal">
-                                Tổng Gốc Đã Bán</p>
+                                Total Principal Sold</p>
                             <p class="fs-1 text-dark font-sans-normal fw-black tracking-tighter" id="dash-principal">$0
                             </p>
                         </div>
@@ -653,7 +655,7 @@
                             </div>
                             <p
                                 class="text-xxs text-info text-uppercase tracking-widest mb-2 lang-commitment font-sans-normal">
-                                Cam Kết Live (x3)</p>
+                                Live Commitment (x3)</p>
                             <p class="display-4 text-white font-sans-normal fw-black tracking-tighter fst-italic"
                                 id="dash-commitment">$0</p>
                         </div>
@@ -662,7 +664,7 @@
                         <div class="dashboard-stat-card bg-white p-4 p-lg-5 rounded-custom border shadow-sm d-flex flex-column justify-content-center h-100"
                             style="min-height: 160px;">
                             <p class="text-xxs text-warning text-uppercase tracking-widest mb-2 lang-bonus font-sans-normal"
-                                style="color: #d97706 !important;">Thưởng Hệ Thống</p>
+                                style="color: #d97706 !important;">Network Bonus</p>
                             <p class="fs-1 text-dark font-sans-normal fw-black tracking-tighter fst-italic"
                                 id="dash-bonus">$12,850.50</p>
                         </div>
@@ -672,7 +674,7 @@
                             style="background-color: #E9F5EF; border-color: #a7f3d0; min-height: 160px;">
                             <p
                                 class="text-xxs text-success text-uppercase tracking-widest mb-2 lang-received font-sans-normal">
-                                Đã Nhận Bồi Hoàn</p>
+                                Received Back</p>
                             <p class="fs-1 text-success font-sans-normal fw-black tracking-tighter" id="dash-received">
                                 $0</p>
                         </div>
@@ -682,7 +684,7 @@
                             style="background-color: rgba(255,255,255,0.8); backdrop-filter: blur(12px); min-height: 160px;">
                             <p
                                 class="text-xxs text-secondary text-uppercase tracking-widest mb-2 lang-remaining font-sans-normal">
-                                Nợ Còn Lại</p>
+                                Remaining Debt</p>
                             <p class="fs-1 text-dark font-sans-normal fw-black tracking-tighter" id="dash-remaining">$0
                             </p>
                         </div>
@@ -692,7 +694,7 @@
                             style="min-height: 160px;">
                             <p
                                 class="text-xxs text-primary text-uppercase tracking-widest mb-2 lang-license font-sans-normal fw-black">
-                                Giấy Phép Kinh Doanh</p>
+                                Business License</p>
                             <p class="fs-2 text-primary font-sans-normal fw-black text-uppercase tracking-tighter fst-italic"
                                 id="dash-license">Professional</p>
                         </div>
@@ -704,7 +706,7 @@
                     <h3
                         class="section-heading fs-3 text-uppercase text-dark mb-4 d-flex align-items-center gap-3 px-2 fw-black fst-italic font-sans-normal">
                         <i data-lucide="combine" class="text-primary font-sans-normal" width="32" height="32"></i>
-                        <span class="lang-sequence font-sans-normal fst-italic">Lộ Trình Ghi Nợ 1x3 (42 Tháng)</span>
+                        <span class="lang-sequence font-sans-normal fst-italic">IOU Recording Schedule 1x3 (42 Months)</span>
                     </h3>
                     <div id="dash-fifo-list" class="d-flex flex-column gap-3"></div>
                 </div>
@@ -719,10 +721,10 @@
                     </div>
                     <h2
                         class="section-heading display-4 text-uppercase tracking-tighter fst-italic lang-sub-bene font-sans-normal fw-black">
-                        Quyền Lợi Tier</h2>
+                        Tier Benefits</h2>
                     <p
                         class="text-secondary text-sm text-uppercase tracking-widest font-sans-normal fst-italic lang-bene-desc fw-bold">
-                        Thưởng trực tiếp F1 theo điểm BV và hạn mức mua VMM tối đa theo từng gói đầu vào.</p>
+                        Direct F1 rewards based on BV points and the maximum VMM purchase limit by entry package.</p>
                 </div>
                 <div id="tier-grid" class="row g-4 pb-5 px-2"></div>
             </div>
@@ -735,10 +737,10 @@
             <div class="text-center mx-auto px-2 d-flex flex-column gap-3" style="max-width: 700px;">
                 <h2
                     class="section-heading display-3 text-uppercase tracking-tighter text-dark lh-1 fst-italic lang-lending-title font-sans-normal fw-black">
-                    Vay Tín Dụng Web3</h2>
+                    Web3 Credit Lending</h2>
                 <p
                     class="text-secondary text-sm text-uppercase tracking-widest font-sans-normal fw-bold fst-italic lang-lending-desc">
-                    Tối ưu hóa nguồn vốn qua hệ thống tín dụng phi tập trung.</p>
+                    Optimize capital through a decentralized credit system.</p>
             </div>
             <div class="row g-4 justify-content-center">
                 <div class="col-12 col-lg-4">
@@ -746,7 +748,7 @@
                         class="bg-dark-custom p-5 rounded-custom-lg text-white shadow-lg position-relative overflow-hidden fst-italic fw-black">
                         <p
                             class="text-xxs text-info text-uppercase tracking-widest mb-3 lang-credit-limit font-sans-normal fw-black">
-                            Hạn Mức Tín Dụng</p>
+                            Credit Limit</p>
                         <p class="display-4 font-sans-normal fw-black tracking-tighter">$50,000</p>
                     </div>
                 </div>
@@ -855,8 +857,8 @@
                 style="flex: 1;">
                 <div class="row g-3 fw-black fst-italic">
                     <div class="col-6 d-flex flex-column gap-1">
-                        <label class="text-xxs text-uppercase text-secondary fw-black font-sans-normal">Gói Bán
-                            Nợ</label>
+                        <label class="text-xxs text-uppercase text-secondary fw-black font-sans-normal">Debt
+                            Sale Package</label>
                         <select id="select-pkg" onchange="updateModalCalc()"
                             class="form-select form-select-lg bg-light border-2 rounded-2xl fw-black font-sans-normal fst-italic">
                             <option value="1000">1,000 USDV</option>
@@ -868,8 +870,8 @@
                         </select>
                     </div>
                     <div class="col-6 d-flex flex-column gap-1 opacity-75">
-                        <label class="text-xxs text-uppercase text-secondary fw-black font-sans-normal">Kỳ Hạn
-                            Gói</label>
+                        <label class="text-xxs text-uppercase text-secondary fw-black font-sans-normal">Package
+                            Term</label>
                         <div class="w-100 p-3 bg-light border border-2 rounded-2xl d-flex justify-content-between align-items-center font-sans-normal fw-black fst-italic"
                             style="height: calc(100% - 22px);">
                             <span>42 Months</span> <i data-lucide="lock" width="18"></i>
@@ -886,13 +888,13 @@
                         <span>Daily payout</span><span id="calc-daily" class="text-dark">$47.62 USDV</span></div>
                     <div class="d-flex justify-content-between opacity-75 fw-black font-sans-normal"
                         style="font-size: 13px;">
-                        <span class="lang-total-reward-text">Tổng thưởng nhận về </span><span id="calc-earned"
+                        <span class="lang-total-reward-text">Total reward received </span><span id="calc-earned"
                             class="text-dark">$40,000 USDV</span>
                     </div>
                     <div class="pt-3 border-top d-flex justify-content-between align-items-end font-sans-normal mt-2">
                         <div>
-                            <p class="text-xxs text-info text-uppercase lang-total-return fw-black fst-italic mb-1">Tổng
-                                Bồi Hoàn (x3)</p>
+                            <p class="text-xxs text-info text-uppercase lang-total-return fw-black fst-italic mb-1">Total
+                                Return (x3)</p>
                             <p id="calc-total" class="fs-2 text-dark fw-black tracking-tighter lh-1 mb-0">$60,000</p>
                         </div>
                         <div class="text-end fw-black fst-italic font-sans-normal">
@@ -906,8 +908,8 @@
                 <div class="p-4 p-lg-5 rounded-custom-lg d-flex flex-column gap-4 shadow-sm position-relative fst-italic fw-black font-sans-normal"
                     style="background-color: #F8FAFC;">
                     <div class="text-center d-flex flex-column gap-1">
-                        <p class="text-xxs text-uppercase text-secondary lang-act-gap fw-black fst-italic mb-0">Số Tiền
-                            Cần Nạp Thêm</p>
+                        <p class="text-xxs text-uppercase text-secondary lang-act-gap fw-black fst-italic mb-0">Additional
+                            Funding Required</p>
                         <p id="calc-gap" class="display-6 text-danger fw-black fst-italic tracking-tighter mb-0">
                             $14,832.18 USD</p>
                     </div>
@@ -924,7 +926,7 @@
                                     class="fs-4 fw-black text-uppercase tracking-tighter fst-italic font-sans-normal mb-0">USDV</span>
                             </div>
                             <div class="text-end">
-                                <p class="text-xxs text-secondary fw-bold text-uppercase lang-balance mb-0">Số dư</p>
+                                <p class="text-xxs text-secondary fw-bold text-uppercase lang-balance mb-0">Balance</p>
                                 <p class="fs-5 fw-black text-dark font-sans-normal fst-italic mb-0">$62,331.06</p>
                             </div>
                         </div>
@@ -932,7 +934,7 @@
 
                     <div
                         class="pt-3 border-top border-secondary-subtle d-flex justify-content-between align-items-center">
-                        <span class="fs-5 text-uppercase text-dark lang-total-pay fw-black">Tổng Thanh Toán</span>
+                        <span class="fs-5 text-uppercase text-dark lang-total-pay fw-black">Total Payment</span>
                         <span id="calc-final"
                             class="fs-2 text-primary fw-black tracking-tighter fst-italic font-sans-normal">$15,277.15</span>
                     </div>
@@ -945,13 +947,13 @@
                             style="width: 32px; height: 32px; flex-shrink: 0;"></div>
                         <p
                             class="text-xxs text-uppercase text-secondary lh-base tracking-widest lang-confirm-text fw-black fst-italic mb-0 py-1">
-                            Tôi xác nhận giao dịch và sử dụng tài sản VMM hiện có để kích hoạt gói.</p>
+                            I confirm this transaction and use existing VMM assets to activate the package.</p>
                     </div>
                     <button id="btn-place" onclick="deployPackage()"
                         class="btn btn-light text-secondary w-100 py-3 rounded-pill fs-4 fw-black text-uppercase tracking-widest shadow d-flex align-items-center justify-content-center gap-3 fst-italic font-sans-normal"
                         disabled>
-                        <i data-lucide="rocket"></i> <span class="lang-btn-place font-sans-normal fst-italic">VÀO GÓI
-                            NGAY</span>
+                        <i data-lucide="rocket"></i> <span class="lang-btn-place font-sans-normal fst-italic">ENTER
+                            PACKAGE NOW</span>
                     </button>
                 </div>
             </div>
@@ -984,12 +986,12 @@
                             class="badge bg-primary bg-opacity-10 text-primary rounded-2 py-1 px-2 text-xxs fw-black text-uppercase"
                             id="receipt-status">Active</span></div>
                     <div class="d-flex justify-content-between align-items-center" style="font-size: 14px;"><span
-                            class="text-secondary fw-bold text-uppercase text-xxs lang-created-date-label">Ngày Tham
-                            Gia</span><span class="text-dark fw-black font-sans-normal" id="receipt-created">-</span>
+                            class="text-secondary fw-bold text-uppercase text-xxs lang-created-date-label">Created
+                            Date</span><span class="text-dark fw-black font-sans-normal" id="receipt-created">-</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center" style="font-size: 14px;"><span
-                            class="text-secondary fw-bold text-uppercase text-xxs lang-end-date-label">Ngày Kết
-                            Thúc</span><span class="text-dark fw-black font-sans-normal" id="receipt-release">-</span>
+                            class="text-secondary fw-bold text-uppercase text-xxs lang-end-date-label">End
+                            Date</span><span class="text-dark fw-black font-sans-normal" id="receipt-release">-</span>
                     </div>
                 </div>
                 <div class="d-flex flex-column gap-2 pb-3 border-bottom border-secondary-subtle border-dashed">
@@ -1005,19 +1007,19 @@
                             class="text-dark fw-black font-sans-normal">~0.238%</span></div>
                     <div class="d-flex justify-content-between align-items-center pt-2 mt-1 border-top"
                         style="font-size: 14px;"><span
-                            class="text-info text-uppercase text-xxs lang-receipt-daily-amount fw-black">Số tiền mỗi
-                            ngày</span><span class="text-primary fw-black font-sans-normal"
+                            class="text-info text-uppercase text-xxs lang-receipt-daily-amount fw-black">Daily
+                            Amount</span><span class="text-primary fw-black font-sans-normal"
                             id="receipt-daily-amount">-</span></div>
                     <div class="d-flex justify-content-between align-items-center" style="font-size: 14px;"><span
-                            class="text-info text-uppercase text-xxs lang-receipt-monthly-amount fw-black">Số tiền mỗi
-                            tháng</span><span class="text-primary fw-black font-sans-normal"
+                            class="text-info text-uppercase text-xxs lang-receipt-monthly-amount fw-black">Monthly
+                            Amount</span><span class="text-primary fw-black font-sans-normal"
                             id="receipt-monthly-amount">-</span></div>
                     <div class="d-flex justify-content-between align-items-center pt-2" style="font-size: 14px;"><span
                             class="text-secondary text-uppercase text-xxs fw-black">Reward Cycles Completed</span><span
                             class="text-success fw-black font-sans-normal" id="receipt-cycles">-</span></div>
                     <div class="d-flex justify-content-between align-items-center" style="font-size: 14px;"><span
-                            class="text-secondary text-uppercase text-xxs lang-receipt-remaining fw-black">Số ngày còn
-                            lại</span><span class="text-info fw-black font-sans-normal" id="receipt-remaining">-</span>
+                            class="text-secondary text-uppercase text-xxs lang-receipt-remaining fw-black">Days
+                            Remaining</span><span class="text-info fw-black font-sans-normal" id="receipt-remaining">-</span>
                     </div>
                 </div>
                 <div class="d-flex flex-column gap-2 pb-2">
@@ -1048,9 +1050,6 @@
         </div>
     </div>
 
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
     <!-- Script Logic -->
     <script>
         // Declarations at the very top
@@ -1058,7 +1057,6 @@
         const SLIPPAGE = 0.03;
         const VMM_VAL_EXISTING = 5167.82;
         const TOTAL_DAYS = 1260;
-        let currentLang = 'vi';
         let isConfirmed = false;
         let networkBonusVal = 12850.50;
 
@@ -1072,54 +1070,19 @@
             { amount: 10000, f1: 10, vmm: 30 }, { amount: 20000, f1: 10, vmm: 35 }, { amount: 50000, f1: 12, vmm: 35 }, { amount: 100000, f1: 14, vmm: 40 }
         ];
 
-        const i18n = {
-            en: {
-                commitment: "Commitment Live (x3)", principal: "Total Principal", bonus: "Network Bonus", received: "Received Back",
-                remaining: "Remaining Debt", license: "Franchise License", sequence: "IOU Sequence 1x3 (42 Months)", totalReturn: "Total Return",
-                newDebt: "NEW DEBT SALE", subDash: "Dashboard", subHist: "Package History", subBene: "Tier Benefits",
-                pkgTitle: "PACKAGE", bvValue: "BV Value", directBonus: "Direct F1 Bonus", vmmLimit: "VMM Buy Limit",
-                iouLabel: "IOU Package", periodLabel: "Plan Period", actGap: "Activation Fund Required",
-                totalPay: "Total Payment", btnPlace: "PLACE PACKAGE", deploying: "DEPLOYING...", balance: "Balance",
-                totalRewardText: "Total reward earned ", confirmText: "I confirm and use existing VMM assets.",
-                createdDateLabel: "Created Date", endDateLabel: "End Date",
-                receiptDailyAmount: "Daily Payout Amount", receiptMonthlyAmount: "Monthly Payout Amount",
-                receiptRemaining: "Remaining Cycles", lendingTitle: "Web3 Credit loan", lendingDesc: "Optimize capital through decentralized credit.",
-                creditLimit: "Credit Limit", activeLoan: "Active Loan", interestRate: "Daily Interest", loanOptions: "Lending Options",
-                licenseTitlePhoto: "LICENSE PRIVILEGES",
-                priv1Title: "ATM PROCESSING", priv1Desc: "EARN FEES FROM GLOBAL TRANSACTIONS.",
-                priv2Title: "AFFILIATE REWARDS", priv2Desc: "UNLOCK MULTI-TIER NETWORK BONUSES.",
-                priv3Title: "GIFT CARD ISSUANCE", priv3Desc: "ZERO NETWORK ISSUANCE FEES.",
-                priv4Title: "ZERO TRADING FEES", priv4Desc: "ZERO FEES ON INTERNAL TRADES.",
-                priv5Title: "INSTITUTIONAL ACCESS", priv5Desc: "VIP NODES & GLOBAL PRIVILEGES.",
-                subBene: "Tier Benefits", beneDesc: "F1 BV reward and max VMM buy limit per package.", bvRate: "$2 USDV = 1 BV"
-            },
-            vi: {
-                commitment: "Cam Kết Live (x3)", principal: "Tổng Gốc Đã Bán", bonus: "Thưởng Hệ Thống", received: "Đã Nhận Bồi Hoàn",
-                remaining: "Nợ Còn Lại", license: "Giấy Phép Kinh Doanh", sequence: "Lộ Trình Ghi Nợ 1x3 (42 Tháng)", totalReturn: "Tổng Bồi Hoàn",
-                newDebt: "THỰC HIỆN BÁN NỢ MỚI", subDash: "Bảng Điều Khiển", subHist: "Lịch Sử Bán Nợ", subBene: "Quyền Lợi Tier",
-                pkgTitle: "GÓI", bvValue: "Giá Trị BV", directBonus: "Thưởng Trực Tiếp F1", vmmLimit: "Hạn Mức Mua VMM",
-                iouLabel: "Gói Bán Nợ", periodLabel: "Kỳ Hạn Gói", actGap: "Số Tiền Cần Nạp Thêm",
-                totalPay: "Tổng Thanh Toán", btnPlace: "VÀO GÓI NGAY", deploying: "ĐANG XỬ LÝ...", balance: "Số dư",
-                totalRewardText: "Tổng thưởng nhận về ", confirmText: "Tôi xác nhận và sử dụng VMM hiện có.",
-                createdDateLabel: "Ngày Tham Gia", endDateLabel: "Ngày Kết Thúc",
-                receiptDailyAmount: "Số tiền mỗi ngày", receiptMonthlyAmount: "Số tiền mỗi tháng",
-                receiptRemaining: "Số ngày còn lại", lendingTitle: "Cho Vay Tín Dụng Web3", lendingDesc: "Tối ưu hóa nguồn vốn qua hệ thống tín dụng phi tập trung.",
-                creditLimit: "Hạn Mức Tín Dụng", activeLoan: "Đang Vay", interestRate: "Lãi Suất Ngày", loanOptions: "Lựa Chọn Khoản Vay",
-                licenseTitlePhoto: "ĐẶC QUYỀN GIẤY PHÉP",
-                priv1Title: "XỬ LÝ ATM", priv1Desc: "HƯỞNG PHÍ TỪ GIAO DỊCH TOÀN CẦU.",
-                priv2Title: "THƯỞNG AFFILIATE", priv2Desc: "MỞ KHÓA THƯỞNG HỆ THỐNG ĐA TẦNG.",
-                priv3Title: "PHÁT HÀNH GIFT CARD", priv3Desc: "MIỄN PHÍ PHÁT HÀNH MẠNG LƯỚI.",
-                priv4Title: "MIỄN PHÍ GIAO DỊCH", priv4Desc: "KHÔNG TỐN PHÍ GIAO DỊCH NỘI BỘ.",
-                priv5Title: "TRUY CẬP ĐỊNH CHẾ", priv5Desc: "VIP NODES & ĐẶC QUYỀN TOÀN CẦU.",
-                subBene: "Quyền Lợi Tier", beneDesc: "Thưởng trực tiếp F1 và hạn mức mua VMM tối đa theo từng gói.", bvRate: "$2 USDV = 1 BV"
-            }
-        };
-
         // Utility functions
         function safeUpdate(id, text) {
             const el = document.getElementById(id);
             if (el) el.innerText = text;
         }
+
+        function refreshIcons() {
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', refreshIcons);
 
         function toggleModal(id, show) {
             const m = document.getElementById('modal-' + id);
@@ -1142,7 +1105,7 @@
             const iou = document.getElementById('section-iou'); if (iou) iou.classList.toggle('d-none', idx !== 0);
             const lend = document.getElementById('section-lending'); if (lend) lend.classList.toggle('d-none', idx !== 3);
             const lic = document.getElementById('section-license'); if (lic) lic.classList.toggle('d-none', idx !== 4);
-            if (idx === 4) lucide.createIcons();
+            if (idx === 4) refreshIcons();
         }
 
         function switchSubTab(type) {
@@ -1162,27 +1125,6 @@
             if (type === 'history') renderHistory();
             if (type === 'dashboard') renderDashboardList();
             if (type === 'benefits') renderTiers();
-        }
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            const keys = ['commitment-label', 'principal', 'bonus', 'received', 'remaining', 'license', 'sequence', 'new-debt', 'iou-label', 'period-label', 'act-gap', 'balance', 'confirm-text', 'btn-place', 'total-reward-text', 'created-date-label', 'end-date-label', 'receipt-daily-amount', 'receipt-monthly-amount', 'receipt-remaining', 'lending-title', 'lending-desc', 'credit-limit', 'active-loan', 'interest-rate', 'loan-options', 'license-title-photo', 'priv-1-title', 'priv-1-desc', 'priv-2-title', 'priv-2-desc', 'priv-3-title', 'priv-3-desc', 'priv-4-title', 'priv-4-desc', 'priv-5-title', 'priv-5-desc', 'sub-bene', 'bene-desc'];
-            keys.forEach(k => {
-                const targets = document.querySelectorAll('.lang-' + k);
-                const translationKey = k.replace(/-./g, x => x[1].toUpperCase());
-                if (i18n[lang][translationKey]) targets.forEach(el => el.innerText = i18n[lang][translationKey]);
-            });
-            safeUpdate('sub-dash', i18n[lang].subDash);
-            safeUpdate('sub-hist', i18n[lang].subHist);
-            safeUpdate('sub-bene', i18n[lang].subBene);
-
-            const btnEn = document.getElementById('btn-en');
-            if (btnEn) btnEn.className = lang === 'en' ? "btn btn-sm btn-light shadow-sm text-primary border-0 fw-black text-xxs transition-all" : "btn btn-sm text-secondary border-0 fw-black text-xxs transition-all";
-
-            const btnVi = document.getElementById('btn-vi');
-            if (btnVi) btnVi.className = lang === 'vi' ? "btn btn-sm btn-light shadow-sm text-primary border-0 fw-black text-xxs transition-all" : "btn btn-sm text-secondary border-0 fw-black text-xxs transition-all";
-
-            renderHistory(); renderDashboardList(); renderTiers(); updateDashboardStats(); updateModalCalc();
         }
 
         function updateDashboardStats() {
@@ -1210,11 +1152,11 @@
                        </div>
                        <p class="text-xs text-secondary text-uppercase tracking-widest mb-2 font-sans-normal fw-bold">Package Value</p>
                        <p class="fs-2 text-dark font-sans-normal fw-black fst-italic mb-4">$${pkg.value.toLocaleString()} <span class="fs-5 text-secondary fw-black fst-italic">USDV</span></p>
-                       <button onclick="showReceipt('${pkg.id}')" class="btn btn-light border w-100 mt-auto py-3 rounded-pill text-xxs text-uppercase tracking-widest transition-all d-flex align-items-center justify-content-center gap-2 fst-italic fw-black font-sans-normal shadow-sm btn-hover-primary">XEM BIÊN LAI <i data-lucide="arrow-up-right"></i></button>
+                       <button onclick="showReceipt('${pkg.id}')" class="btn btn-light border w-100 mt-auto py-3 rounded-pill text-xxs text-uppercase tracking-widest transition-all d-flex align-items-center justify-content-center gap-2 fst-italic fw-black font-sans-normal shadow-sm btn-hover-primary">VIEW RECEIPT <i data-lucide="arrow-up-right"></i></button>
                     </div>
                 </div>
             `).join('');
-            lucide.createIcons();
+            refreshIcons();
 
             // Add hover effects for buttons generated
             document.querySelectorAll('.btn-hover-primary').forEach(btn => {
@@ -1238,7 +1180,7 @@
                     </div>
                     <div class="d-flex align-items-center gap-5 mt-4 mt-lg-0 pe-lg-3 font-sans-normal fst-italic fw-black w-lg-auto justify-content-between justify-content-lg-end">
                         <div class="text-center font-sans-normal fw-black fst-italic">
-                            <p class="text-xxs text-uppercase text-secondary mb-1 fw-bold fst-italic font-sans-normal">Bồi hoàn (x3)</p>
+                            <p class="text-xxs text-uppercase text-secondary mb-1 fw-bold fst-italic font-sans-normal">Repayment (x3)</p>
                             <p class="fs-4 text-info fw-black fst-italic font-sans-normal mb-0">$${(pkg.value * 3).toLocaleString()}</p>
                         </div>
                         <button onclick="showReceipt('${pkg.id}')" class="btn btn-light border p-3 rounded-3xl transition-all shadow-sm btn-hover-primary">
@@ -1247,7 +1189,7 @@
                     </div>
                 </div>
             `).join('');
-            lucide.createIcons();
+            refreshIcons();
 
             document.querySelectorAll('.btn-hover-primary').forEach(btn => {
                 btn.addEventListener('mouseenter', function () { this.classList.remove('btn-light', 'text-dark'); this.classList.add('btn-primary', 'text-white'); });
@@ -1281,13 +1223,13 @@
             const grid = document.getElementById('tier-grid'); if (!grid) return;
             grid.innerHTML = tiersList.map(tier => `
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                    <div class="bg-white rounded-custom p-4 border transition-all fst-italic fw-black font-sans-normal card-glow ${tier.amount === 20000 ? 'border-primary shadow-lg' : 'shadow-sm'}" style="${tier.amount === 20000 ? 'transform: scale(1.03); box-shadow: 0 1rem 3rem rgba(13,110,253,0.15) !important;' : ''}">
+                    <div class="bg-white rounded-custom p-4 border transition-all fst-italic fw-black font-sans-normal card-glow tier-card shadow-sm ${tier.amount === 20000 ? 'tier-card-featured' : ''}" style="${tier.amount === 20000 ? 'transform: scale(1.03);' : ''}">
                         <div class="d-flex justify-content-between align-items-start mb-4 fst-italic fw-black">
                             <div class="rounded-3xl d-flex align-items-center justify-content-center ${tier.amount >= 20000 ? 'bg-primary text-white shadow' : 'bg-light text-secondary'}" style="width: 56px; height: 56px;">
                                 <i data-lucide="star"></i>
                             </div>
                             <div class="text-end fst-italic fw-black font-sans-normal">
-                                <p class="text-xxs text-secondary text-uppercase font-sans-normal fw-bold mb-0">GÓI</p>
+                                <p class="text-xxs text-secondary text-uppercase font-sans-normal fw-bold mb-0">PACKAGE</p>
                                 <p class="fs-3 text-dark font-sans-normal fst-italic fw-black mb-0">$${tier.amount.toLocaleString()}</p>
                             </div>
                         </div>
@@ -1301,14 +1243,14 @@
                                 <span class="text-primary fw-black fs-4 font-sans-normal fst-italic">${tier.f1}%</span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center fst-italic fw-black font-sans-normal pt-2 border-top border-secondary-subtle">
-                                <span class="text-xxs text-secondary text-uppercase fw-black font-sans-normal">Hạn Mức Mua VMM</span>
+                                <span class="text-xxs text-secondary text-uppercase fw-black font-sans-normal">VMM Buy Limit</span>
                                 <span class="text-success fw-black fs-4 font-sans-normal fst-italic">${tier.vmm}%</span>
                             </div>
                         </div>
                     </div>
                 </div>
             `).join('');
-            lucide.createIcons();
+            refreshIcons();
         }
 
         function updateModalCalc() {
@@ -1325,7 +1267,7 @@
             safeUpdate('calc-total', '$' + totalRet.toLocaleString());
             safeUpdate('calc-vmm', '-' + Math.floor(totalRet / VMM_PRICE).toLocaleString() + ' VMM');
             const targetLabel = document.querySelector('.lang-total-reward-text');
-            if (targetLabel) targetLabel.innerText = i18n[currentLang].totalRewardText + '$' + daily.toFixed(2) + ' x ' + TOTAL_DAYS;
+            if (targetLabel) targetLabel.innerText = 'Total reward received ' + '$' + daily.toFixed(2) + ' x ' + TOTAL_DAYS;
         }
 
         function setMethod(m) { }
@@ -1334,34 +1276,28 @@
             const amount = parseInt(document.getElementById('select-pkg').value);
             const btn = document.getElementById('btn-place');
             btn.innerHTML = `<div class="spinner-border spinner-border-sm me-2" role="status"></div> <span>PROCESSING...</span>`;
-            lucide.createIcons();
+            refreshIcons();
             setTimeout(() => {
                 const now = new Date();
                 userPackages.unshift({ id: 'DEBT-' + (amount / 1000) + 'K-' + Math.floor(Math.random() * 999), value: amount, received: 0, status: 'Active', createdDate: now.toLocaleDateString(), releaseDate: now.toLocaleDateString(), totalReturn: amount * 3, cycles: 0 });
-                toggleModal('package', false); setLanguage(currentLang);
-                btn.innerHTML = `<i data-lucide="rocket"></i> <span class="lang-btn-place font-sans-normal fst-italic">VÀO GÓI NGAY</span>`;
-                lucide.createIcons();
-
-                // Thay thế alert bằng Bootstrap Toast hoặc mượn tạm alert
-                alert("Kích hoạt thành công!");
+                toggleModal('package', false);
+                btn.innerHTML = `<i data-lucide="rocket"></i> <span class="lang-btn-place font-sans-normal fst-italic">ENTER PACKAGE NOW</span>`;
+                updateDashboardStats();
+                renderDashboardList();
+                renderTiers();
+                updateModalCalc();
+                refreshIcons();
+                alert("Activation successful!");
             }, 1500);
         }
 
-        window.onload = () => {
-            const container = document.getElementById('hero-3d');
-            if (container) {
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-                renderer.setSize(window.innerWidth, window.innerHeight); container.appendChild(renderer.domElement);
-                const geo = new THREE.IcosahedronGeometry(2.5, 1);
-                const mat = new THREE.MeshPhongMaterial({ color: 0x0d6efd, wireframe: true, transparent: true, opacity: 0.1 });
-                const mesh = new THREE.Mesh(geo, mat); scene.add(mesh);
-                const light = new THREE.PointLight(0xffffff, 1); light.position.set(10, 10, 10); scene.add(light);
-                camera.position.z = 6;
-                function anim() { requestAnimationFrame(anim); mesh.rotation.y += 0.002; renderer.render(scene, camera); }
-                anim();
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            switchMainTab(0);
+            updateDashboardStats();
+            renderDashboardList();
+            renderTiers();
+            updateModalCalc();
+            refreshIcons();
 
             const checkboxWrapper = document.getElementById('btn-confirm-wrapper');
             const checkboxUi = document.getElementById('checkbox-ui');
@@ -1380,12 +1316,10 @@
                         btnPlace.disabled = true;
                         btnPlace.className = "btn btn-light text-secondary w-100 py-3 rounded-pill fs-4 fw-black text-uppercase tracking-widest shadow d-flex align-items-center justify-content-center gap-3 fst-italic font-sans-normal";
                     }
-                    lucide.createIcons();
+                    refreshIcons();
                 };
             }
-            setLanguage('vi');
-            switchMainTab(0);
-        };
+        });
     </script>
 </body>
 

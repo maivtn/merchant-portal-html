@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nodes.quantityPrice) nodes.quantityPrice.textContent = `@ $${quantityPrice.toFixed(2)}`;
       if (nodes.merchant) nodes.merchant.textContent = 'ATM-A8FOBN';
       if (nodes.distance) nodes.distance.textContent = 'Nearby (within 235 mins)';
+      if (nodes.countdown) nodes.countdown.textContent = '10s';
       if (nodes.systemFee) nodes.systemFee.textContent = formatMoney(systemFee);
       if (nodes.merchantFee) nodes.merchantFee.textContent = formatMoney(merchantFee);
       if (nodes.total) nodes.total.textContent = formatMoney(total);
@@ -131,6 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileFeeRate = 5;
     const insuranceFee = 1;
     const buyerReceives = 100;
+    const countdownStartMs = 5 * 60 * 1000;
+    const redirectAfterMs = 10 * 1000;
 
     const formatMoney = (value) => `$${Number(value).toFixed(1).replace(/\.0$/, '')}`;
     const serviceLabel = type === 'sell' ? 'Sell USDV with Cash' : 'Buy USDV with Cash';
@@ -161,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const buyerPays = total;
 
       if (nodes.title) nodes.title.textContent = serviceLabel;
-      if (nodes.countdown) nodes.countdown.textContent = '4:51s';
+      if (nodes.countdown) nodes.countdown.textContent = '5:00';
       if (nodes.amount) nodes.amount.textContent = formatMoney(amount);
       if (nodes.systemFee) nodes.systemFee.textContent = formatMoney(systemFee);
       if (nodes.mobileFee) nodes.mobileFee.textContent = formatMoney(mobileFee);
@@ -184,5 +187,72 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     render();
+
+    const startAt = Date.now();
+    const countdown = nodes.countdown;
+    const tick = () => {
+      const elapsed = Date.now() - startAt;
+      const remaining = Math.max(0, countdownStartMs - elapsed);
+      const displayMinutes = Math.floor(remaining / 60000);
+      const displaySeconds = Math.floor((remaining % 60000) / 1000);
+      if (countdown) countdown.textContent = `${displayMinutes}:${String(displaySeconds).padStart(2, '0')}`;
+      if (elapsed >= redirectAfterMs) {
+        window.location.href = `merchant-atm-accepted.html?type=${encodeURIComponent(type)}`;
+        return;
+      }
+      window.requestAnimationFrame(tick);
+    };
+
+    tick();
+  }
+
+  const acceptedRoot = document.querySelector('[data-accepted-root]');
+  if (acceptedRoot) {
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type') || 'buy';
+    const serviceLabel = type === 'sell' ? 'Sell USDV with Cash' : 'Buy USDV with Cash';
+    const badge = document.querySelector('[data-accepted-badge]');
+    const title = document.querySelector('[data-accepted-title]');
+    const status = document.querySelector('[data-accepted-status]');
+    const more = document.querySelector('[data-accepted-more]');
+    const toggle = document.querySelector('[data-accepted-toggle]');
+    const arrow = document.querySelector('[data-accepted-arrow]');
+    const menu = document.querySelector('[data-accepted-menu]');
+    const menuToggle = document.querySelector('[data-accepted-menu-toggle]');
+    const menuArrow = document.querySelector('[data-accepted-menu-arrow]');
+    const showQrLink = document.querySelector('[data-accepted-show-qr]');
+    const backLinks = document.querySelectorAll('[data-accepted-back]');
+
+    if (badge) badge.textContent = 'Accepted';
+    if (title) title.textContent = serviceLabel;
+    if (status) status.textContent = 'Accepted';
+    if (showQrLink) showQrLink.href = `merchant-atm-qr.html?type=${encodeURIComponent(type)}`;
+    backLinks.forEach((link) => {
+      link.href = `merchant-atm-request-details.html?type=${encodeURIComponent(type)}`;
+    });
+
+    if (toggle && more && arrow) {
+      toggle.addEventListener('click', () => {
+        const hidden = more.classList.toggle('hidden');
+        arrow.style.transform = hidden ? 'rotate(0deg)' : 'rotate(180deg)';
+      });
+    }
+
+    if (menuToggle && menu && menuArrow) {
+      menuToggle.addEventListener('click', () => {
+        const hidden = menu.classList.toggle('hidden');
+        menuArrow.style.transform = hidden ? 'rotate(0deg)' : 'rotate(180deg)';
+      });
+      document.addEventListener('click', (event) => {
+        if (!acceptedRoot.contains(event.target)) {
+          menu.classList.add('hidden');
+          menuArrow.style.transform = 'rotate(0deg)';
+          return;
+        }
+        if (menu.contains(event.target) || menuToggle.contains(event.target)) return;
+        menu.classList.add('hidden');
+        menuArrow.style.transform = 'rotate(0deg)';
+      });
+    }
   }
 });

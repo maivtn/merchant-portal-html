@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Review Details</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="merchant-atm-common.css" />
+  <script defer src="merchant-atm-common.js"></script>
+</head>
+
+<body class="antialiased">
+  <main class="screen-shell">
+    <section class="step-card review-frame">
+      <div class="px-4 pt-4 pb-3 bg-transparent border-b border-[rgba(148,163,184,0.16)]">
+        <div class="flex items-center justify-between">
+          <a href="merchant-atm-order.html?type=buy" data-review-back class="inline-flex items-center gap-2 text-slate-700 text-sm font-semibold">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          </a>
+          <h1 class="text-[15px] font-bold text-slate-900">Review Details</h1>
+          <button class="inline-flex items-center gap-2 text-slate-700 text-sm font-semibold">
+            <i data-lucide="grid-2x2" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="px-5 pt-3 pb-5 bg-transparent" data-review-root>
+        <div class="review-card px-4 py-4">
+          <div class="space-y-3">
+            <div class="review-row">
+              <span class="review-label">Service Type:</span>
+              <span class="review-value" data-review-service-type>Buy USDV with Cash</span>
+            </div>
+            <div class="review-row">
+              <span class="review-label">Amount:</span>
+              <span class="review-value" data-review-amount>$100</span>
+            </div>
+            <div class="review-row">
+              <span class="review-label">Quantity:</span>
+              <span class="review-value">
+                <span data-review-quantity>100 USDV</span><br />
+                <span class="review-muted" data-review-quantity-price>@ $1.00</span>
+              </span>
+            </div>
+            <div class="review-row pt-1">
+              <span class="review-label">Merchant ATM:</span>
+              <span class="review-value">
+                <span data-review-merchant>ATM-A8FOBN</span><br />
+                <span class="review-muted" data-review-distance>Nearby (within 235 mins)</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="mt-4 insurance-card px-3 py-3">
+            <div class="flex items-start justify-between gap-3">
+              <label class="flex items-center gap-2 font-bold text-slate-700 text-[14px]">
+                <input type="checkbox" class="insurance-check" data-review-insurance />
+                <span>Transaction Insurance</span>
+              </label>
+              <span class="text-[14px] font-bold text-slate-700" data-review-insurance-fee>$1</span>
+            </div>
+            <p class="mt-2 text-[13px] leading-5 text-slate-500">
+              You only need to pay 1% of the transaction value to activate insurance and add extra protection for your transaction.
+            </p>
+          </div>
+
+          <div class="mt-4 space-y-2">
+            <div class="review-total-row">
+              <span>System Fee (1%):</span>
+              <strong data-review-system-fee>$1</strong>
+            </div>
+            <div class="review-total-row">
+              <span>Merchant Fee (1.7%):</span>
+              <strong data-review-merchant-fee>$1.7</strong>
+            </div>
+            <div class="review-total-row">
+              <span>Total:</span>
+              <strong data-review-total>$102.7</strong>
+            </div>
+          </div>
+
+          <div class="mt-5 flex items-center justify-center gap-3">
+            <a href="merchant-atm-order.html?type=buy" data-review-back class="inline-flex min-w-[96px] items-center justify-center rounded-2xl details-secondary-btn px-5 py-3.5 text-[15px] font-bold">Cancel</a>
+            <a href="#" data-review-confirm class="inline-flex min-w-[96px] items-center justify-center rounded-2xl details-primary-btn px-5 py-3.5 text-[15px] font-bold">Confirm</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type') || 'buy';
+    document.querySelectorAll('[data-review-back]').forEach((link) => {
+      link.href = `merchant-atm-order.html?type=${encodeURIComponent(type)}`;
+    });
+    lucide.createIcons();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.lucide && typeof window.lucide.createIcons === 'function') {
+    window.lucide.createIcons();
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const type = params.get('type') || (window.location.pathname.endsWith('merchant-atm-order.html') ? 'buy' : null);
+  document.querySelectorAll('[data-step-mode]').forEach((el) => {
+    if (el.getAttribute('data-step-mode') === type) {
+      el.classList.add('active');
+    }
+  });
+
+  document.querySelectorAll('.step-toggle').forEach((toggle) => {
+    const options = Array.from(toggle.querySelectorAll('[data-step-mode]'));
+    if (!options.length) return;
+
+    const syncOrderContinue = () => {
+      const orderContinue = document.querySelector('[data-order-continue]');
+      if (!orderContinue) return;
+      const activeModeButton = document.querySelector('.step-toggle [data-step-mode].active');
+      const activeMode = activeModeButton?.getAttribute('data-step-mode') || 'buy';
+      orderContinue.setAttribute('href', `merchant-atm-review.html?type=${encodeURIComponent(activeMode)}`);
+    };
+
+    const setActive = (target) => {
+      options.forEach((option) => {
+        const isActive = option === target;
+        option.classList.toggle('active', isActive);
+        option.setAttribute('aria-pressed', String(isActive));
+      });
+      syncOrderContinue();
+    };
+
+    const initial = options.find((option) => option.classList.contains('active')) || options[0];
+    setActive(initial);
+
+    options.forEach((option) => {
+      option.addEventListener('click', () => setActive(option));
+    });
+  });
+
+  const termsOverlay = document.querySelector('[data-terms-modal]');
+  const termsOpeners = document.querySelectorAll('[data-terms-open]');
+  const termsClosers = document.querySelectorAll('[data-terms-close]');
+
+  if (termsOverlay) {
+    const openTerms = () => termsOverlay.classList.remove('hidden');
+    const closeTerms = () => termsOverlay.classList.add('hidden');
+
+    termsOpeners.forEach((button) => {
+      button.addEventListener('click', openTerms);
+    });
+
+    termsClosers.forEach((button) => {
+      button.addEventListener('click', closeTerms);
+    });
+
+    termsOverlay.addEventListener('click', (event) => {
+      if (event.target === termsOverlay) {
+        closeTerms();
+      }
+    });
+  }
+
+  const reviewRoot = document.querySelector('[data-review-root]');
+  if (reviewRoot) {
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type') || 'buy';
+    const quantity = 100;
+    const amount = 100;
+    const quantityPrice = 1;
+    const merchantFeeRate = 1.7;
+    const systemFeeRate = 1;
+    const insuranceRate = 1;
+
+    const formatMoney = (value) => `$${Number(value).toFixed(1).replace(/\.0$/, '')}`;
+    const formatQuantity = (value) => `${value} USDV`;
+    const serviceLabel = type === 'sell' ? 'Sell USDV with Cash' : 'Buy USDV with Cash';
+
+    const nodes = {
+      serviceType: document.querySelector('[data-review-service-type]'),
+      amount: document.querySelector('[data-review-amount]'),
+      quantity: document.querySelector('[data-review-quantity]'),
+      quantityPrice: document.querySelector('[data-review-quantity-price]'),
+      merchant: document.querySelector('[data-review-merchant]'),
+      distance: document.querySelector('[data-review-distance]'),
+      systemFee: document.querySelector('[data-review-system-fee]'),
+      merchantFee: document.querySelector('[data-review-merchant-fee]'),
+      total: document.querySelector('[data-review-total]'),
+      insuranceInput: document.querySelector('[data-review-insurance]'),
+      insuranceFee: document.querySelector('[data-review-insurance-fee]'),
+      confirmLink: document.querySelector('[data-review-confirm]'),
+    };
+
+    const render = () => {
+      const insuranceChecked = nodes.insuranceInput?.checked ?? false;
+      const insuranceFee = insuranceChecked ? amount * insuranceRate / 100 : 0;
+      const systemFee = amount * systemFeeRate / 100;
+      const merchantFee = amount * merchantFeeRate / 100;
+      const total = amount + systemFee + merchantFee + insuranceFee;
+
+      if (nodes.serviceType) nodes.serviceType.textContent = serviceLabel;
+      if (nodes.amount) nodes.amount.textContent = formatMoney(amount);
+      if (nodes.quantity) nodes.quantity.textContent = formatQuantity(quantity);
+      if (nodes.quantityPrice) nodes.quantityPrice.textContent = `@ $${quantityPrice.toFixed(2)}`;
+      if (nodes.merchant) nodes.merchant.textContent = 'ATM-A8FOBN';
+      if (nodes.distance) nodes.distance.textContent = 'Nearby (within 235 mins)';
+      if (nodes.systemFee) nodes.systemFee.textContent = formatMoney(systemFee);
+      if (nodes.merchantFee) nodes.merchantFee.textContent = formatMoney(merchantFee);
+      if (nodes.total) nodes.total.textContent = formatMoney(total);
+      if (nodes.insuranceFee) nodes.insuranceFee.textContent = formatMoney(amount * insuranceRate / 100);
+      if (nodes.confirmLink) {
+        nodes.confirmLink.href = `merchant-atm-request-details.html?type=${encodeURIComponent(type)}`;
+      }
+    };
+
+    if (nodes.insuranceInput) {
+      nodes.insuranceInput.addEventListener('change', render);
+    }
+
+    render();
+  }
+});

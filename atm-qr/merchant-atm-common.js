@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const quantity = 100;
     const amount = 100;
     const quantityPrice = 1;
-    const merchantFeeRate = 1.7;
+    const merchantFeeRate = 5;
     const systemFeeRate = 1;
     const insuranceRate = 1;
 
@@ -117,6 +117,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (nodes.insuranceInput) {
       nodes.insuranceInput.addEventListener('change', render);
+    }
+
+    render();
+  }
+
+  const requestRoot = document.querySelector('[data-request-root]');
+  if (requestRoot) {
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type') || 'buy';
+    const amount = 100;
+    const systemFeeRate = 1;
+    const mobileFeeRate = 5;
+    const insuranceFee = 1;
+    const buyerReceives = 100;
+
+    const formatMoney = (value) => `$${Number(value).toFixed(1).replace(/\.0$/, '')}`;
+    const serviceLabel = type === 'sell' ? 'Sell USDV with Cash' : 'Buy USDV with Cash';
+
+    const nodes = {
+      title: document.querySelector('[data-request-title]'),
+      countdown: document.querySelector('[data-request-countdown]'),
+      amount: document.querySelector('[data-request-amount]'),
+      systemFee: document.querySelector('[data-request-system-fee]'),
+      mobileFee: document.querySelector('[data-request-mobile-fee]'),
+      total: document.querySelector('[data-request-total]'),
+      buyerPays: document.querySelector('[data-request-buyer-pays]'),
+      sellerReceives: document.querySelector('[data-request-seller-receives]'),
+      platformFee: document.querySelector('[data-request-platform-fee]'),
+      buyerReceives: document.querySelector('[data-request-buyer-receives]'),
+      insuranceFee: document.querySelector('[data-request-insurance-fee]'),
+      more: document.querySelector('[data-request-more]'),
+      toggle: document.querySelector('[data-request-toggle]'),
+      arrow: document.querySelector('[data-request-arrow]'),
+      backLinks: document.querySelectorAll('[data-request-back]'),
+    };
+
+    const render = () => {
+      const systemFee = amount * systemFeeRate / 100;
+      const mobileFee = amount * mobileFeeRate / 100;
+      const total = amount + systemFee + mobileFee;
+      const sellerReceives = amount + mobileFee;
+      const buyerPays = total;
+
+      if (nodes.title) nodes.title.textContent = serviceLabel;
+      if (nodes.countdown) nodes.countdown.textContent = '4:51s';
+      if (nodes.amount) nodes.amount.textContent = formatMoney(amount);
+      if (nodes.systemFee) nodes.systemFee.textContent = formatMoney(systemFee);
+      if (nodes.mobileFee) nodes.mobileFee.textContent = formatMoney(mobileFee);
+      if (nodes.total) nodes.total.textContent = formatMoney(total);
+      if (nodes.buyerPays) nodes.buyerPays.textContent = formatMoney(buyerPays);
+      if (nodes.sellerReceives) nodes.sellerReceives.textContent = formatMoney(sellerReceives);
+      if (nodes.platformFee) nodes.platformFee.textContent = formatMoney(systemFee);
+      if (nodes.buyerReceives) nodes.buyerReceives.textContent = `${buyerReceives} USDV`;
+      if (nodes.insuranceFee) nodes.insuranceFee.textContent = `${insuranceFee} USDV`;
+      nodes.backLinks.forEach((link) => {
+        link.href = `merchant-atm-review.html?type=${encodeURIComponent(type)}`;
+      });
+    };
+
+    if (nodes.toggle && nodes.more && nodes.arrow) {
+      nodes.toggle.addEventListener('click', () => {
+        const hidden = nodes.more.classList.toggle('hidden');
+        nodes.arrow.style.transform = hidden ? 'rotate(0deg)' : 'rotate(180deg)';
+      });
     }
 
     render();

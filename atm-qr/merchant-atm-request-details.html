@@ -88,19 +88,19 @@
             <div class="space-y-2 text-[14px]">
               <div class="flex items-center justify-between">
                 <span class="text-slate-700">Amount</span>
-                <span class="font-bold text-slate-900">$100</span>
+                <span class="font-bold text-slate-900" data-request-amount>$100</span>
               </div>
               <div class="flex items-center justify-between">
                 <span class="text-slate-700">System Fee (1%) <i data-lucide="info" class="inline w-3.5 h-3.5 text-slate-400 align-middle"></i></span>
-                <span class="font-bold text-slate-900">$1</span>
+                <span class="font-bold text-slate-900" data-request-system-fee>$1</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-slate-700">Mobile Fee (1.7%) <i data-lucide="info" class="inline w-3.5 h-3.5 text-slate-400 align-middle"></i></span>
-                <span class="font-bold text-slate-900">$1.7</span>
+                <span class="text-slate-700">Mobile Fee (5%) <i data-lucide="info" class="inline w-3.5 h-3.5 text-slate-400 align-middle"></i></span>
+                <span class="font-bold text-slate-900" data-request-mobile-fee>$5</span>
               </div>
               <div class="flex items-center justify-between">
                 <span class="text-slate-700 font-semibold">Total</span>
-                <span class="font-black text-[color:var(--brand-primary)]">$102.7</span>
+                <span class="font-black text-[color:var(--brand-primary)]" data-request-total>$106</span>
               </div>
             </div>
           </div>
@@ -114,24 +114,24 @@
             <div class="space-y-2 text-[14px]">
               <div class="flex items-center justify-between">
                 <span class="text-slate-700">Buyer Pays <span class="text-slate-500 text-[12px]">(in cash)</span></span>
-                <span class="font-bold text-slate-900">$102.7</span>
+                <span class="font-bold text-slate-900" data-request-buyer-pays>$106</span>
               </div>
               <div class="flex items-center justify-between">
                 <span class="text-slate-700">Seller Receives <span class="text-slate-500 text-[12px]">(in cash)</span></span>
-                <span class="font-bold text-slate-900">$101.7</span>
+                <span class="font-bold text-slate-900" data-request-seller-receives>$105</span>
               </div>
               <div class="flex items-center justify-between">
                 <span class="text-slate-700">Seller collected for Platform <span class="text-slate-500 text-[12px]">(in cash)</span></span>
-                <span class="font-bold text-slate-900">$1</span>
+                <span class="font-bold text-slate-900" data-request-platform-fee>$1</span>
               </div>
               <div class="flex items-center justify-between">
                 <span class="text-slate-700">Buyer Receives</span>
-                <span class="font-bold text-slate-900">100 USDV</span>
+                <span class="font-bold text-slate-900" data-request-buyer-receives>100 USDV</span>
               </div>
               <hr class="border-slate-200" />
               <div class="flex items-center justify-between">
                 <span class="text-slate-700">Insurance Fee (Buyer)</span>
-                <span class="font-bold text-slate-900">1 USDV</span>
+                <span class="font-bold text-slate-900" data-request-insurance-fee>1 USDV</span>
               </div>
             </div>
           </div>
@@ -149,29 +149,6 @@
     </section>
   </main>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const type = params.get('type') || 'buy';
-    const title = document.querySelector('[data-request-title]');
-    document.querySelectorAll('[data-request-back]').forEach((link) => {
-      link.href = `merchant-atm-review.html?type=${encodeURIComponent(type)}`;
-    });
-    if (title) {
-      title.textContent = type === 'sell' ? 'Sell USDV with Cash' : 'Buy USDV with Cash';
-    }
-
-    const toggle = document.querySelector('[data-request-toggle]');
-    const more = document.querySelector('[data-request-more]');
-    const arrow = document.querySelector('[data-request-arrow]');
-    if (toggle && more && arrow) {
-      toggle.addEventListener('click', () => {
-        const hidden = more.classList.toggle('hidden');
-        arrow.style.transform = hidden ? 'rotate(0deg)' : 'rotate(180deg)';
-      });
-    }
-
-    lucide.createIcons();
-  </script>
 </body>
 
 </html>

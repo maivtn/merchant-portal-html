@@ -273,19 +273,4 @@ Luồng nghiệp vụ tổng thể của tính năng:
 - QR view: tặng qua QR.
 - Proof view: xem proof redeem.
 
-## 6. Ghi chú triển khai
-
-- Toàn bộ data hiện tại là mock trong JS, phù hợp cho demo UI/UX hơn là nghiệp vụ production.
-- Một số hành vi là placeholder:
-  - `download-receipt` chỉ `alert('Downloading Receipt...')`
-  - proof hiển thị bằng ảnh tĩnh
-  - QR cũng là ảnh tĩnh
-  - Transaction history là mock list
-
-## 7. Tham chiếu code
-
-- Templates UI: [`charity/charity-gift.html`](./charity-gift.html)
-- State, routing, business logic: [`charity/charity-gift.js`](./charity-gift.js)
-- Voucher list & batch detail: [`charity/charity-gift.js`](./charity-gift.js#L308)
-- Card list & card detail: [`charity/charity-gift.js`](./charity-gift.js#L315)
-- Payment validation: [`charity/charity-gift.js`](./charity-gift.js#L145)
+ 

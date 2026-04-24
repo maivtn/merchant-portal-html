@@ -220,16 +220,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const menu = document.querySelector('[data-accepted-menu]');
     const menuToggle = document.querySelector('[data-accepted-menu-toggle]');
     const menuArrow = document.querySelector('[data-accepted-menu-arrow]');
+    const qrModal = document.querySelector('[data-accepted-qr-modal]');
+    const qrClose = document.querySelector('[data-accepted-qr-close]');
     const showQrLink = document.querySelector('[data-accepted-show-qr]');
     const backLinks = document.querySelectorAll('[data-accepted-back]');
 
     if (badge) badge.textContent = 'Accepted';
     if (title) title.textContent = serviceLabel;
     if (status) status.textContent = 'Accepted';
-    if (showQrLink) showQrLink.href = `merchant-atm-qr.html?type=${encodeURIComponent(type)}`;
     backLinks.forEach((link) => {
       link.href = `merchant-atm-request-details.html?type=${encodeURIComponent(type)}`;
     });
+
+    if (showQrLink && qrModal) {
+      const openQrModal = () => {
+        qrModal.classList.remove('hidden');
+        qrModal.classList.add('flex');
+      };
+      const closeQrModal = () => {
+        qrModal.classList.add('hidden');
+        qrModal.classList.remove('flex');
+      };
+
+      showQrLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        openQrModal();
+      });
+
+      if (qrClose) {
+        qrClose.addEventListener('click', closeQrModal);
+      }
+
+      qrModal.addEventListener('click', (event) => {
+        if (event.target === qrModal) {
+          closeQrModal();
+        }
+      });
+    }
 
     if (toggle && more && arrow) {
       toggle.addEventListener('click', () => {

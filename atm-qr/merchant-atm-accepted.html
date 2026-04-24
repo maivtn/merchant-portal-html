@@ -83,7 +83,7 @@
                 <span class="font-bold text-slate-900">$1</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-slate-700">Mobile Fee (5%) <i data-lucide="info" class="inline w-3.5 h-3.5 text-slate-400 align-middle"></i></span>
+                <span class="text-slate-700">Service Fee (5%) <i data-lucide="info" class="inline w-3.5 h-3.5 text-slate-400 align-middle"></i></span>
                 <span class="font-bold text-slate-900">$5</span>
               </div>
               <div class="flex items-center justify-between">
@@ -126,7 +126,7 @@
 
           <div class="mt-4 action-row">
             <a href="merchant-atm-request-details.html?type=buy" data-accepted-back class="action-link secondary text-red-500 border border-red-300">Cancel</a>
-            <a href="merchant-atm-qr.html?type=buy" data-accepted-show-qr class="action-link primary">Show QR</a>
+            <button type="button" data-accepted-show-qr class="action-link primary">Show QR</button>
             <div class="relative">
               <button type="button" data-accepted-menu-toggle class="action-link secondary w-full justify-between px-4">
                 <span>More Actions</span>
@@ -173,6 +173,18 @@
       </div>
     </section>
   </main>
+
+  <div class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/45 px-4" data-accepted-qr-modal>
+    <div class="relative w-full max-w-[340px] rounded-[24px] bg-white px-5 pb-6 pt-5 shadow-2xl">
+      <button type="button" data-accepted-qr-close class="absolute right-4 top-4 text-slate-500 transition hover:text-slate-900">
+        <i data-lucide="x" class="h-5 w-5"></i>
+      </button>
+      <h2 class="text-center text-[20px] font-black text-slate-900">QR Code</h2>
+      <div class="mt-5 flex justify-center">
+        <img src="../images/qrcode.png" alt="QR Code" class="w-[188px] h-[188px] object-contain" />
+      </div>
+    </div>
+  </div>
 
   <script>
     lucide.createIcons();

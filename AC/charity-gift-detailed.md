@@ -601,11 +601,4 @@ Provide a transaction log view for charity-related activity.
 | Frontend-only validation | No server-side enforcement | Add backend validation later |
 
 ---
-
-## 13. Reference Files
-
-- [`charity/charity-gift.html`](../charity/charity-gift.html)
-- [`charity/charity-gift.js`](../charity/charity-gift.js)
-- [`AC/charity-gift.md`](./charity-gift.md)
-- [`AC/Charity-Admin-Funding-Flow-AC.md`](./Charity-Admin-Funding-Flow-AC.md)
-
+ 

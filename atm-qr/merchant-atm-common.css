@@ -83,6 +83,128 @@ body {
   border-top: 1px solid rgba(217, 119, 6, 0.08);
 }
 
+.atm-detail-card {
+  border-radius: 24px;
+  border: 1px solid rgba(17, 24, 39, 0.08);
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.05);
+  overflow: hidden;
+}
+
+.atm-detail-row {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 12px;
+  padding: 14px 14px;
+  align-items: center;
+}
+
+.atm-detail-row + .atm-detail-row {
+  border-top: 1px solid rgba(226, 232, 240, 0.95);
+}
+
+.atm-detail-row--top {
+  align-items: flex-start;
+}
+
+.atm-detail-row--top .atm-detail-icon {
+  margin-top: 2px;
+}
+
+.atm-detail-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(254, 243, 199, 0.45);
+  color: var(--brand-primary);
+  box-shadow: inset 0 0 0 1px rgba(249, 115, 22, 0.05);
+}
+
+.atm-detail-label {
+  color: #7c8494;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.atm-detail-title {
+  color: #0f172a;
+  font-size: 14px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.atm-detail-subtitle {
+  color: #0f172a;
+  font-size: 14px;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.atm-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(220, 252, 231, 0.92);
+  color: #16a34a;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.atm-status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+}
+
+.atm-location-text {
+  color: #0f172a;
+  font-size: 14px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 420px) {
+  .atm-detail-row {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 10px;
+    padding: 12px 12px;
+  }
+
+  .atm-detail-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .atm-detail-title {
+    font-size: 14px;
+  }
+
+  .atm-detail-subtitle {
+    font-size: 14px;
+  }
+
+  .atm-status-pill {
+    font-size: 14px;
+  }
+
+  .atm-location-text {
+    font-size: 14px;
+  }
+}
+
 .method-pill,
 .support-item {
   border: 1px solid rgba(217, 119, 6, 0.12);
@@ -106,6 +228,21 @@ body {
   border-radius: 22px;
   background: #fff;
   box-shadow: inset 0 0 0 1px rgba(217, 119, 6, 0.12);
+}
+
+.merchant-qr-canvas {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.merchant-qr-canvas canvas,
+.merchant-qr-canvas img {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  border-radius: 12px;
 }
 
 .qr-logo {

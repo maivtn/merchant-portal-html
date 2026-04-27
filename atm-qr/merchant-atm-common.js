@@ -4,6 +4,78 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const params = new URLSearchParams(window.location.search);
+  const atmProfiles = {
+    merchant: {
+      qrLabel: 'QR Merchant ATM',
+      pageTitle: 'Merchant ATM Info',
+      nameLabel: 'Merchant ATM Name',
+      idLabel: 'Merchant ATM ID',
+      idCardLabel: 'Merchant ID',
+      name: 'VLINKPAY MERCHANT ATM 01',
+      id: 'MAT-4K9P2X',
+      status: 'Online',
+      location: 'Quận 1, TP. Hồ Chí Minh',
+      image: '../atm-qr/merchant.png',
+      infoImage: '../assets/icons/merchant1.png',
+      imageAlt: 'Merchant icon',
+      cta: 'Quét để giao dịch trực tiếp với Merchant',
+      note: 'Bạn đã quét QR từ Merchant ATM. Hệ thống sẽ tự động kết nối tới giao dịch.',
+    },
+    mobile: {
+      qrLabel: 'QR Mobile ATM',
+      pageTitle: 'Mobile ATM Info',
+      nameLabel: 'Mobile ATM Name',
+      idLabel: 'Mobile ATM ID',
+      idCardLabel: 'Mobile ID',
+      name: 'VLINKPAY MOBILE ATM 01',
+      id: 'MOB-8H2Q7N',
+      status: 'Online',
+      location: 'Quận 3, TP. Hồ Chí Minh',
+      image: '../atm-qr/mobile.png',
+      infoImage: '../atm-qr/mobile.png',
+      imageAlt: 'Mobile icon',
+      cta: 'Quét để giao dịch trực tiếp với Mobile ATM',
+      note: 'Bạn đã quét QR từ Mobile ATM. Hệ thống sẽ tự động kết nối tới giao dịch.',
+    },
+  };
+  const atmType = params.get('type') === 'mobile' ? 'mobile' : 'merchant';
+  const atmProfile = atmProfiles[atmType];
+
+  const setText = (selector, value) => {
+    document.querySelectorAll(selector).forEach((el) => {
+      el.textContent = value;
+    });
+  };
+
+  setText('[data-atm-qr-label]', atmProfile.qrLabel);
+  setText('[data-atm-page-title]', atmProfile.pageTitle);
+  setText('[data-atm-name-label]', atmProfile.nameLabel);
+  setText('[data-atm-id-label]', atmProfile.idLabel);
+  setText('[data-atm-id-card-label]', atmProfile.idCardLabel);
+  setText('[data-atm-name]', atmProfile.name);
+  setText('[data-atm-id]', atmProfile.id);
+  setText('[data-atm-status]', atmProfile.status);
+  setText('[data-atm-location]', atmProfile.location);
+  setText('[data-atm-cta]', atmProfile.cta);
+  setText('[data-atm-note]', atmProfile.note);
+
+  if (document.querySelector('[data-atm-page-title]')) {
+    document.title = atmProfile.pageTitle;
+  }
+
+  document.querySelectorAll('[data-atm-image]').forEach((img) => {
+    img.src = img.getAttribute('data-atm-image') === 'info' ? atmProfile.infoImage : atmProfile.image;
+    img.alt = atmProfile.imageAlt;
+  });
+
+  document.querySelectorAll('[data-atm-info-link]').forEach((link) => {
+    link.href = `merchant-atm-info.html?type=${encodeURIComponent(atmType)}`;
+  });
+
+  document.querySelectorAll('[data-atm-qr-link]').forEach((link) => {
+    link.href = `merchant-atm-qr.html?type=${encodeURIComponent(atmType)}`;
+  });
+
   const type = params.get('type') || (window.location.pathname.endsWith('merchant-atm-order.html') ? 'buy' : null);
   document.querySelectorAll('[data-step-mode]').forEach((el) => {
     if (el.getAttribute('data-step-mode') === type) {

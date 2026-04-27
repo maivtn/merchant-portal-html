@@ -7,11 +7,12 @@
   <title>Merchant ATM Setting</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --bg: #eef3fb;
@@ -310,11 +311,11 @@
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.18);
     }
 
-    .switch input:checked + .switch-track {
+    .switch input:checked+.switch-track {
       background: var(--blue);
     }
 
-    .switch input:checked + .switch-track .switch-thumb {
+    .switch input:checked+.switch-track .switch-thumb {
       transform: translateX(12px);
     }
 
@@ -392,24 +393,24 @@
       z-index: 1;
     }
 
-    .activity-switch input:not(:checked) + .activity-switch-track {
+    .activity-switch input:not(:checked)+.activity-switch-track {
       background: #c1c7d3;
     }
 
-    .activity-switch input:not(:checked) + .activity-switch-track .activity-switch-on {
+    .activity-switch input:not(:checked)+.activity-switch-track .activity-switch-on {
       display: none;
     }
 
-    .activity-switch input:not(:checked) + .activity-switch-track .activity-switch-off {
+    .activity-switch input:not(:checked)+.activity-switch-track .activity-switch-off {
       display: block;
     }
 
-    .activity-switch input:not(:checked) + .activity-switch-track .activity-switch-thumb {
+    .activity-switch input:not(:checked)+.activity-switch-track .activity-switch-thumb {
       right: auto;
       left: 3px;
     }
 
-    .activity-switch input:checked + .activity-switch-track .activity-switch-thumb {
+    .activity-switch input:checked+.activity-switch-track .activity-switch-thumb {
       left: auto;
       right: 3px;
     }
@@ -489,7 +490,7 @@
       box-shadow: 0 10px 22px rgba(15, 23, 42, 0.04);
     }
 
-  
+
     .receive-card {
       border: 1px solid rgba(53, 106, 255, 0.34);
       border-radius: 16px;
@@ -616,7 +617,7 @@
       overflow: hidden;
     }
 
-    .walkin-card + .walkin-card {
+    .walkin-card+.walkin-card {
       margin-top: 12px;
     }
 
@@ -894,6 +895,12 @@
       flex: 0 0 auto;
     }
 
+    .walkin-info-icon {
+      font-size: 22px;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
     .walkin-map-row {
       display: flex;
       align-items: flex-start;
@@ -919,6 +926,75 @@
 
     .walkin-map-copy i {
       color: var(--blue);
+    }
+
+    .walkin-setup-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .walkin-setup-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #edf3ff;
+      color: var(--blue);
+      flex: 0 0 auto;
+    }
+
+    .walkin-setup-title {
+      color: #27303f;
+      font-size: 17px;
+      line-height: 1.2;
+      font-weight: 800;
+    }
+
+    .walkin-setup-caption {
+      margin-top: 2px;
+      color: #6f7684;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .walkin-field-card {
+      padding: 12px;
+      border: 1px solid #e4e8f1;
+      border-radius: 12px;
+      background: #fbfcff;
+    }
+
+    .walkin-field-card+.walkin-field-card {
+      margin-top: 10px;
+    }
+
+    .walkin-field-card .form-label {
+      margin-bottom: 8px;
+    }
+
+    .walkin-payment-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid #d8deea;
+      border-radius: 10px;
+      background: #fff;
+      color: #27303f;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .walkin-setup-side {
+      padding: 14px;
+      border: 1px solid #e4e8f1;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
     }
 
     .walkin-right-divider {
@@ -948,6 +1024,7 @@
     }
 
     .qr-modal-card {
+      position: relative;
       width: min(100%, 460px);
       max-height: calc(100vh - 36px);
       overflow: auto;
@@ -956,10 +1033,36 @@
       box-shadow: 0 28px 80px rgba(15, 23, 42, 0.28);
     }
 
+    .qr-modal-iframe-card {
+      width: min(100%, 520px);
+      height: min(98vh, 1060px);
+      overflow: hidden;
+      border-radius: 24px;
+      background: #fff;
+    }
+
+    .qr-modal-iframe {
+      width: 100%;
+      height: calc(100% - 70px);
+      border: 0;
+      display: block;
+      background: #fff;
+    }
+
+    .qr-modal-iframe-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      padding: 12px;
+      border-top: 1px solid #edf1f7;
+      background: #fff;
+    }
+
     .qr-modal-close {
       position: absolute;
       top: 14px;
       right: 14px;
+      z-index: 2;
       width: 34px;
       height: 34px;
       border: 0;
@@ -1338,7 +1441,7 @@
       padding: 14px;
     }
 
-    .fee-compare-col + .fee-compare-col {
+    .fee-compare-col+.fee-compare-col {
       border-left: 1px solid #edf1f7;
     }
 
@@ -1473,6 +1576,17 @@
 
     .asset-row {
       min-height: 36px;
+    }
+
+    .asset-row--fee-config {
+      grid-template-columns: 96px minmax(140px, 1fr) minmax(140px, 1fr);
+    }
+
+    .asset-fee-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
     }
 
     .asset-name {
@@ -1854,7 +1968,7 @@
       border-top: 1px solid #edf1f7;
     }
 
-    .payment-card + .payment-card {
+    .payment-card+.payment-card {
       margin-top: 12px;
     }
 
@@ -1928,6 +2042,97 @@
       white-space: nowrap;
     }
 
+    .receive-service-card {
+      border: 1px solid #d8deea;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.04);
+      padding: 14px;
+    }
+
+    .receive-service-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #edf1f7;
+    }
+
+    .receive-service-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #edf3ff;
+      color: var(--blue);
+      flex: 0 0 auto;
+    }
+
+    .receive-service-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #27303f;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .receive-service-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .receive-service-copy {
+      color: #6f7684;
+      font-size: 12px;
+      line-height: 1.4;
+      margin-top: 6px;
+    }
+
+    .receive-service-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 58px;
+      padding: 12px;
+      border: 1px solid #e4e8f1;
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .receive-service-summary .label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #6f7684;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .receive-service-summary .value {
+      color: #27303f;
+      font-size: 14px;
+      font-weight: 800;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .receive-service-summary .subvalue {
+      color: #6f7684;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: right;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+
     .payment-header {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1947,8 +2152,8 @@
       min-height: 32px;
     }
 
-    .payment-header > :nth-child(3),
-    .payment-row > :nth-child(3) {
+    .payment-header> :nth-child(3),
+    .payment-row> :nth-child(3) {
       display: flex;
       justify-content: flex-end;
       min-width: 0;
@@ -2056,6 +2261,7 @@
     }
 
     @media (max-width: 720px) {
+
       .walkin-options,
       .walkin-layout {
         grid-template-columns: 1fr;
@@ -2080,7 +2286,7 @@
         grid-template-columns: 1fr;
       }
 
-      .fee-compare-col + .fee-compare-col {
+      .fee-compare-col+.fee-compare-col {
         border-left: 0;
         border-top: 1px solid #edf1f7;
       }
@@ -2123,17 +2329,115 @@
     }
 
     @media (max-width: 560px) {
+      .setting-page {
+        font-size: 13px;
+      }
+
+      .setting-shell {
+        padding: 10px;
+      }
+
+      .setting-header h1 {
+        font-size: 22px;
+      }
+
       .setting-topnav button {
         padding-inline: 14px;
+        font-size: 12px;
       }
 
       .setting-subnav {
         width: 100%;
       }
 
+      .setting-subnav button {
+        font-size: 12px;
+      }
+
+      .setting-title {
+        font-size: 14px;
+      }
+
+      .setting-label,
+      .form-label,
+      .form-control,
+      .form-select,
+      .input-group-text,
+      .form-check-label,
+      .activity-status-copy {
+        font-size: 12px;
+      }
+
+      .note-block,
+      .walkin-subtitle,
+      .walkin-option-copy,
+      .walkin-setup-caption,
+      .receive-service-copy,
+      .payment-approval-copy,
+      .payment-info-label,
+      .payment-info-value {
+        font-size: 11.5px !important;
+      }
+
+      .walkin-title {
+        font-size: 15px;
+      }
+
+      .walkin-option-title,
+      .walkin-setup-title,
+      .receive-service-title,
+      .asset-section-head .asset-title {
+        font-size: 13px;
+      }
+
+      .walkin-payment-chip,
+      .asset-name,
+      .payment-label,
+      .payout-link,
+      .primary-action {
+        font-size: 12px;
+      }
+
+      .walkin-info-icon {
+        font-size: 18px;
+      }
+
+      .qr-modal-iframe-card {
+        height: min(96vh, 820px);
+      }
+
+      .qr-modal-iframe {
+        height: calc(100% - 62px);
+      }
+
+      .qr-modal-iframe-actions {
+        gap: 8px;
+        padding: 10px;
+      }
+
+      .qr-modal-iframe-actions .qr-action-btn {
+        height: 42px;
+        font-size: 12px;
+      }
+
       .asset-header,
       .asset-row {
         grid-template-columns: 96px 1fr 1fr;
+      }
+
+      .asset-row--fee-config {
+        grid-template-columns: 68px minmax(0, 1fr) minmax(0, 1fr);
+        gap: 8px;
+      }
+
+      .asset-fee-cell {
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .asset-row--fee-config .asset-fee {
+        max-width: none;
+        min-width: 0;
       }
 
       .fee-row {
@@ -2204,45 +2508,45 @@
             <div class="row g-3">
               <div class="col-12 col-lg-6">
                 <div class="setting-card h-100">
-                <div class="setting-title">Activity Status</div>
-                <div class="status-switch">
-                  <label class="activity-switch">
-                    <input type="checkbox" checked />
-                    <span class="activity-switch-track">
-                      <span class="activity-switch-on">ON</span>
-                      <span class="activity-switch-off">OFF</span>
-                      <span class="activity-switch-thumb"></span>
-                    </span>
-                  </label>
-                  <span class="activity-status-copy">You are accepting transactions</span>
-                </div>
+                  <div class="setting-title">Activity Status</div>
+                  <div class="status-switch">
+                    <label class="activity-switch">
+                      <input type="checkbox" checked />
+                      <span class="activity-switch-track">
+                        <span class="activity-switch-on">ON</span>
+                        <span class="activity-switch-off">OFF</span>
+                        <span class="activity-switch-thumb"></span>
+                      </span>
+                    </label>
+                    <span class="activity-status-copy">You are accepting transactions</span>
+                  </div>
 
-                <div class="mt-2">
-                  <div class="setting-label mb-2">Current Role</div>
-                  <label class="radio-row">
-                    <input type="radio" name="role" checked />
-                    <span>Mobile ATM</span>
-                  </label>
-                  <label class="radio-row">
-                    <input type="radio" name="role" />
-                    <span>Merchant ATM</span>
-                  </label>
-                </div>
+                  <div class="mt-2">
+                    <div class="setting-label mb-2">Current Role</div>
+                    <label class="radio-row">
+                      <input type="radio" name="role" checked />
+                      <span>Mobile ATM</span>
+                    </label>
+                    <label class="radio-row">
+                      <input type="radio" name="role" />
+                      <span>Merchant ATM</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
               <div class="col-12 col-lg-6">
                 <div class="setting-card h-100">
-                <div class="field-row">
-                  <div class="label-wrap">
-                    <span class="setting-label">Minimum transaction amount ($)</span>
+                  <div class="field-row">
+                    <div class="label-wrap">
+                      <span class="setting-label">Minimum transaction amount ($)</span>
+                    </div>
+                    <input class="setting-input" style="max-width: 180px;" value="100" />
                   </div>
-                  <input class="setting-input" style="max-width: 180px;" value="100" />
-                </div>
-                <div class="note-block mt-3">
-                  Transactions are only supported through the app.<br />
-                  Walk-in transactions are supported when enabled.
-                </div>
+                  <div class="note-block mt-3">
+                    Transactions are only supported through the app.<br />
+                    Walk-in transactions are supported when enabled.
+                  </div>
                 </div>
               </div>
             </div>
@@ -2254,7 +2558,8 @@
                     <i data-lucide="store" class="w-5 h-5"></i>
                   </div>
                   <div>
-                    <div class="walkin-title">Walk-in Transaction Mode   <span class="badge bg-primary-subtle text-primary">Mới</span></div>
+                    <div class="walkin-title">Walk-in Transaction Mode <span
+                        class="badge bg-primary-subtle text-primary">Mới</span></div>
                     <div class="walkin-subtitle">Allow customers to visit your fixed location and trade directly.</div>
                   </div>
                 </div>
@@ -2289,7 +2594,8 @@
                     <input class="form-check-input mt-1" type="radio" name="walkinMode" checked>
                     <div>
                       <div class="walkin-option-title">Walk-in + Scan QR</div>
-                      <div class="walkin-option-copy">Customer can walk in, scan merchant QR, view fees, and start transaction.</div>
+                      <div class="walkin-option-copy">Customer can walk in, scan merchant QR, view fees, and start
+                        transaction.</div>
                     </div>
                   </label>
                 </div>
@@ -2306,9 +2612,18 @@
             <div class="walkin-card p-4 mt-4">
               <div class="row g-4">
                 <div class="col-12 col-lg-6">
-                  <h5 class="fw-bold mb-4">Walk-in Setup</h5>
+                  <div class="walkin-setup-head">
+                    <div class="walkin-setup-icon">
+                      <i data-lucide="map-pinned" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                      <div class="walkin-setup-title">Walk-in Setup</div>
+                      <div class="walkin-setup-caption">Location, hours, availability, and accepted payment methods.
+                      </div>
+                    </div>
+                  </div>
 
-                  <div class="mb-3">
+                  <div class="walkin-field-card">
                     <label class="form-label fw-semibold">
                       <i data-lucide="map-pin" class="me-2 text-primary w-4 h-4"></i>
                       Business Location
@@ -2316,7 +2631,7 @@
                     <input class="form-control" value="123 Liberty Street, New York, NY 10006, USA" />
                   </div>
 
-                  <div class="mb-3">
+                  <div class="walkin-field-card">
                     <label class="form-label fw-semibold">
                       <i data-lucide="clock-3" class="me-2 text-primary w-4 h-4"></i>
                       Operating Hours
@@ -2324,92 +2639,99 @@
                     <input class="form-control" value="Mon–Sat, 9:00 AM – 7:00 PM" />
                   </div>
 
-                  <div class="mb-4">
+                  <div class="walkin-field-card">
                     <label class="form-label fw-semibold">
                       <i data-lucide="users" class="me-2 text-primary w-4 h-4"></i>
                       Walk-in Availability
                     </label>
 
                     <div class="d-flex gap-4 flex-wrap">
-                      <div class="form-check form-switch">
+                      <div class="form-check form-switch mb-0">
                         <input class="form-check-input" type="checkbox" checked />
                         <label class="form-check-label">Buy Crypto</label>
                       </div>
 
-                      <div class="form-check form-switch">
+                      <div class="form-check form-switch mb-0">
                         <input class="form-check-input" type="checkbox" checked />
                         <label class="form-check-label">Sell Crypto</label>
                       </div>
                     </div>
                   </div>
 
-                  <div>
+                  <div class="walkin-field-card">
                     <label class="form-label fw-semibold">
                       <i data-lucide="credit-card" class="me-2 text-primary w-4 h-4"></i>
                       Accepted Payment
                     </label>
 
                     <div class="d-flex flex-wrap gap-2">
-                      <button type="button" class="btn btn-light border rounded-3">Cash</button>
-                      <button type="button" class="btn btn-light border rounded-3">Zelle</button>
-                      <button type="button" class="btn btn-light border rounded-3">Bank Wire</button>
-                      <button type="button" class="btn btn-light border rounded-3">PayPal</button>
+                      <button type="button" class="walkin-payment-chip"><i data-lucide="banknote"
+                          class="w-4 h-4 text-success"></i>Cash</button>
+                      <button type="button" class="walkin-payment-chip"><i data-lucide="zap"
+                          class="w-4 h-4 text-primary"></i>Zelle</button>
+                      <button type="button" class="walkin-payment-chip"><i data-lucide="landmark"
+                          class="w-4 h-4 text-secondary"></i>Bank Wire</button>
+                      <button type="button" class="walkin-payment-chip"><i data-lucide="wallet-cards"
+                          class="w-4 h-4 text-primary"></i>PayPal</button>
                     </div>
                   </div>
                 </div>
 
                 <div class="col-12 col-lg-6">
                   <div class="h-100 ps-lg-4 walkin-right-divider">
-                    <div class="mb-3">
-                      <label class="form-label fw-semibold">
-                        <i data-lucide="qr-code" class="me-2 text-primary w-4 h-4"></i>
-                        QR Access Mode
-                      </label>
+                    <div class="walkin-setup-side">
+                      <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                          <i data-lucide="qr-code" class="me-2 text-primary w-4 h-4"></i>
+                          QR Access Mode
+                        </label>
 
-                      <select class="form-select">
-                        <option selected>Scan merchant QR at location</option>
-                        <option>Show ATM QR for customers</option>
-                      </select>
-                    </div>
-
-                    <div class="mb-3">
-                      <label class="form-label fw-semibold">
-                        <i data-lucide="dollar-sign" class="me-2 text-primary w-4 h-4"></i>
-                        Walk-in Fixed Fee
-                      </label>
-
-                      <div class="input-group">
-                        <input class="form-control" value="5" />
-                        <span class="input-group-text">%</span>
+                        <select class="form-select">
+                          <option selected>Scan merchant QR at location</option>
+                          <option>Show ATM QR for customers</option>
+                        </select>
                       </div>
-                    </div>
 
-                    <div class="alert alert-primary bg-primary bg-opacity-10 border-0 rounded-4 mb-3">
-                      <div class="d-flex gap-3">
-                        <i class="fas fa-info-circle text-primary mt-1"></i>
-                        <p class="mb-0">
-                          When walk-in mode is enabled, customers can scan your QR code at the store, review fees and conditions, then create a direct trade request.
-                        </p>
+                      <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                          <i data-lucide="dollar-sign" class="me-2 text-primary w-4 h-4"></i>
+                          Walk-in Fixed Fee
+                        </label>
+
+                        <div class="input-group">
+                          <input class="form-control" value="5" />
+                          <span class="input-group-text">%</span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" checked />
-                      <label class="form-check-label fw-semibold">
-                        Show merchant as Walk-in Available on map/search
-                      </label>
+                      <div class="alert alert-primary bg-primary bg-opacity-10 border-0 rounded-3 mb-3">
+                        <div class="d-flex gap-3">
+                          <i class="bi bi-info-circle-fill walkin-info-icon text-primary mt-1"></i>
+                          <p class="mb-0">
+                            When walk-in mode is enabled, customers can scan your QR code at the store, review fees and
+                            conditions, then create a direct trade request.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" checked />
+                        <label class="form-check-label fw-semibold">
+                          Show merchant as Walk-in Available on map/search
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="card border shadow-sm rounded-4 p-3 mt-3" >
-              <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="receive-service-card mt-3">
+              <div class="receive-service-head">
                 <div class="d-flex align-items-center gap-2">
-                  <div class="bg-light rounded-circle p-2">
-                    <i data-lucide="users" class="w-5 h-5 text-primary"></i>
+                  <div class="receive-service-icon">
+                    <i data-lucide="users" class="w-5 h-5"></i>
                   </div>
-                  <div class="fw-semibold d-flex align-items-center gap-2">
+                  <div class="receive-service-title">
                     <span>Nhận hộ / Chi hộ</span>
                     <span class="badge bg-primary-subtle text-primary">Mới</span>
                   </div>
@@ -2418,49 +2740,51 @@
                 <span class="status-note success">Đã kích hoạt</span>
               </div>
 
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <span class="text-muted">Tham gia chương trình</span>
+              <div class="receive-service-row">
+                <span class="setting-label" style="font-weight: 600;">Tham gia chương trình</span>
                 <div class="form-check form-switch m-0">
                   <input class="form-check-input" type="checkbox" checked />
                 </div>
               </div>
 
-              <div class="text-muted small mb-2 d-flex align-items-center gap-1">
+              <div class="receive-service-copy d-flex align-items-center gap-1">
                 <i data-lucide="map-pin" class="w-4 h-4"></i>
                 Áp dụng cho Merchant ATM / Mobile ATM đủ điều kiện trong khu vực hoạt động
               </div>
 
-              <div class="d-flex justify-content-between align-items-center mb-3 gap-3 flex-wrap">
+              <div class="receive-service-row flex-wrap">
                 <div class="form-check m-0">
                   <input class="form-check-input" type="checkbox" checked id="receive-agree" />
                   <label class="form-check-label small" for="receive-agree">
                     Tôi đồng ý <span class="text-primary">điều khoản &amp; biểu phí</span>
                   </label>
                 </div>
-                <a href="#" class="small text-primary text-decoration-none" onclick="return false;">
-                  Xem chính sách <i data-lucide="arrow-right" class="w-4 h-4 d-inline-block align-text-bottom"></i>
+                <a href="#" class="small text-primary text-decoration-none d-inline-flex align-items-center gap-1" onclick="return false;">
+                  Xem chính sách <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </a>
               </div>
 
-              <div class="row g-2">
+              <div class="row g-2 mt-2">
                 <div class="col-12 col-md-6">
-                  <div class="bg-light rounded-3 p-3">
-                    <div class="text-muted small mb-1 d-flex align-items-center gap-1">
+                  <div class="receive-service-summary">
+                    <div class="label">
                       <i data-lucide="percent" class="w-4 h-4"></i>
                       Phí cố định
                     </div>
-                    <div class="fw-semibold">5%</div>
+                    <div class="value">5%</div>
                   </div>
                 </div>
 
                 <div class="col-12 col-md-6">
-                  <div class="bg-light rounded-3 p-3">
-                    <div class="text-muted small mb-1 d-flex align-items-center gap-1">
+                  <div class="receive-service-summary">
+                    <div class="label">
                       <i data-lucide="calendar-days" class="w-4 h-4"></i>
-                      Kết số
+                      Kết sổ
                     </div>
-                    <div class="fw-semibold">Cuối ngày</div>
-                    <div class="text-muted small">Thanh toán: T+1</div>
+                    <div>
+                      <div class="value">Cuối ngày</div>
+                      <div class="subvalue">Thanh toán: T+1</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2509,74 +2833,86 @@
                   <div class="asset-col-head" style="padding-left: 0;">Sell Fee</div>
                 </div>
                 <div class="asset-grid mt-2">
-                <div class="asset-row" style="grid-template-columns: 96px 70px 1fr 70px 1fr;">
-                  <div class="asset-name">
-                    <span class="asset-icon usdt">T</span>
-                    <span>USDT</span>
+                  <div class="asset-row asset-row--fee-config">
+                    <div class="asset-name">
+                      <span class="asset-icon usdt">T</span>
+                      <span>USDT</span>
+                    </div>
+                    <div class="asset-fee-cell">
+                      <label class="switch asset-switch">
+                        <input type="checkbox" checked />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <div class="asset-fee">
+                        <input value="10" />
+                        <span>%</span>
+                      </div>
+                    </div>
+                    <div class="asset-fee-cell">
+                      <label class="switch asset-switch">
+                        <input type="checkbox" checked />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <div class="asset-fee">
+                        <input value="9.2" />
+                        <span>%</span>
+                      </div>
+                    </div>
                   </div>
-                  <label class="switch asset-switch">
-                    <input type="checkbox" checked />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <div class="asset-fee">
-                    <input value="10" />
-                    <span>%</span>
-                  </div>
-                  <label class="switch asset-switch">
-                    <input type="checkbox" checked />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <div class="asset-fee">
-                    <input value="9.2" />
-                    <span>%</span>
-                  </div>
-                </div>
 
-                <div class="asset-row" style="grid-template-columns: 96px 70px 1fr 70px 1fr;">
-                  <div class="asset-name">
-                    <span class="asset-icon usdv">$</span>
-                    <span>USDV</span>
+                  <div class="asset-row asset-row--fee-config">
+                    <div class="asset-name">
+                      <span class="asset-icon usdv">$</span>
+                      <span>USDV</span>
+                    </div>
+                    <div class="asset-fee-cell">
+                      <label class="switch asset-switch">
+                        <input type="checkbox" checked />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <div class="asset-fee">
+                        <input value="10" />
+                        <span>%</span>
+                      </div>
+                    </div>
+                    <div class="asset-fee-cell">
+                      <label class="switch asset-switch">
+                        <input type="checkbox" checked />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <div class="asset-fee">
+                        <input value="9.2" />
+                        <span>%</span>
+                      </div>
+                    </div>
                   </div>
-                  <label class="switch asset-switch">
-                    <input type="checkbox" checked />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <div class="asset-fee">
-                    <input value="10" />
-                    <span>%</span>
-                  </div>
-                  <label class="switch asset-switch">
-                    <input type="checkbox" checked />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <div class="asset-fee">
-                    <input value="9.2" />
-                    <span>%</span>
-                  </div>
-                </div>
 
-                <div class="asset-row" style="grid-template-columns: 96px 70px 1fr 70px 1fr;">
-                  <div class="asset-name">
-                    <span class="asset-icon btc">₿</span>
-                    <span>BTC</span>
+                  <div class="asset-row asset-row--fee-config">
+                    <div class="asset-name">
+                      <span class="asset-icon btc">₿</span>
+                      <span>BTC</span>
+                    </div>
+                    <div class="asset-fee-cell">
+                      <label class="switch asset-switch">
+                        <input type="checkbox" />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <div class="asset-fee" style="opacity: 0.5;">
+                        <input value="--" />
+                        <span>%</span>
+                      </div>
+                    </div>
+                    <div class="asset-fee-cell">
+                      <label class="switch asset-switch">
+                        <input type="checkbox" checked />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <div class="asset-fee">
+                        <input value="9.2" />
+                        <span>%</span>
+                      </div>
+                    </div>
                   </div>
-                  <label class="switch asset-switch">
-                    <input type="checkbox" />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <div class="asset-fee" style="opacity: 0.5;">
-                    <input value="--" />
-                    <span>%</span>
-                  </div>
-                  <label class="switch asset-switch">
-                    <input type="checkbox" checked />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <div class="asset-fee">
-                    <input value="9.2" />
-                    <span>%</span>
-                  </div>
-                </div>
                 </div>
               </div>
             </div>
@@ -2714,7 +3050,7 @@
         </section>
 
         <section class="setting-panel" data-setting-panel="payment">
-          <div class="setting-section" style="max-width: 520px;">
+          <div class="setting-section" style="max-width: 100%;">
             <div class="payment-card payment-buy-sell-card">
               <div class="payment-buy-sell-head">
                 <div class="payment-buy-sell-title">
@@ -2731,116 +3067,116 @@
                     <div class="payment-empty"></div>
                   </div>
 
-              <div class="payment-row">
-                <div class="payment-label">
-                  <label class="switch">
-                    <input type="checkbox" checked />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <span>Cash</span>
-                </div>
-                <div class="payment-label">
-                  <label class="switch">
-                    <input type="checkbox" checked />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <span>Cash</span>
-                </div>
-                <div class="payout-spacer"></div>
-              </div>
+                  <div class="payment-row">
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" checked />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>Cash</span>
+                    </div>
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" checked />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>Cash</span>
+                    </div>
+                    <div class="payout-spacer"></div>
+                  </div>
 
-              <div class="payment-row">
-                <div class="payment-label">
-                  <label class="switch">
-                    <input type="checkbox" />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <span>Zelle</span>
-                </div>
-                <div class="payment-label">
-                  <label class="switch">
-                    <input type="checkbox" checked />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <span>Zelle</span>
-                </div>
-                <a href="#" class="payout-link" onclick="return false;">
-                  <i data-lucide="square-pen" class="w-4 h-4"></i>
-                  Payout account
-                </a>
-              </div>
+                  <div class="payment-row">
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>Zelle</span>
+                    </div>
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" checked />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>Zelle</span>
+                    </div>
+                    <a href="#" class="payout-link" onclick="return false;">
+                      <i data-lucide="square-pen" class="w-4 h-4"></i>
+                      Payout account
+                    </a>
+                  </div>
 
-              <div class="payment-row">
-                <div class="payment-label">
-                  <label class="switch">
-                    <input type="checkbox" />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <span>Bank Wire</span>
-                </div>
-                <div class="payment-label">
-                  <label class="switch">
-                    <input type="checkbox" />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <span>Bank Wire</span>
-                </div>
-                <div class="payout-spacer"></div>
-              </div>
+                  <div class="payment-row">
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>Bank Wire</span>
+                    </div>
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>Bank Wire</span>
+                    </div>
+                    <div class="payout-spacer"></div>
+                  </div>
 
-              <div class="payment-row">
-                <div class="payment-label">
-                  <label class="switch">
-                    <input type="checkbox" />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <span>PayPal</span>
-                </div>
-                <div class="payment-label">
-                  <label class="switch">
-                    <input type="checkbox" />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <span>PayPal</span>
-                </div>
-                <div class="payout-spacer"></div>
-              </div>
+                  <div class="payment-row">
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>PayPal</span>
+                    </div>
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>PayPal</span>
+                    </div>
+                    <div class="payout-spacer"></div>
+                  </div>
 
-              <div class="payment-row">
-                <div class="payment-label">
-                  <label class="switch">
-                    <input type="checkbox" />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <span>Venmo</span>
-                </div>
-                <div class="payment-label">
-                  <label class="switch">
-                    <input type="checkbox" />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <span>Venmo</span>
-                </div>
-                <div class="payout-spacer"></div>
-              </div>
+                  <div class="payment-row">
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>Venmo</span>
+                    </div>
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>Venmo</span>
+                    </div>
+                    <div class="payout-spacer"></div>
+                  </div>
 
-              <div class="payment-row">
-                <div class="payment-label">
-                  <label class="switch">
-                    <input type="checkbox" />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <span>Cash App</span>
-                </div>
-                <div class="payment-label">
-                  <label class="switch">
-                    <input type="checkbox" />
-                    <span class="switch-track"><span class="switch-thumb"></span></span>
-                  </label>
-                  <span>Cash App</span>
-                </div>
-                <div class="payout-spacer"></div>
-              </div>
+                  <div class="payment-row">
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>Cash App</span>
+                    </div>
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>Cash App</span>
+                    </div>
+                    <div class="payout-spacer"></div>
+                  </div>
 
                   <div class="payment-row">
                     <div class="payment-label">
@@ -2867,13 +3203,16 @@
               <div class="payment-approval-head">
                 <div class="payment-approval-title">
                   <span class="payment-approval-icon"><i data-lucide="handshake" class="w-4 h-4"></i></span>
-                  <span>Thiết lập thanh toán nhận hộ / chi hộ  <span class="badge bg-primary-subtle text-primary">Mới</span></span>
+                  <span>Thiết lập thanh toán nhận hộ / chi hộ <span
+                      class="badge bg-primary-subtle text-primary">Mới</span></span>
                 </div>
               </div>
 
               <div class="payment-approval-body">
-                <div class="payment-approval-topline" style="margin-bottom: 0; padding-bottom: 14px; border-bottom: 1px solid #e8edf5;">
-                  <div class="payment-approval-copy" style="font-size: 14px; color: #27303f;">Cho phép nhận hộ / chi hộ</div>
+                <div class="payment-approval-topline"
+                  style="margin-bottom: 0; padding-bottom: 14px; border-bottom: 1px solid #e8edf5;">
+                  <div class="payment-approval-copy" style="font-size: 14px; color: #27303f;">Cho phép nhận hộ / chi hộ
+                  </div>
                   <div class="inline-switch-row">
                     <div class="status-switch">
                       <label class="activity-switch">
@@ -2957,9 +3296,12 @@
                   <div class="payment-info-row">
                     <div class="payment-info-label">Tài khoản nhận payout</div>
                     <div class="payment-info-value">
-                      <div class="payout-account-box" style="width: 100%; align-items: center; flex-direction: row; justify-content: space-between;">
-                        <div class="value" style="font-weight: 600; color: #6f7684;">VLINKPAY Settlement - 1234567890</div>
-                        <button type="button" class="qr-action-btn" style="height: 34px; padding: 0 10px; border-radius: 10px; min-width: 0;">
+                      <div class="payout-account-box"
+                        style="width: 100%; align-items: center; flex-direction: row; justify-content: space-between;">
+                        <div class="value" style="font-weight: 600; color: #6f7684;">VLINKPAY Settlement - 1234567890
+                        </div>
+                        <button type="button" class="qr-action-btn"
+                          style="height: 34px; padding: 0 10px; border-radius: 10px; min-width: 0;">
                           <i data-lucide="pen-line" class="w-4 h-4"></i>
                         </button>
                       </div>
@@ -2976,7 +3318,8 @@
                     <div class="payment-info-value payment-condition-row">
                       <span class="payment-condition-chip" style="background:#eaf7ea; color:#5aa15e;">KYC/KYB</span>
                       <span class="payment-condition-chip" style="background:#edf3ff; color:#5c75d6;">Collateral</span>
-                      <span class="payment-condition-chip" style="background:#f5edff; color:#9c72d8;">Credit limit</span>
+                      <span class="payment-condition-chip" style="background:#f5edff; color:#9c72d8;">Credit
+                        limit</span>
                       <i data-lucide="chevron-right" class="w-5 h-5" style="color:#b5bdca;"></i>
                     </div>
                   </div>
@@ -2996,86 +3339,15 @@
   </main>
 
   <div class="qr-modal" id="qr-modal" aria-hidden="true">
-    <div class="qr-modal-card" role="dialog" aria-modal="true" aria-label="Merchant ATM QR">
-      <div class="qr-modal-top">
-        <button type="button" class="qr-modal-close" data-close-qr-modal aria-label="Close popup">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-        <div class="qr-modal-banner">
-          <div class="qr-modal-chip">
-            <i data-lucide="qr-code" class="w-3.5 h-3.5"></i>
-            QR MERCHANT ATM
-          </div>
-          <div class="qr-modal-illustration">
-            <img src="../atm-qr/merchant.png" alt="Merchant illustration" />
-          </div>
-        </div>
-      </div>
-
-      <div class="qr-modal-info">
-        <div class="qr-modal-row">
-          <div class="qr-modal-icon">
-            <i data-lucide="credit-card" class="w-4 h-4"></i>
-          </div>
-          <div>
-            <div class="qr-modal-label">Merchant ATM Name</div>
-            <div class="flex items-center gap-3 min-w-0">
-              <div class="qr-modal-title truncate">VLINKPAY MERCHANT ATM 01</div>
-              <i data-lucide="badge-check" class="w-5 h-5 shrink-0 text-orange-500"></i>
-            </div>
-            <div class="mt-4">
-              <div class="qr-modal-label">Merchant ATM ID</div>
-              <div class="qr-modal-subtitle">MAT-4K9P2X</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="qr-modal-row">
-          <div class="qr-modal-icon">
-            <i data-lucide="smartphone" class="w-4 h-4"></i>
-          </div>
-          <div>
-            <div class="qr-modal-label">Status</div>
-            <div class="qr-modal-status">
-              <span class="qr-modal-status-dot"></span>
-              <span>Online</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="qr-modal-row">
-          <div class="qr-modal-icon">
-            <i data-lucide="map-pin" class="w-4 h-4"></i>
-          </div>
-          <div>
-            <div class="qr-modal-subtitle">Quận 1, TP. Hồ Chí Minh</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="qr-modal-code-wrap">
-        <div class="qr-modal-code">
-          <canvas id="qr-modal-canvas" width="320" height="320" aria-label="Merchant QR code"></canvas>
-        </div>
-      </div>
-
-      <div class="qr-modal-footer">
-        <div class="qr-modal-footer-text">
-          <div class="qr-modal-footer-badge">
-            <i data-lucide="scan-line" class="w-5 h-5"></i>
-          </div>
-          <span>Quét để giao dịch trực tiếp với Merchant</span>
-        </div>
-      </div>
-
-      <div class="qr-modal-actions">
+    <div class="qr-modal-card qr-modal-iframe-card" role="dialog" aria-modal="true" aria-label="Merchant ATM QR">
+      <button type="button" class="qr-modal-close" data-close-qr-modal aria-label="Close popup">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+      <iframe class="qr-modal-iframe" src="merchant-atm-qr.html" title="Merchant ATM QR" loading="lazy"></iframe>
+      <div class="qr-modal-iframe-actions">
         <button type="button" class="qr-action-btn" data-download-qr>
           <i data-lucide="download" class="w-4 h-4"></i>
           Download QR
-        </button>
-        <button type="button" class="qr-action-btn secondary" data-share-qr>
-          <i data-lucide="share-2" class="w-4 h-4"></i>
-          Share QR
         </button>
         <button type="button" class="qr-action-btn secondary" data-print-qr>
           <i data-lucide="printer" class="w-4 h-4"></i>

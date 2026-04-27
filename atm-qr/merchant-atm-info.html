@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Thông tin đối tác</title>
+  <title>Merchant ATM Info</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,14 +16,14 @@
 
 <body class="antialiased">
   <main class="screen-shell">
-    <section class="partner-frame">
+    <section class="partner-frame merchant-info-frame">
       <div class="px-4 pt-4 pb-3 bg-white border-b border-[rgba(217,119,6,0.08)]">
         <div class="flex items-center justify-between">
           <a href="merchant-atm-qr.html" class="inline-flex items-center gap-2 text-slate-700 text-sm font-semibold">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             <span>Back</span>
           </a>
-          <h1 class="text-[15px] font-bold text-slate-900">Thông tin đối tác</h1>
+          <h1 class="text-[15px] font-bold text-slate-900">Merchant ATM Info</h1>
           <button class="inline-flex items-center gap-2 text-slate-700 text-sm font-semibold">
             <i data-lucide="grid-2x2" class="w-4 h-4"></i>
           </button>
@@ -31,66 +31,99 @@
       </div>
 
       <div class="px-5 pt-4 pb-5 bg-white">
-        <div class="flex justify-end mb-3">
-          <span class="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-bold partner-badge">Kết nối từ QR</span>
-        </div>
-
-        <div class="flex flex-col items-center text-center">
-          <div class="partner-avatar mb-4">
-            <img src="../assets/icons/merchant1.png" alt="Merchant icon" />
-            <span class="partner-status"></span>
-          </div>
-
-          <p class="text-sm font-semibold text-slate-700 mb-1">Merchant ATM</p>
-          <h2 class="text-[26px] leading-none font-black tracking-[-0.04em] text-slate-900">MCH-8J2NIV</h2>
-
-          <div class="mt-3 flex items-center gap-2 text-slate-600">
-            <span class="inline-flex items-center gap-1.5">
-              <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
-              <span class="text-[13px] font-bold text-slate-800">5.0</span>
-            </span>
-            <span class="text-[13px] text-slate-500">(31 đánh giá)</span>
-          </div>
-
-          <div class="mt-3 space-y-2 w-full">
-            <div class="flex items-center justify-center gap-2 text-slate-500">
-              <i data-lucide="map-pin" class="w-4 h-4"></i>
-              <span class="text-[13px] font-medium">Quận 1, TP. Hồ Chí Minh</span>
+        <div class="merchant-info-hero px-4 py-4">
+          <div class="relative z-10">
+            <div class="flex justify-center">
+              <span class="merchant-info-kicker">
+                <i data-lucide="qr-code" class="w-3.5 h-3.5"></i>
+                Connected from QR
+              </span>
             </div>
-            <div class="flex items-center justify-center gap-2 text-slate-500">
-              <i data-lucide="route" class="w-4 h-4"></i>
-              <span class="text-[13px] font-medium">Cách bạn 0.6 km</span>
+
+            <div class="mt-4 flex flex-col items-center text-center">
+              <div class="merchant-info-avatar relative">
+                <img src="../assets/icons/merchant1.png" alt="Merchant icon" />
+                <span class="partner-status"></span>
+              </div>
+
+              <p class="mt-4 merchant-info-subtitle">Merchant ATM Name</p>
+              <h2 class="mt-1 merchant-info-title">VLINKPAY MERCHANT ATM 01</h2>
+              <div class="mt-3 merchant-info-meta">
+                <span class="merchant-info-chip">
+                  <i data-lucide="star" class="w-3.5 h-3.5 text-amber-500 fill-amber-500"></i>
+                  5.0
+                </span>
+                <span class="merchant-info-chip">
+                  <i data-lucide="route" class="w-3.5 h-3.5"></i>
+                  0.6 km away
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="mt-4 border-t border-slate-100 pt-4">
-          <p class="text-[14px] font-bold text-slate-800 mb-3">Phương thức hỗ trợ</p>
+        <div class="mt-4 grid grid-cols-2 gap-3">
+          <div class="rounded-2xl border border-[rgba(217,119,6,0.12)] bg-white px-3 py-3 shadow-[0_10px_20px_rgba(17,24,39,0.04)]">
+            <p class="text-[12px] font-semibold text-slate-500">Merchant ID</p>
+            <p class="mt-1 text-[15px] font-black tracking-[-0.03em] text-slate-900">MCH-8J2NIV</p>
+          </div>
+          <div class="rounded-2xl border border-[rgba(217,119,6,0.12)] bg-white px-3 py-3 shadow-[0_10px_20px_rgba(17,24,39,0.04)]">
+            <p class="text-[12px] font-semibold text-slate-500">Status</p>
+            <div class="mt-2 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-emerald-600 font-bold w-fit">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              Online
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3 rounded-2xl border border-[rgba(217,119,6,0.12)] bg-white px-4 py-3 shadow-[0_10px_20px_rgba(17,24,39,0.04)]">
+          <div class="flex items-center gap-2 text-slate-500">
+            <i data-lucide="map-pin" class="w-4 h-4 text-[color:var(--brand-primary)]"></i>
+            <span class="text-[14px] font-semibold text-slate-700">Quận 1, TP. Hồ Chí Minh</span>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <div class="merchant-info-section-title mb-3">
+            <i data-lucide="layers-3" class="w-4 h-4 text-[color:var(--brand-primary)]"></i>
+            <span>Phương thức hỗ trợ</span>
+          </div>
           <div class="space-y-2.5">
-            <div class="partner-support-item rounded-2xl px-3 py-3 flex items-center gap-3">
-              <span class="support-icon bg-emerald-50 text-emerald-600">
+            <div class="merchant-info-support">
+              <span class="merchant-info-support-icon bg-emerald-50 text-emerald-600">
                 <i data-lucide="banknote" class="w-4 h-4"></i>
               </span>
-              <span class="text-[14px] font-semibold text-slate-700">Cash</span>
+              <div class="min-w-0">
+                <p class="merchant-info-support-label">Cash</p>
+                <p class="text-[12px] text-slate-500 mt-0.5">Nhận tiền mặt trực tiếp</p>
+              </div>
             </div>
-            <div class="partner-support-item rounded-2xl px-3 py-3 flex items-center gap-3">
-              <span class="support-icon bg-orange-50 text-[color:var(--brand-primary)]">
+            <div class="merchant-info-support">
+              <span class="merchant-info-support-icon bg-orange-50 text-[color:var(--brand-primary)]">
                 <i data-lucide="building-2" class="w-4 h-4"></i>
               </span>
-              <span class="text-[14px] font-semibold text-slate-700">Bank Transfer</span>
+              <div class="min-w-0">
+                <p class="merchant-info-support-label">Bank Transfer</p>
+                <p class="text-[12px] text-slate-500 mt-0.5">Hỗ trợ chuyển khoản theo QR</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="mt-4 info-note rounded-2xl px-4 py-3">
-          <p class="text-[13px] font-medium leading-5">
-            Bạn đã quét QR từ đối tác. Hệ thống sẽ tự động kết nối tới giao dịch.
-          </p>
+        <div class="mt-4 merchant-info-note rounded-2xl px-4 py-3">
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 inline-flex w-8 h-8 rounded-full bg-white/90 items-center justify-center text-[color:var(--brand-primary)] border border-[rgba(217,119,6,0.12)]">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+            </span>
+            <p class="text-[13px] font-medium leading-5">
+              Bạn đã quét QR từ Merchant ATM. Hệ thống sẽ tự động kết nối tới giao dịch.
+            </p>
+          </div>
         </div>
 
-        <div class="mt-4 space-y-2.5">
-          <a href="merchant-atm-order.html?type=buy" data-step-mode="buy" class="block w-full rounded-2xl py-3.5 text-[15px] font-bold primary-btn text-center">Mua Crypto</a>
-          <a href="merchant-atm-order.html?type=sell" data-step-mode="sell" class="block w-full rounded-2xl py-3.5 text-[15px] font-bold secondary-btn text-center">Bán Crypto</a>
+        <div class="mt-4 merchant-info-actions">
+          <a href="merchant-atm-order.html?type=buy" data-step-mode="buy" class="primary-btn">Mua Crypto</a>
+          <a href="merchant-atm-order.html?type=sell" data-step-mode="sell" class="secondary-btn">Bán Crypto</a>
         </div>
       </div>
     </section>

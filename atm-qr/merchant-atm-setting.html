@@ -1,0 +1,3091 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Merchant ATM Setting</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #eef3fb;
+      --panel: #ffffff;
+      --line: #d8deea;
+      --text: #2b3443;
+      --muted: #6f7684;
+      --blue: #356aff;
+      --blue-soft: #e7edff;
+      --blue-ring: rgba(53, 106, 255, 0.18);
+      --green: #22c55e;
+      --shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(231, 237, 255, 0.9), transparent 24%),
+        linear-gradient(180deg, #f7f9fe 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    .setting-page {
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    .setting-shell {
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--panel);
+      min-height: 100vh;
+      box-shadow: var(--shadow);
+    }
+
+    .setting-header {
+      display: grid;
+      grid-template-columns: 120px 1fr 120px;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .setting-header .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--blue);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .setting-header h1 {
+      margin: 0;
+      text-align: center;
+      font-size: 28px;
+      line-height: 1.1;
+      font-weight: 800;
+      color: #1f2937;
+      letter-spacing: -0.03em;
+    }
+
+    .setting-header .header-spacer {
+      width: 120px;
+    }
+
+    .setting-topnav {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      padding: 0 10px;
+      border-bottom: 1px solid var(--line);
+      overflow-x: auto;
+      scrollbar-width: none;
+      background: #fff;
+    }
+
+    .setting-topnav::-webkit-scrollbar,
+    .setting-subnav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .setting-topnav button {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: #6f7684;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 14px 18px 13px;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      cursor: default;
+    }
+
+    .setting-topnav button.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+      font-weight: 600;
+    }
+
+    .setting-board {
+      background: #fff;
+      padding: 12px 0 28px;
+    }
+
+    .setting-subnav {
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      margin: 0 12px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%);
+      border: 1px solid #d8deea;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .setting-subnav button {
+      appearance: none;
+      border: 1px solid transparent;
+      background: #fff;
+      color: #516173;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px 16px;
+      white-space: nowrap;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.03);
+      cursor: pointer;
+      transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .setting-subnav button:hover {
+      transform: translateY(-1px);
+      border-color: #dbe3f0;
+    }
+
+    .setting-subnav button.active {
+      background: linear-gradient(180deg, #eff4ff 0%, #dde7ff 100%);
+      color: var(--blue);
+      border-color: rgba(53, 106, 255, 0.18);
+      box-shadow: 0 10px 20px rgba(53, 106, 255, 0.12);
+    }
+
+    .setting-content {
+      padding: 18px 0 0;
+    }
+
+    .setting-panel {
+      display: none;
+      width: 100%;
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .setting-panel.active {
+      display: block;
+    }
+
+    .setting-section {
+      width: 100%;
+      max-width: 468px;
+      margin: 0 auto;
+    }
+
+    .setting-section--general {
+      max-width: 100%;
+    }
+
+    .setting-title {
+      font-size: 16px;
+      line-height: 1.25;
+      font-weight: 800;
+      color: #27303f;
+      margin-bottom: 14px;
+    }
+
+    .setting-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #27303f;
+      line-height: 1.25;
+    }
+
+    .setting-muted {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .setting-input,
+    .setting-select {
+      width: 100%;
+      height: 38px;
+      border-radius: 8px;
+      border: 1px solid #cfd7e6;
+      background: #fff;
+      padding: 0 12px;
+      font-size: 14px;
+      color: #27303f;
+      outline: none;
+    }
+
+    .setting-input:focus,
+    .setting-select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-ring);
+    }
+
+    .field-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .field-row .label-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-label.fw-semibold {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 0.5rem;
+      line-height: 1.25;
+    }
+
+    .form-label.fw-semibold i {
+      flex: 0 0 auto;
+      margin-right: 0 !important;
+    }
+
+    .info-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      flex: 0 0 auto;
+    }
+
+    .switch input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .switch-track {
+      width: 28px;
+      height: 16px;
+      border-radius: 999px;
+      background: #b3b8c2;
+      position: relative;
+      transition: background-color 0.18s ease;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.28);
+    }
+
+    .switch-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: #fff;
+      transition: transform 0.18s ease;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.18);
+    }
+
+    .switch input:checked + .switch-track {
+      background: var(--blue);
+    }
+
+    .switch input:checked + .switch-track .switch-thumb {
+      transform: translateX(12px);
+    }
+
+    .status-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+
+    .activity-switch {
+      width: 64px;
+      height: 28px;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      cursor: pointer;
+    }
+
+    .activity-switch input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      margin: 0;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .activity-switch-track {
+      width: 100%;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--blue);
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.12);
+    }
+
+    .activity-switch-on {
+      position: absolute;
+      left: 9px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0;
+      z-index: 1;
+    }
+
+    .activity-switch-off {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0;
+      z-index: 1;
+      display: none;
+    }
+
+    .activity-switch-thumb {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.18);
+      z-index: 1;
+    }
+
+    .activity-switch input:not(:checked) + .activity-switch-track {
+      background: #c1c7d3;
+    }
+
+    .activity-switch input:not(:checked) + .activity-switch-track .activity-switch-on {
+      display: none;
+    }
+
+    .activity-switch input:not(:checked) + .activity-switch-track .activity-switch-off {
+      display: block;
+    }
+
+    .activity-switch input:not(:checked) + .activity-switch-track .activity-switch-thumb {
+      right: auto;
+      left: 3px;
+    }
+
+    .activity-switch input:checked + .activity-switch-track .activity-switch-thumb {
+      left: auto;
+      right: 3px;
+    }
+
+    .activity-status-copy {
+      font-size: 14px;
+      color: #27303f;
+      font-weight: 500;
+      line-height: 1.25;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      height: 18px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .radio-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-right: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #27303f;
+    }
+
+    .radio-row input {
+      width: 14px;
+      height: 14px;
+      accent-color: var(--blue);
+    }
+
+    .note-block {
+      font-size: 12px;
+      line-height: 1.45;
+      color: #303847;
+    }
+
+    .section-divider {
+      margin: 18px 0;
+      text-align: center;
+      color: #3a4352;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: 0.12em;
+    }
+
+    .section-divider::before,
+    .section-divider::after {
+      content: "";
+      display: block;
+      height: 1px;
+      background: #d8deea;
+      margin: 0 0 10px;
+    }
+
+    .section-divider::after {
+      margin: 10px 0 0;
+    }
+
+    .setting-card {
+      border: 1px solid #d8deea;
+      border-radius: 16px;
+      background: #fff;
+      padding: 14px;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.04);
+    }
+
+  
+    .receive-card {
+      border: 1px solid rgba(53, 106, 255, 0.34);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #f7faff 0%, #ffffff 42%);
+      box-shadow: 0 12px 26px rgba(53, 106, 255, 0.06);
+      overflow: hidden;
+    }
+
+    .receive-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(53, 106, 255, 0.12);
+      background: rgba(53, 106, 255, 0.03);
+    }
+
+    .receive-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #27303f;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .new-badge {
+      display: inline-flex;
+      align-items: center;
+      height: 20px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: #dbe6ff;
+      border: 1px solid rgba(53, 106, 255, 0.18);
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .receive-card-body {
+      padding: 14px;
+    }
+
+    .receive-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #edf1f7;
+    }
+
+    .receive-top-copy {
+      margin-top: 4px;
+      color: #6f7684;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .receive-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .receive-summary {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #dfe6f2;
+      background: #f6f8fd;
+    }
+
+    .receive-summary-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .receive-summary-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #edf3ff;
+      color: var(--blue);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    .receive-summary .label {
+      color: #6f7684;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .receive-summary .value {
+      margin-top: 6px;
+      color: #27303f;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .setting-grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 16px;
+    }
+
+    .setting-grid-2--narrow {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .walkin-card {
+      border: 1px solid #d8deea;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.05);
+      overflow: hidden;
+    }
+
+    .walkin-card + .walkin-card {
+      margin-top: 12px;
+    }
+
+    .walkin-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 18px 14px;
+    }
+
+    .walkin-head-left {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .walkin-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #eff4ff 0%, #dfe9ff 100%);
+      color: var(--blue);
+      box-shadow: inset 0 0 0 1px rgba(53, 106, 255, 0.08), 0 8px 18px rgba(53, 106, 255, 0.08);
+      flex: 0 0 auto;
+    }
+
+    .walkin-title {
+      color: #27303f;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .walkin-subtitle {
+      margin-top: 4px;
+      color: #6f7684;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .walkin-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding: 0 18px 18px;
+    }
+
+    .walkin-option {
+      border: 1px solid #d9dfe8;
+      border-radius: 16px;
+      background: #fff;
+      padding: 18px 18px 18px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.03);
+    }
+
+    .walkin-option.active {
+      border-color: rgba(53, 106, 255, 0.45);
+      background: linear-gradient(180deg, #f8faff 0%, #f3f7ff 100%);
+      box-shadow: 0 12px 24px rgba(53, 106, 255, 0.08);
+    }
+
+    .walkin-radio {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 2px solid #d8deea;
+      flex: 0 0 auto;
+      margin-top: 1px;
+      position: relative;
+      background: #fff;
+    }
+
+    .walkin-option.active .walkin-radio {
+      border-color: var(--blue);
+    }
+
+    .walkin-option.active .walkin-radio::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: 999px;
+      background: var(--blue);
+      box-shadow: 0 0 0 4px rgba(53, 106, 255, 0.16);
+    }
+
+    .walkin-option-title {
+      color: #27303f;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .walkin-option-copy {
+      margin-top: 6px;
+      color: #6f7684;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .walkin-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 18px;
+      padding: 18px;
+    }
+
+    .walkin-side {
+      display: grid;
+      gap: 14px;
+    }
+
+    .walkin-row {
+      display: grid;
+      grid-template-columns: 176px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+    }
+
+    .walkin-row .walkin-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #27303f;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .walkin-row .walkin-label i {
+      color: #6b7fa8;
+    }
+
+    .walkin-input,
+    .walkin-select {
+      width: 100%;
+      height: 38px;
+      border-radius: 8px;
+      border: 1px solid #cfd7e6;
+      background: #fff;
+      padding: 0 12px;
+      font-size: 14px;
+      color: #27303f;
+      outline: none;
+    }
+
+    .walkin-input:focus,
+    .walkin-select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-ring);
+    }
+
+    .walkin-availability {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .walkin-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #27303f;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .walkin-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .walkin-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 38px;
+      padding: 0 14px;
+      border-radius: 11px;
+      border: 1px solid #d8deea;
+      background: #fff;
+      color: #27303f;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.03);
+    }
+
+    .walkin-pill i {
+      color: #7a869a;
+      flex: 0 0 auto;
+    }
+
+    .walkin-right-card {
+      border: 1px solid #d8deea;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+      padding: 18px;
+      display: grid;
+      gap: 18px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.03);
+    }
+
+    .walkin-right-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #27303f;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .walkin-fee-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 72px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .walkin-fee-input {
+      width: 100%;
+      height: 38px;
+      border-radius: 8px;
+      border: 1px solid #cfd7e6;
+      background: #fff;
+      padding: 0 12px;
+      font-size: 14px;
+      color: #27303f;
+      outline: none;
+    }
+
+    .walkin-fee-suffix {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 38px;
+      border: 1px solid #cfd7e6;
+      border-radius: 8px;
+      color: #27303f;
+      font-size: 14px;
+      font-weight: 700;
+      background: #fafbfd;
+    }
+
+    .walkin-info-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 16px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #edf4ff 0%, #e8f0ff 100%);
+      border: 1px solid #d7e3ff;
+      color: #27303f;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .walkin-info-box i {
+      color: var(--blue);
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+
+    .walkin-info-box .walkin-info-icon {
+      width: 22px;
+      height: 22px;
+      flex: 0 0 auto;
+    }
+
+    .walkin-map-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 4px;
+    }
+
+    .walkin-map-copy {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: #27303f;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .walkin-map-copy input {
+      margin-top: 2px;
+      flex: 0 0 auto;
+    }
+
+    .walkin-map-copy i {
+      color: var(--blue);
+    }
+
+    .walkin-right-divider {
+      border-left: 1px solid #e4e8f1;
+    }
+
+    @media (max-width: 991.98px) {
+      .walkin-right-divider {
+        border-left: 0;
+        padding-left: 0 !important;
+      }
+    }
+
+    .qr-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(15, 23, 42, 0.48);
+      z-index: 50;
+    }
+
+    .qr-modal.active {
+      display: flex;
+    }
+
+    .qr-modal-card {
+      width: min(100%, 460px);
+      max-height: calc(100vh - 36px);
+      overflow: auto;
+      border-radius: 26px;
+      background: #fff;
+      box-shadow: 0 28px 80px rgba(15, 23, 42, 0.28);
+    }
+
+    .qr-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.08);
+      color: #1f2937;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qr-modal-top {
+      position: relative;
+      padding: 16px 16px 0;
+      background: linear-gradient(180deg, #fff7eb 0%, #ffffff 100%);
+      border-top-left-radius: 26px;
+      border-top-right-radius: 26px;
+    }
+
+    .qr-modal-banner {
+      border-radius: 22px;
+      border: 12px solid #ef8a12;
+      background: #fff;
+      padding: 20px 18px 18px;
+    }
+
+    .qr-modal-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 30px;
+      padding: 0 14px;
+      margin: 0 auto 12px;
+      border-radius: 999px;
+      background: #fff0d2;
+      color: #c66b00;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      justify-content: center;
+    }
+
+    .qr-modal-illustration {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 0 16px;
+    }
+
+    .qr-modal-illustration img {
+      width: 100%;
+      max-width: 290px;
+      display: block;
+      object-fit: contain;
+    }
+
+    .qr-modal-info {
+      margin: 14px 16px 0;
+      border: 1px solid #e5e7eb;
+      border-radius: 22px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .qr-modal-row {
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      padding: 16px 18px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .qr-modal-row:first-child {
+      border-top: 0;
+    }
+
+    .qr-modal-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 999px;
+      background: #fff5db;
+      color: #ef8a12;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    .qr-modal-label {
+      color: #8a93a3;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .qr-modal-title {
+      color: #1f2937;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-top: 3px;
+    }
+
+    .qr-modal-subtitle {
+      color: #1f2937;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-top: 4px;
+    }
+
+    .qr-modal-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #16a34a;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .qr-modal-status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16);
+    }
+
+    .qr-modal-code-wrap {
+      margin: 16px 16px 0;
+      padding: 14px;
+      border: 1px solid #f3d7b3;
+      border-radius: 22px;
+      background: #fff;
+    }
+
+    .qr-modal-code {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border-radius: 18px;
+      border: 1px solid #f4d4aa;
+      background: #fff;
+    }
+
+    .qr-modal-footer {
+      margin-top: 14px;
+      padding: 16px;
+      background: linear-gradient(180deg, #ef8a12 0%, #dc7410 100%);
+      color: #fff;
+      border-bottom-left-radius: 26px;
+      border-bottom-right-radius: 26px;
+    }
+
+    .qr-modal-footer-text {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .qr-modal-footer-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.12);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    .qr-modal-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      padding: 14px 16px 16px;
+    }
+
+    .qr-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      height: 48px;
+      border-radius: 14px;
+      border: 1px solid #d8deea;
+      background: #fff;
+      color: #356aff;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .qr-action-btn.secondary {
+      color: #6f7684;
+    }
+
+    @media (max-width: 560px) {
+      .qr-modal-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .qr-modal-row {
+        grid-template-columns: 48px minmax(0, 1fr);
+      }
+
+      .qr-modal-icon {
+        width: 48px;
+        height: 48px;
+      }
+    }
+
+    .setting-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .toggle-stack {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .toggle-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: #27303f;
+    }
+
+    .toggle-option strong {
+      display: block;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .toggle-option span {
+      display: block;
+      margin-top: 2px;
+      color: #6f7684;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .inline-switch-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid #d8deea;
+      color: #27303f;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .show-qr-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(53, 106, 255, 0.22);
+      background: rgba(231, 237, 255, 0.75);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 700;
+      width: fit-content;
+      text-decoration: none;
+    }
+
+    .field-caption {
+      color: #6f7684;
+      font-size: 12px;
+      line-height: 1.45;
+      margin-top: 6px;
+    }
+
+    .service-fee-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: #27303f;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .service-fee-line strong {
+      font-weight: 800;
+    }
+
+    .settlement-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid #d8deea;
+      color: #27303f;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .agreement-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #27303f;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .agreement-row input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--blue);
+    }
+
+    .fee-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 54px 64px auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .fee-compare-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .asset-fee-group {
+      border: 1px solid #d8deea;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.04);
+      overflow: hidden;
+      padding: 14px;
+    }
+
+    .fee-compare-col {
+      padding: 14px;
+    }
+
+    .fee-compare-col + .fee-compare-col {
+      border-left: 1px solid #edf1f7;
+    }
+
+    .fee-compare-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+      color: #27303f;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .fee-compare-title .info-dot {
+      margin-top: 1px;
+    }
+
+    .fee-compare-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 54px 64px auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .fee-compare-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+      color: #27303f;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .slider-track {
+      position: relative;
+      height: 8px;
+      border-radius: 999px;
+      background: #b8bcc4;
+      overflow: visible;
+    }
+
+    .slider-track .slider-thumb {
+      position: absolute;
+      left: -2px;
+      top: 50%;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      transform: translateY(-50%);
+      background: #fff;
+      border: 3px solid var(--blue);
+      box-shadow: 0 0 0 2px rgba(53, 106, 255, 0.08);
+    }
+
+    .percent-input {
+      width: 54px;
+      height: 30px;
+      text-align: center;
+      border-radius: 8px;
+      border: 1px solid #cfd7e6;
+      font-size: 13px;
+      color: #27303f;
+      background: #fff;
+    }
+
+    .percent-suffix {
+      font-size: 13px;
+      font-weight: 700;
+      color: #27303f;
+      margin-left: -2px;
+    }
+
+    .apply-all {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #27303f;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .apply-all input {
+      width: 14px;
+      height: 14px;
+      accent-color: var(--blue);
+    }
+
+    .asset-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .asset-section-head {
+      display: grid;
+      grid-template-columns: 126px 1fr 1fr;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 10px;
+    }
+
+    .asset-section-head .asset-title {
+      color: #27303f;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .asset-section-head .asset-col-head {
+      color: #27303f;
+      font-size: 14px;
+      font-weight: 800;
+      text-align: left;
+      padding-left: 38px;
+    }
+
+    .asset-header,
+    .asset-row {
+      display: grid;
+      grid-template-columns: 126px 1fr 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .asset-header {
+      margin-bottom: 2px;
+      color: #27303f;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .asset-row {
+      min-height: 36px;
+    }
+
+    .asset-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #27303f;
+    }
+
+    .asset-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #fff;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+      flex: 0 0 auto;
+    }
+
+    .asset-icon.usdv {
+      background: linear-gradient(180deg, #16a34a 0%, #0f8a3d 100%);
+    }
+
+    .asset-icon.usdt {
+      background: linear-gradient(180deg, #2fbf9b 0%, #0f9d8a 100%);
+    }
+
+    .asset-icon.vmm {
+      background: linear-gradient(180deg, #f6c24b 0%, #d79c24 100%);
+      color: #7a4b00;
+    }
+
+    .asset-icon.btc {
+      background: linear-gradient(180deg, #ff9f31 0%, #f28c00 100%);
+    }
+
+    .asset-icon.eth {
+      background: linear-gradient(180deg, #6b7280 0%, #374151 100%);
+    }
+
+    .asset-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .asset-fee {
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
+      max-width: 140px;
+      border-radius: 8px;
+      border: 1px solid #cfd7e6;
+      background: #fff;
+      overflow: hidden;
+      height: 30px;
+    }
+
+    .asset-fee input {
+      width: 100%;
+      border: 0;
+      outline: none;
+      padding: 0 10px;
+      height: 100%;
+      font-size: 13px;
+      color: #27303f;
+    }
+
+    .asset-fee span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 100%;
+      border-left: 1px solid #cfd7e6;
+      color: #27303f;
+      font-size: 13px;
+      font-weight: 700;
+      background: #fafbfd;
+      flex: 0 0 auto;
+    }
+
+    .asset-switch {
+      justify-self: start;
+    }
+
+    .device-field {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .country-select {
+      width: 100%;
+      height: 36px;
+      border: 1px solid #cfd7e6;
+      border-radius: 8px;
+      padding: 0 10px;
+      font-size: 14px;
+      color: #27303f;
+      background: #fff;
+      outline: none;
+    }
+
+    .device-toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .device-toggle-text {
+      font-size: 13px;
+      color: #27303f;
+      font-weight: 500;
+    }
+
+    .section-card {
+      padding: 0 16px;
+    }
+
+    .payment-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .payment-section-divider {
+      margin: 18px 0 14px;
+      text-align: center;
+      color: #3a4352;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: 0.12em;
+    }
+
+    .payment-section-divider::before,
+    .payment-section-divider::after {
+      content: "";
+      display: block;
+      height: 1px;
+      background: #d8deea;
+      margin: 0 0 10px;
+    }
+
+    .payment-section-divider::after {
+      margin: 10px 0 0;
+    }
+
+    .payment-card {
+      border: 1px solid #d8deea;
+      border-radius: 16px;
+      background: #fff;
+      padding: 14px;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.04);
+    }
+
+    .payment-buy-sell-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .payment-buy-sell-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid #e4e8f1;
+      background: linear-gradient(180deg, #f7f9ff 0%, #ffffff 100%);
+    }
+
+    .payment-buy-sell-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #27303f;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .payment-buy-sell-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #edf3ff;
+      color: var(--blue);
+      flex: 0 0 auto;
+    }
+
+    .payment-buy-sell-body {
+      padding: 14px 16px 16px;
+    }
+
+    .payment-approval-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .payment-approval-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid #e4e8f1;
+      background: linear-gradient(180deg, #f7f9ff 0%, #ffffff 100%);
+    }
+
+    .payment-approval-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #27303f;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .payment-approval-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #edf3ff;
+      color: var(--blue);
+      flex: 0 0 auto;
+    }
+
+    .payment-approval-body {
+      padding: 14px 16px 16px;
+    }
+
+    .payment-approval-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .payment-approval-copy {
+      color: #6f7684;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .payment-approval-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .payment-approval-col {
+      padding: 12px;
+      border: 1px solid #d8deea;
+      border-radius: 14px;
+      background: #fafbfd;
+    }
+
+    .payment-approval-col-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      color: #27303f;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .payment-choice-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .payment-choice {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #d8deea;
+      background: #fff;
+      color: #27303f;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .payment-choice input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--blue);
+      flex: 0 0 auto;
+    }
+
+    .payment-info-stack {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .payment-info-row {
+      display: grid;
+      grid-template-columns: 160px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 10px 0;
+      border-top: 1px solid #edf1f7;
+    }
+
+    .payment-info-label {
+      color: #27303f;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .payment-info-value {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      color: #27303f;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .payment-inline-select {
+      width: 100%;
+      max-width: 220px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid #cfd7e6;
+      background: #fff;
+      padding: 0 10px;
+      font-size: 13px;
+      color: #27303f;
+    }
+
+    .payment-condition-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .payment-condition-chip {
+      display: inline-flex;
+      align-items: center;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid #d8deea;
+      background: #fff;
+      color: #546072;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .payment-status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 10px;
+      border-top: 1px solid #edf1f7;
+    }
+
+    .payment-card + .payment-card {
+      margin-top: 12px;
+    }
+
+    .payment-radio-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .payment-radio-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: #27303f;
+    }
+
+    .payment-radio-option strong {
+      display: block;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .payment-radio-option span {
+      display: block;
+      margin-top: 2px;
+      color: #6f7684;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .status-note {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: rgba(253, 230, 138, 0.35);
+      border: 1px solid rgba(217, 119, 6, 0.16);
+      color: #7c4a03;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .status-note.success {
+      gap: 6px;
+      background: #eefaf0;
+      border-color: rgba(34, 197, 94, 0.16);
+      color: #2f8f47;
+    }
+
+    .status-note.success::before {
+      content: "";
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: #2f8f47;
+      box-shadow: inset 0 0 0 3px #eefaf0;
+      flex: 0 0 auto;
+    }
+
+    .receive-policy-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .payment-header {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 2px;
+      color: #27303f;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .payment-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      align-items: center;
+      min-height: 32px;
+    }
+
+    .payment-header > :nth-child(3),
+    .payment-row > :nth-child(3) {
+      display: flex;
+      justify-content: flex-end;
+      min-width: 0;
+    }
+
+    .payment-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #27303f;
+      font-weight: 500;
+    }
+
+    .payout-link {
+      color: var(--blue);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .payout-account-box {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid #d8deea;
+      background: #fff;
+      color: #27303f;
+    }
+
+    .payout-account-box .label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #6f7684;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .payout-account-box .value {
+      font-size: 14px;
+      font-weight: 700;
+      color: #27303f;
+    }
+
+    .approval-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #27303f;
+    }
+
+    .save-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 28px;
+      padding-bottom: 8px;
+    }
+
+    .primary-action {
+      min-width: 152px;
+      height: 36px;
+      border: 0;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #3f69f7 0%, #356aff 100%);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 10px 18px rgba(53, 106, 255, 0.18);
+    }
+
+    .center-column {
+      width: 100%;
+      max-width: 496px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 900px) {
+      .setting-shell {
+        max-width: none;
+      }
+
+      .asset-header,
+      .asset-row {
+        grid-template-columns: 106px 1fr 1fr;
+      }
+
+      .setting-header {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+
+      .setting-header .back-link,
+      .setting-header .header-spacer {
+        width: 100%;
+        justify-self: start;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .walkin-options,
+      .walkin-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .walkin-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+
+      .walkin-fee-row {
+        grid-template-columns: 1fr 72px;
+      }
+
+      .walkin-map-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .fee-compare-card,
+      .setting-grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .fee-compare-col + .fee-compare-col {
+        border-left: 0;
+        border-top: 1px solid #edf1f7;
+      }
+
+      .fee-compare-row {
+        grid-template-columns: 1fr 48px 56px auto;
+      }
+
+      .asset-section-head {
+        grid-template-columns: 96px 1fr 1fr;
+      }
+
+      .payment-header,
+      .payment-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .payment-header .payment-empty,
+      .payment-row .payout-spacer {
+        display: none;
+      }
+
+      .payment-approval-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .payment-info-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+
+      .payment-info-value {
+        justify-content: flex-start;
+        text-align: left;
+      }
+
+      .receive-summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .setting-topnav button {
+        padding-inline: 14px;
+      }
+
+      .setting-subnav {
+        width: 100%;
+      }
+
+      .asset-header,
+      .asset-row {
+        grid-template-columns: 96px 1fr 1fr;
+      }
+
+      .fee-row {
+        grid-template-columns: 1fr 48px 56px auto;
+      }
+
+      .inline-switch-row {
+        align-items: flex-start;
+      }
+
+      .setting-grid-2,
+      .setting-grid-2--narrow {
+        grid-template-columns: 1fr;
+      }
+
+      .walkin-head {
+        flex-direction: column;
+      }
+
+      .walkin-option {
+        min-height: 0;
+      }
+
+      .walkin-pills {
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body class="setting-page">
+  <main class="setting-shell">
+    <header class="setting-header">
+      <a href="merchant-atm-info.html" class="back-link">
+        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        <span>Back</span>
+      </a>
+      <h1>P2P Exchange</h1>
+      <div class="header-spacer"></div>
+    </header>
+
+    <nav class="setting-topnav" aria-label="Primary">
+      <button type="button">Buy Crypto (P2P)</button>
+      <button type="button">Sell Crypto (P2P)</button>
+      <button type="button">History</button>
+      <button type="button" class="active">Setting</button>
+    </nav>
+
+    <div class="setting-board">
+      <div class="setting-subnav">
+        <button type="button" class="active" data-setting-tab="general">
+          <i data-lucide="settings-2" class="w-4 h-4"></i>
+          General
+        </button>
+        <button type="button" data-setting-tab="device">
+          <i data-lucide="smartphone" class="w-4 h-4"></i>
+          Mobile Device
+        </button>
+        <button type="button" data-setting-tab="payment">
+          <i data-lucide="landmark" class="w-4 h-4"></i>
+          Payment Methods
+        </button>
+      </div>
+
+      <div class="setting-content">
+        <section class="setting-panel active" data-setting-panel="general">
+          <div class="setting-section setting-section--general">
+            <div class="row g-3">
+              <div class="col-12 col-lg-6">
+                <div class="setting-card h-100">
+                <div class="setting-title">Activity Status</div>
+                <div class="status-switch">
+                  <label class="activity-switch">
+                    <input type="checkbox" checked />
+                    <span class="activity-switch-track">
+                      <span class="activity-switch-on">ON</span>
+                      <span class="activity-switch-off">OFF</span>
+                      <span class="activity-switch-thumb"></span>
+                    </span>
+                  </label>
+                  <span class="activity-status-copy">You are accepting transactions</span>
+                </div>
+
+                <div class="mt-2">
+                  <div class="setting-label mb-2">Current Role</div>
+                  <label class="radio-row">
+                    <input type="radio" name="role" checked />
+                    <span>Mobile ATM</span>
+                  </label>
+                  <label class="radio-row">
+                    <input type="radio" name="role" />
+                    <span>Merchant ATM</span>
+                  </label>
+                </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-6">
+                <div class="setting-card h-100">
+                <div class="field-row">
+                  <div class="label-wrap">
+                    <span class="setting-label">Minimum transaction amount ($)</span>
+                  </div>
+                  <input class="setting-input" style="max-width: 180px;" value="100" />
+                </div>
+                <div class="note-block mt-3">
+                  Transactions are only supported through the app.<br />
+                  Walk-in transactions are supported when enabled.
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="walkin-card p-4 mt-3">
+              <div class="d-flex justify-content-between align-items-start gap-3 mb-4">
+                <div class="d-flex gap-3">
+                  <div class="walkin-icon">
+                    <i data-lucide="store" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <div class="walkin-title">Walk-in Transaction Mode   <span class="badge bg-primary-subtle text-primary">Mới</span></div>
+                    <div class="walkin-subtitle">Allow customers to visit your fixed location and trade directly.</div>
+                  </div>
+                </div>
+
+                <div class="inline-switch-row">
+                  <div class="status-switch">
+                    <label class="activity-switch">
+                      <input type="checkbox" checked />
+                      <span class="activity-switch-track">
+                        <span class="activity-switch-on">ON</span>
+                        <span class="activity-switch-off">OFF</span>
+                        <span class="activity-switch-thumb"></span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row g-3">
+                <div class="col-12 col-md-6">
+                  <label class="walkin-option h-100">
+                    <input class="form-check-input mt-1" type="radio" name="walkinMode">
+                    <div>
+                      <div class="walkin-option-title">App Order Only</div>
+                      <div class="walkin-option-copy">Customer must place order in app before arrival.</div>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <label class="walkin-option active h-100">
+                    <input class="form-check-input mt-1" type="radio" name="walkinMode" checked>
+                    <div>
+                      <div class="walkin-option-title">Walk-in + Scan QR</div>
+                      <div class="walkin-option-copy">Customer can walk in, scan merchant QR, view fees, and start transaction.</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="pt-3 d-flex justify-content-start">
+                <a class="show-qr-btn" href="merchant-atm-qr.html" data-open-qr-modal>
+                  <i data-lucide="qr-code" class="w-4 h-4"></i>
+                  Show ATM QR
+                </a>
+              </div>
+            </div>
+
+            <div class="walkin-card p-4 mt-4">
+              <div class="row g-4">
+                <div class="col-12 col-lg-6">
+                  <h5 class="fw-bold mb-4">Walk-in Setup</h5>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                      <i data-lucide="map-pin" class="me-2 text-primary w-4 h-4"></i>
+                      Business Location
+                    </label>
+                    <input class="form-control" value="123 Liberty Street, New York, NY 10006, USA" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                      <i data-lucide="clock-3" class="me-2 text-primary w-4 h-4"></i>
+                      Operating Hours
+                    </label>
+                    <input class="form-control" value="Mon–Sat, 9:00 AM – 7:00 PM" />
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                      <i data-lucide="users" class="me-2 text-primary w-4 h-4"></i>
+                      Walk-in Availability
+                    </label>
+
+                    <div class="d-flex gap-4 flex-wrap">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" checked />
+                        <label class="form-check-label">Buy Crypto</label>
+                      </div>
+
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" checked />
+                        <label class="form-check-label">Sell Crypto</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="form-label fw-semibold">
+                      <i data-lucide="credit-card" class="me-2 text-primary w-4 h-4"></i>
+                      Accepted Payment
+                    </label>
+
+                    <div class="d-flex flex-wrap gap-2">
+                      <button type="button" class="btn btn-light border rounded-3">Cash</button>
+                      <button type="button" class="btn btn-light border rounded-3">Zelle</button>
+                      <button type="button" class="btn btn-light border rounded-3">Bank Wire</button>
+                      <button type="button" class="btn btn-light border rounded-3">PayPal</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-lg-6">
+                  <div class="h-100 ps-lg-4 walkin-right-divider">
+                    <div class="mb-3">
+                      <label class="form-label fw-semibold">
+                        <i data-lucide="qr-code" class="me-2 text-primary w-4 h-4"></i>
+                        QR Access Mode
+                      </label>
+
+                      <select class="form-select">
+                        <option selected>Scan merchant QR at location</option>
+                        <option>Show ATM QR for customers</option>
+                      </select>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label fw-semibold">
+                        <i data-lucide="dollar-sign" class="me-2 text-primary w-4 h-4"></i>
+                        Walk-in Fixed Fee
+                      </label>
+
+                      <div class="input-group">
+                        <input class="form-control" value="5" />
+                        <span class="input-group-text">%</span>
+                      </div>
+                    </div>
+
+                    <div class="alert alert-primary bg-primary bg-opacity-10 border-0 rounded-4 mb-3">
+                      <div class="d-flex gap-3">
+                        <i class="fas fa-info-circle text-primary mt-1"></i>
+                        <p class="mb-0">
+                          When walk-in mode is enabled, customers can scan your QR code at the store, review fees and conditions, then create a direct trade request.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" checked />
+                      <label class="form-check-label fw-semibold">
+                        Show merchant as Walk-in Available on map/search
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card border shadow-sm rounded-4 p-3 mt-3" >
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="bg-light rounded-circle p-2">
+                    <i data-lucide="users" class="w-5 h-5 text-primary"></i>
+                  </div>
+                  <div class="fw-semibold d-flex align-items-center gap-2">
+                    <span>Nhận hộ / Chi hộ</span>
+                    <span class="badge bg-primary-subtle text-primary">Mới</span>
+                  </div>
+                </div>
+
+                <span class="status-note success">Đã kích hoạt</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="text-muted">Tham gia chương trình</span>
+                <div class="form-check form-switch m-0">
+                  <input class="form-check-input" type="checkbox" checked />
+                </div>
+              </div>
+
+              <div class="text-muted small mb-2 d-flex align-items-center gap-1">
+                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                Áp dụng cho Merchant ATM / Mobile ATM đủ điều kiện trong khu vực hoạt động
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-3 gap-3 flex-wrap">
+                <div class="form-check m-0">
+                  <input class="form-check-input" type="checkbox" checked id="receive-agree" />
+                  <label class="form-check-label small" for="receive-agree">
+                    Tôi đồng ý <span class="text-primary">điều khoản &amp; biểu phí</span>
+                  </label>
+                </div>
+                <a href="#" class="small text-primary text-decoration-none" onclick="return false;">
+                  Xem chính sách <i data-lucide="arrow-right" class="w-4 h-4 d-inline-block align-text-bottom"></i>
+                </a>
+              </div>
+
+              <div class="row g-2">
+                <div class="col-12 col-md-6">
+                  <div class="bg-light rounded-3 p-3">
+                    <div class="text-muted small mb-1 d-flex align-items-center gap-1">
+                      <i data-lucide="percent" class="w-4 h-4"></i>
+                      Phí cố định
+                    </div>
+                    <div class="fw-semibold">5%</div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="bg-light rounded-3 p-3">
+                    <div class="text-muted small mb-1 d-flex align-items-center gap-1">
+                      <i data-lucide="calendar-days" class="w-4 h-4"></i>
+                      Kết số
+                    </div>
+                    <div class="fw-semibold">Cuối ngày</div>
+                    <div class="text-muted small">Thanh toán: T+1</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3">
+              <div class="asset-fee-group">
+                <div class="setting-card fee-compare-card" style="border: 0; box-shadow: none; padding: 0;">
+                  <div class="fee-compare-col">
+                    <div class="fee-compare-title">
+                      <span>Buy Fee</span>
+                      <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                    </div>
+                    <div class="fee-compare-row">
+                      <div class="slider-track"><span class="slider-thumb"></span></div>
+                      <input class="percent-input" value="0" />
+                      <div class="percent-suffix">%</div>
+                      <label class="fee-compare-actions">
+                        <input type="checkbox" />
+                        <span>Apply to all</span>
+                        <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="fee-compare-col">
+                    <div class="fee-compare-title">
+                      <span>Sell Fee</span>
+                      <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                    </div>
+                    <div class="fee-compare-row">
+                      <div class="slider-track"><span class="slider-thumb"></span></div>
+                      <input class="percent-input" value="0" />
+                      <div class="percent-suffix">%</div>
+                      <label class="fee-compare-actions">
+                        <input type="checkbox" />
+                        <span>Apply to all</span>
+                        <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="asset-section-head" style="margin-top: 14px;">
+                  <div class="asset-title">Asset</div>
+                  <div class="asset-col-head">Buy Fee</div>
+                  <div class="asset-col-head" style="padding-left: 0;">Sell Fee</div>
+                </div>
+                <div class="asset-grid mt-2">
+                <div class="asset-row" style="grid-template-columns: 96px 70px 1fr 70px 1fr;">
+                  <div class="asset-name">
+                    <span class="asset-icon usdt">T</span>
+                    <span>USDT</span>
+                  </div>
+                  <label class="switch asset-switch">
+                    <input type="checkbox" checked />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <div class="asset-fee">
+                    <input value="10" />
+                    <span>%</span>
+                  </div>
+                  <label class="switch asset-switch">
+                    <input type="checkbox" checked />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <div class="asset-fee">
+                    <input value="9.2" />
+                    <span>%</span>
+                  </div>
+                </div>
+
+                <div class="asset-row" style="grid-template-columns: 96px 70px 1fr 70px 1fr;">
+                  <div class="asset-name">
+                    <span class="asset-icon usdv">$</span>
+                    <span>USDV</span>
+                  </div>
+                  <label class="switch asset-switch">
+                    <input type="checkbox" checked />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <div class="asset-fee">
+                    <input value="10" />
+                    <span>%</span>
+                  </div>
+                  <label class="switch asset-switch">
+                    <input type="checkbox" checked />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <div class="asset-fee">
+                    <input value="9.2" />
+                    <span>%</span>
+                  </div>
+                </div>
+
+                <div class="asset-row" style="grid-template-columns: 96px 70px 1fr 70px 1fr;">
+                  <div class="asset-name">
+                    <span class="asset-icon btc">₿</span>
+                    <span>BTC</span>
+                  </div>
+                  <label class="switch asset-switch">
+                    <input type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <div class="asset-fee" style="opacity: 0.5;">
+                    <input value="--" />
+                    <span>%</span>
+                  </div>
+                  <label class="switch asset-switch">
+                    <input type="checkbox" checked />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <div class="asset-fee">
+                    <input value="9.2" />
+                    <span>%</span>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <div class="setting-card">
+                <div class="setting-label mb-2">Setup Cash</div>
+                <div class="row g-3 align-items-center">
+                  <div class="col-12 col-lg-8">
+                    <div class="field-row">
+                      <div class="setting-label" style="font-weight: 600;">Cash available ($)</div>
+                      <input class="setting-input" style="max-width: 168px;" value="99,500" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="save-wrap" style="margin-top: 18px;">
+              <button class="primary-action" style="min-width: 220px;">Save changes</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="setting-panel" data-setting-panel="device">
+          <div class="setting-section">
+            <div class="setting-title">Mobile Device</div>
+
+            <div class="mb-4">
+              <div class="field-row mb-2">
+                <div class="label-wrap">
+                  <span class="setting-label">Phone Number</span>
+                  <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                </div>
+              </div>
+              <div class="device-field">
+                <select class="country-select">
+                  <option>+1</option>
+                  <option>+84</option>
+                  <option>+65</option>
+                </select>
+                <input class="setting-input" value="(222) 322-232323" />
+              </div>
+            </div>
+
+            <div class="mb-5">
+              <div class="field-row mb-2">
+                <div class="label-wrap">
+                  <span class="setting-label">Default Location Device</span>
+                  <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                </div>
+              </div>
+              <div class="device-toggle-row">
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="switch-track"><span class="switch-thumb"></span></span>
+                </label>
+                <span class="device-toggle-text">This device is not set as default</span>
+              </div>
+            </div>
+
+            <div class="save-wrap">
+              <button class="primary-action" style="min-width: 106px;">Update</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="setting-panel" data-setting-panel="receive">
+          <div class="setting-section" style="max-width: 760px;">
+            <div class="setting-title" style="margin-bottom: 0;">RECEIVE / PAY ON BEHALF</div>
+            <div class="card border-0 shadow-sm rounded-4 p-3 mt-3" style="max-width: 600px;">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="bg-light rounded-circle p-2">
+                    <i data-lucide="users" class="w-5 h-5 text-primary"></i>
+                  </div>
+                  <div class="fw-semibold d-flex align-items-center gap-2">
+                    <span>Nhận hộ / Chi hộ</span>
+                    <span class="badge bg-primary-subtle text-primary">Mới</span>
+                  </div>
+                </div>
+
+                <span class="status-note success">Đã kích hoạt</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="text-muted">Tham gia chương trình</span>
+                <div class="form-check form-switch m-0">
+                  <input class="form-check-input" type="checkbox" checked />
+                </div>
+              </div>
+
+              <div class="text-muted small mb-2 d-flex align-items-center gap-1">
+                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                Áp dụng cho Merchant ATM / Mobile ATM đủ điều kiện trong khu vực hoạt động
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mb-3 gap-3 flex-wrap">
+                <div class="form-check m-0">
+                  <input class="form-check-input" type="checkbox" checked id="receive-agree" />
+                  <label class="form-check-label small" for="receive-agree">
+                    Tôi đồng ý <span class="text-primary">điều khoản &amp; biểu phí</span>
+                  </label>
+                </div>
+                <a href="#" class="small text-primary text-decoration-none" onclick="return false;">
+                  Xem chính sách <i data-lucide="arrow-right" class="w-4 h-4 d-inline-block align-text-bottom"></i>
+                </a>
+              </div>
+
+              <div class="row g-2">
+                <div class="col-12 col-md-6">
+                  <div class="bg-light rounded-3 p-3">
+                    <div class="text-muted small mb-1 d-flex align-items-center gap-1">
+                      <i data-lucide="percent" class="w-4 h-4"></i>
+                      Phí cố định
+                    </div>
+                    <div class="fw-semibold">5%</div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <div class="bg-light rounded-3 p-3">
+                    <div class="text-muted small mb-1 d-flex align-items-center gap-1">
+                      <i data-lucide="calendar-days" class="w-4 h-4"></i>
+                      Kết số
+                    </div>
+                    <div class="fw-semibold">Cuối ngày</div>
+                    <div class="text-muted small">Thanh toán: T+1</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="setting-panel" data-setting-panel="payment">
+          <div class="setting-section" style="max-width: 520px;">
+            <div class="payment-card payment-buy-sell-card">
+              <div class="payment-buy-sell-head">
+                <div class="payment-buy-sell-title">
+                  <span class="payment-buy-sell-icon"><i data-lucide="landmark" class="w-4 h-4"></i></span>
+                  <span>BUY / SELL PAYMENT CONFIG</span>
+                </div>
+              </div>
+
+              <div class="payment-buy-sell-body">
+                <div class="payment-grid">
+                  <div class="payment-header">
+                    <div>Buy</div>
+                    <div>Sell</div>
+                    <div class="payment-empty"></div>
+                  </div>
+
+              <div class="payment-row">
+                <div class="payment-label">
+                  <label class="switch">
+                    <input type="checkbox" checked />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <span>Cash</span>
+                </div>
+                <div class="payment-label">
+                  <label class="switch">
+                    <input type="checkbox" checked />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <span>Cash</span>
+                </div>
+                <div class="payout-spacer"></div>
+              </div>
+
+              <div class="payment-row">
+                <div class="payment-label">
+                  <label class="switch">
+                    <input type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <span>Zelle</span>
+                </div>
+                <div class="payment-label">
+                  <label class="switch">
+                    <input type="checkbox" checked />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <span>Zelle</span>
+                </div>
+                <a href="#" class="payout-link" onclick="return false;">
+                  <i data-lucide="square-pen" class="w-4 h-4"></i>
+                  Payout account
+                </a>
+              </div>
+
+              <div class="payment-row">
+                <div class="payment-label">
+                  <label class="switch">
+                    <input type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <span>Bank Wire</span>
+                </div>
+                <div class="payment-label">
+                  <label class="switch">
+                    <input type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <span>Bank Wire</span>
+                </div>
+                <div class="payout-spacer"></div>
+              </div>
+
+              <div class="payment-row">
+                <div class="payment-label">
+                  <label class="switch">
+                    <input type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <span>PayPal</span>
+                </div>
+                <div class="payment-label">
+                  <label class="switch">
+                    <input type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <span>PayPal</span>
+                </div>
+                <div class="payout-spacer"></div>
+              </div>
+
+              <div class="payment-row">
+                <div class="payment-label">
+                  <label class="switch">
+                    <input type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <span>Venmo</span>
+                </div>
+                <div class="payment-label">
+                  <label class="switch">
+                    <input type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <span>Venmo</span>
+                </div>
+                <div class="payout-spacer"></div>
+              </div>
+
+              <div class="payment-row">
+                <div class="payment-label">
+                  <label class="switch">
+                    <input type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <span>Cash App</span>
+                </div>
+                <div class="payment-label">
+                  <label class="switch">
+                    <input type="checkbox" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
+                  <span>Cash App</span>
+                </div>
+                <div class="payout-spacer"></div>
+              </div>
+
+                  <div class="payment-row">
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>Apple Cash</span>
+                    </div>
+                    <div class="payment-label">
+                      <label class="switch">
+                        <input type="checkbox" />
+                        <span class="switch-track"><span class="switch-thumb"></span></span>
+                      </label>
+                      <span>Apple Cash</span>
+                    </div>
+                    <div class="payout-spacer"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-card payment-approval-card mt-3">
+              <div class="payment-approval-head">
+                <div class="payment-approval-title">
+                  <span class="payment-approval-icon"><i data-lucide="handshake" class="w-4 h-4"></i></span>
+                  <span>Thiết lập thanh toán nhận hộ / chi hộ  <span class="badge bg-primary-subtle text-primary">Mới</span></span>
+                </div>
+              </div>
+
+              <div class="payment-approval-body">
+                <div class="payment-approval-topline" style="margin-bottom: 0; padding-bottom: 14px; border-bottom: 1px solid #e8edf5;">
+                  <div class="payment-approval-copy" style="font-size: 14px; color: #27303f;">Cho phép nhận hộ / chi hộ</div>
+                  <div class="inline-switch-row">
+                    <div class="status-switch">
+                      <label class="activity-switch">
+                        <input type="checkbox" checked />
+                        <span class="activity-switch-track">
+                          <span class="activity-switch-on">ON</span>
+                          <span class="activity-switch-off">OFF</span>
+                          <span class="activity-switch-thumb"></span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row g-3 mt-3">
+                  <div class="col-12 col-lg-6">
+                    <div class="payment-approval-col h-100">
+                      <div class="payment-approval-col-title">
+                        <span>Thanh toán lại cho công ty</span>
+                        <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                      </div>
+                      <div class="payment-choice-list">
+                        <label class="payment-choice">
+                          <input type="radio" name="payment-to-company" checked />
+                          <i data-lucide="landmark" class="w-4 h-4" style="color:#5c7ad6;"></i>
+                          <span>Bank Transfer</span>
+                        </label>
+                        <label class="payment-choice">
+                          <input type="radio" name="payment-to-company" />
+                          <i data-lucide="wallet" class="w-4 h-4" style="color:#6f7684;"></i>
+                          <span>Wallet Balance</span>
+                        </label>
+                        <label class="payment-choice">
+                          <input type="radio" name="payment-to-company" />
+                          <i data-lucide="circle-dollar-sign" class="w-4 h-4" style="color:#36a35e;"></i>
+                          <span>Stablecoin</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-lg-6">
+                    <div class="payment-approval-col h-100">
+                      <div class="payment-approval-col-title">
+                        <span>Công ty thanh toán lại</span>
+                        <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                      </div>
+                      <div class="payment-choice-list">
+                        <label class="payment-choice">
+                          <input type="radio" name="company-pays-back" checked />
+                          <i data-lucide="landmark" class="w-4 h-4" style="color:#5c7ad6;"></i>
+                          <span>Bank Transfer</span>
+                        </label>
+                        <label class="payment-choice">
+                          <input type="radio" name="company-pays-back" />
+                          <i data-lucide="wallet" class="w-4 h-4" style="color:#6f7684;"></i>
+                          <span>Wallet Balance</span>
+                        </label>
+                        <label class="payment-choice">
+                          <input type="radio" name="company-pays-back" />
+                          <i data-lucide="circle-dollar-sign" class="w-4 h-4" style="color:#14b87a;"></i>
+                          <span>USDT / USDV</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="payment-info-stack">
+                  <div class="payment-info-row">
+                    <div class="payment-info-label">Ưu tiên thanh toán</div>
+                    <div class="payment-info-value">
+                      <select class="payment-inline-select">
+                        <option>Bank Transfer</option>
+                        <option>Wallet Balance</option>
+                        <option>Stablecoin</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="payment-info-row">
+                    <div class="payment-info-label">Tài khoản nhận payout</div>
+                    <div class="payment-info-value">
+                      <div class="payout-account-box" style="width: 100%; align-items: center; flex-direction: row; justify-content: space-between;">
+                        <div class="value" style="font-weight: 600; color: #6f7684;">VLINKPAY Settlement - 1234567890</div>
+                        <button type="button" class="qr-action-btn" style="height: 34px; padding: 0 10px; border-radius: 10px; min-width: 0;">
+                          <i data-lucide="pen-line" class="w-4 h-4"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="payment-info-row">
+                    <div class="payment-info-label">Phí dịch vụ áp dụng</div>
+                    <div class="payment-info-value" style="font-size: 18px; font-weight: 700;">5%</div>
+                  </div>
+
+                  <div class="payment-info-row">
+                    <div class="payment-info-label">Điều kiện tham gia</div>
+                    <div class="payment-info-value payment-condition-row">
+                      <span class="payment-condition-chip" style="background:#eaf7ea; color:#5aa15e;">KYC/KYB</span>
+                      <span class="payment-condition-chip" style="background:#edf3ff; color:#5c75d6;">Collateral</span>
+                      <span class="payment-condition-chip" style="background:#f5edff; color:#9c72d8;">Credit limit</span>
+                      <i data-lucide="chevron-right" class="w-5 h-5" style="color:#b5bdca;"></i>
+                    </div>
+                  </div>
+
+                  <div class="payment-status-row">
+                    <div class="payment-info-label">Trạng thái duyệt</div>
+                    <span class="status-note">Pending review</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div class="qr-modal" id="qr-modal" aria-hidden="true">
+    <div class="qr-modal-card" role="dialog" aria-modal="true" aria-label="Merchant ATM QR">
+      <div class="qr-modal-top">
+        <button type="button" class="qr-modal-close" data-close-qr-modal aria-label="Close popup">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+        <div class="qr-modal-banner">
+          <div class="qr-modal-chip">
+            <i data-lucide="qr-code" class="w-3.5 h-3.5"></i>
+            QR MERCHANT ATM
+          </div>
+          <div class="qr-modal-illustration">
+            <img src="../atm-qr/merchant.png" alt="Merchant illustration" />
+          </div>
+        </div>
+      </div>
+
+      <div class="qr-modal-info">
+        <div class="qr-modal-row">
+          <div class="qr-modal-icon">
+            <i data-lucide="credit-card" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <div class="qr-modal-label">Merchant ATM Name</div>
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="qr-modal-title truncate">VLINKPAY MERCHANT ATM 01</div>
+              <i data-lucide="badge-check" class="w-5 h-5 shrink-0 text-orange-500"></i>
+            </div>
+            <div class="mt-4">
+              <div class="qr-modal-label">Merchant ATM ID</div>
+              <div class="qr-modal-subtitle">MAT-4K9P2X</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="qr-modal-row">
+          <div class="qr-modal-icon">
+            <i data-lucide="smartphone" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <div class="qr-modal-label">Status</div>
+            <div class="qr-modal-status">
+              <span class="qr-modal-status-dot"></span>
+              <span>Online</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="qr-modal-row">
+          <div class="qr-modal-icon">
+            <i data-lucide="map-pin" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <div class="qr-modal-subtitle">Quận 1, TP. Hồ Chí Minh</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qr-modal-code-wrap">
+        <div class="qr-modal-code">
+          <canvas id="qr-modal-canvas" width="320" height="320" aria-label="Merchant QR code"></canvas>
+        </div>
+      </div>
+
+      <div class="qr-modal-footer">
+        <div class="qr-modal-footer-text">
+          <div class="qr-modal-footer-badge">
+            <i data-lucide="scan-line" class="w-5 h-5"></i>
+          </div>
+          <span>Quét để giao dịch trực tiếp với Merchant</span>
+        </div>
+      </div>
+
+      <div class="qr-modal-actions">
+        <button type="button" class="qr-action-btn" data-download-qr>
+          <i data-lucide="download" class="w-4 h-4"></i>
+          Download QR
+        </button>
+        <button type="button" class="qr-action-btn secondary" data-share-qr>
+          <i data-lucide="share-2" class="w-4 h-4"></i>
+          Share QR
+        </button>
+        <button type="button" class="qr-action-btn secondary" data-print-qr>
+          <i data-lucide="printer" class="w-4 h-4"></i>
+          Print
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script defer src="merchant-atm-setting.js"></script>
+</body>
+
+</html>

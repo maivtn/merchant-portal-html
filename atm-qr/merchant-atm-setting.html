@@ -931,14 +931,14 @@
     .walkin-setup-head {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 14px;
     }
 
     .walkin-setup-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -949,7 +949,7 @@
 
     .walkin-setup-title {
       color: #27303f;
-      font-size: 17px;
+      font-size: 14px;
       line-height: 1.2;
       font-weight: 800;
     }
@@ -957,7 +957,7 @@
     .walkin-setup-caption {
       margin-top: 2px;
       color: #6f7684;
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1.35;
     }
 
@@ -974,6 +974,31 @@
 
     .walkin-field-card .form-label {
       margin-bottom: 8px;
+    }
+
+    @media (min-width: 992px) {
+      .walkin-field-card {
+        display: grid;
+        grid-template-columns: 190px minmax(0, 1fr);
+        align-items: center;
+        gap: 12px;
+      }
+
+      .walkin-field-card .form-label {
+        margin-bottom: 0;
+      }
+
+      .walkin-field-card .d-flex.gap-4.flex-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px !important;
+      }
+
+      .walkin-field-card .d-flex.gap-4.flex-wrap .form-check-label {
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
     }
 
     .walkin-payment-chip {
@@ -2399,7 +2424,7 @@
       }
 
       .walkin-info-icon {
-        font-size: 18px;
+        font-size: 14px;
       }
 
       .qr-modal-iframe-card {
@@ -2601,17 +2626,11 @@
                 </div>
               </div>
 
-              <div class="pt-3 d-flex justify-content-start">
-                <a class="show-qr-btn" href="merchant-atm-qr.html?atmType=merchant" data-open-qr-modal>
-                  <i data-lucide="qr-code" class="w-4 h-4"></i>
-                  Show ATM QR
-                </a>
-              </div>
             </div>
 
             <div class="walkin-card p-4 mt-4">
               <div class="row g-4">
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-lg-7">
                   <div class="walkin-setup-head">
                     <div class="walkin-setup-icon">
                       <i data-lucide="map-pinned" class="w-5 h-5"></i>
@@ -2658,7 +2677,7 @@
                     </div>
                   </div>
 
-                  <div class="walkin-field-card">
+                  <div class="walkin-field-card d-flex flex-column justify-start align-items-start">
                     <label class="form-label fw-semibold">
                       <i data-lucide="credit-card" class="me-2 text-primary w-4 h-4"></i>
                       Accepted Payment
@@ -2677,7 +2696,7 @@
                   </div>
                 </div>
 
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-lg-5">
                   <div class="h-100 ps-lg-4 walkin-right-divider">
                     <div class="walkin-setup-side">
                       <div class="mb-3">
@@ -2692,8 +2711,8 @@
                         </select>
                       </div>
 
-                      <div class="mb-3">
-                        <label class="form-label fw-semibold">
+                      <div class="mb-3 d-flex flex-row gap-2 align-items-center">
+                        <label class="form-label fw-semibold flex-shrink-0 ">
                           <i data-lucide="dollar-sign" class="me-2 text-primary w-4 h-4"></i>
                           Walk-in Fixed Fee
                         </label>
@@ -2704,21 +2723,25 @@
                         </div>
                       </div>
 
-                      <div class="alert alert-primary bg-primary bg-opacity-10 border-0 rounded-3 mb-3">
-                        <div class="d-flex gap-3">
-                          <i class="bi bi-info-circle-fill walkin-info-icon text-primary mt-1"></i>
-                          <p class="mb-0">
-                            When walk-in mode is enabled, customers can scan your QR code at the store, review fees and
-                            conditions, then create a direct trade request.
-                          </p>
-                        </div>
+                      <div class="alert alert-primary bg-primary bg-opacity-10 border-0 rounded-3 mb-3 d-flex gap-3 p-2">
+                        <p class="mb-0 small">
+                          <i class="bi bi-info-circle-fill walkin-info-icon text-primary mt-1"></i> When walk-in mode is enabled, customers can scan your QR code at the store, review fees and
+                          conditions, then create a direct trade request.
+                        </p>
                       </div>
 
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" checked />
-                        <label class="form-check-label fw-semibold">
+                        <label class="form-check-label fw-semibold small">
                           Show merchant as Walk-in Available on map/search
                         </label>
+                      </div>
+
+                      <div class="pt-3 d-flex justify-content-start">
+                        <a class="show-qr-btn" href="merchant-atm-qr.html?atmType=merchant" data-open-qr-modal>
+                          <i data-lucide="qr-code" class="w-4 h-4"></i>
+                          Show ATM QR
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -2740,15 +2763,14 @@
                 <span class="status-note success">Activated</span>
               </div>
 
-              <div class="receive-service-row">
+              <div class="receive-service-row justify-start">
                 <span class="setting-label" style="font-weight: 600;">Join Program</span>
                 <div class="form-check form-switch m-0">
                   <input class="form-check-input" type="checkbox" checked />
                 </div>
               </div>
 
-              <div class="receive-service-copy d-flex align-items-center gap-1">
-                <i data-lucide="map-pin" class="w-4 h-4"></i>
+              <div class="receive-service-copy d-flex align-items-center gap-1 mt-0">
                 Applies to eligible Merchant ATM / Mobile ATM accounts in the operating area
               </div>
 
@@ -2759,7 +2781,8 @@
                     I agree to the <span class="text-primary">terms &amp; fee schedule</span>
                   </label>
                 </div>
-                <a href="#" class="small text-primary text-decoration-none d-inline-flex align-items-center gap-1" onclick="return false;">
+                <a href="#" class="small text-primary text-decoration-none d-inline-flex align-items-center gap-1"
+                  onclick="return false;">
                   View Policy <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </a>
               </div>
@@ -3211,7 +3234,8 @@
               <div class="payment-approval-body">
                 <div class="payment-approval-topline"
                   style="margin-bottom: 0; padding-bottom: 14px; border-bottom: 1px solid #e8edf5;">
-                  <div class="payment-approval-copy" style="font-size: 14px; color: #27303f;">Allow receive / pay on behalf
+                  <div class="payment-approval-copy" style="font-size: 14px; color: #27303f;">Allow receive / pay on
+                    behalf
                   </div>
                   <div class="inline-switch-row">
                     <div class="status-switch">
@@ -3343,7 +3367,8 @@
       <button type="button" class="qr-modal-close" data-close-qr-modal aria-label="Close popup">
         <i data-lucide="x" class="w-4 h-4"></i>
       </button>
-      <iframe class="qr-modal-iframe" src="merchant-atm-qr.html?atmType=merchant" title="Merchant ATM QR" loading="lazy"></iframe>
+      <iframe class="qr-modal-iframe" src="merchant-atm-qr.html?atmType=merchant" title="Merchant ATM QR"
+        loading="lazy"></iframe>
       <div class="qr-modal-iframe-actions">
         <button type="button" class="qr-action-btn" data-download-qr>
           <i data-lucide="download" class="w-4 h-4"></i>

@@ -196,6 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
       insuranceInput: document.querySelector('[data-review-insurance]'),
       insuranceFee: document.querySelector('[data-review-insurance-fee]'),
       confirmLink: document.querySelector('[data-review-confirm]'),
+      backLinks: document.querySelectorAll('[data-review-back]'),
     };
 
     const render = () => {
@@ -217,6 +218,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nodes.merchantFee) nodes.merchantFee.textContent = formatMoney(merchantFee);
       if (nodes.total) nodes.total.textContent = formatMoney(total);
       if (nodes.insuranceFee) nodes.insuranceFee.textContent = formatMoney(amount * insuranceRate / 100);
+      nodes.backLinks.forEach((link) => {
+        const backPage = atmType === 'mobile' ? 'merchant-atm-mobile-location.html' : 'merchant-atm-order.html';
+        link.href = withAtmType(backPage, { type });
+      });
       if (nodes.confirmLink) {
         nodes.confirmLink.href = withAtmType('merchant-atm-request-details.html', { type });
       }

@@ -98,7 +98,8 @@
     const type = params.get('type') || 'buy';
     const atmType = params.get('atmType') === 'mobile' ? 'mobile' : 'merchant';
     document.querySelectorAll('[data-review-back]').forEach((link) => {
-      link.href = `merchant-atm-order.html?type=${encodeURIComponent(type)}&atmType=${encodeURIComponent(atmType)}`;
+      const backPage = atmType === 'mobile' ? 'merchant-atm-mobile-location.html' : 'merchant-atm-order.html';
+      link.href = `${backPage}?type=${encodeURIComponent(type)}&atmType=${encodeURIComponent(atmType)}`;
     });
     lucide.createIcons();
   </script>

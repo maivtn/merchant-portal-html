@@ -15,6 +15,21 @@ window.addEventListener('DOMContentLoaded', () => {
   const closeQrButtons = Array.from(document.querySelectorAll('[data-close-qr-modal]'));
   const downloadQrButton = document.querySelector('[data-download-qr]');
   const printQrButton = document.querySelector('[data-print-qr]');
+  const params = new URLSearchParams(window.location.search);
+  const atmType = params.get('atmType') === 'mobile' ? 'mobile' : 'merchant';
+  const withAtmType = (href) => {
+    const url = new URL(href, window.location.href);
+    url.searchParams.set('atmType', atmType);
+    return `${url.pathname.split('/').pop()}${url.search}${url.hash}`;
+  };
+
+  document.querySelectorAll('a[href^="merchant-atm-"]').forEach((link) => {
+    link.href = withAtmType(link.getAttribute('href'));
+  });
+
+  document.querySelectorAll('iframe[src^="merchant-atm-"]').forEach((iframe) => {
+    iframe.src = withAtmType(iframe.getAttribute('src'));
+  });
 
   const activate = (name) => {
     tabs.forEach((tab) => {

@@ -19,7 +19,7 @@
     <section class="step-card review-frame">
       <div class="px-4 pt-4 pb-3 bg-transparent border-b border-[rgba(148,163,184,0.16)]">
         <div class="flex items-center justify-between">
-          <a href="merchant-atm-order.html?type=buy" data-review-back class="inline-flex items-center gap-2 text-slate-700 text-sm font-semibold">
+          <a href="merchant-atm-order.html?type=buy&atmType=merchant" data-review-back class="inline-flex items-center gap-2 text-slate-700 text-sm font-semibold">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
           </a>
           <h1 class="text-[15px] font-bold text-slate-900">Review Details</h1>
@@ -48,7 +48,7 @@
               </span>
             </div>
             <div class="review-row pt-1">
-              <span class="review-label">Merchant ATM:</span>
+              <span class="review-label" data-review-atm-label>Merchant ATM:</span>
               <span class="review-value">
                 <span data-review-merchant>ATM-A8FOBN</span><br />
                 <span class="review-muted" data-review-distance>Nearby (within 235 mins)</span>
@@ -85,7 +85,7 @@
           </div>
 
           <div class="mt-5 flex items-center justify-center gap-3">
-            <a href="merchant-atm-order.html?type=buy" data-review-back class="inline-flex min-w-[96px] items-center justify-center rounded-2xl details-secondary-btn px-5 py-3.5 text-[15px] font-bold">Cancel</a>
+            <a href="merchant-atm-order.html?type=buy&atmType=merchant" data-review-back class="inline-flex min-w-[96px] items-center justify-center rounded-2xl details-secondary-btn px-5 py-3.5 text-[15px] font-bold">Cancel</a>
             <a href="#" data-review-confirm class="inline-flex min-w-[96px] items-center justify-center rounded-2xl details-primary-btn px-5 py-3.5 text-[15px] font-bold">Confirm</a>
           </div>
         </div>
@@ -96,8 +96,9 @@
   <script>
     const params = new URLSearchParams(window.location.search);
     const type = params.get('type') || 'buy';
+    const atmType = params.get('atmType') === 'mobile' ? 'mobile' : 'merchant';
     document.querySelectorAll('[data-review-back]').forEach((link) => {
-      link.href = `merchant-atm-order.html?type=${encodeURIComponent(type)}`;
+      link.href = `merchant-atm-order.html?type=${encodeURIComponent(type)}&atmType=${encodeURIComponent(atmType)}`;
     });
     lucide.createIcons();
   </script>

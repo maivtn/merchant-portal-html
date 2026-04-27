@@ -79,7 +79,7 @@
           </div>
 
           <div class="mt-4 pt-3 border-t border-slate-100">
-            <a href="merchant-atm-info.html" data-atm-info-link class="block qr-shell qr-shell--compact transition-transform duration-200 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[color:var(--brand-primary)] focus:ring-offset-2">
+            <a href="merchant-atm-info.html?atmType=merchant" data-atm-info-link class="block qr-shell qr-shell--compact transition-transform duration-200 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[color:var(--brand-primary)] focus:ring-offset-2">
               <span class="qr-corner tl"></span>
               <span class="qr-corner tr"></span>
               <span class="qr-corner bl"></span>
@@ -114,8 +114,8 @@
       if (!qrHost || typeof window.QRCode !== 'function') return;
 
       const params = new URLSearchParams(window.location.search);
-      const atmType = params.get('type') === 'mobile' ? 'mobile' : 'merchant';
-      const qrUrl = new URL(`/atm-qr/merchant-atm-info.html?type=${encodeURIComponent(atmType)}`, window.location.origin).toString();
+      const atmType = params.get('atmType') === 'mobile' ? 'mobile' : 'merchant';
+      const qrUrl = new URL(`/atm-qr/merchant-atm-info.html?atmType=${encodeURIComponent(atmType)}`, window.location.origin).toString();
 
       qrHost.innerHTML = '';
       new QRCode(qrHost, {

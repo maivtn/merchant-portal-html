@@ -38,8 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
       note: 'Bạn đã quét QR từ Mobile ATM. Hệ thống sẽ tự động kết nối tới giao dịch.',
     },
   };
-  const atmType = params.get('type') === 'mobile' ? 'mobile' : 'merchant';
+  const atmType = params.get('atmType') === 'mobile' ? 'mobile' : 'merchant';
   const atmProfile = atmProfiles[atmType];
+  const withAtmType = (href, extraParams = {}) => {
+    const url = new URL(href, window.location.href);
+    Object.entries(extraParams).forEach(([key, value]) => {
+      url.searchParams.set(key, value);
+    });
+    url.searchParams.set('atmType', atmType);
+    return `${url.pathname.split('/').pop()}${url.search}${url.hash}`;
+  };
 
   const setText = (selector, value) => {
     document.querySelectorAll(selector).forEach((el) => {
@@ -69,11 +77,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.querySelectorAll('[data-atm-info-link]').forEach((link) => {
-    link.href = `merchant-atm-info.html?type=${encodeURIComponent(atmType)}`;
+    link.href = withAtmType('merchant-atm-info.html');
   });
 
   document.querySelectorAll('[data-atm-qr-link]').forEach((link) => {
-    link.href = `merchant-atm-qr.html?type=${encodeURIComponent(atmType)}`;
+    link.href = withAtmType('merchant-atm-qr.html');
+  });
+
+  document.querySelectorAll('a[href^="merchant-atm-"]').forEach((link) => {
+    link.href = withAtmType(link.getAttribute('href'));
   });
 
   const type = params.get('type') || (window.location.pathname.endsWith('merchant-atm-order.html') ? 'buy' : null);
@@ -92,7 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!orderContinue) return;
       const activeModeButton = document.querySelector('.step-toggle [data-step-mode].active');
       const activeMode = activeModeButton?.getAttribute('data-step-mode') || 'buy';
-      orderContinue.setAttribute('href', `merchant-atm-review.html?type=${encodeURIComponent(activeMode)}`);
+      const nextPage = atmType === 'mobile' ? 'merchant-atm-mobile-location.html' : 'merchant-atm-review.html';
+      orderContinue.setAttribute('href', withAtmType(nextPage, { type: activeMode }));
     };
 
     const setActive = (target) => {
@@ -135,6 +148,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const mobileLocationRoot = document.querySelector('[data-mobile-location-root]');
+  if (mobileLocationRoot) {
+    const type = params.get('type') || 'buy';
+    document.querySelectorAll('[data-mobile-location-back]').forEach((link) => {
+      link.href = withAtmType('merchant-atm-order.html', { type });
+    });
+    document.querySelectorAll('[data-mobile-location-continue]').forEach((link) => {
+      link.href = withAtmType('merchant-atm-review.html', { type });
+    });
+    const noteInput = document.querySelector('[data-mobile-location-note]');
+    const noteCounter = document.querySelector('[data-mobile-location-counter]');
+    const syncNoteCounter = () => {
+      if (!noteInput || !noteCounter) return;
+      noteCounter.textContent = `${noteInput.value.length}/100`;
+    };
+    noteInput?.addEventListener('input', syncNoteCounter);
+    syncNoteCounter();
+  }
+
   const reviewRoot = document.querySelector('[data-review-root]');
   if (reviewRoot) {
     const params = new URLSearchParams(window.location.search);
@@ -155,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
       amount: document.querySelector('[data-review-amount]'),
       quantity: document.querySelector('[data-review-quantity]'),
       quantityPrice: document.querySelector('[data-review-quantity-price]'),
+      atmLabel: document.querySelector('[data-review-atm-label]'),
       merchant: document.querySelector('[data-review-merchant]'),
       distance: document.querySelector('[data-review-distance]'),
       systemFee: document.querySelector('[data-review-system-fee]'),
@@ -176,6 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nodes.amount) nodes.amount.textContent = formatMoney(amount);
       if (nodes.quantity) nodes.quantity.textContent = formatQuantity(quantity);
       if (nodes.quantityPrice) nodes.quantityPrice.textContent = `@ $${quantityPrice.toFixed(2)}`;
+      if (nodes.atmLabel) nodes.atmLabel.textContent = atmType === 'mobile' ? 'Mobile ATM:' : 'Merchant ATM:';
       if (nodes.merchant) nodes.merchant.textContent = 'ATM-A8FOBN';
       if (nodes.distance) nodes.distance.textContent = 'Nearby (within 235 mins)';
       if (nodes.countdown) nodes.countdown.textContent = '10s';
@@ -184,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nodes.total) nodes.total.textContent = formatMoney(total);
       if (nodes.insuranceFee) nodes.insuranceFee.textContent = formatMoney(amount * insuranceRate / 100);
       if (nodes.confirmLink) {
-        nodes.confirmLink.href = `merchant-atm-request-details.html?type=${encodeURIComponent(type)}`;
+        nodes.confirmLink.href = withAtmType('merchant-atm-request-details.html', { type });
       }
     };
 
@@ -247,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nodes.buyerReceives) nodes.buyerReceives.textContent = `${buyerReceives} USDV`;
       if (nodes.insuranceFee) nodes.insuranceFee.textContent = `${insuranceFee} USDV`;
       nodes.backLinks.forEach((link) => {
-        link.href = `merchant-atm-review.html?type=${encodeURIComponent(type)}`;
+        link.href = withAtmType('merchant-atm-review.html', { type });
       });
     };
 
@@ -269,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const displaySeconds = Math.floor((remaining % 60000) / 1000);
       if (countdown) countdown.textContent = `${displayMinutes}:${String(displaySeconds).padStart(2, '0')}`;
       if (elapsed >= redirectAfterMs) {
-        window.location.href = `merchant-atm-accepted.html?type=${encodeURIComponent(type)}`;
+        window.location.href = withAtmType('merchant-atm-accepted.html', { type });
         return;
       }
       window.requestAnimationFrame(tick);
@@ -301,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (title) title.textContent = serviceLabel;
     if (status) status.textContent = 'Accepted';
     backLinks.forEach((link) => {
-      link.href = `merchant-atm-request-details.html?type=${encodeURIComponent(type)}`;
+      link.href = withAtmType('merchant-atm-request-details.html', { type });
     });
 
     if (showQrLink && qrModal) {

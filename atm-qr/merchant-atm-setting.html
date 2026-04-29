@@ -872,35 +872,37 @@
     }
 
     .walkin-fee-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 72px;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .walkin-fee-input {
-      width: 100%;
-      height: 38px;
-      border-radius: 8px;
-      border: 1px solid #cfd7e6;
-      background: #fff;
-      padding: 0 12px;
-      font-size: 14px;
-      color: #27303f;
-      outline: none;
-    }
-
-    .walkin-fee-suffix {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      height: 38px;
-      border: 1px solid #cfd7e6;
-      border-radius: 8px;
-      color: #27303f;
-      font-size: 14px;
-      font-weight: 700;
+      width: min(100%, 170px);
+      flex: 1 1 170px;
+    }
+
+    .walkin-fee-row .form-control {
+      min-width: 0;
+    }
+
+    .walkin-fee-row .input-group-text {
+      border-color: var(--border-soft);
       background: #fafbfd;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 0 0.8rem 0.8rem 0;
+    }
+
+    .walkin-fee-row .form-control:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-ring);
+    }
+
+    .walkin-fee-row .input-group-text,
+    .walkin-fee-row .form-control {
+      height: 40px;
+    }
+
+    .walkin-fee-row .form-control {
+      border-radius: 0.8rem 0 0 0.8rem;
     }
 
     .walkin-info-box {
@@ -2464,7 +2466,7 @@
       }
 
       .walkin-fee-row {
-        grid-template-columns: 1fr 72px;
+        width: 100%;
       }
 
       .walkin-map-row {
@@ -2889,9 +2891,9 @@
                       Walk-in Fixed Fee
                     </label>
 
-                    <div class="walkin-fee-row">
-                      <input class="walkin-fee-input" value="5" />
-                      <span class="walkin-fee-suffix">%</span>
+                    <div class="input-group walkin-fee-row">
+                      <input class="form-control" value="5" />
+                      <span class="input-group-text">%</span>
                     </div>
                   </div>
 

@@ -15,6 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const closeQrButtons = Array.from(document.querySelectorAll('[data-close-qr-modal]'));
   const downloadQrButton = document.querySelector('[data-download-qr]');
   const printQrButton = document.querySelector('[data-print-qr]');
+  const walkinModeOptions = Array.from(document.querySelectorAll('.walkin-option'));
   const params = new URLSearchParams(window.location.search);
   const atmType = params.get('atmType') === 'mobile' ? 'mobile' : 'merchant';
   const withAtmType = (href) => {
@@ -89,6 +90,13 @@ window.addEventListener('DOMContentLoaded', () => {
     qrIframe.contentWindow.print();
   };
 
+  const syncWalkinModeOptions = () => {
+    walkinModeOptions.forEach((option) => {
+      const input = option.querySelector('input[name="walkinMode"]');
+      option.classList.toggle('active', Boolean(input?.checked));
+    });
+  };
+
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => activate(tab.getAttribute('data-setting-tab') || 'general'));
   });
@@ -114,5 +122,19 @@ window.addEventListener('DOMContentLoaded', () => {
   downloadQrButton?.addEventListener('click', downloadQr);
   printQrButton?.addEventListener('click', printQr);
 
+  walkinModeOptions.forEach((option) => {
+    const input = option.querySelector('input[name="walkinMode"]');
+    if (!input) return;
+
+    input.addEventListener('change', syncWalkinModeOptions);
+    option.addEventListener('click', () => {
+      if (!input.checked) {
+        input.checked = true;
+      }
+      syncWalkinModeOptions();
+    });
+  });
+
   activate('general');
+  syncWalkinModeOptions();
 });

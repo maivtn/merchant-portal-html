@@ -20,10 +20,12 @@
       --line: #e0e0e0;
       --text: #221f1f;
       --muted: #757575;
+      --border-soft: #e0e0e0;
       --blue: #d97706;
       --blue-soft: #fef3c7;
       --blue-ring: rgba(217, 119, 6, 0.18);
       --green: #22c55e;
+      --card-shadow: 0 14px 32px rgba(34, 31, 31, 0.08);
       --shadow: 0 14px 32px rgba(34, 31, 31, 0.08);
     }
 
@@ -44,6 +46,29 @@
     .setting-page {
       min-height: 100vh;
       padding: 0;
+      --bs-primary: var(--blue);
+      --bs-primary-rgb: 217, 119, 6;
+      --bs-link-color: var(--blue);
+      --bs-link-hover-color: #b45309;
+    }
+
+    .setting-page .text-primary,
+    .setting-page .link-primary {
+      color: var(--blue) !important;
+    }
+
+    .setting-page .form-check-input {
+      border-color: #d8deea;
+    }
+
+    .setting-page .form-check-input:checked {
+      background-color: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .setting-page .form-check-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.15);
     }
 
     .setting-shell {
@@ -60,7 +85,7 @@
       align-items: center;
       gap: 1rem;
       margin-bottom: 1rem;
-      padding: 0 0 1.75rem;
+      padding: 0 0 2rem;
       border-bottom: 0;
       background: transparent;
     }
@@ -95,7 +120,7 @@
       gap: 1.5rem;
       padding: 0;
       border-bottom: 1px solid rgba(217, 119, 6, 0.14);
-      margin-bottom: 1.75rem;
+      margin-bottom: 1rem;
       overflow-x: auto;
       scrollbar-width: none;
       background: transparent;
@@ -116,7 +141,7 @@
       padding: 0.9rem 0 0.8rem;
       white-space: nowrap;
       border-bottom: 2px solid transparent;
-      cursor: default;
+      cursor: pointer;
       position: relative;
       transition: color 0.2s ease;
     }
@@ -220,22 +245,30 @@
     }
 
     .setting-input,
-    .setting-select {
+    .setting-select,
+    .walkin-field-card .form-control,
+    .walkin-setup-side .form-select,
+    .receive-service-card .form-control,
+    .receive-service-card .form-select {
       width: 100%;
-      height: 40px;
-      border-radius: 12px;
-      border: 1px solid #e0e0e0;
+      min-height: 40px;
+      border-radius: 0.8rem;
+      border: 1px solid var(--line);
       background: #fff;
-      padding: 0 12px;
-      font-size: 14px;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.95rem;
       color: var(--text);
       outline: none;
     }
 
     .setting-input:focus,
-    .setting-select:focus {
+    .setting-select:focus,
+    .walkin-field-card .form-control:focus,
+    .walkin-setup-side .form-select:focus,
+    .receive-service-card .form-control:focus,
+    .receive-service-card .form-select:focus {
       border-color: var(--blue);
-      box-shadow: 0 0 0 3px var(--blue-ring);
+      box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.15);
     }
 
     .field-row {
@@ -483,19 +516,19 @@
     }
 
     .setting-card {
-      border: 1px solid var(--line);
-      border-radius: 1.25rem;
+      border: 1px solid rgba(217, 119, 6, 0.14);
+      border-radius: 1.5rem;
       background: #fff;
-      padding: 1.25rem;
-      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
     }
 
 
     .receive-card {
       border: 1px solid rgba(217, 119, 6, 0.14);
-      border-radius: 1.25rem;
+      border-radius: 1.5rem;
       background: linear-gradient(135deg, #fffaf0 0%, #ffffff 62%);
-      box-shadow: var(--shadow);
+      box-shadow: var(--card-shadow);
       overflow: hidden;
     }
 
@@ -504,9 +537,9 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 12px 14px;
-      border-bottom: 1px solid rgba(217, 119, 6, 0.12);
-      background: rgba(217, 119, 6, 0.03);
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid #f0e3c7;
+      background: linear-gradient(180deg, #fffaf0 0%, #ffffff 100%);
     }
 
     .receive-card-title {
@@ -514,7 +547,7 @@
       align-items: center;
       gap: 8px;
       color: var(--text);
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 800;
     }
 
@@ -610,10 +643,10 @@
     }
 
     .walkin-card {
-      border: 1px solid var(--line);
-      border-radius: 1.25rem;
+      border: 1px solid var(--border-soft);
+      border-radius: 1.5rem;
       background: #fff;
-      box-shadow: var(--shadow);
+      box-shadow: var(--card-shadow);
       overflow: hidden;
     }
 
@@ -874,12 +907,12 @@
       display: flex;
       align-items: flex-start;
       gap: 10px;
-      padding: 16px;
-      border-radius: 14px;
-      background: linear-gradient(180deg, #edf4ff 0%, #e8f0ff 100%);
-      border: 1px solid #d7e3ff;
+      padding: 1rem;
+      border-radius: 1rem;
+      background: #fffaf0;
+      border: 1px solid rgba(217, 119, 6, 0.15);
       color: #27303f;
-      font-size: 13px;
+      font-size: 0.93rem;
       line-height: 1.45;
     }
 
@@ -887,6 +920,10 @@
       color: var(--blue);
       flex: 0 0 auto;
       margin-top: 1px;
+    }
+
+    .walkin-info-box p {
+      margin-bottom: 0;
     }
 
     .walkin-info-box .walkin-info-icon {
@@ -942,13 +979,13 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: #fffbeb;
+      background: #fffaf0;
       color: var(--blue);
       flex: 0 0 auto;
     }
 
     .walkin-setup-title {
-      color: #27303f;
+      color: var(--text);
       font-size: 14px;
       line-height: 1.2;
       font-weight: 800;
@@ -956,16 +993,17 @@
 
     .walkin-setup-caption {
       margin-top: 2px;
-      color: #6f7684;
+      color: var(--text-muted);
       font-size: 11px;
       line-height: 1.35;
     }
 
     .walkin-field-card {
       padding: 12px;
-      border: 1px solid #f0e3c7;
-      border-radius: 12px;
-      background: #fffaf0;
+      border: 1px solid var(--border-soft);
+      border-radius: 1rem;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(34, 31, 31, 0.05);
     }
 
     .walkin-field-card+.walkin-field-card {
@@ -1007,8 +1045,8 @@
       gap: 7px;
       min-height: 34px;
       padding: 0 12px;
-      border: 1px solid #e0e0e0;
-      border-radius: 10px;
+      border: 1px solid var(--border-soft);
+      border-radius: 0.9rem;
       background: #fff;
       color: var(--text);
       font-size: 13px;
@@ -1017,13 +1055,14 @@
 
     .walkin-setup-side {
       padding: 14px;
-      border: 1px solid #f0e3c7;
-      border-radius: 14px;
-      background: linear-gradient(180deg, #fffaf0 0%, #ffffff 100%);
+      border: 1px solid var(--border-soft);
+      border-radius: 1rem;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(34, 31, 31, 0.05);
     }
 
     .walkin-right-divider {
-      border-left: 1px solid #f0e3c7;
+      border-left: 1px solid var(--border-soft);
     }
 
     @media (max-width: 991.98px) {
@@ -1282,18 +1321,47 @@
       justify-content: center;
       gap: 10px;
       height: 48px;
-      border-radius: 14px;
-      border: 1px solid #e0e0e0;
+      border-radius: 0.9rem;
+      border: 1px solid var(--line);
       background: #fff;
       color: var(--blue);
-      font-size: 14px;
+      font-size: 0.95rem;
       font-weight: 800;
       text-decoration: none;
       cursor: pointer;
+      box-shadow: 0 8px 22px rgba(34, 31, 31, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
     }
 
     .qr-action-btn.secondary {
-      color: #6f7684;
+      color: #fff;
+      background: #26211f;
+      border-color: #44403c;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .qr-action-btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(217, 119, 6, 0.35);
+      box-shadow: 0 12px 24px rgba(217, 119, 6, 0.12);
+      color: var(--blue);
+    }
+
+    .qr-action-btn.secondary:hover {
+      color: #fff;
+      background: #55514d;
+      border-color: #55514d;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .qr-action-btn:active {
+      transform: translateY(0);
+    }
+
+    .qr-action-btn--ghost {
+      background: #fffbeb;
+      color: var(--blue);
+      box-shadow: none;
     }
 
     @media (max-width: 560px) {
@@ -1375,13 +1443,13 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      height: 34px;
-      padding: 0 14px;
-      border-radius: 8px;
+      height: 40px;
+      padding: 0 16px;
+      border-radius: 0.9rem;
       border: 1px solid rgba(217, 119, 6, 0.38);
       background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
       color: #fff;
-      font-size: 13px;
+      font-size: 0.95rem;
       font-weight: 700;
       width: fit-content;
       text-decoration: none;
@@ -1496,12 +1564,12 @@
     }
 
     .asset-fee-group {
-      border: 1px solid var(--line);
-      border-radius: 16px;
+      border: 1px solid rgba(217, 119, 6, 0.14);
+      border-radius: 1.5rem;
       background: #fff;
-      box-shadow: var(--shadow);
+      box-shadow: var(--card-shadow);
       overflow: hidden;
-      padding: 14px;
+      padding: 1.5rem;
     }
 
     .fee-compare-col {
@@ -1566,11 +1634,11 @@
 
     .percent-input {
       width: 54px;
-      height: 30px;
+      height: 34px;
       text-align: center;
-      border-radius: 8px;
-      border: 1px solid #cfd7e6;
-      font-size: 13px;
+      border-radius: 0.8rem;
+      border: 1px solid var(--line);
+      font-size: 0.95rem;
       color: #27303f;
       background: #fff;
     }
@@ -1710,11 +1778,11 @@
       align-items: center;
       width: 100%;
       max-width: 140px;
-      border-radius: 8px;
-      border: 1px solid #cfd7e6;
+      border-radius: 0.8rem;
+      border: 1px solid var(--line);
       background: #fff;
       overflow: hidden;
-      height: 30px;
+      height: 34px;
     }
 
     .asset-fee input {
@@ -1754,12 +1822,12 @@
 
     .country-select {
       width: 100%;
-      height: 36px;
-      border: 1px solid #cfd7e6;
-      border-radius: 8px;
-      padding: 0 10px;
-      font-size: 14px;
-      color: #27303f;
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 0.8rem;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.95rem;
+      color: var(--text);
       background: #fff;
       outline: none;
     }
@@ -1811,11 +1879,11 @@
     }
 
     .payment-card {
-      border: 1px solid #d8deea;
-      border-radius: 16px;
+      border: 1px solid rgba(217, 119, 6, 0.14);
+      border-radius: 1.5rem;
       background: #fff;
-      padding: 14px;
-      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.04);
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
     }
 
     .payment-buy-sell-card {
@@ -1903,12 +1971,14 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 14px;
+      margin-bottom: 0;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #f0e3c7;
     }
 
     .payment-approval-copy {
-      color: #6f7684;
-      font-size: 13px;
+      color: #27303f;
+      font-size: 0.95rem;
       line-height: 1.45;
     }
 
@@ -1920,9 +1990,9 @@
     }
 
     .payment-approval-col {
-      padding: 12px;
+      padding: 1rem;
       border: 1px solid #f0e3c7;
-      border-radius: 14px;
+      border-radius: 1rem;
       background: #fffaf0;
     }
 
@@ -1945,12 +2015,12 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      border: 1px solid #e0e0e0;
+      padding: 0.7rem 0.85rem;
+      border-radius: 0.9rem;
+      border: 1px solid var(--line);
       background: #fff;
       color: var(--text);
-      font-size: 13px;
+      font-size: 0.95rem;
       font-weight: 600;
     }
 
@@ -1996,12 +2066,12 @@
     .payment-inline-select {
       width: 100%;
       max-width: 220px;
-      height: 34px;
-      border-radius: 10px;
-      border: 1px solid #e0e0e0;
+      min-height: 40px;
+      border-radius: 0.8rem;
+      border: 1px solid var(--line);
       background: #fff;
-      padding: 0 10px;
-      font-size: 13px;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.95rem;
       color: var(--text);
     }
 
@@ -2016,13 +2086,13 @@
     .payment-condition-chip {
       display: inline-flex;
       align-items: center;
-      height: 28px;
-      padding: 0 10px;
+      height: 30px;
+      padding: 0 12px;
       border-radius: 999px;
-      border: 1px solid #e0e0e0;
-      background: #fff;
-      color: #546072;
-      font-size: 12px;
+      border: 1px solid rgba(217, 119, 6, 0.14);
+      background: #fffbeb;
+      color: #7c4a03;
+      font-size: 0.8rem;
       font-weight: 700;
     }
 
@@ -2071,13 +2141,13 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      height: 30px;
+      height: 32px;
       padding: 0 12px;
       border-radius: 999px;
       background: rgba(253, 230, 138, 0.35);
       border: 1px solid rgba(217, 119, 6, 0.16);
       color: #7c4a03;
-      font-size: 13px;
+      font-size: 0.9rem;
       font-weight: 700;
     }
 
@@ -2110,11 +2180,11 @@
     }
 
     .receive-service-card {
-      border: 1px solid var(--line);
-      border-radius: 1.25rem;
+      border: 1px solid rgba(217, 119, 6, 0.14);
+      border-radius: 1.5rem;
       background: linear-gradient(135deg, #fffaf0 0%, #ffffff 62%);
-      box-shadow: var(--shadow);
-      padding: 1rem;
+      box-shadow: var(--card-shadow);
+      padding: 1.5rem;
     }
 
     .receive-service-head {
@@ -2170,8 +2240,33 @@
       min-height: 58px;
       padding: 12px;
       border: 1px solid #f0e3c7;
-      border-radius: 12px;
+      border-radius: 1rem;
       background: #fffaf0;
+    }
+
+    .receive-service-summary--stack {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    .receive-service-summary--stack .text-muted {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--accent-warm-text) !important;
+      font-size: 0.8rem !important;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.3rem !important;
+    }
+
+    .receive-service-summary--stack .fw-semibold {
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 800 !important;
+      line-height: 1.25;
     }
 
     .receive-service-summary .label {
@@ -2189,6 +2284,12 @@
       font-weight: 800;
       text-align: right;
       white-space: nowrap;
+    }
+
+    .receive-service-summary--stack .value,
+    .receive-service-summary--stack .subvalue {
+      text-align: left;
+      white-space: normal;
     }
 
     .receive-service-summary .subvalue {
@@ -2251,8 +2352,8 @@
       flex-direction: column;
       gap: 4px;
       padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid #d8deea;
+      border-radius: 1rem;
+      border: 1px solid var(--line);
       background: #fff;
       color: #27303f;
     }
@@ -2289,14 +2390,31 @@
 
     .primary-action {
       min-width: 152px;
-      height: 36px;
-      border: 0;
-      border-radius: 8px;
-      background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+      min-height: calc(1.5em + 1rem + 2px);
+      height: auto;
+      padding: 0.85rem 1.5rem;
+      border: 1px solid #d97706;
+      border-radius: 0.9rem;
+      background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
       color: #fff;
-      font-size: 14px;
+      font-size: 1rem;
       font-weight: 700;
       box-shadow: 0 10px 18px rgba(217, 119, 6, 0.18);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .primary-action:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(180deg, #f59e0b 0%, #c47309 100%);
+      border-color: #c47309;
+      box-shadow: 0 14px 24px rgba(217, 119, 6, 0.22);
+    }
+
+    .primary-action:active {
+      transform: translateY(0);
     }
 
     .center-column {
@@ -2327,7 +2445,14 @@
     }
 
     @media (max-width: 720px) {
-
+      .setting-card, .walkin-card, .receive-service-card, .asset-fee-group {
+        padding: 12px !important;
+      }
+      .asset-fee-group .setting-card{
+        padding: 0 !important;
+      }
+      .asset-fee-group .fee-compare-col{
+      }
       .walkin-options,
       .walkin-layout {
         grid-template-columns: 1fr;
@@ -2631,8 +2756,7 @@
                     <i data-lucide="store" class="w-5 h-5"></i>
                   </div>
                   <div>
-                    <div class="walkin-title">Walk-in Transaction Mode <span
-                        class="badge bg-primary-subtle text-primary">New</span></div>
+                    <div class="walkin-title">Walk-in Transaction Mode <span class="new-badge">New</span></div>
                     <div class="walkin-subtitle">Allow customers to visit your fixed location and trade directly.</div>
                   </div>
                 </div>
@@ -2684,7 +2808,7 @@
                       <i data-lucide="map-pinned" class="w-5 h-5"></i>
                     </div>
                     <div>
-                      <div class="walkin-setup-title">Walk-in Setup <span class="badge bg-primary-subtle text-primary">New</span></div>
+                      <div class="walkin-setup-title">Walk-in Setup <span class="new-badge">New</span></div>
                       <div class="walkin-setup-caption">Location, hours, availability, and accepted payment methods.
                       </div>
                     </div>
@@ -2759,24 +2883,25 @@
                         </select>
                       </div>
 
-                      <div class="mb-3 d-flex flex-row gap-2 align-items-center">
-                        <label class="form-label fw-semibold flex-shrink-0 mb-0 m-0">
-                          <i data-lucide="dollar-sign" class="me-2 text-primary w-4 h-4"></i>
-                          Walk-in Fixed Fee
-                        </label>
+                  <div class="mb-3 d-flex flex-row gap-2 align-items-center">
+                    <label class="form-label fw-semibold flex-shrink-0 mb-0 m-0">
+                      <i data-lucide="dollar-sign" class="me-2 text-primary w-4 h-4"></i>
+                      Walk-in Fixed Fee
+                    </label>
 
-                        <div class="input-group">
-                          <input class="form-control" value="5" />
-                          <span class="input-group-text">%</span>
-                        </div>
-                      </div>
+                    <div class="walkin-fee-row">
+                      <input class="walkin-fee-input" value="5" />
+                      <span class="walkin-fee-suffix">%</span>
+                    </div>
+                  </div>
 
-                      <div class="alert alert-primary bg-primary bg-opacity-10 border-0 rounded-3 mb-3 d-flex gap-3 p-2">
-                        <p class="mb-0 small">
-                          <i class="bi bi-info-circle-fill walkin-info-icon text-primary mt-1"></i> When walk-in mode is enabled, customers can scan your QR code at the store, review fees and
-                          conditions, then create a direct trade request.
-                        </p>
-                      </div>
+                  <div class="walkin-info-box mb-3">
+                    <i class="bi bi-info-circle-fill walkin-info-icon"></i>
+                    <p class="mb-0">
+                      When walk-in mode is enabled, customers can scan your QR code at the store, review fees and
+                      conditions, then create a direct trade request.
+                    </p>
+                  </div>
 
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" checked />
@@ -2805,7 +2930,7 @@
                   </div>
                   <div class="receive-service-title">
                     <span>Receive / Pay on Behalf</span>
-                    <span class="badge bg-primary-subtle text-primary">New</span>
+                    <span class="new-badge">New</span>
                   </div>
                 </div>
 
@@ -3004,7 +3129,7 @@
             </div>
 
             <div class="save-wrap" style="margin-top: 18px;">
-              <button class="primary-action" style="min-width: 220px;">Lưu và gửi duyệt</button>
+              <button class="primary-action btn btn-lg" style="min-width: 220px;">Lưu và gửi duyệt</button>
             </div>
           </div>
         </section>
@@ -3047,7 +3172,7 @@
             </div>
 
             <div class="save-wrap">
-              <button class="primary-action" style="min-width: 106px;">Update</button>
+              <button class="primary-action btn btn-lg" style="min-width: 106px;">Update</button>
             </div>
           </div>
         </section>
@@ -3055,15 +3180,15 @@
         <section class="setting-panel" data-setting-panel="receive">
           <div class="setting-section" style="max-width: 760px;">
             <div class="setting-title" style="margin-bottom: 0;">RECEIVE / PAY ON BEHALF</div>
-            <div class="card border-0 shadow-sm rounded-4 p-3 mt-3" style="max-width: 600px;">
+            <div class="receive-service-card mt-3" style="max-width: 600px;">
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <div class="d-flex align-items-center gap-2">
-                  <div class="bg-light rounded-circle p-2">
-                    <i data-lucide="users" class="w-5 h-5 text-primary"></i>
+                  <div class="receive-service-icon">
+                    <i data-lucide="users" class="w-5 h-5"></i>
                   </div>
-                  <div class="fw-semibold d-flex align-items-center gap-2">
+                  <div class="receive-service-title">
                     <span>Receive / Pay on Behalf</span>
-                    <span class="badge bg-primary-subtle text-primary">New</span>
+                    <span class="new-badge">New</span>
                   </div>
                 </div>
 
@@ -3096,23 +3221,23 @@
 
               <div class="row g-2">
                 <div class="col-12 col-md-6">
-                  <div class="bg-light rounded-3 p-3">
-                    <div class="text-muted small mb-1 d-flex align-items-center gap-1">
+                  <div class="receive-service-summary receive-service-summary--stack">
+                    <div class="label">
                       <i data-lucide="percent" class="w-4 h-4"></i>
                       Fixed Fee
                     </div>
-                    <div class="fw-semibold">5%</div>
+                    <div class="value">5%</div>
                   </div>
                 </div>
 
                 <div class="col-12 col-md-6">
-                  <div class="bg-light rounded-3 p-3">
-                    <div class="text-muted small mb-1 d-flex align-items-center gap-1">
+                  <div class="receive-service-summary receive-service-summary--stack">
+                    <div class="label">
                       <i data-lucide="calendar-days" class="w-4 h-4"></i>
                       Settlement
                     </div>
-                    <div class="fw-semibold">End of Day</div>
-                    <div class="text-muted small">Payout: T+1</div>
+                    <div class="value">End of Day</div>
+                    <div class="subvalue">Payout: T+1</div>
                   </div>
                 </div>
               </div>
@@ -3276,15 +3401,13 @@
               <div class="payment-approval-head">
                 <div class="payment-approval-title">
                   <span class="payment-approval-icon"><i data-lucide="handshake" class="w-4 h-4"></i></span>
-                  <span>Receive / Pay on Behalf Payment Setup <span
-                      class="badge bg-primary-subtle text-primary">New</span></span>
+                  <span>Receive / Pay on Behalf Payment Setup <span class="new-badge">New</span></span>
                 </div>
               </div>
 
               <div class="payment-approval-body">
-                <div class="payment-approval-topline"
-                  style="margin-bottom: 0; padding-bottom: 14px; border-bottom: 1px solid #e8edf5;">
-                  <div class="payment-approval-copy" style="font-size: 14px; color: #27303f;">Allow receive / pay on
+                <div class="payment-approval-topline">
+                  <div class="payment-approval-copy">Allow receive / pay on
                     behalf
                   </div>
                   <div class="inline-switch-row">
@@ -3370,11 +3493,11 @@
                   <div class="payment-info-row">
                     <div class="payment-info-label">Payout Account</div>
                     <div class="payment-info-value">
-                      <div class="payout-account-box"
+                    <div class="payout-account-box"
                         style="width: 100%; align-items: center; flex-direction: row; justify-content: space-between;">
                         <div class="value" style="font-weight: 600; color: #6f7684;">VLINKPAY Settlement - 1234567890
                         </div>
-                        <button type="button" class="qr-action-btn"
+                        <button type="button" class="qr-action-btn qr-action-btn--ghost"
                           style="height: 34px; padding: 0 10px; border-radius: 10px; min-width: 0;">
                           <i class="bi bi-copy"></i>
                         </button>
@@ -3406,7 +3529,7 @@
               </div>
             </div>
             <div class="save-wrap" style="margin-top: 18px;">
-              <button class="primary-action" style="min-width: 220px;">Lưu thay đổi</button>
+              <button class="primary-action btn btn-lg" style="min-width: 220px;">Lưu thay đổi</button>
             </div>
           </div>
         </section>

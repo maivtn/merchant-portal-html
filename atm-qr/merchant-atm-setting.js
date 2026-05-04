@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
     return `${url.pathname.split('/').pop()}${url.search}${url.hash}`;
   };
 
-  document.querySelectorAll('a[href^="merchant-atm-"]').forEach((link) => {
+  document.querySelectorAll('a[href^="merchant-atm-"]:not([data-preserve-atm-type])').forEach((link) => {
     link.href = withAtmType(link.getAttribute('href'));
   });
 
@@ -40,6 +40,7 @@ window.addEventListener('DOMContentLoaded', () => {
     iframe.src = withAtmType(iframe.getAttribute('src'));
   });
 
+  const roleTargets = (value) => value.split(',').map((item) => item.trim()).filter(Boolean);
   const hoursDayOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
   const formatTime = (value) => {
@@ -141,10 +142,11 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   const syncRoleVisibility = () => {
-    const currentRole = roleInputs.find((input) => input.checked)?.value || 'mobile';
+    const currentRole = roleInputs.find((input) => input.checked)?.value || 'mobile_atm';
 
     roleDependentSections.forEach((section) => {
-      section.hidden = section.getAttribute('data-role-visibility') !== currentRole;
+      const allowedRoles = roleTargets(section.getAttribute('data-role-visibility') || '');
+      section.hidden = !allowedRoles.includes(currentRole);
     });
 
     refreshIcons();
@@ -153,6 +155,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (roleInputs[0] && roleInputs[1]) {
     roleInputs[0].checked = atmType !== 'merchant';
     roleInputs[1].checked = atmType === 'merchant';
+    if (roleInputs[2]) roleInputs[2].checked = false;
   }
 
   const activate = (name) => {
@@ -170,6 +173,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const openQrModal = (event) => {
     if (event) event.preventDefault();
     if (!qrModal) return;
+
+    const trigger = event?.currentTarget;
+    const href = trigger?.getAttribute('href');
+    if (href && qrIframe) {
+      qrIframe.src = href;
+    }
 
     qrModal.classList.add('active');
     qrModal.setAttribute('aria-hidden', 'false');

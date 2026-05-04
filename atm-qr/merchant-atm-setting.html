@@ -71,6 +71,15 @@
       box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.15);
     }
 
+    /* Tailwind CDN defines `.collapse` as `visibility: collapse`; override it here so
+       Bootstrap collapse keeps working on this page. */
+    .setting-page .collapse,
+    .setting-page .collapsing {
+      visibility: visible !important;
+    }
+
+    
+
     .setting-shell {
       width: 100%;
       max-width: 1160px;
@@ -829,6 +838,12 @@
       box-shadow: var(--card-shadow);
       overflow: hidden;
       border: 1px solid rgba(217, 119, 6, 0.14);
+      transition: padding 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+
+    .walkin-card--collapsed .walkin-setup-caption {
+      display: none;
     }
 
     .walkin-card+.walkin-card {
@@ -3374,30 +3389,29 @@
 
 
             </div>
-            <div class="walkin-card p-4 mt-4" data-role-visibility="merchant_atm,combo_atm">
-              <div class="row g-4">
-                <div class="col-12 col-lg-7">
-                  <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
-                    <div class="walkin-setup-head mb-0">
-                      <div class="walkin-setup-icon">
-                        <i data-lucide="map-pinned" class="w-5 h-5"></i>
-                      </div>
-                      <div>
-                        <div class="walkin-setup-title">Walk-in Setup <span class="new-badge">New</span></div>
-                        <div class="walkin-setup-caption">Location, hours, availability, and accepted payment methods.
-                        </div>
-                      </div>
-                    </div>
-
-                    <button type="button" class="walkin-setup-toggle" data-bs-toggle="collapse"
-                      data-bs-target="#walkin-setup-collapse" aria-expanded="true"
-                      aria-controls="walkin-setup-collapse">
-                      <span>Collapse</span>
-                      <i data-lucide="chevron-up" class="walkin-toggle-icon w-4 h-4"></i>
-                    </button>
+            <div class="walkin-card p-4 mt-4" id="walkin-setup-card" data-role-visibility="merchant_atm,combo_atm">
+              <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+                <div class="walkin-setup-head mb-0">
+                  <div class="walkin-setup-icon">
+                    <i data-lucide="map-pinned" class="w-5 h-5"></i>
                   </div>
+                  <div>
+                    <div class="walkin-setup-title">Walk-in Setup <span class="new-badge">New</span></div>
+                    <div class="walkin-setup-caption">Location, hours, availability, and accepted payment methods.
+                    </div>
+                  </div>
+                </div>
 
-                  <div class="collapse show" id="walkin-setup-collapse">
+                <button type="button" class="walkin-setup-toggle" aria-expanded="true"
+                  aria-controls="walkin-setup-collapse">
+                  <span>Collapse</span>
+                  <i data-lucide="chevron-up" class="walkin-toggle-icon w-4 h-4"></i>
+                </button>
+              </div>
+
+              <div class="collapse show" id="walkin-setup-collapse">
+                <div class="row g-4">
+                  <div class="col-12 col-lg-7">
                     <div class="walkin-field-card">
                       <label class="form-label fw-semibold">
                         <i data-lucide="map-pin" class="me-2 text-primary w-4 h-4"></i>
@@ -3457,37 +3471,38 @@
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="col-12 col-lg-5">
-                  <div class="h-100 ps-lg-4 walkin-right-divider">
-                    <div class="walkin-setup-side">
-                      <div class="mb-3 d-flex flex-row gap-2 align-items-center">
-                        <label class="form-label fw-semibold flex-shrink-0 mb-0 m-0">
-                          <i data-lucide="dollar-sign" class="text-primary w-4 h-4"></i>
-                          Walk-in Fixed Fee
-                        </label>
+                  <div class="col-12 col-lg-5">
+                    <div class="h-100 ps-lg-4 walkin-right-divider">
+                      <div class="walkin-setup-side">
+                        <div class="mb-3 d-flex flex-row gap-2 align-items-center">
+                          <label class="form-label fw-semibold flex-shrink-0 mb-0 m-0">
+                            <i data-lucide="dollar-sign" class="text-primary w-4 h-4"></i>
+                            Walk-in Fixed Fee
+                          </label>
 
-                        <div class="input-group walkin-fee-row">
-                          <input class="form-control" value="5" />
-                          <span class="input-group-text">%</span>
+                          <div class="input-group walkin-fee-row">
+                            <input class="form-control" value="5" />
+                            <span class="input-group-text">%</span>
+                          </div>
                         </div>
-                      </div>
 
-                      <div class="walkin-info-box mb-3">
-                        <i class="bi bi-info-circle-fill walkin-info-icon"></i>
-                        <p class="mb-0 small">
-                          When walk-in mode is enabled, customers can scan your QR code at the store, review fees and
-                          conditions, then create a direct trade request.
-                        </p>
-                      </div>
+                        <div class="walkin-info-box mb-3">
+                          <i class="bi bi-info-circle-fill walkin-info-icon"></i>
+                          <p class="mb-0 small">
+                            When walk-in mode is enabled, customers can scan your QR code at the store, review fees
+                            and
+                            conditions, then create a direct trade request.
+                          </p>
+                        </div>
 
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" checked />
-                        <label class="form-check-label fw-semibold small d-inline-flex align-items-center gap-1">
-                          Show merchant as Walk-in Available on map/search
-                          <img src="../atm-qr/map.png" alt="Map" class="w-12 h-12">
-                        </label>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" checked />
+                          <label class="form-check-label fw-semibold small d-inline-flex align-items-center gap-1">
+                            Show merchant as Walk-in Available on map/search
+                            <img src="../atm-qr/map.png" alt="Map" class="w-12 h-12">
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </div>

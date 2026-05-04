@@ -29,6 +29,13 @@ window.addEventListener('DOMContentLoaded', () => {
   const paymentChoiceInputs = Array.from(
     document.querySelectorAll('#receive-on-behalf-payment .payment-choice-list input[type="checkbox"]'),
   );
+  const walkinSetupCard = document.getElementById('walkin-setup-card');
+  const walkinSetupCollapse = document.getElementById('walkin-setup-collapse');
+  const walkinSetupToggle = document.querySelector('.walkin-setup-toggle');
+  const walkinSetupCollapseInstance =
+    walkinSetupCollapse && window.bootstrap?.Collapse
+      ? window.bootstrap.Collapse.getOrCreateInstance(walkinSetupCollapse, { toggle: false })
+      : null;
   const params = new URLSearchParams(window.location.search);
   const atmType = params.get('atmType') === 'mobile' ? 'mobile' : 'merchant';
   const withAtmType = (href) => {
@@ -234,6 +241,15 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const syncWalkinSetupState = () => {
+    if (!walkinSetupCard || !walkinSetupCollapse || !walkinSetupToggle) return;
+
+    const isOpen = walkinSetupCollapse.classList.contains('show');
+    walkinSetupCard.classList.toggle('walkin-card--collapsed', !isOpen);
+    walkinSetupToggle.querySelector('span')?.replaceChildren(document.createTextNode(isOpen ? 'Collapse' : 'Expand'));
+    walkinSetupToggle.setAttribute('aria-expanded', String(isOpen));
+  };
+
   const syncPaymentPriorityOptions = () => {
     if (!paymentPrioritySelect) return;
 
@@ -308,6 +324,21 @@ window.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', () => {
       activate(button.getAttribute('data-open-setting-tab') || 'general');
     });
+  });
+
+  walkinSetupToggle?.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (walkinSetupCollapseInstance) {
+      walkinSetupCollapseInstance.toggle();
+      return;
+    }
+
+    if (!walkinSetupCollapse || !walkinSetupCard) return;
+    const isOpen = walkinSetupCollapse.classList.contains('show');
+    walkinSetupCollapse.classList.toggle('show', !isOpen);
+    walkinSetupCard.classList.toggle('walkin-card--collapsed', isOpen);
+    walkinSetupToggle.querySelector('span')?.replaceChildren(document.createTextNode(isOpen ? 'Expand' : 'Collapse'));
+    walkinSetupToggle.setAttribute('aria-expanded', String(!isOpen));
   });
 
   paymentChoiceInputs.forEach((input) => {
@@ -385,10 +416,14 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  walkinSetupCollapse?.addEventListener('shown.bs.collapse', syncWalkinSetupState);
+  walkinSetupCollapse?.addEventListener('hidden.bs.collapse', syncWalkinSetupState);
+
   activate('general');
   syncRoleVisibility();
   syncAllHoursDayStates();
   syncHoursSummary();
   syncWalkinModeOptions();
   syncPaymentPriorityOptions();
+  syncWalkinSetupState();
 });

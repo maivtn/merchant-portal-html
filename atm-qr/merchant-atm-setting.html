@@ -764,13 +764,19 @@
       max-width: 56ch;
     }
 
+    .mobile-qr-card__actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
     .mobile-qr-card__cta {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      width: 100%;
-      max-width: 256px;
+      min-width: 0;
       min-height: 42px;
       padding: 0 14px;
       border-radius: 0.9rem;
@@ -782,7 +788,6 @@
       text-decoration: none;
       white-space: nowrap;
       box-shadow: 0 10px 18px rgba(217, 119, 6, 0.08);
-      flex: 0 0 auto;
     }
 
     .mobile-qr-card__cta:hover {
@@ -3094,8 +3099,11 @@
         align-items: flex-start;
       }
 
+      .mobile-qr-card__actions {
+        gap: 8px;
+      }
+
       .mobile-qr-card__cta {
-        width: 100%;
         max-width: none;
       }
 
@@ -3241,22 +3249,26 @@
                       <div class="mobile-qr-card__copy">
                         Let customers scan the QR code that matches your ATM type and create a request in the app.
                       </div>
+                      <div class="mobile-qr-card__actions mt-2">
+                        <a class="mobile-qr-card__cta" href="merchant-atm-qr.html?atmType=merchant" data-open-qr-modal
+                          data-preserve-atm-type id="show-qr-btn-atm-merchant"
+                          data-role-visibility="merchant_atm,combo_atm">
+                          <i data-lucide="store" class="w-4 h-4"></i>
+                          Show Merchant ATM QR
+                        </a>
+    
+                        <a class="mobile-qr-card__cta" href="merchant-atm-qr.html?atmType=mobile" data-open-qr-modal
+                          data-preserve-atm-type id="show-qr-btn-atm-mobile" data-role-visibility="mobile_atm,combo_atm">
+                          <i data-lucide="car" class="w-4 h-4"></i>
+                          Show Mobile ATM QR
+                        </a>
+                      </div>
                     </div>
                   </div>
-                  <a class="mobile-qr-card__cta" href="merchant-atm-qr.html?atmType=merchant" data-open-qr-modal
-                    data-preserve-atm-type id="show-qr-btn-atm-merchant" data-role-visibility="merchant_atm,combo_atm">
-                    <i data-lucide="store" class="w-4 h-4"></i>
-                    Show Merchant ATM QR
-                  </a>
-
-                  <a class="mobile-qr-card__cta" href="merchant-atm-qr.html?atmType=mobile" data-open-qr-modal
-                    data-preserve-atm-type id="show-qr-btn-atm-mobile" data-role-visibility="mobile_atm,combo_atm">
-                    <i data-lucide="car" class="w-4 h-4"></i>
-                    Show Mobile ATM QR
-                  </a>
+                 
                 </div>
               </div>
-              <div class="col-12 col-lg-6" data-role-visibility="merchant_atm,combo_atm">
+              <div class="col-12 col-lg-6" data-role-visibility="mobile_atm,merchant_atm,combo_atm">
                 <div class="receive-card h-100">
                   <div class="receive-card__main">
                     <div class="receive-card__icon">
@@ -3366,7 +3378,6 @@
 
                         <select class="form-select">
                           <option selected>Scan merchant QR at the location</option>
-                          <option>Show ATM QR for customers</option>
                         </select>
                       </div>
 

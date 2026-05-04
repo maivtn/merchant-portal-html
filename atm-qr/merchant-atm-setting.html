@@ -282,6 +282,33 @@
       gap: 12px;
     }
 
+    .field-row--text-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .field-row--text-stack .setting-label {
+      margin: 0;
+    }
+
+    .field-row--boxed {
+      padding: 14px 16px;
+      border: 1px solid #f0e3c7;
+      border-radius: 1rem;
+      background: linear-gradient(180deg, #fffaf0 0%, #ffffff 100%);
+      align-items: center;
+    }
+
+    .field-row--stack {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 8px;
+    }
+
     .field-row .label-wrap {
       display: inline-flex;
       align-items: center;
@@ -1142,16 +1169,17 @@
 
     .walkin-setup-title {
       color: var(--text);
-      font-size: 14px;
+      font-size: 1.05rem;
       line-height: 1.2;
       font-weight: 800;
+      letter-spacing: -0.01em;
     }
 
     .walkin-setup-caption {
-      margin-top: 2px;
-      color: var(--text-muted);
-      font-size: 11px;
-      line-height: 1.35;
+      margin-top: 6px;
+      color: #6f7684;
+      font-size: 0.94rem;
+      line-height: 1.5;
     }
 
     .walkin-field-card {
@@ -1298,10 +1326,10 @@
 
     .walkin-setup-side {
       padding: 14px;
-      border: 1px solid rgba(217, 119, 6, 0.14);
+      /* border: 1px solid rgba(217, 119, 6, 0.14); */
       border-radius: 1rem;
       background: #fff;
-      box-shadow: 0 8px 22px rgba(34, 31, 31, 0.05);
+      /* box-shadow: 0 8px 22px rgba(34, 31, 31, 0.05); */
     }
 
     .walkin-right-divider {
@@ -2877,6 +2905,11 @@
         align-items: flex-start;
       }
 
+      .walkin-hours-summary-text {
+        font-size: 11px;
+        line-height: 1.35;
+      }
+
       .fee-compare-card,
       .setting-grid-2 {
         grid-template-columns: 1fr;
@@ -3099,11 +3132,19 @@
         align-items: flex-start;
       }
 
+      .mobile-qr-card__copy {
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
       .mobile-qr-card__actions {
+        flex-direction: column;
+        align-items: stretch;
         gap: 8px;
       }
 
       .mobile-qr-card__cta {
+        width: 100%;
         max-width: none;
       }
 
@@ -3185,9 +3226,11 @@
 
               <div class="col-12 col-lg-6">
                 <div class="setting-card h-100">
-                  
+                  <div class="setting-title">Current Role</div>
+                  <div class="note-block mt-1 mb-2">
+                    Choose which ATM role is active for this setup.
+                  </div>
                   <div class="mt-2">
-                    <div class="setting-label mb-2">Current Role</div>
                     <label class="radio-row">
                       <input type="radio" name="role" value="mobile_atm"  />
                       <span>Mobile ATM</span>
@@ -3201,9 +3244,12 @@
                       <span>Combo ATM</span>
                     </label>
                   </div>
-                  <div class="field-row mt-2" data-role-visibility="mobile_atm,combo_atm">
-                    <div class="label-wrap">
+                  <div class="field-row field-row--boxed mt-2" data-role-visibility="mobile_atm,combo_atm">
+                    <div class="field-row--text-stack">
                       <span class="setting-label">Minimum transaction amount ($)</span>
+                      <div class="note-block">
+                        Applies to Mobile ATM transactions.
+                      </div>
                     </div>
                     <input class="setting-input" style="max-width: 180px;" value="100" />
                   </div>
@@ -3213,33 +3259,8 @@
 
 
 
-            <div class="walkin-card p-4 mt-3" data-role-visibility="merchant_atm,combo_atm">
-              <div class="d-flex justify-content-between align-items-start gap-3">
-                <div class="d-flex gap-3">
-                  <div class="walkin-icon">
-                    <i data-lucide="store" class="w-5 h-5"></i>
-                  </div>
-                  <div>
-                    <div class="walkin-title">Walk-in Transaction Mode <span class="new-badge">New</span></div>
-                    <div class="walkin-subtitle">Allow customers to visit your fixed location and trade directly.</div>
-                  </div>
-                </div>
-
-                <div class="inline-switch-row">
-                  <div class="status-switch">
-                    <label class="activity-switch">
-                      <input type="checkbox" checked />
-                      <span class="activity-switch-track">
-                        <span class="activity-switch-thumb"></span>
-                      </span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-
-            </div>
-            <div class="row g-3 mt-3">
+           
+            <div class="row g-3 mt-2">
               <div class="col-12 col-lg-6">
                 <div class="mobile-qr-card h-100">
                   <div class="mobile-qr-card__left">
@@ -3294,6 +3315,33 @@
                   </div>
                 </div>
               </div>
+            </div>
+            
+            <div class="walkin-card p-4 mt-3" data-role-visibility="merchant_atm,combo_atm">
+              <div class="d-flex justify-content-between align-items-start gap-3">
+                <div class="d-flex gap-3">
+                  <div class="walkin-icon">
+                    <i data-lucide="store" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <div class="walkin-title">Walk-in Transaction Mode <span class="new-badge">New</span></div>
+                    <div class="walkin-subtitle">Allow customers to visit your fixed location and trade directly.</div>
+                  </div>
+                </div>
+
+                <div class="inline-switch-row">
+                  <div class="status-switch">
+                    <label class="activity-switch">
+                      <input type="checkbox" checked />
+                      <span class="activity-switch-track">
+                        <span class="activity-switch-thumb"></span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+
             </div>
             <div class="walkin-card p-4 mt-4" data-role-visibility="merchant_atm,combo_atm">
               <div class="row g-4">
@@ -3372,17 +3420,6 @@
                 <div class="col-12 col-lg-5">
                   <div class="h-100 ps-lg-4 walkin-right-divider">
                     <div class="walkin-setup-side">
-                      <div class="mb-3">
-                        <label class="form-label fw-semibold">
-                          <i data-lucide="qr-code" class="me-2 text-primary w-4 h-4"></i>
-                          QR Access Mode
-                        </label>
-
-                        <select class="form-select">
-                          <option selected>Scan merchant QR at the location</option>
-                        </select>
-                      </div>
-
                       <div class="mb-3 d-flex flex-row gap-2 align-items-center">
                         <label class="form-label fw-semibold flex-shrink-0 mb-0 m-0">
                           <i data-lucide="dollar-sign" class="text-primary w-4 h-4"></i>
@@ -3545,7 +3582,10 @@
 
             <div class="mt-3">
               <div class="setting-card">
-                <div class="setting-label mb-2">Cash Setup</div>
+                <div class="setting-title">Cash Setup</div>
+                <div class="note-block mt-1 mb-2">
+                  Configure the cash balance available for cash trades.
+                </div>
                 <div class="row g-3 align-items-center">
                   <div class="col-12 col-lg-8">
                     <div class="field-row">
@@ -3643,7 +3683,7 @@
                     I agree to the <span class="text-primary">terms &amp; fee schedule</span>
                   </label>
                 </div>
-                <a href="#" class="small text-primary text-decoration-none" onclick="return false;">
+                <a href="merchant-atm-receive-terms.html" class="small text-primary text-decoration-none">
                   View Policy <i data-lucide="arrow-right" class="w-4 h-4 d-inline-block align-text-bottom"></i>
                 </a>
               </div>
@@ -3867,8 +3907,7 @@
                     I agree to the <span class="text-primary">terms &amp; fee schedule</span>
                   </label>
                 </div>
-                <a href="#" class="small text-primary text-decoration-none d-inline-flex align-items-center gap-1"
-                  onclick="return false;">
+                <a href="merchant-atm-receive-terms.html" class="small text-primary text-decoration-none d-inline-flex align-items-center gap-1">
                   View Policy <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </a>
               </div>

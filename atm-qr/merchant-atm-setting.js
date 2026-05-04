@@ -25,6 +25,10 @@ window.addEventListener('DOMContentLoaded', () => {
   const saveHoursButton = document.querySelector('[data-save-hours]');
   const hoursSummary = document.querySelector('[data-hours-summary]');
   const hoursDayRows = Array.from(document.querySelectorAll('[data-hours-day-row]'));
+  const paymentPrioritySelect = document.getElementById('payment-priority-select');
+  const paymentChoiceInputs = Array.from(
+    document.querySelectorAll('#receive-on-behalf-payment .payment-choice-list input[type="checkbox"]'),
+  );
   const params = new URLSearchParams(window.location.search);
   const atmType = params.get('atmType') === 'mobile' ? 'mobile' : 'merchant';
   const withAtmType = (href) => {
@@ -230,6 +234,41 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const syncPaymentPriorityOptions = () => {
+    if (!paymentPrioritySelect) return;
+
+    const selectedLabels = [];
+    const seen = new Set();
+
+    paymentChoiceInputs.forEach((input) => {
+      if (!input.checked) return;
+      const label = input.closest('.payment-choice')?.querySelector('span')?.textContent?.trim() || '';
+      if (!label || seen.has(label)) return;
+      seen.add(label);
+      selectedLabels.push(label);
+    });
+
+    paymentPrioritySelect.innerHTML = '';
+
+    if (!selectedLabels.length) {
+      const option = document.createElement('option');
+      option.value = '';
+      option.textContent = 'No payment methods selected';
+      paymentPrioritySelect.appendChild(option);
+      paymentPrioritySelect.disabled = true;
+      return;
+    }
+
+    paymentPrioritySelect.disabled = false;
+    selectedLabels.forEach((label, index) => {
+      const option = document.createElement('option');
+      option.value = label;
+      option.textContent = label;
+      option.selected = index === 0;
+      paymentPrioritySelect.appendChild(option);
+    });
+  };
+
   let hoursStateSnapshot = captureHoursState();
 
   const openHoursModal = (event) => {
@@ -269,6 +308,10 @@ window.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', () => {
       activate(button.getAttribute('data-open-setting-tab') || 'general');
     });
+  });
+
+  paymentChoiceInputs.forEach((input) => {
+    input.addEventListener('change', syncPaymentPriorityOptions);
   });
 
   openQrButtons.forEach((button) => {
@@ -347,4 +390,5 @@ window.addEventListener('DOMContentLoaded', () => {
   syncAllHoursDayStates();
   syncHoursSummary();
   syncWalkinModeOptions();
+  syncPaymentPriorityOptions();
 });

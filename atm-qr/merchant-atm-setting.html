@@ -529,30 +529,41 @@
 
 
     .receive-card {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
       border: 1px solid rgba(217, 119, 6, 0.14);
       border-radius: 1.5rem;
       background: linear-gradient(135deg, #fffaf0 0%, #ffffff 62%);
       box-shadow: var(--card-shadow);
-      overflow: hidden;
+      padding: 18px;
     }
 
-    .receive-card-header {
+    .receive-card__main {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 16px 12px;
-      border-bottom: 1px solid #f0e3c7;
-      background: linear-gradient(180deg, #fffaf0 0%, #ffffff 100%);
+      align-items: flex-start;
+      gap: 14px;
+      min-width: 0;
+      flex: 1 1 auto;
     }
 
-    .receive-card-title {
+    .receive-card__content {
+      min-width: 0;
+    }
+
+    .receive-card__head {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .receive-card__title {
       color: var(--text);
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 800;
+      line-height: 1.25;
     }
 
     .new-badge {
@@ -569,8 +580,65 @@
       letter-spacing: 0.02em;
     }
 
-    .receive-card-body {
-      padding: 14px;
+    .receive-card__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%);
+      color: var(--blue);
+      box-shadow: inset 0 0 0 1px rgba(217, 119, 6, 0.08), 0 8px 18px rgba(217, 119, 6, 0.08);
+      flex: 0 0 auto;
+    }
+
+    .receive-card__copy {
+      margin-top: 6px;
+      color: #6f7684;
+      font-size: 13px;
+      line-height: 1.45;
+      max-width: 52ch;
+    }
+
+    .receive-card__actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      flex: 0 0 auto;
+      padding-top: 2px;
+    }
+
+    .receive-card__note {
+      color: #8a93a3;
+      font-size: 12px;
+      line-height: 1.4;
+      max-width: 15ch;
+      text-align: left;
+    }
+
+    .receive-card__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 0.9rem;
+      border: 1px solid rgba(217, 119, 6, 0.18);
+      background: #fff7ed;
+      color: #b45309;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 10px 18px rgba(217, 119, 6, 0.08);
+    }
+
+    .receive-card__cta:hover {
+      color: #b45309;
+      border-color: rgba(217, 119, 6, 0.28);
+      transform: translateY(-1px);
     }
 
     .receive-top-row {
@@ -648,9 +716,9 @@
 
     .mobile-qr-card {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
       padding: 18px;
       border-radius: 1.5rem;
       border: 1px solid rgba(217, 119, 6, 0.14);
@@ -665,7 +733,7 @@
       align-items: flex-start;
       gap: 14px;
       min-width: 0;
-      flex: 1 1 auto;
+      width: 100%;
     }
 
     .mobile-qr-card__icon {
@@ -701,6 +769,8 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
+      width: 100%;
+      max-width: 256px;
       min-height: 42px;
       padding: 0 14px;
       border-radius: 0.9rem;
@@ -2851,6 +2921,25 @@
       .receive-summary-grid {
         grid-template-columns: 1fr;
       }
+
+      .receive-card {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .receive-card__actions {
+        width: 100%;
+        align-items: stretch;
+      }
+
+      .receive-card__cta {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .receive-card__note {
+        max-width: none;
+      }
     }
 
     @media (max-width: 560px) {
@@ -3007,6 +3096,7 @@
 
       .mobile-qr-card__cta {
         width: 100%;
+        max-width: none;
       }
 
       .walkin-option {
@@ -3139,29 +3229,57 @@
 
 
             </div>
-            <div class="mobile-qr-card mt-3">
-              <div class="mobile-qr-card__left">
-                <div class="mobile-qr-card__icon">
-                  <i data-lucide="qr-code" class="w-5 h-5"></i>
+            <div class="row g-3 mt-3">
+              <div class="col-12 col-lg-6">
+                <div class="mobile-qr-card h-100">
+                  <div class="mobile-qr-card__left">
+                    <div class="mobile-qr-card__icon">
+                      <i data-lucide="qr-code" class="w-5 h-5"></i>
+                    </div>
+                    <div class="min-w-0">
+                      <div class="mobile-qr-card__title">Merchant & Mobile ATM QR</div>
+                      <div class="mobile-qr-card__copy">
+                        Let customers scan the QR code that matches your ATM type and create a request in the app.
+                      </div>
+                    </div>
+                  </div>
+                  <a class="mobile-qr-card__cta" href="merchant-atm-qr.html?atmType=merchant" data-open-qr-modal
+                    data-preserve-atm-type id="show-qr-btn-atm-merchant" data-role-visibility="merchant_atm,combo_atm">
+                    <i data-lucide="store" class="w-4 h-4"></i>
+                    Show Merchant ATM QR
+                  </a>
+
+                  <a class="mobile-qr-card__cta" href="merchant-atm-qr.html?atmType=mobile" data-open-qr-modal
+                    data-preserve-atm-type id="show-qr-btn-atm-mobile" data-role-visibility="mobile_atm,combo_atm">
+                    <i data-lucide="car" class="w-4 h-4"></i>
+                    Show Mobile ATM QR
+                  </a>
                 </div>
-                <div class="min-w-0">
-                  <div class="mobile-qr-card__title">Merchant & Mobile ATM QR</div>
-                  <div class="mobile-qr-card__copy">
-                    Let customers scan the QR code that matches your ATM type and create a request in the app.
+              </div>
+              <div class="col-12 col-lg-6" data-role-visibility="merchant_atm,combo_atm">
+                <div class="receive-card h-100">
+                  <div class="receive-card__main">
+                    <div class="receive-card__icon">
+                      <i data-lucide="handshake" class="w-5 h-5"></i>
+                    </div>
+                    <div class="receive-card__content min-w-0">
+                      <div class="receive-card__head">
+                        <div class="receive-card__title">Nhận hộ / Chi hộ</div>
+                        <span class="status-note success">Active</span>
+                      </div>
+                      <div class="receive-card__copy">
+                        Set up receive-on-behalf, pay-on-behalf, fees, settlement, and payment methods.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="receive-card__actions">
+                    <button type="button" class="receive-card__cta" data-open-setting-tab="receive-on-behalf">
+                      <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                      Open tab
+                    </button>
                   </div>
                 </div>
               </div>
-              <a class="mobile-qr-card__cta" href="merchant-atm-qr.html?atmType=merchant" data-open-qr-modal
-                data-preserve-atm-type id="show-qr-btn-atm-merchant" data-role-visibility="merchant_atm,combo_atm">
-                <i data-lucide="store" class="w-4 h-4"></i>
-                Show Merchant ATM QR
-              </a>
-
-              <a class="mobile-qr-card__cta" href="merchant-atm-qr.html?atmType=mobile" data-open-qr-modal
-                data-preserve-atm-type id="show-qr-btn-atm-mobile" data-role-visibility="mobile_atm,combo_atm">
-                <i data-lucide="car" class="w-4 h-4"></i>
-                Show Mobile ATM QR
-              </a>
             </div>
             <div class="walkin-card p-4 mt-4" data-role-visibility="merchant_atm,combo_atm">
               <div class="row g-4">

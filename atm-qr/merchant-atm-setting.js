@@ -9,6 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const tabs = Array.from(document.querySelectorAll('[data-setting-tab]'));
   const panels = Array.from(document.querySelectorAll('[data-setting-panel]'));
+  const openSettingTabButtons = Array.from(document.querySelectorAll('[data-open-setting-tab]'));
   const qrModal = document.getElementById('qr-modal');
   const qrIframe = qrModal?.querySelector('.qr-modal-iframe');
   const openQrButtons = Array.from(document.querySelectorAll('[data-open-qr-modal]'));
@@ -262,6 +263,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => activate(tab.getAttribute('data-setting-tab') || 'general'));
+  });
+
+  openSettingTabButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      activate(button.getAttribute('data-open-setting-tab') || 'general');
+    });
   });
 
   openQrButtons.forEach((button) => {

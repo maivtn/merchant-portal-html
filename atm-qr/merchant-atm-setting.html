@@ -270,9 +270,11 @@
       border-color: var(--blue);
       box-shadow: 0 0 0 0.2rem rgba(217, 119, 6, 0.15);
     }
-.walkin-field-card{
-  border: 0 !important;
-}
+
+    .walkin-field-card {
+      border: 0 !important;
+    }
+
     .field-row {
       display: flex;
       align-items: center;
@@ -651,10 +653,10 @@
       gap: 16px;
       padding: 18px;
       border-radius: 1.5rem;
-      border: 1px solid rgba(37, 99, 235, 0.14);
+      border: 1px solid rgba(217, 119, 6, 0.14);
       background:
-        radial-gradient(circle at top right, rgba(219, 234, 254, 0.9), transparent 28%),
-        linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+        radial-gradient(circle at top right, rgba(254, 243, 199, 0.95), transparent 28%),
+        linear-gradient(180deg, #fffaf0 0%, #ffffff 100%);
       box-shadow: var(--card-shadow);
     }
 
@@ -673,9 +675,9 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%);
-      color: #2563eb;
-      box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.08), 0 8px 18px rgba(37, 99, 235, 0.08);
+      background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%);
+      color: var(--blue);
+      box-shadow: inset 0 0 0 1px rgba(217, 119, 6, 0.08), 0 8px 18px rgba(217, 119, 6, 0.08);
       flex: 0 0 auto;
     }
 
@@ -702,20 +704,20 @@
       min-height: 42px;
       padding: 0 14px;
       border-radius: 0.9rem;
-      border: 1px solid rgba(37, 99, 235, 0.18);
-      background: #eff6ff;
-      color: #1d4ed8;
+      border: 1px solid rgba(217, 119, 6, 0.18);
+      background: #fff7ed;
+      color: #b45309;
       font-size: 13px;
       font-weight: 800;
       text-decoration: none;
       white-space: nowrap;
-      box-shadow: 0 10px 18px rgba(37, 99, 235, 0.08);
+      box-shadow: 0 10px 18px rgba(217, 119, 6, 0.08);
       flex: 0 0 auto;
     }
 
     .mobile-qr-card__cta:hover {
-      color: #1d4ed8;
-      border-color: rgba(37, 99, 235, 0.28);
+      color: #b45309;
+      border-color: rgba(217, 119, 6, 0.28);
       transform: translateY(-1px);
     }
 
@@ -2762,14 +2764,20 @@
     }
 
     @media (max-width: 720px) {
-      .setting-card, .walkin-card, .receive-service-card, .asset-fee-group {
+
+      .setting-card,
+      .walkin-card,
+      .receive-service-card,
+      .asset-fee-group {
         padding: 12px !important;
       }
-      .asset-fee-group .setting-card{
+
+      .asset-fee-group .setting-card {
         padding: 0 !important;
       }
-      .asset-fee-group .fee-compare-col{
-      }
+
+      .asset-fee-group .fee-compare-col {}
+
       .walkin-options,
       .walkin-layout {
         grid-template-columns: 1fr;
@@ -2829,9 +2837,12 @@
       .payment-info-row {
         gap: 6px;
       }
-      .payment-info-row:nth-child(2),  .payment-info-row:nth-child(4) {
+
+      .payment-info-row:nth-child(2),
+      .payment-info-row:nth-child(4) {
         grid-template-columns: 1fr;
       }
+
       .payment-info-value {
         justify-content: flex-start;
         text-align: left;
@@ -2864,7 +2875,7 @@
         width: 100%;
         gap: 6px;
         padding: 8px;
-        margin: 0 0 ;
+        margin: 0 0;
       }
 
       .setting-subnav button {
@@ -3100,7 +3111,7 @@
               </div>
             </div>
 
-           
+
 
             <div class="walkin-card p-4 mt-3" data-role-visibility="merchant_atm,combo_atm">
               <div class="d-flex justify-content-between align-items-start gap-3">
@@ -3128,29 +3139,29 @@
 
 
             </div>
-            <div class="mobile-qr-card mt-3" data-role-visibility="mobile_atm,merchant_atm,combo_atm">
+            <div class="mobile-qr-card mt-3">
               <div class="mobile-qr-card__left">
                 <div class="mobile-qr-card__icon">
                   <i data-lucide="qr-code" class="w-5 h-5"></i>
                 </div>
                 <div class="min-w-0">
-                  <div class="mobile-qr-card__title">Mobile/Merchant ATM QR</div>
+                  <div class="mobile-qr-card__title">Merchant & Mobile ATM QR</div>
                   <div class="mobile-qr-card__copy">
-                    Allow customers to scan your Mobile ATM QR and create a request in the app.
+                    Let customers scan the QR code that matches your ATM type and create a request in the app.
                   </div>
                 </div>
               </div>
               <a class="mobile-qr-card__cta" href="merchant-atm-qr.html?atmType=merchant" data-open-qr-modal
-                data-preserve-atm-type id="show-qr-btn-atm-mobile">
-                <i data-lucide="qr-code" class="w-4 h-4"></i>
+                data-preserve-atm-type id="show-qr-btn-atm-merchant" data-role-visibility="merchant_atm,combo_atm">
+                <i data-lucide="store" class="w-4 h-4"></i>
                 Show Merchant ATM QR
               </a>
 
               <a class="mobile-qr-card__cta" href="merchant-atm-qr.html?atmType=mobile" data-open-qr-modal
-              data-preserve-atm-type id="show-qr-btn-atm-mobile">
-              <i data-lucide="qr-code" class="w-4 h-4"></i>
-              Show Mobile ATM QR
-            </a>
+                data-preserve-atm-type id="show-qr-btn-atm-mobile" data-role-visibility="mobile_atm,combo_atm">
+                <i data-lucide="car" class="w-4 h-4"></i>
+                Show Mobile ATM QR
+              </a>
             </div>
             <div class="walkin-card p-4 mt-4" data-role-visibility="merchant_atm,combo_atm">
               <div class="row g-4">
@@ -3169,7 +3180,7 @@
                   <div class="walkin-field-card">
                     <label class="form-label fw-semibold">
                       <i data-lucide="map-pin" class="me-2 text-primary w-4 h-4"></i>
-                          Business Location
+                      Business Location
                     </label>
                     <input class="form-control" value="123 Liberty Street, New York, NY 10006, USA" />
                   </div>
@@ -3241,25 +3252,25 @@
                         </select>
                       </div>
 
-                  <div class="mb-3 d-flex flex-row gap-2 align-items-center">
-                    <label class="form-label fw-semibold flex-shrink-0 mb-0 m-0">
-                      <i data-lucide="dollar-sign" class="text-primary w-4 h-4"></i>
-                      Walk-in Fixed Fee
-                    </label>
+                      <div class="mb-3 d-flex flex-row gap-2 align-items-center">
+                        <label class="form-label fw-semibold flex-shrink-0 mb-0 m-0">
+                          <i data-lucide="dollar-sign" class="text-primary w-4 h-4"></i>
+                          Walk-in Fixed Fee
+                        </label>
 
-                    <div class="input-group walkin-fee-row">
-                      <input class="form-control" value="5" />
-                      <span class="input-group-text">%</span>
-                    </div>
-                  </div>
+                        <div class="input-group walkin-fee-row">
+                          <input class="form-control" value="5" />
+                          <span class="input-group-text">%</span>
+                        </div>
+                      </div>
 
-                  <div class="walkin-info-box mb-3">
-                    <i class="bi bi-info-circle-fill walkin-info-icon"></i>
-                    <p class="mb-0 small">
-                      When walk-in mode is enabled, customers can scan your QR code at the store, review fees and
-                      conditions, then create a direct trade request.
-                    </p>
-                  </div>
+                      <div class="walkin-info-box mb-3">
+                        <i class="bi bi-info-circle-fill walkin-info-icon"></i>
+                        <p class="mb-0 small">
+                          When walk-in mode is enabled, customers can scan your QR code at the store, review fees and
+                          conditions, then create a direct trade request.
+                        </p>
+                      </div>
 
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" checked />
@@ -3529,9 +3540,9 @@
                 </div>
               </div>
             </div>
-            
+
           </div>
-          
+
         </section>
 
         <section class="setting-panel" data-setting-panel="payment">
@@ -3709,8 +3720,8 @@
 
               <div class="receive-service-row justify-start">
                 <span class="setting-label" style="font-weight: 600;">Join Program</span>
-                <div class="form-check form-switch m-0" >
-                  <input class="form-check-input" type="checkbox" checked id="join-program"/>
+                <div class="form-check form-switch m-0">
+                  <input class="form-check-input" type="checkbox" checked id="join-program" />
                 </div>
               </div>
 
@@ -3853,7 +3864,7 @@
                   <div class="payment-info-row">
                     <div class="payment-info-label">Payout Account</div>
                     <div class="payment-info-value">
-                    <div class="payout-account-box"
+                      <div class="payout-account-box"
                         style="width: 100%; align-items: center; flex-direction: row; justify-content: space-between;">
                         <div class="value" style="font-weight: 600; color: #6f7684;">VLINKPAY Settlement - 1234567890
                         </div>

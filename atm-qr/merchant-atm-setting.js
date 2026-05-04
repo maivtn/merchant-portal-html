@@ -147,7 +147,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   const syncRoleVisibility = () => {
-    const currentRole = roleInputs.find((input) => input.checked)?.value || 'mobile_atm';
+    const currentRole = roleInputs.find((input) => input.checked)?.value || 'combo_atm';
 
     roleDependentSections.forEach((section) => {
       const allowedRoles = roleTargets(section.getAttribute('data-role-visibility') || '');
@@ -158,9 +158,9 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   if (roleInputs[0] && roleInputs[1]) {
-    roleInputs[0].checked = atmType !== 'merchant';
-    roleInputs[1].checked = atmType === 'merchant';
-    if (roleInputs[2]) roleInputs[2].checked = false;
+    roleInputs[0].checked = false;
+    roleInputs[1].checked = false;
+    if (roleInputs[2]) roleInputs[2].checked = true;
   }
 
   const activate = (name) => {

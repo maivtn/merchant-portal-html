@@ -36,6 +36,13 @@ window.addEventListener('DOMContentLoaded', () => {
     walkinSetupCollapse && window.bootstrap?.Collapse
       ? window.bootstrap.Collapse.getOrCreateInstance(walkinSetupCollapse, { toggle: false })
       : null;
+  const assetFeeGroup = document.getElementById('asset-fee-group');
+  const assetFeeGroupCollapse = document.getElementById('asset-fee-group-collapse');
+  const assetFeeGroupToggle = document.querySelector('.asset-fee-group__toggle');
+  const assetFeeGroupCollapseInstance =
+    assetFeeGroupCollapse && window.bootstrap?.Collapse
+      ? window.bootstrap.Collapse.getOrCreateInstance(assetFeeGroupCollapse, { toggle: false })
+      : null;
   const params = new URLSearchParams(window.location.search);
   const atmType = params.get('atmType') === 'mobile' ? 'mobile' : 'merchant';
   const withAtmType = (href) => {
@@ -250,6 +257,17 @@ window.addEventListener('DOMContentLoaded', () => {
     walkinSetupToggle.setAttribute('aria-expanded', String(isOpen));
   };
 
+  const syncAssetFeeGroupState = () => {
+    if (!assetFeeGroup || !assetFeeGroupCollapse || !assetFeeGroupToggle) return;
+
+    const isOpen = assetFeeGroupCollapse.classList.contains('show');
+    assetFeeGroup.classList.toggle('asset-fee-group--collapsed', !isOpen);
+    assetFeeGroupToggle
+      .querySelector('span')
+      ?.replaceChildren(document.createTextNode(isOpen ? 'Collapse' : 'Expand'));
+    assetFeeGroupToggle.setAttribute('aria-expanded', String(isOpen));
+  };
+
   const syncPaymentPriorityOptions = () => {
     if (!paymentPrioritySelect) return;
 
@@ -341,6 +359,21 @@ window.addEventListener('DOMContentLoaded', () => {
     walkinSetupToggle.setAttribute('aria-expanded', String(!isOpen));
   });
 
+  assetFeeGroupToggle?.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (assetFeeGroupCollapseInstance) {
+      assetFeeGroupCollapseInstance.toggle();
+      return;
+    }
+
+    if (!assetFeeGroupCollapse || !assetFeeGroup) return;
+    const isOpen = assetFeeGroupCollapse.classList.contains('show');
+    assetFeeGroupCollapse.classList.toggle('show', !isOpen);
+    assetFeeGroup.classList.toggle('asset-fee-group--collapsed', isOpen);
+    assetFeeGroupToggle.querySelector('span')?.replaceChildren(document.createTextNode(isOpen ? 'Expand' : 'Collapse'));
+    assetFeeGroupToggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+
   paymentChoiceInputs.forEach((input) => {
     input.addEventListener('change', syncPaymentPriorityOptions);
   });
@@ -418,6 +451,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   walkinSetupCollapse?.addEventListener('shown.bs.collapse', syncWalkinSetupState);
   walkinSetupCollapse?.addEventListener('hidden.bs.collapse', syncWalkinSetupState);
+  assetFeeGroupCollapse?.addEventListener('shown.bs.collapse', syncAssetFeeGroupState);
+  assetFeeGroupCollapse?.addEventListener('hidden.bs.collapse', syncAssetFeeGroupState);
 
   activate('general');
   syncRoleVisibility();
@@ -426,4 +461,5 @@ window.addEventListener('DOMContentLoaded', () => {
   syncWalkinModeOptions();
   syncPaymentPriorityOptions();
   syncWalkinSetupState();
+  syncAssetFeeGroupState();
 });

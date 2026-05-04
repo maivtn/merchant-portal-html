@@ -215,7 +215,6 @@
       display: none;
       width: 100%;
       margin: 0 auto;
-      padding: 0 16px;
     }
 
     .setting-panel.active {
@@ -304,7 +303,7 @@
     }
 
     .field-row--boxed {
-      padding: 14px 16px;
+      padding: 8px 16px;
       border: 1px solid #f0e3c7;
       border-radius: 1rem;
       background: linear-gradient(180deg, #fffaf0 0%, #ffffff 100%);
@@ -1371,7 +1370,6 @@
     }
 
     .walkin-setup-side {
-      padding: 14px;
       /* border: 1px solid rgba(217, 119, 6, 0.14); */
       border-radius: 1rem;
       background: #fff;
@@ -1813,6 +1811,10 @@
     }
 
     @media (max-width: 560px) {
+      .receive-card__title {
+        font-size: 14px;
+      }
+
       .qr-modal-actions {
         grid-template-columns: 1fr;
       }
@@ -2038,6 +2040,60 @@
       box-shadow: var(--card-shadow);
       overflow: hidden;
       padding: 1.5rem;
+    }
+
+
+    .asset-fee-group__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .asset-fee-group__title {
+      color: #27303f;
+      font-size: 1.05rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .asset-fee-group__caption {
+      margin-top: 4px;
+      color: #6f7684;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .asset-fee-group__toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(217, 119, 6, 0.18);
+      background: #fff7ed;
+      color: #b45309;
+      font-size: 12px;
+      font-weight: 800;
+      box-shadow: 0 8px 18px rgba(217, 119, 6, 0.08);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+      flex: 0 0 auto;
+    }
+
+    .asset-fee-group__toggle:hover {
+      transform: translateY(-1px);
+      border-color: rgba(217, 119, 6, 0.28);
+      box-shadow: 0 10px 20px rgba(217, 119, 6, 0.12);
+    }
+
+    .asset-fee-group__toggle[aria-expanded="false"] .asset-fee-group__toggle-icon {
+      transform: rotate(-180deg);
+    }
+
+    .asset-fee-group__toggle-icon {
+      transition: transform 0.18s ease;
     }
 
     .fee-compare-col {
@@ -2921,6 +2977,7 @@
         padding: 12px !important;
       }
 
+
       .asset-fee-group .setting-card {
         padding: 0 !important;
       }
@@ -3084,7 +3141,7 @@
       }
 
       .walkin-title {
-        font-size: 15px;
+        font-size: 14px;
       }
 
       .walkin-option-title,
@@ -3176,6 +3233,10 @@
       .mobile-qr-card {
         flex-direction: column;
         align-items: flex-start;
+      }
+
+      .mobile-qr-card__title {
+        font-size: 14px;
       }
 
       .mobile-qr-card__copy {
@@ -3273,9 +3334,9 @@
               <div class="col-12 col-lg-6">
                 <div class="setting-card h-100">
                   <div class="setting-title">Current Role</div>
-                  <div class="note-block mt-1 mb-2">
+                  <!-- <div class="note-block mt-1 mb-2">
                     Choose which ATM role is active for this setup.
-                  </div>
+                  </div> -->
                   <div class="mt-2">
                     <label class="radio-row">
                       <input type="radio" name="role" value="mobile_atm"  />
@@ -3297,7 +3358,7 @@
                         Applies to Mobile ATM transactions.
                       </div>
                     </div>
-                    <input class="setting-input" style="max-width: 180px;" value="100" />
+                    <input class="setting-input" style="max-width:80px;" value="100" />
                   </div>
                 </div>
               </div>
@@ -3390,21 +3451,18 @@
 
             </div>
             <div class="walkin-card p-4 mt-4" id="walkin-setup-card" data-role-visibility="merchant_atm,combo_atm">
-              <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+              <div class="d-flex align-items-start justify-content-between gap-3 mb-1">
                 <div class="walkin-setup-head mb-0">
                   <div class="walkin-setup-icon">
                     <i data-lucide="map-pinned" class="w-5 h-5"></i>
                   </div>
                   <div>
                     <div class="walkin-setup-title">Walk-in Setup <span class="new-badge">New</span></div>
-                    <div class="walkin-setup-caption">Location, hours, availability, and accepted payment methods.
-                    </div>
                   </div>
                 </div>
 
                 <button type="button" class="walkin-setup-toggle" aria-expanded="true"
                   aria-controls="walkin-setup-collapse">
-                  <span>Collapse</span>
                   <i data-lucide="chevron-up" class="walkin-toggle-icon w-4 h-4"></i>
                 </button>
               </div>
@@ -3510,8 +3568,19 @@
               </div>
             </div>
             <div class="mt-3">
-              <div class="asset-fee-group">
-                <div class="setting-card fee-compare-card" style="border: 0; box-shadow: none; padding: 0;">
+              <div class="asset-fee-group" id="asset-fee-group">
+                <div class="asset-fee-group__head">
+                  <div>
+                    <div class="asset-fee-group__title">Asset Fees</div>
+                  </div>
+                  <button type="button" class="asset-fee-group__toggle" aria-expanded="true"
+                    aria-controls="asset-fee-group-collapse">
+                    <i data-lucide="chevron-up" class="asset-fee-group__toggle-icon w-4 h-4"></i>
+                  </button>
+                </div>
+
+                <div class="collapse show" id="asset-fee-group-collapse">
+                  <div class="setting-card fee-compare-card" style="border: 0; box-shadow: none; padding: 0;">
                   <div class="fee-compare-col">
                     <div class="fee-compare-title">
                       <span>Buy Fee</span>
@@ -3545,14 +3614,14 @@
                       </label>
                     </div>
                   </div>
-                </div>
+                  </div>
 
-                <div class="asset-section-head" style="margin-top: 14px;">
-                  <div class="asset-title">Asset</div>
-                  <div class="asset-col-head">Buy Fee</div>
-                  <div class="asset-col-head" style="padding-left: 0;">Sell Fee</div>
-                </div>
-                <div class="asset-grid mt-2">
+                  <div class="asset-section-head" style="margin-top: 14px;">
+                    <div class="asset-title">Asset</div>
+                    <div class="asset-col-head">Buy Fee</div>
+                    <div class="asset-col-head" style="padding-left: 0;">Sell Fee</div>
+                  </div>
+                  <div class="asset-grid mt-2">
                   <div class="asset-row asset-row--fee-config">
                     <div class="asset-name">
                       <span class="asset-icon usdt">T</span>
@@ -3633,6 +3702,7 @@
                       </div>
                     </div>
                   </div>
+                </div>
                 </div>
               </div>
             </div>

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
       status: 'Online',
       location: 'Quận 1, TP. Hồ Chí Minh',
       image: '../atm-qr/merchant.png',
-      infoImage: '../assets/icons/merchant1.png',
+      infoImage: '../atm-qr/merchant.png',
       imageAlt: 'Merchant icon',
       cta: 'Quét để giao dịch trực tiếp với Merchant',
       note: 'Bạn đã quét QR từ Merchant ATM. Hệ thống sẽ tự động kết nối tới giao dịch.',

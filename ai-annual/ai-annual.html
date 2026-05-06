@@ -294,8 +294,7 @@
     }
 
     .bonus-row,
-    .small-bonus,
-    .cashback {
+    .small-bonus {
       border: 1px solid var(--line);
       border-radius: 12px;
       background: rgba(255, 255, 255, .045);
@@ -366,26 +365,38 @@
     }
 
     .cashback {
-      text-align: center;
-      padding: 14px 12px;
       margin-top: 14px;
+      text-align: center;
     }
 
-    .cashback small {
-      display: block;
-      color: #888d99;
-
-      font-weight: 700;
-      letter-spacing: .3em;
+    .promotion-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold);
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: .04em;
       text-transform: uppercase;
+    }
+
+    .promotion-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 10px rgba(215, 169, 61, .55);
+      flex: 0 0 auto;
     }
 
     .cashback strong {
       display: block;
       margin-top: 4px;
-      color: var(--gold-2);
-      font-size: 1.643rem;
+      color: #8f96a3;
+      font-size: .95rem;
+      font-style: italic;
       font-weight: 700;
+      letter-spacing: .22em;
       text-transform: uppercase;
     }
 
@@ -1132,12 +1143,13 @@
 
             <div class="plan-body">
               <button class="primary-plan-btn" id="buyPlanName" type="button"></button>
-              <div id="rewardBonusBlock"></div>
-              <div id="referBonusBlock"></div>
-              <div class="cashback">
-                <small>Earning Cashback</small>
+              <div class="cashback" aria-label="Promotion">
+                <div class="promotion-top"><span class="promotion-dot" aria-hidden="true"></span><span
+                    id="promotionText"></span></div>
                 <strong id="cashbackToken"></strong>
               </div>
+              <div id="rewardBonusBlock"></div>
+              <div id="referBonusBlock"></div>
               <a class="policy-link" href="#" role="button">Policy &amp; FAQ <i class="bi bi-arrow-right"></i></a>
             </div>
           </div>
@@ -1321,7 +1333,7 @@
       },
       benefits: [
         { icon: 'bi-diagram-3', name: 'Affiliate Program', copy: 'Full access to all affiliate features' },
-        { icon: 'bi-currency-bitcoin', name: 'BTC Collateral', copy: 'Access to BTC collateral loans' },
+        { icon: 'bi-currency-bitcoin', name: 'BTC Collateral', copy: 'Access to BTC collateral' },
         { icon: 'bi-graph-up-arrow', name: 'VMM Allocation', copy: 'Daily accumulation continues' },
         { icon: 'bi-gift', name: 'Exclusive Rewards', copy: 'Special bonuses and promotions' },
       ],
@@ -1431,6 +1443,7 @@
       $('#buyPeriod').textContent = buy.period;
       $('#buyPill').textContent = buy.badge;
       $('#buyPlanName').textContent = buy.planName;
+      $('#promotionText').textContent = `+${currency(cashbackAmount).replace('.00', '')} PROMOTION`;
       $('#cashbackToken').textContent = buy.cashbackToken;
       $('#activateBtn').textContent = buy.activateText;
 

@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nodes.quantityPrice) nodes.quantityPrice.textContent = `@ $${quantityPrice.toFixed(2)}`;
       if (nodes.atmLabel) nodes.atmLabel.textContent = atmType === 'mobile' ? 'Mobile ATM:' : 'Merchant ATM:';
       if (nodes.merchant) nodes.merchant.textContent = 'ATM-A8FOBN';
-      if (nodes.distance) nodes.distance.textContent = 'Nearby (within 235 mins)';
+      if (nodes.distance) nodes.distance.textContent = 'Nearby (within 25 mins)';
       if (nodes.countdown) nodes.countdown.textContent = '10s';
       if (nodes.systemFee) nodes.systemFee.textContent = formatMoney(systemFee);
       if (nodes.merchantFee) nodes.merchantFee.textContent = formatMoney(merchantFee);

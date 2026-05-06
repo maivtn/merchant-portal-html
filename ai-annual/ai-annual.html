@@ -1,0 +1,1218 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Annual - Compact Data Driven UI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #050505;
+      --card: #101010;
+      --card-2: #151515;
+      --line: rgba(255, 255, 255, .11);
+      --line-soft: rgba(255, 255, 255, .07);
+      --gold: #d7a93d;
+      --gold-2: #f4d978;
+      --text: #f8f8f8;
+      --muted: #a9adb6;
+      --green: #51d86b;
+      --red: #ff625c;
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 18% -8%, rgba(215, 169, 61, .16), transparent 30%),
+        radial-gradient(circle at 92% 10%, rgba(215, 169, 61, .08), transparent 28%),
+        linear-gradient(180deg, #101010 0%, #050505 48%, #000 100%);
+    }
+
+    .app {
+      margin: 0 auto;
+      padding: 14px 12px 24px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 34px 1fr 34px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .back-btn {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      color: var(--gold-2);
+      font-size: 23px;
+      padding: 0;
+    }
+
+    .page-title {
+      margin: 0;
+      text-align: center;
+      font-size: 21px;
+      font-weight: 850;
+      letter-spacing: -.02em;
+    }
+
+    .ai-tabs {
+      display:  flex;
+      align-items: stretch;
+      width: 100%;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 14px;
+    }
+
+    .ai-tabs .nav-item {
+      width: auto;
+    }
+
+    .ai-tabs .nav-link {
+      width: auto;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 14px 12px;
+      font-size: 14px;
+      font-weight: 760;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .ai-tabs .nav-link.active {
+      color: #fff;
+      background: transparent;
+    }
+
+    .ai-tabs .nav-link.active::after {
+      content: "";
+      position: absolute;
+      left: 22%;
+      right: 22%;
+      bottom: -1px;
+      height: 3px;
+      border-radius: 999px 999px 0 0;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
+    }
+
+    .panel,
+    .mini-card,
+    .note-card,
+    .benefit-card,
+    .package-card,
+    .plan-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .055), rgba(255, 255, 255, .022));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035);
+    }
+
+    .panel {
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+
+    .compact-gap {
+      display: grid;
+      gap: 12px;
+    }
+
+    /* BUY TAB */
+    .buy-title {
+      text-align: center;
+      margin: 4px 0 12px;
+    }
+
+    .buy-title h2 {
+      margin: 0;
+      font-size: 25px;
+      line-height: 1.05;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: -.035em;
+      background: linear-gradient(180deg, #fff1ad, var(--gold) 66%, #8d6319);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .buy-title p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 650;
+    }
+
+    .plan-card {
+      position: relative;
+      overflow: hidden;
+      border-color: rgba(215, 169, 61, .55);
+      border-radius: 24px;
+      background: radial-gradient(circle at 50% 0%, rgba(244, 217, 120, .1), transparent 32%), linear-gradient(180deg, #121212, #070707);
+    }
+
+    .ribbon {
+      position: absolute;
+      top: 17px;
+      right: -44px;
+      width: 160px;
+      transform: rotate(45deg);
+      padding: 6px 0;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
+      color: #080808;
+      font-size: 9px;
+      font-weight: 950;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .price-area {
+      padding: 30px 16px 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(215, 169, 61, .34);
+    }
+
+    .price-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 5px;
+      line-height: 1;
+    }
+
+    .currency {
+      margin-top: 12px;
+      color: var(--gold);
+      font-size: 19px;
+      font-weight: 950;
+    }
+
+    .price {
+      font-size: 58px;
+      font-weight: 950;
+      letter-spacing: -.07em;
+      background: linear-gradient(180deg, #fff7bd, var(--gold) 68%, #7d5714);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .period {
+      align-self: center;
+      margin-left: 3px;
+      color: #8f94a0;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .gold-pill {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+      min-height: 30px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
+      color: #070707;
+      font-size: 9px;
+      font-weight: 950;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .plan-body {
+      padding: 18px 16px 20px;
+    }
+
+    .primary-plan-btn {
+      width: 72%;
+      min-height: 50px;
+      display: block;
+      margin: 0 auto 18px;
+      border: 0;
+      border-radius: 13px;
+      background: linear-gradient(180deg, #c39a39, #a77922);
+      color: #080808;
+      font-size: 15px;
+      font-weight: 950;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      box-shadow: 0 12px 20px rgba(0, 0, 0, .45);
+    }
+
+    .label-line {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 14px 0 10px;
+      color: var(--gold);
+      font-size: 10px;
+      font-weight: 950;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .label-line::before {
+      content: "";
+      width: 22px;
+      height: 2px;
+      background: var(--gold);
+    }
+
+    .bonus-row,
+    .small-bonus,
+    .cashback {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .045);
+    }
+
+    .bonus-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      margin-bottom: 9px;
+    }
+
+    .bonus-row.locked {
+      border-color: rgba(215, 169, 61, .45);
+      background: linear-gradient(180deg, rgba(215, 169, 61, .1), rgba(255, 255, 255, .025));
+    }
+
+    .bonus-name {
+      color: #e7e7e7;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .bonus-desc,
+    .lock-label {
+      color: #838895;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .lock-label {
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .bonus-value {
+      color: #fff2a9;
+      font-size: 20px;
+      font-weight: 950;
+    }
+
+    .bonus-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .small-bonus {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 44px;
+      padding: 10px 12px;
+    }
+
+    .small-bonus span {
+      color: #777d8a;
+      font-weight: 850;
+      font-size: 12px;
+    }
+
+    .small-bonus strong {
+      color: #fff;
+      font-weight: 950;
+      font-size: 14px;
+    }
+
+    .cashback {
+      text-align: center;
+      padding: 14px 12px;
+      margin-top: 14px;
+    }
+
+    .cashback small {
+      display: block;
+      color: #888d99;
+      font-size: 10px;
+      font-weight: 950;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+    }
+
+    .cashback strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--gold-2);
+      font-size: 23px;
+      font-weight: 950;
+      text-transform: uppercase;
+    }
+
+    .policy-link {
+      display: block;
+      margin: 16px 0 0;
+      text-align: center;
+      color: #b7bbc4;
+      font-size: 11px;
+      font-weight: 950;
+      letter-spacing: .25em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .outline-cta,
+    .gold-cta {
+      width: 100%;
+      min-height: 52px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 950;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .outline-cta {
+      margin-top: 12px;
+      border: 1px solid var(--gold);
+      background: transparent;
+      color: var(--gold-2);
+    }
+
+    .gold-cta {
+      border: 0;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2), var(--gold));
+      color: #080808;
+      box-shadow: 0 14px 24px rgba(0, 0, 0, .38);
+    }
+
+    /* HISTORY TAB */
+    .hero-panel {
+      padding: 14px;
+    }
+
+    .package-head {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 13px;
+      align-items: center;
+    }
+
+    .ai-badge {
+      position: relative;
+      width: 88px;
+    }
+
+    .badge-shape {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--gold);
+      border-radius: 19px 19px 13px 13px;
+      color: var(--gold-2);
+      font-size: 28px;
+      font-weight: 950;
+      background: radial-gradient(circle at 50% 10%, rgba(244, 217, 120, .12), transparent 58%), #0b0b0b;
+      box-shadow: 0 0 28px rgba(215, 169, 61, .18);
+    }
+
+    .badge-ribbon {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
+      color: #070707;
+      font-size: 10px;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 24px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .status-active {
+      color: var(--green);
+      background: rgba(58, 195, 83, .16);
+    }
+
+    .status-expired {
+      color: var(--red);
+      background: rgba(255, 98, 92, .16);
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      flex: 0 0 auto;
+    }
+
+    .package-title {
+      margin: 8px 0 3px;
+      color: #ffd72f;
+      font-size: 24px;
+      font-weight: 950;
+      letter-spacing: -.03em;
+    }
+
+    .package-subtitle {
+      color: #c7c9ce;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .package-copy {
+      margin: 7px 0 0;
+      color: #e6e6e6;
+      font-size: 12.5px;
+      line-height: 1.38;
+    }
+
+    .divider {
+      border-color: var(--line);
+      opacity: 1;
+      margin: 13px 0;
+    }
+
+    .countdown-title {
+      margin-bottom: 9px;
+      text-align: center;
+      color: #ffd72f;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+    }
+
+    .time-box {
+      min-height: 62px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .035);
+    }
+
+    .time-value {
+      color: var(--gold-2);
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 950;
+      letter-spacing: -.04em;
+      text-align: center;
+    }
+
+    .time-label {
+      margin-top: 5px;
+      color: #f2f2f2;
+      font-size: 9.5px;
+      font-weight: 650;
+      text-align: center;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .mini-card {
+      position: relative;
+      min-height: 122px;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .mini-card i {
+      color: #ffd72f;
+      font-size: 22px;
+    }
+
+    .mini-label {
+      margin-top: 10px;
+      color: #cfd1d6;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .mini-value {
+      margin-top: 6px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 900;
+      line-height: 1.15;
+    }
+
+    .mini-note {
+      margin-top: 6px;
+      color: #b7bac1;
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .active-corner {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .note-card {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 12px;
+      align-items: center;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .note-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--green);
+      background: rgba(58, 195, 83, .16);
+      font-size: 24px;
+    }
+
+    .note-title {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .note-text {
+      color: #e0e0e0;
+      font-size: 12px;
+      line-height: 1.38;
+    }
+
+    .block-title {
+      margin: 2px 0 10px;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: -.02em;
+    }
+
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      @media (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .benefit-card {
+      position: relative;
+      min-height: 126px;
+      border-radius: 14px;
+      padding: 13px 10px;
+      text-align: center;
+    }
+
+    .benefit-card .check {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--green);
+      background: rgba(58, 195, 83, .16);
+      font-size: 13px;
+    }
+
+    .benefit-icon {
+      color: #ffd72f;
+      font-size: 27px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .benefit-name {
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .benefit-copy {
+      margin-top: 5px;
+      color: #c4c7cd;
+      font-size: 11.5px;
+      line-height: 1.3;
+    }
+
+    .package-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .package-card {
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .package-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .pkg-id {
+      font-size: 13px;
+      font-weight: 850;
+      color: #fff;
+    }
+
+    .package-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .meta-box {
+      padding: 8px 9px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, .035);
+    }
+
+    .meta-label {
+      display: block;
+      color: #8f949f;
+      font-size: 9.5px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .meta-value {
+      display: block;
+      margin-top: 4px;
+      color: #f2f2f2;
+      font-size: 12.5px;
+      font-weight: 750;
+    }
+
+    .term-pill {
+      display: inline-flex;
+      margin-top: 3px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      color: #fff6bd;
+      background: rgba(215, 169, 61, .22);
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .foot-note {
+      margin-top: 10px;
+      color: #a9adb6;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .foot-note i {
+      color: #c7cad0;
+      margin-right: 5px;
+    }
+
+    @media (max-width: 390px) {
+      .app {
+        padding-inline: 10px;
+      }
+
+      .page-title {
+        font-size: 20px;
+      }
+
+      .package-head {
+        grid-template-columns: 76px 1fr;
+        gap: 10px;
+      }
+
+      .ai-badge {
+        width: 74px;
+        height: 74px;
+      }
+
+      .badge-shape {
+        width: 62px;
+        height: 62px;
+        font-size: 23px;
+        border-radius: 16px 16px 11px 11px;
+      }
+
+      .badge-ribbon {
+        bottom: 5px;
+        left: 6px;
+        right: 6px;
+        height: 19px;
+        font-size: 8.5px;
+      }
+
+      .package-title {
+        font-size: 21px;
+      }
+
+      .countdown {
+        gap: 4px;
+      }
+
+      .time-box {
+        min-height: 55px;
+        border-radius: 10px;
+      }
+
+      .time-value {
+        font-size: 20px;
+      }
+
+      .time-label {
+        font-size: 8.5px;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-card {
+        min-height: unset;
+      }
+
+      .package-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .benefit-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .buy-title h2 {
+        font-size: 22px;
+      }
+
+      .price {
+        font-size: 52px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <header class="topbar">
+      <button class="back-btn" type="button" aria-label="Back"><i class="bi bi-chevron-left"></i></button>
+      <h1 class="page-title">AI Annual</h1>
+      <span></span>
+    </header>
+
+    <ul class="nav nav-tabs ai-tabs" id="aiAnnualTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="buy-tab" data-bs-toggle="tab" data-bs-target="#buy-pane" type="button" role="tab"
+          aria-controls="buy-pane" aria-selected="false">Buy AI Annual</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="history-tab" data-bs-toggle="tab" data-bs-target="#history-pane"
+          type="button" role="tab" aria-controls="history-pane" aria-selected="true">Package History</button>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <section class="tab-pane fade" id="buy-pane" role="tabpanel" aria-labelledby="buy-tab" tabindex="0">
+        <div class="buy-title">
+          <h2 id="buyTitle"></h2>
+          <p id="buySubtitle"></p>
+        </div>
+        <div style="width: min(100%, 430px); margin: 0 auto;">
+          <div class="plan-card">
+            <div class="ribbon" id="buyRibbon"></div>
+            <div class="price-area">
+              <div class="price-row">
+                <span class="currency">$</span>
+                <span class="price" id="buyPrice"></span>
+                <span class="period" id="buyPeriod"></span>
+              </div>
+              <div class="gold-pill" id="buyPill"></div>
+            </div>
+
+            <div class="plan-body">
+              <button class="primary-plan-btn" id="buyPlanName" type="button"></button>
+              <div id="rewardBonusBlock"></div>
+              <div id="referBonusBlock"></div>
+              <div class="cashback">
+                <small>Earning Cashback</small>
+                <strong id="cashbackToken"></strong>
+              </div>
+              <a class="policy-link" href="#" role="button">Policy &amp; FAQ <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+          <button class="outline-cta" type="button" id="activateBtn"></button>
+        </div>
+
+      </section>
+
+      <section class="tab-pane fade show active compact-gap" id="history-pane" role="tabpanel"
+        aria-labelledby="history-tab" tabindex="0">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="panel hero-panel">
+              <div class="package-head">
+                <div class="ai-badge" aria-hidden="true">
+                  <img src="../ai-annual/images/02_ai_annual_badge.png" alt="AI Annual Badge" width="88" />
+                </div>
+                <div>
+                  <span class="status-pill status-active"><span class="dot"></span><span
+                      id="subscriptionStatus"></span></span>
+                  <h2 class="package-title" id="subscriptionTitle"></h2>
+                  <div class="package-subtitle" id="subscriptionSubtitle"></div>
+                  <p class="package-copy" id="subscriptionCopy"></p>
+                </div>
+              </div>
+    
+              <hr class="divider" />
+              <div class="countdown-title">Remaining Time</div>
+              <div class="countdown" id="countdown"></div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="summary-grid mt-2 mb-2" id="summaryGrid"></div>
+            <div class="note-card">
+              <div class="note-icon"><i class="bi bi-shield-check"></i></div>
+              <div>
+                <div class="note-title" id="noteTitle"></div>
+                <div class="note-text" id="noteText"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+       
+
+        
+
+        <h3 class="block-title mt-4">Your Exclusive Benefits</h3>
+        <div class="benefit-grid" id="benefitGrid"></div>
+
+        <h3 class="block-title mt-4">Package List</h3>
+        <div class="package-list" id="packageList"></div>
+
+        <button class="gold-cta" type="button"><i class="bi bi-cart3 me-2"></i>Buy AI Annual Package</button>
+        <div class="foot-note"><i class="bi bi-shield-check"></i>Your benefits remain active for the duration of your
+          active packages.</div>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // =========================
+    // DATA AREA - change data here
+    // =========================
+    const aiAnnualData = {
+      buyPackage: {
+        title: 'Business Opportunity',
+        subtitle: 'Elevate your business network on our platform',
+        price: 100,
+        period: 'Annual',
+        badge: 'Business Opportunity',
+        ribbon: 'Best Choice',
+        planName: 'Start Builder Max',
+        activateText: 'Activate Now',
+        cashbackToken: 'VMM Token',
+        packageRewardBonus: {
+          title: 'Package Reward Bonus',
+          direct: { level: 'F1', description: 'Direct Referral Reward', value: '30%' },
+          lockedTitle: 'Unlock with Franchise License',
+          locked: [
+            { level: 'F2', value: '5%' },
+            { level: 'F3', value: '15%' },
+          ],
+        },
+        buySellReferBonus: {
+          title: 'Buy-Sell-Refer Bonus',
+          items: [
+            { level: 'F1', value: '55%' },
+            { level: 'F2', value: '10%' },
+            { level: 'F3', value: '15%' },
+            { level: 'F4', value: '20%' },
+          ],
+        },
+      },
+      subscription: {
+        title: 'AI Annual',
+        subtitle: 'Business Opportunity Annual',
+        status: 'Active',
+        copy: 'Your AI Annual benefits are active and running. Keep building your network.',
+        noteTitle: 'Great choice!',
+        noteText: 'Packages Purchased shows all packages you have bought. Active Packages shows only packages that are still active.',
+      },
+      benefits: [
+        { icon: 'bi-diagram-3', name: 'Affiliate Program', copy: 'Full access to all affiliate features' },
+        { icon: 'bi-currency-bitcoin', name: 'BTC Collateral', copy: 'Access to BTC collateral loans' },
+        { icon: 'bi-graph-up-arrow', name: 'VMM Allocation', copy: 'Daily accumulation continues' },
+        { icon: 'bi-gift', name: 'Exclusive Rewards', copy: 'Special bonuses and promotions' },
+      ],
+      packages: [
+        {
+          id: '#AIA-20250520',
+          price: 100,
+          purchaseDate: '2025-05-20T09:50:00',
+          termMonths: 12,
+          validUntil: '2026-05-20T09:50:00',
+          status: 'Expired',
+        },
+        {
+          id: '#AIA-20260520',
+          price: 100,
+          purchaseDate: '2026-05-20T09:50:00',
+          termMonths: 12,
+          validUntil: '2027-05-20T09:50:00',
+          status: 'Active',
+        },
+        {
+          id: '#AIA-20270520',
+          price: 100,
+          purchaseDate: '2027-05-20T09:50:00',
+          termMonths: 12,
+          validUntil: '2028-05-20T09:50:00',
+          status: 'Active',
+        },
+      ],
+    };
+
+    // =========================
+    // HELPERS
+    // =========================
+    const $ = (selector) => document.querySelector(selector);
+    const currency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+    const dateOnly = (iso) => new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(iso));
+    const timeOnly = (iso) => new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
+    const pad = (value) => String(Math.max(0, value)).padStart(2, '0');
+    const getActivePackages = () => aiAnnualData.packages.filter((pkg) => pkg.status === 'Active');
+    const getValidUntil = () => {
+      const activePackages = getActivePackages();
+      if (!activePackages.length) return null;
+      return activePackages
+        .map((pkg) => new Date(pkg.validUntil))
+        .sort((a, b) => b.getTime() - a.getTime())[0];
+    };
+
+    // =========================
+    // RENDER BUY TAB
+    // =========================
+    function renderBuyTab() {
+      const buy = aiAnnualData.buyPackage;
+      $('#buyTitle').textContent = buy.title;
+      $('#buySubtitle').textContent = buy.subtitle;
+      $('#buyRibbon').textContent = buy.ribbon;
+      $('#buyPrice').textContent = buy.price;
+      $('#buyPeriod').textContent = buy.period;
+      $('#buyPill').textContent = buy.badge;
+      $('#buyPlanName').textContent = buy.planName;
+      $('#cashbackToken').textContent = buy.cashbackToken;
+      $('#activateBtn').textContent = buy.activateText;
+
+      $('#rewardBonusBlock').innerHTML = `
+        <div class="label-line">${buy.packageRewardBonus.title}</div>
+        <div class="bonus-row">
+          <div>
+            <div class="bonus-name">${buy.packageRewardBonus.direct.level}</div>
+            <div class="bonus-desc">${buy.packageRewardBonus.direct.description}</div>
+          </div>
+          <div class="bonus-value">${buy.packageRewardBonus.direct.value}</div>
+        </div>
+        <div class="bonus-row locked d-block">
+          <div class="lock-label"><i class="bi bi-lock-fill me-1"></i>${buy.packageRewardBonus.lockedTitle}</div>
+          ${buy.packageRewardBonus.locked.map((item) => `
+            <div class="d-flex justify-content-between align-items-center ${item !== buy.packageRewardBonus.locked.at(-1) ? 'mb-2' : ''}">
+              <span class="bonus-name">${item.level}</span>
+              <span class="bonus-value fs-6">${item.value}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      $('#referBonusBlock').innerHTML = `
+        <div class="label-line">${buy.buySellReferBonus.title}</div>
+        <div class="bonus-grid">
+          ${buy.buySellReferBonus.items.map((item) => `
+            <div class="small-bonus"><span>${item.level}</span><strong>${item.value}</strong></div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // =========================
+    // RENDER HISTORY TAB
+    // =========================
+    function renderHistoryTab() {
+      const sub = aiAnnualData.subscription;
+      const activePackages = getActivePackages();
+      const validUntil = getValidUntil();
+
+      $('#subscriptionStatus').textContent = sub.status;
+      $('#subscriptionTitle').textContent = sub.title;
+      // $('#subscriptionSubtitle').textContent = sub.subtitle;
+      // $('#subscriptionCopy').textContent = sub.copy;
+      $('#noteTitle').textContent = sub.noteTitle;
+      $('#noteText').textContent = sub.noteText;
+
+      $('#summaryGrid').innerHTML = `
+        <div class="mini-card">
+          <i class="bi bi-calendar-check"></i>
+          <div class="mini-label">Valid Until</div>
+          <div class="mini-value">${validUntil ? dateOnly(validUntil) : '—'}</div>
+          <div class="mini-note">${validUntil ? timeOnly(validUntil) : ''}</div>
+        </div>
+        <div class="mini-card">
+          <i class="bi bi-stack"></i>
+          <div class="mini-label">Packages Purchased</div>
+          <div class="mini-value">${aiAnnualData.packages.length} Packages</div>
+          <div class="mini-note">All packages bought.</div>
+        </div>
+        <div class="mini-card">
+          <span class="active-corner"></span>
+          <i class="bi bi-check-circle-fill"></i>
+          <div class="mini-label">Active Packages</div>
+          <div class="mini-value">${activePackages.length} Packages</div>
+          <div class="mini-note">Only still-active packages.</div>
+        </div>
+      `;
+
+      $('#benefitGrid').innerHTML = aiAnnualData.benefits.map((item) => `
+        <div class="benefit-card">
+          <i class="bi bi-check check"></i>
+          <div class="benefit-icon"><i class="bi ${item.icon}"></i></div>
+          <div class="benefit-name">${item.name}</div>
+          <div class="benefit-copy">${item.copy}</div>
+        </div>
+      `).join('');
+
+      $('#packageList').innerHTML = aiAnnualData.packages.map((pkg) => `
+        <article class="package-card">
+          <div class="package-top">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-file-earmark-text text-warning"></i>
+              <span class="pkg-id">${pkg.id}</span>
+            </div>
+            <span class="status-pill ${pkg.status === 'Active' ? 'status-active' : 'status-expired'}">
+              <span class="dot"></span>${pkg.status}
+            </span>
+          </div>
+          <div class="package-meta">
+            <div class="meta-box"><span class="meta-label">Price</span><span class="meta-value">${currency(pkg.price)}</span></div>
+            <div class="meta-box"><span class="meta-label">Purchase Date</span><span class="meta-value">${dateOnly(pkg.purchaseDate)}</span></div>
+            <div class="meta-box"><span class="meta-label">Package Term</span><span class="term-pill">${pkg.termMonths} Months</span></div>
+            <div class="meta-box"><span class="meta-label">Valid Until</span><span class="meta-value">${dateOnly(pkg.validUntil)}</span></div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    // =========================
+    // COUNTDOWN
+    // =========================
+    function renderCountdownShell() {
+      const items = [
+        ['years', 'Years'],
+        ['months', 'Months'],
+        ['days', 'Days'],
+        ['hours', 'Hours'],
+        ['minutes', 'Minutes'],
+        ['seconds', 'Seconds'],
+      ];
+      $('#countdown').innerHTML = items.map(([key, label]) => `
+        <div class="time-box">
+          <div>
+            <div class="time-value" data-time="${key}">00</div>
+            <div class="time-label">${label}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateCountdown() {
+      const expiryDate = getValidUntil();
+      let diff = expiryDate ? Math.max(0, expiryDate.getTime() - Date.now()) : 0;
+      const second = 1000;
+      const minute = second * 60;
+      const hour = minute * 60;
+      const day = hour * 24;
+      const month = day * 30;
+      const year = day * 365;
+
+      const years = Math.floor(diff / year); diff -= years * year;
+      const months = Math.floor(diff / month); diff -= months * month;
+      const days = Math.floor(diff / day); diff -= days * day;
+      const hours = Math.floor(diff / hour); diff -= hours * hour;
+      const minutes = Math.floor(diff / minute); diff -= minutes * minute;
+      const seconds = Math.floor(diff / second);
+
+      Object.entries({ years, months, days, hours, minutes, seconds }).forEach(([key, value]) => {
+        const el = document.querySelector(`[data-time="${key}"]`);
+        if (el) el.textContent = pad(value);
+      });
+    }
+
+    renderBuyTab();
+    renderCountdownShell();
+    renderHistoryTab();
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+
+</html>

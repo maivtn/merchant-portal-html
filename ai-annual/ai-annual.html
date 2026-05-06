@@ -642,11 +642,14 @@
 
     .note-card {
       display: grid;
-      grid-template-columns: 42px 1fr 82px;
+      grid-template-columns: 42px 1fr 180px;
       gap: 12px;
       align-items: center;
       border-radius: 14px;
       padding: 12px;
+      @media (max-width: 768px) {
+        grid-template-columns: 42px 1fr 80px;
+      }
     }
 
     .note-icon {
@@ -814,6 +817,116 @@
     }
 
     .package-table .pkg-id {}
+
+    .purchase-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 24px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .purchase-completed {
+      color: var(--green);
+      background: rgba(58, 195, 83, .16);
+    }
+
+    .purchase-pending {
+      color: var(--gold-2);
+      background: rgba(215, 169, 61, .16);
+    }
+
+    .purchase-failed {
+      color: var(--red);
+      background: rgba(255, 98, 92, .16);
+    }
+
+    .purchase-refunded {
+      color: #8f949f;
+      background: rgba(143, 148, 159, .16);
+    }
+
+    .table-action-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .table-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 30px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(215, 169, 61, .35);
+      background: rgba(255, 255, 255, .02);
+      color: #f2e2a8;
+      font-size: .857rem;
+      font-weight: 750;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .table-action-btn:hover {
+      background: rgba(215, 169, 61, .12);
+      color: #fff;
+    }
+
+    .purchase-modal .modal-content {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #141414, #0a0a0a);
+      color: var(--text);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, .48);
+    }
+
+    .purchase-modal .modal-header,
+    .purchase-modal .modal-footer {
+      border-color: var(--line-soft);
+    }
+
+    .purchase-modal .modal-title {
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .purchase-modal .detail-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .purchase-modal .detail-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 12px;
+      border: 1px solid var(--line-soft);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .03);
+    }
+
+    .purchase-modal .detail-label {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .purchase-modal .detail-value {
+      text-align: right;
+      font-weight: 800;
+    }
+
+    .purchase-modal .cashback-amount {
+      color: var(--green);
+    }
+
+    .purchase-modal .vmm-value {
+      color: #fff;
+    }
 
     .package-top {
       display: flex;
@@ -985,6 +1098,11 @@
         <button class="nav-link active" id="history-tab" data-bs-toggle="tab" data-bs-target="#history-pane"
           type="button" role="tab" aria-controls="history-pane" aria-selected="true">Package History</button>
       </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="purchase-history-tab" data-bs-toggle="tab"
+          data-bs-target="#purchase-history-pane" type="button" role="tab" aria-controls="purchase-history-pane"
+          aria-selected="false">Purchase History</button>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -1082,8 +1200,73 @@
         <div class="foot-note"><i class="bi bi-shield-check"></i>Your benefits remain active for the duration of your
           active packages.</div>
       </section>
+
+      <section class="tab-pane fade" id="purchase-history-pane" role="tabpanel"
+        aria-labelledby="purchase-history-tab" tabindex="0">
+        <div class="package-table-wrap">
+          <table class="package-table" aria-label="Purchase History">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Order Number</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="purchaseHistoryTbody">
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   </main>
+
+  <div class="modal fade purchase-modal" id="purchaseViewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Payment Details</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="detail-grid">
+            <div class="detail-row">
+              <span class="detail-label">Order ID</span>
+              <span class="detail-value" id="purchaseModalOrderId"></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Date time</span>
+              <span class="detail-value" id="purchaseModalDateTime"></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Payment Method</span>
+              <span class="detail-value" id="purchaseModalPaymentMethod"></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Amount</span>
+              <span class="detail-value" id="purchaseModalAmount"></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Cashback </span>
+              <span class="detail-value cashback-amount" id="purchaseModalCashback"></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Received cashback by</span>
+              <span class="detail-value">VMM Token</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Rate $0.000692</span>
+              <span class="detail-value" id="purchaseModalVmm"></span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="table-action-btn" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
@@ -1191,11 +1374,34 @@
     // =========================
     const $ = (selector) => document.querySelector(selector);
     const currency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+    const numberWithCommas = (value, fractionDigits = 2) => new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits,
+    }).format(value);
     const dateOnly = (iso) => new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(iso));
+    const dateTime = (iso) => new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    }).format(new Date(iso));
     const timeOnly = (iso) => new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
     const pad = (value) => String(Math.max(0, value)).padStart(2, '0');
     const getActivePackages = () => aiAnnualData.packages.filter((pkg) => pkg.status === 'Active');
     let packageViewMode = 'table';
+    const cashbackAmount = 20;
+    const cashbackRate = 0.000692;
+    const cashbackTokens = numberWithCommas(cashbackAmount / cashbackRate, 2);
+
+    const getPurchaseHistory = () => aiAnnualData.packages.map((pkg) => ({
+      date: dateOnly(pkg.purchaseDate),
+      dateTime: dateTime(pkg.purchaseDate),
+      orderNumber: `ORD-${pkg.id.replace('#AIA-', '')}`,
+      amount: pkg.price,
+      status: 'Paid',
+      paymentMethod: 'Credit Card',
+    }));
 
     const getValidUntil = () => {
       const activePackages = getActivePackages();
@@ -1365,6 +1571,28 @@
     }
 
     // =========================
+    // RENDER PURCHASE HISTORY TAB
+    // =========================
+    function renderPurchaseHistoryTab() {
+      const getStatusClass = (status) => (status === 'Paid' ? 'purchase-completed' : 'purchase-pending');
+
+      $('#purchaseHistoryTbody').innerHTML = getPurchaseHistory().map((order) => `
+        <tr>
+          <td>${order.date}</td>
+          <td><span class="pkg-id">${order.orderNumber}</span></td>
+          <td>${currency(order.amount)}</td>
+          <td><span class="purchase-status ${getStatusClass(order.status)}"><span class="dot"></span>${order.status}</span></td>
+          <td>
+            <div class="table-action-group">
+              <button class="table-action-btn" type="button" data-purchase-view="${order.orderNumber}"><i class="bi bi-eye"></i>View</button>
+              <button class="table-action-btn" type="button"><i class="bi bi-download"></i>Invoice</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // =========================
     // COUNTDOWN
     // =========================
     function renderCountdownShell() {
@@ -1391,6 +1619,24 @@
         packageViewMode = btn.getAttribute('data-package-view') || 'card';
         renderHistoryTab();
       });
+    });
+
+    document.addEventListener('click', (event) => {
+      const viewBtn = event.target.closest('[data-purchase-view]');
+      if (!viewBtn) return;
+
+      const orderNumber = viewBtn.getAttribute('data-purchase-view');
+      const order = getPurchaseHistory().find((item) => item.orderNumber === orderNumber);
+      if (!order || !window.bootstrap?.Modal) return;
+
+      $('#purchaseModalOrderId').textContent = order.orderNumber;
+      $('#purchaseModalDateTime').textContent = order.dateTime;
+      $('#purchaseModalPaymentMethod').textContent = order.paymentMethod;
+      $('#purchaseModalAmount').textContent = currency(order.amount);
+      $('#purchaseModalCashback').textContent = currency(cashbackAmount);
+      $('#purchaseModalVmm').textContent = `${cashbackTokens} VMM`;
+
+      window.bootstrap.Modal.getOrCreateInstance($('#purchaseViewModal')).show();
     });
 
     const buyAnnualPackageBtn = $('#buyAnnualPackageBtn');
@@ -1428,6 +1674,7 @@
     renderBuyTab();
     renderCountdownShell();
     renderHistoryTab();
+    renderPurchaseHistoryTab();
     updateCountdown();
     setInterval(updateCountdown, 1000);
   </script>

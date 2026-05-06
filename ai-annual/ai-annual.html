@@ -55,8 +55,7 @@
     }
 
     .topbar {
-      display: grid;
-      grid-template-columns: 34px 1fr 34px;
+      display: flex;
       align-items: center;
       margin-bottom: 8px;
     }
@@ -552,7 +551,7 @@
 
     .time-value {
       color: var(--gold-2);
-      font-size: 1.714rem;
+      font-size: 1.5rem;
       line-height: 1;
       font-weight: 700;
       letter-spacing: -.04em;
@@ -575,31 +574,48 @@
 
     .mini-card {
       position: relative;
-      min-height: 122px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
       border-radius: 14px;
       padding: 12px;
     }
 
+    .mini-icon {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .06);
+    }
+
     .mini-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      display: block;
+    }
+
+    .mini-content {
+      flex: 1;
+      min-width: 0;
     }
 
     .mini-card i {
       color: #ffd72f;
-      font-size: 1.571rem;
+      font-size: 1.428rem;
       line-height: 1;
     }
 
     .mini-label {
+      display: block;
       color: #cfd1d6;
       font-weight: 700;
       line-height: 1.2;
     }
 
     .mini-value {
-      margin-top: 6px;
+      margin-top: 5px;
       color: #fff;
       font-size: 1.143rem;
       font-weight: 800;
@@ -609,7 +625,7 @@
     .mini-note {
       margin-top: 6px;
       color: #b7bac1;
-
+      display: none;
       line-height: 1.25;
     }
 
@@ -653,6 +669,7 @@
       color: #e0e0e0;
 
       line-height: 1.38;
+      font-size: 0.8rem;
     }
 
     .block-title {
@@ -942,7 +959,7 @@
 <body>
   <main class="container">
     <header class="topbar">
-      <button class="back-btn" type="button" aria-label="Back"><i class="bi bi-chevron-left"></i></button>
+      <button class="back-btn" type="button" aria-label="Back"><i class="bi bi-arrow-left"></i></button>
       <h1 class="page-title">AI Annual</h1>
       <span></span>
     </header>
@@ -1048,7 +1065,7 @@
         <div class="package-list" id="packageList"></div>
         <div class="package-table-wrap d-none" id="packageTableWrap"></div>
 
-        <button class="gold-cta mx-auto mt-4 px-4" type="button"><i class="bi bi-cart3 me-2"></i>Buy AI Annual
+        <button class="gold-cta mx-auto mt-4 px-4" type="button" id="buyAnnualPackageBtn">Buy AI Annual
           Package</button>
         <div class="foot-note"><i class="bi bi-shield-check"></i>Your benefits remain active for the duration of your
           active packages.</div>
@@ -1214,31 +1231,35 @@
 
       $('#summaryGrid').innerHTML = `
         <div class="mini-card">
-         <div class="mini-row">
-           <i class="bi bi-calendar-check"></i>
-          <span class="mini-label">Valid Until</span>
+          <div class="mini-icon"><i class="bi bi-calendar-check"></i></div>
+          <div class="mini-content">
+            <div class="mini-row">
+              <span class="mini-label">Valid Until</span>
+            </div>
+            <div class="mini-value">${validUntil ? dateOnly(validUntil) : '—'}</div>
+            <div class="mini-note">${validUntil ? timeOnly(validUntil) : ''}</div>
           </div>
-          <div class="mini-value">${validUntil ? dateOnly(validUntil) : '—'}</div>
-          <div class="mini-note">${validUntil ? timeOnly(validUntil) : ''}</div>
         </div>
         <div class="mini-card">
-        <div class="mini-row">
-            <i class="bi bi-stack"></i>
-          <span class="mini-label">Packages Purchased</span>
+          <div class="mini-icon"><i class="bi bi-stack"></i></div>
+          <div class="mini-content">
+            <div class="mini-row">
+              <span class="mini-label">Packages Purchased</span>
+            </div>
+            <div class="mini-value">${aiAnnualData.packages.length}</div>
+            <div class="mini-note">All packages bought.</div>
           </div>
-          <div class="mini-value">${aiAnnualData.packages.length}</div>
-          <div class="mini-note">All packages bought.</div>
         </div>
         <div class="mini-card">
-           <span class="active-corner">
-          </span>
-          <div class="mini-row">
-          <i class="bi bi-check-circle-fill"></i>
-           <span class="mini-label">Active Packages</span>
+          <span class="active-corner"></span>
+          <div class="mini-icon"><i class="bi bi-check-circle-fill"></i></div>
+          <div class="mini-content">
+            <div class="mini-row">
+              <span class="mini-label">Active Packages</span>
+            </div>
+            <div class="mini-value">${activePackages.length}</div>
+            <div class="mini-note">Only still-active packages.</div>
           </div>
-         
-          <div class="mini-value">${activePackages.length}</div>
-          <div class="mini-note">Only still-active packages.</div>
         </div>
       `;
 
@@ -1338,6 +1359,15 @@
         renderHistoryTab();
       });
     });
+
+    const buyAnnualPackageBtn = $('#buyAnnualPackageBtn');
+    if (buyAnnualPackageBtn) {
+      buyAnnualPackageBtn.addEventListener('click', () => {
+        const buyTab = document.querySelector('#buy-tab');
+        if (!buyTab || !window.bootstrap?.Tab) return;
+        window.bootstrap.Tab.getOrCreateInstance(buyTab).show();
+      });
+    }
 
     function updateCountdown() {
       const expiryDate = getValidUntil();

@@ -760,18 +760,25 @@
     }
 
     .package-view-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
       border: 0;
       background: transparent;
       color: #a9adb6;
-
-      font-weight: 850;
-      padding: 7px 12px;
       border-radius: 999px;
     }
 
     .package-view-btn.active {
       color: #0a0a0a;
       background: linear-gradient(90deg, var(--gold), var(--gold-2));
+    }
+
+    .package-view-btn i {
+      font-size: 1rem;
+      line-height: 1;
     }
 
     .package-card {
@@ -1188,8 +1195,10 @@
         <div class="package-list-header mt-4">
           <h3 class="block-title m-0">Package List</h3>
           <div class="package-view-toggle" role="tablist" aria-label="Package view mode">
-            <button class="package-view-btn active" type="button" data-package-view="card">Card</button>
-            <button class="package-view-btn" type="button" data-package-view="table">Table</button>
+            <button class="package-view-btn active" type="button" data-package-view="card" aria-label="Card view"
+              title="Card view"><i class="bi bi-grid-3x2-gap-fill"></i></button>
+            <button class="package-view-btn" type="button" data-package-view="table" aria-label="Table view"
+              title="Table view"><i class="bi bi-list-check"></i></button>
           </div>
         </div>
         <div class="package-list" id="packageList"></div>

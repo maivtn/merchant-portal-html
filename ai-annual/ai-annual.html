@@ -71,7 +71,7 @@
     }
 
     .ai-tabs {
-      display:  flex;
+      display: flex;
       align-items: stretch;
       width: 100%;
       border-bottom: 1px solid var(--line);
@@ -386,7 +386,6 @@
 
     .outline-cta,
     .gold-cta {
-      width: 100%;
       min-height: 52px;
       border-radius: 14px;
       font-size: 14px;
@@ -403,6 +402,10 @@
     }
 
     .gold-cta {
+      display: block;
+      width: fit-content;
+      margin: 0 auto;
+      padding-inline: 22px;
       border: 0;
       background: linear-gradient(90deg, var(--gold), var(--gold-2), var(--gold));
       color: #080808;
@@ -605,7 +608,7 @@
 
     .note-card {
       display: grid;
-      grid-template-columns: 42px 1fr;
+      grid-template-columns: 42px 1fr 82px;
       gap: 12px;
       align-items: center;
       border-radius: 14px;
@@ -646,6 +649,7 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
+
       @media (max-width: 768px) {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -694,12 +698,89 @@
 
     .package-list {
       display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
       gap: 9px;
+      justify-content: center;
+      justify-items: center;
+    }
+
+    .package-view-toggle {
+      display: inline-flex;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .03);
+    }
+
+    .package-list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .package-view-btn {
+      border: 0;
+      background: transparent;
+      color: #a9adb6;
+      font-size: 12px;
+      font-weight: 850;
+      padding: 7px 12px;
+      border-radius: 999px;
+    }
+
+    .package-view-btn.active {
+      color: #0a0a0a;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
     }
 
     .package-card {
+      width: 100%;
+      max-width: 320px;
       border-radius: 14px;
       padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .package-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .03);
+    }
+
+    .package-table {
+      width: 100%;
+      min-width: 640px;
+      border-collapse: collapse;
+    }
+
+    .package-table th,
+    .package-table td {
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--line-soft);
+      text-align: left;
+      white-space: nowrap;
+      font-size: 12.5px;
+    }
+
+    .package-table th {
+      color: #8f949f;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      font-weight: 900;
+    }
+
+    .package-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .package-table .pkg-id {
+      font-size: 12.5px;
     }
 
     .package-top {
@@ -707,13 +788,45 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 10px;
     }
 
     .pkg-id {
       font-size: 13px;
       font-weight: 850;
       color: #fff;
+    }
+
+    .package-summary {
+      display: grid;
+      gap: 8px;
+    }
+
+    .package-price {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .package-price .price-label {
+      color: #8f949f;
+      font-size: 9.5px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .package-price .price-value {
+      color: #fff;
+      font-size: 17px;
+      font-weight: 950;
+      letter-spacing: -.02em;
+    }
+
+    .package-subline {
+      color: #c4c7cd;
+      font-size: 11.5px;
+      line-height: 1.35;
     }
 
     .package-meta {
@@ -745,6 +858,30 @@
       font-weight: 750;
     }
 
+    .package-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 2px;
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .package-footer .footer-label {
+      color: #8f949f;
+      font-size: 9.5px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .package-footer .footer-value {
+      margin-top: 4px;
+      color: #fff;
+      font-size: 12.5px;
+      font-weight: 800;
+    }
+
     .term-pill {
       display: inline-flex;
       margin-top: 3px;
@@ -766,6 +903,23 @@
     .foot-note i {
       color: #c7cad0;
       margin-right: 5px;
+    }
+
+    @media (max-width: 992px) {
+      .package-list {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 320px));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .package-list {
+        grid-template-columns: 1fr;
+        justify-items: stretch;
+      }
+
+      .package-card {
+        max-width: none;
+      }
     }
 
     @media (max-width: 390px) {
@@ -898,7 +1052,7 @@
               <a class="policy-link" href="#" role="button">Policy &amp; FAQ <i class="bi bi-arrow-right"></i></a>
             </div>
           </div>
-          <button class="outline-cta" type="button" id="activateBtn"></button>
+          <button class="outline-cta w-100 mb-3" type="button" id="activateBtn"></button>
         </div>
 
       </section>
@@ -920,36 +1074,44 @@
                   <p class="package-copy" id="subscriptionCopy"></p>
                 </div>
               </div>
-    
+
               <hr class="divider" />
               <div class="countdown-title">Remaining Time</div>
               <div class="countdown" id="countdown"></div>
             </div>
           </div>
           <div class="col-md-8">
-            <div class="summary-grid mt-2 mb-2" id="summaryGrid"></div>
+            <div class="summary-grid mt-2 mt-md-0 mb-2" id="summaryGrid"></div>
             <div class="note-card">
               <div class="note-icon"><i class="bi bi-shield-check"></i></div>
               <div>
                 <div class="note-title" id="noteTitle"></div>
                 <div class="note-text" id="noteText"></div>
               </div>
+              <img src="../ai-annual/images/img1.png" alt="AI Annual Note" class="img-fluid" />
             </div>
           </div>
         </div>
-        
 
-       
 
-        
+
+
+
 
         <h3 class="block-title mt-4">Your Exclusive Benefits</h3>
         <div class="benefit-grid" id="benefitGrid"></div>
 
-        <h3 class="block-title mt-4">Package List</h3>
+        <div class="package-list-header mt-4">
+          <h3 class="block-title m-0">Package List</h3>
+          <div class="package-view-toggle" role="tablist" aria-label="Package view mode">
+            <button class="package-view-btn active" type="button" data-package-view="card">Card</button>
+            <button class="package-view-btn" type="button" data-package-view="table">Table</button>
+          </div>
+        </div>
         <div class="package-list" id="packageList"></div>
+        <div class="package-table-wrap d-none" id="packageTableWrap"></div>
 
-        <button class="gold-cta" type="button"><i class="bi bi-cart3 me-2"></i>Buy AI Annual Package</button>
+        <button class="gold-cta mx-auto mt-4 px-4" type="button"><i class="bi bi-cart3 me-2"></i>Buy AI Annual Package</button>
         <div class="foot-note"><i class="bi bi-shield-check"></i>Your benefits remain active for the duration of your
           active packages.</div>
       </section>
@@ -1042,6 +1204,8 @@
     const timeOnly = (iso) => new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
     const pad = (value) => String(Math.max(0, value)).padStart(2, '0');
     const getActivePackages = () => aiAnnualData.packages.filter((pkg) => pkg.status === 'Active');
+    let packageViewMode = 'table';
+
     const getValidUntil = () => {
       const activePackages = getActivePackages();
       if (!activePackages.length) return null;
@@ -1141,6 +1305,12 @@
         </div>
       `).join('');
 
+      $('#packageList').classList.toggle('d-none', packageViewMode !== 'card');
+      $('#packageTableWrap').classList.toggle('d-none', packageViewMode !== 'table');
+      document.querySelectorAll('[data-package-view]').forEach((btn) => {
+        btn.classList.toggle('active', btn.getAttribute('data-package-view') === packageViewMode);
+      });
+
       $('#packageList').innerHTML = aiAnnualData.packages.map((pkg) => `
         <article class="package-card">
           <div class="package-top">
@@ -1152,14 +1322,46 @@
               <span class="dot"></span>${pkg.status}
             </span>
           </div>
+          <div class="package-summary">
+            <div class="package-price">
+              <div class="price-label">Price</div>
+              <div class="price-value">${currency(pkg.price)}</div>
+            </div>
+            <div class="package-subline">Package term: ${pkg.termMonths} months</div>
+          </div>
           <div class="package-meta">
-            <div class="meta-box"><span class="meta-label">Price</span><span class="meta-value">${currency(pkg.price)}</span></div>
             <div class="meta-box"><span class="meta-label">Purchase Date</span><span class="meta-value">${dateOnly(pkg.purchaseDate)}</span></div>
-            <div class="meta-box"><span class="meta-label">Package Term</span><span class="term-pill">${pkg.termMonths} Months</span></div>
             <div class="meta-box"><span class="meta-label">Valid Until</span><span class="meta-value">${dateOnly(pkg.validUntil)}</span></div>
           </div>
         </article>
       `).join('');
+
+      $('#packageTableWrap').innerHTML = `
+        <table class="package-table">
+          <thead>
+            <tr>
+              <th>Package ID</th>
+              <th>Price</th>
+              <th>Purchase Date</th>
+              <th>Term</th>
+              <th>Valid Until</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${aiAnnualData.packages.map((pkg) => `
+              <tr>
+                <td><span class="pkg-id">${pkg.id}</span></td>
+                <td>${currency(pkg.price)}</td>
+                <td>${dateOnly(pkg.purchaseDate)}</td>
+                <td>${pkg.termMonths} Months</td>
+                <td>${dateOnly(pkg.validUntil)}</td>
+                <td><span class="status-pill ${pkg.status === 'Active' ? 'status-active' : 'status-expired'}"><span class="dot"></span>${pkg.status}</span></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
     }
 
     // =========================
@@ -1183,6 +1385,13 @@
         </div>
       `).join('');
     }
+
+    document.querySelectorAll('[data-package-view]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        packageViewMode = btn.getAttribute('data-package-view') || 'card';
+        renderHistoryTab();
+      });
+    });
 
     function updateCountdown() {
       const expiryDate = getValidUntil();

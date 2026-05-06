@@ -364,12 +364,12 @@
 
     }
 
-    .cashback {
-      margin-top: 14px;
+    .promo-block {
+      margin: 14px 0 0;
       text-align: center;
     }
 
-    .promotion-top {
+    .cashback-promo {
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -380,7 +380,7 @@
       text-transform: uppercase;
     }
 
-    .promotion-dot {
+    .cashback-dot {
       width: 9px;
       height: 9px;
       border-radius: 50%;
@@ -389,14 +389,42 @@
       flex: 0 0 auto;
     }
 
-    .cashback strong {
+    .cashback-free {
       display: block;
-      margin-top: 4px;
+      margin-top: 6px;
       color: #8f96a3;
-      font-size: .95rem;
+      font-size: .82rem;
       font-style: italic;
-      font-weight: 700;
-      letter-spacing: .22em;
+      font-weight: 800;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+    }
+
+    .cashback-card {
+      margin-top: 28px;
+      padding: 20px 16px 18px;
+      border: 1px solid rgba(215, 169, 61, .18);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .02);
+      text-align: center;
+    }
+
+    .cashback-earning {
+      color: #8f96a3;
+      font-size: .82rem;
+      font-weight: 800;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+    }
+
+    .cashback-card strong {
+      display: block;
+      margin-top: 6px;
+      color: #f4df96;
+      font-size: 1.64rem;
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -.03em;
       text-transform: uppercase;
     }
 
@@ -1158,17 +1186,24 @@
 
             <div class="plan-body">
               <button class="primary-plan-btn" id="buyPlanName" type="button"></button>
-              <div class="cashback" aria-label="Promotion">
-                <div class="promotion-top"><span class="promotion-dot" aria-hidden="true"></span><span
+              <div class="promo-block">
+                <div class="cashback-promo"><span class="cashback-dot" aria-hidden="true"></span><span
                     id="promotionText"></span></div>
-                <strong id="cashbackToken"></strong>
+                <strong class="cashback-free" id="cashbackToken"></strong>
               </div>
               <div id="rewardBonusBlock"></div>
               <div id="referBonusBlock"></div>
+              <div class="cashback-card" aria-label="Cashback">
+                <div class="cashback-earning">EARNING CASHBACK</div>
+                <strong id="cashbackValue">VMM TOKEN</strong>
+              </div>
               <a class="policy-link" href="#" role="button">Policy &amp; FAQ <i class="bi bi-arrow-right"></i></a>
+
+              <button class="outline-cta w-100 mb-3" type="button" id="activateBtn"></button>
             </div>
+           
           </div>
-          <button class="outline-cta w-100 mb-3" type="button" id="activateBtn"></button>
+          
         </div>
 
       </section>
@@ -1459,7 +1494,8 @@
       $('#buyPill').textContent = buy.badge;
       $('#buyPlanName').textContent = buy.planName;
       $('#promotionText').textContent = `+${currency(cashbackAmount).replace('.00', '')} PROMOTION`;
-      $('#cashbackToken').textContent = buy.cashbackToken;
+      $('#cashbackToken').textContent = `FREE ${buy.cashbackToken.toUpperCase()}`;
+      $('#cashbackValue').textContent = buy.cashbackToken.toUpperCase();
       $('#activateBtn').textContent = buy.activateText;
 
       $('#rewardBonusBlock').innerHTML = `

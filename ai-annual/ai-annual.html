@@ -1189,8 +1189,8 @@
 
 
 
-        <!-- <h3 class="block-title mt-4">Your Exclusive Benefits</h3>
-        <div class="benefit-grid" id="benefitGrid"></div> -->
+        <h3 class="block-title mt-4">Your Exclusive Benefits</h3>
+        <div class="benefit-grid" id="benefitGrid"></div>
 
         <div class="package-list-header mt-4">
           <h3 class="block-title m-0">Package List</h3>
@@ -1508,14 +1508,14 @@
         </div>
       `;
 
-      // $('#benefitGrid').innerHTML = aiAnnualData.benefits.map((item) => `
-      //   <div class="benefit-card">
-      //     <i class="bi bi-check check"></i>
-      //     <div class="benefit-icon"><i class="bi ${item.icon}"></i></div>
-      //     <div class="benefit-name">${item.name}</div>
-      //     <div class="benefit-copy">${item.copy}</div>
-      //   </div>
-      // `).join('');
+      $('#benefitGrid').innerHTML = aiAnnualData.benefits.map((item) => `
+        <div class="benefit-card">
+          <i class="bi bi-check check"></i>
+          <div class="benefit-icon"><i class="bi ${item.icon}"></i></div>
+          <div class="benefit-name">${item.name}</div>
+          <div class="benefit-copy">${item.copy}</div>
+        </div>
+      `).join('');
 
       $('#packageList').classList.toggle('d-none', packageViewMode !== 'card');
       $('#packageTableWrap').classList.toggle('d-none', packageViewMode !== 'table');

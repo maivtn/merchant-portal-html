@@ -833,6 +833,23 @@
       gap: 12px;
     }
 
+    .history-top-row {
+      align-items: stretch;
+    }
+
+    .history-right-col {
+      display: flex;
+      min-height: 100%;
+    }
+
+    .history-right-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      min-height: 100%;
+    }
+
     .mini-card {
       display: flex;
       align-items: center;
@@ -900,6 +917,7 @@
       border-radius: 14px;
       padding: 12px;
       border-color: rgba(215, 169, 61, .14);
+      flex: 1;
       @media (max-width: 768px) {
         grid-template-columns: 42px 1fr;
       }
@@ -1507,7 +1525,7 @@
 
       <section class="tab-pane fade show active compact-gap" id="history-pane" role="tabpanel"
         aria-labelledby="history-tab" tabindex="0">
-        <div class="row">
+        <div class="row history-top-row">
           <div class="col-md-4">
             <div class="panel hero-panel">
               <div class="package-head">
@@ -1542,15 +1560,16 @@
               <div class="countdown" id="countdown"></div>
             </div>
           </div>
-          <div class="col-md-8">
-            <div class="summary-grid mt-2 mt-md-0 mb-2 mb-md-4 gap-md-4" id="summaryGrid"></div>
-            <div class="note-card">
-              <div class="note-icon"><img src="../ai-annual/images/i4.png" alt="AI Annual Note" width="100%" /></div>
-              <div>
-                <div class="note-title" id="noteTitle"></div>
-                <div class="note-text" id="noteText"></div>
+          <div class="col-md-8 history-right-col">
+            <div class="history-right-stack">
+              <div class="summary-grid mt-2 mt-md-0 mb-2 mb-md-0 gap-md-4" id="summaryGrid"></div>
+              <div class="note-card">
+                <div class="note-icon"><img src="../ai-annual/images/i4.png" alt="AI Annual Note" width="100%" /></div>
+                <div>
+                  <div class="note-title" id="noteTitle"></div>
+                  <div class="note-text" id="noteText"></div>
+                </div>
               </div>
-              <!-- <img src="../ai-annual/images/img1.png" alt="AI Annual Note" class="img-fluid" /> -->
             </div>
           </div>
         </div>

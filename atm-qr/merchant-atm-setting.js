@@ -25,6 +25,16 @@ window.addEventListener('DOMContentLoaded', () => {
   const saveHoursButton = document.querySelector('[data-save-hours]');
   const hoursSummary = document.querySelector('[data-hours-summary]');
   const hoursDayRows = Array.from(document.querySelectorAll('[data-hours-day-row]'));
+  const acceptedPaymentModal = document.getElementById('accepted-payment-modal');
+  const openAcceptedPaymentButtons = Array.from(
+    document.querySelectorAll('[data-open-accepted-payment-modal]'),
+  );
+  const closeAcceptedPaymentButtons = Array.from(
+    document.querySelectorAll('[data-close-accepted-payment-modal]'),
+  );
+  const saveAcceptedPaymentButton = document.querySelector('[data-save-accepted-payment-methods]');
+  const acceptedPaymentOptions = document.querySelector('[data-accepted-payment-options]');
+  const acceptedPaymentChipList = document.querySelector('[data-accepted-payment-chip-list]');
   const paymentPrioritySelect = document.getElementById('payment-priority-select');
   const paymentChoiceInputs = Array.from(
     document.querySelectorAll('#receive-on-behalf-payment .payment-choice-list input[type="checkbox"]'),
@@ -71,6 +81,51 @@ window.addEventListener('DOMContentLoaded', () => {
     const normalizedHour = hour % 12 || 12;
     return `${normalizedHour}:${String(minute).padStart(2, '0')} ${period}`;
   };
+
+  const getGeneralPaymentMethods = () => {
+    const labels = Array.from(
+      document.querySelectorAll('.payment-grid .payment-row > .payment-label:first-child > span'),
+    )
+      .map((node) => node.textContent?.trim() || '')
+      .filter(Boolean);
+
+    return labels.filter((label, index) => labels.indexOf(label) === index);
+  };
+
+  const paymentMethodIconMap = {
+    Cash: 'icons/cash.png',
+    Zelle: 'icons/zelle.png',
+    'Bank Wire': 'icons/bank.png',
+    PayPal: 'icons/paypal.png',
+    Venmo: 'icons/venmo.png',
+    'Cash App': 'icons/cash_app.png',
+    'Apple Cash': 'icons/apple_cash.png',
+  };
+
+  const getPaymentMethodIconSrc = (label) => paymentMethodIconMap[label] || 'icons/bank.png';
+
+  const createAcceptedPaymentChip = (label) => {
+    const iconSrc = getPaymentMethodIconSrc(label);
+    return `
+      <button type="button" class="walkin-payment-chip">
+        <img src="${iconSrc}" alt="" aria-hidden="true" />
+        ${label}
+      </button>
+    `;
+  };
+
+  const getAcceptedPaymentSelection = () => {
+    if (!acceptedPaymentChipList) return [];
+
+    return Array.from(acceptedPaymentChipList.querySelectorAll('.walkin-payment-chip'))
+      .map((button) => button.textContent?.replace(/\s+/g, ' ').trim() || '')
+      .filter(Boolean);
+  };
+
+  let acceptedPaymentMethods = getAcceptedPaymentSelection();
+  if (!acceptedPaymentMethods.length) {
+    acceptedPaymentMethods = getGeneralPaymentMethods().slice(0, 4);
+  }
 
   const syncHoursDayState = (row) => {
     const toggle = row.querySelector('[data-hours-day-toggle]');
@@ -303,6 +358,72 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const syncAcceptedPaymentChips = () => {
+    if (!acceptedPaymentChipList) return;
+
+    acceptedPaymentChipList.innerHTML = acceptedPaymentMethods.map((label) => createAcceptedPaymentChip(label)).join('');
+    refreshIcons();
+  };
+
+  const renderAcceptedPaymentOptions = () => {
+    if (!acceptedPaymentOptions) return;
+
+    const labels = getGeneralPaymentMethods();
+    acceptedPaymentOptions.innerHTML = labels
+      .map((label) => {
+        const iconSrc = getPaymentMethodIconSrc(label);
+        const id = `accepted-payment-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+        const checked = acceptedPaymentMethods.includes(label) ? 'checked' : '';
+
+        return `
+          <label class="accepted-payment-option" for="${id}">
+            <input type="checkbox" id="${id}" value="${label}" ${checked} />
+            <span class="accepted-payment-option-icon">
+              <img src="${iconSrc}" alt="" aria-hidden="true" />
+            </span>
+            <span>${label}</span>
+          </label>
+        `;
+      })
+      .join('');
+
+    refreshIcons();
+  };
+
+  const openAcceptedPaymentModal = (event) => {
+    if (event) event.preventDefault();
+    if (!acceptedPaymentModal) return;
+
+    renderAcceptedPaymentOptions();
+    acceptedPaymentModal.classList.add('active');
+    acceptedPaymentModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeAcceptedPaymentModal = () => {
+    if (!acceptedPaymentModal) return;
+
+    acceptedPaymentModal.classList.remove('active');
+    acceptedPaymentModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  const saveAcceptedPaymentMethods = () => {
+    if (!acceptedPaymentOptions) return;
+
+    const checkedLabels = Array.from(
+      acceptedPaymentOptions.querySelectorAll('input[type="checkbox"]:checked'),
+    )
+      .map((input) => input.value.trim())
+      .filter(Boolean);
+
+    if (!checkedLabels.length) return;
+
+    acceptedPaymentMethods = checkedLabels;
+    syncAcceptedPaymentChips();
+    closeAcceptedPaymentModal();
+  };
+
   let hoursStateSnapshot = captureHoursState();
 
   const openHoursModal = (event) => {
@@ -413,10 +534,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
   saveHoursButton?.addEventListener('click', saveHoursModal);
 
+  openAcceptedPaymentButtons.forEach((button) => {
+    button.addEventListener('click', openAcceptedPaymentModal);
+  });
+
+  closeAcceptedPaymentButtons.forEach((button) => {
+    button.addEventListener('click', closeAcceptedPaymentModal);
+  });
+
+  acceptedPaymentModal?.addEventListener('click', (event) => {
+    if (event.target === acceptedPaymentModal) closeAcceptedPaymentModal();
+  });
+
+  saveAcceptedPaymentButton?.addEventListener('click', saveAcceptedPaymentMethods);
+
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
       closeQrModal();
       closeHoursModal(true);
+      closeAcceptedPaymentModal();
     }
   });
 
@@ -460,6 +596,7 @@ window.addEventListener('DOMContentLoaded', () => {
   syncHoursSummary();
   syncWalkinModeOptions();
   syncPaymentPriorityOptions();
+  syncAcceptedPaymentChips();
   syncWalkinSetupState();
   syncAssetFeeGroupState();
 });

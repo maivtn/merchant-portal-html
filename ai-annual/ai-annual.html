@@ -440,6 +440,182 @@
       text-transform: uppercase;
     }
 
+    .auto-renew-card {
+      margin-top: 16px;
+      padding: 14px;
+      border: 1px solid rgba(215, 169, 61, .22);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .025);
+    }
+
+    .auto-renew-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .auto-renew-label {
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .auto-renew-copy {
+      margin-top: 4px;
+      color: var(--muted);
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .auto-renew-toggle {
+      min-width: 112px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .04);
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+    }
+
+    .auto-renew-toggle.is-on {
+      border-color: rgba(58, 195, 83, .35);
+      background: rgba(58, 195, 83, .16);
+      color: var(--green);
+    }
+
+    .auto-renew-toggle i {
+      margin-right: 6px;
+    }
+
+    .auto-renew-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 24px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .auto-renew-badge.is-on {
+      color: var(--green);
+      background: rgba(58, 195, 83, .16);
+    }
+
+    .auto-renew-badge.is-off {
+      color: var(--red);
+      background: rgba(255, 98, 92, .16);
+    }
+
+    .status-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+
+    .activity-switch {
+      width: 52px;
+      height: 22px;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      cursor: pointer;
+    }
+
+    .activity-switch input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      margin: 0;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .activity-switch-track {
+      width: 100%;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--gold);
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.12);
+    }
+
+    .activity-switch-on {
+      position: absolute;
+      left: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0;
+      z-index: 1;
+    }
+
+    .activity-switch-off {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0;
+      z-index: 1;
+      display: none;
+    }
+
+    .activity-switch-thumb {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.18);
+      z-index: 1;
+    }
+
+    .activity-switch input:not(:checked)+.activity-switch-track {
+      background: #c1c7d3;
+    }
+
+    .activity-switch input:not(:checked)+.activity-switch-track .activity-switch-on {
+      display: none;
+    }
+
+    .activity-switch input:not(:checked)+.activity-switch-track .activity-switch-off {
+      display: block;
+    }
+
+    .activity-switch input:not(:checked)+.activity-switch-track .activity-switch-thumb {
+      right: auto;
+      left: 2px;
+    }
+
+    .activity-switch input:checked+.activity-switch-track .activity-switch-thumb {
+      left: auto;
+      right: 2px;
+    }
+
+    .activity-status-copy {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.6;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
     .outline-cta,
     .gold-cta {
       min-height: 52px;
@@ -475,14 +651,13 @@
 
     .package-head {
       display: grid;
-      grid-template-columns: 92px 1fr;
+      grid-template-columns: 120px 1fr;
       gap: 13px;
       align-items: center;
     }
 
     .ai-badge {
       position: relative;
-      width: 88px;
     }
 
     .badge-shape {
@@ -628,14 +803,12 @@
     }
 
     .mini-icon {
-      width: 42px;
-      height: 42px;
-      flex: 0 0 42px;
+      width: 64px;
       display: grid;
       place-items: center;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, .06);
+      /* border: 1px solid var(--line); */
+      /* border-radius: 12px;
+      background: rgba(255, 255, 255, .06); */
     }
 
     .mini-row {
@@ -681,24 +854,22 @@
 
     .note-card {
       display: grid;
-      grid-template-columns: 42px 1fr 180px;
+      grid-template-columns: 64px 1fr;
       gap: 12px;
       align-items: center;
       border-radius: 14px;
       padding: 12px;
       @media (max-width: 768px) {
-        grid-template-columns: 42px 1fr 40px;
+        grid-template-columns: 42px 1fr;
       }
     }
 
     .note-icon {
-      width: 42px;
-      height: 42px;
       display: grid;
       place-items: center;
-      border-radius: 50%;
+      /* border-radius: 50%; */
       color: var(--green);
-      background: rgba(58, 195, 83, .16);
+      /* background: rgba(58, 195, 83, .16); */
       font-size: 1.714rem;
     }
 
@@ -774,6 +945,13 @@
       font-size: 1.929rem;
       line-height: 1;
       margin-bottom: 8px;
+    }
+
+    .benefit-icon img {
+      width: 100px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
     }
 
     .benefit-name {
@@ -989,6 +1167,79 @@
       color: #fff;
     }
 
+    .policy-modal .modal-content {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #161616, #0b0b0b);
+      color: var(--text);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, .48);
+    }
+
+    .policy-modal .modal-header,
+    .policy-modal .modal-footer {
+      border-color: var(--line-soft);
+    }
+
+    .policy-modal .policy-title {
+      color: var(--gold-2);
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .policy-modal .policy-copy {
+      color: #e1e1e1;
+      line-height: 1.55;
+      margin-bottom: 12px;
+    }
+
+    .policy-modal .policy-list {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .policy-modal .policy-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px 12px;
+      border: 1px solid var(--line-soft);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .03);
+      color: #d8dbe2;
+    }
+
+    .policy-modal .policy-list i {
+      color: var(--gold-2);
+      margin-top: 2px;
+      flex: 0 0 auto;
+    }
+
+    .policy-agree {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 16px;
+      padding: 12px;
+      border: 1px solid rgba(215, 169, 61, .22);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .025);
+    }
+
+    .policy-agree input {
+      margin-top: 3px;
+      accent-color: var(--gold);
+      flex: 0 0 auto;
+    }
+
+    .policy-agree label {
+      color: #f1f1f1;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+
     .package-top {
       display: flex;
       align-items: center;
@@ -1197,7 +1448,7 @@
                 <div class="cashback-earning">EARNING CASHBACK</div>
                 <strong id="cashbackValue">VMM TOKEN</strong>
               </div>
-              <a class="policy-link" href="#" role="button">Policy &amp; FAQ <i class="bi bi-arrow-right"></i></a>
+              <a class="policy-link" href="#" role="button" id="policyLink">Policy &amp; FAQ <i class="bi bi-arrow-right"></i></a>
 
               <button class="outline-cta w-100 mb-3" type="button" id="activateBtn"></button>
             </div>
@@ -1215,16 +1466,28 @@
             <div class="panel hero-panel">
               <div class="package-head">
                 <div class="ai-badge" aria-hidden="true">
-                  <img src="../ai-annual/images/02_ai_annual_badge.png" alt="AI Annual Badge" width="88" />
+                  <img src="../ai-annual/images/i1.png" alt="AI Annual Badge" width="100%" />
                 </div>
                 <div>
-                  <div class="d-flex align-items-center gap-2">
+                  <div class="d-flex align-items-center gap-2 package-name">
                     <h2 class="package-title" id="subscriptionTitle"></h2>
                     <span class="status-pill status-active"><span
                         class="dot"></span><span id="subscriptionStatus"></span></span>
                   </div>
-                  <div class="package-subtitle" id="subscriptionSubtitle"></div>
-                  <p class="package-copy" id="subscriptionCopy"></p>
+                  <div>
+                    <div class="status-switch">
+                      <label class="activity-switch">
+                        <input type="checkbox" id="autoRenewAgreeCheck" />
+                        <span class="activity-switch-track">
+                          <span class="activity-switch-on">ON</span>
+                          <span class="activity-switch-off">OFF</span>
+                          <span class="activity-switch-thumb"></span>
+                        </span>
+                      </label>
+                      <span class="activity-status-copy" id="autoRenewSwitchCopy">Auto renew</span>
+                    </div>
+                   
+                  </div>
                 </div>
               </div>
 
@@ -1236,21 +1499,15 @@
           <div class="col-md-8">
             <div class="summary-grid mt-2 mt-md-0 mb-3" id="summaryGrid"></div>
             <div class="note-card">
-              <div class="note-icon"><i class="bi bi-shield-check"></i></div>
+              <div class="note-icon"><img src="../ai-annual/images/i4.png" alt="AI Annual Note" width="100%" /></div>
               <div>
                 <div class="note-title" id="noteTitle"></div>
                 <div class="note-text" id="noteText"></div>
               </div>
-              <img src="../ai-annual/images/img1.png" alt="AI Annual Note" class="img-fluid" />
+              <!-- <img src="../ai-annual/images/img1.png" alt="AI Annual Note" class="img-fluid" /> -->
             </div>
           </div>
         </div>
-
-
-
-
-
-
 
         <div class="package-list-header mt-4">
           <h3 class="block-title m-0">Package List</h3>
@@ -1338,6 +1595,40 @@
     </div>
   </div>
 
+  <div class="modal fade policy-modal" id="autoRenewPolicyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title mb-1">Auto-Renewal Policy</h5>
+            <div class="text-secondary">Please review and accept this policy before enabling auto-renewal for your AI Annual package.</div>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="policy-title">What you agree to</div>
+          <p class="policy-copy mb-0">
+            Auto-renewal helps keep your AI Annual package active without interruption. Your selected payment method will be charged before the current package expires. You can turn auto-renewal off at any time before the next renewal cycle.
+          </p>
+          <ul class="policy-list">
+            <li><i class="bi bi-shield-check"></i><span>The renewal will follow the current AI Annual package term and price at the time of renewal.</span></li>
+            <li><i class="bi bi-credit-card-2-front"></i><span>Please make sure your selected payment method has enough balance and remains valid for future charges.</span></li>
+            <li><i class="bi bi-exclamation-triangle"></i><span>If the payment fails, auto-renewal may not be completed and your package benefits may expire.</span></li>
+            <li><i class="bi bi-arrow-repeat"></i><span>You can turn auto-renewal off at any time before the next renewal cycle from this screen.</span></li>
+          </ul>
+          <div class="policy-agree">
+            <input class="form-check-input" type="checkbox" id="autoRenewPolicyAgreeCheck" />
+            <label for="autoRenewPolicyAgreeCheck">I have read and agree to the Auto-Renewal Policy for this AI Annual package.</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-light" type="button" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-warning fw-bold" type="button" id="autoRenewConfirmBtn" disabled>Confirm &amp; Enable</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // =========================
@@ -1379,13 +1670,13 @@
         status: 'Active',
         copy: 'Your AI Annual benefits are active and running. Keep building your network.',
         noteTitle: 'Your AI Annual package is now active!',
-        noteText: 'Enjoy daily VMM allocation, exclusive package benefits, and uninterrupted access throughout your annual package period.',
+        noteText: 'Enjoy daily VMM allocation, exclusive package benefits, and uninterrupted access throughout your annual package period. You can review or manage your auto-renewal settings at any time.',
       },
       benefits: [
-        { icon: 'bi-diagram-3', name: 'Affiliate Program', copy: 'Full access to all affiliate features' },
-        { icon: 'bi-currency-bitcoin', name: 'BTC Collateral', copy: 'Access to BTC collateral' },
-        { icon: 'bi-graph-up-arrow', name: 'VMM Allocation', copy: 'Daily accumulation continues' },
-        { icon: 'bi-gift', name: 'Exclusive Rewards', copy: 'Special bonuses and promotions' },
+        { icon: '../ai-annual/images/i5.png', name: 'Affiliate Program', copy: 'Full access to all affiliate features' },
+        { icon: '../ai-annual/images/i6.png', name: 'BTC Collateral', copy: 'Access to BTC collateral' },
+        { icon: '../ai-annual/images/i7.png', name: 'VMM Allocation', copy: 'Daily accumulation continues' },
+        { icon: '../ai-annual/images/i8.png', name: 'Exclusive Rewards', copy: 'Special bonuses and promotions' },
       ],
       packages: [
         {
@@ -1460,6 +1751,8 @@
     const pad = (value) => String(Math.max(0, value)).padStart(2, '0');
     const getActivePackages = () => aiAnnualData.packages.filter((pkg) => pkg.status === 'Active');
     let packageViewMode = 'table';
+    let autoRenewEnabled = false;
+    let autoRenewPolicyAccepted = false;
     const cashbackAmount = 20;
     const cashbackRate = 0.000692;
     const cashbackTokens = numberWithCommas(cashbackAmount / cashbackRate, 2);
@@ -1526,6 +1819,8 @@
           `).join('')}
         </div>
       `;
+
+      renderAutoRenewState();
     }
 
     // =========================
@@ -1545,7 +1840,7 @@
 
       $('#summaryGrid').innerHTML = `
         <div class="mini-card">
-          <div class="mini-icon"><i class="bi bi-calendar-check"></i></div>
+          <div class="mini-icon"><img src="../ai-annual/images/i2.png" alt="Calendar" width="100%" /></div>
           <div class="mini-content">
             <div class="mini-row">
               <span class="mini-label">Valid Until</span>
@@ -1554,7 +1849,7 @@
           </div>
         </div>
         <div class="mini-card">
-          <div class="mini-icon"><i class="bi bi-stack"></i></div>
+          <div class="mini-icon"><img src="../ai-annual/images/i3.png" alt="Packages" width="100%" /></div>
           <div class="mini-content">
             <div class="mini-row">
               <span class="mini-label">Active Packages</span>
@@ -1567,7 +1862,7 @@
       $('#benefitGrid').innerHTML = aiAnnualData.benefits.map((item) => `
         <div class="benefit-card">
           <i class="bi bi-check check"></i>
-          <div class="benefit-icon"><i class="bi ${item.icon}"></i></div>
+          <div class="benefit-icon"><img src="${item.icon}" alt="${item.name}" /></div>
           <div class="benefit-name">${item.name}</div>
           <div class="benefit-copy">${item.copy}</div>
         </div>
@@ -1630,6 +1925,48 @@
           </tbody>
         </table>
       `;
+    }
+
+    function renderAutoRenewState() {
+      const toggle = $('#autoRenewToggle');
+      const toggleText = $('#autoRenewToggleText');
+      const badge = $('#historyAutoRenewBadge');
+      const badgeText = $('#historyAutoRenewText');
+      const switchCopy = $('#autoRenewSwitchCopy');
+
+      if (toggle) {
+        toggle.classList.toggle('is-on', autoRenewEnabled);
+        toggle.setAttribute('aria-pressed', String(autoRenewEnabled));
+      }
+      if (toggleText) {
+        toggleText.textContent = autoRenewEnabled ? 'Turn Off' : 'Turn On';
+      }
+      if (badge) {
+        badge.classList.toggle('is-on', autoRenewEnabled);
+        badge.classList.toggle('is-off', !autoRenewEnabled);
+      }
+      if (badgeText) {
+        badgeText.textContent = autoRenewEnabled ? 'Auto renew ' : 'Auto renew ';
+      }
+      if (autoRenewAgreeCheck) {
+        autoRenewAgreeCheck.checked = autoRenewEnabled;
+      }
+      if (switchCopy) {
+        switchCopy.textContent = autoRenewEnabled ? 'Auto renew ' : 'Auto renew ';
+      }
+      const autoRenewValue = $('#historyAutoRenewValue');
+      if (autoRenewValue) {
+        autoRenewValue.textContent = autoRenewEnabled ? 'Enabled' : 'Disabled';
+      }
+    }
+
+    function setAutoRenewEnabled(nextValue) {
+      autoRenewEnabled = nextValue;
+      renderAutoRenewState();
+    }
+
+    function setAutoRenewPolicyAccepted(nextValue) {
+      autoRenewPolicyAccepted = nextValue;
     }
 
     // =========================
@@ -1700,6 +2037,64 @@
       window.bootstrap.Modal.getOrCreateInstance($('#purchaseViewModal')).show();
     });
 
+    const autoRenewAgreeCheck = $('#autoRenewAgreeCheck');
+    const autoRenewPolicyAgreeCheck = $('#autoRenewPolicyAgreeCheck');
+    const autoRenewConfirmBtn = $('#autoRenewConfirmBtn');
+    const autoRenewPolicyModal = $('#autoRenewPolicyModal');
+    const policyLink = $('#policyLink');
+    policyLink?.addEventListener('click', (event) => {
+      event.preventDefault();
+      if (!window.bootstrap?.Modal) return;
+      window.bootstrap.Modal.getOrCreateInstance(autoRenewPolicyModal).show();
+    });
+
+    let syncingAutoRenewSwitch = false;
+    if (autoRenewAgreeCheck) {
+      autoRenewAgreeCheck.addEventListener('change', () => {
+        if (syncingAutoRenewSwitch) return;
+
+        if (!autoRenewAgreeCheck.checked) {
+          setAutoRenewEnabled(false);
+          return;
+        }
+
+        if (autoRenewPolicyAccepted) {
+          setAutoRenewEnabled(true);
+          return;
+        }
+
+        if (!window.bootstrap?.Modal) return;
+        syncingAutoRenewSwitch = true;
+        autoRenewAgreeCheck.checked = false;
+        syncingAutoRenewSwitch = false;
+        autoRenewConfirmBtn.disabled = true;
+        window.bootstrap.Modal.getOrCreateInstance(autoRenewPolicyModal).show();
+      });
+    }
+
+    if (autoRenewPolicyAgreeCheck && autoRenewConfirmBtn) {
+      autoRenewPolicyAgreeCheck.addEventListener('change', () => {
+        autoRenewConfirmBtn.disabled = !autoRenewPolicyAgreeCheck.checked;
+      });
+
+      autoRenewConfirmBtn.addEventListener('click', () => {
+        if (!autoRenewPolicyAgreeCheck.checked) return;
+        setAutoRenewPolicyAccepted(true);
+        setAutoRenewEnabled(true);
+        window.bootstrap?.Modal.getOrCreateInstance(autoRenewPolicyModal)?.hide();
+      });
+    }
+
+    autoRenewPolicyModal?.addEventListener('hidden.bs.modal', () => {
+      if (autoRenewAgreeCheck && !autoRenewEnabled) {
+        syncingAutoRenewSwitch = true;
+        autoRenewAgreeCheck.checked = false;
+        syncingAutoRenewSwitch = false;
+      }
+      if (autoRenewPolicyAgreeCheck) autoRenewPolicyAgreeCheck.checked = false;
+      if (autoRenewConfirmBtn) autoRenewConfirmBtn.disabled = true;
+    });
+
     const buyAnnualPackageBtn = $('#buyAnnualPackageBtn');
     if (buyAnnualPackageBtn) {
       buyAnnualPackageBtn.addEventListener('click', () => {
@@ -1736,6 +2131,7 @@
     renderCountdownShell();
     renderHistoryTab();
     renderPurchaseHistoryTab();
+    renderAutoRenewState();
     updateCountdown();
     setInterval(updateCountdown, 1000);
   </script>

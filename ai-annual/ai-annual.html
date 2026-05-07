@@ -912,10 +912,11 @@
     .benefit-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      gap: 24px;
 
       @media (max-width: 768px) {
         grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
       }
     }
 
@@ -970,7 +971,7 @@
     .package-list {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 420px));
-      gap: 9px;
+      gap: 16px;
       justify-content: center;
       justify-items: center;
     }
@@ -1208,7 +1209,6 @@
       padding: 10px 12px;
       border: 1px solid var(--line-soft);
       border-radius: 12px;
-      background: rgba(255, 255, 255, .03);
       color: #d8dbe2;
     }
 
@@ -1498,7 +1498,7 @@
             </div>
           </div>
           <div class="col-md-8">
-            <div class="summary-grid mt-2 mt-md-0 mb-3" id="summaryGrid"></div>
+            <div class="summary-grid mt-2 mt-md-0 mb-2 mb-md-4 gap-md-4" id="summaryGrid"></div>
             <div class="note-card">
               <div class="note-icon"><img src="../ai-annual/images/i4.png" alt="AI Annual Note" width="100%" /></div>
               <div>
@@ -1523,8 +1523,8 @@
         <div class="package-table-wrap d-none" id="packageTableWrap"></div>
 
 
-        <h3 class="block-title mt-4">Your Exclusive Benefits</h3>
-        <div class="benefit-grid" id="benefitGrid"></div>
+        <!-- <h3 class="block-title mt-4">Your Exclusive Benefits</h3>
+        <div class="benefit-grid" id="benefitGrid"></div> -->
 
         <!-- <button class="gold-cta mx-auto mt-4 px-4" type="button" id="buyAnnualPackageBtn">Buy AI Annual
           Package</button> -->
@@ -1860,14 +1860,13 @@
         </div>
       `;
 
-      $('#benefitGrid').innerHTML = aiAnnualData.benefits.map((item) => `
-        <div class="benefit-card">
-          <i class="bi bi-check check"></i>
-          <div class="benefit-icon"><img src="${item.icon}" alt="${item.name}" /></div>
-          <div class="benefit-name">${item.name}</div>
-          <div class="benefit-copy">${item.copy}</div>
-        </div>
-      `).join('');
+      // $('#benefitGrid').innerHTML = aiAnnualData.benefits.map((item) => `
+      //   <div class="benefit-card">
+      //     <div class="benefit-icon"><img src="${item.icon}" alt="${item.name}" /></div>
+      //     <div class="benefit-name">${item.name}</div>
+      //     <div class="benefit-copy">${item.copy}</div>
+      //   </div>
+      // `).join('');
 
       $('#packageList').classList.toggle('d-none', packageViewMode !== 'card');
       $('#packageTableWrap').classList.toggle('d-none', packageViewMode !== 'table');

@@ -682,4 +682,17 @@ window.addEventListener('DOMContentLoaded', () => {
       btn.classList.add('active');
     });
   });
+
+  // History view toggle (grid / table)
+  const historySection = document.getElementById('history-list-section');
+  const historyViewBtns = Array.from(document.querySelectorAll('[data-history-view]'));
+  historyViewBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      historyViewBtns.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      const isTable = btn.dataset.historyView === 'table';
+      historySection?.classList.toggle('is-table', isTable);
+      refreshIcons();
+    });
+  });
 });

@@ -3,6 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
     window.lucide.createIcons();
   }
 
+  const supportMethods = [
+    { label: 'Cash', icon: 'cash.png' },
+    { label: 'Bank Transfer', icon: 'bank.png' },
+    { label: 'Zelle', icon: 'zelle.png' },
+    { label: 'PayPal', icon: 'paypal.png' },
+    { label: 'Venmo', icon: 'venmo.png' },
+    { label: 'Cash App', icon: 'cash_app.png' },
+    { label: 'Apple Cash', icon: 'apple_cash.png' },
+  ];
+
   const params = new URLSearchParams(window.location.search);
   const atmProfiles = {
     merchant: {
@@ -14,11 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
       name: 'VLINKPAY MERCHANT ATM 01',
       id: 'MAT-4K9P2X',
       status: 'Online',
-      feeRate: '1%',
+      feeRate: '1%-5%',
+      hoursSummary: 'Thứ 2 - Thứ 6, 9:00 AM - 7:00 PM; Thứ 7, 10:00 AM - 4:00 PM',
       location: 'Quận 1, TP. Hồ Chí Minh',
       image: '../atm-qr/merchant.png',
       infoImage: '../atm-qr/merchant.png',
       imageAlt: 'Merchant icon',
+      supportMethods,
       cta: 'Quét để giao dịch trực tiếp với Merchant',
       note: 'Bạn đã quét QR từ Merchant ATM. Hệ thống sẽ tự động kết nối tới giao dịch.',
     },
@@ -31,11 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
       name: 'VLINKPAY MOBILE ATM 01',
       id: 'MOB-8H2Q7N',
       status: 'Online',
-      feeRate: '5%',
+      feeRate: '1%-5%',
+      hoursSummary: 'Thứ 2 - Thứ 6, 9:00 AM - 7:00 PM; Thứ 7, 10:00 AM - 4:00 PM',
       location: 'Quận 3, TP. Hồ Chí Minh',
       image: '../atm-qr/mobile.png',
       infoImage: '../atm-qr/mobile.png',
       imageAlt: 'Mobile icon',
+      supportMethods,
       cta: 'Quét để giao dịch trực tiếp với Mobile ATM',
       note: 'Bạn đã quét QR từ Mobile ATM. Hệ thống sẽ tự động kết nối tới giao dịch.',
     },
@@ -66,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setText('[data-atm-id]', atmProfile.id);
   setText('[data-atm-status]', atmProfile.status);
   setText('[data-atm-fee-rate]', atmProfile.feeRate);
+  setText('[data-atm-hours-summary]', atmProfile.hoursSummary || '');
   setText('[data-atm-location]', atmProfile.location);
   setText('[data-atm-cta]', atmProfile.cta);
   setText('[data-atm-note]', atmProfile.note);
@@ -78,6 +93,23 @@ document.addEventListener('DOMContentLoaded', () => {
     img.src = img.getAttribute('data-atm-image') === 'info' ? atmProfile.infoImage : atmProfile.image;
     img.alt = atmProfile.imageAlt;
   });
+
+  const supportList = document.querySelector('[data-atm-support-list]');
+  if (supportList) {
+    const supportMethods = atmProfile.supportMethods || [];
+    supportList.innerHTML = supportMethods
+      .map((method) => `
+        <div class="merchant-info-support">
+          <span class="merchant-info-support-icon" aria-hidden="true">
+            <img src="icons/${method.icon}" alt="" />
+          </span>
+          <div class="min-w-0">
+            <p class="merchant-info-support-label">${method.label}</p>
+          </div>
+        </div>
+      `)
+      .join('');
+  }
 
   document.querySelectorAll('[data-atm-info-link]').forEach((link) => {
     link.href = withAtmType('merchant-atm-info.html');
@@ -168,6 +200,76 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     noteInput?.addEventListener('input', syncNoteCounter);
     syncNoteCounter();
+  }
+
+  const paymentMethodSelect = document.querySelector('[data-payment-method-select]');
+  if (paymentMethodSelect) {
+    const toggle = paymentMethodSelect.querySelector('[data-payment-method-toggle]');
+    const menu = paymentMethodSelect.querySelector('[data-payment-method-menu]');
+    const valueNode = paymentMethodSelect.querySelector('[data-payment-method-value]');
+    const input = paymentMethodSelect.querySelector('[data-payment-method-input]');
+    const options = Array.from(paymentMethodSelect.querySelectorAll('[data-payment-method-option]'));
+
+    const optionMeta = {
+      cash: { label: 'Cash', icon: 'icons/cash.png' },
+      'bank-transfer': { label: 'Chuyển khoản', icon: 'icons/bank.png' },
+      zelle: { label: 'Zelle', icon: 'icons/zelle.png' },
+      venmo: { label: 'Venmo', icon: 'icons/venmo.png' },
+      paypal: { label: 'PayPal', icon: 'icons/paypal.png' },
+      'cash-app': { label: 'Cash App', icon: 'icons/cash_app.png' },
+      'apple-cash': { label: 'Apple Cash', icon: 'icons/apple_cash.png' },
+    };
+
+    const setOpen = (open) => {
+      toggle?.setAttribute('aria-expanded', String(open));
+      if (menu) menu.hidden = !open;
+    };
+
+    const setValue = (value) => {
+      const meta = optionMeta[value] || optionMeta['bank-transfer'];
+      if (input) input.value = value;
+      if (valueNode) {
+        valueNode.innerHTML = `
+          <span class="payment-method-select__option-icon">
+            <img src="${meta.icon}" alt="" aria-hidden="true" />
+          </span>
+          <span class="payment-method-select__option-text">${meta.label}</span>
+        `;
+      }
+
+      options.forEach((option) => {
+        const isActive = option.getAttribute('data-payment-method-option') === value;
+        option.classList.toggle('is-active', isActive);
+        option.setAttribute('aria-selected', String(isActive));
+      });
+    };
+
+    const current = input?.value || 'bank-transfer';
+    setValue(current);
+    setOpen(false);
+
+    toggle?.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      setOpen(!isOpen);
+    });
+
+    options.forEach((option) => {
+      option.addEventListener('click', () => {
+        const value = option.getAttribute('data-payment-method-option') || 'bank-transfer';
+        setValue(value);
+        setOpen(false);
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!paymentMethodSelect.contains(event.target)) {
+        setOpen(false);
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    });
   }
 
   const reviewRoot = document.querySelector('[data-review-root]');

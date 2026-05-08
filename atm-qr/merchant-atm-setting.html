@@ -1659,10 +1659,16 @@
     }
 
     .qr-modal-actions {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
       gap: 12px;
       padding: 14px 16px 16px;
+    }
+
+    .qr-modal-actions .qr-action-btn {
+      flex: 1 1 180px;
+      max-width: 220px;
     }
 
     .qr-action-btn {
@@ -1836,13 +1842,40 @@
 
     .hours-modal-actions {
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
+      flex-wrap: wrap;
       gap: 10px;
       padding: 0 18px 18px;
     }
 
     .hours-modal-actions .btn {
       min-width: 128px;
+    }
+
+    .hours-modal-actions .btn-light {
+      border: 1px solid rgba(217, 119, 6, 0.16);
+      background: #fff7ed;
+      color: #b45309;
+      box-shadow: none;
+    }
+
+    .hours-modal-actions .btn-light:hover {
+      border-color: rgba(217, 119, 6, 0.28);
+      background: #ffedd5;
+      color: #9a3412;
+    }
+
+    .hours-modal-actions .btn-primary {
+      border: 1px solid #d97706;
+      background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+      color: #fff;
+      box-shadow: 0 10px 18px rgba(217, 119, 6, 0.18);
+    }
+
+    .hours-modal-actions .btn-primary:hover {
+      background: linear-gradient(180deg, #f59e0b 0%, #c47309 100%);
+      border-color: #c47309;
+      box-shadow: 0 14px 24px rgba(217, 119, 6, 0.22);
     }
 
     .accepted-payment-modal {
@@ -1957,7 +1990,8 @@
 
     .accepted-payment-modal-actions {
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
+      flex-wrap: wrap;
       gap: 10px;
       padding: 0 18px 18px;
     }
@@ -2016,7 +2050,13 @@
       }
 
       .qr-modal-actions {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .qr-modal-actions .qr-action-btn {
+        width: 100%;
+        max-width: none;
       }
 
       .qr-modal-row {
@@ -2042,6 +2082,7 @@
 
       .hours-modal-actions {
         flex-direction: column;
+        align-items: center;
       }
 
       .hours-modal-actions .btn {
@@ -2054,6 +2095,7 @@
 
       .accepted-payment-modal-actions {
         flex-direction: column;
+        align-items: center;
       }
 
       .accepted-payment-modal-actions .btn {
@@ -4273,7 +4315,7 @@
             <div class="payment-card payment-buy-sell-card">
               <div class="payment-buy-sell-head">
                 <div class="payment-buy-sell-title">
-                  <span class="payment-buy-sell-icon"><i data-lucide="landmark" class="w-4 h-4"></i></span>
+                  <span class="payment-buy-sell-icon"><i data-lucide="credit-card" class="w-4 h-4"></i></span>
                   <span>General Payment Settings</span>
                 </div>
               </div>

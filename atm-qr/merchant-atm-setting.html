@@ -2234,13 +2234,14 @@
     }
 
     .fee-compare-card {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
       gap: 0;
       padding: 0;
+      border-radius: 0;
+      box-shadow: none;
       overflow: hidden;
     }
 
+   
     .asset-fee-group {
       border: 1px solid rgba(217, 119, 6, 0.14);
       border-radius: 1.5rem;
@@ -2315,6 +2316,7 @@
       background: #fffaf2;
       overflow-x: auto;
       scrollbar-width: none;
+      margin-top: 0;
     }
 
     .asset-fee-group__tabs::-webkit-scrollbar {
@@ -2359,20 +2361,12 @@
     .asset-fee-group__panel.active {
       display: block;
     }
-
-    .fee-compare-col {
-      padding: 14px;
-    }
-
-    .fee-compare-col+.fee-compare-col {
-      border-left: 1px solid #f0e3c7;
-    }
-
+ 
     .fee-compare-title {
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       color: #27303f;
       font-size: 15px;
       font-weight: 800;
@@ -2384,7 +2378,7 @@
 
     .fee-compare-row {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 54px 64px auto;
+      grid-template-columns: minmax(0, 1fr) 110px auto;
       gap: 10px;
       align-items: center;
     }
@@ -2420,22 +2414,44 @@
       box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.08);
     }
 
-    .percent-input {
-      width: 54px;
+    .percent-input-group {
+      width: 110px;
+      flex: 0 0 auto;
+    }
+
+    .percent-input-group .percent-input,
+    .asset-fee .percent-input {
       height: 34px;
       text-align: center;
-      border-radius: 0.8rem;
-      border: 1px solid var(--line);
       font-size: 0.95rem;
       color: #27303f;
+      border-radius: 0.8rem 0 0 0.8rem;
+    }
+
+    .percent-input-group .percent-input,
+    .asset-fee.input-group .percent-input {
+      border: 1px solid var(--line);
+      border-right: 0;
       background: #fff;
     }
 
-    .percent-suffix {
+    .percent-input-group .percent-suffix,
+    .asset-fee .percent-suffix {
       font-size: 13px;
       font-weight: 700;
       color: #27303f;
-      margin-left: -2px;
+      background: #fafbfd;
+      border-color: #cfd7e6;
+    }
+
+    .percent-input-group .input-group-text,
+    .asset-fee.input-group .input-group-text {
+      border: 1px solid var(--line);
+      border-left: 0;
+      border-radius: 0 0.8rem 0.8rem 0;
+      min-width: 30px;
+      justify-content: center;
+      background: #fafbfd;
     }
 
     .apply-all {
@@ -2462,7 +2478,7 @@
     .asset-section-head {
       display: grid;
       grid-template-columns: 126px 1fr 1fr;
-      gap: 10px;
+      gap: 14px;
       align-items: end;
       margin-bottom: 10px;
     }
@@ -2479,14 +2495,14 @@
       font-size: 14px;
       font-weight: 800;
       text-align: left;
-      padding-left: 38px;
+      padding-left: 0;
     }
 
     .asset-header,
     .asset-row {
       display: grid;
       grid-template-columns: 126px 1fr 1fr;
-      gap: 10px;
+      gap: 14px;
       align-items: center;
     }
 
@@ -2502,22 +2518,22 @@
     }
 
     .asset-row--fee-config {
-      grid-template-columns: 96px minmax(140px, 1fr) minmax(140px, 1fr);
+      grid-template-columns: 126px minmax(140px, 1fr) minmax(140px, 1fr);
     }
 
     .asset-fee-cell {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       min-width: 0;
     }
 
     .asset-name {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
       color: #27303f;
     }
 
@@ -2562,18 +2578,13 @@
     }
 
     .asset-fee {
-      display: inline-flex;
-      align-items: center;
+      display: flex;
+      align-items: stretch;
       width: 100%;
-      max-width: 140px;
-      border-radius: 0.8rem;
-      border: 1px solid var(--line);
-      background: #fff;
-      overflow: hidden;
-      height: 34px;
+      max-width: 110px;
     }
 
-    .asset-fee input {
+    .asset-fee:not(.input-group) input {
       width: 100%;
       border: 0;
       outline: none;
@@ -2583,11 +2594,11 @@
       color: #27303f;
     }
 
-    .asset-fee span {
+    .asset-fee:not(.input-group) span {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 34px;
+      width: 30px;
       height: 100%;
       border-left: 1px solid #cfd7e6;
       color: #27303f;
@@ -3277,22 +3288,27 @@
         line-height: 1.35;
       }
 
-      .fee-compare-card,
+      .fee-compare-card {
+        padding: 0;
+      }
+
       .setting-grid-2 {
         grid-template-columns: 1fr;
       }
 
-      .fee-compare-col+.fee-compare-col {
-        border-left: 0;
-        border-top: 1px solid #f0e3c7;
-      }
+      
 
       .fee-compare-row {
-        grid-template-columns: 1fr 48px 56px auto;
+        grid-template-columns: 1fr 110px auto;
       }
 
       .asset-section-head {
         grid-template-columns: 96px 1fr 1fr;
+        gap: 10px;
+      }
+
+      .asset-row--fee-config {
+        grid-template-columns: 96px minmax(120px, 1fr) minmax(120px, 1fr);
       }
 
       .payment-header,
@@ -3856,16 +3872,18 @@
                   </div>
 
                   <div class="asset-fee-group__panel active" data-asset-fee-panel="online">
-                    <div class="setting-card fee-compare-card" style="border: 0; box-shadow: none; padding: 0;">
-                      <div class="fee-compare-col">
+                    <div class="row g-5">
+                      <div class="col-12 col-md-6 fee-compare-col">
                         <div class="fee-compare-title">
-                          <span>Buy Fee</span>
+                          <span>Sell Fee</span>
                           <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
                         </div>
                         <div class="fee-compare-row">
                           <div class="slider-track"><span class="slider-thumb"></span></div>
-                          <input class="percent-input" value="0" />
-                          <div class="percent-suffix">%</div>
+                          <div class="input-group percent-input-group">
+                            <input class="form-control percent-input" value="2" />
+                            <span class="input-group-text percent-suffix">%</span>
+                          </div>
                           <label class="fee-compare-actions">
                             <input type="checkbox" />
                             <span>Apply to all</span>
@@ -3874,15 +3892,17 @@
                         </div>
                       </div>
 
-                      <div class="fee-compare-col">
+                      <div class="col-12 col-md-6 fee-compare-col">
                         <div class="fee-compare-title">
-                          <span>Sell Fee</span>
+                          <span>Buy Fee</span>
                           <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
                         </div>
                         <div class="fee-compare-row">
                           <div class="slider-track"><span class="slider-thumb"></span></div>
-                          <input class="percent-input" value="0" />
-                          <div class="percent-suffix">%</div>
+                          <div class="input-group percent-input-group">
+                            <input class="form-control percent-input" value="2" />
+                            <span class="input-group-text percent-suffix">%</span>
+                          </div>
                           <label class="fee-compare-actions">
                             <input type="checkbox" />
                             <span>Apply to all</span>
@@ -3893,7 +3913,7 @@
                     </div>
 
                     <div class="asset-section-head" style="margin-top: 14px;">
-                      <div class="asset-title">Asset</div>
+                      <div class="asset-title">Select Buy Sell Asset</div>
                       <div class="asset-col-head">Buy Fee</div>
                       <div class="asset-col-head" style="padding-left: 0;">Sell Fee</div>
                     </div>
@@ -3908,9 +3928,9 @@
                             <input type="checkbox" checked />
                             <span class="switch-track"><span class="switch-thumb"></span></span>
                           </label>
-                          <div class="asset-fee">
-                            <input value="10" />
-                            <span>%</span>
+                          <div class="input-group asset-fee">
+                            <input class="form-control percent-input" value="10" />
+                            <span class="input-group-text percent-suffix">%</span>
                           </div>
                         </div>
                         <div class="asset-fee-cell">
@@ -3918,9 +3938,9 @@
                             <input type="checkbox" checked />
                             <span class="switch-track"><span class="switch-thumb"></span></span>
                           </label>
-                          <div class="asset-fee">
-                            <input value="9.2" />
-                            <span>%</span>
+                          <div class="input-group asset-fee">
+                            <input class="form-control percent-input" value="9.2" />
+                            <span class="input-group-text percent-suffix">%</span>
                           </div>
                         </div>
                       </div>
@@ -3935,9 +3955,9 @@
                             <input type="checkbox" checked />
                             <span class="switch-track"><span class="switch-thumb"></span></span>
                           </label>
-                          <div class="asset-fee">
-                            <input value="10" />
-                            <span>%</span>
+                          <div class="input-group asset-fee">
+                            <input class="form-control percent-input" value="10" />
+                            <span class="input-group-text percent-suffix">%</span>
                           </div>
                         </div>
                         <div class="asset-fee-cell">
@@ -3945,9 +3965,9 @@
                             <input type="checkbox" checked />
                             <span class="switch-track"><span class="switch-thumb"></span></span>
                           </label>
-                          <div class="asset-fee">
-                            <input value="9.2" />
-                            <span>%</span>
+                          <div class="input-group asset-fee">
+                            <input class="form-control percent-input" value="9.2" />
+                            <span class="input-group-text percent-suffix">%</span>
                           </div>
                         </div>
                       </div>
@@ -3962,9 +3982,9 @@
                             <input type="checkbox" />
                             <span class="switch-track"><span class="switch-thumb"></span></span>
                           </label>
-                          <div class="asset-fee" style="opacity: 0.5;">
-                            <input value="--" />
-                            <span>%</span>
+                          <div class="input-group asset-fee" style="opacity: 0.5;">
+                            <input class="form-control percent-input" value="--" />
+                            <span class="input-group-text percent-suffix">%</span>
                           </div>
                         </div>
                         <div class="asset-fee-cell">
@@ -3972,9 +3992,9 @@
                             <input type="checkbox" checked />
                             <span class="switch-track"><span class="switch-thumb"></span></span>
                           </label>
-                          <div class="asset-fee">
-                            <input value="9.2" />
-                            <span>%</span>
+                          <div class="input-group asset-fee">
+                            <input class="form-control percent-input" value="9.2" />
+                            <span class="input-group-text percent-suffix">%</span>
                           </div>
                         </div>
                       </div>
@@ -3982,16 +4002,18 @@
                   </div>
 
                   <div class="asset-fee-group__panel" data-asset-fee-panel="offline">
-                    <div class="setting-card fee-compare-card" style="border: 0; box-shadow: none; padding: 0;">
-                      <div class="fee-compare-col">
+                    <div class="setting-card fee-compare-card row g-0" style="border: 0; box-shadow: none; padding: 0;">
+                      <div class="col-12 col-md-6 fee-compare-col">
                         <div class="fee-compare-title">
                           <span>Buy Fee</span>
                           <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
                         </div>
                         <div class="fee-compare-row">
                           <div class="slider-track"><span class="slider-thumb"></span></div>
-                          <input class="percent-input" value="0" />
-                          <div class="percent-suffix">%</div>
+                          <div class="input-group percent-input-group">
+                            <input class="form-control percent-input" value="0" />
+                            <span class="input-group-text percent-suffix">%</span>
+                          </div>
                           <label class="fee-compare-actions">
                             <input type="checkbox" />
                             <span>Apply to all</span>
@@ -4000,15 +4022,17 @@
                         </div>
                       </div>
 
-                      <div class="fee-compare-col">
+                      <div class="col-12 col-md-6 fee-compare-col">
                         <div class="fee-compare-title">
                           <span>Sell Fee</span>
                           <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
                         </div>
                         <div class="fee-compare-row">
                           <div class="slider-track"><span class="slider-thumb"></span></div>
-                          <input class="percent-input" value="0" />
-                          <div class="percent-suffix">%</div>
+                          <div class="input-group percent-input-group">
+                            <input class="form-control percent-input" value="0" />
+                            <span class="input-group-text percent-suffix">%</span>
+                          </div>
                           <label class="fee-compare-actions">
                             <input type="checkbox" />
                             <span>Apply to all</span>
@@ -4019,7 +4043,7 @@
                     </div>
 
                     <div class="asset-section-head" style="margin-top: 14px;">
-                      <div class="asset-title">Asset</div>
+                      <div class="asset-title">Select Buy Sell Asset</div>
                       <div class="asset-col-head">Buy Fee</div>
                       <div class="asset-col-head" style="padding-left: 0;">Sell Fee</div>
                     </div>
@@ -4034,9 +4058,9 @@
                             <input type="checkbox" checked />
                             <span class="switch-track"><span class="switch-thumb"></span></span>
                           </label>
-                          <div class="asset-fee">
-                            <input value="10" />
-                            <span>%</span>
+                          <div class="input-group asset-fee">
+                            <input class="form-control percent-input" value="10" />
+                            <span class="input-group-text percent-suffix">%</span>
                           </div>
                         </div>
                         <div class="asset-fee-cell">
@@ -4044,9 +4068,9 @@
                             <input type="checkbox" checked />
                             <span class="switch-track"><span class="switch-thumb"></span></span>
                           </label>
-                          <div class="asset-fee">
-                            <input value="9.2" />
-                            <span>%</span>
+                          <div class="input-group asset-fee">
+                            <input class="form-control percent-input" value="9.2" />
+                            <span class="input-group-text percent-suffix">%</span>
                           </div>
                         </div>
                       </div>
@@ -4061,9 +4085,9 @@
                             <input type="checkbox" checked />
                             <span class="switch-track"><span class="switch-thumb"></span></span>
                           </label>
-                          <div class="asset-fee">
-                            <input value="10" />
-                            <span>%</span>
+                          <div class="input-group asset-fee">
+                            <input class="form-control percent-input" value="10" />
+                            <span class="input-group-text percent-suffix">%</span>
                           </div>
                         </div>
                         <div class="asset-fee-cell">
@@ -4071,9 +4095,9 @@
                             <input type="checkbox" checked />
                             <span class="switch-track"><span class="switch-thumb"></span></span>
                           </label>
-                          <div class="asset-fee">
-                            <input value="9.2" />
-                            <span>%</span>
+                          <div class="input-group asset-fee">
+                            <input class="form-control percent-input" value="9.2" />
+                            <span class="input-group-text percent-suffix">%</span>
                           </div>
                         </div>
                       </div>
@@ -4088,9 +4112,9 @@
                             <input type="checkbox" />
                             <span class="switch-track"><span class="switch-thumb"></span></span>
                           </label>
-                          <div class="asset-fee" style="opacity: 0.5;">
-                            <input value="--" />
-                            <span>%</span>
+                          <div class="input-group asset-fee" style="opacity: 0.5;">
+                            <input class="form-control percent-input" value="--" />
+                            <span class="input-group-text percent-suffix">%</span>
                           </div>
                         </div>
                         <div class="asset-fee-cell">
@@ -4098,9 +4122,9 @@
                             <input type="checkbox" checked />
                             <span class="switch-track"><span class="switch-thumb"></span></span>
                           </label>
-                          <div class="asset-fee">
-                            <input value="9.2" />
-                            <span>%</span>
+                          <div class="input-group asset-fee">
+                            <input class="form-control percent-input" value="9.2" />
+                            <span class="input-group-text percent-suffix">%</span>
                           </div>
                         </div>
                       </div>

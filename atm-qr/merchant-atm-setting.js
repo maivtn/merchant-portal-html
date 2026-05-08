@@ -216,7 +216,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   const syncRoleVisibility = () => {
-    const currentRole = roleInputs.find((input) => input.checked)?.value || 'combo_atm';
+    const currentRole = roleInputs.find((input) => input.checked)?.value || 'merchant_atm';
 
     roleDependentSections.forEach((section) => {
       const allowedRoles = roleTargets(section.getAttribute('data-role-visibility') || '');

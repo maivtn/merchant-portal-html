@@ -9,6 +9,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
@@ -344,6 +347,7 @@
       align-items: center;
       justify-content: center;
       color: #94a3b8;
+      cursor: help;
     }
 
     .switch {
@@ -2477,7 +2481,7 @@
 
     .asset-section-head {
       display: grid;
-      grid-template-columns: 126px 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 14px;
       align-items: end;
       margin-bottom: 10px;
@@ -2501,7 +2505,7 @@
     .asset-header,
     .asset-row {
       display: grid;
-      grid-template-columns: 126px 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 14px;
       align-items: center;
     }
@@ -2518,7 +2522,7 @@
     }
 
     .asset-row--fee-config {
-      grid-template-columns: 126px minmax(140px, 1fr) minmax(140px, 1fr);
+      grid-template-columns: 1fr 1fr 1fr;
     }
 
     .asset-fee-cell {
@@ -3706,12 +3710,18 @@
             
             <div class="walkin-card p-4 mt-3" data-role-visibility="merchant_atm,combo_atm">
               <div class="d-flex justify-content-between align-items-start gap-3">
-                <div class="d-flex gap-3">
-                  <div class="walkin-icon">
-                    <i data-lucide="store" class="w-5 h-5"></i>
-                  </div>
-                  <div>
-                    <div class="walkin-title">Walk-in Transaction Mode <span class="new-badge">New</span></div>
+                  <div class="d-flex gap-3">
+                    <div class="walkin-icon">
+                      <i data-lucide="store" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                    <div class="walkin-title">
+                      <span>Walk-in Transaction Mode</span>
+                      <span class="info-dot" data-tippy-content="When walk-in mode is enabled, customers can scan your QR code at the store, review fees and conditions, then create a direct trade request.">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                      </span>
+                      <span class="new-badge">New</span>
+                    </div>
                     <div class="walkin-subtitle">Allow customers to visit your fixed location and trade directly.</div>
                   </div>
                 </div>
@@ -3820,18 +3830,6 @@
                   <div class="col-12 col-lg-5">
                     <div class="h-100 ps-lg-4 walkin-right-divider">
                       <div class="walkin-setup-side">
-                        <div class="mb-3 d-flex flex-row gap-2 align-items-center">
-                          <label class="form-label fw-semibold flex-shrink-0 mb-0 m-0">
-                            <i data-lucide="dollar-sign" class="text-primary w-4 h-4"></i>
-                            Walk-in Fixed Fee
-                          </label>
-
-                          <div class="input-group walkin-fee-row">
-                            <input class="form-control" value="5" />
-                            <span class="input-group-text">%</span>
-                          </div>
-                        </div>
-
                         <div class="walkin-info-box mb-3">
                           <i class="bi bi-info-circle-fill walkin-info-icon"></i>
                           <p class="mb-0 small">
@@ -3875,8 +3873,8 @@
                     <div class="row g-5">
                       <div class="col-12 col-md-6 fee-compare-col">
                         <div class="fee-compare-title">
-                          <span>Sell Fee</span>
-                          <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                          <span>Buy Fee</span>
+                          <span class="info-dot" data-tippy-content="Fee when customers buy crypto from Merchant/Mobile ATM."><i data-lucide="info" class="w-4 h-4"></i></span>
                         </div>
                         <div class="fee-compare-row">
                           <div class="slider-track"><span class="slider-thumb"></span></div>
@@ -3887,15 +3885,15 @@
                           <label class="fee-compare-actions">
                             <input type="checkbox" />
                             <span>Apply to all</span>
-                            <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                            <span class="info-dot" data-tippy-content="Apply this fee to all assets in the list. Individual settings will be overwritten."><i data-lucide="info" class="w-4 h-4"></i></span>
                           </label>
                         </div>
                       </div>
 
                       <div class="col-12 col-md-6 fee-compare-col">
                         <div class="fee-compare-title">
-                          <span>Buy Fee</span>
-                          <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                          <span>Sell Fee</span>
+                          <span class="info-dot" data-tippy-content="Fee when customers sell crypto to Merchant/Mobile ATM."><i data-lucide="info" class="w-4 h-4"></i></span>
                         </div>
                         <div class="fee-compare-row">
                           <div class="slider-track"><span class="slider-thumb"></span></div>
@@ -3906,16 +3904,16 @@
                           <label class="fee-compare-actions">
                             <input type="checkbox" />
                             <span>Apply to all</span>
-                            <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                            <span class="info-dot" data-tippy-content="Apply this fee to all assets in the list. Individual settings will be overwritten."><i data-lucide="info" class="w-4 h-4"></i></span>
                           </label>
                         </div>
                       </div>
                     </div>
 
                     <div class="asset-section-head" style="margin-top: 14px;">
-                      <div class="asset-title">Select Buy Sell Asset</div>
-                      <div class="asset-col-head">Buy Fee</div>
-                      <div class="asset-col-head" style="padding-left: 0;">Sell Fee</div>
+                      <div class="asset-col-head">Select Buy Sell Asset</div>
+                      <div class="asset-col-head">Buy Fee <span class="info-dot" data-tippy-content="Fee applied when customers buy crypto from Merchant/Mobile ATM."><i data-lucide="info" class="w-4 h-4"></i></span></div>
+                      <div class="asset-col-head" style="padding-left: 0;">Sell Fee <span class="info-dot" data-tippy-content="Fee applied when customers sell crypto to Merchant/Mobile ATM."><i data-lucide="info" class="w-4 h-4"></i></span></div>
                     </div>
                     <div class="asset-grid mt-2">
                       <div class="asset-row asset-row--fee-config">
@@ -4002,11 +4000,11 @@
                   </div>
 
                   <div class="asset-fee-group__panel" data-asset-fee-panel="offline">
-                    <div class="setting-card fee-compare-card row g-0" style="border: 0; box-shadow: none; padding: 0;">
+                    <div class="row g-5">
                       <div class="col-12 col-md-6 fee-compare-col">
                         <div class="fee-compare-title">
                           <span>Buy Fee</span>
-                          <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                          <span class="info-dot" data-tippy-content="Fee when customers buy crypto from Merchant/Mobile ATM."><i data-lucide="info" class="w-4 h-4"></i></span>
                         </div>
                         <div class="fee-compare-row">
                           <div class="slider-track"><span class="slider-thumb"></span></div>
@@ -4017,7 +4015,7 @@
                           <label class="fee-compare-actions">
                             <input type="checkbox" />
                             <span>Apply to all</span>
-                            <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                            <span class="info-dot" data-tippy-content="Apply this fee to all assets in the list. Individual settings will be overwritten."><i data-lucide="info" class="w-4 h-4"></i></span>
                           </label>
                         </div>
                       </div>
@@ -4025,7 +4023,7 @@
                       <div class="col-12 col-md-6 fee-compare-col">
                         <div class="fee-compare-title">
                           <span>Sell Fee</span>
-                          <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                          <span class="info-dot" data-tippy-content="Fee when customers sell crypto to Merchant/Mobile ATM."><i data-lucide="info" class="w-4 h-4"></i></span>
                         </div>
                         <div class="fee-compare-row">
                           <div class="slider-track"><span class="slider-thumb"></span></div>
@@ -4036,16 +4034,16 @@
                           <label class="fee-compare-actions">
                             <input type="checkbox" />
                             <span>Apply to all</span>
-                            <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                            <span class="info-dot" data-tippy-content="Apply this fee to all assets in the list. Individual settings will be overwritten."><i data-lucide="info" class="w-4 h-4"></i></span>
                           </label>
                         </div>
                       </div>
                     </div>
 
                     <div class="asset-section-head" style="margin-top: 14px;">
-                      <div class="asset-title">Select Buy Sell Asset</div>
-                      <div class="asset-col-head">Buy Fee</div>
-                      <div class="asset-col-head" style="padding-left: 0;">Sell Fee</div>
+                      <div class="asset-col-head">Select Buy Sell Asset</div>
+                      <div class="asset-col-head">Buy Fee <span class="info-dot" data-tippy-content="Fee applied when customers buy crypto from Merchant/Mobile ATM."><i data-lucide="info" class="w-4 h-4"></i></span></div>
+                      <div class="asset-col-head" style="padding-left: 0;">Sell Fee <span class="info-dot" data-tippy-content="Fee applied when customers sell crypto to Merchant/Mobile ATM."><i data-lucide="info" class="w-4 h-4"></i></span></div>
                     </div>
                     <div class="asset-grid mt-2">
                       <div class="asset-row asset-row--fee-config">

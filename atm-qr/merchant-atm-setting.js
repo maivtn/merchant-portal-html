@@ -5,7 +5,24 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const refreshTooltips = () => {
+    if (!window.tippy) return;
+
+    document.querySelectorAll('.info-dot').forEach((node) => {
+      if (node._tippy) return;
+      window.tippy(node, {
+        content: node.getAttribute('data-tippy-content') || 'More information',
+        theme: 'light-border',
+        animation: 'shift-away-subtle',
+        placement: 'top',
+        interactive: false,
+        arrow: true,
+      });
+    });
+  };
+
   refreshIcons();
+  refreshTooltips();
 
   const tabs = Array.from(document.querySelectorAll('[data-setting-tab]'));
   const panels = Array.from(document.querySelectorAll('[data-setting-panel]'));

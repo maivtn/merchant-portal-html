@@ -160,13 +160,13 @@ document.addEventListener('DOMContentLoaded', () => {
     orderContinue.setAttribute('href', withAtmType(nextPage, { type: activeMode, unit: amountUnit, asset }));
   };
 
-  document.querySelectorAll('[data-atm-info-link]').forEach((link) => {
-    link.href = withAtmType('merchant-atm-info.html');
-  });
+  // document.querySelectorAll('[data-atm-info-link]').forEach((link) => {
+  //   link.href = withAtmType('merchant-atm-info.html');
+  // });
 
-  document.querySelectorAll('[data-atm-qr-link]').forEach((link) => {
-    link.href = withAtmType('merchant-atm-qr.html');
-  });
+  // document.querySelectorAll('[data-atm-qr-link]').forEach((link) => {
+  //   link.href = withAtmType('merchant-atm-qr.html');
+  // });
 
   document.querySelectorAll('a[href^="merchant-atm-"]').forEach((link) => {
     link.href = withAtmType(link.getAttribute('href'));

@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
       name: 'VLINKPAY MERCHANT ATM 01',
       id: 'MAT-4K9P2X',
       status: 'Online',
+      feeRate: '1%',
       location: 'Quận 1, TP. Hồ Chí Minh',
       image: '../atm-qr/merchant.png',
       infoImage: '../atm-qr/merchant.png',
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
       name: 'VLINKPAY MOBILE ATM 01',
       id: 'MOB-8H2Q7N',
       status: 'Online',
+      feeRate: '5%',
       location: 'Quận 3, TP. Hồ Chí Minh',
       image: '../atm-qr/mobile.png',
       infoImage: '../atm-qr/mobile.png',
@@ -63,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setText('[data-atm-name]', atmProfile.name);
   setText('[data-atm-id]', atmProfile.id);
   setText('[data-atm-status]', atmProfile.status);
+  setText('[data-atm-fee-rate]', atmProfile.feeRate);
   setText('[data-atm-location]', atmProfile.location);
   setText('[data-atm-cta]', atmProfile.cta);
   setText('[data-atm-note]', atmProfile.note);

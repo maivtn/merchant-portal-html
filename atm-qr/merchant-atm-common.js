@@ -85,6 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
   setText('[data-atm-cta]', atmProfile.cta);
   setText('[data-atm-note]', atmProfile.note);
 
+  const hoursCard = document.querySelector('[data-atm-hours-card]');
+  if (hoursCard) {
+    hoursCard.hidden = atmType === 'mobile';
+  }
+
   if (document.querySelector('[data-atm-page-title]')) {
     document.title = atmProfile.pageTitle;
   }

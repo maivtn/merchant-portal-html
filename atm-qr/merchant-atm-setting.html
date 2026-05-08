@@ -2304,6 +2304,62 @@
       transition: transform 0.18s ease;
     }
 
+    .asset-fee-group__tabs {
+      display: inline-flex;
+      width: fit-content;
+      gap: 8px;
+      margin: 16px 0 14px;
+      padding: 6px;
+      border: 1px solid rgba(217, 119, 6, 0.12);
+      border-radius: 18px;
+      background: #fffaf2;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .asset-fee-group__tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .asset-fee-group__tab {
+      appearance: none;
+      border: 1px solid transparent;
+      background: transparent;
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 10px 14px;
+      border-radius: 14px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .asset-fee-group__tab:hover {
+      color: var(--text);
+    }
+
+    .asset-fee-group__tab.active {
+      background: #fff;
+      color: var(--blue);
+      border-color: rgba(217, 119, 6, 0.16);
+      box-shadow: 0 10px 22px rgba(217, 119, 6, 0.08);
+    }
+
+    .asset-fee-group__panel {
+      display: none;
+      margin-top: 0;
+      padding: 0 0 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .asset-fee-group__panel.active {
+      display: block;
+    }
+
     .fee-compare-col {
       padding: 14px;
     }
@@ -3788,129 +3844,268 @@
                 </div>
 
                 <div class="collapse show" id="asset-fee-group-collapse">
-                  <div class="setting-card fee-compare-card" style="border: 0; box-shadow: none; padding: 0;">
-                  <div class="fee-compare-col">
-                    <div class="fee-compare-title">
-                      <span>Buy Fee</span>
-                      <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                  <div class="asset-fee-group__tabs" role="tablist" aria-label="Asset fee type">
+                    <button type="button" class="asset-fee-group__tab active" data-asset-fee-tab="online"
+                      aria-selected="true">
+                      Online fee
+                    </button>
+                    <button type="button" class="asset-fee-group__tab" data-asset-fee-tab="offline"
+                      aria-selected="false">
+                      Offline fee
+                    </button>
+                  </div>
+
+                  <div class="asset-fee-group__panel active" data-asset-fee-panel="online">
+                    <div class="setting-card fee-compare-card" style="border: 0; box-shadow: none; padding: 0;">
+                      <div class="fee-compare-col">
+                        <div class="fee-compare-title">
+                          <span>Buy Fee</span>
+                          <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                        </div>
+                        <div class="fee-compare-row">
+                          <div class="slider-track"><span class="slider-thumb"></span></div>
+                          <input class="percent-input" value="0" />
+                          <div class="percent-suffix">%</div>
+                          <label class="fee-compare-actions">
+                            <input type="checkbox" />
+                            <span>Apply to all</span>
+                            <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="fee-compare-col">
+                        <div class="fee-compare-title">
+                          <span>Sell Fee</span>
+                          <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                        </div>
+                        <div class="fee-compare-row">
+                          <div class="slider-track"><span class="slider-thumb"></span></div>
+                          <input class="percent-input" value="0" />
+                          <div class="percent-suffix">%</div>
+                          <label class="fee-compare-actions">
+                            <input type="checkbox" />
+                            <span>Apply to all</span>
+                            <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                          </label>
+                        </div>
+                      </div>
                     </div>
-                    <div class="fee-compare-row">
-                      <div class="slider-track"><span class="slider-thumb"></span></div>
-                      <input class="percent-input" value="0" />
-                      <div class="percent-suffix">%</div>
-                      <label class="fee-compare-actions">
-                        <input type="checkbox" />
-                        <span>Apply to all</span>
-                        <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
-                      </label>
+
+                    <div class="asset-section-head" style="margin-top: 14px;">
+                      <div class="asset-title">Asset</div>
+                      <div class="asset-col-head">Buy Fee</div>
+                      <div class="asset-col-head" style="padding-left: 0;">Sell Fee</div>
+                    </div>
+                    <div class="asset-grid mt-2">
+                      <div class="asset-row asset-row--fee-config">
+                        <div class="asset-name">
+                          <span class="asset-icon usdt">T</span>
+                          <span>USDT</span>
+                        </div>
+                        <div class="asset-fee-cell">
+                          <label class="switch asset-switch">
+                            <input type="checkbox" checked />
+                            <span class="switch-track"><span class="switch-thumb"></span></span>
+                          </label>
+                          <div class="asset-fee">
+                            <input value="10" />
+                            <span>%</span>
+                          </div>
+                        </div>
+                        <div class="asset-fee-cell">
+                          <label class="switch asset-switch">
+                            <input type="checkbox" checked />
+                            <span class="switch-track"><span class="switch-thumb"></span></span>
+                          </label>
+                          <div class="asset-fee">
+                            <input value="9.2" />
+                            <span>%</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="asset-row asset-row--fee-config">
+                        <div class="asset-name">
+                          <span class="asset-icon usdv">$</span>
+                          <span>USDV</span>
+                        </div>
+                        <div class="asset-fee-cell">
+                          <label class="switch asset-switch">
+                            <input type="checkbox" checked />
+                            <span class="switch-track"><span class="switch-thumb"></span></span>
+                          </label>
+                          <div class="asset-fee">
+                            <input value="10" />
+                            <span>%</span>
+                          </div>
+                        </div>
+                        <div class="asset-fee-cell">
+                          <label class="switch asset-switch">
+                            <input type="checkbox" checked />
+                            <span class="switch-track"><span class="switch-thumb"></span></span>
+                          </label>
+                          <div class="asset-fee">
+                            <input value="9.2" />
+                            <span>%</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="asset-row asset-row--fee-config">
+                        <div class="asset-name">
+                          <span class="asset-icon btc">₿</span>
+                          <span>BTC</span>
+                        </div>
+                        <div class="asset-fee-cell">
+                          <label class="switch asset-switch">
+                            <input type="checkbox" />
+                            <span class="switch-track"><span class="switch-thumb"></span></span>
+                          </label>
+                          <div class="asset-fee" style="opacity: 0.5;">
+                            <input value="--" />
+                            <span>%</span>
+                          </div>
+                        </div>
+                        <div class="asset-fee-cell">
+                          <label class="switch asset-switch">
+                            <input type="checkbox" checked />
+                            <span class="switch-track"><span class="switch-thumb"></span></span>
+                          </label>
+                          <div class="asset-fee">
+                            <input value="9.2" />
+                            <span>%</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  <div class="fee-compare-col">
-                    <div class="fee-compare-title">
-                      <span>Sell Fee</span>
-                      <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
-                    </div>
-                    <div class="fee-compare-row">
-                      <div class="slider-track"><span class="slider-thumb"></span></div>
-                      <input class="percent-input" value="0" />
-                      <div class="percent-suffix">%</div>
-                      <label class="fee-compare-actions">
-                        <input type="checkbox" />
-                        <span>Apply to all</span>
-                        <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
-                      </label>
-                    </div>
-                  </div>
-                  </div>
+                  <div class="asset-fee-group__panel" data-asset-fee-panel="offline">
+                    <div class="setting-card fee-compare-card" style="border: 0; box-shadow: none; padding: 0;">
+                      <div class="fee-compare-col">
+                        <div class="fee-compare-title">
+                          <span>Buy Fee</span>
+                          <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                        </div>
+                        <div class="fee-compare-row">
+                          <div class="slider-track"><span class="slider-thumb"></span></div>
+                          <input class="percent-input" value="0" />
+                          <div class="percent-suffix">%</div>
+                          <label class="fee-compare-actions">
+                            <input type="checkbox" />
+                            <span>Apply to all</span>
+                            <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                          </label>
+                        </div>
+                      </div>
 
-                  <div class="asset-section-head" style="margin-top: 14px;">
-                    <div class="asset-title">Asset</div>
-                    <div class="asset-col-head">Buy Fee</div>
-                    <div class="asset-col-head" style="padding-left: 0;">Sell Fee</div>
-                  </div>
-                  <div class="asset-grid mt-2">
-                  <div class="asset-row asset-row--fee-config">
-                    <div class="asset-name">
-                      <span class="asset-icon usdt">T</span>
-                      <span>USDT</span>
-                    </div>
-                    <div class="asset-fee-cell">
-                      <label class="switch asset-switch">
-                        <input type="checkbox" checked />
-                        <span class="switch-track"><span class="switch-thumb"></span></span>
-                      </label>
-                      <div class="asset-fee">
-                        <input value="10" />
-                        <span>%</span>
+                      <div class="fee-compare-col">
+                        <div class="fee-compare-title">
+                          <span>Sell Fee</span>
+                          <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                        </div>
+                        <div class="fee-compare-row">
+                          <div class="slider-track"><span class="slider-thumb"></span></div>
+                          <input class="percent-input" value="0" />
+                          <div class="percent-suffix">%</div>
+                          <label class="fee-compare-actions">
+                            <input type="checkbox" />
+                            <span>Apply to all</span>
+                            <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                          </label>
+                        </div>
                       </div>
                     </div>
-                    <div class="asset-fee-cell">
-                      <label class="switch asset-switch">
-                        <input type="checkbox" checked />
-                        <span class="switch-track"><span class="switch-thumb"></span></span>
-                      </label>
-                      <div class="asset-fee">
-                        <input value="9.2" />
-                        <span>%</span>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div class="asset-row asset-row--fee-config">
-                    <div class="asset-name">
-                      <span class="asset-icon usdv">$</span>
-                      <span>USDV</span>
+                    <div class="asset-section-head" style="margin-top: 14px;">
+                      <div class="asset-title">Asset</div>
+                      <div class="asset-col-head">Buy Fee</div>
+                      <div class="asset-col-head" style="padding-left: 0;">Sell Fee</div>
                     </div>
-                    <div class="asset-fee-cell">
-                      <label class="switch asset-switch">
-                        <input type="checkbox" checked />
-                        <span class="switch-track"><span class="switch-thumb"></span></span>
-                      </label>
-                      <div class="asset-fee">
-                        <input value="10" />
-                        <span>%</span>
+                    <div class="asset-grid mt-2">
+                      <div class="asset-row asset-row--fee-config">
+                        <div class="asset-name">
+                          <span class="asset-icon usdt">T</span>
+                          <span>USDT</span>
+                        </div>
+                        <div class="asset-fee-cell">
+                          <label class="switch asset-switch">
+                            <input type="checkbox" checked />
+                            <span class="switch-track"><span class="switch-thumb"></span></span>
+                          </label>
+                          <div class="asset-fee">
+                            <input value="10" />
+                            <span>%</span>
+                          </div>
+                        </div>
+                        <div class="asset-fee-cell">
+                          <label class="switch asset-switch">
+                            <input type="checkbox" checked />
+                            <span class="switch-track"><span class="switch-thumb"></span></span>
+                          </label>
+                          <div class="asset-fee">
+                            <input value="9.2" />
+                            <span>%</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="asset-fee-cell">
-                      <label class="switch asset-switch">
-                        <input type="checkbox" checked />
-                        <span class="switch-track"><span class="switch-thumb"></span></span>
-                      </label>
-                      <div class="asset-fee">
-                        <input value="9.2" />
-                        <span>%</span>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div class="asset-row asset-row--fee-config">
-                    <div class="asset-name">
-                      <span class="asset-icon btc">₿</span>
-                      <span>BTC</span>
-                    </div>
-                    <div class="asset-fee-cell">
-                      <label class="switch asset-switch">
-                        <input type="checkbox" />
-                        <span class="switch-track"><span class="switch-thumb"></span></span>
-                      </label>
-                      <div class="asset-fee" style="opacity: 0.5;">
-                        <input value="--" />
-                        <span>%</span>
+                      <div class="asset-row asset-row--fee-config">
+                        <div class="asset-name">
+                          <span class="asset-icon usdv">$</span>
+                          <span>USDV</span>
+                        </div>
+                        <div class="asset-fee-cell">
+                          <label class="switch asset-switch">
+                            <input type="checkbox" checked />
+                            <span class="switch-track"><span class="switch-thumb"></span></span>
+                          </label>
+                          <div class="asset-fee">
+                            <input value="10" />
+                            <span>%</span>
+                          </div>
+                        </div>
+                        <div class="asset-fee-cell">
+                          <label class="switch asset-switch">
+                            <input type="checkbox" checked />
+                            <span class="switch-track"><span class="switch-thumb"></span></span>
+                          </label>
+                          <div class="asset-fee">
+                            <input value="9.2" />
+                            <span>%</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="asset-fee-cell">
-                      <label class="switch asset-switch">
-                        <input type="checkbox" checked />
-                        <span class="switch-track"><span class="switch-thumb"></span></span>
-                      </label>
-                      <div class="asset-fee">
-                        <input value="9.2" />
-                        <span>%</span>
+
+                      <div class="asset-row asset-row--fee-config">
+                        <div class="asset-name">
+                          <span class="asset-icon btc">₿</span>
+                          <span>BTC</span>
+                        </div>
+                        <div class="asset-fee-cell">
+                          <label class="switch asset-switch">
+                            <input type="checkbox" />
+                            <span class="switch-track"><span class="switch-thumb"></span></span>
+                          </label>
+                          <div class="asset-fee" style="opacity: 0.5;">
+                            <input value="--" />
+                            <span>%</span>
+                          </div>
+                        </div>
+                        <div class="asset-fee-cell">
+                          <label class="switch asset-switch">
+                            <input type="checkbox" checked />
+                            <span class="switch-track"><span class="switch-thumb"></span></span>
+                          </label>
+                          <div class="asset-fee">
+                            <input value="9.2" />
+                            <span>%</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
                 </div>
               </div>
             </div>

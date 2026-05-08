@@ -49,6 +49,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const assetFeeGroup = document.getElementById('asset-fee-group');
   const assetFeeGroupCollapse = document.getElementById('asset-fee-group-collapse');
   const assetFeeGroupToggle = document.querySelector('.asset-fee-group__toggle');
+  const assetFeeTabs = Array.from(document.querySelectorAll('[data-asset-fee-tab]'));
+  const assetFeePanels = Array.from(document.querySelectorAll('[data-asset-fee-panel]'));
   const assetFeeGroupCollapseInstance =
     assetFeeGroupCollapse && window.bootstrap?.Collapse
       ? window.bootstrap.Collapse.getOrCreateInstance(assetFeeGroupCollapse, { toggle: false })
@@ -242,6 +244,18 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     refreshIcons();
+  };
+
+  const activateAssetFeeTab = (name) => {
+    assetFeeTabs.forEach((tab) => {
+      const isActive = tab.getAttribute('data-asset-fee-tab') === name;
+      tab.classList.toggle('active', isActive);
+      tab.setAttribute('aria-selected', String(isActive));
+    });
+
+    assetFeePanels.forEach((panel) => {
+      panel.classList.toggle('active', panel.getAttribute('data-asset-fee-panel') === name);
+    });
   };
 
   const openQrModal = (event) => {
@@ -458,6 +472,12 @@ window.addEventListener('DOMContentLoaded', () => {
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => activate(tab.getAttribute('data-setting-tab') || 'general'));
   });
+
+  assetFeeTabs.forEach((tab) => {
+    tab.addEventListener('click', () => activateAssetFeeTab(tab.getAttribute('data-asset-fee-tab') || 'online'));
+  });
+
+  activateAssetFeeTab(assetFeeTabs.find((tab) => tab.classList.contains('active'))?.getAttribute('data-asset-fee-tab') || 'online');
 
   openSettingTabButtons.forEach((button) => {
     button.addEventListener('click', () => {

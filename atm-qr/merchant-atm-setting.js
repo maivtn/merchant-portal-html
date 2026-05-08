@@ -259,10 +259,10 @@ window.addEventListener('DOMContentLoaded', () => {
     refreshIcons();
   };
 
-  if (roleInputs[0] && roleInputs[1]) {
-    roleInputs[0].checked = false;
-    roleInputs[1].checked = false;
-    if (roleInputs[2]) roleInputs[2].checked = true;
+  const defaultRole = roleInputs.find((i) => i.value === 'merchant_atm') || roleInputs[0];
+  if (defaultRole) {
+    roleInputs.forEach((i) => (i.checked = false));
+    defaultRole.checked = true;
   }
 
   const activate = (name) => {

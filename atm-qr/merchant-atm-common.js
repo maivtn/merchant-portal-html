@@ -116,6 +116,50 @@ document.addEventListener('DOMContentLoaded', () => {
       .join('');
   }
 
+  const amountUnitInput = document.querySelector('[data-amount-unit-input]');
+  const assetInput = document.querySelector('[data-asset-input]');
+  const sellAssetInfo = document.querySelector('[data-sell-asset-info]');
+  const sellAssetLabel = document.querySelector('[data-sell-asset-label]');
+  const sellAssetQuantity = document.querySelector('[data-sell-asset-quantity]');
+  const sellAssetApprox = document.querySelector('[data-sell-asset-approx]');
+  const sellAssetAvailability = {
+    USD: { quantity: '50,000.00', approx: '≈ $50,000.00' },
+    USDV: { quantity: '29,399.68', approx: '≈ $29,399.68' },
+    USDT: { quantity: '18,240.22', approx: '≈ $18,240.22' },
+    USDC: { quantity: '12,980.10', approx: '≈ $12,980.10' },
+    VMM: { quantity: '8,450.00', approx: '≈ $3,018.00' },
+    DOGE: { quantity: '72,300.00', approx: '≈ $5,804.00' },
+    ETH: { quantity: '14.25', approx: '≈ $43,400.00' },
+  };
+
+  const getActiveMode = () => {
+    const activeModeButton = document.querySelector('.step-toggle [data-step-mode].active');
+    return activeModeButton?.getAttribute('data-step-mode') || 'buy';
+  };
+
+  const syncSellAssetInfo = () => {
+    if (!sellAssetInfo) return;
+    const isSell = getActiveMode() === 'sell';
+    sellAssetInfo.classList.toggle('hidden', !isSell);
+    if (!isSell) return;
+
+    const asset = assetInput?.value || 'USDV';
+    const meta = sellAssetAvailability[asset] || sellAssetAvailability.USDV;
+    if (sellAssetLabel) sellAssetLabel.textContent = asset;
+    if (sellAssetQuantity) sellAssetQuantity.textContent = meta.quantity;
+    if (sellAssetApprox) sellAssetApprox.textContent = meta.approx;
+  };
+
+  const syncOrderContinueLink = () => {
+    const orderContinue = document.querySelector('[data-order-continue]');
+    if (!orderContinue) return;
+    const activeMode = getActiveMode();
+    const nextPage = atmType === 'mobile' ? 'merchant-atm-mobile-location.html' : 'merchant-atm-review.html';
+    const amountUnit = amountUnitInput?.value || 'USD';
+    const asset = assetInput?.value || 'USDV';
+    orderContinue.setAttribute('href', withAtmType(nextPage, { type: activeMode, unit: amountUnit, asset }));
+  };
+
   document.querySelectorAll('[data-atm-info-link]').forEach((link) => {
     link.href = withAtmType('merchant-atm-info.html');
   });
@@ -139,22 +183,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const options = Array.from(toggle.querySelectorAll('[data-step-mode]'));
     if (!options.length) return;
 
-    const syncOrderContinue = () => {
-      const orderContinue = document.querySelector('[data-order-continue]');
-      if (!orderContinue) return;
-      const activeModeButton = document.querySelector('.step-toggle [data-step-mode].active');
-      const activeMode = activeModeButton?.getAttribute('data-step-mode') || 'buy';
-      const nextPage = atmType === 'mobile' ? 'merchant-atm-mobile-location.html' : 'merchant-atm-review.html';
-      orderContinue.setAttribute('href', withAtmType(nextPage, { type: activeMode }));
-    };
-
     const setActive = (target) => {
       options.forEach((option) => {
         const isActive = option === target;
         option.classList.toggle('active', isActive);
         option.setAttribute('aria-pressed', String(isActive));
       });
-      syncOrderContinue();
+      syncOrderContinueLink();
+      syncSellAssetInfo();
     };
 
     const initial = options.find((option) => option.classList.contains('active')) || options[0];
@@ -207,50 +243,44 @@ document.addEventListener('DOMContentLoaded', () => {
     syncNoteCounter();
   }
 
-  const paymentMethodSelect = document.querySelector('[data-payment-method-select]');
-  if (paymentMethodSelect) {
-    const toggle = paymentMethodSelect.querySelector('[data-payment-method-toggle]');
-    const menu = paymentMethodSelect.querySelector('[data-payment-method-menu]');
-    const valueNode = paymentMethodSelect.querySelector('[data-payment-method-value]');
-    const input = paymentMethodSelect.querySelector('[data-payment-method-input]');
-    const options = Array.from(paymentMethodSelect.querySelectorAll('[data-payment-method-option]'));
+  const initImageSelect = (root, config) => {
+    if (!root) return;
 
-    const optionMeta = {
-      cash: { label: 'Cash', icon: 'icons/cash.png' },
-      'bank-transfer': { label: 'Chuyển khoản', icon: 'icons/bank.png' },
-      zelle: { label: 'Zelle', icon: 'icons/zelle.png' },
-      venmo: { label: 'Venmo', icon: 'icons/venmo.png' },
-      paypal: { label: 'PayPal', icon: 'icons/paypal.png' },
-      'cash-app': { label: 'Cash App', icon: 'icons/cash_app.png' },
-      'apple-cash': { label: 'Apple Cash', icon: 'icons/apple_cash.png' },
-    };
+    const toggle = root.querySelector(config.toggleSelector);
+    const menu = root.querySelector(config.menuSelector);
+    const valueNode = root.querySelector(config.valueSelector);
+    const input = root.querySelector(config.inputSelector);
+    const options = Array.from(root.querySelectorAll(config.optionSelector));
 
     const setOpen = (open) => {
       toggle?.setAttribute('aria-expanded', String(open));
       if (menu) menu.hidden = !open;
     };
 
-    const setValue = (value) => {
-      const meta = optionMeta[value] || optionMeta['bank-transfer'];
+    const renderValue = (value) => {
+      const meta = config.optionMeta[value] || config.optionMeta[config.defaultValue];
       if (input) input.value = value;
       if (valueNode) {
         valueNode.innerHTML = `
-          <span class="payment-method-select__option-icon">
+          <span class="${config.iconClass}">
             <img src="${meta.icon}" alt="" aria-hidden="true" />
           </span>
-          <span class="payment-method-select__option-text">${meta.label}</span>
+          <span class="${config.textClass}">${meta.label}</span>
         `;
       }
 
       options.forEach((option) => {
-        const isActive = option.getAttribute('data-payment-method-option') === value;
+        const isActive = option.getAttribute(config.optionAttr) === value;
         option.classList.toggle('is-active', isActive);
         option.setAttribute('aria-selected', String(isActive));
       });
+
+      if (typeof config.onChange === 'function') {
+        config.onChange(value, meta);
+      }
     };
 
-    const current = input?.value || 'bank-transfer';
-    setValue(current);
+    renderValue(input?.value || config.defaultValue);
     setOpen(false);
 
     toggle?.addEventListener('click', () => {
@@ -260,14 +290,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     options.forEach((option) => {
       option.addEventListener('click', () => {
-        const value = option.getAttribute('data-payment-method-option') || 'bank-transfer';
-        setValue(value);
+        const value = option.getAttribute(config.optionAttr) || config.defaultValue;
+        renderValue(value);
         setOpen(false);
       });
     });
 
     document.addEventListener('click', (event) => {
-      if (!paymentMethodSelect.contains(event.target)) {
+      if (!root.contains(event.target)) {
         setOpen(false);
       }
     });
@@ -275,12 +305,77 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') setOpen(false);
     });
-  }
+  };
+
+  initImageSelect(document.querySelector('[data-payment-method-select]'), {
+    toggleSelector: '[data-payment-method-toggle]',
+    menuSelector: '[data-payment-method-menu]',
+    valueSelector: '[data-payment-method-value]',
+    inputSelector: '[data-payment-method-input]',
+    optionSelector: '[data-payment-method-option]',
+    optionAttr: 'data-payment-method-option',
+    defaultValue: 'bank-transfer',
+    iconClass: 'payment-method-select__option-icon',
+    textClass: 'payment-method-select__option-text',
+    optionMeta: {
+      cash: { label: 'Cash', icon: 'icons/cash.png' },
+      'bank-transfer': { label: 'Chuyển khoản', icon: 'icons/bank.png' },
+      zelle: { label: 'Zelle', icon: 'icons/zelle.png' },
+      venmo: { label: 'Venmo', icon: 'icons/venmo.png' },
+      paypal: { label: 'PayPal', icon: 'icons/paypal.png' },
+      'cash-app': { label: 'Cash App', icon: 'icons/cash_app.png' },
+      'apple-cash': { label: 'Apple Cash', icon: 'icons/apple_cash.png' },
+    },
+  });
+
+  initImageSelect(document.querySelector('[data-amount-unit-select]'), {
+    toggleSelector: '[data-amount-unit-toggle]',
+    menuSelector: '[data-amount-unit-menu]',
+    valueSelector: '[data-amount-unit-value]',
+    inputSelector: '[data-amount-unit-input]',
+    optionSelector: '[data-amount-unit-option]',
+    optionAttr: 'data-amount-unit-option',
+    defaultValue: 'USD',
+    iconClass: 'payment-method-select__option-icon',
+    textClass: 'payment-method-select__option-text',
+    optionMeta: {
+      USD: { label: 'USD', icon: 'images/usd.png' },
+    },
+    onChange: syncOrderContinueLink,
+  });
+
+  initImageSelect(document.querySelector('[data-asset-select]'), {
+    toggleSelector: '[data-asset-toggle]',
+    menuSelector: '[data-asset-menu]',
+    valueSelector: '[data-asset-value]',
+    inputSelector: '[data-asset-input]',
+    optionSelector: '[data-asset-option]',
+    optionAttr: 'data-asset-option',
+    defaultValue: 'USDV',
+    iconClass: 'payment-method-select__option-icon',
+    textClass: 'payment-method-select__option-text',
+    optionMeta: {
+      USD: { label: 'USD', icon: 'images/usd.png' },
+      USDV: { label: 'USDV', icon: 'images/usdv.png' },
+      USDT: { label: 'USDT', icon: 'images/usdt.png' },
+      USDC: { label: 'USDC', icon: 'images/usdc.svg' },
+      VMM: { label: 'VMM', icon: 'images/vmm.png' },
+      DOGE: { label: 'DOGE', icon: 'images/doge.png' },
+      ETH: { label: 'ETH', icon: 'images/eth.png' },
+    },
+    onChange: () => {
+      syncOrderContinueLink();
+      syncSellAssetInfo();
+    },
+  });
+
+  syncSellAssetInfo();
 
   const reviewRoot = document.querySelector('[data-review-root]');
   if (reviewRoot) {
     const params = new URLSearchParams(window.location.search);
     const type = params.get('type') || 'buy';
+    const asset = params.get('asset') || params.get('unit') || 'USDV';
     const quantity = 100;
     const amount = 100;
     const quantityPrice = 1;
@@ -289,8 +384,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const insuranceRate = 1;
 
     const formatMoney = (value) => `$${Number(value).toFixed(1).replace(/\.0$/, '')}`;
-    const formatQuantity = (value) => `${value} USDV`;
-    const serviceLabel = type === 'sell' ? 'Sell USDV with Cash' : 'Buy USDV with Cash';
+    const formatQuantity = (value) => `${value} ${asset}`;
+    const serviceLabel = type === 'sell' ? `Sell ${asset} with Cash` : `Buy ${asset} with Cash`;
 
     const nodes = {
       serviceType: document.querySelector('[data-review-service-type]'),
@@ -330,10 +425,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nodes.insuranceFee) nodes.insuranceFee.textContent = formatMoney(amount * insuranceRate / 100);
       nodes.backLinks.forEach((link) => {
         const backPage = atmType === 'mobile' ? 'merchant-atm-mobile-location.html' : 'merchant-atm-order.html';
-        link.href = withAtmType(backPage, { type });
+        link.href = withAtmType(backPage, { type, asset });
       });
       if (nodes.confirmLink) {
-        nodes.confirmLink.href = withAtmType('merchant-atm-request-details.html', { type });
+        nodes.confirmLink.href = withAtmType('merchant-atm-request-details.html', { type, asset });
       }
     };
 
@@ -348,6 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (requestRoot) {
     const params = new URLSearchParams(window.location.search);
     const type = params.get('type') || 'buy';
+    const asset = params.get('asset') || params.get('unit') || 'USDV';
     const amount = 100;
     const systemFeeRate = 1;
     const mobileFeeRate = 5;
@@ -357,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const redirectAfterMs = 10 * 1000;
 
     const formatMoney = (value) => `$${Number(value).toFixed(1).replace(/\.0$/, '')}`;
-    const serviceLabel = type === 'sell' ? 'Sell USDV with Cash' : 'Buy USDV with Cash';
+    const serviceLabel = type === 'sell' ? `Sell ${asset} with Cash` : `Buy ${asset} with Cash`;
 
     const nodes = {
       title: document.querySelector('[data-request-title]'),
@@ -393,10 +489,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nodes.buyerPays) nodes.buyerPays.textContent = formatMoney(buyerPays);
       if (nodes.sellerReceives) nodes.sellerReceives.textContent = formatMoney(sellerReceives);
       if (nodes.platformFee) nodes.platformFee.textContent = formatMoney(systemFee);
-      if (nodes.buyerReceives) nodes.buyerReceives.textContent = `${buyerReceives} USDV`;
-      if (nodes.insuranceFee) nodes.insuranceFee.textContent = `${insuranceFee} USDV`;
+      if (nodes.buyerReceives) nodes.buyerReceives.textContent = `${buyerReceives} ${asset}`;
+      if (nodes.insuranceFee) nodes.insuranceFee.textContent = `${insuranceFee} ${asset}`;
       nodes.backLinks.forEach((link) => {
-        link.href = withAtmType('merchant-atm-review.html', { type });
+        link.href = withAtmType('merchant-atm-review.html', { type, asset });
       });
     };
 

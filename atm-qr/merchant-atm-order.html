@@ -40,27 +40,114 @@
         </div>
 
         <div class="mb-4">
-          <label class="step-form-label">Loại crypto</label>
-          <div class="step-select-wrap">
-            <select class="step-select">
-              <option>USDV</option>
-              <option>USDT</option>
-              <option>USDC</option>
-            </select>
-            <i data-lucide="chevron-down" class="step-select-icon w-4 h-4"></i>
+          <label class="step-form-label">Select Type <span class="text-rose-500">*</span></label>
+          <div class="step-select-wrap payment-method-select" data-asset-select>
+            <button type="button" class="step-select payment-method-select__button" data-asset-toggle
+              aria-haspopup="listbox" aria-expanded="false">
+              <span class="payment-method-select__value" data-asset-value>
+                <span class="payment-method-select__option-icon">
+                  <img src="images/usdv.png" alt="" aria-hidden="true" />
+                </span>
+                <span class="payment-method-select__option-text">USDV</span>
+              </span>
+            </button>
+            <input type="hidden" name="asset-type" value="USDV" data-asset-input />
+            <div class="payment-method-select__menu" data-asset-menu hidden role="listbox" aria-label="Select Type">
+              <button type="button" class="payment-method-select__option" data-asset-option="USD"
+                role="option" aria-selected="false">
+                <span class="payment-method-select__option-icon">
+                  <img src="images/usd.png" alt="" aria-hidden="true" />
+                </span>
+                <span class="payment-method-select__option-text">USD</span>
+              </button>
+              <button type="button" class="payment-method-select__option is-active" data-asset-option="USDV"
+                role="option" aria-selected="true">
+                <span class="payment-method-select__option-icon">
+                  <img src="images/usdv.png" alt="" aria-hidden="true" />
+                </span>
+                <span class="payment-method-select__option-text">USDV</span>
+              </button>
+              <button type="button" class="payment-method-select__option" data-asset-option="USDT"
+                role="option" aria-selected="false">
+                <span class="payment-method-select__option-icon">
+                  <img src="images/usdt.png" alt="" aria-hidden="true" />
+                </span>
+                <span class="payment-method-select__option-text">USDT</span>
+              </button>
+              <button type="button" class="payment-method-select__option" data-asset-option="USDC"
+                role="option" aria-selected="false">
+                <span class="payment-method-select__option-icon">
+                  <img src="images/usdc.svg" alt="" aria-hidden="true" />
+                </span>
+                <span class="payment-method-select__option-text">USDC</span>
+              </button>
+              <button type="button" class="payment-method-select__option" data-asset-option="VMM"
+                role="option" aria-selected="false">
+                <span class="payment-method-select__option-icon">
+                  <img src="images/vmm.png" alt="" aria-hidden="true" />
+                </span>
+                <span class="payment-method-select__option-text">VMM</span>
+              </button>
+              <button type="button" class="payment-method-select__option" data-asset-option="DOGE"
+                role="option" aria-selected="false">
+                <span class="payment-method-select__option-icon">
+                  <img src="images/doge.png" alt="" aria-hidden="true" />
+                </span>
+                <span class="payment-method-select__option-text">DOGE</span>
+              </button>
+              <button type="button" class="payment-method-select__option" data-asset-option="ETH"
+                role="option" aria-selected="false">
+                <span class="payment-method-select__option-icon">
+                  <img src="images/eth.png" alt="" aria-hidden="true" />
+                </span>
+                <span class="payment-method-select__option-text">ETH</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4 hidden" data-sell-asset-info>
+          <div class="sell-asset-info">
+            <div class="sell-asset-info__left" data-sell-asset-label>USDV</div>
+            <div class="sell-asset-info__right">
+              <div class="sell-asset-info__qty">
+                <span>Available Quantity:</span>
+                <strong data-sell-asset-quantity>29,399.68</strong>
+              </div>
+              <div class="sell-asset-info__approx" data-sell-asset-approx>≈ $29,399.68</div>
+            </div>
           </div>
         </div>
 
         <div class="mb-4">
-          <label class="step-form-label">Số tiền</label>
-          <div class="relative">
-            <input class="step-input pr-24" type="text" value="10,000" />
-            <div class="absolute right-4 top-1/2 -translate-y-1/2 inline-flex items-center gap-2 text-slate-700 font-bold">
-              <span class="w-5 h-5 rounded-full bg-emerald-500 text-white inline-flex items-center justify-center text-[11px]">$</span>
-              <span>USDV</span>
+          <label class="step-form-label">Enter Amount <span class="text-rose-500">*</span></label>
+          <div class="amount-field" data-amount-unit-select>
+            <input class="amount-field__input" type="text" value="10,000" placeholder="Enter amount" />
+            <div class="amount-field__unit">
+              <button type="button" class="amount-field__button" data-amount-unit-toggle aria-haspopup="listbox"
+                aria-expanded="false">
+                <span class="payment-method-select__value" data-amount-unit-value>
+                  <span class="payment-method-select__option-icon">
+                    <img src="images/usd.png" alt="" aria-hidden="true" />
+                  </span>
+                  <span class="payment-method-select__option-text">USD</span>
+                </span>
+                <i data-lucide="chevron-down" class="amount-field__chevron w-4 h-4"></i>
+              </button>
+              <input type="hidden" name="amount-unit" value="USD" data-amount-unit-input />
+            </div>
+            <div class="payment-method-select__menu amount-field__menu" data-amount-unit-menu hidden role="listbox"
+              aria-label="Amount unit">
+              <button type="button" class="payment-method-select__option is-active" data-amount-unit-option="USD"
+                role="option" aria-selected="true">
+                <span class="payment-method-select__option-icon">
+                  <img src="images/usd.png" alt="" aria-hidden="true" />
+                </span>
+                <span class="payment-method-select__option-text">USD</span>
+              </button>
             </div>
           </div>
-          <p class="mt-1.5 text-[12px] text-slate-500">Yêu cầu $100 - $10,000</p>
+          <p class="mt-1.5 text-[12px] text-slate-500">require: $100 - $10,000</p>
         </div>
 
         <div class="mb-4">
@@ -162,7 +249,7 @@
           </div>
           <div class="modal-list-item">
             <span class="modal-bullet"></span>
-            <span>Cash In / Cash Out / Nhận hộ / Chi hộ: phí cố định từ 5% (nếu hai bên chấp nhận)</span>
+            <span>Cash In / Cash Out / Nhận hộ / Chi hộ: phí từ 5% (nếu hai bên chấp nhận)</span>
           </div>
           <div class="modal-list-item">
             <span class="modal-bullet"></span>

@@ -3248,7 +3248,7 @@
       padding: 0.85rem 1.5rem;
       border: 1px solid #d97706;
       border-radius: 0.9rem;
-      background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+      background: #d97706;
       color: #fff;
       font-size: 1rem;
       font-weight: 700;
@@ -3261,8 +3261,8 @@
 
     .primary-action:hover {
       transform: translateY(-2px);
-      background: linear-gradient(180deg, #f59e0b 0%, #c47309 100%);
-      border-color: #c47309;
+      background: #b45309;
+      border-color: #b45309;
       box-shadow: 0 14px 24px rgba(217, 119, 6, 0.22);
     }
 
@@ -3430,10 +3430,19 @@
         font-size: 22px;
       }
 
-      .setting-topnav button {
-        padding-inline: 14px;
-        font-size: 12px;
+      .setting-topnav {
+        gap: 0.25rem;
       }
+      .setting-topnav button {
+        padding: 0.6rem 10px;
+        font-size: 11px;
+        gap: 3px;
+      }
+      .topnav-info-dot {
+        width: 14px;
+        height: 14px;
+      }
+      .topnav-info-dot svg { width: 9px; height: 9px; }
 
       .setting-subnav {
         width: 100%;
@@ -3597,6 +3606,189 @@
         gap: 8px;
       }
     }
+
+    /* ── Topnav info icon ─────────────────── */
+    .setting-topnav button {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .topnav-info-dot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      color: #454545;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .topnav-info-dot svg { width: 11px; height: 11px; }
+
+    /* ── History panel ────────────────────── */
+    .history-board { padding: 0 0 28px; }
+
+    .history-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .history-filter-group {
+      display: flex;
+      flex: 1;
+      gap: 8px;
+      padding: 4px 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .history-filter-group::-webkit-scrollbar { display: none; }
+    .history-filter-btn {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 12px 16px;
+      border: 1px solid #e0e0e0;
+      border-radius: 16px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      color: #6b7280;
+      white-space: nowrap;
+      box-shadow: 0 8px 22px rgba(34, 31, 31, 0.05);
+      transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    }
+    .history-filter-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(217, 119, 6, 0.35);
+    }
+    .history-filter-btn.active {
+      background: var(--blue-soft);
+      color: var(--blue);
+      border-color: rgba(217, 119, 6, 0.18);
+      box-shadow: 0 14px 28px rgba(217, 119, 6, 0.12);
+    }
+    .history-filter-icon {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .history-filter-icon img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+    .history-filter-info {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      color: #94a3b8;
+      flex-shrink: 0;
+      cursor: help;
+    }
+    .history-filter-info svg { width: 16px; height: 16px; }
+
+    .history-dropdown-row {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .history-select-wrap { position: relative; }
+    @media (max-width: 640px) {
+      .history-controls { flex-direction: column; align-items: stretch; }
+      .history-dropdown-row { flex-shrink: unset; }
+      .history-select-wrap { flex: 1; }
+      .history-filter-group { gap: 6px; }
+      .history-filter-btn {
+        justify-content: center;
+        padding: 8px 6px;
+        font-size: 11px;
+        gap: 4px;
+        border-radius: 12px;
+      }
+      .history-filter-icon img { width: 16px; height: 16px; }
+      .history-filter-icon svg { width: 14px; height: 14px; }
+      .history-filter-info { width: 13px; height: 13px; }
+      .history-filter-info svg { width: 8px; height: 8px; }
+    }
+    .history-select {
+      width: 100%;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 9px 32px 9px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+      background: #fff;
+      appearance: none;
+      cursor: pointer;
+      outline: none;
+    }
+    .history-select-wrap::after {
+      content: '';
+      position: absolute;
+      right: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid #6b7280;
+      pointer-events: none;
+    }
+    .history-month-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 12px;
+      background: #f1f5f9;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 2px;
+    }
+    .history-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 2px;
+      border-bottom: 1px solid #f1f5f9;
+      text-decoration: none;
+      color: inherit;
+    }
+    .history-item:last-child { border-bottom: none; }
+    .history-item-main { flex: 1; min-width: 0; }
+    .history-item-title { font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 2px; }
+    .history-item-sub { font-size: 13px; color: #6b7280; }
+    .history-item-date { font-size: 12px; color: #9ca3af; margin-top: 2px; }
+    .history-item-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .history-item-amount { font-size: 15px; font-weight: 700; color: #111827; }
+    .history-item-chevron { color: #d1d5db; flex-shrink: 0; }
+    .history-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .history-badge--declined  { background: #fef2f2; color: #ef4444; border: 1px solid #fca5a5; }
+    .history-badge--completed { background: #f0fdf4; color: #22c55e; border: 1px solid #86efac; }
+    .history-badge--cancelled { background: #f8fafc; color: #94a3b8; border: 1px solid #e2e8f0; }
   </style>
 </head>
 
@@ -3612,13 +3804,163 @@
     </header>
 
     <nav class="setting-topnav" aria-label="Primary">
-      <button type="button">Buy Crypto (P2P)</button>
-      <button type="button">Sell Crypto (P2P)</button>
-      <button type="button">History</button>
-      <button type="button" class="active">Settings</button>
+      <button type="button" data-topnav-tab="buy">
+        Buy Crypto (P2P)
+        <span class="topnav-info-dot" data-tippy-content="For buyers: Create a request to buy crypto from a Merchant ATM or Mobile ATM." data-tippy-placement="bottom">
+          <i data-lucide="info"></i>
+        </span>
+      </button>
+      <button type="button" data-topnav-tab="sell">
+        Sell Crypto (P2P)
+        <span class="topnav-info-dot" data-tippy-content="For sellers: Create a request to sell crypto through a Merchant ATM or Mobile ATM." data-tippy-placement="bottom">
+          <i data-lucide="info"></i>
+        </span>
+      </button>
+      <button type="button" data-topnav-tab="history">
+        History
+        <span class="topnav-info-dot" data-tippy-content="View transaction history: Track requests you created or transactions you handled." data-tippy-placement="bottom">
+          <i data-lucide="info"></i>
+        </span>
+      </button>
+      <button type="button" class="active" data-topnav-tab="settings">
+        Settings
+        <span class="topnav-info-dot" data-tippy-content="For ATM partners: Configure your Merchant ATM / Mobile ATM profile, payment methods, limits, and availability." data-tippy-placement="bottom">
+          <i data-lucide="info"></i>
+        </span>
+      </button>
     </nav>
 
-    <div class="setting-board">
+    <!-- History Panel -->
+    <div class="history-board" data-topnav-panel="history" style="display:none; padding: 0 0 28px;">
+      <div class="history-controls">
+        <div class="history-filter-group">
+          <button class="history-filter-btn active" data-history-filter="individual">
+            <span class="history-filter-icon"><i data-lucide="user" class="w-4 h-4"></i></span>
+            <span>Individual</span>
+            <span class="history-filter-info" data-tippy-content="View transactions created by you as a customer." data-tippy-placement="bottom">
+              <i data-lucide="info"></i>
+            </span>
+          </button>
+          <button class="history-filter-btn" data-history-filter="mobile-atm">
+            <span class="history-filter-icon"><img src="mobile.png" alt="Mobile ATM"></span>
+            <span>Mobile ATM</span>
+            <span class="history-filter-info" data-tippy-content="View transactions handled through Mobile ATM service." data-tippy-placement="bottom">
+              <i data-lucide="info"></i>
+            </span>
+          </button>
+          <button class="history-filter-btn" data-history-filter="merchant-atm">
+            <span class="history-filter-icon"><img src="merchant.png" alt="Merchant ATM"></span>
+            <span>Merchant ATM</span>
+            <span class="history-filter-info" data-tippy-content="View transactions handled by Merchant ATM partners." data-tippy-placement="bottom">
+              <i data-lucide="info"></i>
+            </span>
+          </button>
+        </div>
+
+        <div class="history-dropdown-row">
+          <div class="history-select-wrap">
+            <select class="history-select">
+              <option>Exchange Type: All</option>
+              <option>Buy</option>
+              <option>Sell</option>
+            </select>
+          </div>
+          <div class="history-select-wrap">
+            <select class="history-select">
+              <option>Status: All</option>
+              <option>Completed</option>
+              <option>Declined</option>
+              <option>Cancelled</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="history-month-header">
+        <span>August 2025</span>
+        <span>(10)</span>
+      </div>
+
+      <a href="#" class="history-item" onclick="return false;">
+        <div class="history-item-main">
+          <div class="history-item-title">Buy USDV with Cash</div>
+          <div class="history-item-sub">Seller <strong>AD266759</strong></div>
+          <div class="history-item-date">Aug 18, 2025, 4:11 PM</div>
+        </div>
+        <div class="history-item-right">
+          <div class="history-item-amount">$100</div>
+          <span class="history-badge history-badge--declined">Declined</span>
+        </div>
+        <i data-lucide="chevron-right" class="history-item-chevron w-4 h-4"></i>
+      </a>
+
+      <a href="#" class="history-item" onclick="return false;">
+        <div class="history-item-main">
+          <div class="history-item-title">Buy USDV with Cash</div>
+          <div class="history-item-sub">Seller <strong>AD266759</strong></div>
+          <div class="history-item-date">Aug 18, 2025, 4:00 PM</div>
+        </div>
+        <div class="history-item-right">
+          <div class="history-item-amount">$100</div>
+          <span class="history-badge history-badge--completed">Completed</span>
+        </div>
+        <i data-lucide="chevron-right" class="history-item-chevron w-4 h-4"></i>
+      </a>
+
+      <a href="#" class="history-item" onclick="return false;">
+        <div class="history-item-main">
+          <div class="history-item-title">Buy USDV with Cash</div>
+          <div class="history-item-sub">Seller <strong>AD266759</strong></div>
+          <div class="history-item-date">Aug 18, 2025, 3:55 PM</div>
+        </div>
+        <div class="history-item-right">
+          <div class="history-item-amount">$100</div>
+          <span class="history-badge history-badge--completed">Completed</span>
+        </div>
+        <i data-lucide="chevron-right" class="history-item-chevron w-4 h-4"></i>
+      </a>
+
+      <a href="#" class="history-item" onclick="return false;">
+        <div class="history-item-main">
+          <div class="history-item-title">Buy USDV with Cash</div>
+          <div class="history-item-sub">Seller <strong>AD266759</strong></div>
+          <div class="history-item-date">Aug 18, 2025, 3:50 PM</div>
+        </div>
+        <div class="history-item-right">
+          <div class="history-item-amount">$100</div>
+          <span class="history-badge history-badge--completed">Completed</span>
+        </div>
+        <i data-lucide="chevron-right" class="history-item-chevron w-4 h-4"></i>
+      </a>
+
+      <a href="#" class="history-item" onclick="return false;">
+        <div class="history-item-main">
+          <div class="history-item-title">Buy USDV with Cash</div>
+          <div class="history-item-sub">Seller <strong>AD266759</strong></div>
+          <div class="history-item-date">Aug 18, 2025, 2:56 PM</div>
+        </div>
+        <div class="history-item-right">
+          <div class="history-item-amount">$100</div>
+          <span class="history-badge history-badge--completed">Completed</span>
+        </div>
+        <i data-lucide="chevron-right" class="history-item-chevron w-4 h-4"></i>
+      </a>
+
+      <a href="#" class="history-item" onclick="return false;">
+        <div class="history-item-main">
+          <div class="history-item-title">Buy USDV with Cash</div>
+          <div class="history-item-sub">Seller <strong>AD266759</strong></div>
+          <div class="history-item-date">Aug 18, 2025, 2:27 PM</div>
+        </div>
+        <div class="history-item-right">
+          <div class="history-item-amount">$100</div>
+          <span class="history-badge history-badge--cancelled">Cancelled</span>
+        </div>
+        <i data-lucide="chevron-right" class="history-item-chevron w-4 h-4"></i>
+      </a>
+    </div>
+
+    <div class="setting-board" data-topnav-panel="settings">
       <div class="setting-subnav">
         <button type="button" class="active" data-setting-tab="general">
           <i data-lucide="settings-2" class="w-4 h-4"></i>
@@ -3920,7 +4262,7 @@
                   </div>
 
                   <div class="asset-fee-group__panel active" data-asset-fee-panel="online">
-                    <div class="row g-5">
+                    <div class="row g-1 g-md-5">
                       <div class="col-12 col-md-6 fee-compare-col">
                         <div class="fee-compare-title">
                           <span>Buy Fee</span>
@@ -4050,7 +4392,7 @@
                   </div>
 
                   <div class="asset-fee-group__panel" data-asset-fee-panel="offline">
-                    <div class="row g-5">
+                    <div class="row g-1 g-md-5">
                       <div class="col-12 col-md-6 fee-compare-col">
                         <div class="fee-compare-title">
                           <span>Buy Fee</span>

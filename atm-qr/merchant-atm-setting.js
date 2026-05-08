@@ -19,6 +19,20 @@ window.addEventListener('DOMContentLoaded', () => {
         arrow: true,
       });
     });
+
+    document.querySelectorAll('.topnav-info-dot, .history-filter-info').forEach((node) => {
+      if (node._tippy) return;
+      window.tippy(node, {
+        content: node.getAttribute('data-tippy-content') || 'More information',
+        theme: 'light-border',
+        animation: 'shift-away-subtle',
+        placement: node.getAttribute('data-tippy-placement') || 'bottom',
+        trigger: 'click',
+        interactive: false,
+        arrow: true,
+        maxWidth: 240,
+      });
+    });
   };
 
   refreshIcons();
@@ -636,4 +650,36 @@ window.addEventListener('DOMContentLoaded', () => {
   syncAcceptedPaymentChips();
   syncWalkinSetupState();
   syncAssetFeeGroupState();
+
+  // Topnav tab switching
+  const topnavTabs = Array.from(document.querySelectorAll('[data-topnav-tab]'));
+  const topnavPanels = Array.from(document.querySelectorAll('[data-topnav-panel]'));
+
+  const activateTopnavTab = (name) => {
+    topnavTabs.forEach((tab) => tab.classList.toggle('active', tab.dataset.topnavTab === name));
+    topnavPanels.forEach((panel) => {
+      panel.style.display = panel.dataset.topnavPanel === name ? '' : 'none';
+    });
+    refreshIcons();
+    refreshTooltips();
+  };
+
+  topnavTabs.forEach((tab) => {
+    tab.addEventListener('click', (event) => {
+      if (event.target.closest('.topnav-info-dot')) return;
+      activateTopnavTab(tab.dataset.topnavTab || 'settings');
+    });
+  });
+
+  activateTopnavTab('settings');
+
+  // History filter buttons
+  const historyFilterBtns = Array.from(document.querySelectorAll('[data-history-filter]'));
+  historyFilterBtns.forEach((btn) => {
+    btn.addEventListener('click', (event) => {
+      if (event.target.closest('.history-filter-info')) return;
+      historyFilterBtns.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
 });

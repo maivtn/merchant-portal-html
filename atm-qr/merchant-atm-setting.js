@@ -88,7 +88,7 @@ window.addEventListener('DOMContentLoaded', () => {
       : null;
   const params = new URLSearchParams(window.location.search);
   const atmType = params.get('atmType') === 'mobile' ? 'mobile' : 'merchant';
-  const isBehalf = params.get('isBehalf') !== 'false';
+  let isBehalf = params.get('isBehalf') !== 'false';
   const withAtmType = (href) => {
     const url = new URL(href, window.location.href);
     url.searchParams.set('atmType', atmType);
@@ -145,6 +145,66 @@ window.addEventListener('DOMContentLoaded', () => {
 
   joinProgramConfirm?.addEventListener('click', () => {
     closeJoinProgramModal();
+    openPinModal();
+  });
+
+  // PIN modal
+  const pinModal = document.getElementById('pin-modal');
+  const pinInput = document.getElementById('pin-modal-input');
+  const pinEye = document.getElementById('pin-modal-eye');
+  const pinClose = document.getElementById('pin-modal-close');
+  const pinOk = document.getElementById('pin-modal-ok');
+
+  const openPinModal = () => {
+    if (!pinModal) return;
+    if (pinInput) pinInput.value = '';
+    pinModal.classList.add('active');
+    pinModal.setAttribute('aria-hidden', 'false');
+    refreshIcons();
+    setTimeout(() => pinInput?.focus(), 50);
+  };
+
+  const closePinModal = () => {
+    if (!pinModal) return;
+    pinModal.classList.remove('active');
+    pinModal.setAttribute('aria-hidden', 'true');
+    if (pinInput) pinInput.value = '';
+  };
+
+  pinEye?.addEventListener('click', () => {
+    const isPassword = pinInput.type === 'password';
+    pinInput.type = isPassword ? 'text' : 'password';
+    const icon = pinEye.querySelector('i');
+    if (icon) {
+      icon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+      refreshIcons();
+    }
+  });
+
+  pinInput?.addEventListener('input', () => {
+    pinInput.value = pinInput.value.replace(/\D/g, '').slice(0, 6);
+  });
+
+  pinClose?.addEventListener('click', closePinModal);
+  pinOk?.addEventListener('click', () => {
+    closePinModal();
+    window.Swal?.fire({
+      icon: 'success',
+      title: 'Đăng ký thành công',
+      text: 'Đăng ký thu hộ chi hộ thành công',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#f59e0b',
+    }).then(() => {
+      isBehalf = true;
+      syncBehalfState();
+      const url = new URL(window.location.href);
+      url.searchParams.set('isBehalf', 'true');
+      window.history.replaceState(null, '', url);
+    });
+  });
+
+  pinModal?.addEventListener('click', (e) => {
+    if (e.target === pinModal) closePinModal();
   });
 
   const roleTargets = (value) => value.split(',').map((item) => item.trim()).filter(Boolean);
@@ -650,6 +710,7 @@ window.addEventListener('DOMContentLoaded', () => {
       closeHoursModal(true);
       closeAcceptedPaymentModal();
       closeJoinProgramModal();
+      closePinModal();
     }
   });
 

@@ -9,6 +9,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
   <script src="https://unpkg.com/@popperjs/core@2"></script>
   <script src="https://unpkg.com/tippy.js@6"></script>
@@ -3025,7 +3026,8 @@
     }
 
     body.is-behalf [data-behalf-show].btn,
-    body.is-behalf [data-behalf-show].receive-card__cta {
+    body.is-behalf [data-behalf-show].receive-card__cta,
+    body.is-behalf [data-behalf-show][data-setting-tab] {
       display: flex !important;
     }
 
@@ -3038,6 +3040,97 @@
       display: flex !important;
     }
 
+    /* PIN modal */
+    .pin-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(15, 23, 42, 0.48);
+      z-index: 80;
+    }
+
+    .pin-modal.active {
+      display: flex;
+    }
+
+    .pin-modal-card {
+      position: relative;
+      width: min(100%, 400px);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 28px 80px rgba(15, 23, 42, 0.28);
+      padding: 28px 24px 24px;
+      text-align: center;
+    }
+
+    .pin-modal-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+
+    .pin-modal-input-wrap {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .pin-modal-input {
+      width: 100%;
+      height: 52px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 0 48px 0 20px;
+      font-size: 20px;
+      letter-spacing: 0.25em;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .pin-modal-input:focus {
+      border-color: #6366f1;
+    }
+
+    .pin-modal-input::placeholder {
+      font-size: 14px;
+      letter-spacing: 0;
+      color: #94a3b8;
+    }
+
+    .pin-modal-eye {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #94a3b8;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+    }
+
+    .pin-modal-eye:hover {
+      color: #64748b;
+    }
+
+    .pin-modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .pin-modal-actions .btn {
+      min-width: 110px;
+      border-radius: 999px;
+    }
+
     /* Join Program modal */
     .join-program-modal {
       position: fixed;
@@ -3046,7 +3139,8 @@
       align-items: center;
       justify-content: center;
       padding: 18px;
-      background: rgba(15, 23, 42, 0.48);
+      background: rgba(15, 23, 42, 0.52);
+      backdrop-filter: blur(2px);
       z-index: 70;
     }
 
@@ -3056,33 +3150,53 @@
 
     .join-program-card {
       position: relative;
-      width: min(100%, 520px);
-      border-radius: 24px;
+      width: min(100%, 480px);
+      border-radius: 28px;
       background: #fff;
-      box-shadow: 0 28px 80px rgba(15, 23, 42, 0.28);
+      box-shadow: 0 32px 96px rgba(15, 23, 42, 0.32);
       overflow: hidden;
     }
 
-    .join-program-header {
+    .join-program-banner {
+      position: relative;
+      padding: 28px 24px 22px;
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 60%, #fde68a 100%);
+      border-bottom: 1px solid rgba(217, 119, 6, 0.14);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
-      padding: 20px 20px 0;
+    }
+
+    .join-program-banner-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #fff 0%, #fef9ee 100%);
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.18), inset 0 0 0 1.5px rgba(217, 119, 6, 0.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #d97706;
+      flex: 0 0 auto;
+      margin-bottom: 14px;
     }
 
     .join-program-title {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--text);
+      font-size: 20px;
+      font-weight: 900;
+      color: #78350f;
       line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-top: 4px;
     }
 
     .join-program-subtitle {
-      margin-top: 4px;
+      margin-top: 5px;
       font-size: 13px;
-      color: var(--muted);
-      line-height: 1.45;
+      color: #92400e;
+      line-height: 1.5;
+      opacity: 0.85;
     }
 
     .join-program-close {
@@ -3090,57 +3204,128 @@
       height: 34px;
       flex: 0 0 auto;
       border: none;
-      background: #f1f5f9;
+      background: rgba(255,255,255,0.7);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      color: var(--muted);
+      color: #92400e;
+      transition: background 0.15s;
     }
 
     .join-program-close:hover {
-      background: #e2e8f0;
+      background: rgba(255,255,255,0.95);
     }
 
     .join-program-body {
-      padding: 18px 20px;
+      padding: 20px 24px 4px;
     }
 
     .join-program-deposit-box {
-      border: 1.5px solid rgba(217, 119, 6, 0.22);
-      border-radius: 16px;
-      background: linear-gradient(135deg, #fffaf0 0%, #ffffff 80%);
-      padding: 18px;
-      text-align: center;
+      border: 1.5px solid rgba(217, 119, 6, 0.18);
+      border-radius: 18px;
+      background: linear-gradient(135deg, #fffaf2 0%, #ffffff 70%);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
       margin-bottom: 16px;
     }
 
+    .join-program-deposit-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #d97706;
+      flex: 0 0 auto;
+      font-size: 22px;
+    }
+
+    .join-program-deposit-info {
+      flex: 1;
+      min-width: 0;
+    }
+
     .join-program-deposit-label {
-      font-size: 13px;
+      font-size: 12px;
+      font-weight: 600;
       color: var(--muted);
-      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 3px;
     }
 
     .join-program-deposit-amount {
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 900;
       color: #d97706;
       letter-spacing: -0.03em;
       line-height: 1.1;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
     }
 
     .join-program-deposit-unit {
       font-size: 14px;
       font-weight: 700;
       color: #92400e;
-      margin-top: 2px;
     }
 
     .join-program-deposit-note {
-      margin-top: 8px;
+      margin-top: 4px;
       font-size: 12px;
       color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .join-program-info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .join-program-info-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .join-program-info-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5c7ad6;
+      flex: 0 0 auto;
+    }
+
+    .join-program-info-text {
+      flex: 1;
+      color: var(--muted);
+    }
+
+    .join-program-info-text strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .join-program-divider {
+      height: 1px;
+      background: #f1f5f9;
+      margin: 0 24px 16px;
     }
 
     .join-program-terms-row {
@@ -3148,19 +3333,69 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      margin-bottom: 14px;
+      padding: 0 24px 18px;
       font-size: 13px;
     }
 
     .join-program-actions {
       display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
       gap: 10px;
-      padding: 14px 20px 20px;
-      border-top: 1px solid #f1f5f9;
+      padding: 0 24px 24px;
     }
 
     .join-program-actions .btn {
-      flex: 1;
+      min-width: 128px;
+      min-height: calc(1.5em + 1rem + 2px);
+      padding: 0.85rem 1.4rem;
+      border-radius: 0.9rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .join-program-actions .btn-light {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--blue);
+      box-shadow: 0 8px 22px rgba(34, 31, 31, 0.05);
+    }
+
+    .join-program-actions .btn-light:hover {
+      transform: translateY(-2px);
+      border-color: rgba(217, 119, 6, 0.35);
+      background: #fffbeb;
+      color: var(--blue);
+      box-shadow: 0 12px 24px rgba(217, 119, 6, 0.12);
+    }
+
+    .join-program-actions .btn-warning {
+      border: 1px solid #d97706;
+      background: #d97706;
+      color: #fff;
+      box-shadow: 0 10px 18px rgba(217, 119, 6, 0.18);
+    }
+
+    .join-program-actions .btn-warning:hover:not(:disabled) {
+      transform: translateY(-2px);
+      background: #b45309;
+      border-color: #b45309;
+      color: #fff;
+      box-shadow: 0 14px 24px rgba(217, 119, 6, 0.22);
+    }
+
+    .join-program-actions .btn-warning:disabled {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .join-program-actions .btn:active {
+      transform: translateY(0);
     }
 
     .receive-policy-link {
@@ -4207,6 +4442,89 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* SweetAlert2 overrides */
+    .swal2-container.swal2-backdrop-show {
+      background: rgba(15, 23, 42, 0.52) !important;
+      backdrop-filter: blur(2px);
+    }
+
+    .swal2-popup {
+      border-radius: 24px !important;
+      padding: 2rem 2rem 1.75rem !important;
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif !important;
+      box-shadow: 0 32px 96px rgba(15, 23, 42, 0.28) !important;
+    }
+
+    .swal2-icon.swal2-success {
+      border-color: #d97706 !important;
+      color: #d97706 !important;
+    }
+
+    .swal2-icon.swal2-success [class^='swal2-success-line'] {
+      background-color: #d97706 !important;
+    }
+
+    .swal2-icon.swal2-success .swal2-success-ring {
+      border-color: rgba(217, 119, 6, 0.25) !important;
+    }
+
+    .swal2-title {
+      font-size: 1.25rem !important;
+      font-weight: 800 !important;
+      color: #221f1f !important;
+      letter-spacing: -0.02em !important;
+    }
+
+    .swal2-html-container {
+      font-size: 0.93rem !important;
+      color: #757575 !important;
+      line-height: 1.55 !important;
+    }
+
+    .swal2-confirm {
+      border-radius: 0.9rem !important;
+      font-weight: 800 !important;
+      font-size: 0.95rem !important;
+      padding: 0.75rem 2rem !important;
+      background: #d97706 !important;
+      border: 1px solid #d97706 !important;
+      box-shadow: 0 10px 18px rgba(217, 119, 6, 0.22) !important;
+      transition: transform 0.15s, box-shadow 0.15s, background 0.15s !important;
+    }
+
+    .swal2-confirm:hover {
+      background: #b45309 !important;
+      border-color: #b45309 !important;
+      box-shadow: 0 14px 24px rgba(217, 119, 6, 0.28) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .swal2-confirm:focus {
+      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.3) !important;
+    }
+
+    .swal2-cancel {
+      border-radius: 0.9rem !important;
+      font-weight: 800 !important;
+      font-size: 0.95rem !important;
+      padding: 0.75rem 2rem !important;
+      background: #fff !important;
+      border: 1px solid #e0e0e0 !important;
+      color: #d97706 !important;
+      box-shadow: 0 8px 22px rgba(34, 31, 31, 0.05) !important;
+    }
+
+    .swal2-cancel:hover {
+      background: #fffbeb !important;
+      border-color: rgba(217, 119, 6, 0.35) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .swal2-actions {
+      gap: 10px !important;
+      margin-top: 1.5rem !important;
+    }
   </style>
 </head>
 
@@ -4486,7 +4804,7 @@
           <i data-lucide="landmark" class="w-4 h-4"></i>
           Payment Methods
         </button>
-        <button type="button" data-setting-tab="receive-on-behalf">
+        <button type="button" data-setting-tab="receive-on-behalf" data-behalf-show>
           <i data-lucide="handshake" class="w-4 h-4"></i>
           Receive / Pay on Behalf
         </button>
@@ -5378,7 +5696,7 @@
                 <span class="status-note" data-no-behalf-show>Inactive</span>
               </div>
 
-              <div class="receive-service-row justify-start">
+              <!-- <div class="receive-service-row justify-start">
                 <span class="setting-label" style="font-weight: 600;">Join Program</span>
                 <div class="form-check form-switch m-0" data-behalf-show>
                   <input class="form-check-input" type="checkbox" checked id="join-program" />
@@ -5386,16 +5704,16 @@
                 <button type="button" class="btn btn-sm btn-warning" data-no-behalf-show data-open-join-program>
                   Join program
                 </button>
-              </div>
+              </div> -->
 
-              <div class="receive-service-copy d-flex align-items-center gap-1 mt-0">
+              <!-- <div class="receive-service-copy d-flex align-items-center gap-1 mt-0">
                 Applies to eligible Merchant ATM / Mobile ATM accounts in the operating area
-              </div>
+              </div> -->
 
-              <div class="receive-service-row flex-wrap">
+              <!-- <div class="receive-service-row flex-wrap">
                 <div class="form-check m-0">
                   <input class="form-check-input" type="checkbox" checked id="receive-agree" />
-                  <label class="form-check-label small" for="receive-agree">
+                  <label class="form-check-label" for="receive-agree">
                     I agree to the <span class="text-primary">terms &amp; fee schedule</span>
                   </label>
                 </div>
@@ -5403,7 +5721,7 @@
                   class="small text-primary text-decoration-none d-inline-flex align-items-center gap-1">
                   View Policy <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </a>
-              </div>
+              </div> -->
 
               <div class="row g-2 mt-2">
                 <div class="col-12 col-md-6">
@@ -5726,10 +6044,14 @@
 
   <div class="join-program-modal" id="join-program-modal" aria-hidden="true">
     <div class="join-program-card" role="dialog" aria-modal="true" aria-label="Join Program">
-      <div class="join-program-header">
+
+      <div class="join-program-banner">
         <div>
-          <div class="join-program-title">Join Program</div>
-          <div class="join-program-subtitle">A security deposit is required to participate in the Receive / Pay on Behalf program.</div>
+          <div class="join-program-banner-icon">
+            <i data-lucide="handshake" class="w-6 h-6"></i>
+          </div>
+          <div class="join-program-title">Join Receive / Pay on Behalf</div>
+          <div class="join-program-subtitle">A one-time security deposit is required to activate the program on your account.</div>
         </div>
         <button type="button" class="join-program-close" data-close-join-program aria-label="Close">
           <i data-lucide="x" class="w-4 h-4"></i>
@@ -5738,28 +6060,77 @@
 
       <div class="join-program-body">
         <div class="join-program-deposit-box">
-          <div class="join-program-deposit-label">Required Security Deposit</div>
-          <div class="join-program-deposit-amount">2,000</div>
-          <div class="join-program-deposit-unit">USDV</div>
-          <div class="join-program-deposit-note">This amount will be held as collateral and returned upon exit from the program.</div>
+          <div class="join-program-deposit-icon">
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+          </div>
+          <div class="join-program-deposit-info">
+            <div class="join-program-deposit-label">Security Deposit Required</div>
+            <div class="join-program-deposit-amount">
+              2,000 <span class="join-program-deposit-unit">USDV</span>
+            </div>
+            <div class="join-program-deposit-note">Held as collateral · Refundable upon exit</div>
+          </div>
         </div>
 
-        <div class="join-program-terms-row">
-          <div class="form-check m-0">
-            <input class="form-check-input" type="checkbox" id="join-program-agree" />
-            <label class="form-check-label small" for="join-program-agree">
-              I agree to the <a href="receive_pay_terms_en.html" target="_blank" class="text-primary">terms &amp; conditions</a>
-            </label>
+        <div class="join-program-info-list">
+          <div class="join-program-info-item">
+            <div class="join-program-info-icon">
+              <i data-lucide="percent" class="w-4 h-4"></i>
+            </div>
+            <div class="join-program-info-text">Fixed fee <strong>5%</strong> per transaction — you receive <strong>75%</strong> of each fee</div>
           </div>
-          <a href="receive_pay_terms_en.html" target="_blank" class="small text-primary text-decoration-none d-inline-flex align-items-center gap-1">
-            View Terms <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-          </a>
+          <div class="join-program-info-item">
+            <div class="join-program-info-icon">
+              <i data-lucide="calendar-check" class="w-4 h-4"></i>
+            </div>
+            <div class="join-program-info-text">Settlement <strong>End of Day</strong> · Payout <strong>T+1</strong></div>
+          </div>
+          <div class="join-program-info-item">
+            <div class="join-program-info-icon">
+              <i data-lucide="map-pin" class="w-4 h-4"></i>
+            </div>
+            <div class="join-program-info-text">Applies to eligible Merchant ATM / Mobile ATM accounts in the operating area</div>
+          </div>
         </div>
+      </div>
+
+      <div class="join-program-divider"></div>
+
+      <div class="join-program-terms-row">
+        <div class="form-check m-0">
+          <input class="form-check-input" type="checkbox" id="join-program-agree" />
+          <label class="form-check-label" for="join-program-agree">
+            I agree to the <a href="receive_pay_terms_en.html" target="_blank" class="text-primary fw-semibold">terms &amp; conditions</a>
+          </label>
+        </div>
+        <a href="receive_pay_terms_en.html" target="_blank" class=" text-primary text-decoration-none d-inline-flex align-items-center gap-1 fw-semibold text-nowrap">
+          View Terms <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+        </a>
       </div>
 
       <div class="join-program-actions">
         <button type="button" class="btn btn-light" data-close-join-program>Cancel</button>
-        <button type="button" class="btn btn-warning" id="join-program-confirm" disabled>Confirm</button>
+        <button type="button" class="btn btn-warning" id="join-program-confirm" disabled>
+          <i data-lucide="handshake" class="w-4 h-4"></i>
+          Confirm &amp; Join
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pin-modal" id="pin-modal" aria-hidden="true">
+    <div class="pin-modal-card" role="dialog" aria-modal="true" aria-label="Enter PIN">
+      <div class="pin-modal-title">Please enter your VLINKPAY's PIN</div>
+      <div class="pin-modal-input-wrap">
+        <input class="pin-modal-input" id="pin-modal-input" type="password"
+          inputmode="numeric" maxlength="6" placeholder="PIN" autocomplete="off" />
+        <button type="button" class="pin-modal-eye" id="pin-modal-eye" aria-label="Toggle PIN visibility">
+          <i data-lucide="eye" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="pin-modal-actions">
+        <button type="button" class="btn btn-light" id="pin-modal-close">Close</button>
+        <button type="button" class="btn btn-primary" id="pin-modal-ok">OK</button>
       </div>
     </div>
   </div>

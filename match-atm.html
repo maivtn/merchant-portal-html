@@ -174,6 +174,20 @@
         .atm-type-option.selected .atm-type-subtitle {
             color: #b45309;
         }
+
+        .partner-card {
+            transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .partner-card.selected {
+            border-color: var(--brand-primary) !important;
+            background-color: #fffaf0 !important;
+            box-shadow: 0 8px 24px rgba(217, 119, 6, 0.15) !important;
+        }
+
+        .partner-card.selected .partner-check {
+            display: flex !important;
+        }
     </style>
 </head>
 
@@ -284,53 +298,207 @@
                     </div>
                 </div>
 
-                <button onclick="goToStep(2)"
+                <button onclick="goToStep(7)"
                     class="w-full brand-button font-semibold py-3.5 rounded-xl shadow-md active:scale-95 transition-all text-[15px]">
                     Continue
                 </button>
             </main>
         </div>
 
-        <!-- STEP 2: Select a Merchant ATM (Empty/Broadcast) -->
-        <div id="step-2" class="step-container bg-white">
-            <header class="bg-white px-4 pt-12 pb-3 flex items-center justify-between shadow-sm relative z-10">
+        <!-- STEP 2: Select a Mobile ATM / Merchant ATM (Map View) -->
+        <div id="step-2" class="step-container bg-[#f5f6f8]">
+            <header class="bg-white px-4 pt-12 pb-3 flex items-center justify-between border-b border-slate-100 relative z-10">
                 <button onclick="goToStep(1)" class="brand-link flex items-center gap-1 font-medium">
                     <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
                 </button>
-                <h1 class="brand-title text-[17px] font-bold">Select a Merchant ATM</h1>
+                <h1 id="step2-title" class="brand-title text-[17px] font-bold">Select a Mobile ATM</h1>
                 <div class="w-16"></div>
             </header>
 
-            <main class="flex-1 flex flex-col justify-center items-center relative p-4 brand-surface">
-                <div class="flex flex-col items-center justify-center -mt-20">
-                    <div class="w-20 h-20 bg-[#fffaf0] rounded-full flex items-center justify-center mb-6">
-                        <img src="assets/icons/merchant.png"
-                            class="w-10 h-10 object-contain grayscale opacity-60" alt="No Merchant Found">
+            <main class="flex-1 overflow-y-auto">
+                <!-- Map Card -->
+                <div class="m-3 bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                    <div class="flex justify-end px-3 py-2 border-b border-slate-50">
+                        <button class="text-blue-600 text-[12.5px] font-bold flex items-center gap-1">
+                            View Full Map <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        </button>
                     </div>
-                    <h2 class="brand-title text-[17px] font-bold text-center">No suitable Merchant ATM found</h2>
+                    <div class="relative overflow-hidden" style="height: 226px;">
+                        <img src="https://i.ibb.co/RG2pyKYP/Screenshot-2026-04-17-at-16-30-08.png"
+                            class="w-full h-full object-cover" alt="Map">
+
+                        <!-- Ben Thanh Market -->
+                        <div class="absolute flex flex-col items-center pointer-events-none" style="left: 46%; top: 6%; transform: translateX(-50%);">
+                            <div class="w-7 h-7 bg-blue-600 rounded-full border-2 border-white shadow-lg flex items-center justify-center">
+                                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-white"></i>
+                            </div>
+                            <div class="bg-white/95 rounded-md px-1.5 py-0.5 shadow-sm text-[9px] font-bold text-blue-700 mt-0.5 whitespace-nowrap border border-blue-100">Ben Thanh Market</div>
+                        </div>
+
+                        <!-- ATM 1: 1.4% Orange -->
+                        <div class="absolute pointer-events-none" style="left: 18%; top: 20%; transform: translateX(-50%);">
+                            <div class="flex flex-col items-center">
+                                <div class="bg-amber-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-xl shadow-md">1.4%</div>
+                                <div class="bg-white rounded-full px-1.5 py-0.5 mt-1 shadow-sm text-[9px] text-slate-600 font-semibold flex items-center gap-0.5 border border-slate-100 whitespace-nowrap">
+                                    <i data-lucide="clock" class="w-2.5 h-2.5"></i> 20 mins
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ATM 2: 2.1% Blue -->
+                        <div class="absolute pointer-events-none" style="left: 70%; top: 20%; transform: translateX(-50%);">
+                            <div class="flex flex-col items-center">
+                                <div class="bg-blue-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-xl shadow-md">2.1%</div>
+                                <div class="bg-white rounded-full px-1.5 py-0.5 mt-1 shadow-sm text-[9px] text-slate-600 font-semibold flex items-center gap-0.5 border border-slate-100 whitespace-nowrap">
+                                    <i data-lucide="clock" class="w-2.5 h-2.5"></i> 18 mins
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User location -->
+                        <div class="absolute pointer-events-none" style="left: 30%; top: 44%; transform: translateX(-50%);">
+                            <div class="flex flex-col items-center">
+                                <div class="relative">
+                                    <div class="w-14 h-14 bg-blue-400 rounded-full opacity-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                                    <div class="w-5 h-5 bg-blue-600 rounded-full border-2 border-white shadow-lg relative z-10"></div>
+                                </div>
+                                <div class="bg-white rounded-lg px-2 py-0.5 shadow-md text-[9px] font-bold text-slate-700 mt-1 whitespace-nowrap border border-slate-200">You are here</div>
+                            </div>
+                        </div>
+
+                        <!-- ATM 3: 2.4% Orange -->
+                        <div class="absolute pointer-events-none" style="left: 50%; top: 60%; transform: translateX(-50%);">
+                            <div class="flex flex-col items-center">
+                                <div class="bg-amber-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-xl shadow-md">2.4%</div>
+                                <div class="bg-white rounded-full px-1.5 py-0.5 mt-1 shadow-sm text-[9px] text-slate-600 font-semibold flex items-center gap-0.5 border border-slate-100 whitespace-nowrap">
+                                    <i data-lucide="clock" class="w-2.5 h-2.5"></i> 22 mins
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ATM 4: 1.8% Gray -->
+                        <div class="absolute pointer-events-none" style="left: 73%; top: 63%; transform: translateX(-50%);">
+                            <div class="flex flex-col items-center">
+                                <div class="bg-slate-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-xl shadow-md">1.8%</div>
+                                <div class="bg-white rounded-full px-1.5 py-0.5 mt-1 shadow-sm text-[9px] text-slate-600 font-semibold flex items-center gap-0.5 border border-slate-100 whitespace-nowrap">
+                                    <i data-lucide="clock" class="w-2.5 h-2.5"></i> 15 mins
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Compass -->
+                        <button class="absolute right-3 top-3 w-8 h-8 bg-white rounded-full shadow-md flex items-center justify-center border border-slate-200 z-10">
+                            <i data-lucide="crosshair" class="w-4 h-4 text-slate-600"></i>
+                        </button>
+
+                        <!-- Zoom -->
+                        <div class="absolute right-3 bottom-3 flex flex-col z-10">
+                            <button class="w-8 h-8 bg-white flex items-center justify-center border border-slate-200 rounded-t-lg shadow-sm border-b-0">
+                                <i data-lucide="plus" class="w-4 h-4 text-slate-700"></i>
+                            </button>
+                            <button class="w-8 h-8 bg-white flex items-center justify-center border border-slate-200 rounded-b-lg shadow-sm">
+                                <i data-lucide="minus" class="w-4 h-4 text-slate-700"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="absolute bottom-6 left-4 right-4">
-                    <div
-                        class="brand-panel-soft border rounded-2xl p-5 shadow-sm relative overflow-hidden">
-                        <div class="flex items-center gap-2 text-[#b45309] font-bold mb-3">
-                            <i data-lucide="car-front" class="w-5 h-5"></i> On-Demand Delivery Service
-                        </div>
-                        <p class="text-[13px] text-slate-600 mb-4 leading-relaxed relative z-10">
-                            Would you like Vlinkpay to broadcast your request to dispatch a Mobile ATM directly to your
-                            location?
-                        </p>
-                        <div class="text-[12px] font-bold text-[color:var(--brand-primary)] mb-4 relative z-10">
-                            * Service fee: 5%
-                        </div>
-                        <button onclick="goToStep(3)"
-                            class="w-full brand-button font-semibold py-3.5 rounded-xl shadow-lg active:scale-95 transition-all text-[15px] relative z-10">
-                            Send On-Demand Request
-                        </button>
-                        <!-- Background decoration -->
-                        <i data-lucide="zap"
-                            class="absolute -right-4 -bottom-4 w-32 h-32 text-[color:var(--brand-primary)] opacity-[0.03] rotate-12"></i>
+                <!-- Filters -->
+                <div class="flex gap-2.5 px-3 mb-3">
+                    <div class="flex-1 relative">
+                        <select class="w-full border border-slate-200 rounded-xl py-2.5 pl-8 pr-6 text-[12px] font-semibold appearance-none bg-white text-slate-700 outline-none shadow-sm">
+                            <option>Filter Radius: All</option>
+                            <option>Within 1 km</option>
+                            <option>Within 5 km</option>
+                            <option>Within 10 km</option>
+                        </select>
+                        <i data-lucide="crosshair" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500 pointer-events-none"></i>
+                        <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none"></i>
                     </div>
+                    <div class="flex-1 relative">
+                        <select class="w-full border border-slate-200 rounded-xl py-2.5 pl-8 pr-6 text-[12px] font-semibold appearance-none bg-white text-slate-700 outline-none shadow-sm">
+                            <option>Filter Fee: Any</option>
+                            <option>Under 2%</option>
+                            <option>2% – 5%</option>
+                            <option>Above 5%</option>
+                        </select>
+                        <i data-lucide="percent" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500 pointer-events-none"></i>
+                        <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <!-- ATM List -->
+                <div class="bg-white">
+                    <div class="px-4 py-2.5 bg-slate-50 border-y border-slate-100">
+                        <span class="text-[13px] font-bold text-slate-700">Under 2%</span>
+                    </div>
+                    <button onclick="goToStep(3)" class="w-full flex items-center gap-3 px-4 py-4 border-b border-slate-100 active:bg-slate-50 transition-colors">
+                        <img src="assets/icons/mobile.png" class="w-10 h-10 object-contain shrink-0" alt="ATM">
+                        <div class="flex-1 min-w-0 text-left">
+                            <div class="font-bold text-[14px] text-slate-900">ATM-Z5UPIR</div>
+                            <div class="flex items-center gap-1 text-[12px] mt-0.5">
+                                <span class="text-slate-600 font-medium">0.0</span>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+                                <span class="text-amber-600 font-semibold">(0 rating)</span>
+                            </div>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <div class="font-bold text-[13px] text-slate-900">Fee: 1.4%</div>
+                            <div class="text-[11px] text-slate-500 mt-0.5">Nearby (within 20 mins)</div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 ml-1"></i>
+                    </button>
+
+                    <div class="px-4 py-2.5 bg-slate-50 border-y border-slate-100">
+                        <span class="text-[13px] font-bold text-slate-700">From 2% to 5%</span>
+                    </div>
+                    <button onclick="goToStep(3)" class="w-full flex items-center gap-3 px-4 py-4 border-b border-slate-100 active:bg-slate-50 transition-colors">
+                        <img src="assets/icons/mobile.png" class="w-10 h-10 object-contain shrink-0" alt="ATM">
+                        <div class="flex-1 min-w-0 text-left">
+                            <div class="font-bold text-[14px] text-slate-900">ATM-YUQRHK</div>
+                            <div class="flex items-center gap-1 text-[12px] mt-0.5">
+                                <span class="text-slate-600 font-medium">0.0</span>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+                                <span class="text-amber-600 font-semibold">(0 rating)</span>
+                            </div>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <div class="font-bold text-[13px] text-slate-900">Fee: 2.1%</div>
+                            <div class="text-[11px] text-slate-500 mt-0.5">Nearby (within 50 mins)</div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 ml-1"></i>
+                    </button>
+                    <button onclick="goToStep(3)" class="w-full flex items-center gap-3 px-4 py-4 border-b border-slate-100 active:bg-slate-50 transition-colors">
+                        <img src="assets/icons/mobile.png" class="w-10 h-10 object-contain shrink-0" alt="ATM">
+                        <div class="flex-1 min-w-0 text-left">
+                            <div class="font-bold text-[14px] text-slate-900">ATM-UJBG2A</div>
+                            <div class="flex items-center gap-1 text-[12px] mt-0.5">
+                                <span class="text-slate-600 font-medium">3.3</span>
+                                <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+                                <span class="text-amber-600 font-semibold">(3 ratings)</span>
+                            </div>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <div class="font-bold text-[13px] text-slate-900">Fee: 2.4%</div>
+                            <div class="text-[11px] text-slate-500 mt-0.5">Nearby (within 44 mins)</div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Footer location -->
+                <div class="flex items-start gap-2 px-4 py-3 bg-blue-50 border-t border-blue-100">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-blue-600 shrink-0 mt-0.5"></i>
+                    <p id="step2-footer-label" class="text-[11.5px] text-blue-700 font-medium leading-relaxed">Showing Mobile ATM near Ben Thanh Market, District 1, Ho Chi Minh City</p>
+                </div>
+
+                <!-- Partner list fallback -->
+                <div class="px-4 py-5 text-center border-t border-slate-100">
+                    <p class="text-[12px] text-slate-500 mb-1.5">No suitable ATM found for your request?</p>
+                    <button onclick="goToStep(7)"
+                        class="text-[13px] text-[color:var(--brand-primary)] font-bold flex items-center gap-1.5 mx-auto">
+                        <i data-lucide="users" class="w-4 h-4"></i> Choose from eligible partner list
+                    </button>
                 </div>
             </main>
         </div>
@@ -722,9 +890,237 @@
                     class="flex-[1.2] brand-outline border font-bold py-2.5 rounded-xl active:scale-95 transition-all flex justify-center items-center gap-2 text-[14px]">
                     <i data-lucide="more-horizontal" class="w-5 h-5"></i> More Actions
                 </button>
+
             </div>
         </div>
 
+        <!-- STEP 7: Select Eligible Partner (Fallback - No ATM Found) -->
+        <div id="step-7" class="step-container bg-white">
+            <header class="bg-white px-4 pt-12 pb-3 flex items-center justify-between shadow-sm relative z-10">
+                <button onclick="goToStep(1)" class="brand-link flex items-center gap-1 font-medium">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
+                </button>
+                <h1 class="brand-title text-[17px] font-bold">Select a Partner</h1>
+                <div class="w-16"></div>
+            </header>
+
+            <!-- Info Banner -->
+            <div class="flex items-start gap-2.5 px-4 py-3 bg-amber-50 border-b border-amber-100 relative z-10">
+                <div class="w-5 h-5 rounded-full bg-amber-200 flex items-center justify-center shrink-0 mt-0.5">
+                    <i data-lucide="info" class="w-3 h-3 text-amber-700"></i>
+                </div>
+                <p class="text-[12px] text-amber-900 leading-relaxed">
+                    No suitable ATM was found. Please select an eligible partner below to process your request.
+                </p>
+            </div>
+
+            <main class="flex-1 overflow-y-auto brand-surface pb-32">
+                <!-- Priority Section Header -->
+                <div class="px-4 pt-5 pb-2">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-amber-500 shrink-0"></div>
+                        <span class="text-[11px] font-bold text-amber-700 uppercase tracking-wider">Priority Partners · Debt Settlement</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 ml-4 leading-relaxed">Selecting these partners helps offset outstanding debts between Vlinkpay and the partner.</p>
+                </div>
+
+                <!-- Priority Partner 1 -->
+                <div class="px-4 pb-3">
+                    <div class="partner-card brand-card rounded-2xl p-4 cursor-pointer border-2 border-transparent"
+                        data-partner-id="P001" onclick="selectPartner('P001', this)">
+                        <div class="flex items-start gap-3">
+                            <div class="relative flex-shrink-0">
+                                <div class="w-12 h-12 rounded-xl bg-[#fffaf0] border border-[rgba(217,119,6,0.18)] flex items-center justify-center">
+                                    <img src="assets/icons/merchant.png" class="w-7 h-7 object-contain" alt="Partner">
+                                </div>
+                                <div class="absolute -top-1.5 -right-1.5 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center shadow-sm">
+                                    <i data-lucide="star" class="w-3 h-3 text-white fill-white"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2 mb-1.5">
+                                    <div>
+                                        <div class="font-bold text-[14px] text-slate-900 leading-snug">Nguyen Merchant Co.</div>
+                                        <div class="text-[11px] text-slate-400 font-medium">ID: NMC-0847</div>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <div class="partner-check hidden w-5 h-5 rounded-full bg-[color:var(--brand-primary)] items-center justify-center shrink-0">
+                                            <i data-lucide="check" class="w-3 h-3 text-white"></i>
+                                        </div>
+                                        <span class="text-[12px] font-bold text-slate-700 shrink-0">4.8 <i data-lucide="star" class="inline w-3 h-3 fill-amber-400 text-amber-400"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center flex-wrap gap-1.5 mb-2.5">
+                                    <span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold rounded-full border border-blue-100">Merchant ATM</span>
+                                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded-full border border-emerald-100">Active</span>
+                                    <span class="px-2 py-0.5 bg-slate-50 text-slate-500 text-[10px] font-medium rounded-full border border-slate-100">Cash</span>
+                                </div>
+                                <div class="bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 mb-2.5">
+                                    <div class="flex items-center gap-1.5 mb-0.5">
+                                        <i data-lucide="arrow-right-left" class="w-3.5 h-3.5 text-amber-600 shrink-0"></i>
+                                        <span class="text-[11px] font-bold text-amber-700">Debt Settlement Priority</span>
+                                    </div>
+                                    <p class="text-[11px] text-amber-600 leading-relaxed">Platform owes this partner <span class="font-bold">$2,400</span> — this collection settles the outstanding debt.</p>
+                                </div>
+                                <div class="flex items-center gap-3 text-[11px] text-slate-400">
+                                    <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> 1.2 km</span>
+                                    <span class="flex items-center gap-1"><i data-lucide="banknote" class="w-3 h-3"></i> $500 - $5,000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Priority Partner 2 -->
+                <div class="px-4 pb-3">
+                    <div class="partner-card brand-card rounded-2xl p-4 cursor-pointer border-2 border-transparent"
+                        data-partner-id="P002" onclick="selectPartner('P002', this)">
+                        <div class="flex items-start gap-3">
+                            <div class="relative flex-shrink-0">
+                                <div class="w-12 h-12 rounded-xl bg-[#fffaf0] border border-[rgba(217,119,6,0.18)] flex items-center justify-center">
+                                    <img src="assets/icons/mobile.png" class="w-7 h-7 object-contain" alt="Partner">
+                                </div>
+                                <div class="absolute -top-1.5 -right-1.5 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center shadow-sm">
+                                    <i data-lucide="star" class="w-3 h-3 text-white fill-white"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2 mb-1.5">
+                                    <div>
+                                        <div class="font-bold text-[14px] text-slate-900 leading-snug">Tran Mobile Services</div>
+                                        <div class="text-[11px] text-slate-400 font-medium">ID: TMS-2213</div>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <div class="partner-check hidden w-5 h-5 rounded-full bg-[color:var(--brand-primary)] items-center justify-center shrink-0">
+                                            <i data-lucide="check" class="w-3 h-3 text-white"></i>
+                                        </div>
+                                        <span class="text-[12px] font-bold text-slate-700 shrink-0">4.6 <i data-lucide="star" class="inline w-3 h-3 fill-amber-400 text-amber-400"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center flex-wrap gap-1.5 mb-2.5">
+                                    <span class="px-2 py-0.5 bg-purple-50 text-purple-600 text-[10px] font-bold rounded-full border border-purple-100">Mobile ATM</span>
+                                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded-full border border-emerald-100">Active</span>
+                                    <span class="px-2 py-0.5 bg-slate-50 text-slate-500 text-[10px] font-medium rounded-full border border-slate-100">Cash</span>
+                                </div>
+                                <div class="bg-amber-50 border border-amber-200 rounded-xl px-3 py-2 mb-2.5">
+                                    <div class="flex items-center gap-1.5 mb-0.5">
+                                        <i data-lucide="arrow-right-left" class="w-3.5 h-3.5 text-amber-600 shrink-0"></i>
+                                        <span class="text-[11px] font-bold text-amber-700">Debt Settlement Priority</span>
+                                    </div>
+                                    <p class="text-[11px] text-amber-600 leading-relaxed">Platform owes this partner <span class="font-bold">$850</span> — this collection settles the outstanding debt.</p>
+                                </div>
+                                <div class="flex items-center gap-3 text-[11px] text-slate-400">
+                                    <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> 2.8 km</span>
+                                    <span class="flex items-center gap-1"><i data-lucide="banknote" class="w-3 h-3"></i> $100 - $2,000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Standard Section Header -->
+                <div class="px-4 pt-3 pb-2">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-slate-300 shrink-0"></div>
+                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Other Eligible Partners</span>
+                    </div>
+                </div>
+
+                <!-- Standard Partner 1 -->
+                <div class="px-4 pb-3">
+                    <div class="partner-card brand-card rounded-2xl p-4 cursor-pointer border-2 border-transparent"
+                        data-partner-id="P003" onclick="selectPartner('P003', this)">
+                        <div class="flex items-start gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0">
+                                <img src="assets/icons/merchant.png" class="w-7 h-7 object-contain" alt="Partner">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2 mb-1.5">
+                                    <div>
+                                        <div class="font-bold text-[14px] text-slate-900 leading-snug">Le Trading Co.</div>
+                                        <div class="text-[11px] text-slate-400 font-medium">ID: LTC-3301</div>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <div class="partner-check hidden w-5 h-5 rounded-full bg-[color:var(--brand-primary)] items-center justify-center shrink-0">
+                                            <i data-lucide="check" class="w-3 h-3 text-white"></i>
+                                        </div>
+                                        <span class="text-[12px] font-bold text-slate-700 shrink-0">4.3 <i data-lucide="star" class="inline w-3 h-3 fill-amber-400 text-amber-400"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center flex-wrap gap-1.5 mb-2.5">
+                                    <span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-bold rounded-full border border-blue-100">Merchant ATM</span>
+                                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded-full border border-emerald-100">Active</span>
+                                    <span class="px-2 py-0.5 bg-slate-50 text-slate-500 text-[10px] font-medium rounded-full border border-slate-100">Cash</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-[11px] text-slate-400">
+                                    <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> 3.5 km</span>
+                                    <span class="flex items-center gap-1"><i data-lucide="banknote" class="w-3 h-3"></i> $200 - $3,000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Standard Partner 2 -->
+                <div class="px-4 pb-3">
+                    <div class="partner-card brand-card rounded-2xl p-4 cursor-pointer border-2 border-transparent"
+                        data-partner-id="P004" onclick="selectPartner('P004', this)">
+                        <div class="flex items-start gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0">
+                                <img src="assets/icons/mobile.png" class="w-7 h-7 object-contain" alt="Partner">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2 mb-1.5">
+                                    <div>
+                                        <div class="font-bold text-[14px] text-slate-900 leading-snug">Pham Express ATM</div>
+                                        <div class="text-[11px] text-slate-400 font-medium">ID: PEA-5502</div>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <div class="partner-check hidden w-5 h-5 rounded-full bg-[color:var(--brand-primary)] items-center justify-center shrink-0">
+                                            <i data-lucide="check" class="w-3 h-3 text-white"></i>
+                                        </div>
+                                        <span class="text-[12px] font-bold text-slate-700 shrink-0">4.1 <i data-lucide="star" class="inline w-3 h-3 fill-amber-400 text-amber-400"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center flex-wrap gap-1.5 mb-2.5">
+                                    <span class="px-2 py-0.5 bg-purple-50 text-purple-600 text-[10px] font-bold rounded-full border border-purple-100">Mobile ATM</span>
+                                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded-full border border-emerald-100">Active</span>
+                                    <span class="px-2 py-0.5 bg-slate-50 text-slate-500 text-[10px] font-medium rounded-full border border-slate-100">Cash</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-[11px] text-slate-400">
+                                    <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> 4.1 km</span>
+                                    <span class="flex items-center gap-1"><i data-lucide="banknote" class="w-3 h-3"></i> $50 - $1,500</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- On-Demand Alternative -->
+                <!-- <div class="px-4 pt-1 pb-5">
+                    <div class="brand-panel-soft border rounded-2xl p-4 flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-1.5 text-[#b45309] font-bold text-[12.5px] mb-0.5">
+                                <i data-lucide="zap" class="w-3.5 h-3.5 shrink-0"></i> On-Demand Alternative
+                            </div>
+                            <p class="text-[11px] text-slate-500 leading-relaxed">Dispatch a Mobile ATM to your location (5% service fee)</p>
+                        </div>
+                        <button onclick="goToStep(3)"
+                            class="shrink-0 text-[12px] font-bold text-[color:var(--brand-primary)] border border-[color:var(--brand-primary)] rounded-xl px-3 py-2 bg-white active:bg-amber-50 transition-colors">
+                            Request
+                        </button>
+                    </div>
+                </div> -->
+            </main>
+
+            <!-- Fixed Bottom Bar -->
+            <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-[rgba(217,119,6,0.12)] px-4 py-4 z-20 shadow-[0_-8px_20px_rgba(0,0,0,0.04)]">
+                <button id="partner-continue-btn" onclick="goToStep(3)"
+                    class="w-full font-semibold py-3.5 rounded-xl text-[15px] transition-all bg-slate-100 text-slate-400 cursor-not-allowed" disabled>
+                    Select a partner to continue
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -856,6 +1252,16 @@
             const searchingTitle = document.getElementById('searching-title');
             const searchingCopy = document.getElementById('searching-copy');
             const noteLabel = document.getElementById('note-label');
+            const step2Title = document.getElementById('step2-title');
+            const step2Footer = document.getElementById('step2-footer-label');
+
+            if (step2Title) {
+                step2Title.textContent = hasSelection ? `Select a ${label}` : 'Select an ATM';
+            }
+
+            if (step2Footer) {
+                step2Footer.textContent = `Showing ${pluralLabel} near Ben Thanh Market, District 1, Ho Chi Minh City`;
+            }
 
             if (reviewAtmType) {
                 reviewAtmType.textContent = hasSelection ? label : 'Not selected';
@@ -873,6 +1279,25 @@
 
             if (noteLabel) {
                 noteLabel.textContent = hasSelection ? `Note for ${label}` : 'Note for ATM';
+            }
+        }
+
+        let selectedPartnerId = null;
+
+        function selectPartner(id, el) {
+            selectedPartnerId = id;
+            document.querySelectorAll('.partner-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            el.classList.add('selected');
+            lucide.createIcons();
+
+            const btn = document.getElementById('partner-continue-btn');
+            if (btn) {
+                btn.textContent = 'Continue';
+                btn.disabled = false;
+                btn.classList.remove('bg-slate-100', 'text-slate-400', 'cursor-not-allowed');
+                btn.classList.add('brand-button', 'shadow-md', 'active:scale-95');
             }
         }
 

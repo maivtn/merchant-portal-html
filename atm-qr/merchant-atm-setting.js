@@ -88,6 +88,7 @@ window.addEventListener('DOMContentLoaded', () => {
       : null;
   const params = new URLSearchParams(window.location.search);
   const atmType = params.get('atmType') === 'mobile' ? 'mobile' : 'merchant';
+  const isBehalf = params.get('isBehalf') !== 'false';
   const withAtmType = (href) => {
     const url = new URL(href, window.location.href);
     url.searchParams.set('atmType', atmType);
@@ -100,6 +101,50 @@ window.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('iframe[src^="merchant-atm-"]').forEach((iframe) => {
     iframe.src = withAtmType(iframe.getAttribute('src'));
+  });
+
+  const syncBehalfState = () => {
+    document.body.classList.toggle('is-behalf', isBehalf);
+  };
+
+  // Join Program modal
+  const joinProgramModal = document.getElementById('join-program-modal');
+  const joinProgramAgree = document.getElementById('join-program-agree');
+  const joinProgramConfirm = document.getElementById('join-program-confirm');
+
+  const openJoinProgramModal = () => {
+    if (!joinProgramModal) return;
+    if (joinProgramAgree) joinProgramAgree.checked = false;
+    if (joinProgramConfirm) joinProgramConfirm.disabled = true;
+    joinProgramModal.classList.add('active');
+    joinProgramModal.setAttribute('aria-hidden', 'false');
+    refreshIcons();
+  };
+
+  const closeJoinProgramModal = () => {
+    if (!joinProgramModal) return;
+    joinProgramModal.classList.remove('active');
+    joinProgramModal.setAttribute('aria-hidden', 'true');
+  };
+
+  joinProgramAgree?.addEventListener('change', () => {
+    if (joinProgramConfirm) joinProgramConfirm.disabled = !joinProgramAgree.checked;
+  });
+
+  document.querySelectorAll('[data-open-join-program]').forEach((btn) => {
+    btn.addEventListener('click', openJoinProgramModal);
+  });
+
+  document.querySelectorAll('[data-close-join-program]').forEach((btn) => {
+    btn.addEventListener('click', closeJoinProgramModal);
+  });
+
+  joinProgramModal?.addEventListener('click', (e) => {
+    if (e.target === joinProgramModal) closeJoinProgramModal();
+  });
+
+  joinProgramConfirm?.addEventListener('click', () => {
+    closeJoinProgramModal();
   });
 
   const roleTargets = (value) => value.split(',').map((item) => item.trim()).filter(Boolean);
@@ -604,6 +649,7 @@ window.addEventListener('DOMContentLoaded', () => {
       closeQrModal();
       closeHoursModal(true);
       closeAcceptedPaymentModal();
+      closeJoinProgramModal();
     }
   });
 
@@ -650,6 +696,7 @@ window.addEventListener('DOMContentLoaded', () => {
   syncAcceptedPaymentChips();
   syncWalkinSetupState();
   syncAssetFeeGroupState();
+  syncBehalfState();
 
   // Topnav tab switching
   const topnavTabs = Array.from(document.querySelectorAll('[data-topnav-tab]'));

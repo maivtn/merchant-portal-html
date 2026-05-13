@@ -620,14 +620,18 @@ window.addEventListener('DOMContentLoaded', () => {
   transferModal?.addEventListener('click', (e) => { if (e.target === transferModal) closeTransferModal(); });
 
   transferModal?.querySelectorAll('[data-copy]').forEach((btn) => {
+    let revertTimer = null;
+    const setIcon = (name, copied) => {
+      btn.innerHTML = `<i data-lucide="${name}" class="w-4 h-4"></i>`;
+      btn.classList.toggle('copied', copied);
+      refreshIcons();
+    };
     btn.addEventListener('click', () => {
       const text = btn.getAttribute('data-copy');
       navigator.clipboard?.writeText(text).then(() => {
-        const icon = btn.querySelector('i');
-        if (icon) { icon.setAttribute('data-lucide', 'check'); refreshIcons(); }
-        setTimeout(() => {
-          if (icon) { icon.setAttribute('data-lucide', 'copy'); refreshIcons(); }
-        }, 1500);
+        clearTimeout(revertTimer);
+        setIcon('check', true);
+        revertTimer = setTimeout(() => setIcon('copy', false), 1500);
       });
     });
   });

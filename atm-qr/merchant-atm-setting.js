@@ -1020,6 +1020,12 @@ window.addEventListener('DOMContentLoaded', () => {
       panel.style.display = panel.dataset.topnavPanel === name ? '' : 'none';
     });
     updateUrl({ tab: name, subnav: null });
+
+    if (!tabs.some((t) => t.classList.contains('active'))) {
+      const first = tabs[0];
+      if (first) activate(first.getAttribute('data-setting-tab'));
+    }
+
     refreshIcons();
     refreshTooltips();
   };

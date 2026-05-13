@@ -200,8 +200,10 @@
     }
 
     .setting-subnav button:hover {
-      transform: translateY(-1px);
-      border-color: rgba(217, 119, 6, 0.35);
+      transform: translateY(-2px);
+      border-color: rgba(217, 119, 6, 0.45);
+      box-shadow: 0 8px 20px rgba(217,119,6,0.14);
+      color: var(--text);
     }
 
     .setting-subnav button.active {
@@ -679,8 +681,9 @@
 
     .receive-card__cta:hover {
       color: #b45309;
-      border-color: rgba(217, 119, 6, 0.28);
-      transform: translateY(-1px);
+      border-color: rgba(217, 119, 6, 0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(217,119,6,0.16);
     }
 
     .receive-top-row {
@@ -834,8 +837,9 @@
 
     .mobile-qr-card__cta:hover {
       color: #b45309;
-      border-color: rgba(217, 119, 6, 0.28);
-      transform: translateY(-1px);
+      border-color: rgba(217, 119, 6, 0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(217,119,6,0.16);
     }
 
     .walkin-card {
@@ -1194,9 +1198,9 @@
     }
 
     .walkin-setup-toggle:hover {
-      transform: translateY(-1px);
-      border-color: rgba(217, 119, 6, 0.28);
-      box-shadow: 0 10px 20px rgba(217, 119, 6, 0.12);
+      transform: translateY(-2px);
+      border-color: rgba(217, 119, 6, 0.45);
+      box-shadow: 0 10px 24px rgba(217, 119, 6, 0.18);
     }
 
     .walkin-setup-toggle[aria-expanded="false"] .walkin-toggle-icon {
@@ -1402,9 +1406,9 @@
     }
 
     .walkin-payment-edit:hover {
-      transform: translateY(-1px);
-      border-color: rgba(217, 119, 6, 0.35);
-      box-shadow: 0 12px 24px rgba(217, 119, 6, 0.12);
+      transform: translateY(-2px);
+      border-color: rgba(217, 119, 6, 0.45);
+      box-shadow: 0 10px 24px rgba(217, 119, 6, 0.18);
     }
 
     .walkin-setup-side {
@@ -2921,8 +2925,8 @@
       padding: 0.7rem 2.2rem 0.7rem 0.9rem;
       font-size: 0.95rem;
       color: var(--text);
-      appearance: auto;
-      -webkit-appearance: auto;
+      appearance: none;
+      -webkit-appearance: none;
     }
 
     .payment-condition-row {
@@ -4053,7 +4057,7 @@
     .history-filter-group {
       display: flex;
       gap: 8px;
-      padding: 4px 0;
+      padding: 16px 0;
       overflow-x: auto;
       scrollbar-width: none;
     }
@@ -4064,25 +4068,27 @@
 
     .history-filter-btn {
       appearance: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 6px 16px;
       border: 1px solid #e0e0e0;
-      border-radius: 16px;
       background: #fff;
-      cursor: pointer;
+      color: #6b7280;
       font-size: 14px;
       font-weight: 700;
-      color: #6b7280;
+      padding: 12px 16px;
       white-space: nowrap;
+      border-radius: 16px !important;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       box-shadow: 0 8px 22px rgba(34, 31, 31, 0.05);
-      transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+      cursor: pointer;
+      transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
     }
 
     .history-filter-btn:hover {
-      transform: translateY(-1px);
-      border-color: rgba(217, 119, 6, 0.35);
+      transform: translateY(-2px);
+      border-color: rgba(217, 119, 6, 0.45);
+      box-shadow: 0 8px 20px rgba(217,119,6,0.14);
+      color: var(--text);
     }
 
     .history-filter-btn.active {
@@ -4276,11 +4282,13 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
       text-decoration: none;
       color: inherit;
-      transition: box-shadow 0.15s;
+      transition: box-shadow 0.18s, transform 0.18s, border-color 0.18s;
     }
 
     .history-item:hover {
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.11);
+      border-color: rgba(217,119,6,0.22);
     }
 
     .history-item-main {
@@ -4436,11 +4444,15 @@
       border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
       color: inherit;
-      transition: box-shadow 0.15s;
+      transition: box-shadow 0.18s, transform 0.18s, border-color 0.18s;
       height: 100%;
     }
 
-    .settlement-item:hover { box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08); }
+    .settlement-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.11);
+      border-color: rgba(217,119,6,0.22);
+    }
 
     .settlement-item__icon {
       width: 34px;
@@ -4517,7 +4529,11 @@
     }
 
     .history-table tbody tr:hover {
-      background: #f8fafc;
+      background: #fffbeb;
+    }
+
+    .history-table tbody tr:hover td:first-child {
+      box-shadow: inset 3px 0 0 #d97706;
     }
 
     .history-table tbody tr:last-child {
@@ -6747,7 +6763,7 @@
                       </label>
                       <label class="payment-choice">
                         <input type="checkbox" name="payment-to-company" />
-                        <i data-lucide="circle-dollar-sign" class="w-4 h-4" style="color:#36a35e;"></i>
+                        <img src="images/usdv.png" class="w-4 h-4" style="object-fit:contain;" alt="USDV" />
                         <span>USDV</span>
                       </label>
                     </div>
@@ -6780,7 +6796,7 @@
                 <div class="payment-info-row">
                   <div class="payment-info-label">Payment Priority</div>
                   <div class="payment-info-value">
-                    <select class="payment-inline-select" id="payment-priority-select"></select>
+                    <select class="payment-inline-select form-select" id="payment-priority-select"></select>
                   </div>
                 </div>
 

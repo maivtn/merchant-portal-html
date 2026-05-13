@@ -1001,11 +1001,19 @@ window.addEventListener('DOMContentLoaded', () => {
   const topnavTabs = Array.from(document.querySelectorAll('[data-topnav-tab]'));
   const topnavPanels = Array.from(document.querySelectorAll('[data-topnav-panel]'));
 
+  const updateUrl = (params) => {
+    const sp = new URLSearchParams(location.search);
+    Object.entries(params).forEach(([k, v]) => v == null ? sp.delete(k) : sp.set(k, v));
+    const qs = sp.toString();
+    history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
+  };
+
   const activateTopnavTab = (name) => {
     topnavTabs.forEach((tab) => tab.classList.toggle('active', tab.dataset.topnavTab === name));
     topnavPanels.forEach((panel) => {
       panel.style.display = panel.dataset.topnavPanel === name ? '' : 'none';
     });
+    updateUrl({ tab: name, filter: null });
     refreshIcons();
     refreshTooltips();
   };
@@ -1017,7 +1025,9 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  activateTopnavTab('settings');
+  // Restore topnav tab from URL, default to 'settings'
+  const urlParams = new URLSearchParams(location.search);
+  activateTopnavTab(urlParams.get('tab') || 'settings');
 
   // History filters
   const mainFilters = document.getElementById('history-main-filters');
@@ -1051,26 +1061,30 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const activateHistoryFilter = (filter) => {
+    historyFilterBtns.forEach((b) => b.classList.toggle('active', b.dataset.historyFilter === filter));
+    const isSettlement = filter === 'settlement';
+    mainFilters.style.display      = isSettlement ? 'none' : '';
+    settlementFilters.style.display = isSettlement ? ''     : 'none';
+    mainListSection.style.display  = isSettlement ? 'none' : '';
+    settlementSection.style.display = isSettlement ? ''    : 'none';
+    if (!isSettlement) setExchangeTypeOptions(filter === 'individual' ? 'individual' : 'atm');
+    updateUrl({ filter });
+  };
+
   const historyFilterBtns = Array.from(document.querySelectorAll('[data-history-filter]'));
   historyFilterBtns.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       if (e.target.closest('.history-filter-info')) return;
-      historyFilterBtns.forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const filter = btn.dataset.historyFilter;
-      const isSettlement = filter === 'settlement';
-
-      mainFilters.style.display = isSettlement ? 'none' : '';
-      settlementFilters.style.display = isSettlement ? '' : 'none';
-      mainListSection.style.display = isSettlement ? 'none' : '';
-      settlementSection.style.display = isSettlement ? '' : 'none';
-
-      if (!isSettlement) {
-        setExchangeTypeOptions(filter === 'individual' ? 'individual' : 'atm');
-      }
+      activateHistoryFilter(btn.dataset.historyFilter);
     });
   });
+
+  // Restore history filter from URL (only relevant when tab=history)
+  if (urlParams.get('tab') === 'history') {
+    const savedFilter = urlParams.get('filter') || 'individual';
+    activateHistoryFilter(savedFilter);
+  }
 
   // Set initial exchange type options for default active tab (individual)
   setExchangeTypeOptions('individual');

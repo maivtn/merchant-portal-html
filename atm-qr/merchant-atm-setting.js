@@ -209,16 +209,59 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Confirm Repayment modal
   const repaymentModal = document.getElementById('repayment-modal');
-  const repaymentAgree = document.getElementById('repayment-agree');
   const submitRepaymentBtn = document.getElementById('submit-repayment-btn');
   const repaymentFileInput = document.getElementById('repayment-file-input');
-  const repaymentFileName = document.getElementById('repayment-file-name');
+  const repaymentCameraInput = document.getElementById('repayment-camera-input');
+  const repaymentPreviewGrid = document.getElementById('repayment-preview-grid');
+  let repaymentFiles = [];
+
+  const renderRepaymentPreviews = () => {
+    if (!repaymentPreviewGrid) return;
+    repaymentPreviewGrid.innerHTML = '';
+    repaymentPreviewGrid.style.display = repaymentFiles.length ? 'grid' : 'none';
+    repaymentFiles.forEach((file, idx) => {
+      const isPdf = file.type === 'application/pdf';
+      const url = URL.createObjectURL(file);
+      const item = document.createElement('div');
+      item.className = 'proof-preview-item';
+      item.innerHTML = isPdf
+        ? `<div class="proof-preview-item__thumb--pdf"><i data-lucide="file-text" style="width:32px;height:32px;"></i></div>`
+        : `<img class="proof-preview-item__thumb" src="${url}" alt="${file.name}" />`;
+      item.innerHTML += `
+        <button type="button" class="proof-preview-item__remove" data-idx="${idx}" aria-label="Remove">&#x2715;</button>
+        <div class="proof-preview-item__footer">
+          <div class="proof-preview-item__name" title="${file.name}">${file.name}</div>
+          <button type="button" class="proof-preview-item__view" data-url="${url}">
+            <i data-lucide="eye" style="width:12px;height:12px;"></i> View
+          </button>
+        </div>`;
+      repaymentPreviewGrid.appendChild(item);
+    });
+    refreshIcons();
+    repaymentPreviewGrid.querySelectorAll('[data-idx]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        repaymentFiles.splice(Number(btn.dataset.idx), 1);
+        renderRepaymentPreviews();
+        syncRepaymentSubmit();
+      });
+    });
+    repaymentPreviewGrid.querySelectorAll('[data-url]').forEach(btn => {
+      btn.addEventListener('click', () => window.open(btn.dataset.url, '_blank'));
+    });
+  };
+
+  const addRepaymentFiles = (fileList) => {
+    Array.from(fileList).forEach(f => repaymentFiles.push(f));
+    renderRepaymentPreviews();
+    syncRepaymentSubmit();
+  };
 
   const openRepaymentModal = () => {
-    if (repaymentAgree) repaymentAgree.checked = false;
-    if (submitRepaymentBtn) submitRepaymentBtn.disabled = true;
+    repaymentFiles = [];
     if (repaymentFileInput) repaymentFileInput.value = '';
-    if (repaymentFileName) { repaymentFileName.textContent = ''; repaymentFileName.style.display = 'none'; }
+    if (repaymentCameraInput) repaymentCameraInput.value = '';
+    renderRepaymentPreviews();
+    if (submitRepaymentBtn) submitRepaymentBtn.disabled = true;
     repaymentModal?.classList.add('active');
     repaymentModal?.setAttribute('aria-hidden', 'false');
     refreshIcons();
@@ -230,32 +273,25 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   const syncRepaymentSubmit = () => {
-    if (submitRepaymentBtn) {
-      submitRepaymentBtn.disabled = !(repaymentAgree?.checked && repaymentFileInput?.files?.length > 0);
-    }
+    if (submitRepaymentBtn) submitRepaymentBtn.disabled = repaymentFiles.length === 0;
   };
 
   document.getElementById('open-repayment-modal')?.addEventListener('click', openRepaymentModal);
   document.getElementById('close-repayment-modal')?.addEventListener('click', closeRepaymentModal);
   document.getElementById('cancel-repayment-btn')?.addEventListener('click', closeRepaymentModal);
   repaymentModal?.addEventListener('click', (e) => { if (e.target === repaymentModal) closeRepaymentModal(); });
-  repaymentAgree?.addEventListener('change', syncRepaymentSubmit);
-  repaymentFileInput?.addEventListener('change', () => {
-    const file = repaymentFileInput.files?.[0];
-    if (file && repaymentFileName) {
-      repaymentFileName.textContent = file.name;
-      repaymentFileName.style.display = 'block';
-    }
-    syncRepaymentSubmit();
-  });
+  document.getElementById('repayment-take-photo-btn')?.addEventListener('click', () => repaymentCameraInput?.click());
+  document.getElementById('repayment-choose-file-btn')?.addEventListener('click', () => repaymentFileInput?.click());
+  repaymentFileInput?.addEventListener('change', () => { addRepaymentFiles(repaymentFileInput.files); repaymentFileInput.value = ''; });
+  repaymentCameraInput?.addEventListener('change', () => { addRepaymentFiles(repaymentCameraInput.files); repaymentCameraInput.value = ''; });
 
   submitRepaymentBtn?.addEventListener('click', () => {
     closeRepaymentModal();
     window.Swal?.fire({
       icon: 'success',
-      title: 'Repayment confirmed.',
-      text: 'Your proof of payment has been submitted. VLINKPAY will verify and update your balance.',
-      confirmButtonText: 'OK',
+      title: 'Repayment Submitted',
+      text: 'Your repayment confirmation has been submitted and is waiting for VLINKPAY review.',
+      confirmButtonText: 'Done',
       confirmButtonColor: '#f59e0b',
     });
   });
@@ -290,9 +326,9 @@ window.addEventListener('DOMContentLoaded', () => {
     closePayoutModal();
     window.Swal?.fire({
       icon: 'success',
-      title: 'Payout request submitted.',
-      text: 'VLINKPAY will review your request and process the payout within the next settlement cycle.',
-      confirmButtonText: 'OK',
+      title: 'Payout Request Submitted',
+      html: 'Your payout request has been submitted.<br>VLINKPAY will review and process it based on the settlement cycle.<br><br><strong>Expected payout: T+1</strong>',
+      confirmButtonText: 'Done',
       confirmButtonColor: '#f59e0b',
     });
   });

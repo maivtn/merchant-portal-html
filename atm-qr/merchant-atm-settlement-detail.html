@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="merchant-atm-common.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     .detail-header {
       display: flex;
@@ -237,24 +238,52 @@
       line-height: 1;
     }
 
-    /* VLINKPAY uploaded proof (read-only view) */
+    /* Proof view grid */
     .proof-view-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
       margin-top: 6px;
     }
 
     .proof-view-thumb {
-      width: 72px;
-      height: 72px;
-      border-radius: 8px;
-      overflow: hidden;
+      border-radius: 12px;
       border: 1px solid #e2e8f0;
-      cursor: pointer;
+      overflow: hidden;
+      background: #fff;
     }
 
-    .proof-view-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .proof-view-thumb__img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+    }
+
+    .proof-view-thumb__footer {
+      padding: 6px 8px 4px;
+    }
+
+    .proof-view-thumb__name {
+      font-size: 11px;
+      color: #374151;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 3px;
+    }
+
+    .proof-view-thumb__view {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #3b82f6;
+      text-decoration: none;
+    }
+
+    .proof-view-thumb__view:hover { text-decoration: underline; }
 
     /* Actions */
     .detail-actions {
@@ -381,13 +410,13 @@
           <div style="padding: 10px 14px;">
             <div class="proof-view-grid" id="proof-view-grid">
               <div class="proof-view-thumb">
-                <img src="https://placehold.co/72x72/fff7ed/ea580c?text=IMG1" alt="Proof 1" />
-              </div>
-              <div class="proof-view-thumb">
-                <img src="https://placehold.co/72x72/fff7ed/ea580c?text=IMG2" alt="Proof 2" />
-              </div>
-              <div class="proof-view-thumb">
-                <img src="https://placehold.co/72x72/fff7ed/ea580c?text=IMG3" alt="Proof 3" />
+                <img class="proof-view-thumb__img" src="images/bank-transfer-bill.png" alt="bank-transfer-bill.png" />
+                <div class="proof-view-thumb__footer">
+                  <div class="proof-view-thumb__name">bank-transfer-bill.png</div>
+                  <a href="#" class="proof-view-thumb__view" data-src="images/bank-transfer-bill.png">
+                    <i data-lucide="eye" class="w-3.5 h-3.5"></i> View
+                  </a>
+                </div>
               </div>
             </div>
             <div id="proof-view-meta" style="font-size:11.5px;color:#9ca3af;margin-top:6px;">Uploaded by merchant · May 13, 2026 · 09:42 AM</div>
@@ -477,9 +506,16 @@
       const submittedAt  = localStorage.getItem('repaymentSubmittedAt') || '—';
       proofSection.querySelector('.info-section__title').textContent = 'Payment Proof (Submitted)';
       if (storedProofs.length > 0) {
-        proofGrid.innerHTML = storedProofs.map(
-          p => `<div class="proof-view-thumb"><img src="${p.dataUrl}" alt="${p.name}" title="${p.name}" /></div>`
-        ).join('');
+        proofGrid.innerHTML = storedProofs.map(p => `
+          <div class="proof-view-thumb">
+            <img class="proof-view-thumb__img" src="${p.dataUrl}" alt="${p.name}" />
+            <div class="proof-view-thumb__footer">
+              <div class="proof-view-thumb__name">${p.name}</div>
+              <a href="#" class="proof-view-thumb__view" data-src="${p.dataUrl}">
+                <i data-lucide="eye" class="w-3.5 h-3.5"></i> View
+              </a>
+            </div>
+          </div>`).join('');
         if (proofMeta) proofMeta.textContent = `Uploaded by merchant · ${submittedAt}`;
       }
 
@@ -490,40 +526,46 @@
     } else {
       // VLINKPAY Payout — show VLINKPAY proof (sample)
       proofSection.querySelector('.info-section__title').textContent = 'Payment Proof from VLINKPAY';
-      proofGrid.innerHTML = `<div class="proof-view-thumb"><img src="https://placehold.co/72x72/f0fdf4/16a34a?text=Proof" alt="Proof" /></div>`;
+      proofGrid.innerHTML = `
+        <div class="proof-view-thumb">
+          <img class="proof-view-thumb__img" src="images/bank-transfer-bill.png" alt="bank-transfer-bill.png" />
+          <div class="proof-view-thumb__footer">
+            <div class="proof-view-thumb__name">bank-transfer-bill.png</div>
+            <a href="#" class="proof-view-thumb__view" data-src="images/bank-transfer-bill.png">
+              <i data-lucide="eye" class="w-3.5 h-3.5"></i> View
+            </a>
+          </div>
+        </div>`;
       if (proofMeta) proofMeta.textContent = 'Uploaded by VLINKPAY · May 12, 2026 · 10:05 AM';
     }
     proofSection.style.display = '';
 
-    // Timeline
-    const isCompleted = status === 'completed';
-    const timelines = {
-      pay: isCompleted
+    // Timeline (pay flow only)
+    const timelineSection = document.getElementById('timeline').closest('.info-section');
+    if (type === 'receive') {
+      timelineSection.style.display = 'none';
+    } else {
+      const isCompleted = status === 'completed';
+      const steps = isCompleted
         ? [
-            { dot: 'done',   label: 'Submitted',      date: 'May 13, 2026 · 09:42 AM' },
-            { dot: 'done',   label: 'Waiting Review',  date: 'May 13, 2026 · 10:05 AM' },
-            { dot: 'done',   label: 'Completed',       date: 'May 13, 2026 · 02:00 PM' },
+            { dot: 'done',   label: 'Submitted',     date: 'May 13, 2026 · 09:42 AM' },
+            { dot: 'done',   label: 'Waiting Review', date: 'May 13, 2026 · 10:05 AM' },
+            { dot: 'done',   label: 'Completed',      date: 'May 13, 2026 · 02:00 PM' },
           ]
         : [
-            { dot: 'done',   label: 'Submitted',      date: 'May 10, 2026 · 09:42 AM' },
-            { dot: 'active', label: 'Waiting Review',  date: 'May 10, 2026 · 10:05 AM' },
-            { dot: 'idle',   label: 'Completed',       date: '—' },
-          ],
-      receive: [
-        { dot: 'done', label: 'Initiated',  date: 'May 12, 2026 · 08:00 AM' },
-        { dot: 'done', label: 'Processing', date: 'May 12, 2026 · 10:30 AM' },
-        { dot: 'done', label: 'Completed',  date: 'May 12, 2026 · 02:00 PM' },
-      ],
-    };
-
-    document.getElementById('timeline').innerHTML = (timelines[type] || timelines.pay).map(t => `
-      <div class="timeline-item">
-        <div class="timeline-item__dot timeline-item__dot--${t.dot}"></div>
-        <div>
-          <div class="timeline-item__label">${t.label}</div>
-          <div class="timeline-item__date">${t.date}</div>
-        </div>
-      </div>`).join('');
+            { dot: 'done',   label: 'Submitted',     date: 'May 10, 2026 · 09:42 AM' },
+            { dot: 'active', label: 'Waiting Review', date: 'May 10, 2026 · 10:05 AM' },
+            { dot: 'idle',   label: 'Completed',      date: '—' },
+          ];
+      document.getElementById('timeline').innerHTML = steps.map(t => `
+        <div class="timeline-item">
+          <div class="timeline-item__dot timeline-item__dot--${t.dot}"></div>
+          <div>
+            <div class="timeline-item__label">${t.label}</div>
+            <div class="timeline-item__date">${t.date}</div>
+          </div>
+        </div>`).join('');
+    }
 
     // Actions
     const submitMoreBtn = isPay && status === 'waiting-review'
@@ -587,6 +629,21 @@
         location.reload();
       });
     }
+
+    document.getElementById('proof-view-section').addEventListener('click', (e) => {
+      const link = e.target.closest('.proof-view-thumb__view');
+      if (!link) return;
+      e.preventDefault();
+      Swal.fire({
+        imageUrl: link.dataset.src,
+        imageAlt: 'Proof',
+        showConfirmButton: false,
+        showCloseButton: true,
+        width: 'auto',
+        padding: '1rem',
+        background: '#fff',
+      });
+    });
   </script>
 </body>
 

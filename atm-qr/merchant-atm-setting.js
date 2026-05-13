@@ -424,7 +424,6 @@ window.addEventListener('DOMContentLoaded', () => {
     openAddBankModal();
   });
   document.getElementById('close-add-bank-modal')?.addEventListener('click', closeAddBankModal);
-  addBankModal?.addEventListener('click', (e) => { if (e.target === addBankModal) closeAddBankModal(); });
 
   const setupAddBankUpload = (prefix) => {
     const fileInput   = document.getElementById(`add-bank-${prefix}-file-input`);
@@ -598,6 +597,38 @@ window.addEventListener('DOMContentLoaded', () => {
         popup:         'swal2-popup',
         confirmButton: 'swal2-confirm',
       },
+    });
+  });
+
+  // Transfer Instructions modal
+  const transferModal = document.getElementById('transfer-instructions-modal');
+  const openTransferModal = () => {
+    transferModal?.classList.add('active');
+    transferModal?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    refreshIcons();
+  };
+  const closeTransferModal = () => {
+    transferModal?.classList.remove('active');
+    transferModal?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  document.querySelector('.payment-choice-bank-action:not([data-no-bank-show]):not([data-bank-show])')
+    ?.addEventListener('click', (e) => { e.preventDefault(); openTransferModal(); });
+  document.getElementById('close-transfer-modal')?.addEventListener('click', closeTransferModal);
+  transferModal?.addEventListener('click', (e) => { if (e.target === transferModal) closeTransferModal(); });
+
+  transferModal?.querySelectorAll('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const text = btn.getAttribute('data-copy');
+      navigator.clipboard?.writeText(text).then(() => {
+        const icon = btn.querySelector('i');
+        if (icon) { icon.setAttribute('data-lucide', 'check'); refreshIcons(); }
+        setTimeout(() => {
+          if (icon) { icon.setAttribute('data-lucide', 'copy'); refreshIcons(); }
+        }, 1500);
+      });
     });
   });
 

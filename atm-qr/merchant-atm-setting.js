@@ -68,7 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const acceptedPaymentChipList = document.querySelector('[data-accepted-payment-chip-list]');
   const paymentPrioritySelect = document.getElementById('payment-priority-select');
   const paymentChoiceInputs = Array.from(
-    document.querySelectorAll('#receive-on-behalf-payment .payment-choice-list input[type="checkbox"]'),
+    document.querySelectorAll('#receive-on-behalf-payment input[name="company-pays-back"]'),
   );
   const walkinSetupCard = document.getElementById('walkin-setup-card');
   const walkinSetupCollapse = document.getElementById('walkin-setup-collapse');
@@ -643,11 +643,39 @@ window.addEventListener('DOMContentLoaded', () => {
       html: 'Your <strong>Receive / Pay on Behalf</strong> payment setup has been successfully submitted for approval.',
       confirmButtonText: 'OK',
       confirmButtonColor: '#d97706',
-      customClass: {
-        popup: 'swal2-popup',
-        confirmButton: 'swal2-confirm',
-      },
+      customClass: { popup: 'swal2-popup', confirmButton: 'swal2-confirm' },
+    }).then(() => {
+      const badge = document.getElementById('behalf-approval-status-badge');
+      if (badge) {
+        badge.className = 'status-note pending';
+        badge.textContent = 'Pending Approval';
+      }
     });
+  });
+
+  // Bank Info modal (isBank=true)
+  const bankInfoModal = document.getElementById('bank-info-modal');
+  const openBankInfoModal = () => {
+    bankInfoModal?.classList.add('active');
+    bankInfoModal?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    refreshIcons();
+  };
+  const closeBankInfoModal = () => {
+    bankInfoModal?.classList.remove('active');
+    bankInfoModal?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+  document.getElementById('open-bank-info-modal')?.addEventListener('click', openBankInfoModal);
+  document.getElementById('close-bank-info-modal')?.addEventListener('click', closeBankInfoModal);
+  bankInfoModal?.addEventListener('click', (e) => { if (e.target === bankInfoModal) closeBankInfoModal(); });
+
+  document.getElementById('bank-info-irs-view')?.addEventListener('click', () => {
+    showAddBankImageSwal(addBankFileUrls.ssn, addBankFileUrls.ssnIsPdf, 'IRS Letter');
+  });
+
+  document.getElementById('bank-info-check-view')?.addEventListener('click', () => {
+    showAddBankImageSwal(addBankFileUrls.check, addBankFileUrls.checkIsPdf, 'Voided Check');
   });
 
   document.getElementById('open-cancel-confirm-btn')?.addEventListener('click', openCancelConfirmModal);

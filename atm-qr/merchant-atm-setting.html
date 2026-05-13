@@ -202,7 +202,7 @@
     .setting-subnav button:hover {
       transform: translateY(-2px);
       border-color: rgba(217, 119, 6, 0.45);
-      box-shadow: 0 8px 20px rgba(217,119,6,0.14);
+      box-shadow: 0 8px 20px rgba(217, 119, 6, 0.14);
       color: var(--text);
     }
 
@@ -683,7 +683,7 @@
       color: #b45309;
       border-color: rgba(217, 119, 6, 0.45);
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(217,119,6,0.16);
+      box-shadow: 0 8px 20px rgba(217, 119, 6, 0.16);
     }
 
     .receive-top-row {
@@ -839,7 +839,7 @@
       color: #b45309;
       border-color: rgba(217, 119, 6, 0.45);
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(217,119,6,0.16);
+      box-shadow: 0 8px 20px rgba(217, 119, 6, 0.16);
     }
 
     .walkin-card {
@@ -2874,8 +2874,8 @@
     }
 
     .payment-info-stack {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 0;
       margin-top: 10px;
     }
@@ -2885,13 +2885,7 @@
       grid-template-columns: auto minmax(0, 1fr);
       gap: 8px;
       align-items: center;
-      padding: 10px 12px 10px 0;
-      border-top: 1px solid #f0e3c7;
-    }
-
-    .payment-info-row:nth-child(even) {
-      padding-left: 16px;
-      border-left: 1px solid #f0e3c7;
+      padding: 12px 0
     }
 
     .payment-status-row {
@@ -2955,7 +2949,6 @@
       justify-content: space-between;
       gap: 12px;
       padding-top: 10px;
-      border-top: 1px solid #f0e3c7;
     }
 
     .payment-card+.payment-card {
@@ -3018,6 +3011,23 @@
       border-radius: 999px;
       background: #2f8f47;
       box-shadow: inset 0 0 0 3px #eefaf0;
+      flex: 0 0 auto;
+    }
+
+    .status-note.pending {
+      gap: 6px;
+      background: #fff7ed;
+      border-color: rgba(234, 88, 12, 0.2);
+      color: #c2410c;
+    }
+
+    .status-note.pending::before {
+      content: "";
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: #f97316;
+      box-shadow: inset 0 0 0 3px #fff7ed;
       flex: 0 0 auto;
     }
 
@@ -3095,7 +3105,6 @@
 
     .add-bank-modal-body .form-control,
     .add-bank-modal-body .form-select {
-      min-height: 46px;
       border-radius: 0.85rem;
       border: 1.5px solid var(--line);
       font-size: 0.93rem;
@@ -3198,8 +3207,8 @@
       display: block;
     }
 
-    .add-bank-preview-wrap.has-file ~ .add-bank-upload-btns,
-    .add-bank-preview-wrap.has-file ~ .add-bank-upload-hint {
+    .add-bank-preview-wrap.has-file~.add-bank-upload-btns,
+    .add-bank-preview-wrap.has-file~.add-bank-upload-hint {
       display: none;
     }
 
@@ -3241,7 +3250,7 @@
       line-height: 1;
       color: var(--text);
       z-index: 2;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     }
 
     .add-bank-preview-remove:hover {
@@ -3321,9 +3330,17 @@
       font-size: 14px;
     }
 
-    .add-bank-confirm-row:first-child { border-radius: 14px 14px 0 0; }
-    .add-bank-confirm-row:last-child  { border-radius: 0 0 14px 14px; }
-    .add-bank-confirm-row:only-child  { border-radius: 14px; }
+    .add-bank-confirm-row:first-child {
+      border-radius: 14px 14px 0 0;
+    }
+
+    .add-bank-confirm-row:last-child {
+      border-radius: 0 0 14px 14px;
+    }
+
+    .add-bank-confirm-row:only-child {
+      border-radius: 14px;
+    }
 
     .add-bank-confirm-label {
       color: var(--text);
@@ -3348,7 +3365,9 @@
       text-decoration: none;
     }
 
-    .add-bank-confirm-view:hover { opacity: 0.8; }
+    .add-bank-confirm-view:hover {
+      opacity: 0.8;
+    }
 
     .cancel-modal-card[data-add-bank-step="2"] .cancel-modal-head,
     .cancel-modal-card[data-add-bank-step="2"] .add-bank-modal-body,
@@ -3356,11 +3375,21 @@
       display: none !important;
     }
 
-    .cancel-modal-card[data-add-bank-step="2"] .add-bank-confirm-head { display: flex; }
-    .cancel-modal-card[data-add-bank-step="2"] .add-bank-confirm-body { display: flex; }
-    .cancel-modal-card[data-add-bank-step="2"] .add-bank-step2-actions { display: flex !important; }
+    .cancel-modal-card[data-add-bank-step="2"] .add-bank-confirm-head {
+      display: flex;
+    }
 
-    .add-bank-step2-actions { display: none !important; }
+    .cancel-modal-card[data-add-bank-step="2"] .add-bank-confirm-body {
+      display: flex;
+    }
+
+    .cancel-modal-card[data-add-bank-step="2"] .add-bank-step2-actions {
+      display: flex !important;
+    }
+
+    .add-bank-step2-actions {
+      display: none !important;
+    }
 
     /* PIN modal */
     .pin-modal {
@@ -4104,9 +4133,8 @@
 
       .payment-info-row {
         gap: 6px;
-        padding-left: 12px;
-        padding-right: 12px;
         border-left: none !important;
+
       }
 
       .payment-info-value {
@@ -4403,7 +4431,7 @@
     .history-filter-btn:hover {
       transform: translateY(-2px);
       border-color: rgba(217, 119, 6, 0.45);
-      box-shadow: 0 8px 20px rgba(217,119,6,0.14);
+      box-shadow: 0 8px 20px rgba(217, 119, 6, 0.14);
       color: var(--text);
     }
 
@@ -4604,7 +4632,7 @@
     .history-item:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.11);
-      border-color: rgba(217,119,6,0.22);
+      border-color: rgba(217, 119, 6, 0.22);
     }
 
     .history-item-main {
@@ -4767,7 +4795,7 @@
     .settlement-item:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.11);
-      border-color: rgba(217,119,6,0.22);
+      border-color: rgba(217, 119, 6, 0.22);
     }
 
     .settlement-item__icon {
@@ -4780,10 +4808,20 @@
       flex-shrink: 0;
     }
 
-    .settlement-item__icon--pay  { background: #fff7ed; color: #ea580c; }
-    .settlement-item__icon--receive { background: #f0fdf4; color: #16a34a; }
+    .settlement-item__icon--pay {
+      background: #fff7ed;
+      color: #ea580c;
+    }
 
-    .settlement-item__main { flex: 1; min-width: 0; }
+    .settlement-item__icon--receive {
+      background: #f0fdf4;
+      color: #16a34a;
+    }
+
+    .settlement-item__main {
+      flex: 1;
+      min-width: 0;
+    }
 
     .settlement-item__title {
       font-size: 12px;
@@ -4811,8 +4849,13 @@
       font-weight: 700;
     }
 
-    .settlement-item__amount--pay { color: #ea580c; }
-    .settlement-item__amount--receive { color: #16a34a; }
+    .settlement-item__amount--pay {
+      color: #ea580c;
+    }
+
+    .settlement-item__amount--receive {
+      color: #16a34a;
+    }
 
     /* Table view */
     .history-table-wrap {
@@ -5226,7 +5269,7 @@
       gap: 6px;
       height: 34px;
       padding: 0 14px;
-      border-radius: 999px;
+      border-radius: 12px;
       border: none;
       font-size: 13px;
       font-weight: 700;
@@ -5235,30 +5278,32 @@
     }
 
     .credit-action-btn--repay {
+      background: #2563eb;
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.2);
+    }
+
+    .credit-action-btn--repay:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.28);
+    }
+
+    .credit-action-btn--payout {
       background: #16a34a;
       color: #fff;
       box-shadow: 0 6px 16px rgba(22, 163, 74, 0.2);
     }
 
-    .credit-action-btn--repay:hover {
+    .credit-action-btn--payout:hover {
       background: #15803d;
       transform: translateY(-1px);
       box-shadow: 0 10px 20px rgba(22, 163, 74, 0.26);
     }
 
-    .credit-action-btn--payout {
-      background: #ea580c;
-      color: #fff;
-      box-shadow: 0 6px 16px rgba(234, 88, 12, 0.2);
+    .credit-action-btn:active {
+      transform: translateY(0);
     }
-
-    .credit-action-btn--payout:hover {
-      background: #c2410c;
-      transform: translateY(-1px);
-      box-shadow: 0 10px 20px rgba(234, 88, 12, 0.26);
-    }
-
-    .credit-action-btn:active { transform: translateY(0); }
 
     /* Upload proof area */
     .proof-upload-btns {
@@ -5273,7 +5318,7 @@
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      border: 2px dashed rgba(217,119,6,0.35);
+      border: 2px dashed rgba(217, 119, 6, 0.35);
       border-radius: 12px;
       padding: 16px 12px;
       background: #fff;
@@ -5289,7 +5334,9 @@
       background: #fffbeb;
     }
 
-    .proof-upload-btn i { color: #d97706; }
+    .proof-upload-btn i {
+      color: #d97706;
+    }
 
     .proof-upload-hint {
       font-size: 12px;
@@ -5335,7 +5382,7 @@
       right: 5px;
       width: 22px;
       height: 22px;
-      background: rgba(0,0,0,0.55);
+      background: rgba(0, 0, 0, 0.55);
       border: none;
       border-radius: 50%;
       color: #fff;
@@ -5386,7 +5433,9 @@
       z-index: 75;
     }
 
-    .cancel-modal.active { display: flex; }
+    .cancel-modal.active {
+      display: flex;
+    }
 
     .cancel-modal-card {
       position: relative;
@@ -5434,7 +5483,9 @@
       transition: background 0.15s;
     }
 
-    .cancel-modal-close:hover { background: #e2e8f0; }
+    .cancel-modal-close:hover {
+      background: #e2e8f0;
+    }
 
     .cancel-modal-body {
       padding: 16px 20px;
@@ -5476,8 +5527,13 @@
       color: var(--text);
     }
 
-    .cancel-detail-row--fee .cancel-detail-value  { color: #ea580c; }
-    .cancel-detail-row--refund .cancel-detail-value { color: #16a34a; }
+    .cancel-detail-row--fee .cancel-detail-value {
+      color: #ea580c;
+    }
+
+    .cancel-detail-row--refund .cancel-detail-value {
+      color: #16a34a;
+    }
 
     .cancel-obligations {
       border: 1px solid #e2e8f0;
@@ -5566,7 +5622,28 @@
       pointer-events: none;
     }
 
-    .cancel-modal-actions .btn:active { transform: translateY(0); }
+    .cancel-modal-actions .btn:active {
+      transform: translateY(0);
+    }
+
+    .cancel-modal-actions .btn-warning {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(217, 119, 6, 0.25);
+    }
+
+    .cancel-modal-actions .btn-warning:hover:not(:disabled) {
+      background: #b45309;
+      border-color: #b45309;
+      transform: translateY(-1px);
+      box-shadow: 0 12px 22px rgba(217, 119, 6, 0.3);
+    }
+
+    .cancel-modal-actions .btn-warning:disabled {
+      opacity: 0.45;
+      pointer-events: none;
+    }
 
     /* SweetAlert2 overrides */
     .swal2-container.swal2-backdrop-show {
@@ -5662,7 +5739,9 @@
       z-index: 80;
     }
 
-    .transfer-modal.active { display: flex; }
+    .transfer-modal.active {
+      display: flex;
+    }
 
     .transfer-modal-card {
       position: relative;
@@ -5757,12 +5836,24 @@
       transition: opacity 0.15s;
     }
 
-    .transfer-copy-btn:hover { opacity: 0.7; }
+    .transfer-copy-btn:hover {
+      opacity: 0.7;
+    }
 
     @keyframes copy-pop {
-      0%   { transform: scale(0.4); opacity: 0; }
-      65%  { transform: scale(1.3); }
-      100% { transform: scale(1);   opacity: 1; }
+      0% {
+        transform: scale(0.4);
+        opacity: 0;
+      }
+
+      65% {
+        transform: scale(1.3);
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
     .transfer-copy-btn.copied {
@@ -5803,6 +5894,52 @@
       gap: 6px;
       font-weight: 700;
       margin-bottom: 4px;
+    }
+
+    /* Bank Info modal */
+    .bank-info-modal-body {
+      padding: 8px 20px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bank-info-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      font-size: 14.5px;
+    }
+
+    .bank-info-label {
+      color: var(--muted);
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .bank-info-value {
+      color: var(--text);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .bank-info-view {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 14.5px;
+      text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .bank-info-view:hover {
+      opacity: 0.75;
     }
 
     .swal2-cancel {
@@ -5999,7 +6136,8 @@
               <div class="history-item-footer">
                 <span class="history-item-amount">$100</span>
                 <span class="history-badge history-badge--declined">Declined</span>
-                <div class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></div>
+                <div class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </div>
               </div>
             </a>
           </div>
@@ -6013,7 +6151,8 @@
               <div class="history-item-footer">
                 <span class="history-item-amount">$100</span>
                 <span class="history-badge history-badge--completed">Completed</span>
-                <div class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></div>
+                <div class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </div>
               </div>
             </a>
           </div>
@@ -6027,7 +6166,8 @@
               <div class="history-item-footer">
                 <span class="history-item-amount">$100</span>
                 <span class="history-badge history-badge--completed">Completed</span>
-                <div class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></div>
+                <div class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </div>
               </div>
             </a>
           </div>
@@ -6041,7 +6181,8 @@
               <div class="history-item-footer">
                 <span class="history-item-amount">$100</span>
                 <span class="history-badge history-badge--completed">Completed</span>
-                <div class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></div>
+                <div class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </div>
               </div>
             </a>
           </div>
@@ -6055,7 +6196,8 @@
               <div class="history-item-footer">
                 <span class="history-item-amount">$100</span>
                 <span class="history-badge history-badge--completed">Completed</span>
-                <div class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></div>
+                <div class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </div>
               </div>
             </a>
           </div>
@@ -6069,7 +6211,8 @@
               <div class="history-item-footer">
                 <span class="history-item-amount">$100</span>
                 <span class="history-badge history-badge--cancelled">Cancelled</span>
-                <div class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></div>
+                <div class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </div>
               </div>
             </a>
           </div>
@@ -7083,91 +7226,92 @@
             </div>
             <div class="credit-card-body">
               <div class="credit-card-col">
-              <!-- Receive on behalf -->
-              <div class="credit-progress-wrap">
-                <div class="credit-progress-row">
-                  <span class="credit-progress-label">
-                    <i data-lucide="arrow-down-circle" class="w-3 h-3" style="color:#16a34a;vertical-align:middle;"></i>
-                    Receive on Behalf
-                  </span>
-                  <span class="credit-progress-value">850 / 2,000 USDV</span>
-                </div>
-                <div class="credit-progress-bar">
-                  <div class="credit-progress-fill"
-                    style="width: 42.5%; background: linear-gradient(90deg,#4ade80,#16a34a);"></div>
-                </div>
-              </div>
-              <div class="credit-stats">
-                <div class="credit-stat credit-stat--limit">
-                  <div class="credit-stat__icon">
-                    <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
+                <!-- Receive on behalf -->
+                <div class="credit-progress-wrap">
+                  <div class="credit-progress-row">
+                    <span class="credit-progress-label">
+                      <i data-lucide="arrow-down-circle" class="w-3 h-3"
+                        style="color:#16a34a;vertical-align:middle;"></i>
+                      Receive on Behalf
+                    </span>
+                    <span class="credit-progress-value">850 / 2,000 USDV</span>
                   </div>
-                  <div class="credit-stat__info">
-                    <div class="credit-stat__label">Receive Limit</div>
-                    <div class="credit-stat__value">2,000 <span class="credit-stat__unit">USDV</span></div>
+                  <div class="credit-progress-bar">
+                    <div class="credit-progress-fill"
+                      style="width: 42.5%; background: linear-gradient(90deg,#4ade80,#16a34a);"></div>
                   </div>
                 </div>
-                <div class="credit-stat credit-stat--thu">
-                  <div class="credit-stat__icon">
-                    <i data-lucide="arrow-down-circle" class="w-4 h-4"></i>
+                <div class="credit-stats">
+                  <div class="credit-stat credit-stat--limit">
+                    <div class="credit-stat__icon">
+                      <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
+                    </div>
+                    <div class="credit-stat__info">
+                      <div class="credit-stat__label">Receive Limit</div>
+                      <div class="credit-stat__value">2,000 <span class="credit-stat__unit">USDV</span></div>
+                    </div>
                   </div>
-                  <div class="credit-stat__info">
-                    <div class="credit-stat__label">Received</div>
-                    <div class="credit-stat__value">850 <span class="credit-stat__unit">USDV</span></div>
+                  <div class="credit-stat credit-stat--thu">
+                    <div class="credit-stat__icon">
+                      <i data-lucide="arrow-down-circle" class="w-4 h-4"></i>
+                    </div>
+                    <div class="credit-stat__info">
+                      <div class="credit-stat__label">Received</div>
+                      <div class="credit-stat__value">850 <span class="credit-stat__unit">USDV</span></div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="credit-action-row">
-                <button type="button" class="credit-action-btn credit-action-btn--repay" id="open-repayment-modal">
-                  <i data-lucide="check-circle" class="w-4 h-4"></i>
-                  Confirm Repayment
-                </button>
-              </div>
+                <div class="credit-action-row">
+                  <button type="button" class="credit-action-btn credit-action-btn--repay" id="open-repayment-modal">
+                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                    Confirm Repayment
+                  </button>
+                </div>
 
               </div><!-- end credit-card-col -->
               <div class="credit-card-col">
-              <!-- Pay on behalf -->
-              <div class="credit-progress-wrap">
-                <div class="credit-progress-row">
-                  <span class="credit-progress-label">
-                    <i data-lucide="arrow-up-circle" class="w-3 h-3" style="color:#ea580c;vertical-align:middle;"></i>
-                    Pay on Behalf
-                  </span>
-                  <span class="credit-progress-value">320 / 2,000 USDV</span>
-                </div>
-                <div class="credit-progress-bar">
-                  <div class="credit-progress-fill"
-                    style="width: 16%; background: linear-gradient(90deg,#fb923c,#ea580c);"></div>
-                </div>
-              </div>
-              <div class="credit-stats">
-                <div class="credit-stat credit-stat--limit">
-                  <div class="credit-stat__icon">
-                    <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
+                <!-- Pay on behalf -->
+                <div class="credit-progress-wrap">
+                  <div class="credit-progress-row">
+                    <span class="credit-progress-label">
+                      <i data-lucide="arrow-up-circle" class="w-3 h-3" style="color:#ea580c;vertical-align:middle;"></i>
+                      Pay on Behalf
+                    </span>
+                    <span class="credit-progress-value">320 / 2,000 USDV</span>
                   </div>
-                  <div class="credit-stat__info">
-                    <div class="credit-stat__label">Pay Limit</div>
-                    <div class="credit-stat__value">2,000 <span class="credit-stat__unit">USDV</span></div>
+                  <div class="credit-progress-bar">
+                    <div class="credit-progress-fill"
+                      style="width: 16%; background: linear-gradient(90deg,#fb923c,#ea580c);"></div>
                   </div>
                 </div>
-                <div class="credit-stat credit-stat--chi">
-                  <div class="credit-stat__icon">
-                    <i data-lucide="arrow-up-circle" class="w-4 h-4"></i>
+                <div class="credit-stats">
+                  <div class="credit-stat credit-stat--limit">
+                    <div class="credit-stat__icon">
+                      <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
+                    </div>
+                    <div class="credit-stat__info">
+                      <div class="credit-stat__label">Pay Limit</div>
+                      <div class="credit-stat__value">2,000 <span class="credit-stat__unit">USDV</span></div>
+                    </div>
                   </div>
-                  <div class="credit-stat__info">
-                    <div class="credit-stat__label">Paid</div>
-                    <div class="credit-stat__value">320 <span class="credit-stat__unit">USDV</span></div>
+                  <div class="credit-stat credit-stat--chi">
+                    <div class="credit-stat__icon">
+                      <i data-lucide="arrow-up-circle" class="w-4 h-4"></i>
+                    </div>
+                    <div class="credit-stat__info">
+                      <div class="credit-stat__label">Paid</div>
+                      <div class="credit-stat__value">320 <span class="credit-stat__unit">USDV</span></div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="credit-action-row">
-                <button type="button" class="credit-action-btn credit-action-btn--payout" id="open-payout-modal">
-                  <i data-lucide="send" class="w-4 h-4"></i>
-                  Request Payout
-                </button>
-              </div>
+                <div class="credit-action-row">
+                  <button type="button" class="credit-action-btn credit-action-btn--payout" id="open-payout-modal">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                    Request Payout
+                  </button>
+                </div>
               </div><!-- end credit-card-col -->
             </div>
           </div>
@@ -7186,145 +7330,168 @@
             </div>
 
             <div class="collapse show" id="receive-on-behalf-payment-collapse">
-            <div class="payment-approval-body">
+              <div class="payment-approval-body">
 
-              <div class="payment-approval-topline mt-2">
-                <div class="payment-approval-copy" style="font-weight:700;color:var(--text);font-size:15px;">Allow
-                  receive / pay on behalf</div>
-                <div class="inline-switch-row">
-                  <div class="status-switch">
-                    <label class="activity-switch">
-                      <input type="checkbox" checked />
-                      <span class="activity-switch-track">
-                        <span class="activity-switch-on">ON</span>
-                        <span class="activity-switch-off">OFF</span>
-                        <span class="activity-switch-thumb"></span>
-                      </span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row g-2 mb-3">
-                <div class="col-12 col-md-4">
-                  <div class="receive-service-summary">
-                    <div class="label">
-                      <i data-lucide="percent" class="w-4 h-4"></i>
-                      Fixed Fee
-                      <span class="info-dot"
-                        data-tippy-content="You receive 75% of the 5% service fee per transaction."><i
-                          data-lucide="info" class="w-4 h-4"></i></span>
-                    </div>
-                    <div class="value">5%</div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-4">
-                  <div class="receive-service-summary">
-                    <div class="label">
-                      <i data-lucide="calendar-check" class="w-4 h-4"></i>
-                      Settlement
-                    </div>
-                    <div class="value">End of Day</div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-4">
-                  <div class="receive-service-summary">
-                    <div class="label">
-                      <i data-lucide="clock" class="w-4 h-4"></i>
-                      Payout
-                    </div>
-                    <div class="value">T+1</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row g-3">
-                <div class="col-12 col-lg-6">
-                  <div class="payment-approval-col h-100">
-                    <div class="payment-approval-col-title">
-                      <span>Pay Back to VLINKPAY</span>
-                      <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
-                    </div>
-                    <div class="payment-choice-list">
-                      <label class="payment-choice">
-                        <input type="checkbox" name="payment-to-company" checked />
-                        <i data-lucide="landmark" class="w-4 h-4" style="color:#5c7ad6;"></i>
-                        <span>Bank Transfer</span>
-                        <a href="#" class="payment-choice-bank-action" onclick="event.preventDefault()">
-                          <i data-lucide="eye" class="w-4 h-4"></i>
-                          <span>View</span>
-                        </a>
-                      </label>
-                      <label class="payment-choice">
-                        <input type="checkbox" name="payment-to-company" />
-                        <img src="images/usdv.png" class="w-4 h-4" style="object-fit:contain;" alt="USDV" />
-                        <span>USDV</span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-lg-6">
-                  <div class="payment-approval-col h-100">
-                    <div class="payment-approval-col-title">
-                      <span>VLINKPAY Pays Back</span>
-                      <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
-                    </div>
-                    <div class="payment-choice-list">
-                      <label class="payment-choice">
-                        <input type="checkbox" name="company-pays-back" checked />
-                        <i data-lucide="landmark" class="w-4 h-4" style="color:#5c7ad6;"></i>
-                        <span>Bank Transfer</span>
-                        <a href="#" class="payment-choice-bank-action" data-no-bank-show onclick="event.preventDefault()">+ Add bank</a>
-                        <span class="payment-choice-bank-action payment-choice-bank-view" data-bank-show>
-                          <i data-lucide="eye" class="w-4 h-4"></i>
-                          <span>View</span>
+                <div class="payment-approval-topline mt-2">
+                  <div class="payment-approval-copy" style="font-weight:700;color:var(--text);font-size:15px;">Allow
+                    receive / pay on behalf</div>
+                  <div class="inline-switch-row">
+                    <div class="status-switch">
+                      <label class="activity-switch">
+                        <input type="checkbox" checked />
+                        <span class="activity-switch-track">
+                          <span class="activity-switch-on">ON</span>
+                          <span class="activity-switch-off">OFF</span>
+                          <span class="activity-switch-thumb"></span>
                         </span>
                       </label>
-                      <label class="payment-choice">
-                        <input type="checkbox" name="company-pays-back" />
-                        <img src="images/usdv.png" class="w-4 h-4" style="object-fit:contain;" alt="USDV" />
-                        <span>USDV</span>
-                      </label>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="payment-info-stack">
-                <div class="payment-info-row">
-                  <div class="payment-info-label">Payment Priority</div>
-                  <div class="payment-info-value">
-                    <select class="payment-inline-select form-select" id="payment-priority-select"></select>
-                  </div>
-                </div>
-
-                <div class="payment-info-row">
-                  <div class="payment-info-label">Payout Account</div>
-                  <div class="payment-info-value">
-                    <div class="payout-account-box"
-                      style="width: 100%; align-items: center; flex-direction: row; justify-content: space-between;">
-                      <div class="value" style="font-weight: 600; color: #6f7684;">VLINKPAY Settlement - 1234567890
+                <div class="row g-2 mb-3">
+                  <div class="col-12 col-md-4">
+                    <div class="receive-service-summary">
+                      <div class="label">
+                        <i data-lucide="percent" class="w-4 h-4"></i>
+                        Fixed Fee
+                        <span class="info-dot"
+                          data-tippy-content="You receive 75% of the 5% service fee per transaction."><i
+                            data-lucide="info" class="w-4 h-4"></i></span>
                       </div>
-                      <button type="button" class="qr-action-btn qr-action-btn--ghost"
-                        style="height: 34px; padding: 0 10px; border-radius: 10px; min-width: 0;">
-                        <i class="bi bi-copy"></i>
-                      </button>
+                      <div class="value">5%</div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-4">
+                    <div class="receive-service-summary">
+                      <div class="label">
+                        <i data-lucide="calendar-check" class="w-4 h-4"></i>
+                        Settlement
+                      </div>
+                      <div class="value">End of Day</div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-4">
+                    <div class="receive-service-summary">
+                      <div class="label">
+                        <i data-lucide="clock" class="w-4 h-4"></i>
+                        Payout
+                      </div>
+                      <div class="value">T+1</div>
                     </div>
                   </div>
                 </div>
 
-                <div class="payment-info-row">
-                  <div class="payment-info-label">Applied Service Fee</div>
-                  <div class="payment-info-value">
-                    <input class="setting-input" type="number" min="0" max="100" step="0.1" value="5"
-                      style="max-width:90px;text-align:right;" /> <span style="font-weight:700;">%</span>
+                <div class="row g-3">
+                  <div class="col-12 col-lg-6">
+                    <div class="payment-approval-col h-100">
+                      <div class="payment-approval-col-title">
+                        <span>Pay Back to VLINKPAY</span>
+                        <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                      </div>
+                      <div class="payment-choice-list">
+                        <label class="payment-choice">
+                          <input type="checkbox" name="payment-to-company" checked />
+                          <i data-lucide="landmark" class="w-4 h-4" style="color:#5c7ad6;"></i>
+                          <span>Bank Transfer</span>
+                          <a href="#" class="payment-choice-bank-action" onclick="event.preventDefault()">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                            <span>View</span>
+                          </a>
+                        </label>
+                        <label class="payment-choice">
+                          <input type="checkbox" name="payment-to-company" />
+                          <img src="images/usdv.png" class="w-4 h-4" style="object-fit:contain;" alt="USDV" />
+                          <span>USDV</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-lg-6">
+                    <div class="payment-approval-col h-100">
+                      <div class="payment-approval-col-title">
+                        <span>VLINKPAY Pays Back</span>
+                        <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
+                      </div>
+                      <div class="payment-choice-list">
+                        <label class="payment-choice">
+                          <input type="checkbox" name="company-pays-back" checked />
+                          <i data-lucide="landmark" class="w-4 h-4" style="color:#5c7ad6;"></i>
+                          <span>Bank Transfer</span>
+                          <a href="#" class="payment-choice-bank-action" data-no-bank-show
+                            onclick="event.preventDefault()">+ Add bank</a>
+                          <button type="button" class="payment-choice-bank-action payment-choice-bank-view"
+                            data-bank-show id="open-bank-info-modal" onclick="event.stopPropagation()">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                            <span>View</span>
+                          </button>
+                        </label>
+                        <label class="payment-choice">
+                          <input type="checkbox" name="company-pays-back" />
+                          <img src="images/usdv.png" class="w-4 h-4" style="object-fit:contain;" alt="USDV" />
+                          <span>USDV</span>
+                        </label>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div class="payment-info-row">
+                <div class="payment-info-stack">
+
+                  <div class="row g-2">
+                    <div class="col-12 col-md-6">
+                      <div class="payment-info-row">
+                        <div class="payment-info-label">Account to Receive Payout</div>
+                        <div class="payment-info-value">
+                          <div class="payout-account-box">
+                            <div class="value" style="font-weight: 600; color: #6f7684;">ABC Corporation - 1234567890
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <div class="payment-info-row">
+                          <div class="payment-info-label">Applied Service Fee</div>
+                          <div class="payment-info-value">
+                            <div class="input-group percent-input-group" style="max-width:100px;">
+                              <input class="form-control percent-input" type="number" min="0" max="100" step="0.1" value="5" style="text-align:right;" />
+                              <span class="input-group-text percent-suffix">%</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <div class="payment-info-row">
+                          <div class="payment-info-label">Receive Payout Priority</div>
+                          <div class="payment-info-value">
+                            <select class="payment-inline-select form-select" id="payment-priority-select"></select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <div class="payment-status-row">
+                          <div class="payment-info-label" style="display:flex;align-items:center;gap:8px;">
+                            Approval Status
+                            <span class="status-note success" id="behalf-approval-status-badge">Approved</span>
+                          </div>
+                          <a href="#" class="payment-choice-bank-action" style="font-size:13px;"
+                            onclick="event.preventDefault()">
+                            <i data-lucide="history" class="w-4 h-4"></i>
+                            <span>View change history</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+
+
+                  <!-- <div class="payment-info-row">
                   <div class="payment-info-label">Eligibility Requirements</div>
                   <div class="payment-info-value payment-condition-row">
                     <span class="payment-condition-chip" style="background:#eaf7ea; color:#5aa15e;">KYC/KYB</span>
@@ -7333,18 +7500,16 @@
                       limit</span>
                     <i data-lucide="chevron-right" class="w-5 h-5" style="color:#d6a86b;"></i>
                   </div>
-                </div>
+                </div> -->
 
-                <div class="payment-status-row">
-                  <div class="payment-info-label">Approval Status</div>
-                  <span class="status-note success">Approved</span>
+
                 </div>
               </div>
-            </div>
-            <div
-              style="padding: 16px 18px 18px; border-top: 1px solid #f0e3c7; background: linear-gradient(180deg,#fffcf4,#fff); display:flex; justify-content:center;">
-              <button class="primary-action btn btn-lg" id="save-behalf-payment-btn" style="min-width: 220px;">Save and Submit for Approval</button>
-            </div>
+              <div
+                style="padding: 16px 18px 18px; border-top: 1px solid #f0e3c7; background: linear-gradient(180deg,#fffcf4,#fff); display:flex; justify-content:center;">
+                <button class="primary-action btn btn-lg" id="save-behalf-payment-btn" style="min-width: 220px;">Save
+                  and Submit for Approval</button>
+              </div>
             </div><!-- end collapse -->
           </div>
           <div class="deposit-info-card mt-3">
@@ -7638,11 +7803,13 @@
 
   <!-- Modal: Confirm Repayment -->
   <div class="cancel-modal" id="repayment-modal" aria-hidden="true">
-    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Confirm Repayment to VLINKPAY" style="width:min(100%,540px);">
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Confirm Repayment to VLINKPAY"
+      style="width:min(100%,540px);">
       <div class="cancel-modal-head">
         <div>
           <div class="cancel-modal-title">Confirm Repayment to VLINKPAY</div>
-          <div class="cancel-modal-subtitle">You are confirming that you have sent the collected funds back to VLINKPAY.</div>
+          <div class="cancel-modal-subtitle">You are confirming that you have sent the collected funds back to VLINKPAY.
+          </div>
         </div>
         <button type="button" class="cancel-modal-close" id="close-repayment-modal" aria-label="Close">
           <i data-lucide="x" class="w-4 h-4"></i>
@@ -7668,7 +7835,8 @@
             Upload proof <span style="font-weight:400;color:var(--muted);">(required)</span>
           </div>
           <input type="file" id="repayment-file-input" accept="image/*,.pdf" multiple style="display:none;" />
-          <input type="file" id="repayment-camera-input" accept="image/*" capture="camera" multiple style="display:none;" />
+          <input type="file" id="repayment-camera-input" accept="image/*" capture="camera" multiple
+            style="display:none;" />
           <div class="proof-upload-btns">
             <button type="button" class="proof-upload-btn" id="repayment-take-photo-btn">
               <i data-lucide="camera" class="w-6 h-6"></i>
@@ -7679,7 +7847,8 @@
               Choose file
             </button>
           </div>
-          <div class="proof-upload-hint">💡 You can either take a picture of your receipt or upload from your device.</div>
+          <div class="proof-upload-hint">💡 You can either take a picture of your receipt or upload from your device.
+          </div>
           <div class="proof-preview-grid" id="repayment-preview-grid"></div>
         </div>
       </div>
@@ -7701,7 +7870,8 @@
       <div class="cancel-modal-head">
         <div>
           <div class="cancel-modal-title">Request Payout from VLINKPAY</div>
-          <div class="cancel-modal-subtitle">You are requesting VLINKPAY to reimburse the amount you paid on behalf of the company.</div>
+          <div class="cancel-modal-subtitle">You are requesting VLINKPAY to reimburse the amount you paid on behalf of
+            the company.</div>
         </div>
         <button type="button" class="cancel-modal-close" id="close-payout-modal" aria-label="Close">
           <i data-lucide="x" class="w-4 h-4"></i>
@@ -7747,7 +7917,8 @@
       <div class="cancel-modal-head">
         <div>
           <div class="cancel-modal-title">Cancel Deposit Package Policy</div>
-          <div class="cancel-modal-subtitle">Before cancelling your Merchant / Mobile ATM deposit package, please review the cancellation policy below.</div>
+          <div class="cancel-modal-subtitle">Before cancelling your Merchant / Mobile ATM deposit package, please review
+            the cancellation policy below.</div>
         </div>
         <button type="button" class="cancel-modal-close" id="close-cancel-policy" aria-label="Close">
           <i data-lucide="x" class="w-4 h-4"></i>
@@ -7757,7 +7928,8 @@
       <div class="cancel-modal-body">
         <div class="cancel-detail-row">
           <span class="cancel-detail-label">Deposit Package</span>
-          <span class="cancel-detail-value">2,040 USDV <span style="font-size:12px;font-weight:600;color:var(--muted);">(2,000 + 2%)</span></span>
+          <span class="cancel-detail-value">2,040 USDV <span
+              style="font-size:12px;font-weight:600;color:var(--muted);">(2,000 + 2%)</span></span>
         </div>
         <div class="cancel-detail-row cancel-detail-row--refund">
           <span class="cancel-detail-label">Cancellation Fee</span>
@@ -7769,16 +7941,22 @@
         </div>
 
         <div class="cancel-obligations">
-          <div class="cancel-obligations-title">The refund will only be processed after all obligations are cleared, including:</div>
+          <div class="cancel-obligations-title">The refund will only be processed after all obligations are cleared,
+            including:</div>
           <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:6px;">
-            <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="circle-check" class="w-4 h-4" style="color:#16a34a;flex:0 0 auto;"></i> No active transactions</li>
-            <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="circle-check" class="w-4 h-4" style="color:#16a34a;flex:0 0 auto;"></i> No unpaid settlement</li>
-            <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="circle-check" class="w-4 h-4" style="color:#16a34a;flex:0 0 auto;"></i> No open disputes</li>
-            <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="circle-check" class="w-4 h-4" style="color:#16a34a;flex:0 0 auto;"></i> No risk hold or compliance restriction</li>
+            <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="circle-check" class="w-4 h-4"
+                style="color:#16a34a;flex:0 0 auto;"></i> No active transactions</li>
+            <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="circle-check" class="w-4 h-4"
+                style="color:#16a34a;flex:0 0 auto;"></i> No unpaid settlement</li>
+            <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="circle-check" class="w-4 h-4"
+                style="color:#16a34a;flex:0 0 auto;"></i> No open disputes</li>
+            <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="circle-check" class="w-4 h-4"
+                style="color:#16a34a;flex:0 0 auto;"></i> No risk hold or compliance restriction</li>
           </ul>
         </div>
 
-        <p class="cancel-pending-note">If any obligation is still pending, your cancellation request will remain pending until it is fully resolved.</p>
+        <p class="cancel-pending-note">If any obligation is still pending, your cancellation request will remain pending
+          until it is fully resolved.</p>
       </div>
 
       <div class="cancel-modal-actions">
@@ -7807,7 +7985,8 @@
       <div class="cancel-modal-body">
         <div class="cancel-detail-row">
           <span class="cancel-detail-label">Deposit Amount</span>
-          <span class="cancel-detail-value">2,040 USDV <span style="font-size:12px;font-weight:600;color:var(--muted);">(2,000 + 2%)</span></span>
+          <span class="cancel-detail-value">2,040 USDV <span
+              style="font-size:12px;font-weight:600;color:var(--muted);">(2,000 + 2%)</span></span>
         </div>
         <div class="cancel-detail-row cancel-detail-row--refund">
           <span class="cancel-detail-label">Cancellation Fee</span>
@@ -7862,7 +8041,8 @@
 
   <!-- Modal: Add Bank -->
   <div class="cancel-modal" id="add-bank-modal" aria-hidden="true">
-    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Add Bank Account" style="width:min(100%,520px);">
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Add Bank Account"
+      style="width:min(100%,520px);">
       <div class="cancel-modal-head">
         <div>
           <div class="cancel-modal-title">Add Bank Account</div>
@@ -7933,7 +8113,8 @@
           <label class="form-label">Tax Document <span class="req">*</span></label>
           <div class="d-flex flex-column gap-2">
             <label class="form-check" for="add-bank-tax-ssn">
-              <input class="form-check-input" type="radio" name="add-bank-tax-doc" id="add-bank-tax-ssn" value="SSN" checked />
+              <input class="form-check-input" type="radio" name="add-bank-tax-doc" id="add-bank-tax-ssn" value="SSN"
+                checked />
               <span class="form-check-label">SSN (Social Security Number)</span>
             </label>
             <label class="form-check" for="add-bank-tax-ein">
@@ -7944,14 +8125,16 @@
         </div>
 
         <div class="mb-2">
-          <label class="form-label" for="add-bank-doc-number">Enter Your Document Number <span class="req">*</span></label>
+          <label class="form-label" for="add-bank-doc-number">Enter Your Document Number <span
+              class="req">*</span></label>
           <input type="text" class="form-control" id="add-bank-doc-number" placeholder="123-45-6789" />
         </div>
 
         <div class="mb-2" id="add-bank-upload-ssn-wrap">
           <label class="form-label">Upload Front of SSN <span class="req">*</span></label>
           <input type="file" id="add-bank-ssn-file-input" accept="image/*,.pdf" style="display:none;" />
-          <input type="file" id="add-bank-ssn-camera-input" accept="image/*" capture="environment" style="display:none;" />
+          <input type="file" id="add-bank-ssn-camera-input" accept="image/*" capture="environment"
+            style="display:none;" />
           <div class="add-bank-preview-wrap" id="add-bank-ssn-preview-wrap">
             <button type="button" class="add-bank-preview-remove" id="add-bank-ssn-remove-btn">&times;</button>
             <img class="add-bank-preview-img" id="add-bank-ssn-preview-img" src="" alt="" style="display:none;" />
@@ -7973,13 +8156,15 @@
               Choose file
             </button>
           </div>
-          <div class="add-bank-upload-hint">💡 Upload a receipt photo or file. Supported: PNG, JPEG, JPG, PDF. Max size: 5MB.</div>
+          <div class="add-bank-upload-hint">💡 Upload a receipt photo or file. Supported: PNG, JPEG, JPG, PDF. Max size:
+            5MB.</div>
         </div>
 
         <div class="mb-1">
           <label class="form-label">Upload Front of Voided Check Business <span class="req">*</span></label>
           <input type="file" id="add-bank-check-file-input" accept="image/*,.pdf" style="display:none;" />
-          <input type="file" id="add-bank-check-camera-input" accept="image/*" capture="environment" style="display:none;" />
+          <input type="file" id="add-bank-check-camera-input" accept="image/*" capture="environment"
+            style="display:none;" />
           <div class="add-bank-preview-wrap" id="add-bank-check-preview-wrap">
             <button type="button" class="add-bank-preview-remove" id="add-bank-check-remove-btn">&times;</button>
             <img class="add-bank-preview-img" id="add-bank-check-preview-img" src="" alt="" style="display:none;" />
@@ -8001,15 +8186,15 @@
               Choose file
             </button>
           </div>
-          <div class="add-bank-upload-hint">💡 Upload a receipt photo or file. Supported: PNG, JPEG, JPG, PDF. Max size: 5MB.</div>
+          <div class="add-bank-upload-hint">💡 Upload a receipt photo or file. Supported: PNG, JPEG, JPG, PDF. Max size:
+            5MB.</div>
         </div>
 
       </div>
 
       <!-- Step 1 footer -->
       <div class="cancel-modal-actions add-bank-step1-actions">
-        <button type="button" class="btn btn-primary w-100" id="add-bank-next-btn"
-          style="border-radius:0.9rem;font-weight:700;font-size:15px;padding:12px 0;">
+        <button type="button" class="btn btn-warning w-100" id="add-bank-next-btn">
           Next
         </button>
       </div>
@@ -8063,8 +8248,7 @@
 
       <!-- Step 2 footer -->
       <div class="cancel-modal-actions add-bank-step2-actions">
-        <button type="button" class="btn btn-primary w-100" id="add-bank-submit-btn"
-          style="border-radius:0.9rem;font-weight:700;font-size:15px;padding:12px 0;">
+        <button type="button" class="btn btn-warning w-100" id="add-bank-submit-btn">
           Confirm &amp; Submit
         </button>
       </div>
@@ -8077,7 +8261,8 @@
     <div class="transfer-modal-card" role="dialog" aria-modal="true" aria-label="Transfer Instructions">
       <div class="transfer-modal-head">
         <div class="transfer-modal-title">Transfer Instructions</div>
-        <button type="button" class="transfer-modal-close" id="close-transfer-modal" aria-label="Close">&#x2715;</button>
+        <button type="button" class="transfer-modal-close" id="close-transfer-modal"
+          aria-label="Close">&#x2715;</button>
       </div>
 
       <div class="transfer-modal-body">
@@ -8116,7 +8301,8 @@
         <div class="transfer-row">
           <span class="transfer-row-label">Bank address:</span>
           <span class="transfer-row-value">100 W Houston St, San Antonio, TX 78205</span>
-          <button type="button" class="transfer-copy-btn" data-copy="100 W Houston St, San Antonio, TX 78205" aria-label="Copy">
+          <button type="button" class="transfer-copy-btn" data-copy="100 W Houston St, San Antonio, TX 78205"
+            aria-label="Copy">
             <i data-lucide="copy" class="w-4 h-4"></i>
           </button>
         </div>
@@ -8141,8 +8327,68 @@
             <span>⚠️</span> Note:
           </div>
           <ul style="margin:0;padding-left:16px;">
-            <li>Please include <strong>B845C876C</strong> in the memo when sending your transfer. Missing memo information may delay your credit reset.</li>
+            <li>Please include <strong>B845C876C</strong> in the memo when sending your transfer. Missing memo
+              information may delay your credit reset.</li>
           </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Bank Info (isBank=true view) -->
+  <div class="cancel-modal" id="bank-info-modal" aria-hidden="true">
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Bank Account Details"
+      style="width:min(100%,480px);">
+      <div class="cancel-modal-head">
+        <div>
+          <div class="cancel-modal-title">Bank Account Details</div>
+          <div class="cancel-modal-subtitle">Your approved bank information for payouts.</div>
+        </div>
+        <button type="button" class="cancel-modal-close" id="close-bank-info-modal" aria-label="Close">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="bank-info-modal-body">
+        <div class="bank-info-row">
+          <span class="bank-info-label">Status</span>
+          <span class="status-note success">Approved</span>
+        </div>
+        <div class="bank-info-row">
+          <span class="bank-info-label">Bank Name</span>
+          <span class="bank-info-value">Bank of America</span>
+        </div>
+        <div class="bank-info-row">
+          <span class="bank-info-label">Business Name</span>
+          <span class="bank-info-value">ABC Corporation</span>
+        </div>
+        <div class="bank-info-row">
+          <span class="bank-info-label">Account Number</span>
+          <span class="bank-info-value">001234567890</span>
+        </div>
+        <div class="bank-info-row">
+          <span class="bank-info-label">Routing Number</span>
+          <span class="bank-info-value">123456789</span>
+        </div>
+        <div class="bank-info-row">
+          <span class="bank-info-label">Bank Address</span>
+          <span class="bank-info-value">123 Elm Street<br>Los Angeles, CA 90001,<br>United States</span>
+        </div>
+        <div class="bank-info-row">
+          <span class="bank-info-label">Employer Identification Number</span>
+          <span class="bank-info-value">12-3456789</span>
+        </div>
+        <div class="bank-info-row">
+          <span class="bank-info-label">IRS Letter</span>
+          <button type="button" class="bank-info-view" id="bank-info-irs-view">
+            View <i data-lucide="eye" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div class="bank-info-row">
+          <span class="bank-info-label">Front of Voided Check Business</span>
+          <button type="button" class="bank-info-view" id="bank-info-check-view">
+            View <i data-lucide="eye" class="w-4 h-4"></i>
+          </button>
         </div>
       </div>
     </div>

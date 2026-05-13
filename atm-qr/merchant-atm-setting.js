@@ -307,7 +307,16 @@ window.addEventListener('DOMContentLoaded', () => {
   repaymentFileInput?.addEventListener('change', () => { addRepaymentFiles(repaymentFileInput.files); repaymentFileInput.value = ''; });
   repaymentCameraInput?.addEventListener('change', () => { addRepaymentFiles(repaymentCameraInput.files); repaymentCameraInput.value = ''; });
 
-  submitRepaymentBtn?.addEventListener('click', () => {
+  submitRepaymentBtn?.addEventListener('click', async () => {
+    const toDataURL = (file) => new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve({ name: file.name, dataUrl: e.target.result });
+      reader.readAsDataURL(file);
+    });
+    const proofData = await Promise.all(repaymentFiles.map(toDataURL));
+    localStorage.setItem('repaymentProofs', JSON.stringify(proofData));
+    localStorage.setItem('repaymentSubmittedAt', new Date().toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }));
+
     closeRepaymentModal();
     window.Swal?.fire({
       icon: 'success',
@@ -1078,12 +1087,12 @@ window.addEventListener('DOMContentLoaded', () => {
   bindSelectLabel(statusSelect, 'Status');
   // Settlement data
   const settlementData = [
-    { type: 'pay',     title: 'Pay to VLINKPAY',  date: 'May 13, 2026', meta: 'May 13 · Bank',   method: 'Bank Transfer',  amount: '−850 USDV',   amountClass: 'pay',     status: 'paid',       statusLabel: 'Paid',         icon: 'arrow-up-right'   },
-    { type: 'receive', title: 'VLINKPAY Payout',   date: 'May 12, 2026', meta: 'May 12 · Bank',   method: 'Bank Transfer',  amount: '+320 USDV',   amountClass: 'receive', status: 'processing', statusLabel: 'Processing',   icon: 'arrow-down-left'  },
-    { type: 'pay',     title: 'Pay to VLINKPAY',  date: 'May 10, 2026', meta: 'May 10 · Wallet', method: 'Wallet Balance', amount: '−600 USDV',   amountClass: 'pay',     status: 'pending',    statusLabel: 'Pending',      icon: 'arrow-up-right'   },
-    { type: 'receive', title: 'VLINKPAY Payout',   date: 'May 8, 2026',  meta: 'May 8 · Bank',    method: 'Bank Transfer',  amount: '+280 USDV',   amountClass: 'receive', status: 'review',     statusLabel: 'Under Review', icon: 'arrow-down-left'  },
-    { type: 'pay',     title: 'Pay to VLINKPAY',  date: 'Apr 30, 2026', meta: 'Apr 30 · Bank',   method: 'Bank Transfer',  amount: '−1,200 USDV', amountClass: 'pay',     status: 'paid',       statusLabel: 'Paid',         icon: 'arrow-up-right'   },
-    { type: 'receive', title: 'VLINKPAY Payout',   date: 'Apr 28, 2026', meta: 'Apr 28 · USDV',   method: 'USDV',           amount: '+500 USDV',   amountClass: 'receive', status: 'overdue',    statusLabel: 'Overdue',      icon: 'arrow-down-left'  },
+    { type: 'pay',     title: 'Pay to VLINKPAY', date: 'May 13, 2026', meta: 'May 13 · Bank',   method: 'Bank Transfer',  amount: '−850 USDV',   amountClass: 'pay',     status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-up-right'  },
+    { type: 'receive', title: 'VLINKPAY Payout',  date: 'May 12, 2026', meta: 'May 12 · Bank',   method: 'Bank Transfer',  amount: '+320 USDV',   amountClass: 'receive', status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-down-left' },
+    { type: 'pay',     title: 'Pay to VLINKPAY', date: 'May 10, 2026', meta: 'May 10 · Wallet', method: 'Wallet Balance', amount: '−600 USDV',   amountClass: 'pay',     status: 'waiting-review', statusLabel: 'Waiting Review', icon: 'arrow-up-right'  },
+    { type: 'receive', title: 'VLINKPAY Payout',  date: 'May 8, 2026',  meta: 'May 8 · Bank',    method: 'Bank Transfer',  amount: '+280 USDV',   amountClass: 'receive', status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-down-left' },
+    { type: 'pay',     title: 'Pay to VLINKPAY', date: 'Apr 30, 2026', meta: 'Apr 30 · Bank',   method: 'Bank Transfer',  amount: '−1,200 USDV', amountClass: 'pay',     status: 'waiting-review', statusLabel: 'Waiting Review', icon: 'arrow-up-right'  },
+    { type: 'receive', title: 'VLINKPAY Payout',  date: 'Apr 28, 2026', meta: 'Apr 28 · USDV',   method: 'USDV',           amount: '+500 USDV',   amountClass: 'receive', status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-down-left' },
   ];
 
   const settlementGrid  = document.getElementById('settlement-grid');
@@ -1106,7 +1115,7 @@ window.addEventListener('DOMContentLoaded', () => {
             <div class="settlement-item__right">
               <span class="settlement-item__amount settlement-item__amount--${item.amountClass}">${item.amount}</span>
               <span class="history-badge history-badge--${item.status}">${item.statusLabel}</span>
-              <a href="merchant-atm-settlement-detail.html?type=${item.type}" class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></a>
+              <a href="merchant-atm-settlement-detail.html?type=${item.type}&status=${item.status}" class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></a>
             </div>
           </div>
         </div>`).join('');
@@ -1124,7 +1133,7 @@ window.addEventListener('DOMContentLoaded', () => {
           <td class="td-seller">${item.method}</td>
           <td class="td-amount" style="color:${item.amountClass === 'pay' ? '#ea580c' : '#16a34a'};">${item.amount}</td>
           <td><span class="history-badge history-badge--${item.status}">${item.statusLabel}</span></td>
-          <td class="td-chevron"><a href="merchant-atm-settlement-detail.html?type=${item.type}" class="view-details-link">View details <i data-lucide="chevron-right" class="w-4 h-4"></i></a></td>
+          <td class="td-chevron"><a href="merchant-atm-settlement-detail.html?type=${item.type}&status=${item.status}" class="view-details-link">View details <i data-lucide="chevron-right" class="w-4 h-4"></i></a></td>
         </tr>`).join('');
     refreshIcons();
   };

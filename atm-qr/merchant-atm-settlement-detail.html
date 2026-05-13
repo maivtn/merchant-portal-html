@@ -82,13 +82,15 @@
       font-weight: 700;
     }
 
-    .status-badge--paid        { background:#f0fdf4; color:#16a34a; border:1px solid #86efac; }
-    .status-badge--pending     { background:#fffbeb; color:#d97706; border:1px solid #fde68a; }
-    .status-badge--review      { background:#eff6ff; color:#3b82f6; border:1px solid #bfdbfe; }
-    .status-badge--processing  { background:#f5f3ff; color:#7c3aed; border:1px solid #ddd6fe; }
-    .status-badge--confirmed   { background:#f0fdf4; color:#16a34a; border:1px solid #86efac; }
-    .status-badge--rejected    { background:#fef2f2; color:#ef4444; border:1px solid #fca5a5; }
-    .status-badge--overdue     { background:#fff7ed; color:#ea580c; border:1px solid #fdba74; }
+    .status-badge--paid           { background:#f0fdf4; color:#16a34a; border:1px solid #86efac; }
+    .status-badge--completed      { background:#f0fdf4; color:#16a34a; border:1px solid #86efac; }
+    .status-badge--waiting-review { background:#fefce8; color:#ca8a04; border:1px solid #fde047; }
+    .status-badge--pending        { background:#fffbeb; color:#d97706; border:1px solid #fde68a; }
+    .status-badge--review         { background:#eff6ff; color:#3b82f6; border:1px solid #bfdbfe; }
+    .status-badge--processing     { background:#f5f3ff; color:#7c3aed; border:1px solid #ddd6fe; }
+    .status-badge--confirmed      { background:#f0fdf4; color:#16a34a; border:1px solid #86efac; }
+    .status-badge--rejected       { background:#fef2f2; color:#ef4444; border:1px solid #fca5a5; }
+    .status-badge--overdue        { background:#fff7ed; color:#ea580c; border:1px solid #fdba74; }
 
     .info-section {
       background: #f8fafc;
@@ -373,38 +375,36 @@
           </div>
         </div>
 
-        <!-- Upload proof — ATM pays VLINKPAY -->
-        <div class="proof-section" id="proof-upload-section" style="display:none;">
-          <div class="proof-section__title">
-            Upload Payment Proof
-            <span style="font-weight:400;color:#9ca3af;margin-left:4px;">(required)</span>
-          </div>
-          <input type="file" id="proof-file-input"   accept="image/*,.pdf" multiple style="display:none;" />
-          <input type="file" id="proof-camera-input" accept="image/*" capture="camera" multiple style="display:none;" />
-          <div class="proof-upload-btns">
-            <button type="button" class="proof-upload-btn" id="proof-take-photo-btn">
-              <i data-lucide="camera" class="w-5 h-5"></i>Take photo
-            </button>
-            <button type="button" class="proof-upload-btn" id="proof-choose-file-btn">
-              <i data-lucide="folder-open" class="w-5 h-5"></i>Choose file
-            </button>
-          </div>
-          <div class="proof-upload-hint">💡 Attach a photo or screenshot of your payment receipt.</div>
-          <div class="proof-preview-grid" id="proof-preview-grid"></div>
-        </div>
-
-        <!-- VLINKPAY uploaded proof — read-only for ATM -->
+        <!-- Proof section (both flows) — title/content set by JS -->
         <div class="info-section" id="proof-view-section" style="display:none;">
-          <div class="info-section__title">Payment Proof from VLINKPAY</div>
+          <div class="info-section__title">Payment Proof</div>
           <div style="padding: 10px 14px;">
             <div class="proof-view-grid" id="proof-view-grid">
-              <!-- Sample proof images -->
               <div class="proof-view-thumb">
-                <img src="https://placehold.co/72x72/f0fdf4/16a34a?text=Proof" alt="Proof" />
+                <img src="https://placehold.co/72x72/fff7ed/ea580c?text=IMG1" alt="Proof 1" />
+              </div>
+              <div class="proof-view-thumb">
+                <img src="https://placehold.co/72x72/fff7ed/ea580c?text=IMG2" alt="Proof 2" />
+              </div>
+              <div class="proof-view-thumb">
+                <img src="https://placehold.co/72x72/fff7ed/ea580c?text=IMG3" alt="Proof 3" />
               </div>
             </div>
-            <div style="font-size:11.5px;color:#9ca3af;margin-top:8px;">
-              Uploaded by VLINKPAY · May 13, 2026 · 10:05 AM
+            <div id="proof-view-meta" style="font-size:11.5px;color:#9ca3af;margin-top:6px;">Uploaded by merchant · May 13, 2026 · 09:42 AM</div>
+
+            <!-- Upload more (shown for pay + waiting-review only) -->
+            <div id="proof-upload-more" style="display:none; margin-top:12px;">
+              <input type="file" id="proof-more-file-input"   accept="image/*,.pdf" multiple style="display:none;" />
+              <input type="file" id="proof-more-camera-input" accept="image/*" capture="camera" multiple style="display:none;" />
+              <div class="proof-upload-btns">
+                <button type="button" class="proof-upload-btn" id="proof-more-take-photo">
+                  <i data-lucide="camera" class="w-5 h-5"></i>Take photo
+                </button>
+                <button type="button" class="proof-upload-btn" id="proof-more-choose-file">
+                  <i data-lucide="folder-open" class="w-5 h-5"></i>Choose file
+                </button>
+              </div>
+              <div class="proof-preview-grid" id="proof-more-preview"></div>
             </div>
           </div>
         </div>
@@ -423,68 +423,96 @@
   </main>
 
   <script>
-    const params = new URLSearchParams(location.search);
-    const type = params.get('type') || 'pay'; // 'pay' = ATM pays VLINKPAY | 'receive' = VLINKPAY pays ATM
+    const params  = new URLSearchParams(location.search);
+    const type    = params.get('type')   || 'pay';
+    const status  = params.get('status') || (type === 'pay' ? 'waiting-review' : 'completed');
+    const isPay   = type === 'pay';
 
-    const isPay = type === 'pay';
+    const statusMeta = {
+      'completed':      { label: 'Completed',      icon: 'check-circle',  cls: 'status-badge--completed' },
+      'waiting-review': { label: 'Waiting Review',  icon: 'clock',         cls: 'status-badge--waiting-review' },
+      'paid':           { label: 'Paid',            icon: 'check-circle',  cls: 'status-badge--paid' },
+      'processing':     { label: 'Processing',      icon: 'loader',        cls: 'status-badge--processing' },
+      'pending':        { label: 'Pending',         icon: 'clock',         cls: 'status-badge--pending' },
+      'review':         { label: 'Under Review',    icon: 'search',        cls: 'status-badge--review' },
+      'rejected':       { label: 'Rejected',        icon: 'x-circle',      cls: 'status-badge--rejected' },
+      'overdue':        { label: 'Overdue',         icon: 'alert-circle',  cls: 'status-badge--overdue' },
+    };
+    const sm = statusMeta[status] || statusMeta['waiting-review'];
 
     // Hero
-    const heroIcon   = document.getElementById('hero-icon');
+    const heroIcon = document.getElementById('hero-icon');
+    heroIcon.className = `amount-hero__icon amount-hero__icon--${type}`;
+    heroIcon.innerHTML = `<i data-lucide="${isPay ? 'arrow-up-right' : 'arrow-down-left'}" class="w-6 h-6"></i>`;
+
     const heroAmount = document.getElementById('hero-amount');
-    const heroType   = document.getElementById('hero-type');
+    heroAmount.className   = `amount-hero__amount amount-hero__amount--${type}`;
+    heroAmount.textContent = isPay ? '−850 USDV' : '+320 USDV';
+
+    document.getElementById('hero-type').textContent = isPay ? 'Pay to VLINKPAY' : 'VLINKPAY Payout';
+
     const heroStatus = document.getElementById('hero-status');
+    heroStatus.className = `status-badge ${sm.cls}`;
+    heroStatus.innerHTML = `<i data-lucide="${sm.icon}" class="w-3 h-3"></i> ${sm.label}`;
 
-    if (isPay) {
-      heroIcon.className   = 'amount-hero__icon amount-hero__icon--pay';
-      heroIcon.innerHTML   = '<i data-lucide="arrow-up-right" class="w-6 h-6"></i>';
-      heroAmount.className = 'amount-hero__amount amount-hero__amount--pay';
-      heroAmount.textContent = '−850 USDV';
-      heroType.textContent   = 'Pay to VLINKPAY';
-      heroStatus.className   = 'status-badge status-badge--paid';
-      heroStatus.innerHTML   = '<i data-lucide="check-circle" class="w-3 h-3"></i> Paid';
-    } else {
-      heroIcon.className   = 'amount-hero__icon amount-hero__icon--receive';
-      heroIcon.innerHTML   = '<i data-lucide="arrow-down-left" class="w-6 h-6"></i>';
-      heroAmount.className = 'amount-hero__amount amount-hero__amount--receive';
-      heroAmount.textContent = '+320 USDV';
-      heroType.textContent   = 'VLINKPAY Payout';
-      heroStatus.className   = 'status-badge status-badge--processing';
-      heroStatus.innerHTML   = '<i data-lucide="loader" class="w-3 h-3"></i> Processing';
-    }
-
-    // Page title
-    document.getElementById('page-title').textContent = isPay ? 'Pay to VLINKPAY' : 'VLINKPAY Payout';
-
-    // Info fields
-    document.getElementById('info-type').textContent   = isPay ? 'Pay to VLINKPAY' : 'VLINKPAY Payout';
-    document.getElementById('detail-amount').textContent = isPay ? '−850 USDV' : '+320 USDV';
-    document.getElementById('detail-amount').style.color = isPay ? '#ea580c' : '#16a34a';
-    document.getElementById('account-label').textContent = isPay ? 'Pay To' : 'Payout Account';
-    document.getElementById('account-value').textContent = isPay ? 'VLINKPAY-1234567890' : 'ACC-9876543210';
-    document.getElementById('detail-note').textContent   = isPay
+    // Page title & info
+    document.getElementById('page-title').textContent      = isPay ? 'Pay to VLINKPAY' : 'VLINKPAY Payout';
+    document.getElementById('info-type').textContent       = isPay ? 'Pay to VLINKPAY' : 'VLINKPAY Payout';
+    document.getElementById('detail-amount').textContent   = isPay ? '−850 USDV' : '+320 USDV';
+    document.getElementById('detail-amount').style.color   = isPay ? '#ea580c' : '#16a34a';
+    document.getElementById('account-label').textContent   = isPay ? 'Pay To' : 'Payout Account';
+    document.getElementById('account-value').textContent   = isPay ? 'VLINKPAY-1234567890' : 'ACC-9876543210';
+    document.getElementById('detail-note').textContent     = isPay
       ? 'Repayment for Receive on Behalf'
       : 'Payout for completed settlement cycle';
 
-    // Proof sections
+    // Proof section
+    const proofSection = document.getElementById('proof-view-section');
+    const proofGrid    = document.getElementById('proof-view-grid');
+    const proofMeta    = document.getElementById('proof-view-meta');
+
     if (isPay) {
-      document.getElementById('proof-upload-section').style.display = '';
+      // Always show submitted proofs from localStorage (required field in repayment form)
+      const storedProofs = JSON.parse(localStorage.getItem('repaymentProofs') || '[]');
+      const submittedAt  = localStorage.getItem('repaymentSubmittedAt') || '—';
+      proofSection.querySelector('.info-section__title').textContent = 'Payment Proof (Submitted)';
+      if (storedProofs.length > 0) {
+        proofGrid.innerHTML = storedProofs.map(
+          p => `<div class="proof-view-thumb"><img src="${p.dataUrl}" alt="${p.name}" title="${p.name}" /></div>`
+        ).join('');
+        if (proofMeta) proofMeta.textContent = `Uploaded by merchant · ${submittedAt}`;
+      }
+
+      // Show upload-more section for waiting-review
+      if (status === 'waiting-review') {
+        document.getElementById('proof-upload-more').style.display = '';
+      }
     } else {
-      document.getElementById('proof-view-section').style.display = '';
+      // VLINKPAY Payout — show VLINKPAY proof (sample)
+      proofSection.querySelector('.info-section__title').textContent = 'Payment Proof from VLINKPAY';
+      proofGrid.innerHTML = `<div class="proof-view-thumb"><img src="https://placehold.co/72x72/f0fdf4/16a34a?text=Proof" alt="Proof" /></div>`;
+      if (proofMeta) proofMeta.textContent = 'Uploaded by VLINKPAY · May 12, 2026 · 10:05 AM';
     }
+    proofSection.style.display = '';
 
     // Timeline
+    const isCompleted = status === 'completed';
     const timelines = {
-      pay: [
-        { dot: 'done',   label: 'Submitted',    date: 'May 13, 2026 · 09:42 AM' },
-        { dot: 'done',   label: 'Under Review',  date: 'May 13, 2026 · 10:05 AM' },
-        { dot: 'done',   label: 'Confirmed',     date: 'May 13, 2026 · 11:30 AM' },
-        { dot: 'done',   label: 'Paid',          date: 'May 13, 2026 · 02:00 PM' },
-      ],
+      pay: isCompleted
+        ? [
+            { dot: 'done',   label: 'Submitted',      date: 'May 13, 2026 · 09:42 AM' },
+            { dot: 'done',   label: 'Waiting Review',  date: 'May 13, 2026 · 10:05 AM' },
+            { dot: 'done',   label: 'Completed',       date: 'May 13, 2026 · 02:00 PM' },
+          ]
+        : [
+            { dot: 'done',   label: 'Submitted',      date: 'May 10, 2026 · 09:42 AM' },
+            { dot: 'active', label: 'Waiting Review',  date: 'May 10, 2026 · 10:05 AM' },
+            { dot: 'idle',   label: 'Completed',       date: '—' },
+          ],
       receive: [
-        { dot: 'done',   label: 'Initiated',     date: 'May 12, 2026 · 08:00 AM' },
-        { dot: 'done',   label: 'Under Review',  date: 'May 12, 2026 · 09:15 AM' },
-        { dot: 'active', label: 'Processing',    date: 'May 12, 2026 · 10:30 AM' },
-        { dot: 'idle',   label: 'Paid Out',      date: '—' },
+        { dot: 'done', label: 'Initiated',  date: 'May 12, 2026 · 08:00 AM' },
+        { dot: 'done', label: 'Processing', date: 'May 12, 2026 · 10:30 AM' },
+        { dot: 'done', label: 'Completed',  date: 'May 12, 2026 · 02:00 PM' },
       ],
     };
 
@@ -498,74 +526,66 @@
       </div>`).join('');
 
     // Actions
-    const actionsEl = document.getElementById('detail-actions');
-    if (isPay) {
-      actionsEl.innerHTML = `
-        <button class="btn-detail-primary" id="submit-proof-btn" disabled>
-          <i data-lucide="upload" class="w-4 h-4"></i>
-          Submit Proof
-        </button>
-        <button class="btn-detail-secondary">
-          <i data-lucide="download" class="w-4 h-4"></i>
-          Download Receipt
-        </button>
-        <button class="btn-detail-secondary" onclick="if(history.length>1)history.back();else location.href='merchant-atm-setting.html'">
-          <i data-lucide="arrow-left" class="w-4 h-4"></i>
-          Back to History
-        </button>`;
-    } else {
-      actionsEl.innerHTML = `
-        <button class="btn-detail-secondary">
-          <i data-lucide="download" class="w-4 h-4"></i>
-          Download Receipt
-        </button>
-        <button class="btn-detail-secondary" onclick="if(history.length>1)history.back();else location.href='merchant-atm-setting.html'">
-          <i data-lucide="arrow-left" class="w-4 h-4"></i>
-          Back to History
-        </button>`;
-    }
+    const submitMoreBtn = isPay && status === 'waiting-review'
+      ? `<button class="btn-detail-primary" id="submit-more-btn">
+           <i data-lucide="upload" class="w-4 h-4"></i>
+           Submit Updated Proof
+         </button>`
+      : '';
+    const downloadBtn = isCompleted
+      ? `<button class="btn-detail-secondary">
+           <i data-lucide="download" class="w-4 h-4"></i>
+           Download Receipt
+         </button>`
+      : '';
+    document.getElementById('detail-actions').innerHTML = `${submitMoreBtn}${downloadBtn}`;
 
     lucide.createIcons();
 
-    // Upload proof logic (pay flow only)
-    if (isPay) {
-      let proofFiles = [];
+    // Upload more proof logic (pay + waiting-review only)
+    if (isPay && status === 'waiting-review') {
+      let moreFiles = [];
+      const moreFileInput   = document.getElementById('proof-more-file-input');
+      const moreCameraInput = document.getElementById('proof-more-camera-input');
+      const morePreview     = document.getElementById('proof-more-preview');
 
-      const proofFileInput   = document.getElementById('proof-file-input');
-      const proofCameraInput = document.getElementById('proof-camera-input');
-      const previewGrid      = document.getElementById('proof-preview-grid');
-
-      const syncSubmitBtn = () => {
-        const btn = document.getElementById('submit-proof-btn');
-        if (btn) btn.disabled = proofFiles.length === 0;
-      };
-
-      const renderPreviews = () => {
-        previewGrid.innerHTML = proofFiles.map((f, i) => `
+      const renderMore = () => {
+        morePreview.innerHTML = moreFiles.map((f, i) => `
           <div class="proof-thumb">
             <img src="${URL.createObjectURL(f)}" alt="proof" />
             <button class="proof-thumb__remove" data-index="${i}">✕</button>
           </div>`).join('');
-        previewGrid.querySelectorAll('.proof-thumb__remove').forEach(btn => {
+        morePreview.querySelectorAll('.proof-thumb__remove').forEach(btn => {
           btn.addEventListener('click', () => {
-            proofFiles.splice(Number(btn.dataset.index), 1);
-            renderPreviews();
-            syncSubmitBtn();
+            moreFiles.splice(Number(btn.dataset.index), 1);
+            renderMore();
           });
         });
         lucide.createIcons();
-        syncSubmitBtn();
       };
 
-      const addFiles = (list) => {
-        Array.from(list).forEach(f => proofFiles.push(f));
-        renderPreviews();
-      };
+      const addMore = (list) => { Array.from(list).forEach(f => moreFiles.push(f)); renderMore(); };
 
-      document.getElementById('proof-take-photo-btn').addEventListener('click', () => proofCameraInput.click());
-      document.getElementById('proof-choose-file-btn').addEventListener('click', () => proofFileInput.click());
-      proofFileInput.addEventListener('change',   e => { addFiles(e.target.files); e.target.value = ''; });
-      proofCameraInput.addEventListener('change', e => { addFiles(e.target.files); e.target.value = ''; });
+      document.getElementById('proof-more-take-photo').addEventListener('click', () => moreCameraInput.click());
+      document.getElementById('proof-more-choose-file').addEventListener('click', () => moreFileInput.click());
+      moreFileInput.addEventListener('change',   e => { addMore(e.target.files); e.target.value = ''; });
+      moreCameraInput.addEventListener('change', e => { addMore(e.target.files); e.target.value = ''; });
+
+      document.getElementById('submit-more-btn')?.addEventListener('click', async () => {
+        const toDataURL = (file) => new Promise(resolve => {
+          const reader = new FileReader();
+          reader.onload = e => resolve({ name: file.name, dataUrl: e.target.result });
+          reader.readAsDataURL(file);
+        });
+        const existing = JSON.parse(localStorage.getItem('repaymentProofs') || '[]');
+        const newData  = await Promise.all(moreFiles.map(toDataURL));
+        localStorage.setItem('repaymentProofs', JSON.stringify([...existing, ...newData]));
+        localStorage.setItem('repaymentSubmittedAt', new Date().toLocaleString('en-GB', {
+          day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+        }));
+        alert('Updated proof submitted successfully.');
+        location.reload();
+      });
     }
   </script>
 </body>

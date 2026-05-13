@@ -886,10 +886,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeQrModal();
-  });
-
   downloadQrButton?.addEventListener('click', downloadQr);
   printQrButton?.addEventListener('click', printQr);
 
@@ -1080,9 +1076,94 @@ window.addEventListener('DOMContentLoaded', () => {
 
   bindSelectLabel(exchangeTypeSelect, 'Exchange Type');
   bindSelectLabel(statusSelect, 'Status');
-  bindSelectLabel(document.getElementById('settlement-type-select'), 'Type');
-  bindSelectLabel(document.getElementById('settlement-status-select'), 'Status');
-  bindSelectLabel(document.getElementById('settlement-method-select'), 'Method');
+  // Settlement data
+  const settlementData = [
+    { type: 'pay',     title: 'Pay to VLINKPAY',  date: 'May 13, 2026', meta: 'May 13 · Bank',   method: 'Bank Transfer',  amount: '−850 USDV',   amountClass: 'pay',     status: 'paid',       statusLabel: 'Paid',         icon: 'arrow-up-right'   },
+    { type: 'receive', title: 'VLINKPAY Payout',   date: 'May 12, 2026', meta: 'May 12 · Bank',   method: 'Bank Transfer',  amount: '+320 USDV',   amountClass: 'receive', status: 'processing', statusLabel: 'Processing',   icon: 'arrow-down-left'  },
+    { type: 'pay',     title: 'Pay to VLINKPAY',  date: 'May 10, 2026', meta: 'May 10 · Wallet', method: 'Wallet Balance', amount: '−600 USDV',   amountClass: 'pay',     status: 'pending',    statusLabel: 'Pending',      icon: 'arrow-up-right'   },
+    { type: 'receive', title: 'VLINKPAY Payout',   date: 'May 8, 2026',  meta: 'May 8 · Bank',    method: 'Bank Transfer',  amount: '+280 USDV',   amountClass: 'receive', status: 'review',     statusLabel: 'Under Review', icon: 'arrow-down-left'  },
+    { type: 'pay',     title: 'Pay to VLINKPAY',  date: 'Apr 30, 2026', meta: 'Apr 30 · Bank',   method: 'Bank Transfer',  amount: '−1,200 USDV', amountClass: 'pay',     status: 'paid',       statusLabel: 'Paid',         icon: 'arrow-up-right'   },
+    { type: 'receive', title: 'VLINKPAY Payout',   date: 'Apr 28, 2026', meta: 'Apr 28 · USDV',   method: 'USDV',           amount: '+500 USDV',   amountClass: 'receive', status: 'overdue',    statusLabel: 'Overdue',      icon: 'arrow-down-left'  },
+  ];
+
+  const settlementGrid  = document.getElementById('settlement-grid');
+  const settlementTbody = document.getElementById('settlement-tbody');
+
+  const renderSettlementGrid = (items) => {
+    if (!settlementGrid) return;
+    settlementGrid.innerHTML = items.length === 0
+      ? '<div class="col-12 text-center py-4 text-muted" style="font-size:13px;">No records found.</div>'
+      : items.map(item => `
+        <div class="col-6">
+          <div class="settlement-item">
+            <div class="settlement-item__icon settlement-item__icon--${item.type}">
+              <i data-lucide="${item.icon}" class="w-4 h-4"></i>
+            </div>
+            <div class="settlement-item__main">
+              <div class="settlement-item__title">${item.title}</div>
+              <div class="settlement-item__meta">${item.meta}</div>
+            </div>
+            <div class="settlement-item__right">
+              <span class="settlement-item__amount settlement-item__amount--${item.amountClass}">${item.amount}</span>
+              <span class="history-badge history-badge--${item.status}">${item.statusLabel}</span>
+              <a href="merchant-atm-settlement-detail.html?type=${item.type}" class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></a>
+            </div>
+          </div>
+        </div>`).join('');
+    refreshIcons();
+  };
+
+  const renderSettlementTable = (items) => {
+    if (!settlementTbody) return;
+    settlementTbody.innerHTML = items.length === 0
+      ? '<tr><td colspan="6" class="text-center py-4 text-muted" style="font-size:13px;">No records found.</td></tr>'
+      : items.map(item => `
+        <tr>
+          <td class="td-title">${item.title}</td>
+          <td class="td-date">${item.date}</td>
+          <td class="td-seller">${item.method}</td>
+          <td class="td-amount" style="color:${item.amountClass === 'pay' ? '#ea580c' : '#16a34a'};">${item.amount}</td>
+          <td><span class="history-badge history-badge--${item.status}">${item.statusLabel}</span></td>
+          <td class="td-chevron"><a href="merchant-atm-settlement-detail.html?type=${item.type}" class="view-details-link">View details <i data-lucide="chevron-right" class="w-4 h-4"></i></a></td>
+        </tr>`).join('');
+    refreshIcons();
+  };
+
+  const getSettlementFiltered = () => {
+    const type   = document.getElementById('settlement-type-select')?.dataset.filterValue   || '';
+    const status = document.getElementById('settlement-status-select')?.dataset.filterValue || '';
+    const method = document.getElementById('settlement-method-select')?.dataset.filterValue || '';
+    return settlementData.filter(item =>
+      (!type   || item.title       === type)   &&
+      (!status || item.statusLabel === status) &&
+      (!method || item.method      === method)
+    );
+  };
+
+  const renderSettlement = (items) => {
+    renderSettlementGrid(items);
+    renderSettlementTable(items);
+  };
+
+  // Bind settlement filter selects — track value via data attr, update label, then re-render
+  [
+    ['settlement-type-select',   'Type'],
+    ['settlement-status-select', 'Status'],
+    ['settlement-method-select', 'Method'],
+  ].forEach(([id, prefix]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('change', function () {
+      this.dataset.filterValue = this.value;
+      const label = this.selectedIndex > 0 ? this.options[this.selectedIndex].text : 'All';
+      this.options[0].text = `${prefix}: ${label}`;
+      this.selectedIndex = 0;
+      renderSettlement(getSettlementFiltered());
+    });
+  });
+
+  // Initial render
+  renderSettlement(settlementData);
 
   // History view toggle (grid / table) — main list
   const historySection = document.getElementById('history-list-section');

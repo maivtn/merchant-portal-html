@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Settlement Detail</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="merchant-atm-common.css" />
+  <style>
+    .detail-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 16px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      background: #fff;
+    }
+
+    .detail-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .detail-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #111827;
+      text-align: center;
+    }
+
+    .detail-body { padding: 20px 16px 28px; }
+
+    .amount-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 20px 0 24px;
+      border-bottom: 1px solid #f1f5f9;
+      margin-bottom: 20px;
+    }
+
+    .amount-hero__icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .amount-hero__icon--pay     { background: #fff7ed; color: #ea580c; }
+    .amount-hero__icon--receive { background: #f0fdf4; color: #16a34a; }
+
+    .amount-hero__amount { font-size: 28px; font-weight: 800; line-height: 1.1; }
+    .amount-hero__amount--pay     { color: #ea580c; }
+    .amount-hero__amount--receive { color: #16a34a; }
+
+    .amount-hero__type { font-size: 13px; color: #6b7280; font-weight: 500; }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status-badge--paid        { background:#f0fdf4; color:#16a34a; border:1px solid #86efac; }
+    .status-badge--pending     { background:#fffbeb; color:#d97706; border:1px solid #fde68a; }
+    .status-badge--review      { background:#eff6ff; color:#3b82f6; border:1px solid #bfdbfe; }
+    .status-badge--processing  { background:#f5f3ff; color:#7c3aed; border:1px solid #ddd6fe; }
+    .status-badge--confirmed   { background:#f0fdf4; color:#16a34a; border:1px solid #86efac; }
+    .status-badge--rejected    { background:#fef2f2; color:#ef4444; border:1px solid #fca5a5; }
+    .status-badge--overdue     { background:#fff7ed; color:#ea580c; border:1px solid #fdba74; }
+
+    .info-section {
+      background: #f8fafc;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .info-section__title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 10px 14px 6px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .info-row:first-of-type { border-top: none; }
+
+    .info-row__label { font-size: 13px; color: #6b7280; flex-shrink: 0; }
+
+    .info-row__value {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111827;
+      text-align: right;
+    }
+
+    .info-row__value--mono {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: #374151;
+    }
+
+    /* Timeline */
+    .timeline { padding: 4px 0; }
+
+    .timeline-item {
+      display: flex;
+      gap: 12px;
+      padding: 8px 14px;
+    }
+
+    .timeline-item__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    .timeline-item__dot--done   { background: #16a34a; }
+    .timeline-item__dot--active { background: #d97706; box-shadow: 0 0 0 3px rgba(217,119,6,0.2); }
+    .timeline-item__dot--idle   { background: #e2e8f0; }
+
+    .timeline-item__label { font-size: 13px; font-weight: 600; color: #111827; }
+    .timeline-item__date  { font-size: 11px; color: #9ca3af; margin-top: 1px; }
+
+    /* Upload proof */
+    .proof-section {
+      background: #fffbeb;
+      border: 1.5px solid rgba(217,119,6,0.18);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .proof-section__title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 10px;
+    }
+
+    .proof-upload-btns {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .proof-upload-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 8px;
+      border-radius: 10px;
+      border: 1.5px dashed rgba(217,119,6,0.35);
+      background: #fff;
+      color: #d97706;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .proof-upload-btn:hover { border-color: #d97706; background: #fffbeb; }
+
+    .proof-upload-hint {
+      font-size: 11.5px;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .proof-preview-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .proof-thumb {
+      position: relative;
+      width: 72px;
+      height: 72px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+
+    .proof-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .proof-thumb__remove {
+      position: absolute;
+      top: 2px; right: 2px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    /* VLINKPAY uploaded proof (read-only view) */
+    .proof-view-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .proof-view-thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+    }
+
+    .proof-view-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Actions */
+    .detail-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-detail-primary {
+      width: 100%;
+      padding: 13px;
+      border-radius: 14px;
+      border: none;
+      background: #d97706;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: background 0.15s;
+    }
+
+    .btn-detail-primary:hover { background: #b45309; }
+    .btn-detail-primary:disabled { background: #e5e7eb; color: #9ca3af; cursor: not-allowed; }
+
+    .btn-detail-secondary {
+      width: 100%;
+      padding: 13px;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      color: #374151;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: background 0.15s;
+    }
+
+    .btn-detail-secondary:hover { background: #f8fafc; }
+  </style>
+</head>
+
+<body class="antialiased">
+  <main class="screen-shell" style="align-items: flex-start; padding: 0;">
+    <div style="width: 100%; max-width: 480px; margin: 0 auto;">
+
+      <!-- Header -->
+      <div class="detail-header">
+        <button class="detail-back" onclick="if(history.length>1)history.back();else location.href='merchant-atm-setting.html'">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          Back
+        </button>
+        <div class="detail-title" id="page-title">Settlement Detail</div>
+        <div style="width:60px;"></div>
+      </div>
+
+      <div class="detail-body">
+
+        <!-- Amount hero -->
+        <div class="amount-hero">
+          <div class="amount-hero__icon" id="hero-icon">
+            <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
+          </div>
+          <div class="amount-hero__amount" id="hero-amount">−850 USDV</div>
+          <div class="amount-hero__type" id="hero-type">Pay to VLINKPAY</div>
+          <span class="status-badge status-badge--paid" id="hero-status">
+            <i data-lucide="check-circle" class="w-3 h-3"></i> Paid
+          </span>
+        </div>
+
+        <!-- Transaction info -->
+        <div class="info-section">
+          <div class="info-section__title">Transaction Info</div>
+          <div class="info-row">
+            <span class="info-row__label">Reference ID</span>
+            <span class="info-row__value info-row__value--mono">STL-20260513-0047</span>
+          </div>
+          <div class="info-row">
+            <span class="info-row__label">Date</span>
+            <span class="info-row__value">May 13, 2026 · 09:42 AM</span>
+          </div>
+          <div class="info-row">
+            <span class="info-row__label">Type</span>
+            <span class="info-row__value" id="info-type">Pay to VLINKPAY</span>
+          </div>
+          <div class="info-row">
+            <span class="info-row__label">Method</span>
+            <span class="info-row__value">Bank Transfer</span>
+          </div>
+        </div>
+
+        <!-- Payment details -->
+        <div class="info-section">
+          <div class="info-section__title">Payment Details</div>
+          <div class="info-row">
+            <span class="info-row__label">Amount</span>
+            <span class="info-row__value" id="detail-amount" style="color:#ea580c;font-weight:700;">−850 USDV</span>
+          </div>
+          <div class="info-row">
+            <span class="info-row__label">Fee</span>
+            <span class="info-row__value">0 USDV</span>
+          </div>
+          <div class="info-row">
+            <span class="info-row__label" id="account-label">Settlement Account</span>
+            <span class="info-row__value info-row__value--mono" id="account-value">VLINKPAY-1234567890</span>
+          </div>
+          <div class="info-row">
+            <span class="info-row__label">Note</span>
+            <span class="info-row__value" style="color:#6b7280;" id="detail-note">Repayment for Receive on Behalf</span>
+          </div>
+        </div>
+
+        <!-- Upload proof — ATM pays VLINKPAY -->
+        <div class="proof-section" id="proof-upload-section" style="display:none;">
+          <div class="proof-section__title">
+            Upload Payment Proof
+            <span style="font-weight:400;color:#9ca3af;margin-left:4px;">(required)</span>
+          </div>
+          <input type="file" id="proof-file-input"   accept="image/*,.pdf" multiple style="display:none;" />
+          <input type="file" id="proof-camera-input" accept="image/*" capture="camera" multiple style="display:none;" />
+          <div class="proof-upload-btns">
+            <button type="button" class="proof-upload-btn" id="proof-take-photo-btn">
+              <i data-lucide="camera" class="w-5 h-5"></i>Take photo
+            </button>
+            <button type="button" class="proof-upload-btn" id="proof-choose-file-btn">
+              <i data-lucide="folder-open" class="w-5 h-5"></i>Choose file
+            </button>
+          </div>
+          <div class="proof-upload-hint">💡 Attach a photo or screenshot of your payment receipt.</div>
+          <div class="proof-preview-grid" id="proof-preview-grid"></div>
+        </div>
+
+        <!-- VLINKPAY uploaded proof — read-only for ATM -->
+        <div class="info-section" id="proof-view-section" style="display:none;">
+          <div class="info-section__title">Payment Proof from VLINKPAY</div>
+          <div style="padding: 10px 14px;">
+            <div class="proof-view-grid" id="proof-view-grid">
+              <!-- Sample proof images -->
+              <div class="proof-view-thumb">
+                <img src="https://placehold.co/72x72/f0fdf4/16a34a?text=Proof" alt="Proof" />
+              </div>
+            </div>
+            <div style="font-size:11.5px;color:#9ca3af;margin-top:8px;">
+              Uploaded by VLINKPAY · May 13, 2026 · 10:05 AM
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="info-section">
+          <div class="info-section__title">Timeline</div>
+          <div class="timeline" id="timeline"></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="detail-actions" id="detail-actions"></div>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const type = params.get('type') || 'pay'; // 'pay' = ATM pays VLINKPAY | 'receive' = VLINKPAY pays ATM
+
+    const isPay = type === 'pay';
+
+    // Hero
+    const heroIcon   = document.getElementById('hero-icon');
+    const heroAmount = document.getElementById('hero-amount');
+    const heroType   = document.getElementById('hero-type');
+    const heroStatus = document.getElementById('hero-status');
+
+    if (isPay) {
+      heroIcon.className   = 'amount-hero__icon amount-hero__icon--pay';
+      heroIcon.innerHTML   = '<i data-lucide="arrow-up-right" class="w-6 h-6"></i>';
+      heroAmount.className = 'amount-hero__amount amount-hero__amount--pay';
+      heroAmount.textContent = '−850 USDV';
+      heroType.textContent   = 'Pay to VLINKPAY';
+      heroStatus.className   = 'status-badge status-badge--paid';
+      heroStatus.innerHTML   = '<i data-lucide="check-circle" class="w-3 h-3"></i> Paid';
+    } else {
+      heroIcon.className   = 'amount-hero__icon amount-hero__icon--receive';
+      heroIcon.innerHTML   = '<i data-lucide="arrow-down-left" class="w-6 h-6"></i>';
+      heroAmount.className = 'amount-hero__amount amount-hero__amount--receive';
+      heroAmount.textContent = '+320 USDV';
+      heroType.textContent   = 'VLINKPAY Payout';
+      heroStatus.className   = 'status-badge status-badge--processing';
+      heroStatus.innerHTML   = '<i data-lucide="loader" class="w-3 h-3"></i> Processing';
+    }
+
+    // Page title
+    document.getElementById('page-title').textContent = isPay ? 'Pay to VLINKPAY' : 'VLINKPAY Payout';
+
+    // Info fields
+    document.getElementById('info-type').textContent   = isPay ? 'Pay to VLINKPAY' : 'VLINKPAY Payout';
+    document.getElementById('detail-amount').textContent = isPay ? '−850 USDV' : '+320 USDV';
+    document.getElementById('detail-amount').style.color = isPay ? '#ea580c' : '#16a34a';
+    document.getElementById('account-label').textContent = isPay ? 'Pay To' : 'Payout Account';
+    document.getElementById('account-value').textContent = isPay ? 'VLINKPAY-1234567890' : 'ACC-9876543210';
+    document.getElementById('detail-note').textContent   = isPay
+      ? 'Repayment for Receive on Behalf'
+      : 'Payout for completed settlement cycle';
+
+    // Proof sections
+    if (isPay) {
+      document.getElementById('proof-upload-section').style.display = '';
+    } else {
+      document.getElementById('proof-view-section').style.display = '';
+    }
+
+    // Timeline
+    const timelines = {
+      pay: [
+        { dot: 'done',   label: 'Submitted',    date: 'May 13, 2026 · 09:42 AM' },
+        { dot: 'done',   label: 'Under Review',  date: 'May 13, 2026 · 10:05 AM' },
+        { dot: 'done',   label: 'Confirmed',     date: 'May 13, 2026 · 11:30 AM' },
+        { dot: 'done',   label: 'Paid',          date: 'May 13, 2026 · 02:00 PM' },
+      ],
+      receive: [
+        { dot: 'done',   label: 'Initiated',     date: 'May 12, 2026 · 08:00 AM' },
+        { dot: 'done',   label: 'Under Review',  date: 'May 12, 2026 · 09:15 AM' },
+        { dot: 'active', label: 'Processing',    date: 'May 12, 2026 · 10:30 AM' },
+        { dot: 'idle',   label: 'Paid Out',      date: '—' },
+      ],
+    };
+
+    document.getElementById('timeline').innerHTML = (timelines[type] || timelines.pay).map(t => `
+      <div class="timeline-item">
+        <div class="timeline-item__dot timeline-item__dot--${t.dot}"></div>
+        <div>
+          <div class="timeline-item__label">${t.label}</div>
+          <div class="timeline-item__date">${t.date}</div>
+        </div>
+      </div>`).join('');
+
+    // Actions
+    const actionsEl = document.getElementById('detail-actions');
+    if (isPay) {
+      actionsEl.innerHTML = `
+        <button class="btn-detail-primary" id="submit-proof-btn" disabled>
+          <i data-lucide="upload" class="w-4 h-4"></i>
+          Submit Proof
+        </button>
+        <button class="btn-detail-secondary">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          Download Receipt
+        </button>
+        <button class="btn-detail-secondary" onclick="if(history.length>1)history.back();else location.href='merchant-atm-setting.html'">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          Back to History
+        </button>`;
+    } else {
+      actionsEl.innerHTML = `
+        <button class="btn-detail-secondary">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          Download Receipt
+        </button>
+        <button class="btn-detail-secondary" onclick="if(history.length>1)history.back();else location.href='merchant-atm-setting.html'">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          Back to History
+        </button>`;
+    }
+
+    lucide.createIcons();
+
+    // Upload proof logic (pay flow only)
+    if (isPay) {
+      let proofFiles = [];
+
+      const proofFileInput   = document.getElementById('proof-file-input');
+      const proofCameraInput = document.getElementById('proof-camera-input');
+      const previewGrid      = document.getElementById('proof-preview-grid');
+
+      const syncSubmitBtn = () => {
+        const btn = document.getElementById('submit-proof-btn');
+        if (btn) btn.disabled = proofFiles.length === 0;
+      };
+
+      const renderPreviews = () => {
+        previewGrid.innerHTML = proofFiles.map((f, i) => `
+          <div class="proof-thumb">
+            <img src="${URL.createObjectURL(f)}" alt="proof" />
+            <button class="proof-thumb__remove" data-index="${i}">✕</button>
+          </div>`).join('');
+        previewGrid.querySelectorAll('.proof-thumb__remove').forEach(btn => {
+          btn.addEventListener('click', () => {
+            proofFiles.splice(Number(btn.dataset.index), 1);
+            renderPreviews();
+            syncSubmitBtn();
+          });
+        });
+        lucide.createIcons();
+        syncSubmitBtn();
+      };
+
+      const addFiles = (list) => {
+        Array.from(list).forEach(f => proofFiles.push(f));
+        renderPreviews();
+      };
+
+      document.getElementById('proof-take-photo-btn').addEventListener('click', () => proofCameraInput.click());
+      document.getElementById('proof-choose-file-btn').addEventListener('click', () => proofFileInput.click());
+      proofFileInput.addEventListener('change',   e => { addFiles(e.target.files); e.target.value = ''; });
+      proofCameraInput.addEventListener('change', e => { addFiles(e.target.files); e.target.value = ''; });
+    }
+  </script>
+</body>
+
+</html>

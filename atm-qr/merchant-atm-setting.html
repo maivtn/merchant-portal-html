@@ -4601,9 +4601,42 @@
 
     .credit-card-body {
       padding: 16px 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .credit-card-col {
       display: flex;
       flex-direction: column;
       gap: 12px;
+    }
+
+    .credit-card-col:first-child {
+      padding-right: 16px;
+      border-right: 1px solid #f1f5f9;
+    }
+
+    .credit-card-col:last-child {
+      padding-left: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .credit-card-body {
+        grid-template-columns: 1fr;
+      }
+
+      .credit-card-col:first-child {
+        padding-right: 0;
+        border-right: none;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 12px;
+      }
+
+      .credit-card-col:last-child {
+        padding-left: 0;
+        padding-top: 12px;
+      }
     }
 
     .credit-progress-wrap {
@@ -4622,6 +4655,9 @@
     .credit-progress-label {
       font-weight: 600;
       color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .credit-progress-value {
@@ -4738,6 +4774,98 @@
       font-size: 11px;
       font-weight: 700;
       opacity: 0.75;
+    }
+
+    /* Credit action buttons */
+    .credit-action-row {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 6px;
+    }
+
+    .credit-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: none;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    }
+
+    .credit-action-btn--repay {
+      background: #16a34a;
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.2);
+    }
+
+    .credit-action-btn--repay:hover {
+      background: #15803d;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(22, 163, 74, 0.26);
+    }
+
+    .credit-action-btn--payout {
+      background: #ea580c;
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(234, 88, 12, 0.2);
+    }
+
+    .credit-action-btn--payout:hover {
+      background: #c2410c;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(234, 88, 12, 0.26);
+    }
+
+    .credit-action-btn:active { transform: translateY(0); }
+
+    /* Upload proof area */
+    .proof-upload-area {
+      border: 2px dashed #cbd5e1;
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      background: #f8fafc;
+    }
+
+    .proof-upload-area:hover {
+      border-color: #d97706;
+      background: #fffbeb;
+    }
+
+    .proof-upload-area input[type="file"] {
+      display: none;
+    }
+
+    .proof-upload-area__icon {
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .proof-upload-area__label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .proof-upload-area__hint {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .proof-file-name {
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #16a34a;
+      display: none;
     }
 
     /* Cancel deposit modals */
@@ -6189,6 +6317,7 @@
               <span class="status-note success">Active</span>
             </div>
             <div class="credit-card-body">
+              <div class="credit-card-col">
               <!-- Receive on behalf -->
               <div class="credit-progress-wrap">
                 <div class="credit-progress-row">
@@ -6224,8 +6353,15 @@
                 </div>
               </div>
 
-              <div style="height:1px;background:#f1f5f9;margin:4px 0;"></div>
+              <div class="credit-action-row">
+                <button type="button" class="credit-action-btn credit-action-btn--repay" id="open-repayment-modal">
+                  <i data-lucide="check-circle" class="w-4 h-4"></i>
+                  Confirm Repayment
+                </button>
+              </div>
 
+              </div><!-- end credit-card-col -->
+              <div class="credit-card-col">
               <!-- Pay on behalf -->
               <div class="credit-progress-wrap">
                 <div class="credit-progress-row">
@@ -6260,19 +6396,31 @@
                   </div>
                 </div>
               </div>
+
+              <div class="credit-action-row">
+                <button type="button" class="credit-action-btn credit-action-btn--payout" id="open-payout-modal">
+                  <i data-lucide="send" class="w-4 h-4"></i>
+                  Request Payout
+                </button>
+              </div>
+              </div><!-- end credit-card-col -->
             </div>
           </div>
 
           <div class="payment-card payment-approval-card mt-3" id="receive-on-behalf-payment">
-            <div class="payment-approval-head">
+            <div class="payment-approval-head" style="cursor:pointer;" id="receive-on-behalf-payment-toggle"
+              data-bs-toggle="collapse" data-bs-target="#receive-on-behalf-payment-collapse" aria-expanded="true"
+              aria-controls="receive-on-behalf-payment-collapse">
               <div class="payment-approval-title">
                 <span class="payment-approval-icon"><i data-lucide="handshake" class="w-4 h-4"></i></span>
                 <span>Receive / Pay on Behalf Payment Setup</span>
               </div>
+              <button type="button" class="asset-fee-group__toggle" style="pointer-events:none;">
+                <span class="asset-fee-group__toggle-icon"><i data-lucide="chevron-up" class="w-4 h-4"></i></span>
+              </button>
             </div>
 
-
-
+            <div class="collapse show" id="receive-on-behalf-payment-collapse">
             <div class="payment-approval-body">
 
               <div class="payment-approval-topline mt-2">
@@ -6433,6 +6581,7 @@
               style="padding: 16px 18px 18px; border-top: 1px solid #f0e3c7; background: linear-gradient(180deg,#fffcf4,#fff); display:flex; justify-content:center;">
               <button class="primary-action btn btn-lg" style="min-width: 220px;">Save and Submit for Approval</button>
             </div>
+            </div><!-- end collapse -->
           </div>
           <div class="deposit-info-card mt-3">
             <div class="deposit-info-head">
@@ -6718,6 +6867,103 @@
         <button type="button" class="btn btn-warning" id="join-program-confirm" disabled>
           <i data-lucide="handshake" class="w-4 h-4"></i>
           Confirm &amp; Join
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Confirm Repayment -->
+  <div class="cancel-modal" id="repayment-modal" aria-hidden="true">
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Confirm Repayment">
+      <div class="cancel-modal-head">
+        <div>
+          <div class="cancel-modal-title">Confirm Repayment</div>
+          <div class="cancel-modal-subtitle">Upload proof of payment to confirm you have sent funds to VLINKPAY.</div>
+        </div>
+        <button type="button" class="cancel-modal-close" id="close-repayment-modal" aria-label="Close">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="cancel-modal-body">
+        <div class="cancel-detail-row">
+          <span class="cancel-detail-label">Amount Received</span>
+          <span class="cancel-detail-value" style="color:#16a34a;">850 USDV</span>
+        </div>
+
+        <label class="proof-upload-area" id="repayment-upload-label" for="repayment-file-input">
+          <input type="file" id="repayment-file-input" accept="image/*,.pdf" />
+          <div class="proof-upload-area__icon">
+            <i data-lucide="upload-cloud" class="w-8 h-8"></i>
+          </div>
+          <div class="proof-upload-area__label">Click to upload proof of payment</div>
+          <div class="proof-upload-area__hint">Supported: JPG, PNG, PDF — max 10 MB</div>
+          <div class="proof-file-name" id="repayment-file-name"></div>
+        </label>
+
+        <div class="form-check m-0" style="padding-left:1.6rem;">
+          <input class="form-check-input" type="checkbox" id="repayment-agree" />
+          <label class="form-check-label" for="repayment-agree" style="font-size:13px;">
+            I confirm that I have sent the full amount to VLINKPAY and the proof above is accurate.
+          </label>
+        </div>
+      </div>
+
+      <div class="cancel-modal-actions">
+        <button type="button" class="btn btn-light" id="cancel-repayment-btn">Cancel</button>
+        <button type="button" class="btn btn-danger" id="submit-repayment-btn" disabled
+          style="background:#16a34a;border-color:#16a34a;box-shadow:0 8px 18px rgba(22,163,74,0.2);">
+          <i data-lucide="check-circle" class="w-4 h-4"></i>
+          Submit Repayment
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Request Payout -->
+  <div class="cancel-modal" id="payout-modal" aria-hidden="true">
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Request Payout">
+      <div class="cancel-modal-head">
+        <div>
+          <div class="cancel-modal-title">Request Payout</div>
+          <div class="cancel-modal-subtitle">Submit a payout request to VLINKPAY for funds you have paid on behalf.</div>
+        </div>
+        <button type="button" class="cancel-modal-close" id="close-payout-modal" aria-label="Close">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="cancel-modal-body">
+        <div class="cancel-detail-row">
+          <span class="cancel-detail-label">Amount Paid</span>
+          <span class="cancel-detail-value" style="color:#ea580c;">320 USDV</span>
+        </div>
+        <div class="cancel-detail-row cancel-detail-row--refund">
+          <span class="cancel-detail-label">Payout To</span>
+          <span class="cancel-detail-value">Your registered account</span>
+        </div>
+
+        <div class="cancel-obligations" style="background:#f0fdf4;border-color:rgba(34,197,94,0.2);">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#166534;line-height:1.55;">
+            <i data-lucide="info" class="w-4 h-4" style="flex:0 0 auto;margin-top:1px;color:#16a34a;"></i>
+            VLINKPAY will review your request and process the payout within the next settlement cycle.
+          </div>
+        </div>
+
+        <div class="form-check m-0" style="padding-left:1.6rem;">
+          <input class="form-check-input" type="checkbox" id="payout-agree" />
+          <label class="form-check-label" for="payout-agree" style="font-size:13px;">
+            I confirm that the payout request information is accurate and complete.
+          </label>
+        </div>
+      </div>
+
+      <div class="cancel-modal-actions">
+        <button type="button" class="btn btn-light" id="cancel-payout-btn">Cancel</button>
+        <button type="button" class="btn btn-danger" id="submit-payout-btn" disabled
+          style="background:#ea580c;border-color:#ea580c;box-shadow:0 8px 18px rgba(234,88,12,0.2);">
+          <i data-lucide="send" class="w-4 h-4"></i>
+          Submit Request
         </button>
       </div>
     </div>

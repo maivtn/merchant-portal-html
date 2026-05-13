@@ -207,6 +207,96 @@ window.addEventListener('DOMContentLoaded', () => {
     if (e.target === pinModal) closePinModal();
   });
 
+  // Confirm Repayment modal
+  const repaymentModal = document.getElementById('repayment-modal');
+  const repaymentAgree = document.getElementById('repayment-agree');
+  const submitRepaymentBtn = document.getElementById('submit-repayment-btn');
+  const repaymentFileInput = document.getElementById('repayment-file-input');
+  const repaymentFileName = document.getElementById('repayment-file-name');
+
+  const openRepaymentModal = () => {
+    if (repaymentAgree) repaymentAgree.checked = false;
+    if (submitRepaymentBtn) submitRepaymentBtn.disabled = true;
+    if (repaymentFileInput) repaymentFileInput.value = '';
+    if (repaymentFileName) { repaymentFileName.textContent = ''; repaymentFileName.style.display = 'none'; }
+    repaymentModal?.classList.add('active');
+    repaymentModal?.setAttribute('aria-hidden', 'false');
+    refreshIcons();
+  };
+
+  const closeRepaymentModal = () => {
+    repaymentModal?.classList.remove('active');
+    repaymentModal?.setAttribute('aria-hidden', 'true');
+  };
+
+  const syncRepaymentSubmit = () => {
+    if (submitRepaymentBtn) {
+      submitRepaymentBtn.disabled = !(repaymentAgree?.checked && repaymentFileInput?.files?.length > 0);
+    }
+  };
+
+  document.getElementById('open-repayment-modal')?.addEventListener('click', openRepaymentModal);
+  document.getElementById('close-repayment-modal')?.addEventListener('click', closeRepaymentModal);
+  document.getElementById('cancel-repayment-btn')?.addEventListener('click', closeRepaymentModal);
+  repaymentModal?.addEventListener('click', (e) => { if (e.target === repaymentModal) closeRepaymentModal(); });
+  repaymentAgree?.addEventListener('change', syncRepaymentSubmit);
+  repaymentFileInput?.addEventListener('change', () => {
+    const file = repaymentFileInput.files?.[0];
+    if (file && repaymentFileName) {
+      repaymentFileName.textContent = file.name;
+      repaymentFileName.style.display = 'block';
+    }
+    syncRepaymentSubmit();
+  });
+
+  submitRepaymentBtn?.addEventListener('click', () => {
+    closeRepaymentModal();
+    window.Swal?.fire({
+      icon: 'success',
+      title: 'Repayment confirmed.',
+      text: 'Your proof of payment has been submitted. VLINKPAY will verify and update your balance.',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#f59e0b',
+    });
+  });
+
+  // Request Payout modal
+  const payoutModal = document.getElementById('payout-modal');
+  const payoutAgree = document.getElementById('payout-agree');
+  const submitPayoutBtn = document.getElementById('submit-payout-btn');
+
+  const openPayoutModal = () => {
+    if (payoutAgree) payoutAgree.checked = false;
+    if (submitPayoutBtn) submitPayoutBtn.disabled = true;
+    payoutModal?.classList.add('active');
+    payoutModal?.setAttribute('aria-hidden', 'false');
+    refreshIcons();
+  };
+
+  const closePayoutModal = () => {
+    payoutModal?.classList.remove('active');
+    payoutModal?.setAttribute('aria-hidden', 'true');
+  };
+
+  document.getElementById('open-payout-modal')?.addEventListener('click', openPayoutModal);
+  document.getElementById('close-payout-modal')?.addEventListener('click', closePayoutModal);
+  document.getElementById('cancel-payout-btn')?.addEventListener('click', closePayoutModal);
+  payoutModal?.addEventListener('click', (e) => { if (e.target === payoutModal) closePayoutModal(); });
+  payoutAgree?.addEventListener('change', () => {
+    if (submitPayoutBtn) submitPayoutBtn.disabled = !payoutAgree.checked;
+  });
+
+  submitPayoutBtn?.addEventListener('click', () => {
+    closePayoutModal();
+    window.Swal?.fire({
+      icon: 'success',
+      title: 'Payout request submitted.',
+      text: 'VLINKPAY will review your request and process the payout within the next settlement cycle.',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#f59e0b',
+    });
+  });
+
   // Cancel deposit modals
   const cancelPolicyModal = document.getElementById('cancel-policy-modal');
   const cancelConfirmModal = document.getElementById('cancel-confirm-modal');
@@ -779,6 +869,8 @@ window.addEventListener('DOMContentLoaded', () => {
       closePinModal();
       closeCancelPolicyModal();
       closeCancelConfirmModal();
+      closeRepaymentModal();
+      closePayoutModal();
     }
   });
 
@@ -815,6 +907,18 @@ window.addEventListener('DOMContentLoaded', () => {
   walkinSetupCollapse?.addEventListener('hidden.bs.collapse', syncWalkinSetupState);
   assetFeeGroupCollapse?.addEventListener('shown.bs.collapse', syncAssetFeeGroupState);
   assetFeeGroupCollapse?.addEventListener('hidden.bs.collapse', syncAssetFeeGroupState);
+
+  const paymentCollapseEl = document.getElementById('receive-on-behalf-payment-collapse');
+  const paymentToggleEl = document.getElementById('receive-on-behalf-payment-toggle');
+  const syncPaymentCollapseIcon = () => {
+    if (!paymentCollapseEl || !paymentToggleEl) return;
+    const isOpen = paymentCollapseEl.classList.contains('show');
+    const icon = paymentToggleEl.querySelector('.asset-fee-group__toggle .asset-fee-group__toggle-icon');
+    if (icon) icon.style.transform = isOpen ? '' : 'rotate(-180deg)';
+    paymentToggleEl.setAttribute('aria-expanded', String(isOpen));
+  };
+  paymentCollapseEl?.addEventListener('shown.bs.collapse', syncPaymentCollapseIcon);
+  paymentCollapseEl?.addEventListener('hidden.bs.collapse', syncPaymentCollapseIcon);
 
   activate('general');
   syncRoleVisibility();

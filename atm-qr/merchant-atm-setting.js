@@ -89,6 +89,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const atmType = params.get('atmType') === 'mobile' ? 'mobile' : 'merchant';
   let isBehalf = params.get('isBehalf') !== 'false';
+  const isBank = params.get('isBank') === 'true';
+  document.body.classList.toggle('is-bank', isBank);
   const withAtmType = (href) => {
     const url = new URL(href, window.location.href);
     url.searchParams.set('atmType', atmType);
@@ -403,6 +405,201 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('close-cancel-policy')?.addEventListener('click', closeCancelPolicyModal);
   document.getElementById('close-cancel-policy-btn')?.addEventListener('click', closeCancelPolicyModal);
   cancelPolicyModal?.addEventListener('click', (e) => { if (e.target === cancelPolicyModal) closeCancelPolicyModal(); });
+
+  // Add Bank modal
+  const addBankModal = document.getElementById('add-bank-modal');
+  const openAddBankModal = () => {
+    addBankModal?.classList.add('active');
+    addBankModal?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    refreshIcons();
+  };
+  const closeAddBankModal = () => {
+    addBankModal?.classList.remove('active');
+    addBankModal?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+  document.querySelector('.payment-choice-bank-action[data-no-bank-show]')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openAddBankModal();
+  });
+  document.getElementById('close-add-bank-modal')?.addEventListener('click', closeAddBankModal);
+  addBankModal?.addEventListener('click', (e) => { if (e.target === addBankModal) closeAddBankModal(); });
+
+  const setupAddBankUpload = (prefix) => {
+    const fileInput   = document.getElementById(`add-bank-${prefix}-file-input`);
+    const cameraInput = document.getElementById(`add-bank-${prefix}-camera-input`);
+    const photoBtn    = document.getElementById(`add-bank-${prefix}-photo-btn`);
+    const fileBtn     = document.getElementById(`add-bank-${prefix}-file-btn`);
+    const previewWrap = document.getElementById(`add-bank-${prefix}-preview-wrap`);
+    const previewImg  = document.getElementById(`add-bank-${prefix}-preview-img`);
+    const previewPdf  = document.getElementById(`add-bank-${prefix}-preview-pdf`);
+    const previewName = document.getElementById(`add-bank-${prefix}-preview-name`);
+    const removeBtn   = document.getElementById(`add-bank-${prefix}-remove-btn`);
+    const viewBtn     = document.getElementById(`add-bank-${prefix}-view-btn`);
+    let objectUrl = null;
+
+    const showPreview = (file) => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      objectUrl = URL.createObjectURL(file);
+      const isPdf = file.type === 'application/pdf';
+      previewImg.style.display  = isPdf ? 'none' : 'block';
+      previewPdf.style.display  = isPdf ? 'flex' : 'none';
+      if (isPdf) {
+        previewName.textContent = file.name;
+      } else {
+        previewImg.src = objectUrl;
+      }
+      viewBtn.href = objectUrl;
+      previewWrap.classList.add('has-file');
+      addBankFileUrls[prefix]           = objectUrl;
+      addBankFileUrls[`${prefix}IsPdf`] = isPdf;
+      refreshIcons();
+    };
+
+    const clearPreview = () => {
+      if (objectUrl) { URL.revokeObjectURL(objectUrl); objectUrl = null; }
+      previewWrap.classList.remove('has-file');
+      previewImg.src = '';
+      previewImg.style.display = 'none';
+      previewPdf.style.display = 'none';
+      viewBtn.href = '#';
+      addBankFileUrls[prefix]           = null;
+      addBankFileUrls[`${prefix}IsPdf`] = false;
+      if (fileInput)   fileInput.value   = '';
+      if (cameraInput) cameraInput.value = '';
+    };
+
+    const onFile = (e) => { if (e.target.files?.[0]) showPreview(e.target.files[0]); };
+
+    photoBtn?.addEventListener('click', () => cameraInput?.click());
+    fileBtn?.addEventListener('click',  () => fileInput?.click());
+    fileInput?.addEventListener('change',   onFile);
+    cameraInput?.addEventListener('change', onFile);
+    removeBtn?.addEventListener('click', clearPreview);
+    viewBtn?.addEventListener('click', (e) => { if (!objectUrl) e.preventDefault(); });
+  };
+
+  setupAddBankUpload('ssn');
+  setupAddBankUpload('check');
+
+  const addBankTaxRadios = document.querySelectorAll('input[name="add-bank-tax-doc"]');
+  const addBankSsnWrap = document.getElementById('add-bank-upload-ssn-wrap');
+  const addBankDocInput = document.getElementById('add-bank-doc-number');
+  const syncAddBankTaxDoc = () => {
+    const val = document.querySelector('input[name="add-bank-tax-doc"]:checked')?.value;
+    if (addBankSsnWrap) {
+      const lbl = addBankSsnWrap.querySelector('.form-label');
+      if (lbl) lbl.firstChild.textContent = val === 'EIN' ? 'Upload Front of EIN ' : 'Upload Front of SSN ';
+    }
+    if (addBankDocInput) {
+      addBankDocInput.placeholder = val === 'EIN' ? '12-3456789' : '123-45-6789';
+    }
+  };
+  addBankTaxRadios.forEach(r => r.addEventListener('change', syncAddBankTaxDoc));
+
+  const addBankCard = document.querySelector('#add-bank-modal .cancel-modal-card');
+  const addBankFileUrls = { ssn: null, check: null, ssnIsPdf: false, checkIsPdf: false };
+
+  const showAddBankImageSwal = (url, isPdf, label) => {
+    if (!url || url === window.location.href) return;
+    if (isPdf) { window.open(url, '_blank'); return; }
+    Swal.fire({
+      imageUrl: url,
+      imageAlt: label,
+      showConfirmButton: false,
+      showCloseButton: true,
+      padding: '12px',
+      width: 'auto',
+      background: '#fff',
+      customClass: {
+        popup:      'add-bank-swal-popup',
+        image:      'add-bank-swal-image',
+        closeButton:'add-bank-swal-close',
+      },
+    });
+  };
+
+  const goToAddBankStep = (step) => {
+    addBankCard?.setAttribute('data-add-bank-step', step);
+    if (step === 2) refreshIcons();
+  };
+
+  document.getElementById('add-bank-next-btn')?.addEventListener('click', () => {
+    const missing = [];
+    const check = (id, label) => { if (!document.getElementById(id)?.value.trim()) missing.push(label); };
+    check('add-bank-name',           'Bank Name');
+    check('add-bank-business-name',  'Business Name');
+    check('add-bank-account-number', 'Account Number');
+    check('add-bank-routing-number', 'Routing Number');
+    check('add-bank-address',        'Bank Address');
+    check('add-bank-city',           'City');
+    check('add-bank-state',          'State');
+    check('add-bank-zip',            'Zip Code');
+    check('add-bank-doc-number',     'Document Number');
+    if (!addBankFileUrls.ssn)   missing.push('Upload Front of SSN / EIN');
+    if (!addBankFileUrls.check) missing.push('Upload Front of Voided Check Business');
+
+    if (missing.length) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Required Fields Missing',
+        html: `<div style="text-align:left;font-size:14px;line-height:1.8;">${missing.map(m => `• ${m}`).join('<br>')}</div>`,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d97706',
+        customClass: { popup: 'swal2-popup', confirmButton: 'swal2-confirm' },
+      });
+      return;
+    }
+
+    const taxVal = document.querySelector('input[name="add-bank-tax-doc"]:checked')?.value || 'SSN';
+    const address  = document.getElementById('add-bank-address')?.value.trim() || '';
+    const city     = document.getElementById('add-bank-city')?.value.trim() || '';
+    const state    = document.getElementById('add-bank-state')?.value.trim() || '';
+    const zip      = document.getElementById('add-bank-zip')?.value.trim() || '';
+    const country  = document.getElementById('add-bank-country')?.options[document.getElementById('add-bank-country')?.selectedIndex]?.text || '';
+
+    const addrParts = [address, [city, state, zip].filter(Boolean).join(', '), country].filter(Boolean);
+
+    document.getElementById('confirm-bank-name').textContent        = document.getElementById('add-bank-name')?.value.trim() || '—';
+    document.getElementById('confirm-business-name').textContent    = document.getElementById('add-bank-business-name')?.value.trim() || '—';
+    document.getElementById('confirm-account-number').textContent   = document.getElementById('add-bank-account-number')?.value.trim() || '—';
+    document.getElementById('confirm-routing-number').textContent   = document.getElementById('add-bank-routing-number')?.value.trim() || '—';
+    document.getElementById('confirm-bank-address').innerHTML       = addrParts.join('<br>') || '—';
+    document.getElementById('confirm-tax-doc-label').textContent    = taxVal === 'EIN' ? 'EIN (Employer Identification Number)' : 'SSN (Social Security Number)';
+    document.getElementById('confirm-doc-number').textContent       = document.getElementById('add-bank-doc-number')?.value.trim() || '—';
+    document.getElementById('confirm-ssn-upload-label').textContent = taxVal === 'EIN' ? 'Front of EIN' : 'Front of SSN';
+
+    goToAddBankStep(2);
+  });
+
+  document.getElementById('confirm-ssn-view')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showAddBankImageSwal(addBankFileUrls.ssn, addBankFileUrls.ssnIsPdf, 'SSN');
+  });
+
+  document.getElementById('confirm-check-view')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showAddBankImageSwal(addBankFileUrls.check, addBankFileUrls.checkIsPdf, 'Voided Check');
+  });
+
+  document.getElementById('add-bank-back-btn')?.addEventListener('click', () => goToAddBankStep(1));
+
+  document.getElementById('add-bank-submit-btn')?.addEventListener('click', () => {
+    closeAddBankModal();
+    goToAddBankStep(1);
+    Swal.fire({
+      icon: 'success',
+      title: 'Bank Information Submitted!',
+      html: `Your bank details are <strong>pending approval</strong>.<br>We'll <strong>notify</strong> you once approved.`,
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#4F6FE8',
+      customClass: {
+        popup:         'swal2-popup',
+        confirmButton: 'swal2-confirm',
+      },
+    });
+  });
 
   document.getElementById('open-cancel-confirm-btn')?.addEventListener('click', openCancelConfirmModal);
   document.getElementById('close-cancel-confirm')?.addEventListener('click', closeCancelConfirmModal);

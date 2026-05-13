@@ -2921,7 +2921,6 @@
       min-height: 34px;
       border-radius: 0.8rem;
       border: 1px solid var(--line);
-      background: #fff;
       padding: 0.7rem 2.2rem 0.7rem 0.9rem;
       font-size: 0.95rem;
       color: var(--text);
@@ -3045,6 +3044,322 @@
     body:not(.is-behalf) [data-no-behalf-show].receive-card__cta {
       display: flex !important;
     }
+
+    [data-bank-show],
+    [data-no-bank-show] {
+      display: none !important;
+    }
+
+    body.is-bank [data-bank-show] {
+      display: inline-flex !important;
+    }
+
+    body:not(.is-bank) [data-no-bank-show] {
+      display: inline-flex !important;
+    }
+
+    .payment-choice-bank-action {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--blue);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .payment-choice-bank-action:hover {
+      opacity: 0.8;
+    }
+
+    /* Add Bank modal */
+    .add-bank-modal-body {
+      padding: 18px 20px 20px;
+      overflow-y: auto;
+      max-height: calc(100dvh - 160px);
+    }
+
+    .add-bank-modal-body .form-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    .add-bank-modal-body .form-label .req {
+      color: #e53e3e;
+      margin-left: 1px;
+    }
+
+    .add-bank-modal-body .form-control,
+    .add-bank-modal-body .form-select {
+      border-radius: 0.85rem;
+      border: 1.5px solid var(--line);
+      font-size: 0.93rem;
+      color: var(--text);
+      box-shadow: none;
+    }
+
+    .add-bank-modal-body .form-control::placeholder {
+      color: #b0b7c3;
+      font-weight: 400;
+    }
+
+    .add-bank-modal-body .form-control:focus,
+    .add-bank-modal-body .form-select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.13);
+    }
+
+    .add-bank-modal-body .form-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 0.85rem;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .add-bank-modal-body .form-check:has(.form-check-input:checked) {
+      border-color: var(--blue);
+      background: #fffbf0;
+    }
+
+    .add-bank-modal-body .form-check-input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      flex-shrink: 0;
+      accent-color: var(--blue);
+      cursor: pointer;
+    }
+
+    .add-bank-modal-body .form-check-input:focus {
+      box-shadow: none;
+    }
+
+    .add-bank-modal-body .form-check-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .add-bank-upload-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .add-bank-upload-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      border: 2px dashed rgba(59, 130, 246, 0.4);
+      border-radius: 0.85rem;
+      padding: 14px 12px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: #3b82f6;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .add-bank-upload-btn:hover {
+      border-color: #3b82f6;
+      background: #eff6ff;
+    }
+
+    .add-bank-upload-hint {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .add-bank-preview-wrap {
+      display: none;
+      position: relative;
+      border: 1.5px solid var(--line);
+      border-radius: 0.85rem;
+      overflow: hidden;
+      background: #f8fafc;
+      margin-bottom: 6px;
+    }
+
+    .add-bank-preview-wrap.has-file {
+      display: block;
+    }
+
+    .add-bank-preview-wrap.has-file ~ .add-bank-upload-btns,
+    .add-bank-preview-wrap.has-file ~ .add-bank-upload-hint {
+      display: none;
+    }
+
+    .add-bank-preview-img {
+      width: 100%;
+      display: block;
+      max-height: 220px;
+      object-fit: contain;
+      padding: 10px;
+      background: #fff;
+    }
+
+    .add-bank-preview-pdf {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 28px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      background: #fff;
+    }
+
+    .add-bank-preview-remove {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      color: var(--text);
+      z-index: 2;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .add-bank-preview-remove:hover {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #dc2626;
+    }
+
+    .add-bank-preview-view {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+      border-top: 1px solid var(--line);
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .add-bank-preview-view:hover {
+      background: #fffbf0;
+    }
+
+    /* Add Bank — step 2 confirm */
+    .add-bank-confirm-head {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .add-bank-confirm-back {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--blue);
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .add-bank-confirm-head-title {
+      flex: 1;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      padding-right: 60px;
+    }
+
+    .add-bank-confirm-body {
+      display: none;
+      padding: 14px 16px 16px;
+      overflow-y: auto;
+      max-height: calc(100dvh - 200px);
+      background: #f2f4f8;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .add-bank-confirm-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 13px 16px;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    .add-bank-confirm-row:first-child { border-radius: 14px 14px 0 0; }
+    .add-bank-confirm-row:last-child  { border-radius: 0 0 14px 14px; }
+    .add-bank-confirm-row:only-child  { border-radius: 14px; }
+
+    .add-bank-confirm-label {
+      color: var(--text);
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .add-bank-confirm-value {
+      color: var(--text);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .add-bank-confirm-view {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--blue);
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .add-bank-confirm-view:hover { opacity: 0.8; }
+
+    .cancel-modal-card[data-add-bank-step="2"] .cancel-modal-head,
+    .cancel-modal-card[data-add-bank-step="2"] .add-bank-modal-body,
+    .cancel-modal-card[data-add-bank-step="2"] .add-bank-step1-actions {
+      display: none !important;
+    }
+
+    .cancel-modal-card[data-add-bank-step="2"] .add-bank-confirm-head { display: flex; }
+    .cancel-modal-card[data-add-bank-step="2"] .add-bank-confirm-body { display: flex; }
+    .cancel-modal-card[data-add-bank-step="2"] .add-bank-step2-actions { display: flex !important; }
+
+    .add-bank-step2-actions { display: none !important; }
 
     /* PIN modal */
     .pin-modal {
@@ -5313,6 +5628,167 @@
       box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.3) !important;
     }
 
+    .add-bank-swal-popup {
+      border-radius: 20px !important;
+      padding: 10px !important;
+      max-width: min(92vw, 480px) !important;
+    }
+
+    .add-bank-swal-image {
+      max-width: 100% !important;
+      max-height: 70vh !important;
+      border-radius: 12px !important;
+      object-fit: contain !important;
+      margin: 0 !important;
+    }
+
+    .add-bank-swal-close {
+      font-size: 22px !important;
+      top: 10px !important;
+      right: 10px !important;
+    }
+
+    /* Transfer Instructions modal */
+    .transfer-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(15, 23, 42, 0.48);
+      backdrop-filter: blur(2px);
+      z-index: 80;
+    }
+
+    .transfer-modal.active { display: flex; }
+
+    .transfer-modal-card {
+      position: relative;
+      width: min(100%, 480px);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 32px 96px rgba(15, 23, 42, 0.28);
+      overflow: hidden;
+    }
+
+    .transfer-modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px 52px 16px;
+      position: relative;
+    }
+
+    .transfer-modal-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .transfer-modal-close {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 34px;
+      height: 34px;
+      border: none;
+      background: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #94a3b8;
+      font-size: 22px;
+      line-height: 1;
+      border-radius: 50%;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .transfer-modal-close:hover {
+      background: #f1f5f9;
+      color: var(--text);
+    }
+
+    .transfer-modal-body {
+      padding: 4px 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .transfer-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .transfer-row-label {
+      color: #64748b;
+      flex-shrink: 0;
+    }
+
+    .transfer-row-value {
+      font-weight: 700;
+      color: var(--text);
+      word-break: break-all;
+    }
+
+    .transfer-row-value.memo {
+      color: #d97706;
+    }
+
+    .transfer-copy-btn {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0 2px;
+      color: #3b82f6;
+      display: inline-flex;
+      align-items: center;
+      margin-top: 1px;
+      transition: opacity 0.15s;
+    }
+
+    .transfer-copy-btn:hover { opacity: 0.7; }
+
+    .transfer-memo-hint {
+      font-size: 13px;
+      color: #475569;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .transfer-divider {
+      border: none;
+      border-top: 1.5px dashed #e2e8f0;
+      margin: 2px 0;
+    }
+
+    .transfer-note-box {
+      background: #f5ead8;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 13.5px;
+      color: #5c4a1e;
+      line-height: 1.6;
+    }
+
+    .transfer-note-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
     .swal2-cancel {
       border-radius: 0.9rem !important;
       font-weight: 800 !important;
@@ -6760,6 +7236,10 @@
                         <input type="checkbox" name="payment-to-company" checked />
                         <i data-lucide="landmark" class="w-4 h-4" style="color:#5c7ad6;"></i>
                         <span>Bank Transfer</span>
+                        <a href="#" class="payment-choice-bank-action" onclick="event.preventDefault()">
+                          <i data-lucide="eye" class="w-4 h-4"></i>
+                          <span>View details</span>
+                        </a>
                       </label>
                       <label class="payment-choice">
                         <input type="checkbox" name="payment-to-company" />
@@ -6781,10 +7261,15 @@
                         <input type="checkbox" name="company-pays-back" checked />
                         <i data-lucide="landmark" class="w-4 h-4" style="color:#5c7ad6;"></i>
                         <span>Bank Transfer</span>
+                        <a href="#" class="payment-choice-bank-action" data-no-bank-show onclick="event.preventDefault()">+ Add bank</a>
+                        <span class="payment-choice-bank-action payment-choice-bank-view" data-bank-show>
+                          <i data-lucide="eye" class="w-4 h-4"></i>
+                          <span>View</span>
+                        </span>
                       </label>
                       <label class="payment-choice">
                         <input type="checkbox" name="company-pays-back" />
-                        <i data-lucide="circle-dollar-sign" class="w-4 h-4" style="color:#14b87a;"></i>
+                        <img src="images/usdv.png" class="w-4 h-4" style="object-fit:contain;" alt="USDV" />
                         <span>USDV</span>
                       </label>
                     </div>
@@ -7356,6 +7841,218 @@
         <button type="button" class="btn btn-light" id="pin-modal-close">Close</button>
         <button type="button" class="btn btn-primary" id="pin-modal-ok">OK</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add Bank -->
+  <div class="cancel-modal" id="add-bank-modal" aria-hidden="true">
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Add Bank Account" style="width:min(100%,520px);">
+      <div class="cancel-modal-head">
+        <div>
+          <div class="cancel-modal-title">Add Bank Account</div>
+          <div class="cancel-modal-subtitle">Enter your bank details for Bank Transfer payouts.</div>
+        </div>
+        <button type="button" class="cancel-modal-close" id="close-add-bank-modal" aria-label="Close">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="add-bank-modal-body">
+
+        <div class="mb-2">
+          <label class="form-label" for="add-bank-name">Bank Name <span class="req">*</span></label>
+          <input type="text" class="form-control" id="add-bank-name" placeholder="Enter Bank Name" />
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label" for="add-bank-business-name">Business Name <span class="req">*</span></label>
+          <input type="text" class="form-control" id="add-bank-business-name" placeholder="Enter Business Name" />
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label" for="add-bank-account-number">Account Number <span class="req">*</span></label>
+          <input type="text" class="form-control" id="add-bank-account-number" placeholder="Enter Account Number" />
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label" for="add-bank-routing-number">Routing Number <span class="req">*</span></label>
+          <input type="text" class="form-control" id="add-bank-routing-number" placeholder="Enter Routing Number" />
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label" for="add-bank-address">Bank Address <span class="req">*</span></label>
+          <input type="text" class="form-control" id="add-bank-address" placeholder="123 Street" />
+        </div>
+
+        <div class="row g-2 mb-2">
+          <div class="col-6">
+            <label class="form-label" for="add-bank-city">City <span class="req">*</span></label>
+            <input type="text" class="form-control" id="add-bank-city" placeholder="Enter City" />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="add-bank-state">State <span class="req">*</span></label>
+            <input type="text" class="form-control" id="add-bank-state" placeholder="Enter State" />
+          </div>
+        </div>
+
+        <div class="row g-2 mb-2">
+          <div class="col-6">
+            <label class="form-label" for="add-bank-zip">Zip Code <span class="req">*</span></label>
+            <input type="text" class="form-control" id="add-bank-zip" placeholder="Enter Zip Code" />
+          </div>
+          <div class="col-6">
+            <label class="form-label" for="add-bank-country">Country <span class="req">*</span></label>
+            <select class="form-select" id="add-bank-country">
+              <option value="US">United States</option>
+              <option value="CA">Canada</option>
+              <option value="GB">United Kingdom</option>
+              <option value="AU">Australia</option>
+              <option value="SG">Singapore</option>
+              <option value="VN">Vietnam</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label">Tax Document <span class="req">*</span></label>
+          <div class="d-flex flex-column gap-2">
+            <label class="form-check" for="add-bank-tax-ssn">
+              <input class="form-check-input" type="radio" name="add-bank-tax-doc" id="add-bank-tax-ssn" value="SSN" checked />
+              <span class="form-check-label">SSN (Social Security Number)</span>
+            </label>
+            <label class="form-check" for="add-bank-tax-ein">
+              <input class="form-check-input" type="radio" name="add-bank-tax-doc" id="add-bank-tax-ein" value="EIN" />
+              <span class="form-check-label">EIN (Employer Identification Number)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label" for="add-bank-doc-number">Enter Your Document Number <span class="req">*</span></label>
+          <input type="text" class="form-control" id="add-bank-doc-number" placeholder="123-45-6789" />
+        </div>
+
+        <div class="mb-2" id="add-bank-upload-ssn-wrap">
+          <label class="form-label">Upload Front of SSN <span class="req">*</span></label>
+          <input type="file" id="add-bank-ssn-file-input" accept="image/*,.pdf" style="display:none;" />
+          <input type="file" id="add-bank-ssn-camera-input" accept="image/*" capture="environment" style="display:none;" />
+          <div class="add-bank-preview-wrap" id="add-bank-ssn-preview-wrap">
+            <button type="button" class="add-bank-preview-remove" id="add-bank-ssn-remove-btn">&times;</button>
+            <img class="add-bank-preview-img" id="add-bank-ssn-preview-img" src="" alt="" style="display:none;" />
+            <div class="add-bank-preview-pdf" id="add-bank-ssn-preview-pdf" style="display:none;">
+              <i data-lucide="file-text" class="w-5 h-5"></i>
+              <span id="add-bank-ssn-preview-name"></span>
+            </div>
+            <a href="#" class="add-bank-preview-view" id="add-bank-ssn-view-btn" target="_blank">
+              <i data-lucide="eye" class="w-4 h-4"></i> View
+            </a>
+          </div>
+          <div class="add-bank-upload-btns">
+            <button type="button" class="add-bank-upload-btn" id="add-bank-ssn-photo-btn">
+              <i data-lucide="camera" class="w-5 h-5"></i>
+              Take photo
+            </button>
+            <button type="button" class="add-bank-upload-btn" id="add-bank-ssn-file-btn">
+              <i data-lucide="folder-open" class="w-5 h-5"></i>
+              Choose file
+            </button>
+          </div>
+          <div class="add-bank-upload-hint">💡 Upload a receipt photo or file. Supported: PNG, JPEG, JPG, PDF. Max size: 5MB.</div>
+        </div>
+
+        <div class="mb-1">
+          <label class="form-label">Upload Front of Voided Check Business <span class="req">*</span></label>
+          <input type="file" id="add-bank-check-file-input" accept="image/*,.pdf" style="display:none;" />
+          <input type="file" id="add-bank-check-camera-input" accept="image/*" capture="environment" style="display:none;" />
+          <div class="add-bank-preview-wrap" id="add-bank-check-preview-wrap">
+            <button type="button" class="add-bank-preview-remove" id="add-bank-check-remove-btn">&times;</button>
+            <img class="add-bank-preview-img" id="add-bank-check-preview-img" src="" alt="" style="display:none;" />
+            <div class="add-bank-preview-pdf" id="add-bank-check-preview-pdf" style="display:none;">
+              <i data-lucide="file-text" class="w-5 h-5"></i>
+              <span id="add-bank-check-preview-name"></span>
+            </div>
+            <a href="#" class="add-bank-preview-view" id="add-bank-check-view-btn" target="_blank">
+              <i data-lucide="eye" class="w-4 h-4"></i> View
+            </a>
+          </div>
+          <div class="add-bank-upload-btns">
+            <button type="button" class="add-bank-upload-btn" id="add-bank-check-photo-btn">
+              <i data-lucide="camera" class="w-5 h-5"></i>
+              Take photo
+            </button>
+            <button type="button" class="add-bank-upload-btn" id="add-bank-check-file-btn">
+              <i data-lucide="folder-open" class="w-5 h-5"></i>
+              Choose file
+            </button>
+          </div>
+          <div class="add-bank-upload-hint">💡 Upload a receipt photo or file. Supported: PNG, JPEG, JPG, PDF. Max size: 5MB.</div>
+        </div>
+
+      </div>
+
+      <!-- Step 1 footer -->
+      <div class="cancel-modal-actions add-bank-step1-actions">
+        <button type="button" class="btn btn-primary w-100" id="add-bank-next-btn"
+          style="border-radius:0.9rem;font-weight:700;font-size:15px;padding:12px 0;">
+          Next
+        </button>
+      </div>
+
+      <!-- Step 2: Confirm Bank Information -->
+      <div class="add-bank-confirm-head">
+        <button type="button" class="add-bank-confirm-back" id="add-bank-back-btn">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+        </button>
+        <div class="add-bank-confirm-head-title">Confirm Bank Information</div>
+      </div>
+
+      <div class="add-bank-confirm-body" id="add-bank-confirm-body">
+        <div class="add-bank-confirm-row">
+          <span class="add-bank-confirm-label">Bank Name</span>
+          <span class="add-bank-confirm-value" id="confirm-bank-name"></span>
+        </div>
+        <div class="add-bank-confirm-row">
+          <span class="add-bank-confirm-label">Business Name</span>
+          <span class="add-bank-confirm-value" id="confirm-business-name"></span>
+        </div>
+        <div class="add-bank-confirm-row">
+          <span class="add-bank-confirm-label">Account Number</span>
+          <span class="add-bank-confirm-value" id="confirm-account-number"></span>
+        </div>
+        <div class="add-bank-confirm-row">
+          <span class="add-bank-confirm-label">Routing Number</span>
+          <span class="add-bank-confirm-value" id="confirm-routing-number"></span>
+        </div>
+        <div class="add-bank-confirm-row">
+          <span class="add-bank-confirm-label">Bank Address</span>
+          <span class="add-bank-confirm-value" id="confirm-bank-address"></span>
+        </div>
+        <div class="add-bank-confirm-row">
+          <span class="add-bank-confirm-label" id="confirm-tax-doc-label">SSN (Social Security Number)</span>
+          <span class="add-bank-confirm-value" id="confirm-doc-number"></span>
+        </div>
+        <div class="add-bank-confirm-row">
+          <span class="add-bank-confirm-label" id="confirm-ssn-upload-label">Front of SSN</span>
+          <a href="#" class="add-bank-confirm-view" id="confirm-ssn-view" target="_blank">
+            View <i data-lucide="eye" class="w-4 h-4"></i>
+          </a>
+        </div>
+        <div class="add-bank-confirm-row">
+          <span class="add-bank-confirm-label">Front of Voided Check Business</span>
+          <a href="#" class="add-bank-confirm-view" id="confirm-check-view" target="_blank">
+            View <i data-lucide="eye" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Step 2 footer -->
+      <div class="cancel-modal-actions add-bank-step2-actions">
+        <button type="button" class="btn btn-primary w-100" id="add-bank-submit-btn"
+          style="border-radius:0.9rem;font-weight:700;font-size:15px;padding:12px 0;">
+          Confirm &amp; Submit
+        </button>
+      </div>
+
     </div>
   </div>
 

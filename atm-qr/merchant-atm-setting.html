@@ -2885,11 +2885,16 @@
       grid-template-columns: auto minmax(0, 1fr);
       gap: 8px;
       align-items: center;
-      padding: 12px 0
+      padding: 12px;
+      background-color: #faf7f2;
+      border-radius: 12px;
     }
 
     .payment-status-row {
       grid-column: 1 / -1;
+      background-color: #faf7f2;
+      border-radius: 12px;
+      padding: 12px;
     }
 
     .payment-info-label {
@@ -3951,7 +3956,7 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
-      padding: 12px 14px;
+      padding: 6px 12px;
       border-radius: 1rem;
       border: 1px solid var(--line);
       background: #fff;
@@ -5963,6 +5968,47 @@
       gap: 10px !important;
       margin-top: 1.5rem !important;
     }
+
+    /* Modal widths */
+    #add-bank-modal .cancel-modal-card {
+      width: min(100%, 520px);
+    }
+
+    #bank-info-modal .cancel-modal-card {
+      width: min(100%, 480px);
+    }
+
+    /* Transfer modal note list */
+    .transfer-note-box ul {
+      margin: 0;
+      padding-left: 16px;
+    }
+
+    /* Payment info stack – payout account box muted value variant */
+    .payout-account-box .value--muted {
+      font-weight: 600;
+      color: #6f7684;
+    }
+
+    /* Payment info stack – percent input group narrow variant */
+    .percent-input-group--narrow {
+      max-width: 100px;
+    }
+
+    /* Payment status row – change-history link */
+    .payment-choice-bank-action--sm {
+      font-size: 13px;
+    }
+
+    /* Payment choice landmark icon colour */
+    .payment-choice-landmark {
+      color: #5c7ad6;
+    }
+
+    /* Payment choice USDV image */
+    .payment-choice-img {
+      object-fit: contain;
+    }
   </style>
 </head>
 
@@ -7419,7 +7465,7 @@
                       <div class="payment-choice-list">
                         <label class="payment-choice">
                           <input type="checkbox" name="company-pays-back" checked />
-                          <i data-lucide="landmark" class="w-4 h-4" style="color:#5c7ad6;"></i>
+                          <i data-lucide="landmark" class="w-4 h-4 payment-choice-landmark"></i>
                           <span>Bank Transfer</span>
                           <a href="#" class="payment-choice-bank-action" data-no-bank-show
                             onclick="event.preventDefault()">+ Add bank</a>
@@ -7431,7 +7477,7 @@
                         </label>
                         <label class="payment-choice">
                           <input type="checkbox" name="company-pays-back" />
-                          <img src="images/usdv.png" class="w-4 h-4" style="object-fit:contain;" alt="USDV" />
+                          <img src="images/usdv.png" class="w-4 h-4 payment-choice-img" alt="USDV" />
                           <span>USDV</span>
                         </label>
                       </div>
@@ -7441,57 +7487,59 @@
 
                 <div class="payment-info-stack">
 
-                  <div class="row g-2">
+                  <div class="row gx-5 gy-2">
                     <div class="col-12 col-md-6">
                       <div class="payment-info-row">
                         <div class="payment-info-label">Account to Receive Payout</div>
                         <div class="payment-info-value">
                           <div class="payout-account-box">
-                            <div class="value" style="font-weight: 600; color: #6f7684;">ABC Corporation - 1234567890
+                            <div class="value value--muted">ABC Corporation - 1234567890
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <div class="col-12 col-md-6">
-                        <div class="payment-info-row">
-                          <div class="payment-info-label">Applied Service Fee</div>
-                          <div class="payment-info-value">
-                            <div class="input-group percent-input-group" style="max-width:100px;">
-                              <input class="form-control percent-input" type="number" min="0" max="100" step="0.1" value="5" style="text-align:right;" />
-                              <span class="input-group-text percent-suffix">%</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-12 col-md-6">
-                        <div class="payment-info-row">
-                          <div class="payment-info-label">Receive Payout Priority</div>
-                          <div class="payment-info-value">
-                            <select class="payment-inline-select form-select" id="payment-priority-select"></select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-12 col-md-6">
-                        <div class="payment-status-row">
-                          <div class="payment-info-label" style="display:flex;align-items:center;gap:8px;">
-                            Approval Status
-                            <span class="status-note success" id="behalf-approval-status-badge">Approved</span>
-                          </div>
-                          <a href="#" class="payment-choice-bank-action" style="font-size:13px;"
-                            onclick="event.preventDefault()">
-                            <i data-lucide="history" class="w-4 h-4"></i>
-                            <span>View change history</span>
-                          </a>
                         </div>
                       </div>
                     </div>
+                    <div class="col-12 col-md-6">
+                      <div class="payment-info-row">
+                        <div class="payment-info-label">Applied Service Fee</div>
+                        <div class="payment-info-value">
+                          <div class="input-group percent-input-group percent-input-group--narrow">
+                            <input class="form-control percent-input text-end" type="number" min="0" max="100" step="0.1"
+                              value="5" />
+                            <span class="input-group-text percent-suffix">%</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <div class="payment-info-row">
+                        <div class="payment-info-label">Receive Payout Priority</div>
+                        <div class="payment-info-value">
+                          <select class="payment-inline-select form-select" id="payment-priority-select"></select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <div class="payment-status-row">
+                        <div class="payment-info-label d-flex align-items-center gap-2">
+                          Approval Status
+                          <span class="status-note success" id="behalf-approval-status-badge">Approved</span>
+                        </div>
+                        <a href="#" class="payment-choice-bank-action payment-choice-bank-action--sm"
+                          onclick="event.preventDefault()">
+                          <i data-lucide="history" class="w-4 h-4"></i>
+                          <span>View change history</span>
+                        </a>
+                      </div>
+                    </div>
                   </div>
+                </div>
 
 
 
 
 
-                  <!-- <div class="payment-info-row">
+                <!-- <div class="payment-info-row">
                   <div class="payment-info-label">Eligibility Requirements</div>
                   <div class="payment-info-value payment-condition-row">
                     <span class="payment-condition-chip" style="background:#eaf7ea; color:#5aa15e;">KYC/KYB</span>
@@ -7503,61 +7551,61 @@
                 </div> -->
 
 
-                </div>
-              </div>
-              <div
-                style="padding: 16px 18px 18px; border-top: 1px solid #f0e3c7; background: linear-gradient(180deg,#fffcf4,#fff); display:flex; justify-content:center;">
-                <button class="primary-action btn btn-lg" id="save-behalf-payment-btn" style="min-width: 220px;">Save
-                  and Submit for Approval</button>
-              </div>
-            </div><!-- end collapse -->
-          </div>
-          <div class="deposit-info-card mt-3">
-            <div class="deposit-info-head">
-              <div class="deposit-info-title">
-                <span class="deposit-info-icon">
-                  <i data-lucide="shield-check" class="w-4 h-4"></i>
-                </span>
-                Collateral Info
-              </div>
-              <span class="status-note success">Active</span>
-            </div>
-
-            <div class="deposit-info-body">
-
-              <div class="row g-2">
-                <div class="col-12 col-md-6">
-                  <div class="deposit-stat">
-                    <div class="deposit-stat__label">Collateral Amount</div>
-                    <div class="deposit-stat__value">
-                      2,040 <span class="deposit-stat__unit">USDV</span>
-                    </div>
-                    <div class="deposit-stat__sub">2,000 USDV + 2% fee</div>
-                  </div>
-                </div>
-                <div class="col-12 col-md-6">
-                  <div class="deposit-stat deposit-stat--days">
-                    <div class="deposit-stat__label">Days Active</div>
-                    <div class="deposit-stat__value">
-                      12 <span class="deposit-stat__unit">days</span>
-                    </div>
-                    <div class="deposit-stat__sub">Since 30/04/2026</div>
-                  </div>
-                </div>
-              </div>
-              <div style="padding: 4px 2px 4px; border-top: 1px dashed #e5e7eb; margin-top: 8px;">
-                <p style="font-size:12px;color:var(--muted);margin:0 0 4px;line-height:1.6;">
-                  You may leave the program at any time. Upon exit, the collateral will be refunded once all pending
-                  receive / pay on behalf transactions have been settled. <a href="#" id="open-cancel-policy"
-                    style="font-size:12px;color:var(--muted);text-decoration:underline;text-decoration-color:var(--muted);">
-                    More info</a>
-                </p>
-
               </div>
             </div>
-          </div>
+            <div
+              style="padding: 16px 18px 18px; border-top: 1px solid #f0e3c7; background: linear-gradient(180deg,#fffcf4,#fff); display:flex; justify-content:center;">
+              <button class="primary-action btn btn-lg" id="save-behalf-payment-btn" style="min-width: 220px;">Save
+                and Submit for Approval</button>
+            </div>
+          </div><!-- end collapse -->
       </div>
-      </section>
+      <div class="deposit-info-card mt-3">
+        <div class="deposit-info-head">
+          <div class="deposit-info-title">
+            <span class="deposit-info-icon">
+              <i data-lucide="shield-check" class="w-4 h-4"></i>
+            </span>
+            Collateral Info
+          </div>
+          <span class="status-note success">Active</span>
+        </div>
+
+        <div class="deposit-info-body">
+
+          <div class="row g-2">
+            <div class="col-12 col-md-6">
+              <div class="deposit-stat">
+                <div class="deposit-stat__label">Collateral Amount</div>
+                <div class="deposit-stat__value">
+                  2,040 <span class="deposit-stat__unit">USDV</span>
+                </div>
+                <div class="deposit-stat__sub">2,000 USDV + 2% fee</div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="deposit-stat deposit-stat--days">
+                <div class="deposit-stat__label">Days Active</div>
+                <div class="deposit-stat__value">
+                  12 <span class="deposit-stat__unit">days</span>
+                </div>
+                <div class="deposit-stat__sub">Since 30/04/2026</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 4px 2px 4px; border-top: 1px dashed #e5e7eb; margin-top: 8px;">
+            <p style="font-size:12px;color:var(--muted);margin:0 0 4px;line-height:1.6;">
+              You may leave the program at any time. Upon exit, the collateral will be refunded once all pending
+              receive / pay on behalf transactions have been settled. <a href="#" id="open-cancel-policy"
+                style="font-size:12px;color:var(--muted);text-decoration:underline;text-decoration-color:var(--muted);">
+                More info</a>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    </section>
     </div>
     </div>
   </main>
@@ -8041,8 +8089,7 @@
 
   <!-- Modal: Add Bank -->
   <div class="cancel-modal" id="add-bank-modal" aria-hidden="true">
-    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Add Bank Account"
-      style="width:min(100%,520px);">
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Add Bank Account">
       <div class="cancel-modal-head">
         <div>
           <div class="cancel-modal-title">Add Bank Account</div>
@@ -8132,13 +8179,13 @@
 
         <div class="mb-2" id="add-bank-upload-ssn-wrap">
           <label class="form-label">Upload Front of SSN <span class="req">*</span></label>
-          <input type="file" id="add-bank-ssn-file-input" accept="image/*,.pdf" style="display:none;" />
+          <input type="file" id="add-bank-ssn-file-input" accept="image/*,.pdf" class="d-none" />
           <input type="file" id="add-bank-ssn-camera-input" accept="image/*" capture="environment"
-            style="display:none;" />
+            class="d-none" />
           <div class="add-bank-preview-wrap" id="add-bank-ssn-preview-wrap">
             <button type="button" class="add-bank-preview-remove" id="add-bank-ssn-remove-btn">&times;</button>
-            <img class="add-bank-preview-img" id="add-bank-ssn-preview-img" src="" alt="" style="display:none;" />
-            <div class="add-bank-preview-pdf" id="add-bank-ssn-preview-pdf" style="display:none;">
+            <img class="add-bank-preview-img d-none" id="add-bank-ssn-preview-img" src="" alt="" />
+            <div class="add-bank-preview-pdf d-none" id="add-bank-ssn-preview-pdf">
               <i data-lucide="file-text" class="w-5 h-5"></i>
               <span id="add-bank-ssn-preview-name"></span>
             </div>
@@ -8162,13 +8209,13 @@
 
         <div class="mb-1">
           <label class="form-label">Upload Front of Voided Check Business <span class="req">*</span></label>
-          <input type="file" id="add-bank-check-file-input" accept="image/*,.pdf" style="display:none;" />
+          <input type="file" id="add-bank-check-file-input" accept="image/*,.pdf" class="d-none" />
           <input type="file" id="add-bank-check-camera-input" accept="image/*" capture="environment"
-            style="display:none;" />
+            class="d-none" />
           <div class="add-bank-preview-wrap" id="add-bank-check-preview-wrap">
             <button type="button" class="add-bank-preview-remove" id="add-bank-check-remove-btn">&times;</button>
-            <img class="add-bank-preview-img" id="add-bank-check-preview-img" src="" alt="" style="display:none;" />
-            <div class="add-bank-preview-pdf" id="add-bank-check-preview-pdf" style="display:none;">
+            <img class="add-bank-preview-img d-none" id="add-bank-check-preview-img" src="" alt="" />
+            <div class="add-bank-preview-pdf d-none" id="add-bank-check-preview-pdf">
               <i data-lucide="file-text" class="w-5 h-5"></i>
               <span id="add-bank-check-preview-name"></span>
             </div>
@@ -8326,7 +8373,7 @@
           <div class="transfer-note-title">
             <span>⚠️</span> Note:
           </div>
-          <ul style="margin:0;padding-left:16px;">
+          <ul>
             <li>Please include <strong>B845C876C</strong> in the memo when sending your transfer. Missing memo
               information may delay your credit reset.</li>
           </ul>

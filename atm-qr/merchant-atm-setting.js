@@ -832,7 +832,11 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   tabs.forEach((tab) => {
-    tab.addEventListener('click', () => activate(tab.getAttribute('data-setting-tab') || 'general'));
+    tab.addEventListener('click', () => {
+      const name = tab.getAttribute('data-setting-tab') || 'general';
+      activate(name);
+      updateUrl({ subnav: name });
+    });
   });
 
   assetFeeTabs.forEach((tab) => {
@@ -843,7 +847,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
   openSettingTabButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      activate(button.getAttribute('data-open-setting-tab') || 'general');
+      const name = button.getAttribute('data-open-setting-tab') || 'general';
+      activate(name);
+      updateUrl({ subnav: name });
     });
   });
 
@@ -1013,7 +1019,7 @@ window.addEventListener('DOMContentLoaded', () => {
     topnavPanels.forEach((panel) => {
       panel.style.display = panel.dataset.topnavPanel === name ? '' : 'none';
     });
-    updateUrl({ tab: name, filter: null });
+    updateUrl({ tab: name, subnav: null });
     refreshIcons();
     refreshTooltips();
   };
@@ -1025,9 +1031,10 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Restore topnav tab from URL, default to 'settings'
+  // Restore topnav tab and subnav from URL
   const urlParams = new URLSearchParams(location.search);
   activateTopnavTab(urlParams.get('tab') || 'settings');
+  if (urlParams.get('subnav')) activate(urlParams.get('subnav'));
 
   // History filters
   const mainFilters = document.getElementById('history-main-filters');
@@ -1069,7 +1076,7 @@ window.addEventListener('DOMContentLoaded', () => {
     mainListSection.style.display  = isSettlement ? 'none' : '';
     settlementSection.style.display = isSettlement ? ''    : 'none';
     if (!isSettlement) setExchangeTypeOptions(filter === 'individual' ? 'individual' : 'atm');
-    updateUrl({ filter });
+    updateUrl({ subnav: filter });
   };
 
   const historyFilterBtns = Array.from(document.querySelectorAll('[data-history-filter]'));
@@ -1082,7 +1089,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Restore history filter from URL (only relevant when tab=history)
   if (urlParams.get('tab') === 'history') {
-    const savedFilter = urlParams.get('filter') || 'individual';
+    const savedFilter = urlParams.get('subnav') || 'individual';
     activateHistoryFilter(savedFilter);
   }
 
@@ -1121,7 +1128,7 @@ window.addEventListener('DOMContentLoaded', () => {
     settlementGrid.innerHTML = items.length === 0
       ? '<div class="col-12 text-center py-4 text-muted" style="font-size:13px;">No records found.</div>'
       : items.map(item => `
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <div class="settlement-item">
             <div class="settlement-item__icon settlement-item__icon--${item.type}">
               <i data-lucide="${item.icon}" class="w-4 h-4"></i>

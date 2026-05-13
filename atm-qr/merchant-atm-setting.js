@@ -207,6 +207,72 @@ window.addEventListener('DOMContentLoaded', () => {
     if (e.target === pinModal) closePinModal();
   });
 
+  // Cancel deposit modals
+  const cancelPolicyModal = document.getElementById('cancel-policy-modal');
+  const cancelConfirmModal = document.getElementById('cancel-confirm-modal');
+  const cancelConfirmAgree = document.getElementById('cancel-confirm-agree');
+  const confirmCancellationBtn = document.getElementById('confirm-cancellation-btn');
+
+  const openCancelPolicyModal = () => {
+    cancelPolicyModal?.classList.add('active');
+    cancelPolicyModal?.setAttribute('aria-hidden', 'false');
+    refreshIcons();
+  };
+
+  const closeCancelPolicyModal = () => {
+    cancelPolicyModal?.classList.remove('active');
+    cancelPolicyModal?.setAttribute('aria-hidden', 'true');
+  };
+
+  const openCancelConfirmModal = () => {
+    closeCancelPolicyModal();
+    if (cancelConfirmAgree) cancelConfirmAgree.checked = false;
+    if (confirmCancellationBtn) confirmCancellationBtn.disabled = true;
+    cancelConfirmModal?.classList.add('active');
+    cancelConfirmModal?.setAttribute('aria-hidden', 'false');
+    refreshIcons();
+  };
+
+  const closeCancelConfirmModal = () => {
+    cancelConfirmModal?.classList.remove('active');
+    cancelConfirmModal?.setAttribute('aria-hidden', 'true');
+  };
+
+  document.getElementById('open-cancel-policy')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openCancelPolicyModal();
+  });
+
+  document.getElementById('close-cancel-policy')?.addEventListener('click', closeCancelPolicyModal);
+  document.getElementById('close-cancel-policy-btn')?.addEventListener('click', closeCancelPolicyModal);
+  cancelPolicyModal?.addEventListener('click', (e) => { if (e.target === cancelPolicyModal) closeCancelPolicyModal(); });
+
+  document.getElementById('open-cancel-confirm-btn')?.addEventListener('click', openCancelConfirmModal);
+  document.getElementById('close-cancel-confirm')?.addEventListener('click', closeCancelConfirmModal);
+  document.getElementById('keep-package-btn')?.addEventListener('click', closeCancelConfirmModal);
+  cancelConfirmModal?.addEventListener('click', (e) => { if (e.target === cancelConfirmModal) closeCancelConfirmModal(); });
+
+  cancelConfirmAgree?.addEventListener('change', () => {
+    if (confirmCancellationBtn) confirmCancellationBtn.disabled = !cancelConfirmAgree.checked;
+  });
+
+  // Simulate checking pending obligations (true = all clear, false = still pending)
+  const hasNoPendingObligations = () => true;
+
+  confirmCancellationBtn?.addEventListener('click', () => {
+    closeCancelConfirmModal();
+    const allClear = hasNoPendingObligations();
+    window.Swal?.fire({
+      icon: 'success',
+      title: 'Cancellation request submitted.',
+      text: allClear
+        ? 'Your refund is being processed.'
+        : 'Your refund will remain pending until all obligations are cleared.',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#f59e0b',
+    });
+  });
+
   const roleTargets = (value) => value.split(',').map((item) => item.trim()).filter(Boolean);
   const hoursDayOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -711,6 +777,8 @@ window.addEventListener('DOMContentLoaded', () => {
       closeAcceptedPaymentModal();
       closeJoinProgramModal();
       closePinModal();
+      closeCancelPolicyModal();
+      closeCancelConfirmModal();
     }
   });
 

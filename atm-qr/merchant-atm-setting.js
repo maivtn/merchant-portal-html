@@ -145,7 +145,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
   joinProgramConfirm?.addEventListener('click', () => {
     closeJoinProgramModal();
-    openPinModal();
+    openPinModal(() => {
+      window.Swal?.fire({
+        icon: 'success',
+        title: 'Đăng ký thành công',
+        text: 'Đăng ký thu hộ chi hộ thành công',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#f59e0b',
+      }).then(() => {
+        isBehalf = true;
+        syncBehalfState();
+        const url = new URL(window.location.href);
+        url.searchParams.set('isBehalf', 'true');
+        window.history.replaceState(null, '', url);
+      });
+    });
   });
 
   // PIN modal
@@ -154,9 +168,11 @@ window.addEventListener('DOMContentLoaded', () => {
   const pinEye = document.getElementById('pin-modal-eye');
   const pinClose = document.getElementById('pin-modal-close');
   const pinOk = document.getElementById('pin-modal-ok');
+  let pinCallback = null;
 
-  const openPinModal = () => {
+  const openPinModal = (callback) => {
     if (!pinModal) return;
+    pinCallback = callback || null;
     if (pinInput) pinInput.value = '';
     pinModal.classList.add('active');
     pinModal.setAttribute('aria-hidden', 'false');
@@ -188,19 +204,25 @@ window.addEventListener('DOMContentLoaded', () => {
   pinClose?.addEventListener('click', closePinModal);
   pinOk?.addEventListener('click', () => {
     closePinModal();
-    window.Swal?.fire({
-      icon: 'success',
-      title: 'Đăng ký thành công',
-      text: 'Đăng ký thu hộ chi hộ thành công',
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#f59e0b',
-    }).then(() => {
-      isBehalf = true;
-      syncBehalfState();
-      const url = new URL(window.location.href);
-      url.searchParams.set('isBehalf', 'true');
-      window.history.replaceState(null, '', url);
-    });
+    if (pinCallback) {
+      pinCallback();
+      pinCallback = null;
+    } else {
+      // Default: join program
+      window.Swal?.fire({
+        icon: 'success',
+        title: 'Đăng ký thành công',
+        text: 'Đăng ký thu hộ chi hộ thành công',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#f59e0b',
+      }).then(() => {
+        isBehalf = true;
+        syncBehalfState();
+        const url = new URL(window.location.href);
+        url.searchParams.set('isBehalf', 'true');
+        window.history.replaceState(null, '', url);
+      });
+    }
   });
 
   pinModal?.addEventListener('click', (e) => {
@@ -387,15 +409,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
   confirmCancellationBtn?.addEventListener('click', () => {
     closeCancelConfirmModal();
-    const allClear = hasNoPendingObligations();
-    window.Swal?.fire({
-      icon: 'success',
-      title: 'Cancellation request submitted.',
-      text: allClear
-        ? 'Your refund is being processed.'
-        : 'Your refund will remain pending until all obligations are cleared.',
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#f59e0b',
+    openPinModal(() => {
+      const allClear = hasNoPendingObligations();
+      window.Swal?.fire({
+        icon: 'success',
+        title: 'Cancellation request submitted.',
+        text: allClear
+          ? 'Your refund is being processed.'
+          : 'Your refund will remain pending until all obligations are cleared.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#f59e0b',
+      });
     });
   });
 

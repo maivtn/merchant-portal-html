@@ -614,7 +614,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = '';
   };
 
-  document.querySelector('.payment-choice-bank-action:not([data-no-bank-show]):not([data-bank-show])')
+  document.getElementById('open-transfer-modal')
     ?.addEventListener('click', (e) => { e.preventDefault(); openTransferModal(); });
   document.getElementById('close-transfer-modal')?.addEventListener('click', closeTransferModal);
   transferModal?.addEventListener('click', (e) => { if (e.target === transferModal) closeTransferModal(); });
@@ -673,6 +673,22 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('bank-info-irs-view')?.addEventListener('click', () => {
     showAddBankImageSwal(addBankFileUrls.ssn, addBankFileUrls.ssnIsPdf, 'IRS Letter');
   });
+
+  const changeHistoryModal = document.getElementById('change-history-modal');
+  const openChangeHistoryModal = () => {
+    changeHistoryModal?.classList.add('active');
+    changeHistoryModal?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    refreshIcons();
+  };
+  const closeChangeHistoryModal = () => {
+    changeHistoryModal?.classList.remove('active');
+    changeHistoryModal?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+  document.getElementById('open-change-history-modal')?.addEventListener('click', openChangeHistoryModal);
+  document.getElementById('close-change-history-modal')?.addEventListener('click', closeChangeHistoryModal);
+  changeHistoryModal?.addEventListener('click', (e) => { if (e.target === changeHistoryModal) closeChangeHistoryModal(); });
 
   document.getElementById('bank-info-check-view')?.addEventListener('click', () => {
     showAddBankImageSwal(addBankFileUrls.check, addBankFileUrls.checkIsPdf, 'Voided Check');

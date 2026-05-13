@@ -2880,21 +2880,17 @@
       margin-top: 10px;
     }
 
-    .payment-info-row {
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr);
-      gap: 8px;
-      align-items: center;
-      padding: 12px;
-      background-color: #faf7f2;
-      border-radius: 12px;
-    }
-
+    .payment-info-row,
     .payment-status-row {
-      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
       background-color: #faf7f2;
       border-radius: 12px;
-      padding: 12px;
+      height: 100%;
+      min-height: 58px;
     }
 
     .payment-info-label {
@@ -2946,14 +2942,6 @@
       color: #7c4a03;
       font-size: 0.8rem;
       font-weight: 700;
-    }
-
-    .payment-status-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding-top: 10px;
     }
 
     .payment-card+.payment-card {
@@ -5978,6 +5966,116 @@
       width: min(100%, 480px);
     }
 
+    /* Change History Modal */
+    #change-history-modal .cancel-modal-card {
+      width: min(100%, 720px);
+    }
+
+    .change-history-body {
+      padding: 16px 20px 20px;
+    }
+
+    .change-history-table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+    }
+
+    .change-history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .change-history-table thead tr {
+      background-color: #faf7f2;
+    }
+
+    .change-history-table th {
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    .change-history-table td {
+      padding: 12px 14px;
+      color: var(--text);
+      vertical-align: middle;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .change-history-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .change-history-table tbody tr:hover td {
+      background-color: #fdfaf5;
+    }
+
+    .ch-date {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .ch-time {
+      display: block;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .ch-type {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .ch-type--bank {
+      background-color: #ede9fe;
+      color: #6d28d9;
+    }
+
+    .ch-type--fee {
+      background-color: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .ch-type--priority {
+      background-color: #dcfce7;
+      color: #15803d;
+    }
+
+    .ch-type--pays-back {
+      background-color: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .ch-type--pay-to {
+      background-color: #fce7f3;
+      color: #be185d;
+    }
+
+    .ch-val {
+      font-size: 13px;
+      color: #27303f;
+      white-space: nowrap;
+    }
+
+    .ch-val--old {
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
     /* Transfer modal note list */
     .transfer-note-box ul {
       margin: 0;
@@ -7428,6 +7526,32 @@
                       <div class="value">T+1</div>
                     </div>
                   </div>
+                  <div class="col-12 col-md-6 d-flex flex-column">
+                    <div class="payment-info-row">
+                      <div class="payment-info-label">Applied Service Fee</div>
+                      <div class="payment-info-value">
+                        <div class="input-group percent-input-group percent-input-group--narrow">
+                          <input class="form-control percent-input text-end" type="number" min="0" max="100" step="0.1"
+                            value="5" />
+                          <span class="input-group-text percent-suffix">%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6 d-flex flex-column">
+                    <div class="payment-status-row">
+                      <div class="payment-info-label d-flex align-items-center gap-2">
+                        Approval Status
+                        <span class="status-note success" id="behalf-approval-status-badge">Approved</span>
+                      </div>
+                      <a href="#" class="payment-choice-bank-action payment-choice-bank-action--sm"
+                        id="open-change-history-modal" onclick="event.preventDefault()">
+                        <i data-lucide="history" class="w-4 h-4"></i>
+                        <span>View change history</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="row g-3">
@@ -7470,7 +7594,7 @@
                           <input type="checkbox" name="payment-to-company" checked />
                           <i data-lucide="landmark" class="w-4 h-4" style="color:#5c7ad6;"></i>
                           <span>Bank Transfer</span>
-                          <a href="#" class="payment-choice-bank-action" onclick="event.preventDefault()">
+                          <a href="#" class="payment-choice-bank-action" id="open-transfer-modal" onclick="event.preventDefault()">
                             <i data-lucide="eye" class="w-4 h-4"></i>
                             <span>View</span>
                           </a>
@@ -7488,7 +7612,7 @@
                 <div class="payment-info-stack">
 
                   <div class="row gx-3 gy-2">
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 d-flex flex-column">
                       <div class="payment-info-row">
                         <div class="payment-info-label">Account to Receive Payout</div>
                         <div class="payment-info-value">
@@ -7499,19 +7623,8 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                      <div class="payment-info-row">
-                        <div class="payment-info-label">Applied Service Fee</div>
-                        <div class="payment-info-value">
-                          <div class="input-group percent-input-group percent-input-group--narrow">
-                            <input class="form-control percent-input text-end" type="number" min="0" max="100" step="0.1"
-                              value="5" />
-                            <span class="input-group-text percent-suffix">%</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-6">
+                    
+                    <div class="col-12 col-md-6 d-flex flex-column">
                       <div class="payment-info-row">
                         <div class="payment-info-label">Receive Payout Priority</div>
                         <div class="payment-info-value">
@@ -7519,19 +7632,9 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                      <div class="payment-status-row">
-                        <div class="payment-info-label d-flex align-items-center gap-2">
-                          Approval Status
-                          <span class="status-note success" id="behalf-approval-status-badge">Approved</span>
-                        </div>
-                        <a href="#" class="payment-choice-bank-action payment-choice-bank-action--sm"
-                          onclick="event.preventDefault()">
-                          <i data-lucide="history" class="w-4 h-4"></i>
-                          <span>View change history</span>
-                        </a>
-                      </div>
-                    </div>
+                    
+
+
                   </div>
                 </div>
 
@@ -8435,6 +8538,81 @@
           <button type="button" class="bank-info-view" id="bank-info-check-view">
             View <i data-lucide="eye" class="w-4 h-4"></i>
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change History Modal -->
+  <div class="cancel-modal" id="change-history-modal" aria-hidden="true">
+    <div class="cancel-modal-card change-history-card" role="dialog" aria-modal="true" aria-label="Change History">
+      <div class="cancel-modal-head">
+        <div>
+          <div class="cancel-modal-title">Change History</div>
+          <div class="cancel-modal-subtitle">All updates to Receive / Pay on Behalf Payment Setup.</div>
+        </div>
+        <button type="button" class="cancel-modal-close" id="close-change-history-modal" aria-label="Close">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="cancel-modal-body change-history-body">
+        <div class="change-history-table-wrap">
+          <table class="change-history-table">
+            <thead>
+              <tr>
+                <th>Date &amp; Time</th>
+                <th>Type</th>
+                <th>Old Value</th>
+                <th>New Value</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="ch-date">May 10, 2025<span class="ch-time">09:42 AM</span></td>
+                <td><span class="ch-type ch-type--bank">Bank Information</span></td>
+                <td class="ch-val ch-val--old">—</td>
+                <td class="ch-val">Bank of America · ****7890</td>
+                <td><span class="status-note pending">Pending Approval</span></td>
+              </tr>
+              <tr>
+                <td class="ch-date">May 11, 2025<span class="ch-time">02:15 PM</span></td>
+                <td><span class="ch-type ch-type--bank">Bank Information</span></td>
+                <td class="ch-val ch-val--old">—</td>
+                <td class="ch-val">Bank of America · ****7890</td>
+                <td><span class="status-note success">Approved</span></td>
+              </tr>
+              <tr>
+                <td class="ch-date">May 12, 2025<span class="ch-time">11:05 AM</span></td>
+                <td><span class="ch-type ch-type--fee">Applied Service Fee</span></td>
+                <td class="ch-val ch-val--old">3%</td>
+                <td class="ch-val">5%</td>
+                <td><span class="status-note success">Approved</span></td>
+              </tr>
+              <tr>
+                <td class="ch-date">May 12, 2025<span class="ch-time">03:20 PM</span></td>
+                <td><span class="ch-type ch-type--priority">Receive Payout Priority</span></td>
+                <td class="ch-val ch-val--old">USDV</td>
+                <td class="ch-val">Bank Transfer</td>
+                <td><span class="status-note success">Approved</span></td>
+              </tr>
+              <tr>
+                <td class="ch-date">May 13, 2025<span class="ch-time">08:30 AM</span></td>
+                <td><span class="ch-type ch-type--pays-back">VLINKPAY Pays Back</span></td>
+                <td class="ch-val ch-val--old">Bank Transfer</td>
+                <td class="ch-val">Bank Transfer, USDV</td>
+                <td><span class="status-note pending">Pending Approval</span></td>
+              </tr>
+              <tr>
+                <td class="ch-date">May 13, 2025<span class="ch-time">09:15 AM</span></td>
+                <td><span class="ch-type ch-type--pay-to">Pay Back to VLINKPAY</span></td>
+                <td class="ch-val ch-val--old">USDV</td>
+                <td class="ch-val">Bank Transfer</td>
+                <td><span class="status-note pending">Pending Approval</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

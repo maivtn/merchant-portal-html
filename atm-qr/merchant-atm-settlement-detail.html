@@ -541,11 +541,11 @@
     proofSection.style.display = '';
 
     // Timeline (pay flow only)
+    const isCompleted = status === 'completed';
     const timelineSection = document.getElementById('timeline').closest('.info-section');
     if (type === 'receive') {
       timelineSection.style.display = 'none';
     } else {
-      const isCompleted = status === 'completed';
       const steps = isCompleted
         ? [
             { dot: 'done',   label: 'Submitted',     date: 'May 13, 2026 · 09:42 AM' },

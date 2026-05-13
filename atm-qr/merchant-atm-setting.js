@@ -1100,13 +1100,17 @@ window.addEventListener('DOMContentLoaded', () => {
   bindSelectLabel(exchangeTypeSelect, 'Exchange Type');
   bindSelectLabel(statusSelect, 'Status');
   // Settlement data
+  const fmtSettlementDate = (iso) => new Date(iso).toLocaleString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit',
+  });
+
   const settlementData = [
-    { type: 'pay',     title: 'Pay to VLINKPAY', date: 'May 13, 2026', meta: 'May 13 · Bank',   method: 'Bank Transfer',  amount: '−850 USDV',   amountClass: 'pay',     status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-up-right'  },
-    { type: 'receive', title: 'VLINKPAY Payout',  date: 'May 12, 2026', meta: 'May 12 · Bank',   method: 'Bank Transfer',  amount: '+320 USDV',   amountClass: 'receive', status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-down-left' },
-    { type: 'pay',     title: 'Pay to VLINKPAY', date: 'May 10, 2026', meta: 'May 10 · Wallet', method: 'Wallet Balance', amount: '−600 USDV',   amountClass: 'pay',     status: 'waiting-review', statusLabel: 'Waiting Review', icon: 'arrow-up-right'  },
-    { type: 'receive', title: 'VLINKPAY Payout',  date: 'May 8, 2026',  meta: 'May 8 · Bank',    method: 'Bank Transfer',  amount: '+280 USDV',   amountClass: 'receive', status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-down-left' },
-    { type: 'pay',     title: 'Pay to VLINKPAY', date: 'Apr 30, 2026', meta: 'Apr 30 · Bank',   method: 'Bank Transfer',  amount: '−1,200 USDV', amountClass: 'pay',     status: 'waiting-review', statusLabel: 'Waiting Review', icon: 'arrow-up-right'  },
-    { type: 'receive', title: 'VLINKPAY Payout',  date: 'Apr 28, 2026', meta: 'Apr 28 · USDV',   method: 'USDV',           amount: '+500 USDV',   amountClass: 'receive', status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-down-left' },
+    { type: 'pay',     title: 'Pay to VLINKPAY', datetime: '2026-05-13T16:00:00', method: 'Bank Transfer',  amount: '−$850',   amountClass: 'pay',     status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-up-right'  },
+    { type: 'receive', title: 'VLINKPAY Payout',  datetime: '2026-05-12T10:05:00', method: 'Bank Transfer',  amount: '+$320',   amountClass: 'receive', status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-down-left' },
+    { type: 'pay',     title: 'Pay to VLINKPAY', datetime: '2026-05-10T09:42:00', method: 'Wallet Balance', amount: '−$600',   amountClass: 'pay',     status: 'waiting-review', statusLabel: 'Waiting Review', icon: 'arrow-up-right'  },
+    { type: 'receive', title: 'VLINKPAY Payout',  datetime: '2026-05-08T14:30:00', method: 'Bank Transfer',  amount: '+$280',   amountClass: 'receive', status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-down-left' },
+    { type: 'pay',     title: 'Pay to VLINKPAY', datetime: '2026-04-30T11:15:00', method: 'Bank Transfer',  amount: '−$1,200', amountClass: 'pay',     status: 'waiting-review', statusLabel: 'Waiting Review', icon: 'arrow-up-right'  },
+    { type: 'receive', title: 'VLINKPAY Payout',  datetime: '2026-04-28T08:00:00', method: 'USDV',           amount: '+$500',   amountClass: 'receive', status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-down-left' },
   ];
 
   const settlementGrid  = document.getElementById('settlement-grid');
@@ -1124,7 +1128,7 @@ window.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="settlement-item__main">
               <div class="settlement-item__title">${item.title}</div>
-              <div class="settlement-item__meta">${item.meta}</div>
+              <div class="settlement-item__meta">${fmtSettlementDate(item.datetime)} · ${item.method}</div>
             </div>
             <div class="settlement-item__right">
               <span class="settlement-item__amount settlement-item__amount--${item.amountClass}">${item.amount}</span>
@@ -1143,7 +1147,7 @@ window.addEventListener('DOMContentLoaded', () => {
       : items.map(item => `
         <tr>
           <td class="td-title">${item.title}</td>
-          <td class="td-date">${item.date}</td>
+          <td class="td-date">${fmtSettlementDate(item.datetime)}</td>
           <td class="td-seller">${item.method}</td>
           <td class="td-amount" style="color:${item.amountClass === 'pay' ? '#ea580c' : '#16a34a'};">${item.amount}</td>
           <td><span class="history-badge history-badge--${item.status}">${item.statusLabel}</span></td>

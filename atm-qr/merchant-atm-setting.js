@@ -407,7 +407,8 @@ window.addEventListener('DOMContentLoaded', () => {
   // Simulate checking pending obligations (true = all clear, false = still pending)
   const hasNoPendingObligations = () => true;
 
-  confirmCancellationBtn?.addEventListener('click', () => {
+  confirmCancellationBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
     closeCancelConfirmModal();
     openPinModal(() => {
       const allClear = hasNoPendingObligations();
@@ -1013,17 +1014,77 @@ window.addEventListener('DOMContentLoaded', () => {
 
   activateTopnavTab('settings');
 
-  // History filter buttons
+  // History filters
+  const mainFilters = document.getElementById('history-main-filters');
+  const settlementFilters = document.getElementById('history-settlement-filters');
+  const mainListSection = document.getElementById('history-list-section');
+  const settlementSection = document.getElementById('history-settlement-section');
+  const exchangeTypeSelect = document.getElementById('exchange-type-select');
+  const statusSelect = document.getElementById('status-select');
+
+  const exchangeTypeOptionSets = {
+    individual: [
+      ['', 'Exchange Type: All'],
+      ['Buy', 'Buy'],
+      ['Sell', 'Sell'],
+    ],
+    atm: [
+      ['', 'Exchange Type: All'],
+      ['Buy', 'Buy'],
+      ['Sell', 'Sell'],
+      ['Receive on Behalf', 'Receive on Behalf'],
+      ['Pay on Behalf', 'Pay on Behalf'],
+    ],
+  };
+
+  const setExchangeTypeOptions = (set) => {
+    if (!exchangeTypeSelect) return;
+    exchangeTypeSelect.innerHTML = '';
+    exchangeTypeOptionSets[set].forEach(([val, text]) => {
+      const opt = new Option(text, val);
+      exchangeTypeSelect.add(opt);
+    });
+  };
+
   const historyFilterBtns = Array.from(document.querySelectorAll('[data-history-filter]'));
   historyFilterBtns.forEach((btn) => {
-    btn.addEventListener('click', (event) => {
-      if (event.target.closest('.history-filter-info')) return;
+    btn.addEventListener('click', (e) => {
+      if (e.target.closest('.history-filter-info')) return;
       historyFilterBtns.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
+
+      const filter = btn.dataset.historyFilter;
+      const isSettlement = filter === 'settlement';
+
+      mainFilters.style.display = isSettlement ? 'none' : '';
+      settlementFilters.style.display = isSettlement ? '' : 'none';
+      mainListSection.style.display = isSettlement ? 'none' : '';
+      settlementSection.style.display = isSettlement ? '' : 'none';
+
+      if (!isSettlement) {
+        setExchangeTypeOptions(filter === 'individual' ? 'individual' : 'atm');
+      }
     });
   });
 
-  // History view toggle (grid / table)
+  // Set initial exchange type options for default active tab (individual)
+  setExchangeTypeOptions('individual');
+
+  const bindSelectLabel = (el, prefix) => {
+    el?.addEventListener('change', function () {
+      const label = this.selectedIndex > 0 ? this.options[this.selectedIndex].text : 'All';
+      this.options[0].text = `${prefix}: ${label}`;
+      this.selectedIndex = 0;
+    });
+  };
+
+  bindSelectLabel(exchangeTypeSelect, 'Exchange Type');
+  bindSelectLabel(statusSelect, 'Status');
+  bindSelectLabel(document.getElementById('settlement-type-select'), 'Type');
+  bindSelectLabel(document.getElementById('settlement-status-select'), 'Status');
+  bindSelectLabel(document.getElementById('settlement-method-select'), 'Method');
+
+  // History view toggle (grid / table) — main list
   const historySection = document.getElementById('history-list-section');
   const historyViewBtns = Array.from(document.querySelectorAll('[data-history-view]'));
   historyViewBtns.forEach((btn) => {
@@ -1032,6 +1093,18 @@ window.addEventListener('DOMContentLoaded', () => {
       btn.classList.add('active');
       const isTable = btn.dataset.historyView === 'table';
       historySection?.classList.toggle('is-table', isTable);
+      refreshIcons();
+    });
+  });
+
+  // Settlement view toggle (grid / table)
+  const settlementViewBtns = Array.from(document.querySelectorAll('[data-settlement-view]'));
+  settlementViewBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      settlementViewBtns.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      const isTable = btn.dataset.settlementView === 'table';
+      settlementSection?.classList.toggle('is-table', isTable);
       refreshIcons();
     });
   });

@@ -636,6 +636,20 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  document.getElementById('save-behalf-payment-btn')?.addEventListener('click', () => {
+    Swal.fire({
+      icon: 'success',
+      title: 'Payment Setup Updated!',
+      html: 'Your <strong>Receive / Pay on Behalf</strong> payment setup has been successfully submitted for approval.',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#d97706',
+      customClass: {
+        popup: 'swal2-popup',
+        confirmButton: 'swal2-confirm',
+      },
+    });
+  });
+
   document.getElementById('open-cancel-confirm-btn')?.addEventListener('click', openCancelConfirmModal);
   document.getElementById('close-cancel-confirm')?.addEventListener('click', closeCancelConfirmModal);
   document.getElementById('keep-package-btn')?.addEventListener('click', closeCancelConfirmModal);

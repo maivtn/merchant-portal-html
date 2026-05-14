@@ -288,6 +288,11 @@ window.addEventListener('DOMContentLoaded', () => {
     });
     const target = document.getElementById(`repayment-acct-${method}`);
     if (target) { target.style.display = 'flex'; refreshIcons(); }
+    const uploadSection = document.getElementById('repayment-upload-section');
+    if (uploadSection) uploadSection.style.display = method === 'usdv' ? 'none' : '';
+    if (submitRepaymentBtn) {
+      submitRepaymentBtn.disabled = method !== 'usdv' && repaymentFiles.length === 0;
+    }
   };
 
   // Copy buttons inside repayment account info — event delegation

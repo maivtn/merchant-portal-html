@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Settlement & Payout History</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="merchant-atm-common.css" />
+  <style>
+    :root {
+      --bg: #fffdf9;
+      --text: #221f1f;
+      --muted: #757575;
+      --line: #e0e0e0;
+      --amber: #d97706;
+      --amber-soft: #fffbeb;
+      --amber-ring: rgba(217,119,6,0.18);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top right, rgba(254,243,199,0.8), transparent 24%),
+                  linear-gradient(180deg, #fffdf9 0%, #fff 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .hist-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(217,119,6,0.12);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .hist-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .hist-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      text-align: center;
+      flex: 1;
+    }
+
+    /* ── Filter strip ── */
+    .filter-strip {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .filter-strip::-webkit-scrollbar { display: none; }
+
+    .filter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1.5px solid #e2e8f0;
+      background: #fff;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .filter-pill:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    .filter-pill.active {
+      background: var(--amber-soft);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    /* ── Date group header ── */
+    .date-group-header {
+      padding: 10px 16px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    /* ── History item ── */
+    .hist-list {
+      padding: 8px 16px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .hist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border-radius: 14px;
+      padding: 12px 14px;
+      box-shadow: 0 1px 3px rgba(34,31,31,0.06), 0 2px 8px rgba(34,31,31,0.03);
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.15s, transform 0.12s;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .hist-item:hover {
+      box-shadow: 0 4px 16px rgba(34,31,31,0.09);
+      transform: translateY(-1px);
+    }
+
+    .hist-item:active { transform: translateY(0); }
+
+    .hist-item__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .hist-item__icon--pay     { background: #fff7ed; color: #ea580c; }
+    .hist-item__icon--payout  { background: #f0fdf4; color: #16a34a; }
+
+    .hist-item__info { flex: 1; min-width: 0; }
+
+    .hist-item__type {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .hist-item__meta {
+      font-size: 11.5px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hist-item__right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .hist-item__amount {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .hist-item__amount--pay    { color: var(--text); }
+    .hist-item__amount--payout { color: #16a34a; }
+
+    /* ── Status badges ── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-badge--completed      { background:#f0fdf4; color:#16a34a; border:1px solid #86efac; }
+    .status-badge--pending        { background:#fffbeb; color:#d97706; border:1px solid #fde68a; }
+    .status-badge--review         { background:#eff6ff; color:#3b82f6; border:1px solid #bfdbfe; }
+    .status-badge--processing     { background:#f5f3ff; color:#7c3aed; border:1px solid #ddd6fe; }
+    .status-badge--rejected       { background:#fef2f2; color:#ef4444; border:1px solid #fca5a5; }
+
+    /* ── Empty state ── */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 48px 24px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .empty-state__icon {
+      width: 52px;
+      height: 52px;
+      background: #f1f5f9;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+    }
+
+    .empty-state__title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .empty-state__desc {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── Summary bar ── */
+    .summary-bar {
+      display: flex;
+      gap: 0;
+      margin: 12px 16px 0;
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid rgba(217,119,6,0.15);
+      overflow: hidden;
+    }
+
+    .summary-bar__item {
+      flex: 1;
+      padding: 10px 12px;
+      text-align: center;
+      border-right: 1px solid rgba(217,119,6,0.1);
+    }
+
+    .summary-bar__item:last-child { border-right: none; }
+
+    .summary-bar__label {
+      font-size: 10.5px;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .summary-bar__value {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .summary-bar__value--pay    { color: #ea580c; }
+    .summary-bar__value--payout { color: #16a34a; }
+  </style>
+</head>
+<body>
+  <div style="max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;">
+
+    <!-- Header -->
+    <div class="hist-header">
+      <button class="hist-back" onclick="if(history.length>1)history.back();else location.href='merchant-atm-setting.html?isBehalf=true#receive-on-behalf'">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        Back
+      </button>
+      <div class="hist-title">Settlement & Payout History</div>
+      <div style="width:60px;"></div>
+    </div>
+
+    <!-- Filter pills -->
+    <div class="filter-strip" id="filter-strip">
+      <button class="filter-pill" data-filter="all" onclick="setFilter('all', this)">
+        <i data-lucide="layers" style="width:13px;height:13px;"></i>
+        All
+      </button>
+      <button class="filter-pill" data-filter="pay_to_vlinkpay" onclick="setFilter('pay_to_vlinkpay', this)">
+        <i data-lucide="arrow-up-circle" style="width:13px;height:13px;"></i>
+        Pay to VLINKPAY
+      </button>
+      <button class="filter-pill" data-filter="vlinkpay_payout" onclick="setFilter('vlinkpay_payout', this)">
+        <i data-lucide="arrow-down-circle" style="width:13px;height:13px;"></i>
+        VLINKPAY Payout
+      </button>
+    </div>
+
+    <!-- Summary bar -->
+    <div class="summary-bar" id="summary-bar">
+      <div class="summary-bar__item">
+        <div class="summary-bar__label">Total Paid</div>
+        <div class="summary-bar__value summary-bar__value--pay" id="summary-pay">—</div>
+      </div>
+      <div class="summary-bar__item">
+        <div class="summary-bar__label">Total Received</div>
+        <div class="summary-bar__value summary-bar__value--payout" id="summary-payout">—</div>
+      </div>
+      <div class="summary-bar__item">
+        <div class="summary-bar__label">Transactions</div>
+        <div class="summary-bar__value" id="summary-count">—</div>
+      </div>
+    </div>
+
+    <!-- List -->
+    <div class="hist-list" id="hist-list"></div>
+
+  </div>
+
+  <script>
+    const RECORDS = [
+      { id: 'STL-001', type: 'pay_to_vlinkpay', amount: 850,  date: '2026-05-12', status: 'completed',  txId: 'TXN...A1B2' },
+      { id: 'STL-002', type: 'pay_to_vlinkpay', amount: 320,  date: '2026-05-08', status: 'review',     txId: 'TXN...C3D4' },
+      { id: 'STL-003', type: 'vlinkpay_payout', amount: 310,  date: '2026-05-07', status: 'completed',  txId: 'TXN...E5F6' },
+      { id: 'STL-004', type: 'pay_to_vlinkpay', amount: 500,  date: '2026-05-03', status: 'completed',  txId: 'TXN...G7H8' },
+      { id: 'STL-005', type: 'vlinkpay_payout', amount: 490,  date: '2026-04-30', status: 'processing', txId: 'TXN...I9J0' },
+      { id: 'STL-006', type: 'pay_to_vlinkpay', amount: 760,  date: '2026-04-25', status: 'completed',  txId: 'TXN...K1L2' },
+      { id: 'STL-007', type: 'vlinkpay_payout', amount: 740,  date: '2026-04-24', status: 'completed',  txId: 'TXN...M3N4' },
+      { id: 'STL-008', type: 'pay_to_vlinkpay', amount: 200,  date: '2026-04-18', status: 'rejected',   txId: 'TXN...O5P6' },
+    ];
+
+    const TYPE_LABEL = {
+      pay_to_vlinkpay: 'Pay to VLINKPAY',
+      vlinkpay_payout: 'VLINKPAY Payout',
+    };
+
+    const STATUS_HTML = {
+      completed:  '<span class="status-badge status-badge--completed"><i data-lucide="check-circle" style="width:10px;height:10px;"></i>Completed</span>',
+      review:     '<span class="status-badge status-badge--review"><i data-lucide="clock" style="width:10px;height:10px;"></i>Under Review</span>',
+      processing: '<span class="status-badge status-badge--processing"><i data-lucide="loader" style="width:10px;height:10px;"></i>Processing</span>',
+      pending:    '<span class="status-badge status-badge--pending"><i data-lucide="clock" style="width:10px;height:10px;"></i>Pending</span>',
+      rejected:   '<span class="status-badge status-badge--rejected"><i data-lucide="x-circle" style="width:10px;height:10px;"></i>Rejected</span>',
+    };
+
+    let activeFilter = new URLSearchParams(location.search).get('filter') || 'all';
+
+    function formatDate(iso) {
+      const d = new Date(iso);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function groupByMonth(records) {
+      const groups = {};
+      records.forEach(r => {
+        const key = new Date(r.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(r);
+      });
+      return groups;
+    }
+
+    function render() {
+      const filtered = activeFilter === 'all'
+        ? RECORDS
+        : RECORDS.filter(r => r.type === activeFilter);
+
+      const list = document.getElementById('hist-list');
+
+      if (!filtered.length) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state__icon"><i data-lucide="inbox" style="width:24px;height:24px;"></i></div>
+            <div class="empty-state__title">No records found</div>
+            <div class="empty-state__desc">There are no transactions matching the selected filter.</div>
+          </div>`;
+        updateSummary(filtered);
+        lucide.createIcons();
+        return;
+      }
+
+      const groups = groupByMonth(filtered);
+      let html = '';
+      for (const [month, items] of Object.entries(groups)) {
+        html += `<div class="date-group-header">${month}</div>`;
+        items.forEach(r => {
+          const isPay = r.type === 'pay_to_vlinkpay';
+          html += `
+            <button class="hist-item" onclick="goToDetail('${r.id}')">
+              <div class="hist-item__icon hist-item__icon--${isPay ? 'pay' : 'payout'}">
+                <i data-lucide="${isPay ? 'arrow-up-circle' : 'arrow-down-circle'}" style="width:18px;height:18px;"></i>
+              </div>
+              <div class="hist-item__info">
+                <div class="hist-item__type">${TYPE_LABEL[r.type]}</div>
+                <div class="hist-item__meta">
+                  <span>${formatDate(r.date)}</span>
+                  <span style="opacity:0.4;">·</span>
+                  <span style="font-family:monospace;font-size:11px;">${r.txId}</span>
+                </div>
+              </div>
+              <div class="hist-item__right">
+                <div class="hist-item__amount hist-item__amount--${isPay ? 'pay' : 'payout'}">
+                  ${isPay ? '−' : '+'}${r.amount} USDV
+                </div>
+                ${STATUS_HTML[r.status] || ''}
+              </div>
+            </button>`;
+        });
+      }
+
+      list.innerHTML = html;
+      updateSummary(filtered);
+      lucide.createIcons();
+    }
+
+    function updateSummary(filtered) {
+      const totalPay    = filtered.filter(r => r.type === 'pay_to_vlinkpay').reduce((s, r) => s + r.amount, 0);
+      const totalPayout = filtered.filter(r => r.type === 'vlinkpay_payout').reduce((s, r) => s + r.amount, 0);
+      document.getElementById('summary-pay').textContent    = totalPay    ? totalPay    + ' USDV' : '—';
+      document.getElementById('summary-payout').textContent = totalPayout ? totalPayout + ' USDV' : '—';
+      document.getElementById('summary-count').textContent  = filtered.length;
+    }
+
+    function setFilter(filter, el) {
+      activeFilter = filter;
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      const url = new URL(location.href);
+      url.searchParams.set('filter', filter);
+      history.replaceState(null, '', url);
+      render();
+    }
+
+    function goToDetail(id) {
+      location.href = 'merchant-atm-settlement-detail.html?id=' + id;
+    }
+
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+      const activePill = document.querySelector(`.filter-pill[data-filter="${activeFilter}"]`);
+      if (activePill) activePill.classList.add('active');
+      else document.querySelector('.filter-pill[data-filter="all"]').classList.add('active');
+      render();
+    });
+  </script>
+</body>
+</html>

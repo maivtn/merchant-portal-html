@@ -830,22 +830,22 @@
                         <div class="space-y-2 text-[14px]">
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-700 font-medium">Amount</span>
-                                <span class="font-bold text-[15px]">$100</span>
+                                <span id="accepted-amount" class="font-bold text-[15px]">$100</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-700 font-medium flex items-center gap-1.5">System Fee (1%) <i
                                         data-lucide="info" class="w-4 h-4 text-slate-400"></i></span>
-                                <span class="font-bold text-[15px]">$1</span>
+                                <span id="accepted-system-fee" class="font-bold text-[15px]">$1</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-700 font-medium flex items-center gap-1.5">Service Fee (5%) <i
                                         data-lucide="info" class="w-4 h-4 text-slate-400"></i></span>
-                                <span class="font-bold text-[15px]">$5</span>
+                                <span id="accepted-mobile-fee" class="font-bold text-[15px]">$5</span>
                             </div>
-                            <div id="accepted-insurance-row" class="justify-between items-center" style="display: none;">
+                            <div id="accepted-insurance-row" class="flex justify-between items-center" style="display: none;">
                                 <span class="text-slate-700 font-medium flex items-center gap-1.5">Transaction Insurance (1%) <i
                                         data-lucide="info" class="w-4 h-4 text-slate-400"></i></span>
-                                <span class="font-bold text-[15px]">$1</span>
+                                <span id="accepted-insurance-fee" class="font-bold text-[15px]">$1</span>
                             </div>
                             <div class="flex justify-between items-center pt-3 border-t border-[rgba(217,119,6,0.1)]">
                                 <span class="font-bold text-[16px] text-slate-900">Total</span>
@@ -869,7 +869,7 @@
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-800 font-medium">Seller Receives <span
                                         class="text-slate-500 font-normal text-[12px] ml-0.5">(in cash)</span></span>
-                                <span class="font-bold text-[14.5px]">$3.75</span>
+                                <span id="seller-receives" class="font-bold text-[14.5px]">$3.75</span>
                             </div>
                             
                             <div class="flex justify-between items-center">
@@ -879,7 +879,7 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-800 font-medium">Buyer Receives</span>
-                                <span class="font-bold text-[14.5px]">100 USDV</span>
+                                <span id="accepted-buyer-receives" class="font-bold text-[14.5px]">100 USDV</span>
                             </div>
                         </div>
                     </div>
@@ -1347,7 +1347,7 @@
         }
 
         function formatUsd(value) {
-            return `$${value.toFixed(0)}`;
+            return `$${value.toFixed(2)}`;
         }
 
         function updateTransactionSummary() {
@@ -1365,9 +1365,16 @@
             setText('transaction-insurance-value', formatUsd(summary.insuranceFee));
             setText('review-total', formatUsd(summary.total));
             setText('pending-total', formatUsd(summary.total));
+            setText('accepted-amount', formatUsd(summary.amount));
+            setText('accepted-system-fee', formatUsd(summary.systemFee));
+            setText('accepted-mobile-fee', formatUsd(summary.mobileFee));
+            setText('accepted-insurance-fee', formatUsd(summary.insuranceFee));
             setText('accepted-total', formatUsd(summary.total));
             setText('buyer-pays', formatUsd(summary.total));
-            setText('platform-collection', formatUsd(summary.amount + summary.systemFee));
+            const atmReceives = 0.05 * 0.75 * summary.amount;
+            setText('seller-receives', formatUsd(atmReceives));
+            setText('platform-collection', formatUsd(summary.total - atmReceives));
+            setText('accepted-buyer-receives', `${summary.amount} USDV`);
 
             insuranceRowIds.forEach((id) => {
                 const row = document.getElementById(id);

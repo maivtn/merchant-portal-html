@@ -89,7 +89,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const atmType = params.get('atmType') === 'mobile' ? 'mobile' : 'merchant';
   let isBehalf = params.get('isBehalf') !== 'false';
-  const isBank = params.get('isBank') === 'true';
+  const bankApproval = params.get('bankApproval');
+  const isBank = bankApproval === 'true' || bankApproval === 'pending';
   document.body.classList.toggle('is-bank', isBank);
   const withAtmType = (href) => {
     const url = new URL(href, window.location.href);

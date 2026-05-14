@@ -8192,11 +8192,11 @@
 
   <!-- Modal: Confirm Repayment -->
   <div class="cancel-modal" id="repayment-modal" aria-hidden="true">
-    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Send Payment to VLINKPAY"
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label=" Payment to VLINKPAY"
       style="width:min(100%,540px);">
       <div class="cancel-modal-head">
         <div>
-          <div class="cancel-modal-title">Send Payment to VLINKPAY</div>
+          <div class="cancel-modal-title"> Payment to VLINKPAY</div>
           <div class="cancel-modal-subtitle">Confirm that you have sent the collected funds to VLINKPAY using the selected payment method.
           </div>
         </div>
@@ -8577,8 +8577,8 @@
     <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Add Bank Account">
       <div class="cancel-modal-head">
         <div>
-          <div class="cancel-modal-title">Add Bank Account</div>
-          <div class="cancel-modal-subtitle">Enter your bank details for Bank Transfer payouts.</div>
+          <div class="cancel-modal-title" id="add-bank-modal-title">Add Bank Account</div>
+          <div class="cancel-modal-subtitle" id="add-bank-modal-subtitle">Enter your bank details for Bank Transfer payouts.</div>
         </div>
         <button type="button" class="cancel-modal-close" id="close-add-bank-modal" aria-label="Close">
           <i data-lucide="x" class="w-4 h-4"></i>
@@ -8586,6 +8586,16 @@
       </div>
 
       <div class="add-bank-modal-body">
+
+        <!-- Edit mode warning (hidden when adding) -->
+        <div id="add-bank-edit-warning" style="display:none;background:#fffbeb;border:1px solid rgba(217,119,6,0.3);border-radius:10px;padding:11px 14px;margin-bottom:10px;">
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <i data-lucide="alert-triangle" style="width:15px;height:15px;color:#d97706;flex-shrink:0;margin-top:1px;"></i>
+            <div style="font-size:12.5px;color:#92400e;line-height:1.55;">
+              Any changes to your bank account details must be reviewed by VLINKPAY. Payouts will be temporarily suspended until the update is approved.
+            </div>
+          </div>
+        </div>
 
         <div class="mb-2">
           <label class="form-label" for="add-bank-name">Bank Name <span class="req">*</span></label>
@@ -9031,27 +9041,27 @@
         </div>
         <div class="bank-info-row">
           <span class="bank-info-label">Bank Name</span>
-          <span class="bank-info-value">Bank of America</span>
+          <span class="bank-info-value" id="bank-detail-bank-name">Bank of America</span>
         </div>
         <div class="bank-info-row">
           <span class="bank-info-label">Business Name</span>
-          <span class="bank-info-value">ABC Corporation</span>
+          <span class="bank-info-value" id="bank-detail-business-name">ABC Corporation</span>
         </div>
         <div class="bank-info-row">
           <span class="bank-info-label">Account Number</span>
-          <span class="bank-info-value">001234567890</span>
+          <span class="bank-info-value" id="bank-detail-account-number">001234567890</span>
         </div>
         <div class="bank-info-row">
           <span class="bank-info-label">Routing Number</span>
-          <span class="bank-info-value">123456789</span>
+          <span class="bank-info-value" id="bank-detail-routing-number">123456789</span>
         </div>
         <div class="bank-info-row">
           <span class="bank-info-label">Bank Address</span>
-          <span class="bank-info-value">123 Elm Street<br>Los Angeles, CA 90001,<br>United States</span>
+          <span class="bank-info-value" id="bank-detail-address">123 Elm Street<br>Los Angeles, CA 90001,<br>United States</span>
         </div>
         <div class="bank-info-row">
           <span class="bank-info-label">Employer Identification Number</span>
-          <span class="bank-info-value">12-3456789</span>
+          <span class="bank-info-value" id="bank-detail-ein">12-3456789</span>
         </div>
         <div class="bank-info-row">
           <span class="bank-info-label">IRS Letter</span>

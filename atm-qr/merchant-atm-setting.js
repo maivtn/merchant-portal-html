@@ -249,17 +249,38 @@ window.addEventListener('DOMContentLoaded', () => {
       const url = URL.createObjectURL(file);
       const item = document.createElement('div');
       item.className = 'proof-preview-item';
-      item.innerHTML = isPdf
-        ? `<div class="proof-preview-item__thumb--pdf"><i data-lucide="file-text" style="width:32px;height:32px;"></i></div>`
-        : `<img class="proof-preview-item__thumb" src="${url}" alt="${file.name}" />`;
-      item.innerHTML += `
-        <button type="button" class="proof-preview-item__remove" data-idx="${idx}" aria-label="Remove">&#x2715;</button>
-        <div class="proof-preview-item__footer">
-          <div class="proof-preview-item__name" title="${file.name}">${file.name}</div>
-          <button type="button" class="proof-preview-item__view" data-url="${url}">
-            <i data-lucide="eye" style="width:12px;height:12px;"></i> View
-          </button>
-        </div>`;
+
+      if (isPdf) {
+        const thumb = document.createElement('div');
+        thumb.className = 'proof-preview-item__thumb--pdf';
+        thumb.innerHTML = `<i data-lucide="file-text" style="width:32px;height:32px;"></i>`;
+        item.appendChild(thumb);
+      } else {
+        const img = document.createElement('img');
+        img.className = 'proof-preview-item__thumb';
+        img.src = url;
+        img.alt = file.name;
+        item.appendChild(img);
+      }
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'proof-preview-item__remove';
+      removeBtn.setAttribute('data-idx', idx);
+      removeBtn.setAttribute('aria-label', 'Remove');
+      removeBtn.textContent = '✕';
+      item.appendChild(removeBtn);
+
+      const footer = document.createElement('div');
+      footer.className = 'proof-preview-item__footer';
+      footer.innerHTML = `
+        <div class="proof-preview-item__name" title="${file.name}">${file.name}</div>
+        <button type="button" class="proof-preview-item__view">
+          <i data-lucide="eye" style="width:12px;height:12px;"></i> View
+        </button>`;
+      footer.querySelector('.proof-preview-item__view').addEventListener('click', () => window.open(url, '_blank'));
+      item.appendChild(footer);
+
       repaymentPreviewGrid.appendChild(item);
     });
     refreshIcons();
@@ -269,9 +290,6 @@ window.addEventListener('DOMContentLoaded', () => {
         renderRepaymentPreviews();
         syncRepaymentSubmit();
       });
-    });
-    repaymentPreviewGrid.querySelectorAll('[data-url]').forEach(btn => {
-      btn.addEventListener('click', () => window.open(btn.dataset.url, '_blank'));
     });
   };
 
@@ -749,8 +767,71 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('bank-edit-proceed-btn')?.addEventListener('click', () => {
     hideBankEditWarning();
     closeBankInfoModal();
-    document.getElementById('open-add-bank-modal')?.click();
+
+    // Read current values from bank-info-modal detail spans
+    const val = (id) => (document.getElementById(id)?.textContent || '').trim();
+    const bankName     = val('bank-detail-bank-name');
+    const businessName = val('bank-detail-business-name');
+    const accountNum   = val('bank-detail-account-number');
+    const routingNum   = val('bank-detail-routing-number');
+    const ein          = val('bank-detail-ein');
+
+    // Parse address lines from innerHTML (split on <br>)
+    const addrHtml = document.getElementById('bank-detail-address')?.innerHTML || '';
+    const addrLines = addrHtml.split(/<br\s*\/?>/i).map(s => s.trim()).filter(Boolean);
+    const street  = addrLines[0] || '';
+    // "Los Angeles, CA 90001," → city=Los Angeles, state=CA, zip=90001
+    const cityLine = (addrLines[1] || '').replace(/,$/, '');
+    const cityParts = cityLine.match(/^(.+),\s*([A-Z]{2})\s+(\d{5}(?:-\d{4})?)$/);
+    const city    = cityParts ? cityParts[1].trim() : cityLine;
+    const state   = cityParts ? cityParts[2] : '';
+    const zip     = cityParts ? cityParts[3] : '';
+    const countryName = (addrLines[2] || '').replace(/,$/, '').trim();
+    const countryMap  = { 'United States': 'US', 'Canada': 'CA', 'United Kingdom': 'GB', 'Australia': 'AU', 'Singapore': 'SG', 'Vietnam': 'VN' };
+    const country = countryMap[countryName] || 'US';
+
+    // Switch to edit mode UI
+    const titleEl    = document.getElementById('add-bank-modal-title');
+    const subtitleEl = document.getElementById('add-bank-modal-subtitle');
+    const warnEl     = document.getElementById('add-bank-edit-warning');
+    if (titleEl)    titleEl.textContent    = 'Edit Bank Account';
+    if (subtitleEl) subtitleEl.textContent = 'Update your bank details. Changes require VLINKPAY approval.';
+    if (warnEl)     { warnEl.style.display = 'block'; refreshIcons(); }
+
+    // Open modal
+    openAddBankModal();
+
+    // Fill fields after modal is visible
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+    set('add-bank-name',           bankName);
+    set('add-bank-business-name',  businessName);
+    set('add-bank-account-number', accountNum);
+    set('add-bank-routing-number', routingNum);
+    set('add-bank-address',        street);
+    set('add-bank-city',           city);
+    set('add-bank-state',          state);
+    set('add-bank-zip',            zip);
+    set('add-bank-doc-number',     ein);
+    const countryEl = document.getElementById('add-bank-country');
+    if (countryEl) countryEl.value = country;
+
+    // Select EIN radio since we have an EIN
+    if (ein) {
+      const einRadio = document.getElementById('add-bank-tax-ein');
+      if (einRadio) { einRadio.checked = true; einRadio.dispatchEvent(new Event('change')); }
+    }
   });
+
+  // Reset add-bank-modal to "Add" mode when closed
+  const resetAddBankMode = () => {
+    const titleEl    = document.getElementById('add-bank-modal-title');
+    const subtitleEl = document.getElementById('add-bank-modal-subtitle');
+    const warnEl     = document.getElementById('add-bank-edit-warning');
+    if (titleEl)    titleEl.textContent    = 'Add Bank Account';
+    if (subtitleEl) subtitleEl.textContent = 'Enter your bank details for Bank Transfer payouts.';
+    if (warnEl)     warnEl.style.display   = 'none';
+  };
+  document.getElementById('close-add-bank-modal')?.addEventListener('click', resetAddBankMode, true);
 
   document.getElementById('bank-info-irs-view')?.addEventListener('click', () => {
     showAddBankImageSwal(addBankFileUrls.ssn, addBankFileUrls.ssnIsPdf, 'IRS Letter');

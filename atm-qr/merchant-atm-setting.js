@@ -281,12 +281,22 @@ window.addEventListener('DOMContentLoaded', () => {
     syncRepaymentSubmit();
   };
 
+  const syncRepaymentAccount = () => {
+    const method = document.getElementById('repayment-payment-method')?.value || 'bank';
+    document.querySelectorAll('#repayment-account-info .repayment-acct-block').forEach(el => {
+      el.style.display = 'none';
+    });
+    const target = document.getElementById(`repayment-acct-${method}`);
+    if (target) target.style.display = 'flex';
+  };
+
   const openRepaymentModal = () => {
     repaymentFiles = [];
     if (repaymentFileInput) repaymentFileInput.value = '';
     if (repaymentCameraInput) repaymentCameraInput.value = '';
     renderRepaymentPreviews();
     if (submitRepaymentBtn) submitRepaymentBtn.disabled = true;
+    syncRepaymentAccount();
     repaymentModal?.classList.add('active');
     repaymentModal?.setAttribute('aria-hidden', 'false');
     refreshIcons();
@@ -304,6 +314,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('open-repayment-modal')?.addEventListener('click', openRepaymentModal);
   document.getElementById('close-repayment-modal')?.addEventListener('click', closeRepaymentModal);
   document.getElementById('cancel-repayment-btn')?.addEventListener('click', closeRepaymentModal);
+  document.getElementById('repayment-payment-method')?.addEventListener('change', syncRepaymentAccount);
   repaymentModal?.addEventListener('click', (e) => { if (e.target === repaymentModal) closeRepaymentModal(); });
   document.getElementById('repayment-take-photo-btn')?.addEventListener('click', () => repaymentCameraInput?.click());
   document.getElementById('repayment-choose-file-btn')?.addEventListener('click', () => repaymentFileInput?.click());

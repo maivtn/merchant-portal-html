@@ -5548,6 +5548,92 @@
       box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
     }
 
+    .repayment-acct-block {
+      border: 1px solid rgba(217, 119, 6, 0.2);
+      border-radius: 12px;
+      background: #fffbeb;
+      padding: 2px 14px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .repayment-acct-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(217, 119, 6, 0.1);
+      font-size: 13px;
+    }
+
+    .repayment-acct-row:last-child {
+      border-bottom: none;
+    }
+
+    .repayment-acct-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .repayment-acct-value {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      text-align: right;
+    }
+
+    .repayment-acct-value--mono {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      text-align: right;
+      letter-spacing: 0.03em;
+    }
+
+    .repayment-acct-row--memo .repayment-acct-value {
+      color: #ea580c;
+      font-size: 12px;
+    }
+
+    .repayment-acct-usdv {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 12px 0;
+    }
+
+    .repayment-acct-usdv__qr img {
+      border-radius: 8px;
+      border: 1px solid rgba(217, 119, 6, 0.2);
+      display: block;
+    }
+
+    .repayment-acct-usdv__info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .repayment-acct-usdv__label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .repayment-acct-usdv__addr {
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+      word-break: break-all;
+      line-height: 1.5;
+    }
+
     .cancel-detail-label {
       font-size: 13px;
       font-weight: 600;
@@ -7448,8 +7534,8 @@
 
                 <div class="credit-action-row">
                   <button type="button" class="credit-action-btn credit-action-btn--repay" id="open-repayment-modal">
-                    <i data-lucide="check-circle" class="w-4 h-4"></i>
-                    Confirm Repayment
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                    Pay to VLINKPAY
                   </button>
                 </div>
 
@@ -7536,7 +7622,7 @@
                 <div class="row g-2 mb-3">
                   <div class="col-12 col-md-4 d-flex flex-column">
                     <div class="payment-info-row">
-                      <div class="payment-info-label">Applied Service Fee</div>
+                      <div class="payment-info-label">Applied Service Fee (5%-10%)</div>
                       <div class="payment-info-value">
                         <div class="input-group percent-input-group percent-input-group--narrow">
                           <input class="form-control percent-input text-end" type="number" min="0" max="100" step="0.1"
@@ -7982,12 +8068,12 @@
 
   <!-- Modal: Confirm Repayment -->
   <div class="cancel-modal" id="repayment-modal" aria-hidden="true">
-    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Confirm Repayment to VLINKPAY"
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Send Payment to VLINKPAY"
       style="width:min(100%,540px);">
       <div class="cancel-modal-head">
         <div>
-          <div class="cancel-modal-title">Confirm Repayment to VLINKPAY</div>
-          <div class="cancel-modal-subtitle">You are confirming that you have sent the collected funds back to VLINKPAY.
+          <div class="cancel-modal-title">Send Payment to VLINKPAY</div>
+          <div class="cancel-modal-subtitle">Confirm that you have sent the collected funds to VLINKPAY using the selected payment method.
           </div>
         </div>
         <button type="button" class="cancel-modal-close" id="close-repayment-modal" aria-label="Close">
@@ -8009,9 +8095,91 @@
             <option value="bank_wire">Bank Wire</option>
           </select>
         </div>
-        <div class="cancel-detail-row">
+        <div class="cancel-detail-row cancel-detail-row--select" style="border-bottom-left-radius:4px;border-bottom-right-radius:4px;">
           <span class="cancel-detail-label">Settlement account</span>
-          <span class="cancel-detail-value" style="font-size:13px;">VLINKPAY LLC — 1234567890</span>
+        </div>
+        <div id="repayment-account-info">
+          <!-- ACH / Bank Transfer -->
+          <div class="repayment-acct-block" id="repayment-acct-bank">
+            <div class="repayment-acct-row">
+              <span class="repayment-acct-label">Beneficiary</span>
+              <span class="repayment-acct-value">VLINKPAY LLC</span>
+            </div>
+            <div class="repayment-acct-row">
+              <span class="repayment-acct-label">Bank</span>
+              <span class="repayment-acct-value">FROST BANK</span>
+            </div>
+            <div class="repayment-acct-row">
+              <span class="repayment-acct-label">ABA / Routing</span>
+              <span class="repayment-acct-value repayment-acct-value--mono">114000093</span>
+            </div>
+            <div class="repayment-acct-row">
+              <span class="repayment-acct-label">Account No.</span>
+              <span class="repayment-acct-value repayment-acct-value--mono">503320731</span>
+            </div>
+            <div class="repayment-acct-row">
+              <span class="repayment-acct-label">Bank Address</span>
+              <span class="repayment-acct-value" style="font-size:12px;text-align:right;">100 W Houston St,<br>San Antonio, TX 78205</span>
+            </div>
+            <div class="repayment-acct-row repayment-acct-row--memo">
+              <span class="repayment-acct-label">Memo</span>
+              <span class="repayment-acct-value">Your merchant code <span style="font-weight:600;font-size:11px;">(required)</span></span>
+            </div>
+          </div>
+          <!-- Wire Transfer -->
+          <div class="repayment-acct-block" id="repayment-acct-bank_wire" style="display:none;">
+            <div class="repayment-acct-row">
+              <span class="repayment-acct-label">Beneficiary</span>
+              <span class="repayment-acct-value">VLINKPAY LLC</span>
+            </div>
+            <div class="repayment-acct-row">
+              <span class="repayment-acct-label">Bank</span>
+              <span class="repayment-acct-value">FROST BANK</span>
+            </div>
+            <div class="repayment-acct-row">
+              <span class="repayment-acct-label">ABA / Routing</span>
+              <span class="repayment-acct-value repayment-acct-value--mono">114000093</span>
+            </div>
+            <div class="repayment-acct-row">
+              <span class="repayment-acct-label">Account No.</span>
+              <span class="repayment-acct-value repayment-acct-value--mono">503320731</span>
+            </div>
+            <div class="repayment-acct-row">
+              <span class="repayment-acct-label">Bank Address</span>
+              <span class="repayment-acct-value" style="font-size:12px;text-align:right;">100 W Houston St,<br>San Antonio, TX 78205</span>
+            </div>
+            <div class="repayment-acct-row repayment-acct-row--memo">
+              <span class="repayment-acct-label">Memo</span>
+              <span class="repayment-acct-value">Your merchant code <span style="font-weight:600;font-size:11px;">(required)</span></span>
+            </div>
+          </div>
+          <!-- Zelle -->
+          <div class="repayment-acct-block" id="repayment-acct-zelle" style="display:none;">
+            <div class="repayment-acct-row">
+              <span class="repayment-acct-label">Recipient</span>
+              <span class="repayment-acct-value">VLINKPAY LLC</span>
+            </div>
+            <div class="repayment-acct-row">
+              <span class="repayment-acct-label">Zelle Phone</span>
+              <span class="repayment-acct-value repayment-acct-value--mono">832-799-5853</span>
+            </div>
+            <div class="repayment-acct-row repayment-acct-row--memo">
+              <span class="repayment-acct-label">Memo</span>
+              <span class="repayment-acct-value">Your merchant code <span style="font-weight:600;font-size:11px;">(required)</span></span>
+            </div>
+          </div>
+          <!-- USDV -->
+          <div class="repayment-acct-block" id="repayment-acct-usdv" style="display:none;">
+            <div class="repayment-acct-usdv">
+              <div class="repayment-acct-usdv__qr">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=TVLinkPayUSDVWalletAddress001" width="110" height="110" alt="VLINKPAY USDV Wallet QR" />
+              </div>
+              <div class="repayment-acct-usdv__info">
+                <div class="repayment-acct-usdv__label">VLINKPAY Wallet (USDV · TRC-20)</div>
+                <div class="repayment-acct-usdv__addr">TVLinkPayUSDVWalletAddress001</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div>
@@ -8660,7 +8828,7 @@
         const el = document.getElementById(id);
         if (!el) return;
         el.className = cls;
-        el.textContent = (id === 'bank-approval-status-badge' && bankApproval === 'true') ? '' : text;
+        el.textContent = text;
       });
     })();
   </script>

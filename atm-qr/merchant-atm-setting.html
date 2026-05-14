@@ -2887,10 +2887,12 @@
       justify-content: space-between;
       gap: 10px;
       padding: 12px 14px;
-      background-color: #faf7f2;
       border-radius: 12px;
       height: 100%;
       min-height: 58px;
+      border: 1px solid #f0e3c7;
+      border-radius: 1rem;
+      background: #fffaf0;
     }
 
     .payment-info-label {
@@ -2986,7 +2988,7 @@
       background: rgba(253, 230, 138, 0.35);
       border: 1px solid rgba(217, 119, 6, 0.16);
       color: #7c4a03;
-      font-size: 0.9rem;
+      font-size: 0.7rem;
       font-weight: 700;
     }
 
@@ -7616,7 +7618,8 @@
                           <input type="checkbox" name="payment-to-company" checked />
                           <i data-lucide="landmark" class="w-4 h-4" style="color:#5c7ad6;"></i>
                           <span>Bank Transfer</span>
-                          <a href="#" class="payment-choice-bank-action" id="open-transfer-modal" onclick="event.preventDefault()">
+                          <a href="#" class="payment-choice-bank-action" id="open-transfer-modal"
+                            onclick="event.preventDefault()">
                             <i data-lucide="eye" class="w-4 h-4"></i>
                             <span>View</span>
                           </a>
@@ -7645,7 +7648,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <div class="col-12 col-md-6 d-flex flex-column">
                       <div class="payment-info-row">
                         <div class="payment-info-label">Receive Payout Priority</div>
@@ -7654,7 +7657,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
 
 
                   </div>
@@ -7684,51 +7687,53 @@
                 and Submit for Approval</button>
             </div>
           </div><!-- end collapse -->
-      </div>
-      <div class="deposit-info-card mt-3">
-        <div class="deposit-info-head">
-          <div class="deposit-info-title">
-            <span class="deposit-info-icon">
-              <i data-lucide="shield-check" class="w-4 h-4"></i>
-            </span>
-            Collateral Info
-          </div>
-          <span class="status-note success">Active</span>
-        </div>
 
-        <div class="deposit-info-body">
-
-          <div class="row g-2">
-            <div class="col-12 col-md-6">
-              <div class="deposit-stat">
-                <div class="deposit-stat__label">Collateral Amount</div>
-                <div class="deposit-stat__value">
-                  2,040 <span class="deposit-stat__unit">USDV</span>
+          <div class="deposit-info-card mt-3">
+            <div class="deposit-info-head">
+              <div class="deposit-info-title">
+                <span class="deposit-info-icon">
+                  <i data-lucide="shield-check" class="w-4 h-4"></i>
+                </span>
+                Collateral Info
+              </div>
+              <span class="status-note success">Active</span>
+            </div>
+    
+            <div class="deposit-info-body">
+    
+              <div class="row g-2">
+                <div class="col-12 col-md-6">
+                  <div class="deposit-stat">
+                    <div class="deposit-stat__label">Collateral Amount</div>
+                    <div class="deposit-stat__value">
+                      2,040 <span class="deposit-stat__unit">USDV</span>
+                    </div>
+                    <div class="deposit-stat__sub">2,000 USDV + 2% fee</div>
+                  </div>
                 </div>
-                <div class="deposit-stat__sub">2,000 USDV + 2% fee</div>
+                <div class="col-12 col-md-6">
+                  <div class="deposit-stat deposit-stat--days">
+                    <div class="deposit-stat__label">Days Active</div>
+                    <div class="deposit-stat__value">
+                      12 <span class="deposit-stat__unit">days</span>
+                    </div>
+                    <div class="deposit-stat__sub">Since 30/04/2026</div>
+                  </div>
+                </div>
+              </div>
+              <div style="padding: 4px 2px 4px; border-top: 1px dashed #e5e7eb; margin-top: 8px;">
+                <p style="font-size:12px;color:var(--muted);margin:0 0 4px;line-height:1.6;">
+                  You may leave the program at any time. Upon exit, the collateral will be refunded once all pending
+                  receive / pay on behalf transactions have been settled. <a href="#" id="open-cancel-policy"
+                    style="font-size:12px;color:var(--muted);text-decoration:underline;text-decoration-color:var(--muted);">
+                    More info</a>
+                </p>
+    
               </div>
             </div>
-            <div class="col-12 col-md-6">
-              <div class="deposit-stat deposit-stat--days">
-                <div class="deposit-stat__label">Days Active</div>
-                <div class="deposit-stat__value">
-                  12 <span class="deposit-stat__unit">days</span>
-                </div>
-                <div class="deposit-stat__sub">Since 30/04/2026</div>
-              </div>
-            </div>
           </div>
-          <div style="padding: 4px 2px 4px; border-top: 1px dashed #e5e7eb; margin-top: 8px;">
-            <p style="font-size:12px;color:var(--muted);margin:0 0 4px;line-height:1.6;">
-              You may leave the program at any time. Upon exit, the collateral will be refunded once all pending
-              receive / pay on behalf transactions have been settled. <a href="#" id="open-cancel-policy"
-                style="font-size:12px;color:var(--muted);text-decoration:underline;text-decoration-color:var(--muted);">
-                More info</a>
-            </p>
-
-          </div>
-        </div>
       </div>
+     
     </div>
     </section>
     </div>
@@ -8307,8 +8312,7 @@
         <div class="mb-2" id="add-bank-upload-ssn-wrap">
           <label class="form-label">Upload Front of SSN <span class="req">*</span></label>
           <input type="file" id="add-bank-ssn-file-input" accept="image/*,.pdf" class="d-none" />
-          <input type="file" id="add-bank-ssn-camera-input" accept="image/*" capture="environment"
-            class="d-none" />
+          <input type="file" id="add-bank-ssn-camera-input" accept="image/*" capture="environment" class="d-none" />
           <div class="add-bank-preview-wrap" id="add-bank-ssn-preview-wrap">
             <button type="button" class="add-bank-preview-remove" id="add-bank-ssn-remove-btn">&times;</button>
             <img class="add-bank-preview-img d-none" id="add-bank-ssn-preview-img" src="" alt="" />
@@ -8337,8 +8341,7 @@
         <div class="mb-1">
           <label class="form-label">Upload Front of Voided Check Business <span class="req">*</span></label>
           <input type="file" id="add-bank-check-file-input" accept="image/*,.pdf" class="d-none" />
-          <input type="file" id="add-bank-check-camera-input" accept="image/*" capture="environment"
-            class="d-none" />
+          <input type="file" id="add-bank-check-camera-input" accept="image/*" capture="environment" class="d-none" />
           <div class="add-bank-preview-wrap" id="add-bank-check-preview-wrap">
             <button type="button" class="add-bank-preview-remove" id="add-bank-check-remove-btn">&times;</button>
             <img class="add-bank-preview-img d-none" id="add-bank-check-preview-img" src="" alt="" />

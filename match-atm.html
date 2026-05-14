@@ -1397,6 +1397,9 @@
         });
 
         function goToStep(stepIndex) {
+            // Skip partner-list step for merchant type (fixed location)
+            if (stepIndex === 3 && getUrlAtmType() === 'merchant') stepIndex = 4;
+
             // Determine direction for animation
             const isNext = stepIndex > currentStep;
 

@@ -287,8 +287,27 @@ window.addEventListener('DOMContentLoaded', () => {
       el.style.display = 'none';
     });
     const target = document.getElementById(`repayment-acct-${method}`);
-    if (target) target.style.display = 'flex';
+    if (target) { target.style.display = 'flex'; refreshIcons(); }
   };
+
+  // Copy buttons inside repayment account info — event delegation
+  const repaymentCopyTimers = new WeakMap();
+  document.getElementById('repayment-account-info')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-copy]');
+    if (!btn) return;
+    const text = btn.getAttribute('data-copy');
+    navigator.clipboard?.writeText(text).then(() => {
+      clearTimeout(repaymentCopyTimers.get(btn));
+      btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i>`;
+      btn.classList.add('copied');
+      refreshIcons();
+      repaymentCopyTimers.set(btn, setTimeout(() => {
+        btn.innerHTML = `<i data-lucide="copy" class="w-4 h-4"></i>`;
+        btn.classList.remove('copied');
+        refreshIcons();
+      }, 1500));
+    });
+  });
 
   const openRepaymentModal = () => {
     repaymentFiles = [];
@@ -614,6 +633,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Transfer Instructions modal
   const transferModal = document.getElementById('transfer-instructions-modal');
+
+  const switchTransferTab = (tab) => {
+    transferModal?.querySelectorAll('[data-transfer-tab]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.transferTab === tab);
+    });
+    transferModal?.querySelectorAll('.transfer-section').forEach(sec => {
+      sec.style.display = sec.id === `transfer-section-${tab}` ? 'flex' : 'none';
+    });
+  };
+
   const openTransferModal = () => {
     transferModal?.classList.add('active');
     transferModal?.setAttribute('aria-hidden', 'false');
@@ -631,20 +660,26 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('close-transfer-modal')?.addEventListener('click', closeTransferModal);
   transferModal?.addEventListener('click', (e) => { if (e.target === transferModal) closeTransferModal(); });
 
-  transferModal?.querySelectorAll('[data-copy]').forEach((btn) => {
-    let revertTimer = null;
-    const setIcon = (name, copied) => {
-      btn.innerHTML = `<i data-lucide="${name}" class="w-4 h-4"></i>`;
-      btn.classList.toggle('copied', copied);
+  transferModal?.querySelectorAll('[data-transfer-tab]').forEach(btn => {
+    btn.addEventListener('click', () => switchTransferTab(btn.dataset.transferTab));
+  });
+
+  // Copy buttons — event delegation covers all tabs
+  const copyTimers = new WeakMap();
+  transferModal?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-copy]');
+    if (!btn) return;
+    const text = btn.getAttribute('data-copy');
+    navigator.clipboard?.writeText(text).then(() => {
+      clearTimeout(copyTimers.get(btn));
+      btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i>`;
+      btn.classList.add('copied');
       refreshIcons();
-    };
-    btn.addEventListener('click', () => {
-      const text = btn.getAttribute('data-copy');
-      navigator.clipboard?.writeText(text).then(() => {
-        clearTimeout(revertTimer);
-        setIcon('check', true);
-        revertTimer = setTimeout(() => setIcon('copy', false), 1500);
-      });
+      copyTimers.set(btn, setTimeout(() => {
+        btn.innerHTML = `<i data-lucide="copy" class="w-4 h-4"></i>`;
+        btn.classList.remove('copied');
+        refreshIcons();
+      }, 1500));
     });
   });
 

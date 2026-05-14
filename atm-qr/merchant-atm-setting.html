@@ -5549,89 +5549,23 @@
     }
 
     .repayment-acct-block {
-      border: 1px solid rgba(217, 119, 6, 0.2);
-      border-radius: 12px;
-      background: #fffbeb;
-      padding: 2px 14px;
       display: flex;
       flex-direction: column;
-    }
-
-    .repayment-acct-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
       gap: 10px;
-      padding: 7px 0;
-      border-bottom: 1px solid rgba(217, 119, 6, 0.1);
-      font-size: 13px;
+      background: #fffbeb;
+      border: 1px solid rgba(217, 119, 6, 0.25);
+      border-radius: 14px;
+      padding: 14px 16px;
     }
 
-    .repayment-acct-row:last-child {
-      border-bottom: none;
-    }
-
-    .repayment-acct-label {
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-
-    .repayment-acct-value {
-      font-size: 13px;
-      font-weight: 700;
+    .repayment-method-label {
+      font-size: 15px;
       color: var(--text);
-      text-align: right;
+      font-weight: 400;
     }
 
-    .repayment-acct-value--mono {
-      font-family: 'Courier New', monospace;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text);
-      text-align: right;
-      letter-spacing: 0.03em;
-    }
-
-    .repayment-acct-row--memo .repayment-acct-value {
-      color: #ea580c;
-      font-size: 12px;
-    }
-
-    .repayment-acct-usdv {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      padding: 12px 0;
-    }
-
-    .repayment-acct-usdv__qr img {
-      border-radius: 8px;
-      border: 1px solid rgba(217, 119, 6, 0.2);
-      display: block;
-    }
-
-    .repayment-acct-usdv__info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .repayment-acct-usdv__label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .repayment-acct-usdv__addr {
-      font-family: 'Courier New', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text);
-      word-break: break-all;
-      line-height: 1.5;
+    .repayment-method-label strong {
+      font-size: 15px;
     }
 
     .cancel-detail-label {
@@ -6048,46 +5982,47 @@
 
     .transfer-usdv-card {
       display: flex;
-      align-items: center;
-      gap: 18px;
-      background: #f0f4ff;
-      border: 1px solid #c7d9ff;
+      align-items: flex-start;
+      gap: 16px;
+      background: #f1f5fb;
+      border: none;
       border-radius: 16px;
-      padding: 16px 18px;
+      padding: 16px;
     }
 
     .transfer-usdv-qr img {
-      border-radius: 8px;
+      border-radius: 6px;
       display: block;
+      flex-shrink: 0;
     }
 
     .transfer-usdv-info {
       flex: 1;
       min-width: 0;
+      padding-top: 2px;
     }
 
     .transfer-usdv-info__label {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 800;
       color: var(--text);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .transfer-usdv-info__addr {
-      font-family: 'Courier New', monospace;
       font-size: 13px;
-      font-weight: 700;
-      color: #1d4ed8;
+      font-weight: 500;
+      color: #1e3a8a;
       word-break: break-all;
-      line-height: 1.5;
-      margin-bottom: 10px;
+      line-height: 1.55;
+      margin-bottom: 12px;
     }
 
     .transfer-usdv-copy-btn {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      border: 2px solid #16a34a;
+      border: 1.5px solid #86efac;
       background: #f0fdf4;
       color: #16a34a;
       display: flex;
@@ -6099,12 +6034,13 @@
     }
 
     .transfer-usdv-copy-btn:hover {
-      background: #16a34a;
-      color: #fff;
+      background: #dcfce7;
+      border-color: #16a34a;
     }
 
     .transfer-usdv-copy-btn.copied {
       background: #16a34a;
+      border-color: #16a34a;
       color: #fff;
     }
 
@@ -7906,14 +7842,19 @@
                   </div>
                 </div>
               </div>
-              <div style="padding: 4px 2px 4px; border-top: 1px dashed #e5e7eb; margin-top: 8px;">
-                <p style="font-size:12px;color:var(--muted);margin:0 0 4px;line-height:1.6;">
-                  You may leave the program at any time. Upon exit, the collateral will be refunded once all pending
-                  receive / pay on behalf transactions have been settled. <a href="#" id="open-cancel-policy"
-                    style="font-size:12px;color:var(--muted);text-decoration:underline;text-decoration-color:var(--muted);">
-                    More info</a>
-                </p>
-    
+              <div style="padding: 8px 2px 4px; border-top: 1px dashed #e5e7eb; margin-top: 8px; display:flex; gap:8px;">
+                <a href="#" id="open-cancel-policy"
+                  style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:var(--muted);text-decoration:none;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:20px;padding:4px 12px;"
+                  onclick="event.preventDefault()">
+                  <i data-lucide="scroll-text" style="width:13px;height:13px;"></i>
+                  Terms
+                </a>
+                <a href="#" id="open-cancel-policy-btn2"
+                  style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:#dc2626;text-decoration:none;background:#fef2f2;border:1px solid rgba(220,38,38,0.2);border-radius:20px;padding:4px 12px;"
+                  onclick="event.preventDefault(); document.getElementById('cancel-policy-modal').classList.add('active'); document.getElementById('cancel-policy-modal').setAttribute('aria-hidden','false');">
+                  <i data-lucide="x-circle" style="width:13px;height:13px;"></i>
+                  Huỷ gói
+                </a>
               </div>
             </div>
           </div>
@@ -8191,82 +8132,136 @@
         <div id="repayment-account-info">
           <!-- ACH / Bank Transfer -->
           <div class="repayment-acct-block" id="repayment-acct-bank">
-            <div class="repayment-acct-row">
-              <span class="repayment-acct-label">Beneficiary</span>
-              <span class="repayment-acct-value">VLINKPAY LLC</span>
+            <div class="repayment-method-label">Method: <strong style="color:#3b82f6;">ACH</strong></div>
+            <div class="transfer-row">
+              <span class="transfer-row-label">Beneficiary name:</span>
+              <span class="transfer-row-value">VLINKPAY LLC</span>
+              <button type="button" class="transfer-copy-btn" data-copy="VLINKPAY LLC" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
             </div>
-            <div class="repayment-acct-row">
-              <span class="repayment-acct-label">Bank</span>
-              <span class="repayment-acct-value">FROST BANK</span>
+            <div class="transfer-row">
+              <span class="transfer-row-label">Bank name:</span>
+              <span class="transfer-row-value">FROST BANK</span>
+              <button type="button" class="transfer-copy-btn" data-copy="FROST BANK" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
             </div>
-            <div class="repayment-acct-row">
-              <span class="repayment-acct-label">ABA / Routing</span>
-              <span class="repayment-acct-value repayment-acct-value--mono">114000093</span>
+            <div class="transfer-row">
+              <span class="transfer-row-label">ABA/Routing number:</span>
+              <span class="transfer-row-value">114000093</span>
+              <button type="button" class="transfer-copy-btn" data-copy="114000093" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
             </div>
-            <div class="repayment-acct-row">
-              <span class="repayment-acct-label">Account No.</span>
-              <span class="repayment-acct-value repayment-acct-value--mono">503320731</span>
+            <div class="transfer-row">
+              <span class="transfer-row-label">Account number:</span>
+              <span class="transfer-row-value">503320731</span>
+              <button type="button" class="transfer-copy-btn" data-copy="503320731" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
             </div>
-            <div class="repayment-acct-row">
-              <span class="repayment-acct-label">Bank Address</span>
-              <span class="repayment-acct-value" style="font-size:12px;text-align:right;">100 W Houston St,<br>San Antonio, TX 78205</span>
+            <div class="transfer-row">
+              <span class="transfer-row-label">Bank address:</span>
+              <span class="transfer-row-value">100 W Houston St, San Antonio, TX 78205</span>
+              <button type="button" class="transfer-copy-btn" data-copy="100 W Houston St, San Antonio, TX 78205" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
             </div>
-            <div class="repayment-acct-row repayment-acct-row--memo">
-              <span class="repayment-acct-label">Memo</span>
-              <span class="repayment-acct-value">Your merchant code <span style="font-weight:600;font-size:11px;">(required)</span></span>
+            <div class="transfer-row">
+              <span class="transfer-row-label">Memo (required):</span>
+              <span class="transfer-row-value memo">B845C876C</span>
+              <button type="button" class="transfer-copy-btn" data-copy="B845C876C" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
+            </div>
+            <div class="transfer-memo-hint"><span>➡️</span><span>Add this code <strong>exactly</strong> in your <strong>ACH memo/note.</strong></span></div>
+            <hr class="transfer-divider" />
+            <div class="transfer-note-box">
+              <div class="transfer-note-title"><span>⚠️</span> Note:</div>
+              <ul><li>Please include <strong>B845C876C</strong> in the memo when sending your transfer. Missing memo information may delay your credit reset.</li></ul>
             </div>
           </div>
           <!-- Wire Transfer -->
           <div class="repayment-acct-block" id="repayment-acct-bank_wire" style="display:none;">
-            <div class="repayment-acct-row">
-              <span class="repayment-acct-label">Beneficiary</span>
-              <span class="repayment-acct-value">VLINKPAY LLC</span>
+            <div class="repayment-method-label">Method: <strong style="color:#d97706;">WIRE TRANSFER</strong></div>
+            <div class="transfer-row">
+              <span class="transfer-row-label">Beneficiary name:</span>
+              <span class="transfer-row-value">VLINKPAY LLC</span>
+              <button type="button" class="transfer-copy-btn" data-copy="VLINKPAY LLC" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
             </div>
-            <div class="repayment-acct-row">
-              <span class="repayment-acct-label">Bank</span>
-              <span class="repayment-acct-value">FROST BANK</span>
+            <div class="transfer-row">
+              <span class="transfer-row-label">Bank name:</span>
+              <span class="transfer-row-value">FROST BANK</span>
+              <button type="button" class="transfer-copy-btn" data-copy="FROST BANK" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
             </div>
-            <div class="repayment-acct-row">
-              <span class="repayment-acct-label">ABA / Routing</span>
-              <span class="repayment-acct-value repayment-acct-value--mono">114000093</span>
+            <div class="transfer-row">
+              <span class="transfer-row-label">ABA/Routing number:</span>
+              <span class="transfer-row-value">114000093</span>
+              <button type="button" class="transfer-copy-btn" data-copy="114000093" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
             </div>
-            <div class="repayment-acct-row">
-              <span class="repayment-acct-label">Account No.</span>
-              <span class="repayment-acct-value repayment-acct-value--mono">503320731</span>
+            <div class="transfer-row">
+              <span class="transfer-row-label">Account number:</span>
+              <span class="transfer-row-value">503320731</span>
+              <button type="button" class="transfer-copy-btn" data-copy="503320731" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
             </div>
-            <div class="repayment-acct-row">
-              <span class="repayment-acct-label">Bank Address</span>
-              <span class="repayment-acct-value" style="font-size:12px;text-align:right;">100 W Houston St,<br>San Antonio, TX 78205</span>
+            <div class="transfer-row">
+              <span class="transfer-row-label">Bank address:</span>
+              <span class="transfer-row-value">100 W Houston St, San Antonio, TX 78205</span>
+              <button type="button" class="transfer-copy-btn" data-copy="100 W Houston St, San Antonio, TX 78205" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
             </div>
-            <div class="repayment-acct-row repayment-acct-row--memo">
-              <span class="repayment-acct-label">Memo</span>
-              <span class="repayment-acct-value">Your merchant code <span style="font-weight:600;font-size:11px;">(required)</span></span>
+            <div class="transfer-row">
+              <span class="transfer-row-label">Memo (required):</span>
+              <span class="transfer-row-value memo">B845C876C</span>
+              <button type="button" class="transfer-copy-btn" data-copy="B845C876C" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
+            </div>
+            <div class="transfer-memo-hint"><span>➡️</span><span>Add this code <strong>exactly</strong> in your <strong>Wire memo/note.</strong></span></div>
+            <hr class="transfer-divider" />
+            <div class="transfer-note-box">
+              <div class="transfer-note-title"><span>⚠️</span> Note:</div>
+              <ul><li>Please include <strong>B845C876C</strong> in the memo when sending your transfer. Missing memo information may delay your credit reset.</li></ul>
             </div>
           </div>
           <!-- Zelle -->
           <div class="repayment-acct-block" id="repayment-acct-zelle" style="display:none;">
-            <div class="repayment-acct-row">
-              <span class="repayment-acct-label">Recipient</span>
-              <span class="repayment-acct-value">VLINKPAY LLC</span>
+            <div class="repayment-method-label">Method: <strong style="color:#3b82f6;">Zelle</strong></div>
+            <div class="transfer-row">
+              <span class="transfer-row-label">Recipient name:</span>
+              <span class="transfer-row-value">VLINKPAY LLC</span>
+              <button type="button" class="transfer-copy-btn" data-copy="VLINKPAY LLC" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
             </div>
-            <div class="repayment-acct-row">
-              <span class="repayment-acct-label">Zelle Phone</span>
-              <span class="repayment-acct-value repayment-acct-value--mono">832-799-5853</span>
+            <div class="transfer-row">
+              <span class="transfer-row-label">Zelle phone:</span>
+              <span class="transfer-row-value">832–799–5853</span>
+              <button type="button" class="transfer-copy-btn" data-copy="832-799-5853" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
             </div>
-            <div class="repayment-acct-row repayment-acct-row--memo">
-              <span class="repayment-acct-label">Memo</span>
-              <span class="repayment-acct-value">Your merchant code <span style="font-weight:600;font-size:11px;">(required)</span></span>
+            <div class="transfer-row">
+              <span class="transfer-row-label">Memo (required):</span>
+              <span class="transfer-row-value memo">B845C876C</span>
+              <button type="button" class="transfer-copy-btn" data-copy="B845C876C" aria-label="Copy"><i data-lucide="copy" class="w-4 h-4"></i></button>
+            </div>
+            <div class="transfer-memo-hint"><span>➡️</span><span>Add this code <strong>exactly</strong> in your <strong>Zelle memo/note.</strong></span></div>
+            <hr class="transfer-divider" />
+            <div class="transfer-note-box">
+              <div class="transfer-note-title"><span>⚠️</span> Note:</div>
+              <ul><li>Please include <strong>B845C876C</strong> in the memo when sending your Zelle transfer. Missing memo information may delay your credit reset.</li></ul>
             </div>
           </div>
           <!-- USDV -->
           <div class="repayment-acct-block" id="repayment-acct-usdv" style="display:none;">
-            <div class="repayment-acct-usdv">
-              <div class="repayment-acct-usdv__qr">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=TVsrDLQFATb8YmvoGcj3nEF7fKeeKVkkyL" width="110" height="110" alt="VLINKPAY USDV Wallet QR" />
+            <div class="transfer-row" style="background:none;border:none;padding:0;">
+              <span class="transfer-row-label" style="font-weight:700;color:var(--text);">Assets</span>
+              <span class="transfer-row-value" style="display:flex;align-items:center;gap:6px;">
+                <img src="../images/usdv.png" style="width:18px;height:18px;object-fit:contain;" alt="USDV" />
+                USDV
+              </span>
+            </div>
+            <div class="transfer-row" style="background:none;border:none;padding:0;">
+              <span class="transfer-row-label" style="font-weight:700;color:var(--text);">Network</span>
+              <span class="transfer-row-value" style="display:flex;align-items:center;gap:6px;">
+                <img src="../images/vrc20.png" style="width:18px;height:18px;object-fit:contain;" alt="VRC20" />
+                Vlinkpay (VRC20)
+              </span>
+            </div>
+            <hr class="transfer-divider" style="margin:4px 0;" />
+            <div class="transfer-usdv-card" style="background:#f1f5fb;border-radius:14px;">
+              <div class="transfer-usdv-qr">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=TVsrDLQFATb8YmvoGcj3nEF7fKeeKVkkyL" width="120" height="120" alt="VLINKPAY USDV Wallet QR" />
               </div>
-              <div class="repayment-acct-usdv__info">
-                <div class="repayment-acct-usdv__label">VLINKPAY Wallet (USDV · VRC20)</div>
-                <div class="repayment-acct-usdv__addr">TVsrDLQFATb8YmvoGcj3nEF7fKeeKVkkyL</div>
+              <div class="transfer-usdv-info">
+                <div class="transfer-usdv-info__label">Address</div>
+                <div class="transfer-usdv-info__addr">TVsrDLQFATb8YmvoGcj3nEF7fKeeKVkkyL</div>
+                <button type="button" class="transfer-usdv-copy-btn" data-copy="TVsrDLQFATb8YmvoGcj3nEF7fKeeKVkkyL" aria-label="Copy address">
+                  <i data-lucide="copy" class="w-4 h-4"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -8700,72 +8695,190 @@
           aria-label="Close">&#x2715;</button>
       </div>
 
+      <!-- Tabs -->
+      <div class="transfer-tabs">
+        <button type="button" class="transfer-tab active" data-transfer-tab="zelle">Zelle</button>
+        <button type="button" class="transfer-tab" data-transfer-tab="ach">ACH</button>
+        <button type="button" class="transfer-tab" data-transfer-tab="wire">Wire Transfer</button>
+        <button type="button" class="transfer-tab" data-transfer-tab="usdv">USDV</button>
+      </div>
+
       <div class="transfer-modal-body">
-        <div class="transfer-row">
-          <span class="transfer-row-label">Beneficiary name:</span>
-          <span class="transfer-row-value">VLINKPAY LLC</span>
-          <button type="button" class="transfer-copy-btn" data-copy="VLINKPAY LLC" aria-label="Copy">
-            <i data-lucide="copy" class="w-4 h-4"></i>
-          </button>
-        </div>
 
-        <div class="transfer-row">
-          <span class="transfer-row-label">Bank name:</span>
-          <span class="transfer-row-value">FROST BANK</span>
-          <button type="button" class="transfer-copy-btn" data-copy="FROST BANK" aria-label="Copy">
-            <i data-lucide="copy" class="w-4 h-4"></i>
-          </button>
-        </div>
-
-        <div class="transfer-row">
-          <span class="transfer-row-label">ABA/Routing number:</span>
-          <span class="transfer-row-value">114000093</span>
-          <button type="button" class="transfer-copy-btn" data-copy="114000093" aria-label="Copy">
-            <i data-lucide="copy" class="w-4 h-4"></i>
-          </button>
-        </div>
-
-        <div class="transfer-row">
-          <span class="transfer-row-label">Account number:</span>
-          <span class="transfer-row-value">503320731</span>
-          <button type="button" class="transfer-copy-btn" data-copy="503320731" aria-label="Copy">
-            <i data-lucide="copy" class="w-4 h-4"></i>
-          </button>
-        </div>
-
-        <div class="transfer-row">
-          <span class="transfer-row-label">Bank address:</span>
-          <span class="transfer-row-value">100 W Houston St, San Antonio, TX 78205</span>
-          <button type="button" class="transfer-copy-btn" data-copy="100 W Houston St, San Antonio, TX 78205"
-            aria-label="Copy">
-            <i data-lucide="copy" class="w-4 h-4"></i>
-          </button>
-        </div>
-
-        <div class="transfer-row">
-          <span class="transfer-row-label">Memo (required):</span>
-          <span class="transfer-row-value memo">B845C876C</span>
-          <button type="button" class="transfer-copy-btn" data-copy="B845C876C" aria-label="Copy">
-            <i data-lucide="copy" class="w-4 h-4"></i>
-          </button>
-        </div>
-
-        <div class="transfer-memo-hint">
-          <span>➡️</span>
-          <span>Add this code <strong>exactly</strong> in your <strong>memo/note.</strong></span>
-        </div>
-
-        <hr class="transfer-divider" />
-
-        <div class="transfer-note-box">
-          <div class="transfer-note-title">
-            <span>⚠️</span> Note:
+        <!-- Zelle -->
+        <div class="transfer-section" id="transfer-section-zelle">
+          <div class="transfer-row">
+            <span class="transfer-row-label">Recipient:</span>
+            <span class="transfer-row-value">VLINKPAY LLC</span>
+            <button type="button" class="transfer-copy-btn" data-copy="VLINKPAY LLC" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
           </div>
-          <ul>
-            <li>Please include <strong>B845C876C</strong> in the memo when sending your transfer. Missing memo
-              information may delay your credit reset.</li>
-          </ul>
+          <div class="transfer-row">
+            <span class="transfer-row-label">Zelle phone:</span>
+            <span class="transfer-row-value">832-799-5853</span>
+            <button type="button" class="transfer-copy-btn" data-copy="832-799-5853" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-row">
+            <span class="transfer-row-label">Memo (required):</span>
+            <span class="transfer-row-value memo">B845C876C</span>
+            <button type="button" class="transfer-copy-btn" data-copy="B845C876C" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-memo-hint">
+            <span>➡️</span>
+            <span>Add this code <strong>exactly</strong> in your <strong>Zelle memo/note.</strong></span>
+          </div>
+          <hr class="transfer-divider" />
+          <div class="transfer-note-box">
+            <div class="transfer-note-title"><span>⚠️</span> Note:</div>
+            <ul>
+              <li>Please include <strong>B845C876C</strong> in the memo. Missing memo may delay your credit.</li>
+            </ul>
+          </div>
         </div>
+
+        <!-- ACH -->
+        <div class="transfer-section" id="transfer-section-ach" style="display:none;">
+          <div class="transfer-row">
+            <span class="transfer-row-label">Beneficiary name:</span>
+            <span class="transfer-row-value">VLINKPAY LLC</span>
+            <button type="button" class="transfer-copy-btn" data-copy="VLINKPAY LLC" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-row">
+            <span class="transfer-row-label">Bank name:</span>
+            <span class="transfer-row-value">FROST BANK</span>
+            <button type="button" class="transfer-copy-btn" data-copy="FROST BANK" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-row">
+            <span class="transfer-row-label">ABA / Routing:</span>
+            <span class="transfer-row-value">114000093</span>
+            <button type="button" class="transfer-copy-btn" data-copy="114000093" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-row">
+            <span class="transfer-row-label">Account number:</span>
+            <span class="transfer-row-value">503320731</span>
+            <button type="button" class="transfer-copy-btn" data-copy="503320731" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-row">
+            <span class="transfer-row-label">Bank address:</span>
+            <span class="transfer-row-value">100 W Houston St, San Antonio, TX 78205</span>
+            <button type="button" class="transfer-copy-btn" data-copy="100 W Houston St, San Antonio, TX 78205" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-row">
+            <span class="transfer-row-label">Memo (required):</span>
+            <span class="transfer-row-value memo">B845C876C</span>
+            <button type="button" class="transfer-copy-btn" data-copy="B845C876C" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-memo-hint">
+            <span>➡️</span>
+            <span>Add this code <strong>exactly</strong> in your <strong>memo/note.</strong></span>
+          </div>
+          <hr class="transfer-divider" />
+          <div class="transfer-note-box">
+            <div class="transfer-note-title"><span>⚠️</span> Note:</div>
+            <ul>
+              <li>Please include <strong>B845C876C</strong> in the memo. Missing memo may delay your credit.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Wire Transfer -->
+        <div class="transfer-section" id="transfer-section-wire" style="display:none;">
+          <div class="transfer-row">
+            <span class="transfer-row-label">Beneficiary name:</span>
+            <span class="transfer-row-value">VLINKPAY LLC</span>
+            <button type="button" class="transfer-copy-btn" data-copy="VLINKPAY LLC" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-row">
+            <span class="transfer-row-label">Bank name:</span>
+            <span class="transfer-row-value">FROST BANK</span>
+            <button type="button" class="transfer-copy-btn" data-copy="FROST BANK" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-row">
+            <span class="transfer-row-label">ABA / Routing:</span>
+            <span class="transfer-row-value">114000093</span>
+            <button type="button" class="transfer-copy-btn" data-copy="114000093" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-row">
+            <span class="transfer-row-label">Account number:</span>
+            <span class="transfer-row-value">503320731</span>
+            <button type="button" class="transfer-copy-btn" data-copy="503320731" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-row">
+            <span class="transfer-row-label">Bank address:</span>
+            <span class="transfer-row-value">100 W Houston St, San Antonio, TX 78205</span>
+            <button type="button" class="transfer-copy-btn" data-copy="100 W Houston St, San Antonio, TX 78205" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-row">
+            <span class="transfer-row-label">Memo (required):</span>
+            <span class="transfer-row-value memo">B845C876C</span>
+            <button type="button" class="transfer-copy-btn" data-copy="B845C876C" aria-label="Copy">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="transfer-memo-hint">
+            <span>➡️</span>
+            <span>Add this code <strong>exactly</strong> in your <strong>memo/note.</strong></span>
+          </div>
+          <hr class="transfer-divider" />
+          <div class="transfer-note-box">
+            <div class="transfer-note-title"><span>⚠️</span> Note:</div>
+            <ul>
+              <li>Please include <strong>B845C876C</strong> in the memo. Missing memo may delay your credit.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- USDV -->
+        <div class="transfer-section" id="transfer-section-usdv" style="display:none;">
+          <div class="transfer-usdv-card">
+            <div class="transfer-usdv-qr">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=TVsrDLQFATb8YmvoGcj3nEF7fKeeKVkkyL" width="120" height="120" alt="VLINKPAY USDV Wallet QR" />
+            </div>
+            <div class="transfer-usdv-info">
+              <div class="transfer-usdv-info__label">Address</div>
+              <div class="transfer-usdv-info__addr">TVsrDLQFATb8YmvoGcj3nEF7fKeeKVkkyL</div>
+              <button type="button" class="transfer-usdv-copy-btn" data-copy="TVsrDLQFATb8YmvoGcj3nEF7fKeeKVkkyL" aria-label="Copy address">
+                <i data-lucide="copy" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+          <hr class="transfer-divider" />
+          <div class="transfer-note-box">
+            <div class="transfer-note-title"><span>⚠️</span> Note:</div>
+            <ul>
+              <li>Network: <strong>Vlinkpay (VRC20)</strong>. USDV Minimum Top-up: 0 USDV.</li>
+              <li>Transfer only the correct cryptocurrency to this address. Incorrect transfers are irreversible.</li>
+            </ul>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

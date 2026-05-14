@@ -718,9 +718,39 @@ window.addEventListener('DOMContentLoaded', () => {
     bankInfoModal?.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   };
-  document.getElementById('open-bank-info-modal')?.addEventListener('click', openBankInfoModal);
-  document.getElementById('close-bank-info-modal')?.addEventListener('click', closeBankInfoModal);
-  bankInfoModal?.addEventListener('click', (e) => { if (e.target === bankInfoModal) closeBankInfoModal(); });
+  const bankEditWarning = document.getElementById('bank-edit-warning');
+
+  const hideBankEditWarning = () => {
+    if (bankEditWarning) bankEditWarning.style.display = 'none';
+  };
+
+  document.getElementById('open-bank-info-modal')?.addEventListener('click', () => {
+    hideBankEditWarning();
+    openBankInfoModal();
+  });
+  document.getElementById('close-bank-info-modal')?.addEventListener('click', () => {
+    hideBankEditWarning();
+    closeBankInfoModal();
+  });
+  bankInfoModal?.addEventListener('click', (e) => {
+    if (e.target === bankInfoModal) { hideBankEditWarning(); closeBankInfoModal(); }
+  });
+
+  document.getElementById('bank-info-edit-btn')?.addEventListener('click', () => {
+    if (bankEditWarning) {
+      const isVisible = bankEditWarning.style.display !== 'none';
+      bankEditWarning.style.display = isVisible ? 'none' : 'block';
+      refreshIcons();
+    }
+  });
+
+  document.getElementById('bank-edit-cancel-btn')?.addEventListener('click', hideBankEditWarning);
+
+  document.getElementById('bank-edit-proceed-btn')?.addEventListener('click', () => {
+    hideBankEditWarning();
+    closeBankInfoModal();
+    document.getElementById('open-add-bank-modal')?.click();
+  });
 
   document.getElementById('bank-info-irs-view')?.addEventListener('click', () => {
     showAddBankImageSwal(addBankFileUrls.ssn, addBankFileUrls.ssnIsPdf, 'IRS Letter');
@@ -1546,6 +1576,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Initial render
   renderSettlement(settlementData);
+
+  // Restore settlement type filter from URL after initial render
+  if (urlParams.get('tab') === 'history' && urlParams.get('subnav') === 'settlement') {
+    const settlementType = urlParams.get('settlementType');
+    if (settlementType) {
+      const sel = document.getElementById('settlement-type-select');
+      if (sel) {
+        sel.dataset.filterValue = settlementType;
+        sel.options[0].text = `Type: ${settlementType}`;
+        renderSettlement(getSettlementFiltered());
+      }
+    }
+  }
 
   // History view toggle (grid / table) — main list
   const historySection = document.getElementById('history-list-section');

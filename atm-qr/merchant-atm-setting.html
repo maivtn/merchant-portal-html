@@ -6444,10 +6444,10 @@
             </select>
           </div>
           <div class="history-view-toggle">
-            <button class="history-view-btn active" data-history-view="grid" title="Grid view">
+            <button class="history-view-btn" data-history-view="grid" title="Grid view">
               <i data-lucide="layout-grid" class="w-4 h-4"></i>
             </button>
-            <button class="history-view-btn" data-history-view="table" title="Table view">
+            <button class="history-view-btn active" data-history-view="table" title="Table view">
               <i data-lucide="table-2" class="w-4 h-4"></i>
             </button>
           </div>
@@ -6486,10 +6486,10 @@
             </select>
           </div>
           <div class="history-view-toggle">
-            <button class="history-view-btn active" data-settlement-view="grid" title="Grid view">
+            <button class="history-view-btn" data-settlement-view="grid" title="Grid view">
               <i data-lucide="layout-grid" class="w-4 h-4"></i>
             </button>
-            <button class="history-view-btn" data-settlement-view="table" title="Table view">
+            <button class="history-view-btn active" data-settlement-view="table" title="Table view">
               <i data-lucide="table-2" class="w-4 h-4"></i>
             </button>
           </div>
@@ -6498,7 +6498,7 @@
       </div>
 
       <!-- Main transaction list -->
-      <div class="history-list-section" id="history-list-section">
+      <div class="history-list-section is-table" id="history-list-section">
         <!-- Grid view -->
         <div class="history-list row g-2">
           <div class="col-12 col-sm-6">
@@ -6667,7 +6667,7 @@
       </div>
 
       <!-- Settlement / Payout list -->
-      <div id="history-settlement-section" class="history-list-section" style="display:none;">
+      <div id="history-settlement-section" class="history-list-section is-table" style="display:none;">
 
         <!-- Grid view — populated by JS -->
         <div class="history-list row g-2" id="settlement-grid"></div>
@@ -7638,7 +7638,7 @@
                 </div>
 
                 <div class="credit-action-row" style="gap:8px;">
-                  <a href="merchant-atm-settlement-history.html?filter=pay_to_vlinkpay" class="credit-action-btn credit-action-btn--history">
+                  <a href="?tab=history&subnav=settlement&settlementType=Pay+to+VLINKPAY" class="credit-action-btn credit-action-btn--history">
                     <i data-lucide="history" class="w-4 h-4"></i>
                     Settlement History
                   </a>
@@ -7686,14 +7686,20 @@
                 </div>
 
                 <div class="credit-action-row" style="gap:8px;">
-                  <a href="merchant-atm-settlement-history.html?filter=vlinkpay_payout" class="credit-action-btn credit-action-btn--history">
+                  <a href="?tab=history&subnav=settlement&settlementType=VLINKPAY+Payout" class="credit-action-btn credit-action-btn--history">
                     <i data-lucide="history" class="w-4 h-4"></i>
                     Payout History
                   </a>
-                  <button type="button" class="credit-action-btn credit-action-btn--payout" id="open-payout-modal">
-                    <i data-lucide="send" class="w-4 h-4"></i>
-                    Request Payout
-                  </button>
+                  <div style="display:inline-flex;align-items:center;gap:4px;">
+                    <button type="button" class="credit-action-btn credit-action-btn--payout" id="open-payout-modal">
+                      <i data-lucide="send" class="w-4 h-4"></i>
+                      Request Payout
+                    </button>
+                    <span class="info-dot" style="width:18px;height:18px;font-size:11px;"
+                      data-tippy-content="If VLINKPAY is late on your payout, use this to submit a reminder. VLINKPAY will be notified and will prioritize processing your reimbursement.">
+                      <i data-lucide="info" style="width:11px;height:11px;"></i>
+                    </span>
+                  </div>
                 </div>
               </div><!-- end credit-card-col -->
             </div>
@@ -8392,8 +8398,7 @@
       <div class="cancel-modal-head">
         <div>
           <div class="cancel-modal-title">Request Payout from VLINKPAY</div>
-          <div class="cancel-modal-subtitle">You are requesting VLINKPAY to reimburse the amount you paid on behalf of
-            the company.</div>
+          <div class="cancel-modal-subtitle">Submit a payout reminder if VLINKPAY has not reimbursed you on time.</div>
         </div>
         <button type="button" class="cancel-modal-close" id="close-payout-modal" aria-label="Close">
           <i data-lucide="x" class="w-4 h-4"></i>
@@ -8401,10 +8406,20 @@
       </div>
 
       <div class="cancel-modal-body">
+        <!-- Purpose banner -->
+        <div style="background:#fff7ed;border:1px solid rgba(234,88,12,0.25);border-radius:10px;padding:11px 13px;display:flex;align-items:flex-start;gap:9px;">
+          <i data-lucide="bell-ring" style="width:15px;height:15px;color:#ea580c;flex-shrink:0;margin-top:1px;"></i>
+          <div style="font-size:12.5px;color:#7c2d12;line-height:1.6;">
+            <strong>Payout reminder</strong> — If VLINKPAY is late processing your reimbursement, submitting this request will notify VLINKPAY and prompt them to prioritize your payout.
+          </div>
+        </div>
+
         <div class="cancel-detail-row">
           <span class="cancel-detail-label">Amount</span>
           <span class="cancel-detail-value" style="color:#ea580c;font-weight:700;">320 USDV</span>
         </div>
+         
+        
 
         <div class="form-check m-0" style="padding-left:1.6rem;">
           <input class="form-check-input" type="checkbox" id="payout-agree" />
@@ -8976,9 +8991,37 @@
           <div class="cancel-modal-title">Bank Account Details</div>
           <div class="cancel-modal-subtitle">Your approved bank information for payouts.</div>
         </div>
-        <button type="button" class="cancel-modal-close" id="close-bank-info-modal" aria-label="Close">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button type="button" id="bank-info-edit-btn"
+            style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;border:1.5px solid #d97706;background:#fffbeb;color:#d97706;font-size:12.5px;font-weight:700;cursor:pointer;">
+            <i data-lucide="pencil" style="width:13px;height:13px;"></i>
+            Edit
+          </button>
+          <button type="button" class="cancel-modal-close" id="close-bank-info-modal" aria-label="Close">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Edit warning banner (hidden by default) -->
+      <div id="bank-edit-warning" style="display:none;margin:0 0 2px;background:#fffbeb;border:1px solid rgba(217,119,6,0.3);border-radius:10px;padding:11px 14px;">
+        <div style="display:flex;align-items:flex-start;gap:8px;">
+          <i data-lucide="alert-triangle" style="width:15px;height:15px;color:#d97706;flex-shrink:0;margin-top:1px;"></i>
+          <div style="font-size:12.5px;color:#92400e;line-height:1.55;">
+            <strong>Approval required.</strong> Any changes to your bank account details must be reviewed by VLINKPAY. Payouts will be temporarily suspended until the update is approved.
+          </div>
+        </div>
+        <div style="margin-top:10px;display:flex;justify-content:flex-end;gap:8px;">
+          <button type="button" id="bank-edit-cancel-btn"
+            style="padding:6px 14px;border-radius:8px;border:1.5px solid #e2e8f0;background:#fff;font-size:12.5px;font-weight:600;color:#64748b;cursor:pointer;">
+            Cancel
+          </button>
+          <button type="button" id="bank-edit-proceed-btn"
+            style="padding:6px 14px;border-radius:8px;border:none;background:#d97706;color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
+            <i data-lucide="pencil" style="width:12px;height:12px;"></i>
+            Proceed to Edit
+          </button>
+        </div>
       </div>
 
       <div class="bank-info-modal-body">

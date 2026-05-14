@@ -726,15 +726,15 @@
                     <div class="space-y-3 text-[14px]">
                         <div class="flex justify-between items-center">
                             <span class="text-slate-600 font-medium">Amount</span>
-                            <span class="font-bold text-[15px] text-slate-900">$100</span>
+                            <span id="pending-amount" class="font-bold text-[15px] text-slate-900">$100</span>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-slate-600 font-medium flex items-center gap-1.5">System Fee (1%) <i data-lucide="info" class="w-4 h-4 text-slate-400"></i></span>
-                            <span class="font-bold text-[15px] text-slate-900">$1</span>
+                            <span id="pending-system-fee" class="font-bold text-[15px] text-slate-900">$1</span>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-slate-600 font-medium flex items-center gap-1.5">Service Fee (<span id="service-fee-pct-4">5%</span>) <i data-lucide="info" class="w-4 h-4 text-slate-400"></i></span>
-                            <span class="font-bold text-[15px] text-slate-900">$5</span>
+                            <span class="text-slate-600 font-medium flex items-center gap-1.5">Service Fee (<span id="service-fee-pct-5">5%</span>) <i data-lucide="info" class="w-4 h-4 text-slate-400"></i></span>
+                            <span id="pending-mobile-fee" class="font-bold text-[15px] text-slate-900">$5</span>
                         </div>
                         <div class="flex justify-between items-center pt-2 border-t border-[rgba(217,119,6,0.1)]">
                             <span class="font-bold text-[16px] text-slate-900">Total</span>
@@ -1384,7 +1384,11 @@
             setText('accepted-buyer-receives', `${summary.amount} USDV`);
 
             const feePct = (selectedServiceFeeRate * 100).toFixed(1).replace(/\.0$/, '') + '%';
-            ['service-fee-pct', 'service-fee-pct-4', 'service-fee-pct-6'].forEach(id => setText(id, feePct));
+            ['service-fee-pct', 'service-fee-pct-5', 'service-fee-pct-6'].forEach(id => setText(id, feePct));
+
+            setText('pending-amount', formatUsd(summary.amount));
+            setText('pending-system-fee', formatUsd(summary.systemFee));
+            setText('pending-mobile-fee', formatUsd(summary.mobileFee));
 
             insuranceRowIds.forEach((id) => {
                 const row = document.getElementById(id);

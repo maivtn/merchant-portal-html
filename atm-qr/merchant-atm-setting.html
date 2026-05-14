@@ -6015,6 +6015,99 @@
       margin-bottom: 4px;
     }
 
+    .transfer-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 4px 20px 14px;
+    }
+
+    .transfer-tab {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1.5px solid #e2e8f0;
+      background: #f8fafc;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .transfer-tab.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    .transfer-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .transfer-usdv-card {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: #f0f4ff;
+      border: 1px solid #c7d9ff;
+      border-radius: 16px;
+      padding: 16px 18px;
+    }
+
+    .transfer-usdv-qr img {
+      border-radius: 8px;
+      display: block;
+    }
+
+    .transfer-usdv-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .transfer-usdv-info__label {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .transfer-usdv-info__addr {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1d4ed8;
+      word-break: break-all;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .transfer-usdv-copy-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #16a34a;
+      background: #f0fdf4;
+      color: #16a34a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    .transfer-usdv-copy-btn:hover {
+      background: #16a34a;
+      color: #fff;
+    }
+
+    .transfer-usdv-copy-btn.copied {
+      background: #16a34a;
+      color: #fff;
+    }
+
     /* Bank Info modal */
     .bank-info-modal-body {
       padding: 8px 20px 24px;
@@ -8083,8 +8176,8 @@
 
       <div class="cancel-modal-body">
         <div class="cancel-detail-row cancel-detail-row--refund">
-          <span class="cancel-detail-label">Amount to repay</span>
-          <span class="cancel-detail-value">850 USDV</span>
+          <span class="cancel-detail-label">Amount</span>
+          <span class="cancel-detail-value">$850</span>
         </div>
         <div class="cancel-detail-row cancel-detail-row--select">
           <span class="cancel-detail-label">Payment method</span>
@@ -8094,9 +8187,6 @@
             <option value="zelle">Zelle</option>
             <option value="bank_wire">Bank Wire</option>
           </select>
-        </div>
-        <div class="cancel-detail-row cancel-detail-row--select" style="border-bottom-left-radius:4px;border-bottom-right-radius:4px;">
-          <span class="cancel-detail-label">Settlement account</span>
         </div>
         <div id="repayment-account-info">
           <!-- ACH / Bank Transfer -->
@@ -8172,11 +8262,11 @@
           <div class="repayment-acct-block" id="repayment-acct-usdv" style="display:none;">
             <div class="repayment-acct-usdv">
               <div class="repayment-acct-usdv__qr">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=TVLinkPayUSDVWalletAddress001" width="110" height="110" alt="VLINKPAY USDV Wallet QR" />
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=TVsrDLQFATb8YmvoGcj3nEF7fKeeKVkkyL" width="110" height="110" alt="VLINKPAY USDV Wallet QR" />
               </div>
               <div class="repayment-acct-usdv__info">
-                <div class="repayment-acct-usdv__label">VLINKPAY Wallet (USDV · TRC-20)</div>
-                <div class="repayment-acct-usdv__addr">TVLinkPayUSDVWalletAddress001</div>
+                <div class="repayment-acct-usdv__label">VLINKPAY Wallet (USDV · VRC20)</div>
+                <div class="repayment-acct-usdv__addr">TVsrDLQFATb8YmvoGcj3nEF7fKeeKVkkyL</div>
               </div>
             </div>
           </div>

@@ -634,7 +634,7 @@
                             <span id="system-fee-value" class="font-bold">$1</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-slate-500">Service fee (5%)</span>
+                            <span class="text-slate-500">Service fee (<span id="service-fee-pct">5%</span>)</span>
                             <span id="mobile-fee-value" class="font-bold">$5</span>
                         </div>
                         <div id="transaction-insurance-row" class="justify-between" style="display: none;">
@@ -733,7 +733,7 @@
                             <span class="font-bold text-[15px] text-slate-900">$1</span>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-slate-600 font-medium flex items-center gap-1.5">Service Fee (5%) <i data-lucide="info" class="w-4 h-4 text-slate-400"></i></span>
+                            <span class="text-slate-600 font-medium flex items-center gap-1.5">Service Fee (<span id="service-fee-pct-4">5%</span>) <i data-lucide="info" class="w-4 h-4 text-slate-400"></i></span>
                             <span class="font-bold text-[15px] text-slate-900">$5</span>
                         </div>
                         <div class="flex justify-between items-center pt-2 border-t border-[rgba(217,119,6,0.1)]">
@@ -838,7 +838,7 @@
                                 <span id="accepted-system-fee" class="font-bold text-[15px]">$1</span>
                             </div>
                             <div class="flex justify-between items-center">
-                                <span class="text-slate-700 font-medium flex items-center gap-1.5">Service Fee (5%) <i
+                                <span class="text-slate-700 font-medium flex items-center gap-1.5">Service Fee (<span id="service-fee-pct-6">5%</span>) <i
                                         data-lucide="info" class="w-4 h-4 text-slate-400"></i></span>
                                 <span id="accepted-mobile-fee" class="font-bold text-[15px]">$5</span>
                             </div>
@@ -911,7 +911,7 @@
                 <button onclick="goToStep(1)" class="brand-link flex items-center gap-1 font-medium">
                     <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
                 </button>
-                <h1 class="brand-title text-[17px] font-bold">Select a Partner</h1>
+                <h1 class="brand-title text-[17px] font-bold" id="partner-list-title">Select a Partner</h1>
                 <div class="w-16"></div>
             </header>
 
@@ -994,67 +994,11 @@
 
             <main class="flex-1 overflow-y-auto pb-6 bg-white">
 
-                <!-- Under 2% -->
+                <!-- 5% – 7% -->
                 <div class="px-4 py-2.5 bg-slate-50 border-y border-slate-100">
-                    <span class="text-[13px] font-bold text-slate-700">Under 2%</span>
+                    <span class="text-[13px] font-bold text-slate-700">5% – 7%</span>
                 </div>
-                <button onclick="goToStep(3)" data-partner-type="merchant"
-                    class="w-full flex items-center gap-3 px-4 py-3.5 border-b border-slate-100 active:bg-slate-50 transition-colors">
-                    <img src="assets/icons/merchant.png" class="w-10 h-10 object-contain shrink-0" alt="ATM">
-                    <div class="flex-1 min-w-0 text-left">
-                        <div class="font-bold text-[14px] text-slate-900">ATM-HWLJHH</div>
-                        <div class="flex items-center gap-1 text-[12px] mt-0.5">
-                            <span class="text-slate-600 font-medium">4.3</span>
-                            <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
-                            <span class="text-amber-600 font-semibold">(3 ratings)</span>
-                        </div>
-                    </div>
-                    <div class="text-right shrink-0">
-                        <div class="font-bold text-[13px] text-slate-900">Fee: 0%</div>
-                        <div class="text-[11px] text-slate-500 mt-0.5">Nearby (within 3h 54m)</div>
-                    </div>
-                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 ml-1"></i>
-                </button>
-                <button onclick="goToStep(3)" data-partner-type="mobile"
-                    class="w-full flex items-center gap-3 px-4 py-3.5 border-b border-slate-100 active:bg-slate-50 transition-colors">
-                    <img src="assets/icons/mobile.png" class="w-10 h-10 object-contain shrink-0" alt="ATM">
-                    <div class="flex-1 min-w-0 text-left">
-                        <div class="font-bold text-[14px] text-slate-900">ATM-Z5UPIR</div>
-                        <div class="flex items-center gap-1 text-[12px] mt-0.5">
-                            <span class="text-slate-600 font-medium">4.8</span>
-                            <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
-                            <span class="text-amber-600 font-semibold">(6 ratings)</span>
-                        </div>
-                    </div>
-                    <div class="text-right shrink-0">
-                        <div class="font-bold text-[13px] text-slate-900">Fee: 1.4%</div>
-                        <div class="text-[11px] text-slate-500 mt-0.5">Nearby (within 20m)</div>
-                    </div>
-                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 ml-1"></i>
-                </button>
-
-                <!-- From 2% to 5% -->
-                <div class="px-4 py-2.5 bg-slate-50 border-y border-slate-100">
-                    <span class="text-[13px] font-bold text-slate-700">From 2% to 5%</span>
-                </div>
-                <button onclick="goToStep(3)" data-partner-type="mobile"
-                    class="w-full flex items-center gap-3 px-4 py-3.5 border-b border-slate-100 active:bg-slate-50 transition-colors">
-                    <img src="assets/icons/mobile.png" class="w-10 h-10 object-contain shrink-0" alt="ATM">
-                    <div class="flex-1 min-w-0 text-left">
-                        <div class="font-bold text-[14px] text-slate-900">ATM-8ZGQQK</div>
-                        <div class="flex items-center gap-1 text-[12px] mt-0.5">
-                            <span class="text-slate-600 font-medium">0.0</span>
-                            <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
-                            <span class="text-amber-600 font-semibold">(0 rating)</span>
-                        </div>
-                    </div>
-                    <div class="text-right shrink-0">
-                        <div class="font-bold text-[13px] text-slate-900">Fee: 2.5%</div>
-                        <div class="text-[11px] text-slate-500 mt-0.5">Nearby (within 3h 13m)</div>
-                    </div>
-                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 ml-1"></i>
-                </button>
-                <button onclick="goToStep(3)" data-partner-type="merchant"
+                <button onclick="selectPartner(0.055)" data-partner-type="merchant" data-fee="0.055"
                     class="w-full flex items-center gap-3 px-4 py-3.5 border-b border-slate-100 active:bg-slate-50 transition-colors">
                     <img src="assets/icons/merchant.png" class="w-10 h-10 object-contain shrink-0" alt="ATM">
                     <div class="flex-1 min-w-0 text-left">
@@ -1066,34 +1010,51 @@
                         </div>
                     </div>
                     <div class="text-right shrink-0">
-                        <div class="font-bold text-[13px] text-slate-900">Fee: 2.4%</div>
+                        <div class="font-bold text-[13px] text-slate-900">Fee: 5.5%</div>
                         <div class="text-[11px] text-slate-500 mt-0.5">Nearby (within 44m)</div>
                     </div>
                     <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 ml-1"></i>
                 </button>
-
-                <!-- Over 5% -->
-                <div class="px-4 py-2.5 bg-slate-50 border-y border-slate-100">
-                    <span class="text-[13px] font-bold text-slate-700">Over 5%</span>
-                </div>
-                <button onclick="goToStep(3)" data-partner-type="merchant"
+                <button onclick="selectPartner(0.058)" data-partner-type="merchant" data-fee="0.058"
                     class="w-full flex items-center gap-3 px-4 py-3.5 border-b border-slate-100 active:bg-slate-50 transition-colors">
                     <img src="assets/icons/merchant.png" class="w-10 h-10 object-contain shrink-0" alt="ATM">
                     <div class="flex-1 min-w-0 text-left">
-                        <div class="font-bold text-[14px] text-slate-900">ATM-KSNI8O</div>
+                        <div class="font-bold text-[14px] text-slate-900">ATM-HWLJHH</div>
                         <div class="flex items-center gap-1 text-[12px] mt-0.5">
-                            <span class="text-slate-600 font-medium">4.7</span>
+                            <span class="text-slate-600 font-medium">4.3</span>
                             <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
-                            <span class="text-amber-600 font-semibold">(13 ratings)</span>
+                            <span class="text-amber-600 font-semibold">(3 ratings)</span>
                         </div>
                     </div>
                     <div class="text-right shrink-0">
-                        <div class="font-bold text-[13px] text-slate-900">Fee: 9.5%</div>
-                        <div class="text-[11px] text-slate-500 mt-0.5">Nearby (within 11h 18m)</div>
+                        <div class="font-bold text-[13px] text-slate-900">Fee: 5.8%</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">Nearby (within 3h 54m)</div>
                     </div>
                     <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 ml-1"></i>
                 </button>
-                <button onclick="goToStep(3)" data-partner-type="mobile"
+                <button onclick="selectPartner(0.062)" data-partner-type="mobile" data-fee="0.062"
+                    class="w-full flex items-center gap-3 px-4 py-3.5 border-b border-slate-100 active:bg-slate-50 transition-colors">
+                    <img src="assets/icons/mobile.png" class="w-10 h-10 object-contain shrink-0" alt="ATM">
+                    <div class="flex-1 min-w-0 text-left">
+                        <div class="font-bold text-[14px] text-slate-900">ATM-Z5UPIR</div>
+                        <div class="flex items-center gap-1 text-[12px] mt-0.5">
+                            <span class="text-slate-600 font-medium">4.8</span>
+                            <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+                            <span class="text-amber-600 font-semibold">(6 ratings)</span>
+                        </div>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <div class="font-bold text-[13px] text-slate-900">Fee: 6.2%</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">Nearby (within 20m)</div>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 ml-1"></i>
+                </button>
+
+                <!-- 7% – 10% -->
+                <div class="px-4 py-2.5 bg-slate-50 border-y border-slate-100">
+                    <span class="text-[13px] font-bold text-slate-700">7% – 10%</span>
+                </div>
+                <button onclick="selectPartner(0.072)" data-partner-type="mobile" data-fee="0.072"
                     class="w-full flex items-center gap-3 px-4 py-3.5 border-b border-slate-100 active:bg-slate-50 transition-colors">
                     <img src="assets/icons/mobile.png" class="w-10 h-10 object-contain shrink-0" alt="ATM">
                     <div class="flex-1 min-w-0 text-left">
@@ -1107,6 +1068,40 @@
                     <div class="text-right shrink-0">
                         <div class="font-bold text-[13px] text-slate-900">Fee: 7.2%</div>
                         <div class="text-[11px] text-slate-500 mt-0.5">Nearby (within 50m)</div>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 ml-1"></i>
+                </button>
+                <button onclick="selectPartner(0.075)" data-partner-type="mobile" data-fee="0.075"
+                    class="w-full flex items-center gap-3 px-4 py-3.5 border-b border-slate-100 active:bg-slate-50 transition-colors">
+                    <img src="assets/icons/mobile.png" class="w-10 h-10 object-contain shrink-0" alt="ATM">
+                    <div class="flex-1 min-w-0 text-left">
+                        <div class="font-bold text-[14px] text-slate-900">ATM-8ZGQQK</div>
+                        <div class="flex items-center gap-1 text-[12px] mt-0.5">
+                            <span class="text-slate-600 font-medium">0.0</span>
+                            <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+                            <span class="text-amber-600 font-semibold">(0 rating)</span>
+                        </div>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <div class="font-bold text-[13px] text-slate-900">Fee: 7.5%</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">Nearby (within 3h 13m)</div>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 ml-1"></i>
+                </button>
+                <button onclick="selectPartner(0.095)" data-partner-type="merchant" data-fee="0.095"
+                    class="w-full flex items-center gap-3 px-4 py-3.5 border-b border-slate-100 active:bg-slate-50 transition-colors">
+                    <img src="assets/icons/merchant.png" class="w-10 h-10 object-contain shrink-0" alt="ATM">
+                    <div class="flex-1 min-w-0 text-left">
+                        <div class="font-bold text-[14px] text-slate-900">ATM-KSNI8O</div>
+                        <div class="flex items-center gap-1 text-[12px] mt-0.5">
+                            <span class="text-slate-600 font-medium">4.7</span>
+                            <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+                            <span class="text-amber-600 font-semibold">(13 ratings)</span>
+                        </div>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <div class="font-bold text-[13px] text-slate-900">Fee: 9.5%</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">Nearby (within 11h 18m)</div>
                     </div>
                     <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 shrink-0 ml-1"></i>
                 </button>
@@ -1228,6 +1223,7 @@
         let timerInterval;
         const _urlAtmType = new URLSearchParams(window.location.search).get('atmType');
         let selectedAtmType = _urlAtmType || 'merchant';
+        let selectedServiceFeeRate = 0.05;
 
         function getAtmTypeLabel(type) {
             return type === 'merchant' ? 'Merchant ATM' : 'Mobile ATM';
@@ -1272,6 +1268,11 @@
 
             if (noteLabel) {
                 noteLabel.textContent = hasSelection ? `Note for ${label}` : 'Note for ATM';
+            }
+
+            const partnerListTitle = document.getElementById('partner-list-title');
+            if (partnerListTitle) {
+                partnerListTitle.textContent = hasSelection ? `Select a ${label}` : 'Select a Partner';
             }
         }
 
@@ -1328,10 +1329,16 @@
             filterPartnersByAtmType();
         }
 
+        function selectPartner(feeRate) {
+            selectedServiceFeeRate = feeRate;
+            updateTransactionSummary();
+            goToStep(3);
+        }
+
         function getTransactionAmounts() {
             const amount = 100;
             const systemFee = amount * 0.01;
-            const mobileFee = amount * 0.05;
+            const mobileFee = amount * selectedServiceFeeRate;
             const insuranceFee = amount * 0.01;
             const insuranceEnabled = document.getElementById('transaction-insurance-toggle')?.checked || false;
             const total = amount + systemFee + mobileFee + (insuranceEnabled ? insuranceFee : 0);
@@ -1371,10 +1378,13 @@
             setText('accepted-insurance-fee', formatUsd(summary.insuranceFee));
             setText('accepted-total', formatUsd(summary.total));
             setText('buyer-pays', formatUsd(summary.total));
-            const atmReceives = 0.05 * 0.75 * summary.amount;
+            const atmReceives = selectedServiceFeeRate * 0.75 * summary.amount;
             setText('seller-receives', formatUsd(atmReceives));
             setText('platform-collection', formatUsd(summary.total - atmReceives));
             setText('accepted-buyer-receives', `${summary.amount} USDV`);
+
+            const feePct = (selectedServiceFeeRate * 100).toFixed(1).replace(/\.0$/, '') + '%';
+            ['service-fee-pct', 'service-fee-pct-4', 'service-fee-pct-6'].forEach(id => setText(id, feePct));
 
             insuranceRowIds.forEach((id) => {
                 const row = document.getElementById(id);
@@ -1429,6 +1439,10 @@
             }
 
             currentStep = stepIndex;
+
+            const url = new URL(window.location);
+            url.searchParams.set('step', stepIndex);
+            window.history.replaceState({}, '', url);
 
             if (stepIndex === 4) {
                 updateReviewAtmInfo();

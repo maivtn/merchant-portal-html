@@ -91,6 +91,33 @@ let tabsSwiper = null;
 const VND_RATE = 25960.55;
 function toUSD(amount, currency) { return currency === 'VND' ? Math.round(amount / VND_RATE) : amount; }
 
+const currencies = [
+  { value: 'USD', label: 'USD', image: '../images/usd.png' },
+  { value: 'VND', label: 'VND', image: '../images/vnd.png' },
+];
+
+function buildCurrencySelect() {
+  const cur = currencies.find(c => c.value === state.currency) || currencies[0];
+  const opts = currencies.map(c => `
+    <button type="button" data-action="set-currency" data-currency="${c.value}"
+      class="flex w-full items-center gap-2.5 px-3 py-2.5 text-sm font-semibold transition hover:bg-gold/5 ${state.currency === c.value ? 'text-gold' : 'text-cream'}">
+      <img src="${c.image}" alt="${c.label}" class="h-5 w-5 shrink-0 rounded-full object-cover">
+      <span>${c.label}</span>
+      ${state.currency === c.value ? `<span class="ml-auto">${icon('check', 'w-3 h-3')}</span>` : ''}
+    </button>`).join('');
+  return `<div class="relative" id="currency-select-wrapper">
+    <button type="button" data-action="toggle-currency-dropdown"
+      class="flex h-11 w-32 items-center gap-2 rounded-lg border border-line bg-black/30 pl-3 pr-3 text-sm font-semibold text-gold outline-none transition hover:border-gold/60 sm:h-14">
+      <img src="${cur.image}" alt="${cur.label}" class="h-5 w-5 shrink-0 rounded-full object-cover">
+      <span>${cur.label}</span>
+      <span class="ml-auto text-soft">${icon('chevron-down', 'w-4 h-4')}</span>
+    </button>
+    <div id="currency-dropdown-list" class="fixed z-[9999] hidden overflow-hidden rounded-lg border border-line bg-panel shadow-luxury">
+      ${opts}
+    </div>
+  </div>`;
+}
+
 function icon(name, classes = 'w-4 h-4') { return `<i data-lucide="${name}" class="${classes}"></i>`; }
 function escapeHtml(str) { return String(str ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])); }
 function fillTemplate(id, values = {}) {
@@ -356,13 +383,13 @@ function giftTypeContent() {
 
 function voucherDetailsContent() {
   return fillTemplate('tpl-voucher-details', {
-    currencyIcon: icon('chevron-down','w-4 h-4')
+    currencySelect: buildCurrencySelect()
   });
 }
 
 function cardDetailsContent() {
   return fillTemplate('tpl-card-details', {
-    currencyIcon: icon('chevron-down','w-4 h-4'),
+    currencySelect: buildCurrencySelect(),
     minusIcon: icon('minus','w-4 h-4'),
     plusIcon: icon('plus','w-4 h-4'),
     checkIcon: icon('check','w-3 h-3')
@@ -417,7 +444,7 @@ function buildInvoiceSummary() {
 function syncBuyView() {
   const purposeGrid = document.getElementById('purpose-grid');
   if (purposeGrid) {
-    purposeGrid.innerHTML = purposes.map(item => `<button data-action="set-purpose" data-purpose="${item.id}" class="relative rounded-2xl border p-2 md:p-4 text-center transition ${state.purpose === item.id ? 'border-gold bg-gold/5 shadow-gold' : 'border-line hover:border-gold/70 hover:bg-gold/5'}"><div class="mx-auto mb-1 md:mb-3 grid h-11 w-11 place-items-center rounded-xl ${state.purpose === item.id ? 'bg-gold/10 text-gold' : 'bg-zinc-900 text-soft'}">${purposeMedia(item)}</div><div class="text-[11px] font-semibold uppercase tracking-[0.08em] sm:text-xs">${item.label}</div>${state.purpose === item.id ? `<div class="absolute right-3 top-3 grid h-4 w-4 place-items-center rounded-full bg-gold text-black">${icon('check','w-3 h-3')}</div>` : ''}</button>`).join('');
+    purposeGrid.innerHTML = purposes.map(item => `<button data-action="set-purpose" data-purpose="${item.id}" class="relative rounded-2xl border p-2 md:p-4 text-center transition ${state.purpose === item.id ? 'border-gold bg-gold/5 shadow-gold' : 'border-line hover:border-gold/70 hover:bg-gold/5'}"><div class="mx-auto mb-1 md:mb-3 grid h-11 w-11 place-items-center rounded-xl ${state.purpose === item.id ? 'bg-gold/10 text-gold' : 'bg-zinc-900 text-soft'}">${purposeMedia(item)}</div><div class="text-[11px] font-semibold uppercase tracking-[0.08em] sm:text-xs">${item.label}</div>${state.purpose === item.id ? `<div class="absolute right-3 top-3 grid h-4 w-4 place-items-center rounded-full bg-gold text-white">${icon('check','w-3 h-3')}</div>` : ''}</button>`).join('');
   }
   const currencySelect = document.getElementById('currency-select');
   if (currencySelect) currencySelect.value = state.currency;
@@ -680,9 +707,16 @@ function buildTransactionDetail() {
 function renderModal() {
   const slot = document.getElementById('modal-slot');
   if (!state.isSuccess) { slot.innerHTML = ''; return; }
+  const isVoucher = state.flowType === 'voucher';
   slot.innerHTML = fillTemplate('tpl-modal', {
     checkIcon: icon('check-circle-2','w-7 h-7'),
-    viewLabel: state.flowType === 'voucher' ? 'Voucher' : 'Cards'
+    title: isVoucher ? 'Donation Successful!' : 'Gift Ready!',
+    message: isVoucher
+      ? 'Thank you for your donation! Your contribution has been recorded and will be allocated to verified charity partners.'
+      : (state.sendDirectly && state.recipientEmail
+          ? `Your Charity E-Gift Cards have been created and sent to ${state.recipientEmail}`
+          : 'Your Charity E-Gift Cards have been created and are ready to use.'),
+    viewLabel: isVoucher ? 'Voucher' : 'Cards'
   });
   safeCreateIcons();
 }
@@ -891,6 +925,25 @@ app.addEventListener('click', (event) => {
     }
     return;
   }
+  if (action === 'toggle-currency-dropdown') {
+    const list = document.getElementById('currency-dropdown-list');
+    const btn = target.closest('[data-action="toggle-currency-dropdown"]');
+    if (list && btn) {
+      const rect = btn.getBoundingClientRect();
+      list.style.top = `${rect.bottom + 4}px`;
+      list.style.left = `${rect.left}px`;
+      list.style.width = `${rect.width}px`;
+      list.classList.toggle('hidden');
+    }
+    return;
+  }
+  if (action === 'set-currency') {
+    state.currency = target.dataset.currency;
+    const wrapper = document.getElementById('currency-select-wrapper');
+    if (wrapper) wrapper.outerHTML = buildCurrencySelect();
+    syncBuyView();
+    return;
+  }
   if (action === 'set-purpose') { state.purpose = target.dataset.purpose; return syncBuyView(); }
   if (action === 'set-payment-method') { state.paymentMethod = target.dataset.method; return syncBuyView(); }
   if (action === 'quantity-minus') { state.quantity = Math.max(1, state.quantity - 1); return syncBuyView(); }
@@ -946,11 +999,18 @@ app.addEventListener('input', (event) => {
 
 app.addEventListener('change', (event) => {
   const t = event.target;
-  if (t.id === 'currency-select') { state.currency = t.value; syncBuyView(); }
   if (t.id === 'send-directly-check') { state.sendDirectly = t.checked; syncBuyView(); }
   if (t.id === 'batch-filter') { state.filterStatus = t.value; renderRoute(true); }
   if (t.id === 'card-filter') { state.cardFilterStatus = t.value; renderRoute(true); }
   if (t.id === 'history-filter') { state.historyFilter = t.value; renderRoute(true); }
+});
+
+document.addEventListener('click', (e) => {
+  const wrapper = document.getElementById('currency-select-wrapper');
+  if (wrapper && !wrapper.contains(e.target)) {
+    const list = document.getElementById('currency-dropdown-list');
+    if (list) list.classList.add('hidden');
+  }
 });
 
 ensureShell();

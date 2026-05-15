@@ -157,9 +157,9 @@ function getNumericValue(val) {
 }
 function numericAmount() { return getNumericValue(state.amount); }
 function numericCardValue() { return getNumericValue(state.cardValue); }
-function platformFee() { return state.flowType === 'voucher' ? numericAmount() * 0.015 : 0; }
+function platformFee() { return state.flowType === 'voucher' ? numericAmount() * 0.015 : numericCardValue() * state.quantity * 0.015; }
 function voucherTotal() { return numericAmount() + platformFee(); }
-function cardTotal() { return numericCardValue() * state.quantity; }
+function cardTotal() { return numericCardValue() * state.quantity + platformFee(); }
 function canProceedToPayment() {
   if (state.flowType === 'voucher') return !!state.purpose && numericAmount() > 0;
   if (state.flowType === 'card') return numericCardValue() > 0 && state.quantity >= 1 && (!state.sendDirectly || state.recipientEmail.includes('@'));
@@ -410,7 +410,7 @@ function syncBuyView() {
   if (invoice) {
     invoice.innerHTML = state.flowType === 'voucher'
       ? `<div class="space-y-3 text-sm sm:text-[15px]"><div class="flex items-center justify-between text-zinc-300"><span>Donation Amount</span><strong class="text-cream">$${formatNumber(numericAmount())}</strong></div><div class="flex items-center justify-between text-zinc-300"><span>Platform Fee (1.5%)</span><strong class="text-gold">$${formatNumber(platformFee().toFixed(2))}</strong></div><div class="h-px bg-line"></div><div class="flex items-center justify-between"><strong class="text-sm uppercase tracking-[0.14em] text-cream">Total</strong><strong class="text-2xl font-bold text-gold">$${formatNumber(voucherTotal().toFixed(2))}</strong></div></div>`
-      : `<div class="space-y-3 text-sm sm:text-[15px]"><div class="flex items-center justify-between text-zinc-300"><span>Gift Card Value</span><strong class="text-cream">$${formatNumber(numericCardValue())}</strong></div><div class="flex items-center justify-between text-zinc-300"><span>Quantity</span><strong class="text-cream">x${state.quantity}</strong></div><div class="h-px bg-line"></div><div class="flex items-center justify-between"><strong class="text-sm uppercase tracking-[0.14em] text-cream">Total</strong><strong class="text-2xl font-bold text-gold">$${formatNumber(cardTotal().toFixed(2))}</strong></div></div>`;
+      : `<div class="space-y-3 text-sm sm:text-[15px]"><div class="flex items-center justify-between text-zinc-300"><span>Gift Card Value</span><strong class="text-cream">$${formatNumber(numericCardValue())}</strong></div><div class="flex items-center justify-between text-zinc-300"><span>Quantity</span><strong class="text-cream">x${state.quantity}</strong></div><div class="flex items-center justify-between text-zinc-300"><span>Platform Fee (1.5%)</span><strong class="text-gold">$${formatNumber(platformFee().toFixed(2))}</strong></div><div class="h-px bg-line"></div><div class="flex items-center justify-between"><strong class="text-sm uppercase tracking-[0.14em] text-cream">Total</strong><strong class="text-2xl font-bold text-gold">$${formatNumber(cardTotal().toFixed(2))}</strong></div></div>`;
   }
   const btn = document.getElementById('confirm-payment-btn');
   if (btn) {

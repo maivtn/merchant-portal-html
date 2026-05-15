@@ -755,11 +755,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('bank-info-edit-btn')?.addEventListener('click', () => {
-    if (bankEditWarning) {
-      const isVisible = bankEditWarning.style.display !== 'none';
-      bankEditWarning.style.display = isVisible ? 'none' : 'block';
-      refreshIcons();
-    }
+    document.getElementById('bank-edit-proceed-btn')?.click();
   });
 
   document.getElementById('bank-edit-cancel-btn')?.addEventListener('click', hideBankEditWarning);
@@ -871,7 +867,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   confirmCancellationBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
-    closeCancelConfirmModal();
+    closeCancelPolicyModal();
     openPinModal(() => {
       const allClear = hasNoPendingObligations();
       window.Swal?.fire({
@@ -1165,7 +1161,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
     paymentChoiceInputs.forEach((input) => {
       if (!input.checked) return;
-      const label = input.closest('.payment-choice')?.querySelector('span')?.textContent?.trim() || '';
+      const spanEl = input.closest('.payment-choice')?.querySelector('span');
+      const label = spanEl
+        ? Array.from(spanEl.childNodes)
+            .filter(n => n.nodeType === Node.TEXT_NODE)
+            .map(n => n.textContent.trim())
+            .filter(Boolean)
+            .join(' ')
+        : '';
       if (!label || seen.has(label)) return;
       seen.add(label);
       selectedLabels.push(label);

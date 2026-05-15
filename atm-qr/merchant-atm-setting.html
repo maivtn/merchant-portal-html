@@ -243,6 +243,20 @@
       font-weight: 800;
       color: var(--text);
       margin-bottom: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .setting-title .setting-title-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--blue-soft, #eef3ff);
+      color: var(--blue);
+      flex-shrink: 0;
     }
 
     .setting-label {
@@ -311,11 +325,35 @@
     }
 
     .field-row--boxed {
-      padding: 8px 16px;
+      padding: 12px 14px;
       border: 1px solid #f0e3c7;
-      border-radius: 1rem;
+      border-radius: 14px;
       background: linear-gradient(180deg, #fffaf0 0%, #ffffff 100%);
       align-items: center;
+    }
+
+    .field-row__content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .field-row__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--blue-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--blue);
+    }
+
+    .setting-input--sm {
+      max-width: 80px;
     }
 
     .field-row--stack {
@@ -518,20 +556,74 @@
       line-height: 1;
     }
 
-    .radio-row {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-right: 14px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #27303f;
+    .radio-option-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
-
+    .radio-row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 14px;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      background: #fff;
+      position: relative;
+    }
     .radio-row input {
-      width: 14px;
-      height: 14px;
-      accent-color: var(--blue);
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
+    .radio-row__icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e9ecef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+      flex-shrink: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+    .radio-row__text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .radio-row__title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.2;
+    }
+    .radio-row__status {
+      font-size: 12px;
+      font-weight: 500;
+      color: #94a3b8;
+    }
+    .radio-row:hover {
+      border-color: var(--blue);
+    }
+    .radio-row:has(input:checked) {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+    }
+    .radio-row:has(input:checked) .radio-row__icon {
+      background: var(--blue);
+      color: #fff;
+    }
+    .radio-row:has(input:checked) .radio-row__status {
+      color: var(--blue);
+      font-weight: 600;
     }
 
     .note-block {
@@ -684,6 +776,18 @@
       border-color: rgba(217, 119, 6, 0.45);
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(217, 119, 6, 0.16);
+    }
+    .receive-card__cta--join {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+      box-shadow: 0 6px 18px rgba(217, 119, 6, 0.28);
+    }
+    .receive-card__cta--join:hover {
+      color: #fff;
+      background: #b45309;
+      border-color: #b45309;
+      box-shadow: 0 8px 22px rgba(217, 119, 6, 0.38);
     }
 
     .receive-top-row {
@@ -3490,7 +3594,44 @@
 
     .pin-modal-actions .btn {
       min-width: 110px;
-      border-radius: 999px;
+      border-radius: 0.9rem;
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 0.75rem 1.4rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s, box-shadow 0.15s, background 0.15s, border-color 0.15s;
+    }
+
+    .pin-modal-actions .btn-light {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      box-shadow: 0 8px 22px rgba(34, 31, 31, 0.05);
+    }
+
+    .pin-modal-actions .btn-light:hover {
+      background: #f8fafc;
+      transform: translateY(-1px);
+    }
+
+    .pin-modal-actions .btn-primary {
+      border: 1px solid #d97706;
+      background: #d97706;
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(217, 119, 6, 0.2);
+    }
+
+    .pin-modal-actions .btn-primary:hover {
+      background: #b45309;
+      border-color: #b45309;
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(217, 119, 6, 0.25);
+    }
+
+    .pin-modal-actions .btn:active {
+      transform: translateY(0);
     }
 
     /* Join Program modal */
@@ -6719,7 +6860,10 @@
             <div class="row g-3">
               <div class="col-12 col-lg-6">
                 <div class="setting-card h-100">
-                  <div class="setting-title">Activity Status</div>
+                  <div class="setting-title">
+                    <span class="setting-title-icon"><i data-lucide="zap" class="w-4 h-4"></i></span>
+                    Activity Status
+                  </div>
 
                   <div class="status-switch">
                     <label class="activity-switch">
@@ -6742,18 +6886,27 @@
 
               <div class="col-12 col-lg-6">
                 <div class="setting-card h-100">
-                  <div class="setting-title">Current Role</div>
-                  <!-- <div class="note-block mt-1 mb-2">
+                  <div class="setting-title">
+                    <span class="setting-title-icon"><i data-lucide="settings-2" class="w-4 h-4"></i></span>
+                    Configure ATM Mode
+                  </div>
+                  <div class="note-block mt-1 mb-2">
                     Choose which ATM role is active for this setup.
-                  </div> -->
-                  <div class="mt-2">
+                  </div>
+                  <div class="radio-option-grid mt-2">
                     <label class="radio-row">
                       <input type="radio" name="role" value="mobile_atm" />
-                      <span>Mobile ATM</span>
+                      <div class="radio-row__icon"><i data-lucide="car" class="w-5 h-5"></i></div>
+                      <div class="radio-row__text">
+                        <div class="radio-row__title">Mobile ATM</div>
+                      </div>
                     </label>
                     <label class="radio-row">
                       <input type="radio" name="role" value="merchant_atm" checked />
-                      <span>Merchant ATM</span>
+                      <div class="radio-row__icon"><i data-lucide="store" class="w-5 h-5"></i></div>
+                      <div class="radio-row__text">
+                        <div class="radio-row__title">Merchant ATM</div>
+                      </div>
                     </label>
                     <!-- <label class="radio-row">
                       <input type="radio" name="role" value="combo_atm" checked />
@@ -6761,13 +6914,13 @@
                     </label> -->
                   </div>
                   <div class="field-row field-row--boxed mt-2" data-role-visibility="mobile_atm">
-                    <div class="field-row--text-stack">
+                    <div class="field-row__content">
+                      <div class="field-row__icon">
+                        <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
+                      </div>
                       <span class="setting-label">Minimum transaction amount ($)</span>
-                      <!-- <div class="note-block">
-                        Applies to Mobile ATM transactions.
-                      </div> -->
                     </div>
-                    <input class="setting-input" style="max-width:80px;" value="100" />
+                    <input class="setting-input setting-input--sm" value="100" />
                   </div>
                 </div>
               </div>
@@ -6800,8 +6953,8 @@
                       <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
                       Open tab
                     </button>
-                    <button type="button" class="receive-card__cta" data-open-join-program data-no-behalf-show>
-                      <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                    <button type="button" class="receive-card__cta receive-card__cta--join" data-open-join-program data-no-behalf-show>
+                      <i data-lucide="rocket" class="w-4 h-4"></i>
                       Join program
                     </button>
                   </div>
@@ -6979,11 +7132,13 @@
                 <div class="collapse show" id="asset-fee-group-collapse">
                   <div class="asset-fee-group__tabs" role="tablist" aria-label="Asset fee type">
                     <button type="button" class="asset-fee-group__tab active" data-asset-fee-tab="online"
-                      aria-selected="true">
+                      aria-selected="true"
+                      data-tippy-content="Fee applied to crypto transactions processed online (app/web).">
                       Online fee
                     </button>
                     <button type="button" class="asset-fee-group__tab" data-asset-fee-tab="offline"
-                      aria-selected="false" data-role-visibility="merchant_atm">
+                      aria-selected="false" data-role-visibility="merchant_atm"
+                      data-tippy-content="Fee applied to in-person walk-in transactions at the physical ATM.">
                       Walk-in Fee
                     </button>
                   </div>

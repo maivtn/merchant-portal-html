@@ -1040,6 +1040,11 @@ window.addEventListener('DOMContentLoaded', () => {
       section.hidden = !allowedRoles.includes(currentRole);
     });
 
+    roleInputs.forEach((input) => {
+      const statusEl = input.closest('.radio-row')?.querySelector('.radio-row__status');
+      if (statusEl) statusEl.textContent = input.checked ? 'Active' : 'Inactive';
+    });
+
     refreshIcons();
   };
 

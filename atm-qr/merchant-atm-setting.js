@@ -755,13 +755,6 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('bank-info-edit-btn')?.addEventListener('click', () => {
-    document.getElementById('bank-edit-proceed-btn')?.click();
-  });
-
-  document.getElementById('bank-edit-cancel-btn')?.addEventListener('click', hideBankEditWarning);
-
-  document.getElementById('bank-edit-proceed-btn')?.addEventListener('click', () => {
-    hideBankEditWarning();
     closeBankInfoModal();
 
     // Read current values from bank-info-modal detail spans
@@ -776,7 +769,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const addrHtml = document.getElementById('bank-detail-address')?.innerHTML || '';
     const addrLines = addrHtml.split(/<br\s*\/?>/i).map(s => s.trim()).filter(Boolean);
     const street  = addrLines[0] || '';
-    // "Los Angeles, CA 90001," → city=Los Angeles, state=CA, zip=90001
     const cityLine = (addrLines[1] || '').replace(/,$/, '');
     const cityParts = cityLine.match(/^(.+),\s*([A-Z]{2})\s+(\d{5}(?:-\d{4})?)$/);
     const city    = cityParts ? cityParts[1].trim() : cityLine;

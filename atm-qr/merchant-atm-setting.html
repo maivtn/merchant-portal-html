@@ -3135,6 +3135,11 @@
       display: inline-flex !important;
     }
 
+    body.is-behalf .receive-card__copy [data-behalf-show],
+    body:not(.is-behalf) .receive-card__copy [data-no-behalf-show] {
+      display: inline !important;
+    }
+
     body.is-behalf [data-behalf-show].btn,
     body.is-behalf [data-behalf-show].receive-card__cta,
     body.is-behalf [data-behalf-show][data-setting-tab] {
@@ -6888,11 +6893,14 @@
                 <div class="setting-card h-100">
                   <div class="setting-title">
                     <span class="setting-title-icon"><i data-lucide="settings-2" class="w-4 h-4"></i></span>
+                   <div>
                     Configure ATM Mode
+                    <div class="note-block mt-1 mb-2 fw-normal">
+                      Choose which ATM role is active for this setup.
+                    </div>
+                   </div>
                   </div>
-                  <div class="note-block mt-1 mb-2">
-                    Choose which ATM role is active for this setup.
-                  </div>
+                 
                   <div class="radio-option-grid mt-2">
                     <label class="radio-row">
                       <input type="radio" name="role" value="mobile_atm" />
@@ -6943,7 +6951,8 @@
                         <span class="status-note" data-no-behalf-show>Inactive</span>
                       </div>
                       <div class="receive-card__copy">
-                        Set up receive-on-behalf, pay-on-behalf, fees, settlement, and payment methods.
+                        <span data-behalf-show style="display:none;">Set up receive-on-behalf, pay-on-behalf, fees, settlement, and payment methods.</span>
+                        <span data-no-behalf-show style="display:none;">Join the program to unlock receive &amp; pay on behalf, fees, settlement, and payment method setup.</span>
                       </div>
                     </div>
                   </div>

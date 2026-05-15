@@ -88,6 +88,9 @@ let shellReady = false;
 let currentRouteKey = '';
 let tabsSwiper = null;
 
+const VND_RATE = 25960.55;
+function toUSD(amount, currency) { return currency === 'VND' ? Math.round(amount / VND_RATE) : amount; }
+
 function icon(name, classes = 'w-4 h-4') { return `<i data-lucide="${name}" class="${classes}"></i>`; }
 function escapeHtml(str) { return String(str ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])); }
 function fillTemplate(id, values = {}) {
@@ -157,9 +160,9 @@ function getNumericValue(val) {
 }
 function numericAmount() { return getNumericValue(state.amount); }
 function numericCardValue() { return getNumericValue(state.cardValue); }
-function platformFee() { return state.flowType === 'voucher' ? numericAmount() * 0.015 : numericCardValue() * state.quantity * 0.015; }
-function voucherTotal() { return numericAmount() + platformFee(); }
-function cardTotal() { return numericCardValue() * state.quantity + platformFee(); }
+function platformFee() { return state.flowType === 'voucher' ? toUSD(numericAmount(), state.currency) * 0.015 : toUSD(numericCardValue() * state.quantity, state.currency) * 0.015; }
+function voucherTotal() { return toUSD(numericAmount(), state.currency) + platformFee(); }
+function cardTotal() { return toUSD(numericCardValue() * state.quantity, state.currency) + platformFee(); }
 function canProceedToPayment() {
   if (state.flowType === 'voucher') return !!state.purpose && numericAmount() > 0;
   if (state.flowType === 'card') return numericCardValue() > 0 && state.quantity >= 1 && (!state.sendDirectly || state.recipientEmail.includes('@'));
@@ -381,6 +384,36 @@ function buildBuyView() {
   syncBuyView();
 }
 
+function buildInvoiceSummary() {
+  const isVND = state.currency === 'VND';
+  const rateLabel = `Exchange Rate $1.00 = ${formatNumber(VND_RATE.toFixed(2))} VND`;
+  const row = (label, val, valCls = 'text-cream') =>
+    `<div class="flex items-center justify-between text-zinc-300"><span>${label}</span><strong class="${valCls}">${val}</strong></div>`;
+
+  if (state.flowType === 'voucher') {
+    const raw = numericAmount();
+    const usd = toUSD(raw, state.currency);
+    return `<div class="space-y-3 text-sm sm:text-[15px]">
+      ${row('Donation Amount', isVND ? `${formatNumber(raw)} VND` : `$${formatNumber(raw)}`)}
+      ${isVND ? row(rateLabel, `$${formatNumber(usd)}`) : ''}
+      ${row('Platform Fee (1.5%)', `$${formatNumber(platformFee().toFixed(2))}`, 'text-gold')}
+      <div class="h-px bg-line"></div>
+      <div class="flex items-center justify-between"><strong class="text-sm uppercase tracking-[0.14em] text-cream">Total</strong><strong class="text-2xl font-bold text-gold">$${formatNumber(voucherTotal().toFixed(2))}</strong></div>
+    </div>`;
+  }
+
+  const rawCard = numericCardValue();
+  const usdSub = toUSD(rawCard * state.quantity, state.currency);
+  return `<div class="space-y-3 text-sm sm:text-[15px]">
+    ${row('Gift Card Value', isVND ? `${formatNumber(rawCard)} VND` : `$${formatNumber(rawCard)}`)}
+    ${row('Quantity', `x${state.quantity}`)}
+    ${isVND ? row(rateLabel, `$${formatNumber(usdSub)}`) : ''}
+    ${row('Platform Fee (1.5%)', `$${formatNumber(platformFee().toFixed(2))}`, 'text-gold')}
+    <div class="h-px bg-line"></div>
+    <div class="flex items-center justify-between"><strong class="text-sm uppercase tracking-[0.14em] text-cream">Total</strong><strong class="text-2xl font-bold text-gold">$${formatNumber(cardTotal().toFixed(2))}</strong></div>
+  </div>`;
+}
+
 function syncBuyView() {
   const purposeGrid = document.getElementById('purpose-grid');
   if (purposeGrid) {
@@ -407,11 +440,7 @@ function syncBuyView() {
     paymentList.innerHTML = paymentMethods.map(pm => `<button data-action="set-payment-method" data-method="${pm.id}" class="flex w-full items-center justify-between rounded-2xl border p-2 md:p-4 text-left transition ${state.paymentMethod === pm.id ? 'border-gold bg-gold/5 shadow-gold' : 'border-line hover:-translate-y-1 hover:border-gold/70'}"><div class="flex items-center gap-4"><div class="grid h-4 w-4 place-items-center rounded-full border ${state.paymentMethod === pm.id ? 'border-gold' : 'border-zinc-600'}">${state.paymentMethod === pm.id ? '<span class="h-2 w-2 rounded-full bg-gold"></span>' : ''}</div><div class="grid h-9 w-9 place-items-center overflow-hidden rounded-full border border-line bg-white"><img src="${pm.image}" alt="${pm.id}" class="h-full w-full object-cover p-1"></div><span class="text-sm font-semibold text-cream sm:text-[15px]">${pm.id}</span></div><div class="text-right"><p class="mb-0.5 text-[10px] uppercase tracking-[0.12em] text-soft sm:text-[12px]">Available</p><p class="text-[12px] font-semibold text-gold sm:text-[14px]">${pm.id === 'BTC' ? '' : '$'}${pm.available}</p></div></button>`).join('');
   }
   const invoice = document.getElementById('invoice-summary');
-  if (invoice) {
-    invoice.innerHTML = state.flowType === 'voucher'
-      ? `<div class="space-y-3 text-sm sm:text-[15px]"><div class="flex items-center justify-between text-zinc-300"><span>Donation Amount</span><strong class="text-cream">$${formatNumber(numericAmount())}</strong></div><div class="flex items-center justify-between text-zinc-300"><span>Platform Fee (1.5%)</span><strong class="text-gold">$${formatNumber(platformFee().toFixed(2))}</strong></div><div class="h-px bg-line"></div><div class="flex items-center justify-between"><strong class="text-sm uppercase tracking-[0.14em] text-cream">Total</strong><strong class="text-2xl font-bold text-gold">$${formatNumber(voucherTotal().toFixed(2))}</strong></div></div>`
-      : `<div class="space-y-3 text-sm sm:text-[15px]"><div class="flex items-center justify-between text-zinc-300"><span>Gift Card Value</span><strong class="text-cream">$${formatNumber(numericCardValue())}</strong></div><div class="flex items-center justify-between text-zinc-300"><span>Quantity</span><strong class="text-cream">x${state.quantity}</strong></div><div class="flex items-center justify-between text-zinc-300"><span>Platform Fee (1.5%)</span><strong class="text-gold">$${formatNumber(platformFee().toFixed(2))}</strong></div><div class="h-px bg-line"></div><div class="flex items-center justify-between"><strong class="text-sm uppercase tracking-[0.14em] text-cream">Total</strong><strong class="text-2xl font-bold text-gold">$${formatNumber(cardTotal().toFixed(2))}</strong></div></div>`;
-  }
+  if (invoice) invoice.innerHTML = buildInvoiceSummary();
   const btn = document.getElementById('confirm-payment-btn');
   if (btn) {
     const enabled = canProceedToPayment();

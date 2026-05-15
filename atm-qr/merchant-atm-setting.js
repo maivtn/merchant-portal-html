@@ -821,8 +821,9 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   document.getElementById('close-add-bank-modal')?.addEventListener('click', resetAddBankMode, true);
 
-  document.getElementById('bank-info-irs-view')?.addEventListener('click', () => {
-    showAddBankImageSwal(addBankFileUrls.ssn, addBankFileUrls.ssnIsPdf, 'IRS Letter');
+  document.getElementById('bank-info-irs-view')?.addEventListener('click', (e) => {
+    const url = addBankFileUrls.ssn || e.currentTarget.dataset.preview;
+    showAddBankImageSwal(url, addBankFileUrls.ssnIsPdf, 'IRS Letter');
   });
 
   const changeHistoryModal = document.getElementById('change-history-modal');
@@ -841,8 +842,9 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('close-change-history-modal')?.addEventListener('click', closeChangeHistoryModal);
   changeHistoryModal?.addEventListener('click', (e) => { if (e.target === changeHistoryModal) closeChangeHistoryModal(); });
 
-  document.getElementById('bank-info-check-view')?.addEventListener('click', () => {
-    showAddBankImageSwal(addBankFileUrls.check, addBankFileUrls.checkIsPdf, 'Voided Check');
+  document.getElementById('bank-info-check-view')?.addEventListener('click', (e) => {
+    const url = addBankFileUrls.check || e.currentTarget.dataset.preview;
+    showAddBankImageSwal(url, addBankFileUrls.checkIsPdf, 'Voided Check');
   });
 
   document.getElementById('open-cancel-confirm-btn')?.addEventListener('click', openCancelConfirmModal);

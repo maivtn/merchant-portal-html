@@ -1846,11 +1846,13 @@ window.addEventListener('DOMContentLoaded', () => {
             <i data-lucide="landmark" style="width:18px;height:18px;"></i>
           </div>
           <div class="behalf-bank-item-info">
-            <div class="behalf-bank-item-name">${bank.bankName}</div>
+            <div style="display:flex;align-items:center;gap:7px;">
+              <div class="behalf-bank-item-name">${bank.bankName}</div>
+              <span class="status-note ${st.cls}" style="height:22px;font-size:10.5px;padding:0 8px;">${st.label}</span>
+            </div>
             <div class="behalf-bank-item-acc">${bank.businessName} · ${maskAccount(bank.accountNumber)}</div>
           </div>
           <div class="behalf-bank-item-actions">
-            <span class="status-note ${st.cls}">${st.label}</span>
             <button type="button" class="behalf-bank-view-btn" data-view-bank-id="${bank.id}" title="View details">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1863,7 +1865,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
               </svg>
-              Edit
             </button>
             <button type="button" class="behalf-bank-delete-btn" data-delete-bank-id="${bank.id}" title="Delete">
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"

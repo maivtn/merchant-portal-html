@@ -6566,26 +6566,42 @@
       flex-shrink: 0;
     }
 
+    @media (max-width: 575px) {
+      .behalf-bank-item {
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+
+      .behalf-bank-item-info {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+
+      .behalf-bank-item-actions {
+        flex: 0 0 100%;
+        padding-left: 48px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+      }
+    }
+
     .behalf-bank-edit-btn {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 5px 12px;
-      background: none;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
-    }
-
-    .behalf-bank-edit-btn:hover {
-      border-color: var(--blue);
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border: 1px solid rgba(79,111,232,0.3);
+      border-radius: 50%;
       color: var(--blue);
       background: #eff6ff;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      flex-shrink: 0;
+      padding: 0;
     }
+
+    .behalf-bank-edit-btn:hover { opacity: 0.75; }
 
     /* Payout bank account radio list */
     .payout-bank-select-wrap {
@@ -6678,21 +6694,17 @@
       justify-content: center;
       width: 30px;
       height: 30px;
-      background: none;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(22,163,74,0.3);
       border-radius: 50%;
-      color: var(--muted);
+      color: #16a34a;
+      background: #f0fdf4;
       cursor: pointer;
-      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      transition: opacity 0.15s;
       flex-shrink: 0;
       padding: 0;
     }
 
-    .behalf-bank-view-btn:hover {
-      border-color: var(--blue);
-      color: var(--blue);
-      background: #eff6ff;
-    }
+    .behalf-bank-view-btn:hover { opacity: 0.75; }
 
     .behalf-bank-delete-btn {
       display: inline-flex;
@@ -6700,21 +6712,17 @@
       justify-content: center;
       width: 30px;
       height: 30px;
-      background: none;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(220,38,38,0.3);
       border-radius: 50%;
-      color: var(--muted);
+      color: #dc2626;
+      background: #fef2f2;
       cursor: pointer;
-      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      transition: opacity 0.15s;
       flex-shrink: 0;
       padding: 0;
     }
 
-    .behalf-bank-delete-btn:hover {
-      border-color: #dc2626;
-      color: #dc2626;
-      background: #fef2f2;
-    }
+    .behalf-bank-delete-btn:hover { opacity: 0.75; }
 
     .behalf-bank-list-footer {
       padding: 12px 20px 16px;
@@ -8343,8 +8351,8 @@
                         </span>
                         <span class="info-dot"><i data-lucide="info" class="w-4 h-4"></i></span>
                       </div>
-                      <div class="payment-choice-list">
-                        <div class="row">
+                      <div class="payment-choice-list ">
+                        <div class="row g-2">
                           <div class="col-12 col-md-6">
                             <label class="payment-choice" id="bank-transfer-choice">
                               <input type="checkbox" name="company-pays-back" id="bank-transfer-checkbox" />

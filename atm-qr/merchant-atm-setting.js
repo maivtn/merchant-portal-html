@@ -1944,6 +1944,16 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('behalf-add-bank-empty-btn')?.addEventListener('click', openAddBankForAdd);
   document.getElementById('behalf-add-bank-list-btn')?.addEventListener('click', openAddBankForAdd);
 
+  const syncPayoutBankSelectState = () => {
+    const sel      = document.getElementById('payout-bank-account-select');
+    const checkbox = document.getElementById('bank-transfer-checkbox');
+    if (!sel) return;
+    const enabled = checkbox?.checked && !checkbox?.disabled;
+    sel.disabled = !enabled;
+    sel.style.opacity = enabled ? '' : '0.45';
+    sel.style.cursor  = enabled ? '' : 'not-allowed';
+  };
+
   const renderPayoutBankSelect = () => {
     const sel = document.getElementById('payout-bank-account-select');
     if (!sel) return;
@@ -1955,7 +1965,10 @@ window.addEventListener('DOMContentLoaded', () => {
         `<option value="${b.id}">${b.bankName} – ${b.businessName} (••••${String(b.accountNumber).slice(-4)})</option>`
       ).join('');
     }
+    syncPayoutBankSelectState();
   };
+
+  document.getElementById('bank-transfer-checkbox')?.addEventListener('change', syncPayoutBankSelectState);
 
   const syncBankTransferCheckbox = () => {
     const checkbox = document.getElementById('bank-transfer-checkbox');
@@ -1970,4 +1983,5 @@ window.addEventListener('DOMContentLoaded', () => {
   renderBehalfBanks();
   renderPayoutBankSelect();
   syncBankTransferCheckbox();
+  syncPayoutBankSelectState();
 });

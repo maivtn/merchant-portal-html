@@ -1697,4 +1697,240 @@ window.addEventListener('DOMContentLoaded', () => {
       refreshIcons();
     });
   });
+
+  // ── Banks Management (receive-on-behalf tab) ──────────────────────────────
+
+  // Status config: saved | pending | approved
+  const BANK_STATUS = {
+    saved:    { label: 'Saved',    cls: ''        },
+    pending:  { label: 'Pending',  cls: 'pending' },
+    approved: { label: 'Approved', cls: 'success' },
+  };
+
+  // Bank data
+  const behalfBanks = [
+    {
+      id: 1,
+      bankName:      'Bank of America',
+      businessName:  'ABC Corporation',
+      accountNumber: '001234567890',
+      routingNumber: '123456789',
+      address:       '123 Elm Street',
+      city:          'Los Angeles',
+      state:         'CA',
+      zip:           '90001',
+      country:       'US',
+      taxDoc:        'EIN',
+      docNumber:     '12-3456789',
+      status:        'approved',
+    },
+    {
+      id: 2,
+      bankName:      'Chase Bank',
+      businessName:  'ABC Corporation',
+      accountNumber: '987654321000',
+      routingNumber: '021000021',
+      address:       '456 Oak Avenue',
+      city:          'New York',
+      state:         'NY',
+      zip:           '10001',
+      country:       'US',
+      taxDoc:        'SSN',
+      docNumber:     '123-45-6789',
+      status:        'pending',
+    },
+    {
+      id: 3,
+      bankName:      'Wells Fargo',
+      businessName:  'ABC Corporation',
+      accountNumber: '556677889900',
+      routingNumber: '121042882',
+      address:       '789 Pine Blvd',
+      city:          'San Francisco',
+      state:         'CA',
+      zip:           '94105',
+      country:       'US',
+      taxDoc:        'EIN',
+      docNumber:     '98-7654321',
+      status:        'saved',
+    },
+    {
+      id: 4,
+      bankName:      'Citibank',
+      businessName:  'ABC Corporation',
+      accountNumber: '334455667788',
+      routingNumber: '021000089',
+      address:       '388 Greenwich St',
+      city:          'New York',
+      state:         'NY',
+      zip:           '10013',
+      country:       'US',
+      taxDoc:        'EIN',
+      docNumber:     '45-6789012',
+      status:        'approved',
+    },
+  ];
+
+  const maskAccount = (num) => '••••' + String(num).slice(-4);
+
+  const behalfBankEmptyEl  = document.getElementById('behalf-banks-empty');
+  const behalfBankListEl   = document.getElementById('behalf-banks-list');
+  const behalfBankItemsEl  = document.getElementById('behalf-bank-list-items');
+
+  const openAddBankForEdit = (bank) => {
+    const titleEl    = document.getElementById('add-bank-modal-title');
+    const subtitleEl = document.getElementById('add-bank-modal-subtitle');
+    const warnEl     = document.getElementById('add-bank-edit-warning');
+    if (titleEl)    titleEl.textContent    = 'Edit Bank Account';
+    if (subtitleEl) subtitleEl.textContent = 'Update your bank details. Changes require VLINKPAY approval.';
+    if (warnEl)     warnEl.style.display   = 'flex';
+
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+    set('add-bank-name',           bank.bankName);
+    set('add-bank-business-name',  bank.businessName);
+    set('add-bank-account-number', bank.accountNumber);
+    set('add-bank-routing-number', bank.routingNumber);
+    set('add-bank-address',        bank.address);
+    set('add-bank-city',           bank.city);
+    set('add-bank-state',          bank.state);
+    set('add-bank-zip',            bank.zip);
+    set('add-bank-doc-number',     bank.docNumber);
+
+    const countryEl = document.getElementById('add-bank-country');
+    if (countryEl) countryEl.value = bank.country;
+
+    const taxEinRadio = document.getElementById('add-bank-tax-ein');
+    const taxSsnRadio = document.getElementById('add-bank-tax-ssn');
+    if (bank.taxDoc === 'EIN' && taxEinRadio) taxEinRadio.checked = true;
+    else if (taxSsnRadio) taxSsnRadio.checked = true;
+    document.querySelector('input[name="add-bank-tax-doc"]:checked')?.dispatchEvent(new Event('change'));
+
+    openAddBankModal();
+  };
+
+  const openAddBankForAdd = () => {
+    const titleEl    = document.getElementById('add-bank-modal-title');
+    const subtitleEl = document.getElementById('add-bank-modal-subtitle');
+    const warnEl     = document.getElementById('add-bank-edit-warning');
+    if (titleEl)    titleEl.textContent    = 'Add Bank Account';
+    if (subtitleEl) subtitleEl.textContent = 'Enter your bank details for Bank Transfer payouts.';
+    if (warnEl)     warnEl.style.display   = 'none';
+
+    ['add-bank-name','add-bank-business-name','add-bank-account-number',
+     'add-bank-routing-number','add-bank-address','add-bank-city',
+     'add-bank-state','add-bank-zip','add-bank-doc-number'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+
+    openAddBankModal();
+  };
+
+  const renderBehalfBanks = () => {
+    if (!behalfBankEmptyEl || !behalfBankListEl || !behalfBankItemsEl) return;
+
+    if (behalfBanks.length === 0) {
+      behalfBankEmptyEl.style.display = '';
+      behalfBankListEl.style.display  = 'none';
+      return;
+    }
+
+    behalfBankEmptyEl.style.display = 'none';
+    behalfBankListEl.style.display  = '';
+
+    behalfBankItemsEl.innerHTML = behalfBanks.map((bank) => {
+      const st = BANK_STATUS[bank.status] || BANK_STATUS.saved;
+      return `
+        <div class="behalf-bank-item" data-bank-id="${bank.id}">
+          <div class="behalf-bank-item-icon">
+            <i data-lucide="landmark" style="width:18px;height:18px;"></i>
+          </div>
+          <div class="behalf-bank-item-info">
+            <div class="behalf-bank-item-name">${bank.bankName}</div>
+            <div class="behalf-bank-item-acc">${bank.businessName} · ${maskAccount(bank.accountNumber)}</div>
+          </div>
+          <div class="behalf-bank-item-actions">
+            <span class="status-note ${st.cls}">${st.label}</span>
+            <button type="button" class="behalf-bank-edit-btn" data-edit-bank-id="${bank.id}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+              </svg>
+              Edit
+            </button>
+            <button type="button" class="behalf-bank-delete-btn" data-delete-bank-id="${bank.id}" title="Delete">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+              </svg>
+            </button>
+          </div>
+        </div>`;
+    }).join('');
+
+    refreshIcons();
+
+    behalfBankItemsEl.querySelectorAll('[data-edit-bank-id]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const bank = behalfBanks.find(b => b.id === Number(btn.dataset.editBankId));
+        if (bank) openAddBankForEdit(bank);
+      });
+    });
+
+    behalfBankItemsEl.querySelectorAll('[data-delete-bank-id]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id   = Number(btn.dataset.deleteBankId);
+        const bank = behalfBanks.find(b => b.id === id);
+        if (!bank) return;
+        Swal.fire({
+          icon: 'warning',
+          title: 'Delete Bank Account?',
+          html: `Remove <strong>${bank.bankName}</strong> (••••${String(bank.accountNumber).slice(-4)}) from your list?`,
+          showCancelButton: true,
+          confirmButtonText: 'Delete',
+          cancelButtonText: 'Cancel',
+          confirmButtonColor: '#dc2626',
+          customClass: { popup: 'swal2-popup', confirmButton: 'swal2-confirm', cancelButton: 'swal2-cancel' },
+        }).then(result => {
+          if (!result.isConfirmed) return;
+          const idx = behalfBanks.findIndex(b => b.id === id);
+          if (idx !== -1) behalfBanks.splice(idx, 1);
+          renderBehalfBanks();
+          renderPayoutBankSelect();
+          syncBankTransferCheckbox();
+        });
+      });
+    });
+  };
+
+  document.getElementById('behalf-add-bank-empty-btn')?.addEventListener('click', openAddBankForAdd);
+  document.getElementById('behalf-add-bank-list-btn')?.addEventListener('click', openAddBankForAdd);
+
+  const renderPayoutBankSelect = () => {
+    const sel = document.getElementById('payout-bank-account-select');
+    if (!sel) return;
+    const approved = behalfBanks.filter(b => b.status === 'approved');
+    if (approved.length === 0) {
+      sel.innerHTML = '<option value="">— No approved bank —</option>';
+    } else {
+      sel.innerHTML = approved.map(b =>
+        `<option value="${b.id}">${b.bankName} – ${b.businessName} (••••${String(b.accountNumber).slice(-4)})</option>`
+      ).join('');
+    }
+  };
+
+  const syncBankTransferCheckbox = () => {
+    const checkbox = document.getElementById('bank-transfer-checkbox');
+    const label    = document.getElementById('bank-transfer-choice');
+    if (!checkbox) return;
+    const hasApproved = behalfBanks.some(b => b.status === 'approved');
+    checkbox.disabled = !hasApproved;
+    if (label) label.style.opacity = hasApproved ? '' : '0.5';
+    if (!hasApproved) checkbox.checked = false;
+  };
+
+  renderBehalfBanks();
+  renderPayoutBankSelect();
+  syncBankTransferCheckbox();
 });

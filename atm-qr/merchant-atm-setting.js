@@ -353,7 +353,134 @@ window.addEventListener('DOMContentLoaded', () => {
     if (submitRepaymentBtn) submitRepaymentBtn.disabled = repaymentFiles.length === 0;
   };
 
-  document.getElementById('open-repayment-modal')?.addEventListener('click', openRepaymentModal);
+  // Reset Credit – data
+  const RC = {
+    receiveCredit: 2000,      // Receive credit limit
+    collected: 850,           // Collected on behalf (debt to VLINKPAY)
+    pendingPayout: 1500,      // Pending pay-on-behalf payout
+    commission: 31.88,
+  };
+  RC.available    = RC.receiveCredit - RC.collected;
+  RC.remaining    = RC.pendingPayout - RC.collected;
+
+  const fmtUSD = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0 });
+
+  const fillRC = () => {
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    // reset-credit-modal
+    set('rc-subtitle-collected', fmtUSD(RC.collected));
+    set('rc-stat-limit',         fmtUSD(RC.receiveCredit));
+    set('rc-stat-collected',     fmtUSD(RC.collected));
+    set('rc-stat-available',     fmtUSD(RC.available));
+    set('rc-stat-after-reset',   fmtUSD(RC.receiveCredit));
+    set('rc-offset-amount',      fmtUSD(RC.collected));
+    set('rc-pending-payout',     fmtUSD(RC.pendingPayout));
+    set('rc-remaining-payout',   fmtUSD(RC.remaining));
+    set('rc-pay-amount',         fmtUSD(RC.collected));
+    // confirm-offset-modal
+    set('co-debt',               fmtUSD(RC.collected));
+    set('co-pending-payout',     fmtUSD(RC.pendingPayout));
+    set('co-offset-amount',      fmtUSD(RC.collected));
+    set('co-remaining-payout',   fmtUSD(RC.remaining));
+    set('co-credit-after-reset', fmtUSD(RC.receiveCredit));
+    // credit-reset-success-modal
+    set('cr-method',             'Offset with Pay-on-Behalf Payout');
+    set('cr-offset-amount',      fmtUSD(RC.collected));
+    set('cr-remaining-payout',   fmtUSD(RC.remaining));
+    set('cr-available-credit',   fmtUSD(RC.receiveCredit));
+  };
+
+  // Reset Credit – Choose Method modal
+  const resetCreditModal = document.getElementById('reset-credit-modal');
+  const confirmOffsetModal = document.getElementById('confirm-offset-modal');
+  const creditResetSuccessModal = document.getElementById('credit-reset-success-modal');
+
+  const openResetCreditModal = () => {
+    fillRC();
+    const offsetRadio = resetCreditModal?.querySelector('input[value="offset"]');
+    if (offsetRadio) offsetRadio.checked = true;
+    document.getElementById('rc-option-offset')?.classList.add('selected');
+    document.getElementById('rc-option-pay')?.classList.remove('selected');
+    resetCreditModal?.classList.add('active');
+    resetCreditModal?.setAttribute('aria-hidden', 'false');
+    refreshIcons();
+  };
+
+  const closeResetCreditModal = () => {
+    resetCreditModal?.classList.remove('active');
+    resetCreditModal?.setAttribute('aria-hidden', 'true');
+  };
+
+  const openConfirmOffsetModal = () => {
+    confirmOffsetModal?.classList.add('active');
+    confirmOffsetModal?.setAttribute('aria-hidden', 'false');
+    refreshIcons();
+  };
+
+  const closeConfirmOffsetModal = () => {
+    confirmOffsetModal?.classList.remove('active');
+    confirmOffsetModal?.setAttribute('aria-hidden', 'true');
+  };
+
+  const openCreditResetSuccessModal = () => {
+    creditResetSuccessModal?.classList.add('active');
+    creditResetSuccessModal?.setAttribute('aria-hidden', 'false');
+    refreshIcons();
+  };
+
+  const closeCreditResetSuccessModal = () => {
+    creditResetSuccessModal?.classList.remove('active');
+    creditResetSuccessModal?.setAttribute('aria-hidden', 'true');
+  };
+
+  // Radio option toggle styling
+  resetCreditModal?.querySelectorAll('input[name="rc-method"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      document.getElementById('rc-option-offset')?.classList.toggle('selected', radio.value !== 'pay');
+      document.getElementById('rc-option-pay')?.classList.toggle('selected', radio.value === 'pay');
+    });
+  });
+
+  // Click on label also selects the correct radio
+  document.getElementById('rc-option-offset')?.addEventListener('click', () => {
+    const r = document.querySelector('input[name="rc-method"][value="offset"]');
+    if (r) { r.checked = true; r.dispatchEvent(new Event('change')); }
+  });
+  document.getElementById('rc-option-pay')?.addEventListener('click', () => {
+    const r = document.querySelector('input[name="rc-method"][value="pay"]');
+    if (r) { r.checked = true; r.dispatchEvent(new Event('change')); }
+  });
+
+  document.getElementById('open-repayment-modal')?.addEventListener('click', openResetCreditModal);
+  document.getElementById('close-reset-credit-modal')?.addEventListener('click', closeResetCreditModal);
+  document.getElementById('cancel-reset-credit-btn')?.addEventListener('click', closeResetCreditModal);
+  resetCreditModal?.addEventListener('click', (e) => { if (e.target === resetCreditModal) closeResetCreditModal(); });
+
+  document.getElementById('continue-reset-credit-btn')?.addEventListener('click', () => {
+    const selected = resetCreditModal?.querySelector('input[name="rc-method"]:checked')?.value;
+    closeResetCreditModal();
+    if (selected === 'offset') {
+      openConfirmOffsetModal();
+    } else {
+      openRepaymentModal();
+    }
+  });
+
+  document.getElementById('close-confirm-offset-modal')?.addEventListener('click', closeConfirmOffsetModal);
+  document.getElementById('back-confirm-offset-btn')?.addEventListener('click', () => {
+    closeConfirmOffsetModal();
+    openResetCreditModal();
+  });
+  confirmOffsetModal?.addEventListener('click', (e) => { if (e.target === confirmOffsetModal) closeConfirmOffsetModal(); });
+
+  document.getElementById('submit-offset-btn')?.addEventListener('click', () => {
+    closeConfirmOffsetModal();
+    openCreditResetSuccessModal();
+  });
+
+  document.getElementById('done-credit-reset-btn')?.addEventListener('click', closeCreditResetSuccessModal);
+  creditResetSuccessModal?.addEventListener('click', (e) => { if (e.target === creditResetSuccessModal) closeCreditResetSuccessModal(); });
+
   document.getElementById('close-repayment-modal')?.addEventListener('click', closeRepaymentModal);
   document.getElementById('cancel-repayment-btn')?.addEventListener('click', closeRepaymentModal);
   document.getElementById('repayment-payment-method')?.addEventListener('change', syncRepaymentAccount);

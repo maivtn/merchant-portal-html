@@ -5293,7 +5293,7 @@
     .credit-card-body {
       padding: 16px 18px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+     
       gap: 0;
     }
 
@@ -5412,6 +5412,11 @@
       border: 1px solid rgba(139, 92, 246, 0.2);
     }
 
+    .credit-stat--available {
+      background: #eff6ff;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
     .credit-stat__icon {
       width: 34px;
       height: 34px;
@@ -5444,6 +5449,15 @@
 
     .credit-stat--commission .credit-stat__value {
       color: #7c3aed;
+    }
+
+    .credit-stat--available .credit-stat__icon {
+      background: #dbeafe;
+      color: #2563eb;
+    }
+
+    .credit-stat--available .credit-stat__value {
+      color: #2563eb;
     }
 
     .credit-commission-badge {
@@ -5841,6 +5855,53 @@
     .repayment-method-label strong {
       font-size: 15px;
     }
+
+    /* Reset Credit Choose Method Modal */
+    .rc-status-table { display:flex;flex-direction:column;gap:0;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:2px; }
+    .rc-status-row { display:flex;justify-content:space-between;align-items:center;padding:9px 14px;font-size:13px;border-bottom:1px solid #f1f5f9; }
+    .rc-status-row:last-child { border-bottom:none; }
+    .rc-status-row__label { color:var(--muted);font-weight:500; }
+    .rc-status-row__value { font-weight:700;color:var(--text); }
+    .rc-status-row--highlight { background:#f0fdf4; }
+    .rc-status-row--highlight .rc-status-row__value { color:#16a34a;font-size:14px; }
+    .rc-method-section-label { font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:6px; }
+    .rc-method-option { position:relative;border:2px solid #e2e8f0;border-radius:14px;padding:12px 14px;cursor:pointer;transition:border-color .15s,background .15s; }
+    .rc-method-option:hover { border-color:#cbd5e1; }
+    .rc-method-option.selected { border-color:#22c55e;background:#f0fdf4; }
+    .rc-method-option__head { display:flex;align-items:center;gap:10px; }
+    .rc-method-option__radio { width:18px;height:18px;flex-shrink:0;accent-color:#16a34a; }
+    .rc-method-option__title { font-size:14px;font-weight:700;color:var(--text); }
+    .rc-method-option__recommended { font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:#dcfce7;color:#15803d;border:1px solid rgba(34,197,94,.3); }
+    .rc-method-option__desc { font-size:12px;color:var(--muted);margin:4px 0 8px 28px;line-height:1.5; }
+    .rc-method-detail { display:flex;flex-direction:column;gap:4px;margin-left:28px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:8px 12px; }
+    .rc-method-detail-row { display:flex;justify-content:space-between;align-items:center;font-size:12.5px; }
+    .rc-method-detail-row__label { color:var(--muted); }
+    .rc-method-detail-row__value { font-weight:700;color:var(--text); }
+    .rc-method-detail-row__value--bold { font-size:13px; }
+    .rc-note-box { display:flex;align-items:flex-start;gap:9px;background:#fff7ed;border:1px solid rgba(217,119,6,.2);border-radius:10px;padding:10px 13px;font-size:12px;color:#92400e;line-height:1.6; }
+    /* Confirm Offset Modal */
+    .co-rows { display:flex;flex-direction:column;gap:0; }
+    .co-row { display:flex;justify-content:space-between;align-items:center;padding:9px 0;font-size:13.5px;border-bottom:1px solid #f1f5f9; }
+    .co-row:last-child { border-bottom:none; }
+    .co-row__label { color:var(--muted); }
+    .co-row__value { font-weight:700;color:var(--text); }
+    .co-row__value--green { color:#16a34a; }
+    .co-divider { border:none;border-top:1.5px solid #e2e8f0;margin:4px 0; }
+    .co-info-box { display:flex;align-items:flex-start;gap:9px;background:#eff6ff;border:1px solid rgba(59,130,246,.2);border-radius:10px;padding:10px 13px;font-size:12px;color:#1e40af;line-height:1.6; }
+    /* Credit Reset Success Modal */
+    .cr-success-icon-wrap { display:flex;justify-content:center;align-items:center;padding:24px 0 8px;position:relative; }
+    .cr-success-icon { width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#4ade80,#16a34a);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(22,163,74,.3); }
+    .cr-sparkle { position:absolute;font-size:14px; }
+    .cr-sparkle--tl { top:18px;left:calc(50% - 46px); }
+    .cr-sparkle--tr { top:18px;right:calc(50% - 46px); }
+    .cr-success-title { text-align:center;font-size:18px;font-weight:900;color:var(--text);margin-bottom:4px; }
+    .cr-success-sub { text-align:center;font-size:13px;color:var(--muted);margin-bottom:12px; }
+    .cr-result-rows { display:flex;flex-direction:column;gap:0;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden; }
+    .cr-result-row { display:flex;justify-content:space-between;align-items:center;padding:9px 14px;font-size:13px;border-bottom:1px solid #f1f5f9; }
+    .cr-result-row:last-child { border-bottom:none; }
+    .cr-result-row__label { color:var(--muted);font-weight:500; }
+    .cr-result-row__value { font-weight:700;color:var(--text); }
+    .cr-result-row__value--green { color:#16a34a; }
 
     .cancel-detail-label {
       font-size: 13px;
@@ -8152,121 +8213,138 @@
               <span class="status-note success">Active</span>
             </div>
             <div class="credit-card-body">
-              <div class="credit-card-col">
-                <!-- Receive on behalf -->
-                <div class="credit-progress-wrap">
-                  <div class="credit-progress-row">
-                    <span class="credit-progress-label">
-                      <i data-lucide="arrow-down-circle" class="w-3 h-3"
-                        style="color:#16a34a;vertical-align:middle;"></i>
-                      Receive on Behalf
-                    </span>
-                    <span class="credit-progress-value">$850 </span>
-                  </div>
-                  <div class="credit-progress-bar-wrap">
-                    <div class="credit-progress-bar" style="background: linear-gradient(90deg, #a78bfa 0px, #7c3aed 14px, #4ade80 14px, #16a34a 42.5%, #e2e8f0 42.5%);"></div>
-                  </div>
+              <div class="row">
+                <div class="col-12 col-md-7">
+                  <div class="credit-card-col">
+                    <!-- Receive on behalf -->
+                    <div class="credit-progress-wrap">
+                      <div class="credit-progress-row">
+                        <span class="credit-progress-label">
+                          <i data-lucide="arrow-down-circle" class="w-3 h-3"
+                            style="color:#16a34a;vertical-align:middle;"></i>
+                          Receive on Behalf
+                        </span>
+                        <span class="credit-progress-value">$850 </span>
+                      </div>
+                      <div class="credit-progress-bar-wrap">
+                        <div class="credit-progress-bar" style="background: linear-gradient(90deg, #a78bfa 0px, #7c3aed 14px, #4ade80 14px, #16a34a 42.5%, #e2e8f0 42.5%);"></div>
+                      </div>
+                    </div>
+                    <div class="credit-stats">
+                      <div class="credit-stat credit-stat--limit">
+                        <div class="credit-stat__icon">
+                          <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
+                        </div>
+                        <div class="credit-stat__info">
+                          <div class="credit-stat__label">Credit</div>
+                          <div class="credit-stat__value">$2,000 <span class="credit-stat__unit"></span></div>
+                        </div>
+                      </div>
+                      <div class="credit-stat credit-stat--thu">
+                        <div class="credit-stat__icon">
+                          <i data-lucide="arrow-down-circle" class="w-4 h-4"></i>
+                        </div>
+                        <div class="credit-stat__info">
+                          <div class="credit-stat__label">Collected on Behalf</div>
+                          <div class="credit-stat__value">$850 <span class="credit-stat__unit"></span></div>
+                        </div>
+                      </div>
+                      <div class="credit-stat credit-stat--available">
+                        <div class="credit-stat__icon">
+                          <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        </div>
+                        <div class="credit-stat__info">
+                          <div class="credit-stat__label">Available Credit</div>
+                          <div class="credit-stat__value">$1,150 <span class="credit-stat__unit"></span></div>
+                        </div>
+                      </div>
+                      <div class="credit-stat credit-stat--commission">
+                        <div class="credit-stat__icon">
+                          <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
+                        </div>
+                        <div class="credit-stat__info">
+                          <div class="credit-stat__label">Commission
+                            <span class="info-dot" data-tippy-content="Calculated as: Received × Service Fee × 75%">
+                              <i data-lucide="info" class="w-4 h-4"></i>
+                            </span>
+                          </div>
+                          <div class="credit-stat__value">$31.88 <span class="credit-stat__unit"></span></div>
+                        </div>
+                      </div>
+                    </div>
+    
+                    <div class="credit-action-row" style="gap:8px;">
+                      <a href="?tab=history&subnav=settlement&settlementType=Pay+to+VLINKPAY" class="credit-action-btn credit-action-btn--history">
+                        <i data-lucide="history" class="w-4 h-4"></i>
+                        Settlement History
+                      </a>
+                      <button type="button" class="credit-action-btn credit-action-btn--repay" id="open-repayment-modal">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                        Reset Credit
+                      </button>
+                    </div>
+    
+                  </div><!-- end credit-card-col -->
                 </div>
-                <div class="credit-stats">
-                  <div class="credit-stat credit-stat--limit">
-                    <div class="credit-stat__icon">
-                      <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
+                <div class="col-12 col-md-5">
+                  <div class="credit-card-col">
+                    <!-- Pay on behalf -->
+                    <div class="credit-progress-wrap">
+                      <div class="credit-progress-row">
+                        <span class="credit-progress-label">
+                          <i data-lucide="arrow-up-circle" class="w-3 h-3" style="color:#ea580c;vertical-align:middle;"></i>
+                          Pay on Behalf
+                        </span>
+                        <span class="credit-progress-value">$2,000 </span>
+                      </div>
+                      <div class="credit-progress-bar">
+                        <div class="credit-progress-fill"
+                          style="width: 16%; background: linear-gradient(90deg,#fb923c,#ea580c);"></div>
+                      </div>
                     </div>
-                    <div class="credit-stat__info">
-                      <div class="credit-stat__label">Credit</div>
-                      <div class="credit-stat__value">$2,000 <span class="credit-stat__unit"></span></div>
+                    <div class="credit-stats">
+                      <div class="credit-stat credit-stat--limit">
+                        <div class="credit-stat__icon">
+                          <i data-lucide="arrow-up-circle" class="w-4 h-4"></i>
+                        </div>
+                        <div class="credit-stat__info">
+                          <div class="credit-stat__label">Pay-on-Behalf Amount</div>
+                          <div class="credit-stat__value">$1,500 <span class="credit-stat__unit"></span></div>
+                        </div>
+                      </div>
+                      <div class="credit-stat credit-stat--chi">
+                       
+                        <div class="credit-stat__icon">
+                          <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
+                        </div>
+                        <div class="credit-stat__info">
+                          <div class="credit-stat__label">Commission</div>
+                          <div class="credit-stat__value">$37.5 <span class="credit-stat__unit"></span></div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="credit-stat credit-stat--thu">
-                    <div class="credit-stat__icon">
-                      <i data-lucide="arrow-down-circle" class="w-4 h-4"></i>
-                    </div>
-                    <div class="credit-stat__info">
-                      <div class="credit-stat__label">Collected on Behalf</div>
-                      <div class="credit-stat__value">$850 <span class="credit-stat__unit"></span></div>
-                    </div>
-                  </div>
-                  <div class="credit-stat credit-stat--commission">
-                    <div class="credit-stat__icon">
-                      <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
-                    </div>
-                    <div class="credit-stat__info">
-                      <div class="credit-stat__label">Commission
-                        <span class="info-dot" data-tippy-content="Calculated as: Received × Service Fee × 75%">
-                          <i data-lucide="info" class="w-4 h-4"></i>
+    
+                    <div class="credit-action-row" style="gap:8px;">
+                      <a href="?tab=history&subnav=settlement&settlementType=VLINKPAY+Payout" class="credit-action-btn credit-action-btn--history">
+                        <i data-lucide="history" class="w-4 h-4"></i>
+                        Payout History
+                      </a>
+                      <div style="display:inline-flex;align-items:center;gap:4px;">
+                        <button type="button" class="credit-action-btn credit-action-btn--payout" id="open-payout-modal">
+                          <i data-lucide="send" class="w-4 h-4"></i>
+                          Request Payout
+                        </button>
+                        <span class="info-dot" style="width:18px;height:18px;font-size:11px;"
+                          data-tippy-content="If VLINKPAY is late on your payout, use this to submit a reminder. VLINKPAY will be notified and will prioritize processing your reimbursement.">
+                          <i data-lucide="info" style="width:11px;height:11px;"></i>
                         </span>
                       </div>
-                      <div class="credit-stat__value">$31.88 <span class="credit-stat__unit"></span></div>
                     </div>
-                  </div>
+                  </div><!-- end credit-card-col -->
                 </div>
-
-                <div class="credit-action-row" style="gap:8px;">
-                  <a href="?tab=history&subnav=settlement&settlementType=Pay+to+VLINKPAY" class="credit-action-btn credit-action-btn--history">
-                    <i data-lucide="history" class="w-4 h-4"></i>
-                    Settlement History
-                  </a>
-                  <button type="button" class="credit-action-btn credit-action-btn--repay" id="open-repayment-modal">
-                    <i data-lucide="send" class="w-4 h-4"></i>
-                    Pay to VLINKPAY
-                  </button>
-                </div>
-
-              </div><!-- end credit-card-col -->
-              <div class="credit-card-col">
-                <!-- Pay on behalf -->
-                <div class="credit-progress-wrap">
-                  <div class="credit-progress-row">
-                    <span class="credit-progress-label">
-                      <i data-lucide="arrow-up-circle" class="w-3 h-3" style="color:#ea580c;vertical-align:middle;"></i>
-                      Pay on Behalf
-                    </span>
-                    <span class="credit-progress-value">$2,000 </span>
-                  </div>
-                  <div class="credit-progress-bar">
-                    <div class="credit-progress-fill"
-                      style="width: 16%; background: linear-gradient(90deg,#fb923c,#ea580c);"></div>
-                  </div>
-                </div>
-                <div class="credit-stats">
-                  <div class="credit-stat credit-stat--limit">
-                    <div class="credit-stat__icon">
-                      <i data-lucide="arrow-up-circle" class="w-4 h-4"></i>
-                    </div>
-                    <div class="credit-stat__info">
-                      <div class="credit-stat__label">Pay-on-Behalf Amount</div>
-                      <div class="credit-stat__value">$2,000 <span class="credit-stat__unit"></span></div>
-                    </div>
-                  </div>
-                  <div class="credit-stat credit-stat--chi">
-                   
-                    <div class="credit-stat__icon">
-                      <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
-                    </div>
-                    <div class="credit-stat__info">
-                      <div class="credit-stat__label">Commission</div>
-                      <div class="credit-stat__value">$75 <span class="credit-stat__unit"></span></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="credit-action-row" style="gap:8px;">
-                  <a href="?tab=history&subnav=settlement&settlementType=VLINKPAY+Payout" class="credit-action-btn credit-action-btn--history">
-                    <i data-lucide="history" class="w-4 h-4"></i>
-                    Payout History
-                  </a>
-                  <div style="display:inline-flex;align-items:center;gap:4px;">
-                    <button type="button" class="credit-action-btn credit-action-btn--payout" id="open-payout-modal">
-                      <i data-lucide="send" class="w-4 h-4"></i>
-                      Request Payout
-                    </button>
-                    <span class="info-dot" style="width:18px;height:18px;font-size:11px;"
-                      data-tippy-content="If VLINKPAY is late on your payout, use this to submit a reminder. VLINKPAY will be notified and will prioritize processing your reimbursement.">
-                      <i data-lucide="info" style="width:11px;height:11px;"></i>
-                    </span>
-                  </div>
-                </div>
-              </div><!-- end credit-card-col -->
+              </div>
+             
+             
             </div>
           </div>
 
@@ -8787,6 +8865,195 @@
   </div>
 
   <!-- Modal: Confirm Repayment -->
+  <!-- Modal: Reset Receive Credit – Choose Method -->
+  <div class="cancel-modal" id="reset-credit-modal" aria-hidden="true">
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Reset Receive Credit" style="width:min(100%,500px);max-height:92vh;overflow-y:auto;">
+      <div class="cancel-modal-head">
+        <div>
+          <div class="cancel-modal-title">Reset Receive Credit</div>
+          <div class="cancel-modal-subtitle">You have collected <span id="rc-subtitle-collected"></span> on behalf of VLINKPAY.<br>This amount reduces your receive credit.</div>
+        </div>
+        <button type="button" class="cancel-modal-close" id="close-reset-credit-modal" aria-label="Close">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div class="cancel-modal-body">
+        <!-- Current status -->
+        <div>
+          <div class="rc-method-section-label">Current status</div>
+          <div class="rc-status-table">
+            <div class="rc-status-row">
+              <span class="rc-status-row__label">Receive credit limit</span>
+              <span class="rc-status-row__value" id="rc-stat-limit"></span>
+            </div>
+            <div class="rc-status-row">
+              <span class="rc-status-row__label">Collected on behalf</span>
+              <span class="rc-status-row__value" id="rc-stat-collected"></span>
+            </div>
+            <div class="rc-status-row">
+              <span class="rc-status-row__label">Available credit now</span>
+              <span class="rc-status-row__value" style="font-size:14px;" id="rc-stat-available"></span>
+            </div>
+            <div class="rc-status-row rc-status-row--highlight">
+              <span class="rc-status-row__label" style="font-weight:700;color:var(--text);">Credit after reset</span>
+              <span class="rc-status-row__value" id="rc-stat-after-reset"></span>
+            </div>
+          </div>
+        </div>
+        <!-- Choose method -->
+        <div>
+          <div class="rc-method-section-label">Choose how to reset credit</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <!-- Option 1: Offset -->
+            <label class="rc-method-option selected" id="rc-option-offset">
+              <div class="rc-method-option__head">
+                <input type="radio" name="rc-method" value="offset" class="rc-method-option__radio" checked />
+                <span class="rc-method-option__title">Offset with Pay-on-Behalf Payout</span>
+                <span class="rc-method-option__recommended">Recommended</span>
+              </div>
+              <div class="rc-method-option__desc">Use your pending payout to settle the collected amount.</div>
+              <div class="rc-method-detail">
+                <div class="rc-method-detail-row">
+                  <span class="rc-method-detail-row__label">Amount to offset</span>
+                  <span class="rc-method-detail-row__value" id="rc-offset-amount"></span>
+                </div>
+                <div class="rc-method-detail-row">
+                  <span class="rc-method-detail-row__label">Pending pay-on-behalf payout</span>
+                  <span class="rc-method-detail-row__value" id="rc-pending-payout"></span>
+                </div>
+                <div class="rc-method-detail-row">
+                  <span class="rc-method-detail-row__label">Remaining payout after offset</span>
+                  <span class="rc-method-detail-row__value rc-method-detail-row__value--bold" id="rc-remaining-payout"></span>
+                </div>
+              </div>
+            </label>
+            <!-- Option 2: Pay directly -->
+            <label class="rc-method-option" id="rc-option-pay">
+              <div class="rc-method-option__head">
+                <input type="radio" name="rc-method" value="pay" class="rc-method-option__radio" />
+                <span class="rc-method-option__title">Pay directly to VLINKPAY</span>
+              </div>
+              <div class="rc-method-option__desc">Transfer the collected amount directly to VLINKPAY.</div>
+              <div class="rc-method-detail">
+                <div class="rc-method-detail-row">
+                  <span class="rc-method-detail-row__label">Amount to pay</span>
+                  <span class="rc-method-detail-row__value" id="rc-pay-amount"></span>
+                </div>
+                <div class="rc-method-detail-row">
+                  <span class="rc-method-detail-row__label">Payment methods</span>
+                  <span class="rc-method-detail-row__value" style="font-weight:500;color:var(--muted);font-size:12px;">Bank Transfer / Wallet / Stablecoin</span>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+        <!-- Note -->
+        <div class="rc-note-box">
+          <i data-lucide="info" style="width:14px;height:14px;color:#d97706;flex-shrink:0;margin-top:1px;"></i>
+          <span>Commission is not offset here.<br>It will be settled separately based on the payout policy.</span>
+        </div>
+      </div>
+      <div class="cancel-modal-actions">
+        <button type="button" class="btn btn-light" id="cancel-reset-credit-btn">Cancel</button>
+        <button type="button" class="btn btn-warning" id="continue-reset-credit-btn">
+          Continue
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Confirm Offset -->
+  <div class="cancel-modal" id="confirm-offset-modal" aria-hidden="true">
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Confirm Offset" style="width:min(100%,460px);">
+      <div class="cancel-modal-head">
+        <div>
+          <div class="cancel-modal-title">Confirm Offset</div>
+          <div class="cancel-modal-subtitle">VLINKPAY will offset your receive debt<br>with your pending payout.</div>
+        </div>
+        <button type="button" class="cancel-modal-close" id="close-confirm-offset-modal" aria-label="Close">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div class="cancel-modal-body">
+        <div class="co-rows">
+          <div class="co-row">
+            <span class="co-row__label">Receive debt (collected on behalf)</span>
+            <span class="co-row__value" id="co-debt"></span>
+          </div>
+          <div class="co-row">
+            <span class="co-row__label">Pending pay-on-behalf payout</span>
+            <span class="co-row__value" id="co-pending-payout"></span>
+          </div>
+        </div>
+        <hr class="co-divider" />
+        <div class="co-rows">
+          <div class="co-row">
+            <span class="co-row__label">Offset amount</span>
+            <span class="co-row__value" id="co-offset-amount"></span>
+          </div>
+          <div class="co-row">
+            <span class="co-row__label">Remaining payout after offset</span>
+            <span class="co-row__value co-row__value--green" id="co-remaining-payout"></span>
+          </div>
+          <div class="co-row">
+            <span class="co-row__label">Receive credit after reset</span>
+            <span class="co-row__value co-row__value--green" id="co-credit-after-reset"></span>
+          </div>
+        </div>
+        <div class="co-info-box">
+          <i data-lucide="info" style="width:14px;height:14px;color:#3b82f6;flex-shrink:0;margin-top:1px;"></i>
+          <span>This action will reduce your pending payout and restore your receive credit.</span>
+        </div>
+      </div>
+      <div class="cancel-modal-actions">
+        <button type="button" class="btn btn-light" id="back-confirm-offset-btn">Back</button>
+        <button type="button" class="btn btn-warning" id="submit-offset-btn">
+          <i data-lucide="check-circle" class="w-4 h-4"></i>
+          Confirm Offset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Credit Reset Completed -->
+  <div class="cancel-modal" id="credit-reset-success-modal" aria-hidden="true">
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Credit Reset Completed" style="width:min(100%,420px);">
+      <div class="cancel-modal-body" style="padding-bottom:0;">
+        <div class="cr-success-icon-wrap">
+          <span class="cr-sparkle cr-sparkle--tl">+</span>
+          <div class="cr-success-icon">
+            <i data-lucide="check" style="width:28px;height:28px;color:#fff;stroke-width:3;"></i>
+          </div>
+          <span class="cr-sparkle cr-sparkle--tr">+</span>
+        </div>
+        <div class="cr-success-title">Credit Reset Completed</div>
+        <div class="cr-success-sub">Your receive credit has been restored.</div>
+        <div class="cr-result-rows">
+          <div class="cr-result-row">
+            <span class="cr-result-row__label">Method</span>
+            <span class="cr-result-row__value" style="font-size:12px;" id="cr-method"></span>
+          </div>
+          <div class="cr-result-row">
+            <span class="cr-result-row__label">Offset amount</span>
+            <span class="cr-result-row__value" id="cr-offset-amount"></span>
+          </div>
+          <div class="cr-result-row">
+            <span class="cr-result-row__label">Remaining payout</span>
+            <span class="cr-result-row__value" id="cr-remaining-payout"></span>
+          </div>
+          <div class="cr-result-row">
+            <span class="cr-result-row__label">Available receive credit</span>
+            <span class="cr-result-row__value cr-result-row__value--green" id="cr-available-credit"></span>
+          </div>
+        </div>
+      </div>
+      <div class="cancel-modal-actions" style="padding-top:16px;">
+        <button type="button" class="btn btn-warning w-100" id="done-credit-reset-btn">Done</button>
+      </div>
+    </div>
+  </div>
+
   <div class="cancel-modal" id="repayment-modal" aria-hidden="true">
     <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Payment to VLINKPAY"
       style="width:min(100%,540px);">
@@ -8922,35 +9189,8 @@
             </div>
           </div>
           <!-- USDV -->
-          <div class="repayment-acct-block" id="repayment-acct-usdv" style="display:none;">
-            <div class="usdv-meta">
-              <div class="usdv-meta-row">
-                <span class="usdv-meta-row__label">Asset</span>
-                <span class="usdv-meta-row__value">
-                  <img src="../images/usdv.png" width="16" height="16" style="object-fit:contain;" alt="USDV" />
-                  USDV
-                </span>
-              </div>
-              <div class="usdv-meta-sep"></div>
-              <div class="usdv-meta-row">
-                <span class="usdv-meta-row__label">Network</span>
-                <span class="usdv-meta-row__value">
-                  <img src="../images/vrc20.png" width="16" height="16" style="object-fit:contain;" alt="VRC20" />
-                  Vlinkpay (VRC20)
-                </span>
-              </div>
-            </div>
-            <div class="usdv-qr-wrap">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=TVsrDLQFATb8YmvoGcj3nEF7fKeeKVkkyL" width="140" height="140" alt="VLINKPAY USDV Wallet QR" />
-            </div>
-            <div class="usdv-addr-wrap">
-              <span class="usdv-addr-label">Wallet Address</span>
-              <div class="usdv-addr-text">TVsrDLQFATb8YmvoGcj3nEF7fKeeKVkkyL</div>
-              <button type="button" class="usdv-copy-btn" data-copy="TVsrDLQFATb8YmvoGcj3nEF7fKeeKVkkyL" aria-label="Copy address">
-                <i data-lucide="copy" class="w-4 h-4"></i>
-                Copy Address
-              </button>
-            </div>
+          <div  id="repayment-acct-usdv" style="display:none;">
+             
           </div>
         </div>
 
@@ -9009,11 +9249,11 @@
           </div>
         </div>
 
-        <div class="cancel-detail-row">
+        <!-- <div class="cancel-detail-row">
           <span class="cancel-detail-label">Amount</span>
-          <span class="cancel-detail-value" style="color:#ea580c;font-weight:700;">2,075 USDV</span>
+          <span class="cancel-detail-value" style="color:#ea580c;font-weight:700;">1,537.5 USDV</span>
         </div>
-         
+          -->
         
 
         <div class="form-check m-0" style="padding-left:1.6rem;">

@@ -5360,7 +5360,13 @@
       height: 8px;
       border-radius: 999px;
       background: #f1f5f9;
+      overflow: visible;
+      position: relative;
+    }
+
+    .credit-progress-bar .credit-progress-fill {
       overflow: hidden;
+      border-radius: 999px;
     }
 
     .credit-progress-fill {
@@ -5401,6 +5407,11 @@
       border: 1px solid rgba(249, 115, 22, 0.18);
     }
 
+    .credit-stat--commission {
+      background: #f5f3ff;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
     .credit-stat__icon {
       width: 34px;
       height: 34px;
@@ -5424,6 +5435,41 @@
     .credit-stat--chi .credit-stat__icon {
       background: #ffedd5;
       color: #ea580c;
+    }
+
+    .credit-stat--commission .credit-stat__icon {
+      background: #ede9fe;
+      color: #7c3aed;
+    }
+
+    .credit-stat--commission .credit-stat__value {
+      color: #7c3aed;
+    }
+
+    .credit-commission-badge {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #7c3aed;
+      background: #ede9fe;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 999px;
+      padding: 2px 8px;
+      white-space: nowrap;
+      box-shadow: 0 1px 4px rgba(139,92,246,0.15);
+      pointer-events: none;
+    }
+
+    .credit-commission-badge svg {
+      width: 11px;
+      height: 11px;
+      flex-shrink: 0;
     }
 
     .credit-stat__info {
@@ -7835,9 +7881,8 @@
                     </span>
                     <span class="credit-progress-value">$850 / $2,000 </span>
                   </div>
-                  <div class="credit-progress-bar">
-                    <div class="credit-progress-fill"
-                      style="width: 42.5%; background: linear-gradient(90deg,#4ade80,#16a34a);"></div>
+                  <div class="credit-progress-bar-wrap">
+                    <div class="credit-progress-bar" style="background: linear-gradient(90deg, #a78bfa 0px, #7c3aed 14px, #4ade80 14px, #16a34a 42.5%, #e2e8f0 42.5%);"></div>
                   </div>
                 </div>
                 <div class="credit-stats">
@@ -7857,6 +7902,19 @@
                     <div class="credit-stat__info">
                       <div class="credit-stat__label">Received</div>
                       <div class="credit-stat__value">$850 <span class="credit-stat__unit"></span></div>
+                    </div>
+                  </div>
+                  <div class="credit-stat credit-stat--commission">
+                    <div class="credit-stat__icon">
+                      <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
+                    </div>
+                    <div class="credit-stat__info">
+                      <div class="credit-stat__label">Commission
+                        <span class="info-dot" data-tippy-content="Calculated as: Received × Service Fee × 75%">
+                          <i data-lucide="info" class="w-4 h-4"></i>
+                        </span>
+                      </div>
+                      <div class="credit-stat__value">$31.88 <span class="credit-stat__unit"></span></div>
                     </div>
                   </div>
                 </div>
@@ -7891,7 +7949,7 @@
                 <div class="credit-stats">
                   <div class="credit-stat credit-stat--limit">
                     <div class="credit-stat__icon">
-                      <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
+                      <i data-lucide="arrow-up-circle" class="w-4 h-4"></i>
                     </div>
                     <div class="credit-stat__info">
                       <div class="credit-stat__label">Pay-on-Behalf Amount</div>
@@ -7899,8 +7957,9 @@
                     </div>
                   </div>
                   <div class="credit-stat credit-stat--chi">
+                   
                     <div class="credit-stat__icon">
-                      <i data-lucide="arrow-up-circle" class="w-4 h-4"></i>
+                      <i data-lucide="circle-dollar-sign" class="w-4 h-4"></i>
                     </div>
                     <div class="credit-stat__info">
                       <div class="credit-stat__label">Commission</div>

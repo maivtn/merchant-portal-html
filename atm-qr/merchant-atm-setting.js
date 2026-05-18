@@ -1703,7 +1703,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Status config: saved | pending | approved
   const BANK_STATUS = {
     saved:    { label: 'Saved',    cls: ''        },
-    pending:  { label: 'Pending',  cls: 'pending' },
+    pending:  { label: 'Pending Review',  cls: 'pending' },
     approved: { label: 'Approved', cls: 'success' },
   };
 
@@ -1723,6 +1723,7 @@ window.addEventListener('DOMContentLoaded', () => {
       taxDoc:        'EIN',
       docNumber:     '12-3456789',
       status:        'approved',
+      type:          'US',
     },
     {
       id: 2,
@@ -1738,6 +1739,7 @@ window.addEventListener('DOMContentLoaded', () => {
       taxDoc:        'SSN',
       docNumber:     '123-45-6789',
       status:        'pending',
+      type:          'US',
     },
     {
       id: 3,
@@ -1753,6 +1755,7 @@ window.addEventListener('DOMContentLoaded', () => {
       taxDoc:        'EIN',
       docNumber:     '98-7654321',
       status:        'saved',
+      type:          'US',
     },
     {
       id: 4,
@@ -1768,6 +1771,23 @@ window.addEventListener('DOMContentLoaded', () => {
       taxDoc:        'EIN',
       docNumber:     '45-6789012',
       status:        'approved',
+      type:          'US',
+    },
+    {
+      id: 5,
+      bankName:      'Vietcombank',
+      businessName:  'Công ty ABC',
+      accountNumber: '1234567890123',
+      routingNumber: '',
+      address:       '198 Trần Quang Khải, Hoàn Kiếm, Hà Nội',
+      city:          '',
+      state:         '',
+      zip:           '',
+      country:       'VN',
+      taxDoc:        'ID',
+      docNumber:     '012345678901',
+      status:        'approved',
+      type:          'VN',
     },
   ];
 
@@ -1826,6 +1846,78 @@ window.addEventListener('DOMContentLoaded', () => {
     openAddBankModal();
   };
 
+  // US Bank — open info modal
+  const openUsBankInfoModal = (bank) => {
+    const st  = BANK_STATUS[bank.status] || BANK_STATUS.saved;
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    const statusEl = document.getElementById('bank-detail-status-badge');
+    if (statusEl) { statusEl.textContent = st.label; statusEl.className = `status-note${st.cls ? ' ' + st.cls : ''}`; }
+    set('bank-detail-bank-name',      bank.bankName);
+    set('bank-detail-business-name',  bank.businessName);
+    set('bank-detail-account-number', bank.accountNumber);
+    set('bank-detail-routing-number', bank.routingNumber);
+    set('bank-detail-ein',            bank.docNumber);
+    const addrEl = document.getElementById('bank-detail-address');
+    if (addrEl) {
+      const parts = [bank.address, [bank.city, bank.state, bank.zip].filter(Boolean).join(', ')];
+      addrEl.innerHTML = parts.filter(Boolean).join('<br>');
+    }
+    const modal = document.getElementById('bank-info-modal');
+    modal?.classList.add('active');
+    modal?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    refreshIcons();
+  };
+
+  // VN Bank — open info modal
+  let _vnBankInfoCurrent = null;
+  const openVnBankInfoModal = (bank) => {
+    _vnBankInfoCurrent = bank;
+    const st  = BANK_STATUS[bank.status] || BANK_STATUS.saved;
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    const statusEl = document.getElementById('vn-bank-detail-status');
+    if (statusEl) { statusEl.textContent = st.label; statusEl.className = `status-note${st.cls ? ' ' + st.cls : ''}`; }
+    set('vn-bank-detail-name',      bank.bankName);
+    set('vn-bank-detail-holder',    bank.businessName);
+    set('vn-bank-detail-account',   bank.accountNumber);
+    set('vn-bank-detail-address',   bank.address);
+    set('vn-bank-detail-id-number', bank.docNumber);
+    const modal = document.getElementById('vn-bank-info-modal');
+    modal?.classList.add('active');
+    modal?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    refreshIcons();
+  };
+  const closeVnBankInfoModal = () => {
+    const modal = document.getElementById('vn-bank-info-modal');
+    modal?.classList.remove('active');
+    modal?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+  document.getElementById('close-vn-bank-info-modal')?.addEventListener('click', closeVnBankInfoModal);
+  document.getElementById('vn-bank-info-modal')?.addEventListener('click', (e) => {
+    if (e.target === document.getElementById('vn-bank-info-modal')) closeVnBankInfoModal();
+  });
+  document.getElementById('vn-bank-info-edit-btn')?.addEventListener('click', () => {
+    closeVnBankInfoModal();
+    if (_vnBankInfoCurrent) openVnBankForEdit(_vnBankInfoCurrent);
+  });
+
+  // VN Bank — open edit modal pre-filled
+  const openVnBankForEdit = (bank) => {
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+    set('vn-bank-name',      bank.bankName);
+    set('vn-bank-holder',    bank.businessName);
+    set('vn-bank-account',   bank.accountNumber);
+    set('vn-bank-address',   bank.address);
+    set('vn-bank-id-number', bank.docNumber);
+    const titleEl    = document.getElementById('add-vn-bank-modal')?.querySelector('.cancel-modal-title');
+    const subtitleEl = document.getElementById('add-vn-bank-modal')?.querySelector('.cancel-modal-subtitle');
+    if (titleEl)    titleEl.textContent    = 'Edit VN Bank Account';
+    if (subtitleEl) subtitleEl.textContent = 'Update your Vietnamese bank details. Changes require VLINKPAY approval.';
+    openVnBankModal();
+  };
+
   const renderBehalfBanks = () => {
     if (!behalfBankEmptyEl || !behalfBankListEl || !behalfBankItemsEl) return;
 
@@ -1882,7 +1974,9 @@ window.addEventListener('DOMContentLoaded', () => {
     behalfBankItemsEl.querySelectorAll('[data-edit-bank-id]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const bank = behalfBanks.find(b => b.id === Number(btn.dataset.editBankId));
-        if (bank) openAddBankForEdit(bank);
+        if (!bank) return;
+        if (bank.type === 'VN') openVnBankForEdit(bank);
+        else openAddBankForEdit(bank);
       });
     });
 
@@ -1890,28 +1984,8 @@ window.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', () => {
         const bank = behalfBanks.find(b => b.id === Number(btn.dataset.viewBankId));
         if (!bank) return;
-        const st = BANK_STATUS[bank.status] || BANK_STATUS.saved;
-        const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-        const statusEl = document.getElementById('bank-detail-status-badge');
-        if (statusEl) {
-          statusEl.textContent = st.label;
-          statusEl.className   = `status-note${st.cls ? ' ' + st.cls : ''}`;
-        }
-        set('bank-detail-bank-name',     bank.bankName);
-        set('bank-detail-business-name', bank.businessName);
-        set('bank-detail-account-number', bank.accountNumber);
-        set('bank-detail-routing-number', bank.routingNumber);
-        set('bank-detail-ein',           bank.docNumber);
-        const addrEl = document.getElementById('bank-detail-address');
-        if (addrEl) {
-          const parts = [bank.address, [bank.city, bank.state, bank.zip].filter(Boolean).join(', ')];
-          addrEl.innerHTML = parts.filter(Boolean).join('<br>');
-        }
-        const bankInfoModal = document.getElementById('bank-info-modal');
-        bankInfoModal?.classList.add('active');
-        bankInfoModal?.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-        refreshIcons();
+        if (bank.type === 'VN') openVnBankInfoModal(bank);
+        else openUsBankInfoModal(bank);
       });
     });
 
@@ -1936,13 +2010,154 @@ window.addEventListener('DOMContentLoaded', () => {
           renderBehalfBanks();
           renderPayoutBankSelect();
           syncBankTransferCheckbox();
+          syncPayoutBankSelectState();
         });
       });
     });
   };
 
-  document.getElementById('behalf-add-bank-empty-btn')?.addEventListener('click', openAddBankForAdd);
-  document.getElementById('behalf-add-bank-list-btn')?.addEventListener('click', openAddBankForAdd);
+  // VN Bank modal
+  const vnBankModal = document.getElementById('add-vn-bank-modal');
+  const openVnBankModal = () => {
+    vnBankModal?.classList.add('active');
+    vnBankModal?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    refreshIcons();
+  };
+  const closeVnBankModal = () => {
+    vnBankModal?.classList.remove('active');
+    vnBankModal?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  document.getElementById('close-vn-bank-modal')?.addEventListener('click', closeVnBankModal);
+  document.getElementById('vn-bank-cancel-btn')?.addEventListener('click', closeVnBankModal);
+  vnBankModal?.addEventListener('click', (e) => { if (e.target === vnBankModal) closeVnBankModal(); });
+
+  // VN Bank ID upload
+  let vnBankIdFileUrl = null;
+  let vnBankIdIsPdf   = false;
+  const vnIdFileInput   = document.getElementById('vn-bank-id-file-input');
+  const vnIdCameraInput = document.getElementById('vn-bank-id-camera-input');
+  const vnIdPreviewWrap = document.getElementById('vn-bank-id-preview-wrap');
+  const vnIdPreviewImg  = document.getElementById('vn-bank-id-preview-img');
+  const vnIdPreviewPdf  = document.getElementById('vn-bank-id-preview-pdf');
+  const vnIdPreviewName = document.getElementById('vn-bank-id-preview-name');
+  const vnIdRemoveBtn   = document.getElementById('vn-bank-id-remove-btn');
+  const vnIdViewBtn     = document.getElementById('vn-bank-id-view-btn');
+
+  const handleVnIdFile = (file) => {
+    if (!file) return;
+    if (vnBankIdFileUrl) URL.revokeObjectURL(vnBankIdFileUrl);
+    vnBankIdFileUrl = URL.createObjectURL(file);
+    vnBankIdIsPdf   = file.type === 'application/pdf';
+    vnIdPreviewWrap?.classList.add('has-file');
+    if (vnBankIdIsPdf) {
+      vnIdPreviewImg?.classList.add('d-none');
+      vnIdPreviewPdf?.classList.remove('d-none');
+      if (vnIdPreviewName) vnIdPreviewName.textContent = file.name;
+    } else {
+      vnIdPreviewPdf?.classList.add('d-none');
+      vnIdPreviewImg?.classList.remove('d-none');
+      if (vnIdPreviewImg) vnIdPreviewImg.src = vnBankIdFileUrl;
+    }
+    if (vnIdViewBtn) vnIdViewBtn.href = vnBankIdFileUrl;
+  };
+
+  document.getElementById('vn-bank-id-photo-btn')?.addEventListener('click', () => vnIdCameraInput?.click());
+  document.getElementById('vn-bank-id-file-btn')?.addEventListener('click',  () => vnIdFileInput?.click());
+  vnIdFileInput?.addEventListener('change',   (e) => handleVnIdFile(e.target.files[0]));
+  vnIdCameraInput?.addEventListener('change', (e) => handleVnIdFile(e.target.files[0]));
+  vnIdRemoveBtn?.addEventListener('click', () => {
+    vnIdPreviewWrap?.classList.remove('has-file');
+    vnIdPreviewImg?.classList.add('d-none');
+    vnIdPreviewPdf?.classList.add('d-none');
+    if (vnIdPreviewImg) vnIdPreviewImg.src = '';
+    if (vnIdViewBtn) vnIdViewBtn.href = '#';
+    if (vnIdFileInput)   vnIdFileInput.value   = '';
+    if (vnIdCameraInput) vnIdCameraInput.value = '';
+    if (vnBankIdFileUrl) { URL.revokeObjectURL(vnBankIdFileUrl); vnBankIdFileUrl = null; }
+  });
+
+  document.getElementById('vn-bank-submit-btn')?.addEventListener('click', () => {
+    const missing = [];
+    const check = (id, label) => { if (!document.getElementById(id)?.value.trim()) missing.push(label); };
+    check('vn-bank-name',      'Bank Name');
+    check('vn-bank-holder',    'Account Holder Name');
+    check('vn-bank-account',   'Account Number');
+    check('vn-bank-address',   'Bank Address');
+    check('vn-bank-id-number', 'ID Card Number');
+    if (!vnBankIdFileUrl) missing.push('Upload Front of ID Card');
+    if (missing.length) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Required Fields Missing',
+        html: `<div style="text-align:left;font-size:14px;line-height:1.8;">${missing.map(m => `• ${m}`).join('<br>')}</div>`,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d97706',
+        customClass: { popup: 'swal2-popup', confirmButton: 'swal2-confirm' },
+      });
+      return;
+    }
+    closeVnBankModal();
+    Swal.fire({
+      icon: 'success',
+      title: 'Bank Information Submitted!',
+      html: `Your VN bank details are <strong>pending approval</strong>.<br>We'll <strong>notify</strong> you once approved.`,
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#4F6FE8',
+      customClass: { popup: 'swal2-popup', confirmButton: 'swal2-confirm' },
+    });
+  });
+
+  const showAddBankTypePicker = () => {
+    Swal.fire({
+      title: 'Select Bank Type',
+      html: `
+        <div style="display:flex;gap:12px;justify-content:center;margin-top:8px;">
+          <button id="swal-us-bank-btn" type="button" style="
+            flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;
+            padding:16px 12px;border:1.5px solid #e2e8f0;border-radius:14px;
+            background:#fff;cursor:pointer;font-weight:700;font-size:14px;color:#64748b;
+            transition:border-color 0.15s,background 0.15s,color 0.15s;">
+            <i class="bi bi-bank" style="font-size:28px;"></i>
+            US Bank
+          </button>
+          <button id="swal-vn-bank-btn" type="button" style="
+            flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;
+            padding:16px 12px;border:1.5px solid #e2e8f0;border-radius:14px;
+            background:#fff;cursor:pointer;font-weight:700;font-size:14px;color:#64748b;
+            transition:border-color 0.15s,background 0.15s,color 0.15s;">
+            <i class="bi bi-bank" style="font-size:28px;"></i>
+            VN Bank
+          </button>
+        </div>`,
+      showConfirmButton: false,
+      showCloseButton: true,
+      customClass: { popup: 'swal2-popup' },
+      didOpen: () => {
+        const addHover = (el) => {
+          el?.addEventListener('mouseenter', () => { el.style.borderColor = '#4f6fe8'; el.style.background = '#eff6ff'; el.style.color = '#4f6fe8'; });
+          el?.addEventListener('mouseleave', () => { el.style.borderColor = '#e2e8f0'; el.style.background = '#fff'; el.style.color = '#64748b'; });
+        };
+        const usBtn = document.getElementById('swal-us-bank-btn');
+        const vnBtn = document.getElementById('swal-vn-bank-btn');
+        addHover(usBtn);
+        addHover(vnBtn);
+        usBtn?.addEventListener('click', () => {
+          Swal.close();
+          openAddBankForAdd();
+        });
+        vnBtn?.addEventListener('click', () => {
+          Swal.close();
+          openVnBankModal();
+        });
+      },
+    });
+  };
+
+  document.getElementById('behalf-add-bank-empty-btn')?.addEventListener('click', showAddBankTypePicker);
+  document.getElementById('behalf-add-bank-list-btn')?.addEventListener('click', showAddBankTypePicker);
 
   const syncPayoutBankSelectState = () => {
     const sel      = document.getElementById('payout-bank-account-select');

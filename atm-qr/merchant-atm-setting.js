@@ -638,6 +638,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('add-bank-back-btn')?.addEventListener('click', () => goToAddBankStep(1));
 
+  document.getElementById('add-bank-save-later-btn')?.addEventListener('click', () => {
+    closeAddBankModal();
+    Swal.fire({
+      icon: 'success',
+      title: 'Saved!',
+      html: `Your bank details have been <strong>saved</strong>.<br>You can submit for approval later.`,
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#4F6FE8',
+      customClass: { popup: 'swal2-popup', confirmButton: 'swal2-confirm' },
+    });
+  });
+
   document.getElementById('add-bank-submit-btn')?.addEventListener('click', () => {
     closeAddBankModal();
     goToAddBankStep(1);
@@ -1786,7 +1798,7 @@ window.addEventListener('DOMContentLoaded', () => {
       country:       'VN',
       taxDoc:        'ID',
       docNumber:     '012345678901',
-      status:        'approved',
+      status:        'pending',
       type:          'VN',
     },
   ];
@@ -1894,6 +1906,10 @@ window.addEventListener('DOMContentLoaded', () => {
     modal?.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   };
+  document.getElementById('vn-bank-info-id-view')?.addEventListener('click', (e) => {
+    const url = vnBankIdFileUrl || e.currentTarget.dataset.preview;
+    showAddBankImageSwal(url, false, 'Front of ID Card');
+  });
   document.getElementById('close-vn-bank-info-modal')?.addEventListener('click', closeVnBankInfoModal);
   document.getElementById('vn-bank-info-modal')?.addEventListener('click', (e) => {
     if (e.target === document.getElementById('vn-bank-info-modal')) closeVnBankInfoModal();

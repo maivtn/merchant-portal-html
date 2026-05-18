@@ -1851,7 +1851,14 @@ window.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="behalf-bank-item-actions">
             <span class="status-note ${st.cls}">${st.label}</span>
-            <button type="button" class="behalf-bank-edit-btn" data-edit-bank-id="${bank.id}">
+            <button type="button" class="behalf-bank-view-btn" data-view-bank-id="${bank.id}" title="View details">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+            <button type="button" class="behalf-bank-edit-btn" data-edit-bank-id="${bank.id}" title="Edit">
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
@@ -1875,6 +1882,35 @@ window.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', () => {
         const bank = behalfBanks.find(b => b.id === Number(btn.dataset.editBankId));
         if (bank) openAddBankForEdit(bank);
+      });
+    });
+
+    behalfBankItemsEl.querySelectorAll('[data-view-bank-id]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const bank = behalfBanks.find(b => b.id === Number(btn.dataset.viewBankId));
+        if (!bank) return;
+        const st = BANK_STATUS[bank.status] || BANK_STATUS.saved;
+        const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+        const statusEl = document.getElementById('bank-detail-status-badge');
+        if (statusEl) {
+          statusEl.textContent = st.label;
+          statusEl.className   = `status-note${st.cls ? ' ' + st.cls : ''}`;
+        }
+        set('bank-detail-bank-name',     bank.bankName);
+        set('bank-detail-business-name', bank.businessName);
+        set('bank-detail-account-number', bank.accountNumber);
+        set('bank-detail-routing-number', bank.routingNumber);
+        set('bank-detail-ein',           bank.docNumber);
+        const addrEl = document.getElementById('bank-detail-address');
+        if (addrEl) {
+          const parts = [bank.address, [bank.city, bank.state, bank.zip].filter(Boolean).join(', ')];
+          addrEl.innerHTML = parts.filter(Boolean).join('<br>');
+        }
+        const bankInfoModal = document.getElementById('bank-info-modal');
+        bankInfoModal?.classList.add('active');
+        bankInfoModal?.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        refreshIcons();
       });
     });
 

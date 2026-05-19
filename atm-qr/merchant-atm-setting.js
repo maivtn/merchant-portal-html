@@ -752,9 +752,6 @@ window.addEventListener('DOMContentLoaded', () => {
     check('add-bank-city',           'City');
     check('add-bank-state',          'State');
     check('add-bank-zip',            'Zip Code');
-    check('add-bank-doc-number',     'Document Number');
-    if (!addBankFileUrls.ssn)   missing.push('Upload Front of SSN / EIN');
-    if (!addBankFileUrls.check) missing.push('Upload Front of Voided Check Business');
 
     if (missing.length) {
       Swal.fire({
@@ -768,7 +765,6 @@ window.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const taxVal = document.querySelector('input[name="add-bank-tax-doc"]:checked')?.value || 'SSN';
     const address  = document.getElementById('add-bank-address')?.value.trim() || '';
     const city     = document.getElementById('add-bank-city')?.value.trim() || '';
     const state    = document.getElementById('add-bank-state')?.value.trim() || '';
@@ -782,21 +778,8 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('confirm-account-number').textContent   = document.getElementById('add-bank-account-number')?.value.trim() || '—';
     document.getElementById('confirm-routing-number').textContent   = document.getElementById('add-bank-routing-number')?.value.trim() || '—';
     document.getElementById('confirm-bank-address').innerHTML       = addrParts.join('<br>') || '—';
-    document.getElementById('confirm-tax-doc-label').textContent    = taxVal === 'EIN' ? 'EIN (Employer Identification Number)' : 'SSN (Social Security Number)';
-    document.getElementById('confirm-doc-number').textContent       = document.getElementById('add-bank-doc-number')?.value.trim() || '—';
-    document.getElementById('confirm-ssn-upload-label').textContent = taxVal === 'EIN' ? 'Front of EIN' : 'Front of SSN';
 
     goToAddBankStep(2);
-  });
-
-  document.getElementById('confirm-ssn-view')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    showAddBankImageSwal(addBankFileUrls.ssn, addBankFileUrls.ssnIsPdf, 'SSN');
-  });
-
-  document.getElementById('confirm-check-view')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    showAddBankImageSwal(addBankFileUrls.check, addBankFileUrls.checkIsPdf, 'Voided Check');
   });
 
   document.getElementById('add-bank-back-btn')?.addEventListener('click', () => goToAddBankStep(1));
@@ -996,11 +979,6 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   document.getElementById('close-add-bank-modal')?.addEventListener('click', resetAddBankMode, true);
 
-  document.getElementById('bank-info-irs-view')?.addEventListener('click', (e) => {
-    const url = addBankFileUrls.ssn || e.currentTarget.dataset.preview;
-    showAddBankImageSwal(url, addBankFileUrls.ssnIsPdf, 'IRS Letter');
-  });
-
   const changeHistoryModal = document.getElementById('change-history-modal');
   const openChangeHistoryModal = () => {
     changeHistoryModal?.classList.add('active');
@@ -1017,10 +995,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('close-change-history-modal')?.addEventListener('click', closeChangeHistoryModal);
   changeHistoryModal?.addEventListener('click', (e) => { if (e.target === changeHistoryModal) closeChangeHistoryModal(); });
 
-  document.getElementById('bank-info-check-view')?.addEventListener('click', (e) => {
-    const url = addBankFileUrls.check || e.currentTarget.dataset.preview;
-    showAddBankImageSwal(url, addBankFileUrls.checkIsPdf, 'Voided Check');
-  });
+
 
   document.getElementById('open-cancel-confirm-btn')?.addEventListener('click', openCancelConfirmModal);
   document.getElementById('close-cancel-confirm')?.addEventListener('click', closeCancelConfirmModal);
@@ -1877,9 +1852,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Status config: saved | pending | approved
   const BANK_STATUS = {
-    saved:    { label: 'Saved',    cls: ''        },
-    pending:  { label: 'Pending Review',  cls: 'pending' },
-    approved: { label: 'Approved', cls: 'success' },
+    saved:    { label: 'Saved',   cls: ''        },
+    approved: { label: 'Active',  cls: 'success' },
   };
 
   // Bank data
@@ -1899,70 +1873,6 @@ window.addEventListener('DOMContentLoaded', () => {
       docNumber:     '12-3456789',
       status:        'approved',
       type:          'US',
-    },
-    {
-      id: 2,
-      bankName:      'Chase Bank',
-      businessName:  'ABC Corporation',
-      accountNumber: '987654321000',
-      routingNumber: '021000021',
-      address:       '456 Oak Avenue',
-      city:          'New York',
-      state:         'NY',
-      zip:           '10001',
-      country:       'US',
-      taxDoc:        'SSN',
-      docNumber:     '123-45-6789',
-      status:        'pending',
-      type:          'US',
-    },
-    {
-      id: 3,
-      bankName:      'Wells Fargo',
-      businessName:  'ABC Corporation',
-      accountNumber: '556677889900',
-      routingNumber: '121042882',
-      address:       '789 Pine Blvd',
-      city:          'San Francisco',
-      state:         'CA',
-      zip:           '94105',
-      country:       'US',
-      taxDoc:        'EIN',
-      docNumber:     '98-7654321',
-      status:        'saved',
-      type:          'US',
-    },
-    {
-      id: 4,
-      bankName:      'Citibank',
-      businessName:  'ABC Corporation',
-      accountNumber: '334455667788',
-      routingNumber: '021000089',
-      address:       '388 Greenwich St',
-      city:          'New York',
-      state:         'NY',
-      zip:           '10013',
-      country:       'US',
-      taxDoc:        'EIN',
-      docNumber:     '45-6789012',
-      status:        'approved',
-      type:          'US',
-    },
-    {
-      id: 5,
-      bankName:      'Vietcombank',
-      businessName:  'Công ty ABC',
-      accountNumber: '1234567890123',
-      routingNumber: '',
-      address:       '198 Trần Quang Khải, Hoàn Kiếm, Hà Nội',
-      city:          '',
-      state:         '',
-      zip:           '',
-      country:       'VN',
-      taxDoc:        'ID',
-      docNumber:     '012345678901',
-      status:        'pending',
-      type:          'VN',
     },
   ];
 
@@ -2056,7 +1966,6 @@ window.addEventListener('DOMContentLoaded', () => {
     set('vn-bank-detail-holder',    bank.businessName);
     set('vn-bank-detail-account',   bank.accountNumber);
     set('vn-bank-detail-address',   bank.address);
-    set('vn-bank-detail-id-number', bank.docNumber);
     const modal = document.getElementById('vn-bank-info-modal');
     modal?.classList.add('active');
     modal?.setAttribute('aria-hidden', 'false');
@@ -2089,7 +1998,6 @@ window.addEventListener('DOMContentLoaded', () => {
     set('vn-bank-holder',    bank.businessName);
     set('vn-bank-account',   bank.accountNumber);
     set('vn-bank-address',   bank.address);
-    set('vn-bank-id-number', bank.docNumber);
     const titleEl    = document.getElementById('add-vn-bank-modal')?.querySelector('.cancel-modal-title');
     const subtitleEl = document.getElementById('add-vn-bank-modal')?.querySelector('.cancel-modal-subtitle');
     if (titleEl)    titleEl.textContent    = 'Edit VN Bank Account';
@@ -2110,17 +2018,13 @@ window.addEventListener('DOMContentLoaded', () => {
     behalfBankListEl.style.display  = '';
 
     behalfBankItemsEl.innerHTML = behalfBanks.map((bank) => {
-      const st = BANK_STATUS[bank.status] || BANK_STATUS.saved;
       return `
         <div class="behalf-bank-item" data-bank-id="${bank.id}">
           <div class="behalf-bank-item-icon">
             <i data-lucide="landmark" style="width:18px;height:18px;"></i>
           </div>
           <div class="behalf-bank-item-info">
-            <div style="display:flex;align-items:center;gap:7px;">
-              <div class="behalf-bank-item-name">${bank.bankName}</div>
-              <span class="status-note ${st.cls}" style="height:22px;font-size:10.5px;padding:0 8px;">${st.label}</span>
-            </div>
+            <div class="behalf-bank-item-name">${bank.bankName}</div>
             <div class="behalf-bank-item-acc">${bank.businessName} · ${maskAccount(bank.accountNumber)}</div>
           </div>
           <div class="behalf-bank-item-actions">
@@ -2265,7 +2169,6 @@ window.addEventListener('DOMContentLoaded', () => {
     check('vn-bank-holder',    'Account Holder Name');
     check('vn-bank-account',   'Account Number');
     check('vn-bank-address',   'Bank Address');
-    check('vn-bank-id-number', 'ID Card Number');
     if (!vnBankIdFileUrl) missing.push('Upload Front of ID Card');
     if (missing.length) {
       Swal.fire({
@@ -2290,6 +2193,17 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   const showAddBankTypePicker = () => {
+    if (behalfBanks.length >= 5) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Bank Limit Reached',
+        html: 'You can add a maximum of <strong>5 bank accounts</strong>.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d97706',
+        customClass: { popup: 'swal2-popup', confirmButton: 'swal2-confirm' },
+      });
+      return;
+    }
     Swal.fire({
       title: 'Select Bank Type',
       html: `

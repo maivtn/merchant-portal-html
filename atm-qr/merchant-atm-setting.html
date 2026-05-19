@@ -8436,7 +8436,7 @@
                               <i data-lucide="landmark" class="w-4 h-4 payment-choice-landmark"></i>
                               <span>Bank Transfer</span>
                               <span class="info-dot" id="bank-transfer-tooltip"
-                                data-tippy-content="At least 1 Approved bank account is required to enable this payment method.">
+                                data-tippy-content="At least 1 Active bank account is required to enable this payment method.">
                                 <i data-lucide="info" class="w-4 h-4"></i>
                               </span>
                             </label>
@@ -9377,16 +9377,6 @@
 
       <div class="add-bank-modal-body">
 
-        <!-- Edit mode warning (hidden when adding) -->
-        <div id="add-bank-edit-warning" style="display:none;background:#fffbeb;border:1px solid rgba(217,119,6,0.3);border-radius:10px;padding:11px 14px;margin-bottom:10px;">
-          <div style="display:flex;align-items:flex-start;gap:8px;">
-            <i data-lucide="alert-triangle" style="width:15px;height:15px;color:#d97706;flex-shrink:0;margin-top:1px;"></i>
-            <div style="font-size:12.5px;color:#92400e;line-height:1.55;">
-              Any changes to your bank account details must be reviewed by VLINKPAY. Payouts will be temporarily suspended until the update is approved.
-            </div>
-          </div>
-        </div>
-
         <div class="mb-2">
           <label class="form-label" for="add-bank-name">Bank Name <span class="req">*</span></label>
           <input type="text" class="form-control" id="add-bank-name" placeholder="Enter Bank Name" />
@@ -9441,92 +9431,10 @@
           </div>
         </div>
 
-        <div class="mb-2">
-          <label class="form-label">Tax Document <span class="req">*</span></label>
-          <div class="d-flex flex-column gap-2">
-            <label class="form-check" for="add-bank-tax-ssn">
-              <input class="form-check-input" type="radio" name="add-bank-tax-doc" id="add-bank-tax-ssn" value="SSN"
-                checked />
-              <span class="form-check-label">SSN (Social Security Number)</span>
-            </label>
-            <label class="form-check" for="add-bank-tax-ein">
-              <input class="form-check-input" type="radio" name="add-bank-tax-doc" id="add-bank-tax-ein" value="EIN" />
-              <span class="form-check-label">EIN (Employer Identification Number)</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="mb-2">
-          <label class="form-label" for="add-bank-doc-number">Enter Your Document Number <span
-              class="req">*</span></label>
-          <input type="text" class="form-control" id="add-bank-doc-number" placeholder="123-45-6789" />
-        </div>
-
-        <div class="mb-2" id="add-bank-upload-ssn-wrap">
-          <label class="form-label">Upload Front of SSN <span class="req">*</span></label>
-          <input type="file" id="add-bank-ssn-file-input" accept="image/*,.pdf" class="d-none" />
-          <input type="file" id="add-bank-ssn-camera-input" accept="image/*" capture="environment" class="d-none" />
-          <div class="add-bank-preview-wrap" id="add-bank-ssn-preview-wrap">
-            <button type="button" class="add-bank-preview-remove" id="add-bank-ssn-remove-btn">&times;</button>
-            <img class="add-bank-preview-img d-none" id="add-bank-ssn-preview-img" src="" alt="" />
-            <div class="add-bank-preview-pdf d-none" id="add-bank-ssn-preview-pdf">
-              <i data-lucide="file-text" class="w-5 h-5"></i>
-              <span id="add-bank-ssn-preview-name"></span>
-            </div>
-            <a href="#" class="add-bank-preview-view" id="add-bank-ssn-view-btn" target="_blank">
-              <i data-lucide="eye" class="w-4 h-4"></i> View
-            </a>
-          </div>
-          <div class="add-bank-upload-btns">
-            <button type="button" class="add-bank-upload-btn" id="add-bank-ssn-photo-btn">
-              <i data-lucide="camera" class="w-5 h-5"></i>
-              Take photo
-            </button>
-            <button type="button" class="add-bank-upload-btn" id="add-bank-ssn-file-btn">
-              <i data-lucide="folder-open" class="w-5 h-5"></i>
-              Choose file
-            </button>
-          </div>
-          <div class="add-bank-upload-hint">💡 Upload a receipt photo or file. Supported: PNG, JPEG, JPG, PDF. Max size:
-            5MB.</div>
-        </div>
-
-        <div class="mb-1">
-          <label class="form-label">Upload Front of Voided Check Business <span class="req">*</span></label>
-          <input type="file" id="add-bank-check-file-input" accept="image/*,.pdf" class="d-none" />
-          <input type="file" id="add-bank-check-camera-input" accept="image/*" capture="environment" class="d-none" />
-          <div class="add-bank-preview-wrap" id="add-bank-check-preview-wrap">
-            <button type="button" class="add-bank-preview-remove" id="add-bank-check-remove-btn">&times;</button>
-            <img class="add-bank-preview-img d-none" id="add-bank-check-preview-img" src="" alt="" />
-            <div class="add-bank-preview-pdf d-none" id="add-bank-check-preview-pdf">
-              <i data-lucide="file-text" class="w-5 h-5"></i>
-              <span id="add-bank-check-preview-name"></span>
-            </div>
-            <a href="#" class="add-bank-preview-view" id="add-bank-check-view-btn" target="_blank">
-              <i data-lucide="eye" class="w-4 h-4"></i> View
-            </a>
-          </div>
-          <div class="add-bank-upload-btns">
-            <button type="button" class="add-bank-upload-btn" id="add-bank-check-photo-btn">
-              <i data-lucide="camera" class="w-5 h-5"></i>
-              Take photo
-            </button>
-            <button type="button" class="add-bank-upload-btn" id="add-bank-check-file-btn">
-              <i data-lucide="folder-open" class="w-5 h-5"></i>
-              Choose file
-            </button>
-          </div>
-          <div class="add-bank-upload-hint">💡 Upload a receipt photo or file. Supported: PNG, JPEG, JPG, PDF. Max size:
-            5MB.</div>
-        </div>
-
       </div>
 
       <!-- Step 1 footer -->
       <div class="cancel-modal-actions add-bank-step1-actions">
-        <button type="button" class="btn btn-light w-100" id="add-bank-save-later-btn">
-          Save
-        </button>
         <button type="button" class="btn btn-warning w-100" id="add-bank-next-btn">
           Next
         </button>
@@ -9560,22 +9468,6 @@
         <div class="add-bank-confirm-row">
           <span class="add-bank-confirm-label">Bank Address</span>
           <span class="add-bank-confirm-value" id="confirm-bank-address"></span>
-        </div>
-        <div class="add-bank-confirm-row">
-          <span class="add-bank-confirm-label" id="confirm-tax-doc-label">SSN (Social Security Number)</span>
-          <span class="add-bank-confirm-value" id="confirm-doc-number"></span>
-        </div>
-        <div class="add-bank-confirm-row">
-          <span class="add-bank-confirm-label" id="confirm-ssn-upload-label">Front of SSN</span>
-          <a href="#" class="add-bank-confirm-view" id="confirm-ssn-view" target="_blank">
-            View <i data-lucide="eye" class="w-4 h-4"></i>
-          </a>
-        </div>
-        <div class="add-bank-confirm-row">
-          <span class="add-bank-confirm-label">Front of Voided Check Business</span>
-          <a href="#" class="add-bank-confirm-view" id="confirm-check-view" target="_blank">
-            View <i data-lucide="eye" class="w-4 h-4"></i>
-          </a>
         </div>
       </div>
 
@@ -9792,7 +9684,7 @@
       <div class="cancel-modal-head">
         <div>
           <div class="cancel-modal-title">Bank Account Details</div>
-          <div class="cancel-modal-subtitle">Your approved bank information for payouts.</div>
+          <div class="cancel-modal-subtitle">Your bank information for payouts.</div>
         </div>
         <button type="button" class="cancel-modal-close" id="close-bank-info-modal" aria-label="Close">
           <i data-lucide="x" class="w-4 h-4"></i>
@@ -9800,10 +9692,6 @@
       </div>
 
       <div class="bank-info-modal-body">
-        <div class="bank-info-row">
-          <span class="bank-info-label">Status</span>
-          <span class="status-note success" id="bank-detail-status-badge">Approved</span>
-        </div>
         <div class="bank-info-row">
           <span class="bank-info-label">Bank Name</span>
           <span class="bank-info-value" id="bank-detail-bank-name">Bank of America</span>
@@ -9823,24 +9711,6 @@
         <div class="bank-info-row">
           <span class="bank-info-label">Bank Address</span>
           <span class="bank-info-value" id="bank-detail-address">123 Elm Street<br>Los Angeles, CA 90001,<br>United States</span>
-        </div>
-        <div class="bank-info-row">
-          <span class="bank-info-label">Employer Identification Number</span>
-          <span class="bank-info-value" id="bank-detail-ein">12-3456789</span>
-        </div>
-        <div class="bank-info-row">
-          <span class="bank-info-label">IRS Letter</span>
-          <button type="button" class="bank-info-view" id="bank-info-irs-view"
-            data-preview="https://placehold.co/420x560/fffbeb/92400e?text=IRS+Letter">
-            View <i data-lucide="eye" class="w-4 h-4"></i>
-          </button>
-        </div>
-        <div class="bank-info-row">
-          <span class="bank-info-label">Front of Voided Check Business</span>
-          <button type="button" class="bank-info-view" id="bank-info-check-view"
-            data-preview="https://placehold.co/560x300/fffbeb/92400e?text=Voided+Check">
-            View <i data-lucide="eye" class="w-4 h-4"></i>
-          </button>
         </div>
       </div>
 
@@ -9939,7 +9809,7 @@
       } else {
         cls = 'status-note'; text = 'No Bank';
       }
-      ['bank-approval-status-badge', 'bank-detail-status-badge'].forEach(id => {
+      ['bank-approval-status-badge'].forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
         el.className = cls;
@@ -9979,17 +9849,6 @@
         <div class="bank-info-row">
           <span class="bank-info-label">Bank Address</span>
           <span class="bank-info-value" id="vn-bank-detail-address"></span>
-        </div>
-        <div class="bank-info-row">
-          <span class="bank-info-label">ID Card Number</span>
-          <span class="bank-info-value" id="vn-bank-detail-id-number"></span>
-        </div>
-        <div class="bank-info-row">
-          <span class="bank-info-label">Front of ID Card</span>
-          <button type="button" class="bank-info-view" id="vn-bank-info-id-view"
-            data-preview="https://placehold.co/420x560/eff6ff/4f6fe8?text=ID+Card">
-            View <i data-lucide="eye" class="w-4 h-4"></i>
-          </button>
         </div>
       </div>
       <div class="cancel-modal-actions">
@@ -10034,39 +9893,6 @@
         <div class="mb-2">
           <label class="form-label" for="vn-bank-address">Bank Address <span class="req">*</span></label>
           <input type="text" class="form-control" id="vn-bank-address" placeholder="e.g. 198 Trần Quang Khải, Hà Nội" />
-        </div>
-
-        <div class="mb-2">
-          <label class="form-label" for="vn-bank-id-number">ID Card Number <span class="req">*</span></label>
-          <input type="text" class="form-control" id="vn-bank-id-number" placeholder="Enter ID card number" />
-        </div>
-
-        <div class="mb-2">
-          <label class="form-label">Front of ID Card <span class="req">*</span></label>
-          <input type="file" id="vn-bank-id-file-input" accept="image/*,.pdf" class="d-none" />
-          <input type="file" id="vn-bank-id-camera-input" accept="image/*" capture="environment" class="d-none" />
-          <div class="add-bank-preview-wrap" id="vn-bank-id-preview-wrap">
-            <button type="button" class="add-bank-preview-remove" id="vn-bank-id-remove-btn">&times;</button>
-            <img class="add-bank-preview-img d-none" id="vn-bank-id-preview-img" src="" alt="" />
-            <div class="add-bank-preview-pdf d-none" id="vn-bank-id-preview-pdf">
-              <i data-lucide="file-text" class="w-5 h-5"></i>
-              <span id="vn-bank-id-preview-name"></span>
-            </div>
-            <a href="#" class="add-bank-preview-view" id="vn-bank-id-view-btn" target="_blank">
-              <i data-lucide="eye" class="w-4 h-4"></i> View
-            </a>
-          </div>
-          <div class="add-bank-upload-btns">
-            <button type="button" class="add-bank-upload-btn" id="vn-bank-id-photo-btn">
-              <i data-lucide="camera" class="w-5 h-5"></i>
-              Take photo
-            </button>
-            <button type="button" class="add-bank-upload-btn" id="vn-bank-id-file-btn">
-              <i data-lucide="folder-open" class="w-5 h-5"></i>
-              Choose file
-            </button>
-          </div>
-          <div class="add-bank-upload-hint">💡 Supported: PNG, JPEG, JPG, PDF. Max size: 5MB.</div>
         </div>
 
       </div>

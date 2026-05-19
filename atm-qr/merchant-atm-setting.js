@@ -353,19 +353,52 @@ window.addEventListener('DOMContentLoaded', () => {
     if (submitRepaymentBtn) submitRepaymentBtn.disabled = repaymentFiles.length === 0;
   };
 
-  // Reset Credit – data
+  // ── Credit card data ────────────────────────────────────────────
   const RC = {
-    receiveCredit: 2000,      // Receive credit limit
-    collected: 850,           // Collected on behalf (debt to VLINKPAY)
-    pendingPayout: 1500,      // Pending pay-on-behalf payout
-    commission: 31.88,
+    receiveCredit:  2000,   // Receive credit limit
+    collected:       850,   // Collected on behalf (debt to VLINKPAY)
+    commission:    31.88,   // Commission earned (receive side)
+    pendingPayout:  1500,   // Pending pay-on-behalf payout
+    pobCommission:  37.50,  // Commission earned (pay side)
   };
-  RC.available    = RC.receiveCredit - RC.collected;
-  RC.remaining    = RC.pendingPayout - RC.collected;
+
+  const rcDerived = () => {
+    RC.available  = RC.receiveCredit - RC.collected;
+    RC.remaining  = RC.pendingPayout - RC.collected;
+  };
+  rcDerived();
 
   const fmtUSD = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0 });
 
+  const renderCreditCard = () => {
+    rcDerived();
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+    // ── Receive on Behalf card ──
+    set('rob-progress-value',  fmtUSD(RC.collected));
+    set('rob-stat-credit',     fmtUSD(RC.receiveCredit));
+    set('rob-stat-collected',  fmtUSD(RC.collected));
+    set('rob-stat-available',  fmtUSD(RC.available));
+    set('rob-stat-commission', fmtUSD(RC.commission));
+
+    // gradient bar: purple commission pip (14px) + green = collected%, rest grey
+    const robPct = RC.receiveCredit > 0 ? (RC.collected / RC.receiveCredit * 100).toFixed(1) : 0;
+    const bar = document.getElementById('rob-progress-bar');
+    if (bar) bar.style.background =
+      `linear-gradient(90deg, #a78bfa 0px, #7c3aed 14px, #4ade80 14px, #16a34a ${robPct}%, #e2e8f0 ${robPct}%)`;
+
+    // ── Pay on Behalf card ──
+    set('pob-progress-value',  fmtUSD(RC.pendingPayout));
+    set('pob-stat-amount',     fmtUSD(RC.pendingPayout));
+    set('pob-stat-commission', fmtUSD(RC.pobCommission));
+
+    const pobPct = RC.receiveCredit > 0 ? Math.min(RC.pendingPayout / RC.receiveCredit * 100, 100).toFixed(1) : 0;
+    const fill = document.getElementById('pob-progress-fill');
+    if (fill) fill.style.width = pobPct + '%';
+  };
+
   const fillRC = () => {
+    rcDerived();
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
     // reset-credit-modal
     set('rc-subtitle-collected', fmtUSD(RC.collected));
@@ -384,6 +417,8 @@ window.addEventListener('DOMContentLoaded', () => {
     set('co-remaining-payout',   fmtUSD(RC.remaining));
     set('co-credit-after-reset', fmtUSD(RC.receiveCredit));
   };
+
+  renderCreditCard();
 
   // Reset Credit – Choose Method modal
   const resetCreditModal = document.getElementById('reset-credit-modal');
@@ -474,6 +509,10 @@ window.addEventListener('DOMContentLoaded', () => {
   confirmOffsetModal?.addEventListener('click', (e) => { if (e.target === confirmOffsetModal) closeConfirmOffsetModal(); });
 
   document.getElementById('submit-offset-btn')?.addEventListener('click', () => {
+    // Apply offset: collected clears, pendingPayout reduces by collected amount
+    RC.pendingPayout = RC.remaining;
+    RC.collected     = 0;
+    renderCreditCard();
     closeConfirmOffsetModal();
     showCreditResetSuccess();
   });

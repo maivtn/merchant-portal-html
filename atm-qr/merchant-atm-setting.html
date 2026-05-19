@@ -9752,6 +9752,7 @@
   </div>
 
   <!-- Modal: Add Bank -->
+  <!-- Modal 1: Add Bank Account (Form) -->
   <div class="cancel-modal" id="add-bank-modal" aria-hidden="true">
     <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Add Bank Account">
       <div class="cancel-modal-head">
@@ -9763,34 +9764,27 @@
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
-
       <div class="add-bank-modal-body">
-
         <div class="mb-2">
           <label class="form-label" for="add-bank-name">Bank Name <span class="req">*</span></label>
           <input type="text" class="form-control" id="add-bank-name" placeholder="Enter Bank Name" />
         </div>
-
         <div class="mb-2">
           <label class="form-label" for="add-bank-business-name">Business Name <span class="req">*</span></label>
           <input type="text" class="form-control" id="add-bank-business-name" placeholder="Enter Business Name" />
         </div>
-
         <div class="mb-2">
           <label class="form-label" for="add-bank-account-number">Account Number <span class="req">*</span></label>
           <input type="text" class="form-control" id="add-bank-account-number" placeholder="Enter Account Number" />
         </div>
-
         <div class="mb-2">
           <label class="form-label" for="add-bank-routing-number">Routing Number <span class="req">*</span></label>
           <input type="text" class="form-control" id="add-bank-routing-number" placeholder="Enter Routing Number" />
         </div>
-
         <div class="mb-2">
           <label class="form-label" for="add-bank-address">Bank Address <span class="req">*</span></label>
           <input type="text" class="form-control" id="add-bank-address" placeholder="123 Street" />
         </div>
-
         <div class="row g-2 mb-2">
           <div class="col-6">
             <label class="form-label" for="add-bank-city">City <span class="req">*</span></label>
@@ -9801,7 +9795,6 @@
             <input type="text" class="form-control" id="add-bank-state" placeholder="Enter State" />
           </div>
         </div>
-
         <div class="row g-2 mb-2">
           <div class="col-6">
             <label class="form-label" for="add-bank-zip">Zip Code <span class="req">*</span></label>
@@ -9819,54 +9812,62 @@
             </select>
           </div>
         </div>
-
       </div>
-
-      <!-- Step 1 footer -->
-      <div class="cancel-modal-actions add-bank-step1-actions">
+      <div class="cancel-modal-actions">
         <button type="button" class="btn btn-warning w-100" id="add-bank-next-btn">
           Next
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </button>
       </div>
+    </div>
+  </div>
 
-      <!-- Step 2: Confirm Bank Information -->
-      <div class="add-bank-confirm-head">
+  <!-- Modal 2: Confirm Bank Information (Review) -->
+  <div class="cancel-modal" id="confirm-bank-modal" aria-hidden="true">
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Confirm Bank Information">
+      <div class="add-bank-confirm-head" style="display:flex;">
         <button type="button" class="add-bank-confirm-back" id="add-bank-back-btn">
           <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
         </button>
         <div class="add-bank-confirm-head-title">Confirm Bank Information</div>
+        <button type="button" class="cancel-modal-close" id="close-confirm-bank-modal" aria-label="Close">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
       </div>
-
-      <div class="add-bank-confirm-body" id="add-bank-confirm-body">
-        <div class="add-bank-confirm-row">
-          <span class="add-bank-confirm-label">Bank Name</span>
-          <span class="add-bank-confirm-value" id="confirm-bank-name"></span>
+      <div class="add-bank-modal-body">
+        <div class="vn-bank-review-notice">
+          <i data-lucide="shield-check" style="width:15px;height:15px;color:#d97706;flex-shrink:0;margin-top:1px;"></i>
+          Please review your bank details carefully before submitting. This information will be used for payouts.
         </div>
-        <div class="add-bank-confirm-row">
-          <span class="add-bank-confirm-label">Business Name</span>
-          <span class="add-bank-confirm-value" id="confirm-business-name"></span>
-        </div>
-        <div class="add-bank-confirm-row">
-          <span class="add-bank-confirm-label">Account Number</span>
-          <span class="add-bank-confirm-value" id="confirm-account-number"></span>
-        </div>
-        <div class="add-bank-confirm-row">
-          <span class="add-bank-confirm-label">Routing Number</span>
-          <span class="add-bank-confirm-value" id="confirm-routing-number"></span>
-        </div>
-        <div class="add-bank-confirm-row">
-          <span class="add-bank-confirm-label">Bank Address</span>
-          <span class="add-bank-confirm-value" id="confirm-bank-address"></span>
+        <div class="add-bank-confirm-body" id="add-bank-confirm-body" style="display:flex;">
+          <div class="add-bank-confirm-row">
+            <span class="add-bank-confirm-label">Bank Name</span>
+            <span class="add-bank-confirm-value" id="confirm-bank-name"></span>
+          </div>
+          <div class="add-bank-confirm-row">
+            <span class="add-bank-confirm-label">Business Name</span>
+            <span class="add-bank-confirm-value" id="confirm-business-name"></span>
+          </div>
+          <div class="add-bank-confirm-row">
+            <span class="add-bank-confirm-label">Account Number</span>
+            <span class="add-bank-confirm-value" id="confirm-account-number"></span>
+          </div>
+          <div class="add-bank-confirm-row">
+            <span class="add-bank-confirm-label">Routing Number</span>
+            <span class="add-bank-confirm-value" id="confirm-routing-number"></span>
+          </div>
+          <div class="add-bank-confirm-row">
+            <span class="add-bank-confirm-label">Bank Address</span>
+            <span class="add-bank-confirm-value" id="confirm-bank-address"></span>
+          </div>
         </div>
       </div>
-
-      <!-- Step 2 footer -->
-      <div class="cancel-modal-actions add-bank-step2-actions">
+      <div class="cancel-modal-actions">
         <button type="button" class="btn btn-warning w-100" id="add-bank-submit-btn">
+          <i data-lucide="send" class="w-4 h-4"></i>
           Confirm &amp; Submit
         </button>
       </div>
-
     </div>
   </div>
 

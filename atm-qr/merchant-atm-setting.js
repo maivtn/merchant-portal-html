@@ -664,6 +664,23 @@ window.addEventListener('DOMContentLoaded', () => {
     openAddBankModal();
   });
   document.getElementById('close-add-bank-modal')?.addEventListener('click', closeAddBankModal);
+  addBankModal?.addEventListener('click', (e) => { if (e.target === addBankModal) closeAddBankModal(); });
+
+  // Confirm Bank modal (review step)
+  const confirmBankModal = document.getElementById('confirm-bank-modal');
+  const openConfirmBankModal = () => {
+    confirmBankModal?.classList.add('active');
+    confirmBankModal?.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    refreshIcons();
+  };
+  const closeConfirmBankModal = () => {
+    confirmBankModal?.classList.remove('active');
+    confirmBankModal?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+  document.getElementById('close-confirm-bank-modal')?.addEventListener('click', closeConfirmBankModal);
+  confirmBankModal?.addEventListener('click', (e) => { if (e.target === confirmBankModal) closeConfirmBankModal(); });
 
   const setupAddBankUpload = (prefix) => {
     const fileInput   = document.getElementById(`add-bank-${prefix}-file-input`);
@@ -737,7 +754,6 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   addBankTaxRadios.forEach(r => r.addEventListener('change', syncAddBankTaxDoc));
 
-  const addBankCard = document.querySelector('#add-bank-modal .cancel-modal-card');
   const addBankFileUrls = { ssn: null, check: null, ssnIsPdf: false, checkIsPdf: false };
 
   const showAddBankImageSwal = (url, isPdf, label) => {
@@ -757,11 +773,6 @@ window.addEventListener('DOMContentLoaded', () => {
         closeButton:'add-bank-swal-close',
       },
     });
-  };
-
-  const goToAddBankStep = (step) => {
-    addBankCard?.setAttribute('data-add-bank-step', step);
-    if (step === 2) refreshIcons();
   };
 
   document.getElementById('add-bank-next-btn')?.addEventListener('click', () => {
@@ -802,10 +813,14 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('confirm-routing-number').textContent   = document.getElementById('add-bank-routing-number')?.value.trim() || '—';
     document.getElementById('confirm-bank-address').innerHTML       = addrParts.join('<br>') || '—';
 
-    goToAddBankStep(2);
+    closeAddBankModal();
+    openConfirmBankModal();
   });
 
-  document.getElementById('add-bank-back-btn')?.addEventListener('click', () => goToAddBankStep(1));
+  document.getElementById('add-bank-back-btn')?.addEventListener('click', () => {
+    closeConfirmBankModal();
+    openAddBankModal();
+  });
 
   document.getElementById('add-bank-save-later-btn')?.addEventListener('click', () => {
     closeAddBankModal();
@@ -820,8 +835,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('add-bank-submit-btn')?.addEventListener('click', () => {
-    closeAddBankModal();
-    goToAddBankStep(1);
+    closeConfirmBankModal();
     Swal.fire({
       icon: 'success',
       title: 'Bank Information Submitted!',

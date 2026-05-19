@@ -374,27 +374,17 @@ window.addEventListener('DOMContentLoaded', () => {
     rcDerived();
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
 
-    // ── Receive on Behalf card ──
-    set('rob-progress-value',  fmtUSD(RC.collected));
+    // ── Stat cards ──
     set('rob-stat-credit',     fmtUSD(RC.receiveCredit));
-    set('rob-stat-collected',  fmtUSD(RC.collected));
     set('rob-stat-available',  fmtUSD(RC.available));
+    set('rob-stat-collected',  fmtUSD(RC.collected));
     set('rob-stat-commission', fmtUSD(RC.commission));
-
-    // gradient bar: purple commission pip (14px) + green = collected%, rest grey
-    const robPct = RC.receiveCredit > 0 ? (RC.collected / RC.receiveCredit * 100).toFixed(1) : 0;
-    const bar = document.getElementById('rob-progress-bar');
-    if (bar) bar.style.background =
-      `linear-gradient(90deg, #a78bfa 0px, #7c3aed 14px, #4ade80 14px, #16a34a ${robPct}%, #e2e8f0 ${robPct}%)`;
-
-    // ── Pay on Behalf card ──
-    set('pob-progress-value',  fmtUSD(RC.pendingPayout));
     set('pob-stat-amount',     fmtUSD(RC.pendingPayout));
     set('pob-stat-commission', fmtUSD(RC.pobCommission));
 
-    const pobPct = RC.receiveCredit > 0 ? Math.min(RC.pendingPayout / RC.receiveCredit * 100, 100).toFixed(1) : 0;
-    const fill = document.getElementById('pob-progress-fill');
-    if (fill) fill.style.width = pobPct + '%';
+    // ── Bottom owe card + reset label ──
+    set('stat-owe-amount',              fmtUSD(RC.collected));
+    set('reset-credit-payback-label',   'Pay back ' + fmtUSD(RC.collected));
   };
 
   const fillRC = () => {

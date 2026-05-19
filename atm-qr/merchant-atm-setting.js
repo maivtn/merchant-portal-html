@@ -151,8 +151,8 @@ window.addEventListener('DOMContentLoaded', () => {
     openPinModal(() => {
       window.Swal?.fire({
         icon: 'success',
-        title: 'Đăng ký thành công',
-        text: 'Đăng ký thu hộ chi hộ thành công',
+        title: 'Registration successful',
+        text: 'Receive / Pay on Behalf registration successful',
         confirmButtonText: 'OK',
         confirmButtonColor: '#f59e0b',
       }).then(() => {
@@ -214,8 +214,8 @@ window.addEventListener('DOMContentLoaded', () => {
       // Default: join program
       window.Swal?.fire({
         icon: 'success',
-        title: 'Đăng ký thành công',
-        text: 'Đăng ký thu hộ chi hộ thành công',
+        title: 'Registration successful',
+        text: 'Receive / Pay on Behalf registration successful',
         confirmButtonText: 'OK',
         confirmButtonColor: '#f59e0b',
       }).then(() => {
@@ -374,12 +374,13 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   // ── Credit card data ────────────────────────────────────────────
+  const _qp = new URLSearchParams(window.location.search);
   const RC = {
-    receiveCredit:   2000,   // Credit limit granted by VLINKPAY
-    amountThuHo:      850,   // Collected on behalf (thu hộ)
-    commissionThuHo:  31.88, // Commission earned on thu hộ
-    commissionChiHo:  31.88, // Commission earned on chi hộ
-    amountChiHo:     1500,   // Paid on behalf by VLINKPAY (chi hộ)
+    receiveCredit:   2000,
+    amountThuHo:     _qp.has('collected') ? parseFloat(_qp.get('collected')) : 850,
+    commissionThuHo:  31.88,
+    commissionChiHo:  31.88,
+    amountChiHo:     900,
   };
 
   const rcDerived = () => {
@@ -824,7 +825,7 @@ window.addEventListener('DOMContentLoaded', () => {
     Swal.fire({
       icon: 'success',
       title: 'Bank Information Submitted!',
-      html: `Your bank details are <strong>pending approval</strong>.<br>We'll <strong>notify</strong> you once approved.`,
+      html: `Your bank details have been submitted successfully.`,
       confirmButtonText: 'OK',
       confirmButtonColor: '#4F6FE8',
       customClass: {
@@ -2123,6 +2124,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // VN Bank modal
   const vnBankModal = document.getElementById('add-vn-bank-modal');
+  const reviewVnBankModal = document.getElementById('review-vn-bank-modal');
+
   const openVnBankModal = () => {
     vnBankModal?.classList.add('active');
     vnBankModal?.setAttribute('aria-hidden', 'false');
@@ -2134,10 +2137,20 @@ window.addEventListener('DOMContentLoaded', () => {
     vnBankModal?.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   };
+  const openReviewVnBankModal = () => {
+    reviewVnBankModal?.classList.add('active');
+    reviewVnBankModal?.setAttribute('aria-hidden', 'false');
+    refreshIcons();
+  };
+  const closeReviewVnBankModal = () => {
+    reviewVnBankModal?.classList.remove('active');
+    reviewVnBankModal?.setAttribute('aria-hidden', 'true');
+  };
 
   document.getElementById('close-vn-bank-modal')?.addEventListener('click', closeVnBankModal);
-  document.getElementById('vn-bank-cancel-btn')?.addEventListener('click', closeVnBankModal);
   vnBankModal?.addEventListener('click', (e) => { if (e.target === vnBankModal) closeVnBankModal(); });
+  document.getElementById('close-review-vn-bank-modal')?.addEventListener('click', closeReviewVnBankModal);
+  reviewVnBankModal?.addEventListener('click', (e) => { if (e.target === reviewVnBankModal) closeReviewVnBankModal(); });
 
   // VN Bank ID upload
   let vnBankIdFileUrl = null;
@@ -2184,14 +2197,13 @@ window.addEventListener('DOMContentLoaded', () => {
     if (vnBankIdFileUrl) { URL.revokeObjectURL(vnBankIdFileUrl); vnBankIdFileUrl = null; }
   });
 
-  document.getElementById('vn-bank-submit-btn')?.addEventListener('click', () => {
+  document.getElementById('vn-bank-next-btn')?.addEventListener('click', () => {
     const missing = [];
     const check = (id, label) => { if (!document.getElementById(id)?.value.trim()) missing.push(label); };
-    check('vn-bank-name',      'Bank Name');
-    check('vn-bank-holder',    'Account Holder Name');
-    check('vn-bank-account',   'Account Number');
-    check('vn-bank-address',   'Bank Address');
-    if (!vnBankIdFileUrl) missing.push('Upload Front of ID Card');
+    check('vn-bank-name',    'Bank Name');
+    check('vn-bank-holder',  'Account Holder Name');
+    check('vn-bank-account', 'Account Number');
+    check('vn-bank-address', 'Bank Address');
     if (missing.length) {
       Swal.fire({
         icon: 'warning',
@@ -2203,11 +2215,26 @@ window.addEventListener('DOMContentLoaded', () => {
       });
       return;
     }
+    const val = (id) => document.getElementById(id)?.value.trim() || '';
+    document.getElementById('rev-vn-bank-name').textContent    = val('vn-bank-name');
+    document.getElementById('rev-vn-bank-holder').textContent  = val('vn-bank-holder');
+    document.getElementById('rev-vn-bank-account').textContent = val('vn-bank-account');
+    document.getElementById('rev-vn-bank-address').textContent = val('vn-bank-address');
     closeVnBankModal();
+    openReviewVnBankModal();
+  });
+
+  document.getElementById('vn-bank-back-btn')?.addEventListener('click', () => {
+    closeReviewVnBankModal();
+    openVnBankModal();
+  });
+
+  document.getElementById('vn-bank-submit-btn')?.addEventListener('click', () => {
+    closeReviewVnBankModal();
     Swal.fire({
       icon: 'success',
       title: 'Bank Information Submitted!',
-      html: `Your VN bank details are <strong>pending approval</strong>.<br>We'll <strong>notify</strong> you once approved.`,
+      html: `Your bank details have been submitted successfully.`,
       confirmButtonText: 'OK',
       confirmButtonColor: '#4F6FE8',
       customClass: { popup: 'swal2-popup', confirmButton: 'swal2-confirm' },

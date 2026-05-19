@@ -3240,6 +3240,59 @@
       max-height: calc(100dvh - 160px);
     }
 
+    #vn-bank-step-review .add-bank-confirm-head {
+      display: flex;
+    }
+
+    #vn-bank-step-review .add-bank-step2-actions {
+      display: flex !important;
+    }
+
+    .vn-bank-review-notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: #fffbeb;
+      border: 1px solid rgba(217,119,6,0.25);
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-size: 13px;
+      color: #92400e;
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
+    .vn-bank-review-table {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .vn-bank-review-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 16px;
+      font-size: 13.5px;
+      border-bottom: 1px solid #f1f5f9;
+      gap: 12px;
+    }
+
+    .vn-bank-review-row:last-child { border-bottom: none; }
+
+    .vn-bank-review-label {
+      color: var(--muted);
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .vn-bank-review-value {
+      font-weight: 700;
+      color: var(--text);
+      text-align: right;
+      word-break: break-all;
+    }
+
     .add-bank-modal-body .form-label {
       font-size: 13px;
       font-weight: 700;
@@ -8497,7 +8550,7 @@
           <!-- Deposit info card -->
 
 
-          <!-- Credit thu hộ chi hộ -->
+          <!-- Credit collect / payout on behalf -->
           <div class="credit-card mt-3">
             <div class="credit-card-head">
               <div class="credit-card-title">
@@ -8938,7 +8991,7 @@
                   style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:#dc2626;text-decoration:none;background:#fef2f2;border:1px solid rgba(220,38,38,0.2);border-radius:20px;padding:4px 12px;"
                   onclick="event.preventDefault(); document.getElementById('cancel-policy-modal').classList.add('active'); document.getElementById('cancel-policy-modal').setAttribute('aria-hidden','false');">
                   <i data-lucide="x-circle" style="width:13px;height:13px;"></i>
-                  Huỷ gói
+                  Cancel Plan
                 </a>
               </div>
             </div>
@@ -9479,7 +9532,7 @@
                 <span class="usdv-wallet-row__name">USDV</span>
               </div>
               <div class="usdv-wallet-row__right">
-                <span class="usdv-wallet-row__label">Số dư:</span>
+                <span class="usdv-wallet-row__label">Available:</span>
                 <span class="usdv-wallet-row__amount" id="repayment-usdv-balance">—</span>
               </div>
             </div>
@@ -10196,7 +10249,7 @@
     </div>
   </div>
 
-  <!-- VN Bank Modal -->
+  <!-- Modal 1: Add VN Bank Account (Form) -->
   <div class="cancel-modal" id="add-vn-bank-modal" aria-hidden="true">
     <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Add VN Bank Account" style="width:min(100%,520px);">
       <div class="cancel-modal-head">
@@ -10208,36 +10261,73 @@
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
-
       <div class="add-bank-modal-body">
-
         <div class="mb-2">
           <label class="form-label" for="vn-bank-name">Bank Name <span class="req">*</span></label>
           <input type="text" class="form-control" id="vn-bank-name" placeholder="e.g. Vietcombank, Techcombank" />
         </div>
-
         <div class="mb-2">
           <label class="form-label" for="vn-bank-holder">Account Holder Name <span class="req">*</span></label>
           <input type="text" class="form-control" id="vn-bank-holder" placeholder="Enter full name" />
         </div>
-
         <div class="mb-2">
           <label class="form-label" for="vn-bank-account">Account Number <span class="req">*</span></label>
           <input type="text" class="form-control" id="vn-bank-account" placeholder="Enter account number" />
         </div>
-
         <div class="mb-2">
           <label class="form-label" for="vn-bank-address">Bank Address <span class="req">*</span></label>
-          <input type="text" class="form-control" id="vn-bank-address" placeholder="e.g. 198 Trần Quang Khải, Hà Nội" />
+          <input type="text" class="form-control" id="vn-bank-address" placeholder="e.g. 123 Main St, New York, NY 10001" />
         </div>
-
       </div>
-
       <div class="cancel-modal-actions">
-        <button type="button" class="btn btn-light" id="vn-bank-cancel-btn">Cancel</button>
-        <button type="button" class="btn btn-warning" id="vn-bank-submit-btn">
+        <button type="button" class="btn btn-warning" id="vn-bank-next-btn">
+          Next
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Review VN Bank Information -->
+  <div class="cancel-modal" id="review-vn-bank-modal" aria-hidden="true">
+    <div class="cancel-modal-card" role="dialog" aria-modal="true" aria-label="Review VN Bank Information" style="width:min(100%,520px);">
+      <div class="add-bank-confirm-head" style="display:flex;">
+        <button type="button" class="add-bank-confirm-back" id="vn-bank-back-btn">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+        </button>
+        <div class="add-bank-confirm-head-title">Review Bank Information</div>
+        <button type="button" class="cancel-modal-close" id="close-review-vn-bank-modal" aria-label="Close">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div class="add-bank-modal-body">
+        <div class="vn-bank-review-notice">
+          <i data-lucide="shield-check" style="width:15px;height:15px;color:#d97706;flex-shrink:0;margin-top:1px;"></i>
+          Please review your bank details carefully before submitting. This information will be used for payouts.
+        </div>
+        <div class="vn-bank-review-table">
+          <div class="vn-bank-review-row">
+            <span class="vn-bank-review-label">Bank Name</span>
+            <span class="vn-bank-review-value" id="rev-vn-bank-name"></span>
+          </div>
+          <div class="vn-bank-review-row">
+            <span class="vn-bank-review-label">Account Holder</span>
+            <span class="vn-bank-review-value" id="rev-vn-bank-holder"></span>
+          </div>
+          <div class="vn-bank-review-row">
+            <span class="vn-bank-review-label">Account Number</span>
+            <span class="vn-bank-review-value" id="rev-vn-bank-account"></span>
+          </div>
+          <div class="vn-bank-review-row">
+            <span class="vn-bank-review-label">Bank Address</span>
+            <span class="vn-bank-review-value" id="rev-vn-bank-address"></span>
+          </div>
+        </div>
+      </div>
+      <div class="cancel-modal-actions">
+        <button type="button" class="btn btn-warning w-100" id="vn-bank-submit-btn">
           <i data-lucide="send" class="w-4 h-4"></i>
-          Submit
+          Confirm &amp; Submit
         </button>
       </div>
     </div>

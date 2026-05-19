@@ -383,18 +383,11 @@ window.addEventListener('DOMContentLoaded', () => {
     set('co-offset-amount',      fmtUSD(RC.collected));
     set('co-remaining-payout',   fmtUSD(RC.remaining));
     set('co-credit-after-reset', fmtUSD(RC.receiveCredit));
-    // credit-reset-success-modal
-    set('cr-method',             'Offset with Pay-on-Behalf Payout');
-    set('cr-offset-amount',      fmtUSD(RC.collected));
-    set('cr-remaining-payout',   fmtUSD(RC.remaining));
-    set('cr-available-credit',   fmtUSD(RC.receiveCredit));
   };
 
   // Reset Credit – Choose Method modal
   const resetCreditModal = document.getElementById('reset-credit-modal');
   const confirmOffsetModal = document.getElementById('confirm-offset-modal');
-  const creditResetSuccessModal = document.getElementById('credit-reset-success-modal');
-
   const openResetCreditModal = () => {
     fillRC();
     const offsetRadio = resetCreditModal?.querySelector('input[value="offset"]');
@@ -422,15 +415,22 @@ window.addEventListener('DOMContentLoaded', () => {
     confirmOffsetModal?.setAttribute('aria-hidden', 'true');
   };
 
-  const openCreditResetSuccessModal = () => {
-    creditResetSuccessModal?.classList.add('active');
-    creditResetSuccessModal?.setAttribute('aria-hidden', 'false');
-    refreshIcons();
-  };
-
-  const closeCreditResetSuccessModal = () => {
-    creditResetSuccessModal?.classList.remove('active');
-    creditResetSuccessModal?.setAttribute('aria-hidden', 'true');
+  const showCreditResetSuccess = () => {
+    window.Swal?.fire({
+      icon: 'success',
+      title: 'Credit Reset Completed',
+      html: `
+        <div style="font-size:13px;color:#64748b;margin-bottom:12px;">Your receive credit has been restored.</div>
+        <table style="width:100%;font-size:13px;border-collapse:collapse;">
+          <tr><td style="padding:7px 0;color:#64748b;text-align:left;">Method</td><td style="text-align:right;font-weight:700;font-size:12px;">Offset with Pay-on-Behalf Payout</td></tr>
+          <tr style="border-top:1px solid #f1f5f9;"><td style="padding:7px 0;color:#64748b;text-align:left;">Offset amount</td><td style="text-align:right;font-weight:700;">${fmtUSD(RC.collected)}</td></tr>
+          <tr style="border-top:1px solid #f1f5f9;"><td style="padding:7px 0;color:#64748b;text-align:left;">Remaining payout</td><td style="text-align:right;font-weight:700;">${fmtUSD(RC.remaining)}</td></tr>
+          <tr style="border-top:1px solid #f1f5f9;"><td style="padding:7px 0;color:#64748b;text-align:left;">Available receive credit</td><td style="text-align:right;font-weight:700;color:#16a34a;">${fmtUSD(RC.receiveCredit)}</td></tr>
+        </table>`,
+      confirmButtonText: 'Done',
+      confirmButtonColor: '#f59e0b',
+      customClass: { popup: 'swal-rounded' },
+    });
   };
 
   // Radio option toggle styling
@@ -475,11 +475,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('submit-offset-btn')?.addEventListener('click', () => {
     closeConfirmOffsetModal();
-    openCreditResetSuccessModal();
+    showCreditResetSuccess();
   });
-
-  document.getElementById('done-credit-reset-btn')?.addEventListener('click', closeCreditResetSuccessModal);
-  creditResetSuccessModal?.addEventListener('click', (e) => { if (e.target === creditResetSuccessModal) closeCreditResetSuccessModal(); });
 
   document.getElementById('close-repayment-modal')?.addEventListener('click', closeRepaymentModal);
   document.getElementById('cancel-repayment-btn')?.addEventListener('click', closeRepaymentModal);

@@ -355,16 +355,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // ── Credit card data ────────────────────────────────────────────
   const RC = {
-    receiveCredit:  2000,   // Receive credit limit
-    collected:       850,   // Collected on behalf (debt to VLINKPAY)
-    commission:    31.88,   // Commission earned (receive side)
-    pendingPayout:  1500,   // Pending pay-on-behalf payout
-    pobCommission:  37.50,  // Commission earned (pay side)
+    receiveCredit:   2000,   // Credit limit granted by VLINKPAY
+    amountThuHo:      850,   // Collected on behalf (thu hộ)
+    commissionThuHo:  31.88, // Commission earned on thu hộ
+    commissionChiHo:  31.88, // Commission earned on chi hộ
+    amountChiHo:     1500,   // Paid on behalf by VLINKPAY (chi hộ)
   };
 
   const rcDerived = () => {
-    RC.available  = RC.receiveCredit - RC.collected;
-    RC.remaining  = RC.pendingPayout - RC.collected;
+    RC.netAvailable  = RC.receiveCredit - RC.amountThuHo + RC.amountChiHo;
+    RC.commission    = RC.commissionThuHo + RC.commissionChiHo;
+    RC.payBack       = RC.amountThuHo - RC.amountChiHo > 0 ? RC.amountThuHo - RC.amountChiHo : 0;
+    RC.vlinkpayPayout= RC.amountChiHo - RC.amountThuHo > 0 ? RC.amountChiHo - RC.amountThuHo : 0;
   };
   rcDerived();
 
@@ -376,35 +378,42 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // ── Stat cards ──
     set('rob-stat-credit',     fmtUSD(RC.receiveCredit));
-    set('rob-stat-available',  fmtUSD(RC.available));
-    set('rob-stat-collected',  fmtUSD(RC.collected));
+    set('rob-stat-available',  fmtUSD(RC.netAvailable));
+    set('rob-stat-collected',  fmtUSD(RC.amountThuHo));
     set('rob-stat-commission', fmtUSD(RC.commission));
-    set('pob-stat-amount',     fmtUSD(RC.pendingPayout));
-    set('pob-stat-commission', fmtUSD(RC.pobCommission));
+    set('pob-stat-amount',     fmtUSD(RC.amountChiHo));
 
-    // ── Bottom owe card + reset label ──
-    set('stat-owe-amount',              fmtUSD(RC.collected));
-    set('reset-credit-payback-label',   'Pay back ' + fmtUSD(RC.collected));
+    // ── Bottom cards ──
+    set('stat-owe-amount',            fmtUSD(RC.payBack));
+    set('stat-vlinkpay-payout',       fmtUSD(RC.vlinkpayPayout));
+    set('reset-credit-payback-label', 'Pay back ' + fmtUSD(RC.payBack));
+    set('payout-amount-label',        'Request ' + fmtUSD(RC.vlinkpayPayout));
+
+    // ── Disable buttons when amount = 0 ──
+    const repayBtn  = document.getElementById('open-repayment-modal');
+    const payoutBtn = document.getElementById('open-payout-modal');
+    if (repayBtn)  repayBtn.disabled  = RC.payBack        === 0;
+    if (payoutBtn) payoutBtn.disabled = RC.vlinkpayPayout === 0;
   };
 
   const fillRC = () => {
     rcDerived();
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
     // reset-credit-modal
-    set('rc-subtitle-collected', fmtUSD(RC.collected));
+    set('rc-subtitle-collected', fmtUSD(RC.amountThuHo));
     set('rc-stat-limit',         fmtUSD(RC.receiveCredit));
-    set('rc-stat-collected',     fmtUSD(RC.collected));
-    set('rc-stat-available',     fmtUSD(RC.available));
+    set('rc-stat-collected',     fmtUSD(RC.amountThuHo));
+    set('rc-stat-available',     fmtUSD(RC.netAvailable));
     set('rc-stat-after-reset',   fmtUSD(RC.receiveCredit));
-    set('rc-offset-amount',      fmtUSD(RC.collected));
-    set('rc-pending-payout',     fmtUSD(RC.pendingPayout));
-    set('rc-remaining-payout',   fmtUSD(RC.remaining));
-    set('rc-pay-amount',         fmtUSD(RC.collected));
+    set('rc-offset-amount',      fmtUSD(RC.payBack));
+    set('rc-pending-payout',     fmtUSD(RC.amountChiHo));
+    set('rc-remaining-payout',   fmtUSD(RC.vlinkpayPayout));
+    set('rc-pay-amount',         fmtUSD(RC.payBack));
     // confirm-offset-modal
-    set('co-debt',               fmtUSD(RC.collected));
-    set('co-pending-payout',     fmtUSD(RC.pendingPayout));
-    set('co-offset-amount',      fmtUSD(RC.collected));
-    set('co-remaining-payout',   fmtUSD(RC.remaining));
+    set('co-debt',               fmtUSD(RC.payBack));
+    set('co-pending-payout',     fmtUSD(RC.amountChiHo));
+    set('co-offset-amount',      fmtUSD(RC.payBack));
+    set('co-remaining-payout',   fmtUSD(RC.vlinkpayPayout));
     set('co-credit-after-reset', fmtUSD(RC.receiveCredit));
   };
 

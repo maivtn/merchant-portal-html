@@ -5486,6 +5486,26 @@
       color: var(--text);
     }
 
+    .anlytic-action-info-dot {
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      z-index: 2;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+    }
+
+    .anlytic-action-info-dot:hover {
+      background: #e2e8f0;
+      color: #64748b;
+    }
+
     .anlytic-action-card--payout:hover {
       background: #fff7ed;
       transform: translateY(-1px);
@@ -6054,6 +6074,82 @@
 
     .repayment-method-label strong {
       font-size: 15px;
+    }
+
+    .usdv-wallet-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .usdv-wallet-row__left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .usdv-wallet-row__icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .usdv-wallet-row__name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .usdv-wallet-row__right {
+      text-align: right;
+    }
+
+    .usdv-wallet-row__label {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 1px;
+    }
+
+    .usdv-wallet-row__amount {
+      display: block;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .usdv-wallet-card__status {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .usdv-wallet-card__status[data-ok="1"] {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+
+    .usdv-wallet-card__status[data-ok="0"] {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .usdv-wallet-warn {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      background: #fff1f2;
+      border: 1px solid rgba(220,38,38,0.2);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12.5px;
+      color: #991b1b;
+      line-height: 1.5;
     }
 
     /* Reset Credit Choose Method Modal */
@@ -8515,7 +8611,8 @@
                 </div>
                 <!-- Vlinkpay Payout -->
                 <div class="col-12 col-sm-6 col-lg-3">
-                  <div class="anlytic-owe-card anlytic-owe-card--vlinkpay">
+                  
+                  <div class="anlytic-owe-card anlytic-owe-card--vlinkpay position-relative">
                     <div class="anlytic-owe-card__icon">
                       <i data-lucide="arrow-down" class="w-5 h-5"></i>
                     </div>
@@ -8544,7 +8641,12 @@
                     
                    
                     <!-- Request Payout -->
-                    <div class="col-4">
+                    <div class="col-4" style="position:relative;">
+                      <span class="info-dot anlytic-action-info-dot"
+                        data-tippy-content="VLINKPAY will settle your payout according to the agreed policy. If payment is delayed, use this to submit a reminder and VLINKPAY will prioritize processing your reimbursement."
+                        data-tippy-placement="top">
+                        <i data-lucide="info" style="width:11px;height:11px;"></i>
+                      </span>
                       <button type="button" class="anlytic-action-card anlytic-action-card--payout" id="open-payout-modal">
                         <i data-lucide="arrow-up" class="w-6 h-6" style="color:#ea580c;"></i>
                         <span class="anlytic-action-card__title" style="color:#ea580c;">Request Payout</span>
@@ -8554,10 +8656,10 @@
 
                     <!-- Settlement History -->
                     <div class="col-4">
-                      <a href="?tab=history&subnav=settlement&settlementType=Pay+to+VLINKPAY"
+                      <a href="?tab=history&subnav=settlement"
                         class="anlytic-action-card anlytic-action-card--history">
                         <i data-lucide="history" class="w-6 h-6"></i>
-                        <span class="anlytic-action-card__title">Settlement History</span>
+                        <span class="anlytic-action-card__title">Settlement / Payout History</span>
                       </a>
                     </div>
                   </div>
@@ -9370,8 +9472,22 @@
             </div>
           </div>
           <!-- USDV -->
-          <div  id="repayment-acct-usdv" style="display:none;">
-             
+          <div class="repayment-acct-block" id="repayment-acct-usdv" style="display:none;flex-direction:column;gap:0;">
+            <div class="usdv-wallet-row">
+              <div class="usdv-wallet-row__left">
+                <img src="../images/usdv.png" alt="USDV" class="usdv-wallet-row__icon" style="object-fit:contain;">
+                <span class="usdv-wallet-row__name">USDV</span>
+              </div>
+              <div class="usdv-wallet-row__right">
+                <span class="usdv-wallet-row__label">Số dư:</span>
+                <span class="usdv-wallet-row__amount" id="repayment-usdv-balance">—</span>
+              </div>
+            </div>
+            <div class="usdv-wallet-warn" id="repayment-usdv-warn" style="display:none;">
+              <i data-lucide="triangle-alert" style="width:13px;height:13px;flex-shrink:0;"></i>
+              Insufficient USDV balance. Please top up your wallet or choose another payment method.
+            </div>
+            <span class="usdv-wallet-card__status" id="repayment-usdv-status" style="display:none;"></span>
           </div>
         </div>
 

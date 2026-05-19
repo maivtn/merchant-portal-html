@@ -8,13 +8,13 @@ window.addEventListener('DOMContentLoaded', () => {
   const refreshTooltips = () => {
     if (!window.tippy) return;
 
-    document.querySelectorAll('.info-dot').forEach((node) => {
+    document.querySelectorAll('.info-dot, .anlytic-action-info-dot').forEach((node) => {
       if (node._tippy) return;
       window.tippy(node, {
         content: node.getAttribute('data-tippy-content') || 'More information',
         theme: 'light-border',
         animation: 'shift-away-subtle',
-        placement: 'top',
+        placement: node.getAttribute('data-tippy-placement') || 'top',
         interactive: false,
         arrow: true,
       });
@@ -308,8 +308,23 @@ window.addEventListener('DOMContentLoaded', () => {
     if (target) { target.style.display = 'flex'; refreshIcons(); }
     const uploadSection = document.getElementById('repayment-upload-section');
     if (uploadSection) uploadSection.style.display = method === 'usdv' ? 'none' : '';
-    if (submitRepaymentBtn) {
-      submitRepaymentBtn.disabled = method !== 'usdv' && repaymentFiles.length === 0;
+
+    if (method === 'usdv') {
+      const bal   = WALLET.usdv;
+      const need  = RC.payBack;
+      const ok    = bal >= need;
+      const balEl = document.getElementById('repayment-usdv-balance');
+      if (balEl) balEl.textContent = "$"+ bal.toLocaleString('en-US', { minimumFractionDigits: 2 }) ;
+      const statusEl = document.getElementById('repayment-usdv-status');
+      if (statusEl) {
+        statusEl.textContent   = ok ? 'Sufficient' : 'Insufficient';
+        statusEl.dataset.ok    = ok ? '1' : '0';
+      }
+      const warnEl = document.getElementById('repayment-usdv-warn');
+      if (warnEl) warnEl.style.display = ok ? 'none' : 'flex';
+      if (submitRepaymentBtn) submitRepaymentBtn.disabled = !ok;
+    } else {
+      if (submitRepaymentBtn) submitRepaymentBtn.disabled = repaymentFiles.length === 0;
     }
   };
 
@@ -353,6 +368,11 @@ window.addEventListener('DOMContentLoaded', () => {
     if (submitRepaymentBtn) submitRepaymentBtn.disabled = repaymentFiles.length === 0;
   };
 
+  // ── Wallet balances (mock) ───────────────────────────────────────
+  const WALLET = {
+    usdv: 620.00,  // USDV wallet balance
+  };
+
   // ── Credit card data ────────────────────────────────────────────
   const RC = {
     receiveCredit:   2000,   // Credit limit granted by VLINKPAY
@@ -363,10 +383,13 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   const rcDerived = () => {
-    RC.netAvailable  = RC.receiveCredit - RC.amountThuHo + RC.amountChiHo;
-    RC.commission    = RC.commissionThuHo + RC.commissionChiHo;
-    RC.payBack       = RC.amountThuHo - RC.amountChiHo > 0 ? RC.amountThuHo - RC.amountChiHo : 0;
-    RC.vlinkpayPayout= RC.amountChiHo - RC.amountThuHo > 0 ? RC.amountChiHo - RC.amountThuHo : 0;
+    RC.netAvailable   = RC.receiveCredit - RC.amountThuHo + RC.amountChiHo;
+    RC.availableReceive = RC.receiveCredit - RC.amountThuHo;
+    RC.commission     = RC.commissionThuHo + RC.commissionChiHo;
+    RC.payBack        = RC.amountThuHo - RC.amountChiHo > 0 ? RC.amountThuHo - RC.amountChiHo : 0;
+    RC.vlinkpayPayout = RC.amountChiHo - RC.amountThuHo > 0 ? RC.amountChiHo - RC.amountThuHo : 0;
+    RC.offsetAmount   = Math.min(RC.amountThuHo, RC.amountChiHo);
+    RC.remainingAfterOffset = RC.amountChiHo - RC.offsetAmount;
   };
   rcDerived();
 
@@ -403,17 +426,17 @@ window.addEventListener('DOMContentLoaded', () => {
     set('rc-subtitle-collected', fmtUSD(RC.amountThuHo));
     set('rc-stat-limit',         fmtUSD(RC.receiveCredit));
     set('rc-stat-collected',     fmtUSD(RC.amountThuHo));
-    set('rc-stat-available',     fmtUSD(RC.netAvailable));
+    set('rc-stat-available',     fmtUSD(RC.availableReceive));
     set('rc-stat-after-reset',   fmtUSD(RC.receiveCredit));
-    set('rc-offset-amount',      fmtUSD(RC.payBack));
+    set('rc-offset-amount',      fmtUSD(RC.offsetAmount));
     set('rc-pending-payout',     fmtUSD(RC.amountChiHo));
-    set('rc-remaining-payout',   fmtUSD(RC.vlinkpayPayout));
-    set('rc-pay-amount',         fmtUSD(RC.payBack));
+    set('rc-remaining-payout',   fmtUSD(RC.remainingAfterOffset));
+    set('rc-pay-amount',         fmtUSD(RC.amountThuHo));
     // confirm-offset-modal
-    set('co-debt',               fmtUSD(RC.payBack));
+    set('co-debt',               fmtUSD(RC.amountThuHo));
     set('co-pending-payout',     fmtUSD(RC.amountChiHo));
-    set('co-offset-amount',      fmtUSD(RC.payBack));
-    set('co-remaining-payout',   fmtUSD(RC.vlinkpayPayout));
+    set('co-offset-amount',      fmtUSD(RC.offsetAmount));
+    set('co-remaining-payout',   fmtUSD(RC.remainingAfterOffset));
     set('co-credit-after-reset', fmtUSD(RC.receiveCredit));
   };
 
@@ -485,7 +508,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (r) { r.checked = true; r.dispatchEvent(new Event('change')); }
   });
 
-  document.getElementById('open-repayment-modal')?.addEventListener('click', openResetCreditModal);
+  document.getElementById('open-repayment-modal')?.addEventListener('click', openRepaymentModal);
   document.getElementById('close-reset-credit-modal')?.addEventListener('click', closeResetCreditModal);
   document.getElementById('cancel-reset-credit-btn')?.addEventListener('click', closeResetCreditModal);
   resetCreditModal?.addEventListener('click', (e) => { if (e.target === resetCreditModal) closeResetCreditModal(); });

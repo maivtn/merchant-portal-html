@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống IOU Package Maxout 300% - Full Specs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chosen Palette: Warm Neutrals & Deep Amber (bg-stone-50, text-stone-800, accent amber-600/700) -->
+    <!-- Application Structure Plan: Phiên bản v1.5 khôi phục và làm rõ tất cả các "mảnh ghép" thông tin: Maxout, FIFO, Binary Outer Branch, 24h Grace, Multi-Daily pooling và AI Annual. Các phần được tách biệt bằng ID rõ ràng để người dùng dễ dàng theo dõi dòng chảy của dữ liệu từ lý thuyết đến simulator. -->
+    <!-- Visualization & Content Choices: 
+        1. Binary Tree: Tái hiện sơ đồ nhánh ngoài bằng CSS.
+        2. FIFO: Hiệu ứng nạp tiền dồn gói.
+        3. Simulator: Tích hợp logic "Dồn Daily" và "Cảnh báo Reset VMM" trực quan hơn.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; background-color: #fafaf9; color: #292524; scroll-behavior: smooth; }
+        .chart-container { position: relative; width: 100%; max-width: 900px; margin: 0 auto; height: 350px; }
+        .nav-link { transition: all 0.2s; border-bottom: 2px solid transparent; }
+        .nav-link:hover { color: #b45309; border-bottom-color: #b45309; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid #e7e5e4; }
+        .not-qualified { text-decoration: line-through; opacity: 0.5; }
+        .package-box { transition: all 0.5s ease; }
+        .fill-bar { transition: height 0.5s ease, background-color 0.3s ease; }
+        
+        /* Binary Tree Visuals */
+        .binary-node { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.7rem; position: relative; z-index: 2; }
+        .tree-line { position: absolute; background-color: #d6d3d1; z-index: 1; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
+    </style>
+</head>
+<body class="antialiased text-stone-900">
+
+    <nav class="sticky top-0 z-50 glass-card shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="font-black text-xl text-amber-700 tracking-tighter">IOU<span class="text-stone-800 uppercase font-light">Specs</span></div>
+                <div class="hidden lg:flex space-x-6 text-[11px] font-black uppercase tracking-widest text-stone-500">
+                    <a href="#rules" class="nav-link py-2">1. Quy tắc</a>
+                    <a href="#tiers" class="nav-link py-2">2. Package</a>
+                    <a href="#network" class="nav-link py-2">3. Network & BV</a>
+                    <a href="#vmm" class="nav-link py-2">4. VMM & AI</a>
+                    <a href="#fifo" class="nav-link py-2">5. FIFO</a>
+                    <a href="#mo-phong" class="nav-link px-3 py-2 bg-amber-600 text-white rounded-full hover:bg-amber-700">Simulator</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-24">
+
+        <!-- Header -->
+        <header class="text-center space-y-4 py-10">
+            <div class="inline-block px-4 py-1 bg-amber-100 text-amber-800 rounded-full text-[10px] font-black tracking-[0.2em] uppercase">Phiên bản Đặc tả v1.5 - Đầy đủ nhất</div>
+            <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-stone-900">IOU Package <span class="text-amber-600">300% MAXOUT</span></h1>
+            <p class="text-lg text-stone-500 max-w-2xl mx-auto">Tài liệu tương tác giải trình toàn bộ cơ chế: Dồn tiền FIFO, Nhánh mạnh Nhị phân, Bảo lưu 24h và AI Annual.</p>
+        </header>
+
+        <!-- Section 1: Core Rules & Pooling -->
+        <section id="rules" class="scroll-mt-20">
+            <div class="bg-white rounded-[2rem] shadow-sm border border-stone-200 p-8 md:p-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-3xl font-black text-stone-900 mb-6 tracking-tight">1. Quy tắc 300% & Dồn Daily</h2>
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <div class="w-12 h-12 bg-amber-600 text-white rounded-2xl flex items-center justify-center font-black flex-shrink-0">3x</div>
+                                <div>
+                                    <h4 class="font-bold text-stone-800">Maxout Cap 300%</h4>
+                                    <p class="text-sm text-stone-500">Mỗi gói đầu tư có giới hạn nhận thưởng tối đa gấp 3 lần giá trị gốc ($1K -> $3K).</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-12 h-12 bg-stone-800 text-white rounded-2xl flex items-center justify-center font-black flex-shrink-0">D</div>
+                                <div>
+                                    <h4 class="font-bold text-stone-800">Dồn Daily (Multi-pooling)</h4>
+                                    <p class="text-sm text-stone-500">Nếu bạn có nhiều gói, phần Daily chuẩn của gói 2, 3... sẽ được dồn toàn bộ vào gói 1 để đạt Maxout nhanh hơn.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-stone-50 p-8 rounded-3xl border border-stone-200 text-center">
+                        <div class="text-[10px] font-black uppercase text-stone-400 mb-4 tracking-widest">Minh họa dồn Daily</div>
+                        <div class="flex justify-center items-end gap-2 h-32">
+                            <div class="w-8 bg-amber-200 h-10 rounded-t-lg"></div>
+                            <div class="w-8 bg-amber-300 h-20 rounded-t-lg"></div>
+                            <div class="w-8 bg-amber-400 h-28 rounded-t-lg"></div>
+                            <div class="w-12 bg-amber-600 h-32 rounded-t-lg flex items-center justify-center text-white text-[10px] font-black">Gói 1</div>
+                        </div>
+                        <p class="text-[10px] mt-4 text-stone-500 italic">Daily gói 2 + gói 3 + gói 4 ➔ Chảy vào Gói 1</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Package Tiers -->
+        <section id="tiers" class="scroll-mt-20">
+            <h2 class="text-center text-3xl font-black mb-10">2. Danh mục Gói & Hạn mức VMM</h2>
+            <div class="chart-container">
+                <canvas id="packageChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Section 3: Network & Binary Outer Branch -->
+        <section id="network" class="scroll-mt-20">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <!-- Binary Diagram -->
+                <div class="bg-stone-900 rounded-[2.5rem] p-10 text-white flex flex-col items-center">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-stone-500 mb-10">BV Nhánh Ngoài (Nhánh Mạnh)</h3>
+                    <div class="relative flex flex-col items-center w-full max-w-xs scale-110">
+                        <div class="binary-node bg-amber-600 border-2 border-amber-400 text-white">UP</div>
+                        <div class="w-full flex justify-center h-10 relative">
+                            <div class="tree-line w-1/2 h-[2px] top-0 left-1/4"></div>
+                            <div class="tree-line w-[2px] h-full top-0 left-1/4"></div>
+                            <div class="tree-line w-[2px] h-full top-0 right-1/4"></div>
+                        </div>
+                        <div class="w-full flex justify-between">
+                            <div class="flex flex-col items-center gap-3">
+                                <div class="binary-node bg-stone-700 border-2 border-amber-500 text-white">F1</div>
+                                <div class="bg-amber-500 text-stone-900 px-2 py-0.5 rounded-[4px] text-[8px] font-black uppercase">NHÁNH NGOÀI</div>
+                                <div class="text-[8px] text-amber-500 font-bold">BV tích lũy tại đây</div>
+                            </div>
+                            <div class="flex flex-col items-center gap-3 opacity-20">
+                                <div class="binary-node bg-stone-800 border-2 border-stone-600 text-white">---</div>
+                                <div class="text-[8px] text-stone-500">Nhánh trong</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-12 p-5 bg-stone-800/50 rounded-2xl border border-stone-700 w-full">
+                        <p class="text-[11px] text-stone-400 leading-relaxed italic">
+                            BV phát sinh từ gói của F1 sẽ được tính vào nhánh mạnh (nhánh ngoài) của người bảo trợ tùy theo vị trí đặt. Franchise License là bắt buộc để ghi nhận giá trị này.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 24h Grace & Direct -->
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-black text-stone-900 tracking-tight">3. Network & Grace Period 24h</h2>
+                    <p class="text-stone-500 text-sm">Nếu bạn chưa có Franchise License khi F1 mua gói, hệ thống cho bạn 24 tiếng để kích hoạt bảo lưu quyền lợi:</p>
+                    
+                    <div class="space-y-4">
+                        <div class="p-5 bg-white rounded-2xl border border-stone-200 flex gap-4 shadow-sm">
+                            <div class="text-amber-600 font-black text-2xl">⏳</div>
+                            <div>
+                                <h4 class="font-bold text-stone-800 text-sm">Bảo lưu 24h (Grace Period)</h4>
+                                <p class="text-xs text-stone-500">BV và Direct Share sẽ được "treo" (Pending) trong 24h. Kích hoạt License trong thời gian này để nhận đủ.</p>
+                            </div>
+                        </div>
+                        <div class="p-5 bg-red-50 rounded-2xl border border-red-100 flex gap-4">
+                            <div class="text-red-600 font-black text-2xl">✕</div>
+                            <div>
+                                <h4 class="font-bold text-red-900 text-sm">Quá 24h (Lost)</h4>
+                                <p class="text-xs text-red-700">Quyền lợi chuyển trạng thái <strong>Not Qualified</strong>. Earning bị hủy vĩnh viễn.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-6">
+                        <h4 class="text-[10px] font-black uppercase text-stone-400 mb-4 tracking-widest text-center">Tỷ lệ chia sẻ Direct Bonus</h4>
+                        <div class="chart-container" style="height: 200px;">
+                            <canvas id="directChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: VMM & AI Annual -->
+        <section id="vmm" class="scroll-mt-20">
+            <div class="bg-amber-900 rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden">
+                <div class="absolute -top-10 -left-10 w-40 h-40 bg-amber-600/20 rounded-full blur-3xl"></div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+                    <div>
+                        <h2 class="text-4xl font-black mb-6 tracking-tight">4. AI Annual & Quota VMM</h2>
+                        <p class="text-amber-100/70 text-sm leading-relaxed mb-8">
+                            Gói AI Annual là điều kiện cần để bảo lưu hạn mức mua VMM Token (Quota). Mỗi ngày, thu nhập từ IOU Package sinh ra Quota VMM tương ứng.
+                        </p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-4 bg-white/5 rounded-2xl border border-white/10">
+                                <div class="text-[10px] font-black text-amber-500 uppercase mb-2">CÓ AI ANNUAL</div>
+                                <p class="text-[11px] text-white">Quota được cộng dồn (Cumulative) qua ngày để tích lũy mua token lớn.</p>
+                            </div>
+                            <div class="p-4 bg-red-500/10 rounded-2xl border border-red-500/20">
+                                <div class="text-[10px] font-black text-red-400 uppercase mb-2">KHÔNG AI ANNUAL</div>
+                                <p class="text-[11px] text-white">Quota bị <strong>reset về 0 sau 24h</strong> nếu không sử dụng ngay trong ngày.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-black/20 p-8 rounded-[2.5rem] border border-white/10">
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="text-xs font-black uppercase tracking-widest text-amber-500">Hạn mức VMM</span>
+                            <span class="text-[10px] text-stone-400">Dựa theo Tier Package</span>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm">Gói 1K - 10K</span>
+                                <span class="font-black text-xl">30%</span>
+                            </div>
+                            <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                                <div class="bg-amber-500 h-full w-[30%]"></div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm">Gói 20K - 50K</span>
+                                <span class="font-black text-xl text-amber-400">35%</span>
+                            </div>
+                            <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                                <div class="bg-amber-400 h-full w-[35%]"></div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm">Gói 100K+</span>
+                                <span class="font-black text-xl text-amber-300">40%</span>
+                            </div>
+                            <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                                <div class="bg-amber-300 h-full w-[40%]"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: FIFO Animation -->
+        <section id="fifo" class="scroll-mt-20">
+            <div class="bg-white rounded-[2rem] border border-stone-200 p-8">
+                <h2 class="text-2xl font-black text-stone-900 mb-8 text-center">5. Mô phỏng luồng tiền FIFO</h2>
+                <div class="bg-stone-900 rounded-[2rem] p-8 text-white flex flex-col items-center">
+                    <div class="flex flex-col md:flex-row gap-8 items-end justify-center mb-10 w-full">
+                        <div class="w-full md:w-40 bg-stone-800 rounded-2xl p-4 border-2 border-stone-600 package-box relative h-56 flex flex-col justify-end" id="pkg1">
+                            <div class="absolute top-4 left-0 w-full text-center text-[10px] font-black text-stone-400 uppercase">Gói 1 ($3K)</div>
+                            <div class="fill-bar bg-amber-500 w-full rounded-xl bottom-0" style="height: 0%;" id="fill1"></div>
+                            <div class="absolute inset-0 flex items-center justify-center font-black text-lg text-white z-10" id="val1">$0</div>
+                        </div>
+                        <div class="hidden md:flex text-stone-600 items-center h-56 text-2xl">➔</div>
+                        <div class="w-full md:w-40 bg-stone-800 rounded-2xl p-4 border-2 border-stone-700 package-box relative h-56 flex flex-col justify-end opacity-40" id="pkg2">
+                            <div class="absolute top-4 left-0 w-full text-center text-[10px] font-black text-stone-400 uppercase">Gói 2 ($9K)</div>
+                            <div class="fill-bar bg-stone-600 w-full rounded-xl bottom-0" style="height: 0%;" id="fill2"></div>
+                            <div class="absolute inset-0 flex items-center justify-center font-black text-lg text-stone-500 z-10" id="val2">$0</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <button id="btn-add-earning" class="bg-amber-600 hover:bg-amber-500 text-white font-black py-3 px-8 rounded-2xl text-sm transition shadow-lg">Nạp $2,500 Earning</button>
+                        <button id="btn-reset-fifo" class="bg-stone-700 hover:bg-stone-600 text-white font-black py-3 px-8 rounded-2xl text-sm transition">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Master Simulator -->
+        <section id="mo-phong" class="scroll-mt-20 pb-20">
+            <div class="bg-gradient-to-br from-stone-800 to-stone-900 rounded-[3.5rem] p-1 shadow-2xl">
+                <div class="bg-white rounded-[3.3rem] p-8 md:p-14">
+                    <div class="mb-12">
+                        <h2 class="text-4xl font-black text-stone-900 tracking-tight mb-2">Master Simulator <span class="text-amber-600">v1.5</span></h2>
+                        <p class="text-stone-500 font-medium">Mô phỏng tất cả điều kiện: Dồn Daily, Franchise 24h, và Bảo lưu VMM.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                        <!-- Controls -->
+                        <div class="lg:col-span-5 space-y-8">
+                            <!-- Package Config -->
+                            <div class="bg-stone-50 p-6 rounded-[2rem] border border-stone-200 space-y-6">
+                                <div>
+                                    <label class="block text-[10px] font-black text-stone-400 uppercase tracking-widest mb-3">Gói đang chạy (Active)</label>
+                                    <select id="sim-package" class="w-full bg-white border border-stone-200 text-stone-900 rounded-2xl p-4 font-black text-lg shadow-sm">
+                                        <option value="1000">IOU 1K ($1,000)</option>
+                                        <option value="10000" selected>IOU 10K ($10,000)</option>
+                                        <option value="100000">IOU 100K ($100,000)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-stone-400 uppercase tracking-widest mb-3">Gói dồn Daily (Queued)</label>
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <button class="btn-toggle-pkg h-10 rounded-xl border border-stone-200 text-[10px] font-black transition bg-white" data-value="1000">1K</button>
+                                        <button class="btn-toggle-pkg h-10 rounded-xl border border-stone-200 text-[10px] font-black transition bg-white" data-value="10000">10K</button>
+                                        <button class="btn-toggle-pkg h-10 rounded-xl border border-stone-200 text-[10px] font-black transition bg-white" data-value="50000">50K</button>
+                                        <button class="btn-toggle-pkg h-10 rounded-xl border border-stone-200 text-[10px] font-black transition bg-white" data-value="100000">100K</button>
+                                    </div>
+                                    <div id="queued-list" class="mt-3 text-[10px] font-bold text-stone-500 italic">Chọn gói để cộng dồn Daily</div>
+                                </div>
+                            </div>
+
+                            <!-- License Config -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-amber-50 p-5 rounded-[2rem] border border-amber-200">
+                                    <label class="block text-[9px] font-black text-amber-700 uppercase mb-3 tracking-widest">Franchise State</label>
+                                    <select id="sim-franchise-state" class="w-full bg-transparent font-black text-amber-900 text-xs outline-none cursor-pointer">
+                                        <option value="active">Active (Qualified)</option>
+                                        <option value="grace">Grace (Pending 24h)</option>
+                                        <option value="expired">Expired (Lost)</option>
+                                    </select>
+                                </div>
+                                <div class="bg-stone-50 p-5 rounded-[2rem] border border-stone-200 flex flex-col justify-between">
+                                    <label class="block text-[9px] font-black text-stone-400 uppercase mb-3 tracking-widest text-center">AI Annual</label>
+                                    <div class="flex items-center justify-center gap-3">
+                                        <span class="text-[9px] font-bold text-stone-500 uppercase">OFF</span>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" id="sim-ai-annual" class="sr-only peer" checked>
+                                            <div class="w-10 h-5 bg-stone-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-600"></div>
+                                        </label>
+                                        <span class="text-[9px] font-black text-amber-700 uppercase">ON</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Earnings -->
+                            <div class="bg-stone-50 p-6 rounded-[2rem] border border-stone-200">
+                                <label class="block text-[10px] font-black text-stone-400 uppercase tracking-widest mb-6 text-center">Earning Network / Ngày ($)</label>
+                                <input type="range" id="sim-network" min="0" max="2000" step="50" value="200" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-amber-600">
+                                <div class="flex justify-between mt-4 text-2xl font-black text-amber-700" id="sim-network-val">$200</div>
+                            </div>
+                        </div>
+
+                        <!-- Results -->
+                        <div class="lg:col-span-7 bg-stone-900 rounded-[3rem] p-10 text-white flex flex-col justify-between shadow-2xl relative overflow-hidden">
+                            <div class="absolute top-0 right-0 p-12 opacity-5 font-black text-8xl pointer-events-none">RESULT</div>
+                            
+                            <div class="grid grid-cols-2 gap-10 relative z-10">
+                                <div class="space-y-1">
+                                    <div class="text-stone-500 text-[10px] uppercase font-black tracking-widest">Hạn mức Maxout</div>
+                                    <div class="text-4xl font-black" id="out-maxout">$30,000</div>
+                                </div>
+                                <div class="text-right space-y-1">
+                                    <div class="text-stone-500 text-[10px] uppercase font-black tracking-widest">Tổng nhận / Ngày</div>
+                                    <div class="text-4xl font-black text-amber-500" id="out-daily">$123.81</div>
+                                </div>
+                            </div>
+
+                            <!-- Breakdown -->
+                            <div class="mt-10 bg-stone-800/40 p-8 rounded-[2.5rem] border border-stone-800 relative z-10 space-y-4">
+                                <div class="flex justify-between items-center text-xs border-b border-stone-700/50 pb-4">
+                                    <span class="text-stone-500 font-black uppercase tracking-widest">Thành phần thu nhập</span>
+                                    <span class="text-stone-500 font-black uppercase tracking-widest">Giá trị</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-stone-300 text-sm">Daily (Active + Dồn gói)</span>
+                                    <span class="font-black text-green-400" id="det-daily">+$23.81</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-stone-300 text-sm">Network (Qualified)</span>
+                                    <span class="font-black text-amber-500" id="det-network">+$200.00</span>
+                                </div>
+                                <div id="det-pending-box" class="hidden pt-2">
+                                    <div class="flex justify-between items-center text-xs font-black italic text-amber-600 bg-amber-600/10 p-2 rounded-lg">
+                                        <span>⏳ Đang chờ (Grace Period):</span>
+                                        <span id="det-pending-val">$200.00</span>
+                                    </div>
+                                </div>
+                                <div id="det-loss-box" class="hidden pt-2">
+                                    <div class="flex justify-between items-center text-xs font-black text-red-500 bg-red-500/10 p-2 rounded-lg">
+                                        <span>❌ Mất (Quá 24h):</span>
+                                        <span id="det-loss-val">-$200.00</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- VMM Status -->
+                            <div class="mt-8 flex items-center justify-between bg-black/30 p-4 rounded-2xl border border-white/5 relative z-10">
+                                <div class="flex flex-col">
+                                    <span class="text-[9px] font-black text-stone-500 uppercase mb-1">Quota VMM mở / Ngày</span>
+                                    <span class="text-2xl font-black text-amber-400" id="out-vmm-daily">$37.14</span>
+                                </div>
+                                <div class="text-right">
+                                    <span id="vmm-status-badge" class="px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter">Bảo lưu (AI Annual)</span>
+                                    <p id="vmm-reset-text" class="text-[8px] text-red-400 mt-2 font-bold hidden">RESET SAU 24H NẾU KHÔNG DÙNG</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-10 relative z-10 text-center">
+                                <div class="text-stone-500 text-[10px] font-black uppercase tracking-widest mb-2">Hoàn thành gói sau</div>
+                                <div class="flex items-baseline justify-center gap-2">
+                                    <span class="text-8xl font-black tracking-tighter" id="out-days">242</span>
+                                    <span class="text-2xl font-bold text-stone-600 uppercase tracking-widest">Ngày</span>
+                                </div>
+                                <div class="w-full bg-stone-800 h-2 rounded-full mt-6 overflow-hidden">
+                                    <div class="bg-gradient-to-r from-amber-600 to-amber-400 h-full rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(217,119,6,0.3)]" id="out-progress-bar" style="width: 40%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const packageData = [
+            { tier: 1, name: 'IOU 1K', value: 1000, ratio: 0.30 },
+            { tier: 2, name: 'IOU 3K', value: 3000, ratio: 0.30 },
+            { tier: 3, name: 'IOU 5K', value: 5000, ratio: 0.30 },
+            { tier: 4, name: 'IOU 10K', value: 10000, ratio: 0.30 },
+            { tier: 5, name: 'IOU 20K', value: 20000, ratio: 0.35 },
+            { tier: 6, name: 'IOU 50K', value: 50000, ratio: 0.35 },
+            { tier: 7, name: 'IOU 100K', value: 100000, ratio: 0.40 }
+        ];
+
+        const formatCurr = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
+        const formatDec = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(val);
+
+        // Package Chart
+        const ctxPkg = document.getElementById('packageChart').getContext('2d');
+        new Chart(ctxPkg, {
+            type: 'bar',
+            data: {
+                labels: packageData.map(p => p.name),
+                datasets: [
+                    { label: 'Package Value', data: packageData.map(p => p.value), backgroundColor: '#d6d3d1', borderRadius: 4 },
+                    { label: 'Maxout Cap (3x)', data: packageData.map(p => p.value * 3), backgroundColor: '#d97706', borderRadius: 4 }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+        });
+
+        // Direct Share Chart
+        const ctxDir = document.getElementById('directChart').getContext('2d');
+        new Chart(ctxDir, {
+            type: 'bar',
+            data: {
+                labels: ['Gói 1', 'Gói 2', 'Gói 3', 'Gói 4', 'Gói 5', 'Gói 6', 'Gói 7+'],
+                datasets: [
+                    { label: 'F1 (%)', data: [0, 50, 60, 70, 80, 90, 100], backgroundColor: '#b45309' },
+                    { label: 'Sponsor (%)', data: [100, 50, 40, 30, 20, 10, 0], backgroundColor: '#e7e5e4' }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, max: 100 } } }
+        });
+
+        // FIFO Logic
+        let fifoState = { pkgs: [{ id: 1, cap: 3000, current: 0 }, { id: 2, cap: 9000, current: 0 }] };
+        const renderFifo = () => {
+            fifoState.pkgs.forEach(p => {
+                const fill = document.getElementById(`fill${p.id}`);
+                const val = document.getElementById(`val${p.id}`);
+                const pct = (p.current / p.cap) * 100;
+                fill.style.height = `${pct}%`;
+                val.innerText = pct >= 100 ? 'MAXOUT' : `$${p.current.toLocaleString()}`;
+            });
+        };
+        document.getElementById('btn-add-earning').onclick = () => {
+            let earning = 2500;
+            fifoState.pkgs.forEach(p => {
+                let space = p.cap - p.current;
+                let alloc = Math.min(earning, space);
+                p.current += alloc;
+                earning -= alloc;
+            });
+            renderFifo();
+        };
+        document.getElementById('btn-reset-fifo').onclick = () => {
+            fifoState.pkgs.forEach(p => p.current = 0);
+            renderFifo();
+        };
+
+        // Simulator Interaction Logic
+        const simSelect = document.getElementById('sim-package');
+        const simFranchiseState = document.getElementById('sim-franchise-state');
+        const simAiAnnual = document.getElementById('sim-ai-annual');
+        const simNetwork = document.getElementById('sim-network');
+        const simNetworkVal = document.getElementById('sim-network-val');
+        const btnTogglePkgs = document.querySelectorAll('.btn-toggle-pkg');
+        const queuedListDisplay = document.getElementById('queued-list');
+        let queuedPackages = [];
+
+        btnTogglePkgs.forEach(btn => {
+            btn.onclick = () => {
+                const val = parseInt(btn.dataset.value);
+                if (queuedPackages.includes(val)) {
+                    queuedPackages = queuedPackages.filter(v => v !== val);
+                    btn.classList.replace('bg-amber-600', 'bg-white');
+                    btn.classList.remove('text-white', 'border-amber-600');
+                } else {
+                    queuedPackages.push(val);
+                    btn.classList.replace('bg-white', 'bg-amber-600');
+                    btn.classList.add('text-white', 'border-amber-600');
+                }
+                updateSimulator();
+            };
+        });
+
+        const updateSimulator = () => {
+            const activeVal = parseFloat(simSelect.value);
+            const rawNetwork = parseFloat(simNetwork.value);
+            const licenseState = simFranchiseState.value;
+            const hasAiAnnual = simAiAnnual.checked;
+            
+            const pkgInfo = packageData.find(p => p.value === activeVal);
+            const maxout = activeVal * 3;
+            
+            // 1. Pooling Daily Logic
+            const activeDaily = maxout / 1260;
+            const queuedDaily = queuedPackages.reduce((s, v) => s + (v * 3 / 1260), 0);
+            
+            // 2. Network / Grace / Expired Logic
+            let qualifiedNetwork = 0;
+            const detNetworkEl = document.getElementById('det-network');
+            const pendingBox = document.getElementById('det-pending-box');
+            const lossBox = document.getElementById('det-loss-box');
+
+            if (licenseState === 'active') {
+                qualifiedNetwork = rawNetwork;
+                detNetworkEl.className = "font-black text-amber-500";
+                pendingBox.classList.add('hidden');
+                lossBox.classList.add('hidden');
+            } else if (licenseState === 'grace') {
+                qualifiedNetwork = 0;
+                detNetworkEl.className = "font-black text-stone-600 italic opacity-40";
+                pendingBox.classList.remove('hidden');
+                document.getElementById('det-pending-val').innerText = `$${rawNetwork.toFixed(2)}`;
+                lossBox.classList.add('hidden');
+            } else {
+                qualifiedNetwork = 0;
+                detNetworkEl.className = "font-black text-red-500/20 line-through";
+                pendingBox.classList.add('hidden');
+                lossBox.classList.remove('hidden');
+                document.getElementById('det-loss-val').innerText = `-$${rawNetwork.toFixed(2)}`;
+            }
+
+            const totalDaily = activeDaily + queuedDaily + qualifiedNetwork;
+            const days = Math.ceil(maxout / totalDaily);
+            const progressPct = ((1260 - days) / 1260) * 100;
+
+            // 3. VMM Quota Logic
+            const vmmDailyQuota = totalDaily * pkgInfo.ratio;
+            const vmmBadge = document.getElementById('vmm-status-badge');
+            const vmmResetText = document.getElementById('vmm-reset-text');
+
+            if (hasAiAnnual) {
+                vmmBadge.innerText = "Bảo lưu (AI Annual)";
+                vmmBadge.className = "px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter bg-green-500/20 text-green-400";
+                vmmResetText.classList.add('hidden');
+            } else {
+                vmmBadge.innerText = "Reset sau 24h";
+                vmmBadge.className = "px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter bg-red-500/20 text-red-400";
+                vmmResetText.classList.remove('hidden');
+            }
+
+            // UI Refresh
+            simNetworkVal.innerText = `$${rawNetwork}`;
+            document.getElementById('out-maxout').innerText = formatCurr(maxout);
+            document.getElementById('out-daily').innerText = formatDec(totalDaily);
+            document.getElementById('out-vmm-daily').innerText = formatDec(vmmDailyQuota);
+            document.getElementById('out-days').innerText = isFinite(days) ? days : '---';
+            document.getElementById('out-progress-bar').style.width = `${Math.max(5, progressPct)}%`;
+            document.getElementById('det-daily').innerText = `+${formatDec(activeDaily + queuedDaily)}`;
+            document.getElementById('det-network').innerText = `+${formatDec(qualifiedNetwork)}`;
+            
+            // Queued list summary
+            if (queuedPackages.length > 0) {
+                queuedListDisplay.innerText = "Dồn Daily từ: " + queuedPackages.map(v => (v/1000) + 'K').join(', ');
+            } else {
+                queuedListDisplay.innerText = "Chưa chọn gói dồn Daily";
+            }
+        };
+
+        simSelect.onchange = updateSimulator;
+        simFranchiseState.onchange = updateSimulator;
+        simAiAnnual.onchange = updateSimulator;
+        simNetwork.oninput = updateSimulator;
+        updateSimulator();
+    </script>
+</body>
+</html>

@@ -42,13 +42,13 @@ const mockGiftCards = [
 ];
 
 const mockHistoryTransactions = [
-  { id: 'TX-2411-001', type: 'E-Voucher', amount: 5000, currency: 'USD', date: 'Nov 27, 2024 09:09 PM', status: 'Completed', month: 'November, 2024' },
-  { id: 'TX-2411-002', type: 'E-Gift Card', amount: 1200, currency: 'USD', date: 'Nov 18, 2024 01:15 PM', status: 'Completed', month: 'November, 2024' },
-  { id: 'TX-2411-003', type: 'E-Voucher', amount: 2500000, currency: 'VND', date: 'Nov 08, 2024 10:20 AM', status: 'Completed', month: 'November, 2024' },
-  { id: 'TX-2410-001', type: 'E-Gift Card', amount: 300, currency: 'USD', date: 'Oct 21, 2024 04:45 PM', status: 'Completed', month: 'October, 2024' },
-  { id: 'TX-2410-002', type: 'E-Voucher', amount: 750, currency: 'USD', date: 'Oct 12, 2024 11:24 AM', status: 'Completed', month: 'October, 2024' },
-  { id: 'TX-2409-001', type: 'E-Gift Card', amount: 5000000, currency: 'VND', date: 'Sep 22, 2024 08:10 AM', status: 'Completed', month: 'September, 2024' },
-  { id: 'TX-2409-002', type: 'E-Voucher', amount: 1250, currency: 'USD', date: 'Sep 06, 2024 03:30 PM', status: 'Completed', month: 'September, 2024' }
+  { id: 'TX-2411-001', type: 'E-Voucher',   purpose: 'Children Education',   amount: 5000,    currency: 'USD', paymentMethod: 'USDV', date: 'Nov 27, 2024 09:09 PM', status: 'Completed', month: 'November, 2024' },
+  { id: 'TX-2411-002', type: 'E-Gift Card', purpose: 'Scholarship Programs', amount: 1200,    currency: 'USD', paymentMethod: 'USDT', cardValue: 400,     quantity: 3, recipientEmail: 'nguyen_a@example.com', date: 'Nov 18, 2024 01:15 PM', status: 'Completed', month: 'November, 2024' },
+  { id: 'TX-2411-003', type: 'E-Voucher',   purpose: 'Food Support',         amount: 2500000, currency: 'VND', paymentMethod: 'VND',  date: 'Nov 08, 2024 10:20 AM', status: 'Completed', month: 'November, 2024' },
+  { id: 'TX-2410-001', type: 'E-Gift Card', purpose: 'Elderly Care',         amount: 300,     currency: 'USD', paymentMethod: 'USDV', cardValue: 150,     quantity: 2, date: 'Oct 21, 2024 04:45 PM', status: 'Completed', month: 'October, 2024' },
+  { id: 'TX-2410-002', type: 'E-Voucher',   purpose: 'Disaster Relief',      amount: 750,     currency: 'USD', paymentMethod: 'USDV', date: 'Oct 12, 2024 11:24 AM', status: 'Completed', month: 'October, 2024' },
+  { id: 'TX-2409-001', type: 'E-Gift Card', purpose: 'Healthcare & Medicine', amount: 5000000, currency: 'VND', paymentMethod: 'VND',  cardValue: 1000000, quantity: 5, recipientEmail: 'tranb@example.com', date: 'Sep 22, 2024 08:10 AM', status: 'Completed', month: 'September, 2024' },
+  { id: 'TX-2409-002', type: 'E-Voucher',   purpose: 'Scholarship Programs', amount: 1250,    currency: 'USD', paymentMethod: 'USDT', date: 'Sep 06, 2024 03:30 PM', status: 'Completed', month: 'September, 2024' }
 ];
 
 const state = {
@@ -596,112 +596,76 @@ function buildTransactionDetail() {
     return;
   }
 
+  const isCard = tx.type === 'E-Gift Card';
   const meta = getTransactionDetailMeta(tx);
-  const steps = transactionTimeline(tx);
-  const proofLabel = tx.type === 'E-Gift Card' ? 'Redemption proof' : 'Payout proof';
-  const proofAction = tx.type === 'E-Gift Card' ? 'gift-card' : 'voucher';
-  const detailNote = tx.type === 'E-Gift Card'
-    ? 'Gift card purchase details, payout reference, and redemption status are shown in one place for quick lookup.'
-    : 'Donation details, settlement reference, and distribution status are shown in one place for quick lookup.';
+
+  const quantityRow = (isCard && tx.quantity)
+    ? row('Quantity', `${tx.quantity} card${tx.quantity > 1 ? 's' : ''}`)
+    : '';
+  const cardValueRow = isCard
+    ? row('Card Value', `${formatNumber(tx.cardValue || tx.amount)} ${tx.currency}`)
+    : '';
+  const donationRow = !isCard
+    ? row('Donation Amount', `${formatNumber(tx.amount)} ${tx.currency}`)
+    : '';
+  const recipientRow = (isCard && tx.recipientEmail)
+    ? row('Recipient', tx.recipientEmail, true)
+    : '';
+
+
+  function row(label, value, rightAligned = false) {
+    return `<div class="flex items-start justify-between gap-4">
+      <span class="shrink-0 text-sm text-soft">${label}</span>
+      <span class="text-sm font-semibold text-cream ${rightAligned ? 'text-right' : ''}">${value}</span>
+    </div>`;
+  }
 
   document.getElementById('main-slot').innerHTML = `
-    <div class="mx-auto max-w-5xl space-y-6 animate-fadeUp">
-      <section class="rounded-2xl border border-line bg-panel p-6 shadow-luxury sm:p-8">
-        <div class="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <div class="mb-2 text-[11px] uppercase tracking-[0.22em] text-gold sm:text-[13px]">Transaction #${tx.id}</div>
-            <h3 class="text-2xl font-semibold text-cream sm:text-3xl">${tx.type}</h3>
-            <p class="mt-2 max-w-3xl text-sm leading-6 text-soft sm:text-[15px]">${detailNote}</p>
-          </div>
-          <span class="rounded px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] ${badgeClasses(tx.status)}">${tx.status}</span>
-        </div>
-      </section>
+    <div class="mx-auto max-w-lg animate-fadeUp">
+      <div class="overflow-hidden rounded-2xl border border-line bg-panel shadow-luxury">
 
-      <section class="grid gap-4 lg:grid-cols-2">
-        <div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury">
-          <h4 class="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-gold">Transaction detail</h4>
-          <div class="grid gap-4 sm:grid-cols-2">
-            <div class="rounded-xl border border-line bg-black/20 p-4">
-              <div class="text-[10px] uppercase tracking-[0.18em] text-soft">Owner</div>
-              <div class="mt-1 text-base font-semibold text-cream">${meta.owner}</div>
-            </div>
-            <div class="rounded-xl border border-line bg-black/20 p-4">
-              <div class="text-[10px] uppercase tracking-[0.18em] text-soft">Beneficiary</div>
-              <div class="mt-1 text-base font-semibold text-cream">${meta.beneficiary}</div>
-            </div>
-            <div class="rounded-xl border border-line bg-black/20 p-4">
-              <div class="text-[10px] uppercase tracking-[0.18em] text-soft">Amount</div>
-              <div class="mt-1 text-base font-semibold text-gold">${formatNumber(tx.amount)} ${tx.currency}</div>
-            </div>
-            <div class="rounded-xl border border-line bg-black/20 p-4">
-              <div class="text-[10px] uppercase tracking-[0.18em] text-soft">Payment asset</div>
-              <div class="mt-1 text-base font-semibold text-cream">${meta.paymentAsset}</div>
+        <div class="flex items-center justify-between gap-3 border-b border-line px-5 py-4">
+          <span class="text-sm font-bold uppercase tracking-[0.16em] text-cream">Status</span>
+          <span class="rounded px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] ${badgeClasses(tx.status)}">${tx.status === 'Completed' ? 'PAID' : tx.status}</span>
+        </div>
+
+        <div class="space-y-3 border-b border-line px-5 py-4">
+          ${row('Type', tx.type)}
+          ${row('Transaction ID', '#' + tx.id)}
+          ${row('Date & Time', tx.date.replace(', ', ' · '))}
+        </div>
+
+        <div class="space-y-3 border-b border-line px-5 py-4">
+          ${row('Purpose', meta.purpose)}
+          ${quantityRow}
+          ${cardValueRow}
+          ${donationRow}
+        
+          ${isCard ? row('Card Total', `${formatNumber(tx.amount)} ${tx.currency}`) : ''}
+          ${row('Platform Fee', `${formatNumber(meta.fee)} ${tx.currency}`)}
+          <div class="border-t border-dashed border-line pt-3">
+            <div class="flex items-center justify-between gap-4">
+              <span class="text-sm font-bold text-cream">Total Paid</span>
+              <span class="text-base font-bold text-gold">${formatNumber(meta.total)} ${tx.currency}</span>
             </div>
           </div>
         </div>
 
-        <div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury">
-          <h4 class="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-gold">Settlement detail</h4>
-          <div class="space-y-4">
-            <div class="flex items-center justify-between gap-4">
-              <span class="text-sm text-soft">Date</span>
-              <span class="font-semibold text-cream">${tx.date}</span>
-            </div>
-            <div class="flex items-center justify-between gap-4">
-              <span class="text-sm text-soft">Wallet address</span>
-              <span class="font-semibold text-cream">${meta.walletAddress}</span>
-            </div>
-            <div class="flex items-center justify-between gap-4">
-              <span class="text-sm text-soft">Reference</span>
-              <span class="font-semibold text-cream">${meta.reference}</span>
-            </div>
-            <div class="flex items-center justify-between gap-4">
-              <span class="text-sm text-soft">Currency</span>
-              <span class="font-semibold text-cream">${tx.currency}</span>
-            </div>
+        <div class="flex items-center justify-between gap-4 px-5 py-4">
+          <span class="text-sm text-soft">Payment Method</span>
+          <div class="flex items-center gap-2">
+            <img src="${meta.paymentMethodImage}" alt="${meta.paymentAsset}" class="h-5 w-5 rounded-full object-cover">
+            <span class="text-sm font-semibold text-cream">${meta.paymentAsset}</span>
           </div>
         </div>
-      </section>
 
-      <section class="rounded-2xl border border-line bg-panel p-6 shadow-luxury sm:p-8">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h4 class="text-sm font-semibold uppercase tracking-[0.16em] text-gold">Lifecycle</h4>
-          </div>
-          <button data-action="download-receipt" class="btn-action-outline rounded-lg px-5 py-3 text-[11px] font-extrabold uppercase tracking-[0.16em] sm:text-[13px]">Download Receipt</button>
-        </div>
-        <div class="mt-6 space-y-3">
-          ${steps.map((step, index) => `
-            <div class="flex gap-4 rounded-2xl border border-line bg-black/20 p-4">
-              <div class="grid h-10 w-10 shrink-0 place-items-center rounded-full ${index < steps.length - 1 ? 'bg-gold/10 text-gold' : 'bg-black/10 text-soft'}">
-                ${icon(index < steps.length - 1 ? 'check' : 'clock', 'w-4 h-4')}
-              </div>
-              <div class="min-w-0">
-                <div class="text-[11px] uppercase tracking-[0.18em] text-soft">${step.time}</div>
-                <div class="mt-1 text-base font-semibold text-cream">${step.title}</div>
-                <div class="mt-1 text-sm text-soft">${step.note}</div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </section>
+      </div>
 
-      <section class="grid gap-4 lg:grid-cols-2">
-        <div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury">
-          <h4 class="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-gold">Reference</h4>
-          <div class="space-y-3 text-sm leading-6 text-soft">
-            <p>Transaction reference: <span class="font-semibold text-cream">${meta.reference}</span></p>
-            <p>Wallet address: <span class="font-semibold text-cream">${meta.walletAddress}</span></p>
-            <p>Payment asset: <span class="font-semibold text-cream">${meta.paymentAsset}</span></p>
-          </div>
-        </div>
-        <div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury">
-          <h4 class="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-gold">${proofLabel}</h4>
-          <button data-action="open-proof" data-proof-kind="${proofAction}" class="btn-action mx-auto block w-full rounded-lg px-6 py-3.5 text-[11px] font-extrabold uppercase tracking-[0.16em] sm:text-[13px]">
-            View Proof
-          </button>
-        </div>
-      </section>
+      <div class="mt-4">
+        <button data-action="download-receipt" class="btn-action-outline w-full rounded-lg py-3 text-[11px] font-extrabold uppercase tracking-[0.16em] sm:text-[13px]">
+          Download Receipt
+        </button>
+      </div>
     </div>
   `;
   safeCreateIcons();
@@ -746,13 +710,20 @@ function triggerTextDownload(filename, content) {
 
 function getTransactionDetailMeta(tx) {
   const isCard = tx?.type === 'E-Gift Card';
-  const isVnd = tx?.currency === 'VND';
+  const pm = tx?.paymentMethod || (isCard ? 'USDT' : 'USDV');
+  const pmObj = paymentMethods.find(p => p.id === pm) || paymentMethods[0];
+  const fee = Math.round(tx.amount * 0.015 * 100) / 100;
+  const total = tx.amount + fee;
   return {
     owner: 'Nguyen Van A',
-    beneficiary: isCard ? 'tranb@example.com' : 'Children Education Program',
-    paymentAsset: isCard ? (isVnd ? 'VND' : 'USDT') : (isVnd ? 'VND' : 'USDV'),
+    purpose: tx?.purpose || (isCard ? 'Charity Gift Card' : 'General Donation'),
+    paymentAsset: pm,
+    paymentMethodImage: pmObj.image,
+    fee,
+    total,
     walletAddress: isCard ? '0x71C...3E4D' : '0xA83F...9C21',
     reference: isCard ? 'NFT-8812' : 'BATCH-2025-014',
+    network: 'Vlinkpay (VRC20)',
     proofKind: isCard ? 'gift-card' : 'voucher',
   };
 }

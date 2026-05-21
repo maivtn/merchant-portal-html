@@ -1,0 +1,1979 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VLINKPAY - Mobile Merchant ATM Dashboard Simulator</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    /* Tùy chỉnh thanh cuộn mượt cho mô phỏng di động */
+    .mobile-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .mobile-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.3);
+    }
+    .mobile-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+    /* Hiệu ứng quét của camera QR */
+    @keyframes scan {
+      0%, 100% { top: 0%; }
+      50% { top: 100%; }
+    }
+    .scanner-line {
+      animation: scan 2.2s infinite ease-in-out;
+    }
+
+    /* ================= CẤU HÌNH GIAO DIỆN SÁNG PHẲNG KHÔNG GRADIENT (METICULOUS FLAT LIGHT MODE OVERRIDES) ================= */
+    body.light-mode {
+      background-color: #f1f5f9 !important; /* slate-100 */
+      color: #0f172a !important; /* slate-900 */
+    }
+    body.light-mode .bg-slate-955,
+    body.light-mode .bg-slate-950, 
+    body.light-mode .bg-slate-950\/40 {
+      background-color: #f8fafc !important; /* slate-50 */
+    }
+    body.light-mode .bg-slate-900 {
+      background-color: #ffffff !important; /* Trắng bento phẳng tinh tế */
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+    }
+    body.light-mode .bg-slate-850 {
+      background-color: #e2e8f0 !important; /* slate-200 */
+    }
+    body.light-mode .bg-slate-855 {
+      background-color: #cbd5e1 !important; /* slate-300 */
+    }
+    /* Ghi đè thiết bị di động giả lập */
+    body.light-mode .border-slate-800 {
+      border-color: #cbd5e1 !important; /* Viền điện thoại màu bạc sang trọng */
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+    }
+    body.light-mode .bg-slate-855.rounded-b-3xl {
+      background-color: #cbd5e1 !important; /* Tai thỏ đồng bộ màu viền điện thoại */
+    }
+
+    /* Quy tắc chuyển đổi text cực kỳ kỹ lưỡng để tránh chữ trắng trên nền sáng */
+    body.light-mode .text-slate-100 { color: #0f172a !important; }
+    body.light-mode .text-slate-200 { color: #1e293b !important; }
+    body.light-mode .text-slate-300 { color: #334155 !important; }
+    body.light-mode .text-slate-400 { color: #475569 !important; }
+
+    /* Tự động biến chữ trắng (text-white) trên nền sáng thành màu tối, trừ khi trong nút bấm hoặc nền màu đậm */
+    body.light-mode .text-white:not(button):not(button *):not(.bg-orange-500 *):not(.bg-orange-600 *):not(.bg-blue-500 *):not(.bg-blue-600 *):not(.bg-emerald-500 *):not(.bg-rose-500 *):not(.bg-slate-700 *) {
+      color: #0f172a !important;
+    }
+
+    body.light-mode select {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+      border: 1px solid #cbd5e1 !important;
+    }
+    body.light-mode input {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+      border: 1px solid #cbd5e1 !important;
+    }
+    body.light-mode .bg-slate-800 {
+      background-color: #f1f5f9 !important; /* slate-100 */
+    }
+    body.light-mode .bg-slate-800\/60 {
+      background-color: #e2e8f0 !important; /* slate-200 */
+    }
+    /* Chỉnh sửa các thẻ con bên trong ứng dụng di động */
+    body.light-mode #app-viewport {
+      background-color: #f8fafc !important;
+    }
+    body.light-mode #recent-requests-list > div {
+      background-color: #ffffff !important;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+    }
+    body.light-mode #recent-requests-list span.text-white {
+      color: #0f172a !important;
+    }
+    body.light-mode #bottom-nav-bar {
+      background-color: #ffffff !important;
+      box-shadow: 0 -4px 15px rgba(15, 23, 42, 0.03);
+      border-top: 1px solid #e2e8f0 !important;
+    }
+    body.light-mode #bottom-nav-bar span {
+      color: #475569 !important;
+    }
+    /* Thẻ ví Wallet Card phẳng */
+    body.light-mode .bg-slate-900.rounded-2xl {
+      background-color: #ffffff !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+    body.light-mode #wallet-balance {
+      color: #0f172a !important;
+    }
+    /* Modal & Hộp thoại */
+    body.light-mode #modal-content {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+    body.light-mode #modal-content .text-white {
+      color: #0f172a !important;
+    }
+    body.light-mode #modal-content .bg-slate-850 {
+      background-color: #f1f5f9 !important;
+    }
+    body.light-mode #modal-content .bg-slate-955 {
+      background-color: #f8fafc !important;
+    }
+    body.light-mode #modal-content .bg-slate-950 {
+      background-color: #f8fafc !important;
+    }
+    body.light-mode #modal-content .text-slate-300,
+    body.light-mode #modal-content .text-slate-400 {
+      color: #334155 !important;
+    }
+    /* Toast Alert */
+    body.light-mode #toast-box > div {
+      background-color: #ffffff !important;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08) !important;
+    }
+
+    /* ================= TỰ ĐỘNG CHUYỂN ĐỔI SẮC ĐỘ MÀU CHỮ SÁNG ĐỂ NỔI BẬT (DEEP TEXT CONTRAST) ================= */
+    body.light-mode .text-orange-400 { color: #ea580c !important; } /* Cam đậm */
+    body.light-mode .text-blue-400 { color: #1d4ed8 !important; } /* Xanh hoàng gia */
+    body.light-mode .text-emerald-400 { color: #15803d !important; } /* Xanh lá đậm */
+    body.light-mode .text-purple-400 { color: #6d28d9 !important; } /* Tím đậm */
+    body.light-mode .text-rose-400 { color: #be123c !important; } /* Đỏ hồng đậm */
+    body.light-mode .text-amber-400 { color: #b45309 !important; } /* Amber sẫm */
+    body.light-mode .text-sky-400 { color: #0369a1 !important; } /* Sky đậm */
+
+    /* Đồng bộ nhãn chữ trên các phím của các khu vực ATM & Tính năng nhanh */
+    body.light-mode #grid-combo-actions button span,
+    body.light-mode #grid-mobile-actions button span,
+    body.light-mode #grid-merchant-actions button span,
+    body.light-mode #quick-actions-panel button span {
+      color: #1e293b !important;
+    }
+
+    /* Đồng bộ các block nền mờ trong chế độ sáng để tránh bị chìm */
+    body.light-mode .bg-blue-500\/10 { background-color: rgba(59, 130, 246, 0.15) !important; }
+    body.light-mode .bg-emerald-500\/10 { background-color: rgba(16, 185, 129, 0.15) !important; }
+    body.light-mode .bg-purple-500\/10 { background-color: rgba(139, 92, 246, 0.15) !important; }
+    body.light-mode .bg-amber-500\/10 { background-color: rgba(245, 158, 11, 0.15) !important; }
+    body.light-mode .bg-rose-500\/10 { background-color: rgba(244, 63, 94, 0.15) !important; }
+    body.light-mode .bg-sky-500\/10 { background-color: rgba(14, 165, 233, 0.15) !important; }
+    body.light-mode .bg-orange-500\/10 { background-color: rgba(249, 115, 22, 0.15) !important; }
+
+    /* ================= THIẾT KẾ ĐẶC BIỆT CHO 2 THÊ NỀN XANH LÁ NHẠT TRONG LIGHT MODE (EXPLICIT LIGHT GREEN CONTRAST) ================= */
+    body.light-mode #become-partner-card {
+      background-color: #f0fdf4 !important; /* bg-emerald-50 nhạt */
+    }
+    body.light-mode #become-partner-card h3 {
+      color: #166534 !important; /* emerald-800 */
+    }
+    body.light-mode #become-partner-card p {
+      color: #15803d !important; /* emerald-700 */
+    }
+    body.light-mode #become-partner-card span {
+      background-color: rgba(16, 185, 129, 0.15) !important;
+      color: #15803d !important;
+    }
+
+    body.light-mode #manage-franchise-card {
+      background-color: #f0fdf4 !important; /* bg-emerald-50 nhạt */
+    }
+    body.light-mode #manage-franchise-card h4 {
+      color: #166534 !important; /* emerald-800 */
+    }
+    body.light-mode #manage-franchise-card p {
+      color: #15803d !important; /* emerald-700 */
+    }
+    body.light-mode #manage-franchise-card button {
+      background-color: rgba(16, 185, 129, 0.15) !important;
+      color: #15803d !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-955 text-slate-100 min-h-screen flex flex-col xl:flex-row overflow-x-hidden">
+
+  <!-- BẢNG ĐIỀU KHIỂN GIẢ LẬP (BÊN TRÁI DESKTOP) -->
+  <div class="w-full xl:w-96 bg-slate-900 p-6 flex flex-col justify-between shrink-0">
+    <div>
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center font-bold text-white text-xl shadow-lg shadow-orange-500/20">V</div>
+        <div>
+          <h1 class="text-lg font-bold text-white tracking-wide">VLINKPAY</h1>
+          <p class="text-xs text-slate-400">Thiết bị ATM Đối tác v1.6</p>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <!-- CHỌN KỊCH BẢN CHÍNH -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Chọn Kịch Bản Người Dùng</label>
+          <div class="space-y-2">
+            <button onclick="setScenario('no-license-personal')" id="btn-scen-no-license-personal" class="w-full text-left p-3.5 rounded-xl bg-slate-855 hover:bg-slate-800 transition flex flex-col gap-1">
+              <span class="text-sm font-semibold text-orange-400">1. Người dùng Cá nhân (Chưa có Giấy phép)</span>
+              <span class="text-xs text-slate-400 leading-tight">Chỉ hiển thị vùng Cá nhân P2P, khóa chỉ 1 giao dịch đồng thời và hiển thị tiến trình.</span>
+            </button>
+            <button onclick="setScenario('mobile-atm')" id="btn-scen-mobile-atm" class="w-full text-left p-3.5 rounded-xl bg-slate-855 hover:bg-slate-800 transition flex flex-col gap-1">
+              <span class="text-sm font-semibold text-blue-400">2. Đối tác Mobile ATM (Cá nhân + Giấy phép)</span>
+              <span class="text-xs text-slate-400 leading-tight">Kích hoạt vai trò ATM Di động, hiển thị trạng thái hoạt động Full chiều rộng, QR nổi bật ở thanh điều hướng.</span>
+            </button>
+            <button onclick="setScenario('merchant-atm')" id="btn-scen-merchant-atm" class="w-full text-left p-3.5 rounded-xl bg-slate-855 hover:bg-slate-800 transition flex flex-col gap-1">
+              <span class="text-sm font-semibold text-emerald-400">3. Đối tác Merchant ATM (Doanh nghiệp)</span>
+              <span class="text-xs text-slate-400 leading-tight">Giao diện Vie Nail Bar doanh nghiệp, hiển thị trạng thái hoạt động & khách vãng lai (Walk-in).</span>
+            </button>
+            <button onclick="setScenario('combo-atm')" id="btn-scen-combo-atm" class="w-full text-left p-3.5 rounded-xl bg-slate-855 hover:bg-slate-800 transition flex flex-col gap-1">
+              <span class="text-sm font-semibold text-purple-400">4. Gói Combo (Mobile + Merchant ATM)</span>
+              <span class="text-xs text-slate-400 leading-tight">Hợp nhất 2 khu vực ATM thành 1 phân vùng duy nhất với 4 nút trên 1 hàng gọn gàng.</span>
+            </button>
+            <button onclick="setScenario('expired-license')" id="btn-scen-expired-license" class="w-full text-left p-3.5 rounded-xl bg-slate-855 hover:bg-slate-800 transition flex flex-col gap-1">
+              <span class="text-sm font-semibold text-rose-400">5. Giấy phép Hết hạn / Khóa</span>
+              <span class="text-xs text-slate-400 leading-tight">Mở chế độ Chỉ đọc (Read-only), hiển thị banner yêu cầu gia hạn và khóa toàn bộ công cụ ATM.</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CÁC THIẾT LẬP THAY ĐỔI ĐỘNG -->
+        <div class="border-t border-slate-800/80 pt-5 space-y-4">
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400">Tùy chỉnh tương tác nhanh</h3>
+          
+          <!-- Loại tài khoản -->
+          <div>
+            <label class="block text-xs text-slate-400 mb-1">Loại tài khoản mô phỏng</label>
+            <select id="select-account-type" onchange="changeAccountType(this.value)" class="w-full bg-slate-855 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500">
+              <option value="personal">Personal (Cá nhân)</option>
+              <option value="business">Business (Doanh nghiệp)</option>
+            </select>
+          </div>
+
+          <!-- Trạng thái Online / Offline ATM -->
+          <div class="flex items-center justify-between p-2.5 bg-slate-855 rounded-lg">
+            <span class="text-xs text-slate-300 font-medium">Trạng thái ATM hoạt động</span>
+            <div class="flex gap-1 bg-slate-800 p-1 rounded-md">
+              <button onclick="toggleAtmOnline(true)" id="btn-online-on" class="px-3 py-1 text-xs rounded font-semibold transition">Bật (ON)</button>
+              <button onclick="toggleAtmOnline(false)" id="btn-online-off" class="px-3 py-1 text-xs rounded font-semibold transition">Tắt (OFF)</button>
+            </div>
+          </div>
+
+          <!-- Chế độ Giao diện (Sáng/Tối) -->
+          <div class="flex items-center justify-between p-2.5 bg-slate-855 rounded-lg">
+            <span class="text-xs text-slate-300 font-medium">Chế độ giao diện</span>
+            <div class="flex gap-1 bg-slate-800 p-1 rounded-md">
+              <button onclick="setTheme('light')" id="btn-theme-light" class="px-3 py-1 text-xs rounded font-semibold transition text-slate-400 hover:text-white">Sáng</button>
+              <button onclick="setTheme('dark')" id="btn-theme-dark" class="px-3 py-1 text-xs rounded font-semibold transition bg-slate-700 text-white shadow-sm">Tối</button>
+            </div>
+          </div>
+
+          <!-- Tạo yêu cầu giả lập mới -->
+          <button onclick="triggerMockRequest()" class="w-full bg-orange-500/10 hover:bg-orange-500/20 text-orange-400 py-2.5 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-2">
+            <i data-lucide="bell-ring" class="w-4 h-4"></i> Giả lập Khách gửi Yêu cầu Mới
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TÓM TẮT QUY TẮC NGHIỆP VỤ ĐÃ ĐÁP ỨNG -->
+    <div class="mt-8 border-t border-slate-800/80 pt-4 hidden xl:block">
+      <div class="bg-slate-855 p-4 rounded-xl">
+        <h4 class="text-xs font-bold text-slate-300 mb-2 flex items-center gap-1.5">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i> Tuân Thủ Quy Tắc Đặc Tả
+        </h4>
+        <ul class="text-[11px] text-slate-400 space-y-1.5">
+          <li class="flex items-start gap-1"><span class="text-emerald-400">✓</span> No Role Switcher (Quy tắc DASH-001)</li>
+          <li class="flex items-start gap-1"><span class="text-emerald-400">✓</span> Giao diện Ví gọn gàng (Quy tắc DASH-004)</li>
+          <li class="flex items-start gap-1"><span class="text-emerald-400">✓</span> Ràng buộc gói Combo (Quy tắc DASH-012/013)</li>
+          <li class="flex items-start gap-1"><span class="text-emerald-400">✓</span> Đồng bộ trạng thái Offline QR (DASH-022)</li>
+          <li class="flex items-start gap-1"><span class="text-emerald-400">✓</span> Trình quét QR trực tiếp (Quy tắc DASH-025)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- KHU VỰC THIẾT BỊ DI ĐỘNG GIẢ LẬP (Ở BÊN PHẢI) -->
+  <div class="flex-1 flex items-center justify-center p-4 md:p-8 bg-slate-950/40">
+    
+    <!-- KHUNG ĐIỆN THOẠI CHUẨN PREMIUM (FLAT DESIGN SHADOWS) -->
+    <div class="w-full max-w-[412px] h-[840px] bg-slate-900 rounded-[50px] border-[8px] border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.7)] relative flex flex-col overflow-hidden">
+      
+      <!-- Tai thỏ / Camera di động mô phỏng -->
+      <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-40 h-7 bg-slate-855 rounded-b-3xl z-50 flex items-center justify-center">
+        <div class="w-16 h-1.5 bg-slate-900 rounded-full mb-1"></div>
+        <div class="w-3 h-3 bg-slate-900 rounded-full ml-3 mb-1"></div>
+      </div>
+
+      <!-- Khung hiển thị thông tin hệ thống di động -->
+      <div class="h-10 bg-slate-900 px-6 pt-3 flex justify-between items-center text-[11px] font-semibold text-slate-400 z-40 shrink-0">
+        <span>09:41</span>
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="signal" class="w-3.5 h-3.5"></i>
+          <span>5G</span>
+          <i data-lucide="battery" class="w-4 h-4 text-emerald-500"></i>
+        </div>
+      </div>
+
+      <!-- TOAST THÔNG BÁO TỰ CHẾ TRÊN MÀN HÌNH ĐIỆN THOẠI -->
+      <div id="toast-box" class="absolute top-12 left-4 right-4 z-50 transition-all duration-300 transform -translate-y-20 opacity-0 pointer-events-none">
+        <div class="bg-slate-800/95 backdrop-blur-md shadow-2xl p-4 rounded-xl flex items-start gap-3">
+          <div class="p-1 bg-orange-500/10 rounded-lg text-orange-400" id="toast-icon-container">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+          </div>
+          <div class="flex-1">
+            <h5 class="text-xs font-bold text-white" id="toast-title">Thông báo mới</h5>
+            <p class="text-[11px] text-slate-300 mt-0.5" id="toast-message">Nội dung chi tiết...</p>
+          </div>
+          <button onclick="hideToast()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+
+      <!-- TRÌNH CONTAINER CHỨC CÁC ROUTER MÀN HÌNH TRỰC QUAN -->
+      <div id="app-viewport" class="flex-1 overflow-y-auto mobile-scrollbar bg-slate-950 pb-20 relative">
+        
+        <!-- ================= MÀN HÌNH 1: DASHBOARD CHÍNH ================= -->
+        <div id="screen-dashboard" class="p-4 space-y-2.5">
+          
+          <!-- LỜI CHÀO / HEADER (DASH-5.1 & DASH-5.2) -->
+          <div class="flex justify-between items-center pt-1">
+            <div>
+              <h2 id="greet-title" class="text-md font-bold text-white tracking-tight">Xin chào, Sam 👋</h2>
+              <p id="greet-subtitle" class="text-[11px] text-slate-400 mt-0.5">Mua & bán Crypto (P2P) với các đối tác ATM uy tín</p>
+            </div>
+            <!-- Chuông thông báo có badge -->
+            <button onclick="toggleNotificationPanel()" class="relative p-2 bg-slate-900 hover:bg-slate-800 rounded-xl text-slate-300 transition">
+              <i data-lucide="bell" class="w-4.5 h-4.5"></i>
+              <span id="notification-badge" class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-orange-500 rounded-full ring-2 ring-slate-955 hidden"></span>
+            </button>
+          </div>
+
+          <!-- WALLET SUMMARY CARD (Quy tắc DASH-7.1 -> 7.5 - Thiết kế phẳng không Gradient - Đã xóa biểu tượng nền) -->
+          <div class="bg-slate-900 rounded-2xl p-4 shadow-lg relative overflow-hidden">
+            <div class="flex justify-between items-center mb-1.5">
+              <div class="flex items-center gap-1.5">
+                <span class="text-[10px] font-medium text-slate-400 tracking-wider uppercase">Tổng tài sản ví</span>
+                <button onclick="toggleBalanceVisibility()" class="text-slate-400 hover:text-white transition">
+                  <i id="balance-eye-icon" data-lucide="eye" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+              <button onclick="changeScreen('wallet_details')" class="text-[11px] font-bold text-orange-400 hover:text-orange-300 transition flex items-center gap-0.5">
+                Xem ví <i data-lucide="chevron-right" class="w-3 h-3"></i>
+              </button>
+            </div>
+            <div class="relative z-10">
+              <span id="wallet-balance" class="text-xl font-extrabold text-white tracking-tight">$7,207.92</span>
+            </div>
+          </div>
+
+          <!-- IN PROGRESS TRANSACTION CARD (Màn hình giao dịch đang xử lý) - ĐƯA LÊN TRÊN NGAY DƯỚI VÍ -->
+          <div id="in-progress-card" class="relative overflow-hidden hidden">
+            <!-- Tự động kết nối động qua JS -->
+          </div>
+
+          <!-- PENDING REQUESTS ALERT CARD (Chỉ hiển thị khi có yêu cầu và có Giấy phép hoạt động) -->
+          <div id="pending-requests-card" class="bg-orange-500/10 rounded-xl p-3 flex items-center justify-between hidden">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8.5 h-8.5 bg-orange-500/20 text-orange-400 rounded-lg flex items-center justify-center">
+                <i data-lucide="clock" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">Yêu cầu đang chờ</h4>
+                <p id="pending-request-desc" class="text-[10px] text-slate-300 mt-0.5">2 yêu cầu cần xử lý gấp</p>
+              </div>
+            </div>
+            <button onclick="openRequestListModal()" class="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-[10px] font-semibold transition shadow-md shadow-orange-500/10">
+              Xem chi tiết
+            </button>
+          </div>
+
+          <!-- BANNER GIA HẠN GIẤY PHÉP (DASH-11.1) -->
+          <div id="renew-license-card" class="bg-rose-500/10 rounded-xl p-3.5 hidden space-y-2.5">
+            <div class="flex items-start gap-2.5">
+              <div class="w-8 h-8 bg-rose-500/20 text-rose-400 rounded-lg flex items-center justify-center shrink-0">
+                <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">Gia hạn Giấy phép Nhượng quyền</h4>
+                <p class="text-[10px] text-slate-300 mt-0.5 leading-normal">Công cụ ATM của bạn đang bị khóa tạm thời cho đến khi Giấy phép hoạt động trở lại.</p>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="openPurchaseModal()" class="flex-1 py-1 bg-rose-500 hover:bg-rose-600 text-white rounded-lg text-[11px] font-semibold text-center transition">Gia hạn ngay</button>
+              <button onclick="changeScreen('license_management')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-755 text-slate-300 rounded-lg text-[11px] font-semibold text-center transition">Chi tiết</button>
+            </div>
+          </div>
+
+          <!-- TRẠNG THÁI HOẠT ĐỘNG (ON / OFF - Không viền, phẳng) -->
+          <div id="operational-status-panel" class="hidden grid grid-cols-2 gap-2.5">
+            <div id="activity-status-box" class="bg-slate-900 rounded-xl p-2.5 flex justify-between items-center">
+              <div>
+                <span class="text-[8.5px] text-slate-400 font-medium uppercase tracking-wider block">Trạng thái</span>
+                <span class="text-xs font-bold text-white">Hoạt động</span>
+              </div>
+              <span id="badge-activity-status" class="px-2 py-0.5 text-[9px] font-bold rounded bg-emerald-500/15 text-emerald-400 flex items-center gap-1">
+                <span class="w-1 h-1 bg-emerald-400 rounded-full animate-pulse"></span> BẬT
+              </span>
+            </div>
+            <div id="walk-in-status-box" class="bg-slate-900 rounded-xl p-2.5 flex justify-between items-center">
+              <div>
+                <span class="text-[8.5px] text-slate-400 font-medium uppercase tracking-wider block">Khách vãng lai</span>
+                <span class="text-xs font-bold text-white">Walk-in</span>
+              </div>
+              <span class="px-2 py-0.5 text-[9px] font-bold rounded bg-emerald-500/15 text-emerald-400 flex items-center gap-1">
+                BẬT
+              </span>
+            </div>
+          </div>
+
+          <!-- PRIMARY P2P ACTION CARDS (DASH-12.1.1 - Nâng cấp nền xanh dương cho phím Bán & Đồng bộ danh xưng Crypto P2P) -->
+          <div id="p2p-primary-cards" class="grid grid-cols-2 gap-2.5">
+            <button onclick="changeScreen('p2p_buy_flow')" class="bg-orange-600 hover:bg-orange-700 rounded-xl p-3 text-left shadow-lg relative overflow-hidden transition transform active:scale-95">
+              <div class="absolute -right-4 -bottom-4 text-white/10">
+                <i data-lucide="shopping-bag" class="w-12 h-12"></i>
+              </div>
+              <h3 class="text-xs font-extrabold text-white leading-tight">Mua Crypto (P2P)</h3>
+              <p class="text-[8.5px] text-orange-100 mt-1.5">Bằng tiền mặt gần bạn</p>
+            </button>
+            <button onclick="changeScreen('p2p_sell_flow')" class="bg-blue-600 hover:bg-blue-700 rounded-xl p-3 text-left shadow-lg relative overflow-hidden transition transform active:scale-95">
+              <div class="absolute -right-4 -bottom-4 text-white/10">
+                <i data-lucide="banknote" class="w-12 h-12"></i>
+              </div>
+              <h3 class="text-xs font-extrabold text-white leading-tight">Bán Crypto (P2P)</h3>
+              <p class="text-[8.5px] text-blue-100 mt-1.5">Quy đổi lấy tiền mặt</p>
+            </button>
+          </div>
+
+          <!-- TÍNH NĂNG NHANH CHO USER THƯỜNG - DI CHUYỂN XUỐNG DƯỚI 2 CARD MUA/BÁN P2P (Đồng bộ phối bento màu mờ sắc nét) -->
+          <div id="quick-actions-panel" class="space-y-1.5">
+            <div class="flex justify-between items-center">
+              <h4 class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Tính năng nhanh</h4>
+            </div>
+            <div class="grid grid-cols-3 gap-2">
+              <button onclick="openMapSim()" class="bg-blue-500/10 hover:bg-blue-500/20 p-2.5 rounded-xl flex flex-col items-center text-center transition">
+                <i data-lucide="map" class="w-3.5 h-3.5 text-blue-400"></i>
+                <span class="text-[9px] text-slate-300 font-semibold mt-1 leading-tight">Bản đồ</span>
+              </button>
+              <button onclick="changeScreen('p2p_buy_flow')" class="bg-orange-500/10 hover:bg-orange-500/20 p-2.5 rounded-xl flex flex-col items-center text-center transition">
+                <i data-lucide="arrow-down-circle" class="w-3.5 h-3.5 text-orange-400"></i>
+                <span class="text-[9px] text-slate-300 font-semibold mt-1 leading-tight">Mua P2P</span>
+              </button>
+              <button onclick="changeScreen('p2p_sell_flow')" class="bg-emerald-500/10 hover:bg-emerald-500/20 p-2.5 rounded-xl flex flex-col items-center text-center transition">
+                <i data-lucide="arrow-up-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <span class="text-[9px] text-slate-300 font-semibold mt-1 leading-tight">Bán P2P</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KHU VỰC CHỨC NĂNG MOBILE ATM (DASH-16.1 & DASH-16.5 - Đã xóa title & rating và background, tô màu nền cho item) -->
+          <div id="area-mobile-atm" class="hidden space-y-2 relative">
+            <!-- 3 Nút chức năng chính của Mobile ATM (Màu phối đồng bộ Combo ATM) -->
+            <div class="grid grid-cols-3 gap-2" id="grid-mobile-actions">
+              <button onclick="handleAtmAction('mobile')" class="flex flex-col items-center justify-center p-2.5 bg-blue-500/10 hover:bg-blue-500/20 active:scale-95 rounded-xl transition relative group">
+                <i data-lucide="qr-code" class="w-4.5 h-4.5 text-blue-400 group-hover:scale-110 transition"></i>
+                <span class="text-[9.5px] text-slate-200 font-medium mt-1">Mã QR ATM</span>
+              </button>
+              <button onclick="handleAtmAction('receive_pay')" class="flex flex-col items-center justify-center p-2.5 bg-purple-500/10 hover:bg-purple-500/20 active:scale-95 rounded-xl transition relative group">
+                <i data-lucide="handshake" class="w-4.5 h-4.5 text-purple-400 group-hover:scale-110 transition"></i>
+                <span class="text-[9.5px] text-slate-200 font-medium mt-1">Thu/Chi hộ</span>
+              </button>
+              <button onclick="handleAtmAction('settings')" class="flex flex-col items-center justify-center p-2.5 bg-amber-500/10 hover:bg-amber-500/20 active:scale-95 rounded-xl transition relative group">
+                <i data-lucide="sliders" class="w-4.5 h-4.5 text-amber-400 group-hover:scale-110 transition"></i>
+                <span class="text-[9.5px] text-slate-200 font-medium mt-1">Portal</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KHU VỰC CHỨC NĂNG MERCHANT ATM (DASH-17.1 & DASH-17.7 - Đã xóa title & rating và background, tô màu nền cho item) -->
+          <div id="area-merchant-atm" class="hidden space-y-2 relative">
+            <!-- 3 Nút chức năng chính của Merchant ATM (Màu phối đồng bộ Combo ATM) -->
+            <div class="grid grid-cols-3 gap-2" id="grid-merchant-actions">
+              <button onclick="handleAtmAction('merchant')" class="flex flex-col items-center justify-center p-2.5 bg-emerald-500/10 hover:bg-emerald-500/20 active:scale-95 rounded-xl transition relative group">
+                <i data-lucide="qr-code" class="w-4.5 h-4.5 text-emerald-400 group-hover:scale-110 transition"></i>
+                <span class="text-[9.5px] text-slate-200 font-medium mt-1">Mã QR ATM</span>
+              </button>
+              <button onclick="handleAtmAction('receive_pay')" class="flex flex-col items-center justify-center p-2.5 bg-purple-500/10 hover:bg-purple-500/20 active:scale-95 rounded-xl transition relative group">
+                <i data-lucide="handshake" class="w-4.5 h-4.5 text-purple-400 group-hover:scale-110 transition"></i>
+                <span class="text-[9.5px] text-slate-200 font-medium mt-1">Thu/Chi hộ</span>
+              </button>
+              <button onclick="handleAtmAction('settings')" class="flex flex-col items-center justify-center p-2.5 bg-amber-500/10 hover:bg-amber-500/20 active:scale-95 rounded-xl transition relative group">
+                <i data-lucide="sliders" class="w-4.5 h-4.5 text-amber-400 group-hover:scale-110 transition"></i>
+                <span class="text-[9.5px] text-slate-200 font-medium mt-1">Portal</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KHU VỰC CHỨC NĂNG COMBO ATM (HỢP NHẤT - DASH-015: 4 NÚT TRÊN 1 HÀNG DUY NHẤT) -->
+          <div id="area-combo-atm" class="hidden space-y-2 relative">
+            <!-- 4 Nút hành động ngang trên 1 hàng phẳng mượt - Phối màu bento riêng biệt -->
+            <div class="grid grid-cols-4 gap-1.5" id="grid-combo-actions">
+              <button onclick="handleAtmAction('mobile')" class="flex flex-col items-center justify-center p-1.5 py-2.5 bg-blue-500/10 hover:bg-blue-500/20 active:scale-95 rounded-xl transition relative group">
+                <i data-lucide="qr-code" class="w-4 h-4 text-blue-400 group-hover:scale-110 transition"></i>
+                <span class="text-[8.5px] text-slate-200 font-semibold mt-1 text-center leading-tight">QR Mobile</span>
+              </button>
+              <button onclick="handleAtmAction('merchant')" class="flex flex-col items-center justify-center p-1.5 py-2.5 bg-emerald-500/10 hover:bg-emerald-500/20 active:scale-95 rounded-xl transition relative group">
+                <i data-lucide="qr-code" class="w-4 h-4 text-emerald-400 group-hover:scale-110 transition"></i>
+                <span class="text-[8.5px] text-slate-200 font-semibold mt-1 text-center leading-tight">QR Merch</span>
+              </button>
+              <button onclick="handleAtmAction('receive_pay')" class="flex flex-col items-center justify-center p-1.5 py-2.5 bg-purple-500/10 hover:bg-purple-500/20 active:scale-95 rounded-xl transition relative group">
+                <i data-lucide="handshake" class="w-4 h-4 text-purple-400 group-hover:scale-110 transition"></i>
+                <span class="text-[8.5px] text-slate-200 font-semibold mt-1 text-center leading-tight">Thu/Chi</span>
+              </button>
+              <button onclick="handleAtmAction('settings')" class="flex flex-col items-center justify-center p-1.5 py-2.5 bg-amber-500/10 hover:bg-amber-500/20 active:scale-95 rounded-xl transition relative group">
+                <i data-lucide="sliders" class="w-4 h-4 text-amber-400 group-hover:scale-110 transition"></i>
+                <span class="text-[8.5px] text-slate-200 font-semibold mt-1 text-center leading-tight">Portal</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- HIỆU SUẤT HOẠT ĐỘNG & NHẬN CHI HỘ (HỢP NHẤT TRỰC QUAN KHÔNG CÒN TIÊU ĐỀ PHỤ - MỖI Ô 1 MÀU TRỰC QUAN & CĂN GIỮA) -->
+          <div id="summary-metrics-panel" class="hidden space-y-2">
+            <h4 class="text-[10px] font-bold text-slate-300 flex items-center gap-1 uppercase tracking-wider">
+              <i data-lucide="trending-up" class="w-3.5 h-3.5 text-orange-400"></i> Hiệu suất hoạt động ATM
+            </h4>
+            <!-- Row 1: Thống kê Giao dịch (Mỗi ô 1 màu nền & chữ số màu căn giữa) -->
+            <div class="grid grid-cols-3 gap-2">
+              <div class="bg-blue-500/10 rounded-lg p-2 text-center">
+                <span class="text-[7.5px] text-blue-400 font-bold block uppercase leading-tight">Giao dịch</span>
+                <span class="text-[12px] font-black text-blue-400 block mt-0.5">300</span>
+              </div>
+              <div class="bg-emerald-500/10 rounded-lg p-2 text-center">
+                <span class="text-[7.5px] text-emerald-400 font-bold block uppercase leading-tight">Thành công</span>
+                <span class="text-[12px] font-black text-emerald-400 block mt-0.5">248</span>
+              </div>
+              <div class="bg-purple-500/10 rounded-lg p-2 text-center">
+                <span class="text-[7.5px] text-purple-400 font-bold block uppercase leading-tight">Đánh giá</span>
+                <span class="text-[12px] font-black text-purple-400 block mt-0.5">4.9 ★</span>
+              </div>
+            </div>
+            <!-- Row 2: Thống kê Tài chính Nhận Hộ Chi Hộ (Mỗi ô 1 màu nền & chữ số màu căn giữa) -->
+            <div class="grid grid-cols-3 gap-2">
+              <div class="bg-sky-500/10 rounded-lg p-2 text-center">
+                <span class="text-[7.5px] text-sky-400 font-bold block uppercase leading-tight">Đã Thu Hộ</span>
+                <span class="text-[12px] font-black text-sky-400 block mt-0.5">$850</span>
+              </div>
+              <div class="bg-rose-500/10 rounded-lg p-2 text-center">
+                <span class="text-[7.5px] text-rose-400 font-bold block uppercase leading-tight">Đã Chi Hộ</span>
+                <span class="text-[12px] font-black text-rose-400 block mt-0.5">$900</span>
+              </div>
+              <div class="bg-amber-500/10 rounded-lg p-2 text-center">
+                <span class="text-[7.5px] text-amber-400 font-bold block uppercase leading-tight">Hoa Hồng</span>
+                <span class="text-[12px] font-black text-amber-400 block mt-0.5">$63.76</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dummy element giữ kết nối với JavaScript cũ để tránh lỗi Runtime -->
+          <div id="financial-summary-panel" class="hidden"></div>
+
+          <!-- BANNER MUA GIẤY PHÉP NHƯỢNG QUYỀN (NỀN XANH LÁ NHẠT SANG TRỌNG) -->
+          <div id="become-partner-card" class="bg-emerald-500/10 rounded-xl p-3.5 relative overflow-hidden">
+            <span class="text-[8px] font-bold text-emerald-400 tracking-wider uppercase bg-emerald-500/10 px-1.5 py-0.5 rounded inline-block mb-1 animate-pulse">Đối tác</span>
+            <h3 class="text-xs font-extrabold text-white">Kiếm thêm thu nhập với Mobile ATM</h3>
+            <p class="text-[9.5px] text-slate-400 mt-0.5 mb-2.5 leading-snug">Hợp tác cùng VLINKPAY nạp/rút tiền mặt để nhận hoa hồng.</p>
+            <button onclick="openPurchaseModal()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold py-1.5 px-2.5 rounded-lg shadow-md transition transform active:scale-95">
+              Đăng ký ngay
+            </button>
+          </div>
+
+          <!-- CARD: QUẢN LÝ GIẤY PHÉP (DASH-10.1 - NỀN XANH LÁ NHẠT ĐỒNG BỘ) -->
+          <div id="manage-franchise-card" class="bg-emerald-500/10 rounded-xl p-2.5 flex items-center justify-between hidden">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 bg-emerald-500/20 text-emerald-400 rounded-lg flex items-center justify-center">
+                <i data-lucide="shield" class="w-3.5 h-3.5"></i>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">Quản lý Giấy phép</h4>
+                <p class="text-[9.5px] text-slate-400">Xem NFT nhượng quyền của bạn</p>
+              </div>
+            </div>
+            <button onclick="changeScreen('license_management')" class="px-2.5 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 rounded-lg text-[10px] font-bold transition">
+              Quản lý
+            </button>
+          </div>
+
+          <!-- DANH SÁCH LỊCH SỬ GIAO DỊCH GẦN ĐÂY (DASH-24.1) -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center">
+              <h4 id="recent-requests-title" class="text-[10px] font-bold text-slate-300 font-semibold uppercase tracking-wider">Giao dịch gần đây</h4>
+              <button onclick="openHistoryScreen()" class="text-[10px] text-slate-400 hover:text-white font-medium transition">Xem tất cả</button>
+            </div>
+            <div class="space-y-1.5" id="recent-requests-list">
+              <!-- Render tự động qua Javascript -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ================= MÀN HÌNH 2: CAMERA QUÉT QR GIẢ LẬP ================= -->
+        <div id="screen-scanner" class="absolute inset-0 bg-slate-950 z-40 hidden flex flex-col">
+          <div class="p-4 border-b border-slate-800/80 flex justify-between items-center bg-slate-900">
+            <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+              <i data-lucide="scan-line" class="w-4 h-4 text-orange-500"></i> Quét mã QR ATM
+            </h3>
+            <button onclick="changeScreen('dashboard')" class="p-1.5 bg-slate-800 hover:bg-slate-755 text-slate-400 hover:text-white rounded-lg transition">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="flex-1 bg-slate-950 relative flex flex-col items-center justify-center p-8">
+            <div class="w-64 h-64 border-2 border-dashed border-orange-500 rounded-3xl relative overflow-hidden flex items-center justify-center bg-slate-900/50">
+              <div class="scanner-line absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-orange-500 to-transparent shadow-[0_0_10px_rgba(249,115,22,0.8)]"></div>
+              
+              <div onclick="simulateScanSuccess()" class="cursor-pointer hover:scale-105 transition duration-300 p-4 bg-white rounded-xl shadow-lg text-center">
+                <svg class="w-32 h-32 text-slate-900 mx-auto" viewBox="0 0 100 100">
+                  <path fill="currentColor" d="M0,0 h30 v10 h-20 v20 h-10 z M100,0 h-30 v10 h20 v20 h10 z M0,100 h30 v-10 h-20 v-20 h-10 z M100,100 h-30 v-10 h20 v-20 h10 z M35,35 h30 v30 h-30 z M45,45 h10 v10 h-10 z M15,15 h10 v10 h-10 z M75,15 h10 v10 h-10 z M15,75 h10 v10 h-10 z M75,75 h10 v10 h-10 z"/>
+                </svg>
+                <p class="text-[9px] text-slate-500 mt-2 font-bold uppercase tracking-wider">Nhấn vào đây để quét</p>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 mt-6 text-center leading-relaxed">Hãy hướng camera điện thoại của bạn vào mã QR ATM của khách hàng để bắt đầu nhận diện giao dịch.</p>
+          </div>
+        </div>
+
+        <!-- ================= MÀN HÌNH 3: CHI TIẾT MÃ QR ATM RIÊNG BIỆT (DASH-19.1) ================= -->
+        <div id="screen-qr" class="absolute inset-0 bg-slate-950 z-40 hidden flex flex-col">
+          <div class="p-4 border-b border-slate-800/80 flex justify-between items-center bg-slate-900">
+            <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+              <i data-lucide="qr-code" class="w-4 h-4 text-orange-500"></i> Mã QR ATM Định Danh
+            </h3>
+            <button onclick="changeScreen('dashboard')" class="p-1.5 bg-slate-800 hover:bg-slate-755 text-slate-400 hover:text-white rounded-lg transition">
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="flex-1 p-5 space-y-4 overflow-y-auto mobile-scrollbar bg-slate-950">
+            
+            <!-- Banner cảnh báo ngoại tuyến (DASH-20.1) -->
+            <div id="qr-offline-warning" class="bg-rose-500/10 p-3.5 rounded-xl flex items-start gap-2 text-[11px] text-rose-400 hidden">
+              <i data-lucide="alert-circle" class="w-4 h-4 shrink-0 mt-0.5 animate-bounce"></i>
+              <p class="leading-relaxed"><strong>Chú ý:</strong> ATM này hiện đang ngoại tuyến. Khách hàng có thể không khởi tạo được giao dịch.</p>
+            </div>
+
+            <!-- Khung QR chính (Không viền) -->
+            <div class="flex flex-col items-center justify-center p-6 bg-slate-900 rounded-2xl shadow-xl">
+              <div class="p-4 bg-white rounded-xl">
+                <svg class="w-44 h-44 text-slate-900" viewBox="0 0 100 100">
+                  <path fill="currentColor" d="M0,0 h30 v10 h-20 v20 h-10 z M100,0 h-30 v10 h20 v20 h10 z M0,100 h30 v-10 h-20 v-20 h-10 z M100,100 h-30 v-10 h20 v-20 h10 z M35,35 h30 v30 h-30 z M45,45 h10 v10 h-10 z M15,15 h10 v10 h-10 z M75,15 h10 v10 h-10 z M15,75 h10 v10 h-10 z M75,75 h10 v10 h-10 z M10,40 h10 v10 h-10 z M40,10 h10 v10 h-10 z M80,40 h10 v10 h-10 z M40,80 h10 v10 h-10 z"/>
+                </svg>
+              </div>
+              <h3 id="qr-atm-title" class="text-sm font-bold text-white mt-4">Mobile ATM Partner</h3>
+              <p id="qr-atm-id" class="text-xs text-slate-400 mt-1">ID: ATM-MOB-9901</p>
+              <div class="mt-3 flex gap-2">
+                <span class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/10 text-blue-400" id="qr-atm-type-badge">Mobile ATM</span>
+                <span class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400" id="qr-atm-status-badge">Đang hoạt động</span>
+              </div>
+            </div>
+
+            <!-- Chi tiết biểu phí & phương thức thanh toán hỗ trợ (DASH-19.4) -->
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between p-3 bg-slate-900 rounded-xl">
+                <span class="text-slate-400">Phí dịch vụ:</span>
+                <span class="font-bold text-white">1% - 5%</span>
+              </div>
+              <div class="p-3 bg-slate-900 rounded-xl space-y-2">
+                <span class="text-slate-400 block text-[11px] font-medium">Phương thức hỗ trợ:</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 bg-slate-800 rounded text-[10px] text-slate-300">Tiền mặt</span>
+                  <span class="px-2.5 py-1 bg-slate-800 rounded text-[10px] text-slate-300">Bank Transfer</span>
+                  <span class="px-2.5 py-1 bg-slate-800 rounded text-[10px] text-slate-300">Zelle</span>
+                  <span class="px-2.5 py-1 bg-slate-800 rounded text-[10px] text-slate-300">PayPal</span>
+                  <span class="px-2.5 py-1 bg-slate-800 rounded text-[10px] text-slate-300">Venmo</span>
+                  <span class="px-2.5 py-1 bg-slate-800 rounded text-[10px] text-slate-300">Cash App</span>
+                </div>
+              </div>
+            </div>
+
+            <p class="text-[11px] text-slate-500 text-center leading-relaxed">Đưa mã QR này cho khách hàng quét để bắt đầu một giao dịch P2P kỹ thuật số an toàn.</p>
+
+            <div class="grid grid-cols-2 gap-2 pt-2">
+              <button onclick="copyToClipboard('ATM-MOB-9901')" class="py-2.5 bg-slate-800 hover:bg-slate-755 text-slate-200 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+                <i data-lucide="copy" class="w-4 h-4"></i> Sao chép ID
+              </button>
+              <button onclick="showToast('Chia sẻ QR', 'Liên kết QR đã được lưu vào bộ nhớ tạm thành công.', 'success')" class="py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+                <i data-lucide="share-2" class="w-4 h-4"></i> Chia sẻ
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= MÀN HÌNH 4: QUẢN LÝ GIẤY PHÉP NHƯỢNG QUYỀN (DASH-10.4 / 10.5) ================= -->
+        <div id="screen-license-mgmt" class="absolute inset-0 bg-slate-950 z-40 hidden flex flex-col">
+          <div class="p-4 border-b border-slate-800/80 flex justify-between items-center bg-slate-900">
+            <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+              <i data-lucide="shield" class="w-4 h-4 text-orange-500"></i> Quản lý Franchise License
+            </h3>
+            <button onclick="changeScreen('dashboard')" class="p-1.5 bg-slate-800 hover:bg-slate-755 text-slate-400 hover:text-white rounded-lg transition">
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <!-- Các Tab chức năng chuyên sâu (DASH-10.5) -->
+          <div class="flex border-b border-slate-800/80 text-[11px] font-bold overflow-x-auto bg-slate-900 shrink-0">
+            <button onclick="switchFranchiseTab('nft')" id="tab-btn-nft" class="py-3 px-4 border-b-2 border-orange-500 text-orange-400 shrink-0 transition">Giá trị NFT</button>
+            <button onclick="switchFranchiseTab('inv')" id="tab-btn-inv" class="py-3 px-4 border-b-2 border-transparent text-slate-400 hover:text-white shrink-0 transition">Kho đồ</button>
+            <button onclick="switchFranchiseTab('get')" id="tab-btn-get" class="py-3 px-4 border-b-2 border-transparent text-slate-400 hover:text-white shrink-0 transition">Nhận phép</button>
+            <button onclick="switchFranchiseTab('hist')" id="tab-btn-hist" class="py-3 px-4 border-b-2 border-transparent text-slate-400 hover:text-white shrink-0 transition">Lịch sử</button>
+            <button onclick="switchFranchiseTab('deleg')" id="tab-btn-deleg" class="py-3 px-4 border-b-2 border-transparent text-slate-400 hover:text-white shrink-0 transition">Ủy quyền</button>
+          </div>
+
+          <div class="flex-1 p-5 space-y-4 overflow-y-auto mobile-scrollbar">
+            <div id="franchise-tab-view" class="space-y-4">
+              <!-- Nội dung render động qua JavaScript (NFT Value mặc định) -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= MÀN HÌNH 5: CHI TIẾT VÍ TÀI SẢN (DASH-7.4) ================= -->
+        <div id="screen-wallet-details" class="absolute inset-0 bg-slate-950 z-40 hidden flex flex-col">
+          <div class="p-4 border-b border-slate-800/80 flex justify-between items-center bg-slate-900">
+            <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+              <i data-lucide="wallet" class="w-4 h-4 text-orange-500"></i> Ví tài sản của tôi
+            </h3>
+            <button onclick="changeScreen('dashboard')" class="p-1.5 bg-slate-800 hover:bg-slate-755 text-slate-400 hover:text-white rounded-lg transition">
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="flex-1 p-5 space-y-4 overflow-y-auto mobile-scrollbar font-medium bg-slate-950">
+            <div class="bg-orange-500/10 p-5 rounded-2xl text-center">
+              <span class="text-xs text-slate-400 block uppercase font-medium tracking-wider mb-1">Tổng tài sản quy đổi</span>
+              <h2 class="text-3xl font-black text-white" id="details-wallet-balance">$7,207.92</h2>
+            </div>
+
+            <h4 class="text-xs font-bold text-slate-300">Phân rã Token chi tiết</h4>
+            <div class="space-y-2">
+              <div class="p-3.5 bg-slate-900 rounded-xl flex justify-between items-center">
+                <div>
+                  <span class="text-xs font-bold text-white block">VLINKPAY USDV</span>
+                  <span class="text-[10px] text-slate-400">Stablecoin gốc của nền tảng</span>
+                </div>
+                <span class="text-sm font-bold text-white">7,207.92 USDV</span>
+              </div>
+              <div class="p-3.5 bg-slate-900 rounded-xl flex justify-between items-center">
+                <div>
+                  <span class="text-xs font-bold text-white block">Ethereum ETH</span>
+                  <span class="text-[10px] text-slate-400">Gas token hoạt động</span>
+                </div>
+                <span class="text-sm font-bold text-white">1.45 ETH</span>
+              </div>
+              <div class="p-3.5 bg-slate-900 rounded-xl flex justify-between items-center">
+                <div>
+                  <span class="text-xs font-bold text-white block">Tether USDT</span>
+                  <span class="text-[10px] text-slate-400">Stablecoin ERC20</span>
+                </div>
+                <span class="text-sm font-bold text-white">250.00 USDT</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 pt-4">
+              <button onclick="showToast('Nạp tiền', 'Tính năng nạp tiền đang được bảo trì.', 'warning')" class="py-3 bg-orange-500 text-white rounded-xl text-xs font-bold transition">Nạp Token</button>
+              <button onclick="showToast('Rút tiền', 'Tính năng rút tiền đang được bảo trì.', 'warning')" class="py-3 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold transition">Rút Token</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= MÀN HÌNH 6: LUỒNG GIAO DỊCH P2P MUA / BÁN (DASH-12.1.1) ================= -->
+        <div id="screen-p2p-flow" class="absolute inset-0 bg-slate-950 z-40 hidden flex flex-col">
+          <div class="p-4 border-b border-slate-800/80 flex justify-between items-center bg-slate-900">
+            <h3 class="text-sm font-bold text-white flex items-center gap-1.5" id="p2p-flow-title">
+              <i data-lucide="globe" class="w-4 h-4 text-orange-500"></i> Giao dịch P2P
+            </h3>
+            <button onclick="changeScreen('dashboard')" class="p-1.5 bg-slate-800 hover:bg-slate-755 text-slate-400 hover:text-white rounded-lg transition">
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="flex-1 p-5 space-y-4 overflow-y-auto mobile-scrollbar bg-slate-950">
+            <p class="text-xs text-slate-400" id="p2p-flow-desc">Thực hiện mua/bán Gift Cash với các đối tác gần bạn.</p>
+
+            <div class="bg-slate-900 p-4 rounded-xl space-y-3">
+              <label class="block text-xs font-bold text-slate-300">Nhập số lượng giao dịch quy đổi (USD):</label>
+              <div class="relative">
+                <span class="absolute left-3.5 top-2.5 text-slate-400 font-bold">$</span>
+                <input type="number" id="input-p2p-amount" value="100" class="w-full bg-slate-955 rounded-xl p-2.5 pl-8 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500">
+              </div>
+              <p class="text-[10px] text-slate-400">Hạn ngạch giao dịch khả dụng tối thiểu từ $10 đến tối đa $5,000.</p>
+            </div>
+
+            <div class="bg-slate-900 p-4 rounded-xl space-y-3">
+              <span class="block text-xs font-bold text-slate-300">Chọn đối tác ATM gần nhất:</span>
+              <div class="space-y-2">
+                <div class="p-3 bg-slate-950 rounded-lg flex justify-between items-center">
+                  <div>
+                    <span class="text-xs font-bold text-white block">Vie Nail Bar (Merchant)</span>
+                    <span class="text-[10px] text-slate-400">Cách bạn: 0.2 dặm • Phí: 1.5%</span>
+                  </div>
+                  <span class="text-xs font-bold text-emerald-400">Online</span>
+                </div>
+                <div class="p-3 bg-slate-955 rounded-lg flex justify-between items-center">
+                  <div>
+                    <span class="text-xs font-bold text-white block">Mobile ATM - MB1049</span>
+                    <span class="text-[10px] text-slate-400">Cách bạn: 0.6 dặm • Phí: 2.0%</span>
+                  </div>
+                  <span class="text-xs font-bold text-emerald-400">Online</span>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="submitP2PTransaction()" class="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold transition shadow-lg shadow-orange-500/10">
+              Khởi chạy giao dịch
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- THANH ĐIỀU HƯỚNG DƯỚI ĐỘNG (BOTTOM NAVIGATION - DASH-26 - Không viền) -->
+      <div id="bottom-nav-bar" class="absolute bottom-0 left-0 right-0 h-16 bg-slate-900 px-4 flex justify-around items-center z-45 shrink-0 shadow-[0_-5px_15px_rgba(0,0,0,0.4)]">
+        <!-- Render tự động tùy theo trạng thái Giấy phép & Screen định hướng -->
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- CÁC HỘP THOẠI MODAL PHỤ TRỢ (MÔ PHỎNG LUỒNG THỜI GIAN THỰC - Không viền thô) -->
+  <div id="modal-container" class="fixed inset-0 bg-slate-955/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div id="modal-content" class="bg-slate-900 rounded-3xl w-full max-w-sm max-h-[90vh] overflow-y-auto mobile-scrollbar p-6 space-y-4 shadow-2xl relative transform scale-90 transition-all duration-300">
+      
+      <!-- Nút đóng nhanh -->
+      <button onclick="closeModal()" class="absolute top-4 right-4 p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-400 hover:text-white rounded-full transition">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <!-- Vùng render nội dung chi tiết -->
+      <div id="modal-inner-content">
+        <!-- Thay thế động bằng JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT ĐIỀU KHIỂN LOGIC TOÀN BỘ TRANG -->
+  <script>
+    // Định nghĩa biến môi trường cục bộ để lưu trữ trạng thái người dùng
+    let state = {
+      accountType: 'personal',       // 'personal' | 'business'
+      licenseStatus: 'none',         // 'none' | 'active' | 'expired'
+      activeRoles: {
+        mobile: false,
+        merchant: false
+      },
+      atmOnline: true,               // Trạng thái bật/tắt hoạt động của ATM (DASH-030)
+      balanceVisible: true,          // Ẩn/hiện tổng tài sản (DASH-075)
+      currentScreen: 'dashboard',    // Router hiện tại: 'dashboard', 'scanner', 'qr', 'license_management', 'wallet_details', 'p2p_flow'
+      selectedQrType: 'mobile',      // 'mobile' | 'merchant'
+      activeFranchiseTab: 'nft',     // Tab quản lý NFT hoạt động: 'nft', 'inv', 'get', 'hist', 'deleg'
+      hasPendingRequest: true,       // Giả lập trạng thái yêu cầu đang chờ xử lý
+      p2pFlowMode: 'buy',            // 'buy' | 'sell'
+      theme: 'dark',                 // 'dark' | 'light' (Cập nhật lưu trữ Theme mặc định)
+      transactions: [
+        { id: 'TX-4402', type: 'Mua USDV bằng Tiền mặt', counterparty: 'Seller AD266759', amount: '$100', status: 'Pending', time: 'Hôm nay • 04:11 PM' },
+        { id: 'TX-4399', type: 'Bán USDV bằng Tiền mặt', counterparty: 'Buyer BC992811', amount: '$500', status: 'Completed', time: 'Hôm nay • 10:25 AM' },
+        { id: 'TX-4201', type: 'Giao dịch Mobile ATM', counterparty: 'Partner MB-10492', amount: '$1,200', status: 'Completed', time: 'Hôm qua • 03:30 PM' }
+      ]
+    };
+
+    // Điểm khởi chạy của ứng dụng
+    window.onload = function() {
+      lucide.createIcons();
+      setScenario('no-license-personal');
+    };
+
+    // QUY TRÌNH CHUYỂN ĐỔI KỊCH BẢN GIẢ LẬP NHANH (BẢNG TRÁI)
+    function setScenario(scenName) {
+      // Làm sạch giao diện các nút kịch bản ở thanh điều khiển trái
+      ['no-license-personal', 'mobile-atm', 'merchant-atm', 'combo-atm', 'expired-license'].forEach(name => {
+        const btn = document.getElementById(`btn-scen-${name}`);
+        if (btn) {
+          btn.classList.remove('border-orange-500', 'bg-orange-500/10', 'border-blue-500', 'bg-blue-500/10', 'border-emerald-500', 'bg-emerald-500/10', 'border-purple-500', 'bg-purple-500/10', 'border-rose-500', 'bg-rose-500/10');
+          btn.classList.add('border-slate-700', 'bg-slate-855');
+        }
+      });
+
+      // Gán tham số cấu hình trạng thái dựa vào kịch bản chọn lựa
+      if (scenName === 'no-license-personal') {
+        state.accountType = 'personal';
+        state.licenseStatus = 'none';
+        state.activeRoles.mobile = false;
+        state.activeRoles.merchant = false;
+        document.getElementById('btn-scen-no-license-personal').className = "w-full text-left p-3 rounded-xl border border-orange-500 bg-orange-500/10 transition flex flex-col gap-1";
+      } else if (scenName === 'mobile-atm') {
+        state.accountType = 'personal';
+        state.licenseStatus = 'active';
+        state.activeRoles.mobile = true;
+        state.activeRoles.merchant = false;
+        document.getElementById('btn-scen-mobile-atm').className = "w-full text-left p-3 rounded-xl border border-blue-500 bg-blue-500/10 transition flex flex-col gap-1";
+      } else if (scenName === 'merchant-atm') {
+        state.accountType = 'business';
+        state.licenseStatus = 'active';
+        state.activeRoles.mobile = false;
+        state.activeRoles.merchant = true;
+        document.getElementById('btn-scen-merchant-atm').className = "w-full text-left p-3 rounded-xl border border-emerald-500 bg-emerald-500/10 transition flex flex-col gap-1";
+      } else if (scenName === 'combo-atm') {
+        state.accountType = 'business';
+        state.licenseStatus = 'active';
+        state.activeRoles.mobile = true;
+        state.activeRoles.merchant = true;
+        document.getElementById('btn-scen-combo-atm').className = "w-full text-left p-3 rounded-xl border border-purple-500 bg-purple-500/10 transition flex flex-col gap-1";
+      } else if (scenName === 'expired-license') {
+        state.accountType = 'personal';
+        state.licenseStatus = 'expired';
+        state.activeRoles.mobile = true;
+        state.activeRoles.merchant = false;
+        document.getElementById('btn-scen-expired-license').className = "w-full text-left p-3 rounded-xl border border-rose-500 bg-rose-500/10 transition flex flex-col gap-1";
+      }
+
+      // Đồng bộ thiết lập sang các control phụ trợ
+      document.getElementById('select-account-type').value = state.accountType;
+      toggleAtmOnline(state.atmOnline);
+
+      // Reset màn hình về dashboard trang chủ
+      changeScreen('dashboard');
+    }
+
+    // THAY ĐỔI LOẠI TÀI KHOẢN (BUSINESS/PERSONAL)
+    function changeAccountType(value) {
+      state.accountType = value;
+      // DASH-012/013: Gói Combo chỉ có sẵn cho tài khoản doanh nghiệp.
+      if (value === 'personal' && state.activeRoles.mobile && state.activeRoles.merchant) {
+        state.activeRoles.merchant = false; 
+        showToast("Ràng buộc nghiệp vụ", "Tài khoản Cá nhân không thể kích hoạt gói Combo. Hệ thống tự động chuyển về Mobile ATM.", "warning");
+      }
+      updateDashboardUI();
+    }
+
+    // TRẠNG THÁI ONLINE / OFFLINE ATM
+    function toggleAtmOnline(isOnline) {
+      const onBtn = document.getElementById('btn-online-on');
+      const offBtn = document.getElementById('btn-online-off');
+
+      state.atmOnline = isOnline;
+
+      if (isOnline) {
+        onBtn.className = "px-3 py-1 text-xs rounded font-semibold bg-emerald-500 text-white shadow-sm";
+        offBtn.className = "px-3 py-1 text-xs rounded font-semibold bg-slate-800 text-slate-400 hover:text-white";
+        
+        // Đồng bộ lên badge trạng thái hoạt động của dashboard
+        const badge = document.getElementById('badge-activity-status');
+        if (badge) {
+          badge.className = "px-2.5 py-1 text-[10px] font-bold rounded-full bg-emerald-500/15 text-emerald-400 flex items-center gap-1";
+          badge.innerHTML = `<span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span> BẬT`;
+        }
+      } else {
+        onBtn.className = "px-3 py-1 text-xs rounded font-semibold bg-slate-800 text-slate-400 hover:text-white";
+        offBtn.className = "px-3 py-1 text-xs rounded font-semibold bg-rose-500 text-white shadow-sm";
+        
+        const badge = document.getElementById('badge-activity-status');
+        if (badge) {
+          badge.className = "px-2.5 py-1 text-[10px] font-bold rounded-full bg-rose-500/15 text-rose-400 flex items-center gap-1";
+          badge.innerHTML = `<span class="w-1.5 h-1.5 bg-rose-400 rounded-full"></span> TẮT`;
+        }
+      }
+
+      // Cập nhật lại giao diện QR nếu đang ở màn hình QR
+      if (state.currentScreen === 'qr_screen') {
+        renderQrScreen();
+      }
+    }
+
+    // CHUYỂN ĐỔI CHẾ ĐỘ SÁNG / TỐI TOÀN CỤC (LIGHT / DARK THEME)
+    function setTheme(theme) {
+      const body = document.body;
+      const btnLight = document.getElementById('btn-theme-light');
+      const btnDark = document.getElementById('btn-theme-dark');
+      
+      state.theme = theme;
+      
+      if (theme === 'light') {
+        body.classList.add('light-mode');
+        btnLight.className = "px-3 py-1 text-xs rounded font-semibold transition bg-orange-500 text-white shadow-sm";
+        btnDark.className = "px-3 py-1 text-xs rounded font-semibold transition text-slate-555 hover:text-slate-800";
+        showToast("Giao diện Sáng", "Hệ thống đã chuyển đổi trực quan sang giao diện nền sáng.");
+      } else {
+        body.classList.remove('light-mode');
+        btnLight.className = "px-3 py-1 text-xs rounded font-semibold transition text-slate-400 hover:text-white";
+        btnDark.className = "px-3 py-1 text-xs rounded font-semibold transition bg-slate-700 text-white shadow-sm";
+        showToast("Giao diện Tối", "Hệ thống đã phục hồi trở lại chế độ giao diện tối.");
+      }
+      
+      // Đồng bộ thiết lập & render lại các biểu tượng
+      lucide.createIcons();
+      updateDashboardUI();
+    }
+
+    // GIẢ LẬP KHÁCH GỬI YÊU CẦU MỚI (DASH-19)
+    function triggerMockRequest() {
+      if (state.licenseStatus === 'none') {
+        showToast("Hành động bị khóa", "Người dùng không có Giấy phép hoạt động nhượng quyền để nhận yêu cầu.", "warning");
+        return;
+      }
+      if (state.licenseStatus === 'expired') {
+        showToast("Hành động bị khóa", "Giấy phép của bạn đang bị Khóa / Hết hạn. Vui lòng gia hạn trước.", "warning");
+        return;
+      }
+
+      state.hasPendingRequest = true;
+      document.getElementById('notification-badge').classList.remove('hidden');
+      updateDashboardUI();
+      showToast("Có yêu cầu mới", "Vừa phát hiện 1 yêu cầu Khách hàng giao dịch xung quanh vị trí của bạn.", "info");
+    }
+
+    // ẨN / HIỆN SỐ DƯ TÀI SẢN (DASH-075)
+    function toggleBalanceVisibility() {
+      state.balanceVisible = !state.balanceVisible;
+      const balanceEl = document.getElementById('wallet-balance');
+      const eyeIcon = document.getElementById('balance-eye-icon');
+      
+      if (state.balanceVisible) {
+        balanceEl.innerText = "$7,207.92";
+        eyeIcon.setAttribute('data-lucide', 'eye');
+      } else {
+        balanceEl.innerText = "$••••••";
+        eyeIcon.setAttribute('data-lucide', 'eye-off');
+      }
+      lucide.createIcons();
+    }
+
+    // CHUYỂN ĐỔI MÀN HÌNH ROUTER TRÊN ĐIỆN THOẠI MÔ PHỎNG (DASH-27)
+    function changeScreen(screenName) {
+      state.currentScreen = screenName;
+
+      // Ẩn tất cả màn hình
+      document.getElementById('screen-dashboard').classList.add('hidden');
+      document.getElementById('screen-scanner').classList.add('hidden');
+      document.getElementById('screen-qr').classList.add('hidden');
+      document.getElementById('screen-license-mgmt').classList.add('hidden');
+      document.getElementById('screen-wallet-details').classList.add('hidden');
+      document.getElementById('screen-p2p-flow').classList.add('hidden');
+
+      if (screenName === 'dashboard') {
+        document.getElementById('screen-dashboard').classList.remove('hidden');
+        updateDashboardUI();
+      } else if (screenName === 'scanner') {
+        // DASH-22.3: Nếu giấy phép hết hạn, khóa hành động mở quét QR
+        if (state.licenseStatus === 'expired') {
+          showToast("Hành động bị khóa", "Gia hạn Giấy phép Nhượng quyền để mở khóa công cụ ATM này.", "warning");
+          state.currentScreen = 'dashboard';
+          document.getElementById('screen-dashboard').classList.remove('hidden');
+          updateDashboardUI();
+          return;
+        }
+        document.getElementById('screen-scanner').classList.remove('hidden');
+      } else if (screenName === 'qr_screen') {
+        document.getElementById('screen-qr').classList.remove('hidden');
+        renderQrScreen();
+      } else if (screenName === 'license_management') {
+        document.getElementById('screen-license-mgmt').classList.remove('hidden');
+        switchFranchiseTab(state.activeFranchiseTab);
+      } else if (screenName === 'wallet_details') {
+        document.getElementById('screen-wallet-details').classList.remove('hidden');
+        document.getElementById('details-wallet-balance').innerText = state.balanceVisible ? "$7,207.92" : "$••••••";
+      } else if (screenName === 'p2p_buy_flow') {
+        state.p2pFlowMode = 'buy';
+        document.getElementById('screen-p2p-flow').classList.remove('hidden');
+        document.getElementById('p2p-flow-title').innerHTML = `<i data-lucide="shopping-bag" class="w-4 h-4 text-orange-500"></i> Mua Crypto (P2P)`;
+        document.getElementById('p2p-flow-desc').innerText = "Nạp nhanh tài sản USDV bằng Tiền mặt thông qua ATM đối tác.";
+        lucide.createIcons();
+      } else if (screenName === 'p2p_sell_flow') {
+        state.p2pFlowMode = 'sell';
+        document.getElementById('screen-p2p-flow').classList.remove('hidden');
+        document.getElementById('p2p-flow-title').innerHTML = `<i data-lucide="banknote" class="w-4 h-4 text-orange-500"></i> Bán Crypto (P2P)`;
+        document.getElementById('p2p-flow-desc').innerText = "Thanh khoản tài sản USDV của bạn rút về Tiền mặt nhanh chóng.";
+        lucide.createIcons();
+      }
+
+      // Cập nhật lại Bottom Navigation đồng bộ theo Router
+      renderBottomNav();
+      lucide.createIcons();
+    }
+
+    // UPDATE TOÀN BỘ SỐ LIỆU VÀ CÁC THÀNH PHẦN DASHBOARD CHÍNH
+    function updateDashboardUI() {
+      const isNone = state.licenseStatus === 'none';
+      const isActive = state.licenseStatus === 'active';
+      const isExpired = state.licenseStatus === 'expired';
+
+      // 1. Cập nhật lời chào (DASH-5.1)
+      const greetTitle = document.getElementById('greet-title');
+      const greetSubtitle = document.getElementById('greet-subtitle');
+      if (isNone) {
+        greetTitle.innerText = "Xin chào, Sam 👋";
+        greetSubtitle.innerText = "Mua & bán Crypto (P2P) với các đối tác ATM uy tín";
+      } else if (state.activeRoles.merchant && !state.activeRoles.mobile) {
+        greetTitle.innerText = "Xin chào, Vie Nail Bar 💅";
+        greetSubtitle.innerText = "Cổng vận hành Merchant ATM của Doanh nghiệp";
+      } else if (state.activeRoles.mobile && !state.activeRoles.merchant) {
+        greetTitle.innerText = "Xin chào, Mobile ATM 🚗";
+        greetSubtitle.innerText = "Đang kết nối hoạt động ATM di động";
+      } else if (state.activeRoles.mobile && state.activeRoles.merchant) {
+        greetTitle.innerText = "Xin chào, Combo Partner 🌟";
+        greetSubtitle.innerText = "Sở hữu bản quyền cả Mobile & Merchant ATM";
+      }
+
+      // 2. Thẻ Pending Requests (DASH-16.3 & DASH-17.5)
+      const pendingReqCard = document.getElementById('pending-requests-card');
+      if (isActive && state.hasPendingRequest) {
+        pendingReqCard.classList.remove('hidden');
+      } else {
+        pendingReqCard.classList.add('hidden');
+      }
+
+      // 3. Banner Gia hạn Giấy phép (DASH-11.1)
+      const renewCard = document.getElementById('renew-license-card');
+      if (isExpired) {
+        renewCard.classList.remove('hidden');
+      } else {
+        renewCard.classList.add('hidden');
+      }
+
+      // 4. Panel trạng thái hoạt động (DASH-16.4: Bố cục Full khi ẩn Walk-in)
+      const optStatusPanel = document.getElementById('operational-status-panel');
+      const walkInStatusBox = document.getElementById('walk-in-status-box');
+      
+      if (!isNone) {
+        optStatusPanel.classList.remove('hidden');
+        if (state.activeRoles.merchant) {
+          // Là Merchant hoặc Combo: Hiện cả 2 trạng thái dạng grid 2 cột
+          walkInStatusBox.classList.remove('hidden');
+          optStatusPanel.className = "grid grid-cols-2 gap-2.5";
+        } else {
+          // Là Mobile ATM: Ẩn Walk-in, đẩy trạng thái Hoạt động làm FULL width (quy tắc 2 trạng thái cho full)
+          walkInStatusBox.classList.add('hidden');
+          optStatusPanel.className = "grid grid-cols-1 gap-2.5";
+        }
+      } else {
+        optStatusPanel.classList.add('hidden');
+      }
+
+      // 5. Giao diện người dùng Cá nhân (P2P Primary Cards) (DASH-12.1.1)
+      const p2pPrimary = document.getElementById('p2p-primary-cards');
+      if (isNone) {
+        p2pPrimary.classList.remove('hidden');
+      } else {
+        p2pPrimary.classList.add('hidden');
+      }
+
+      // 6. Giao dịch cá nhân đang tiến hành (In-progress Transaction) (DASH-12.1.1) - Cập nhật tối giản bằng màu xanh dương
+      const inProgressCard = document.getElementById('in-progress-card');
+      const activeTx = state.transactions.find(tx => tx.status === 'Pending' || tx.status === 'Processing');
+      
+      if (isNone && activeTx) {
+        inProgressCard.classList.remove('hidden');
+        inProgressCard.className = "bg-blue-500/10 rounded-xl p-2.5 flex items-center justify-between";
+        inProgressCard.innerHTML = `
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-blue-500/20 text-blue-400 rounded-lg flex items-center justify-center">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5 animate-spin"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-white">Giao dịch đang tiến hành</h4>
+              <p class="text-[10px] text-slate-300 mt-0.5">${activeTx.amount} • Mua USDV từ Seller</p>
+            </div>
+          </div>
+          <button onclick="openActiveTxManageModal('${activeTx.id}')" class="px-2.5 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-[10px] font-semibold transition shadow-md shadow-blue-500/10 shrink-0">
+            Quản lý
+          </button>
+        `;
+      } else {
+        inProgressCard.classList.add('hidden');
+      }
+
+      // 7, 8 & New: Phân phối hiển thị vùng chức năng ATM theo gói Combo hoặc Standard (DASH-015)
+      const areaMobile = document.getElementById('area-mobile-atm');
+      const areaMerchant = document.getElementById('area-merchant-atm');
+      const areaCombo = document.getElementById('area-combo-atm');
+
+      const isComboActive = state.activeRoles.mobile && state.activeRoles.merchant && !isNone;
+
+      if (isComboActive) {
+        // Nếu là Combo: Ẩn 2 vùng riêng biệt, hiển thị 1 vùng tích hợp duy nhất (DASH-015)
+        areaCombo.classList.remove('hidden');
+        areaMobile.classList.add('hidden');
+        areaMerchant.classList.add('hidden');
+        if (isExpired) {
+          applyReadOnlyOverlay(areaCombo, 'grid-combo-actions');
+        } else {
+          removeReadOnlyOverlay(areaCombo, 'grid-combo-actions');
+        }
+      } else {
+        // Không phải Combo: Ẩn vùng Combo, hiển thị theo phân vai Standard thông thường
+        areaCombo.classList.add('hidden');
+
+        // Mobile ATM Area
+        if (state.activeRoles.mobile && !isNone) {
+          areaMobile.classList.remove('hidden');
+          if (isExpired) {
+            applyReadOnlyOverlay(areaMobile, 'grid-mobile-actions');
+          } else {
+            removeReadOnlyOverlay(areaMobile, 'grid-mobile-actions');
+          }
+        } else {
+          areaMobile.classList.add('hidden');
+        }
+
+        // Merchant ATM Area
+        if (state.activeRoles.merchant && !isNone) {
+          areaMerchant.classList.remove('hidden');
+          if (isExpired) {
+            applyReadOnlyOverlay(areaMerchant, 'grid-merchant-actions');
+          } else {
+            removeReadOnlyOverlay(areaMerchant, 'grid-merchant-actions');
+          }
+        } else {
+          areaMerchant.classList.add('hidden');
+        }
+      }
+
+      // 9. Hiệu suất summary (DASH-16.6 & DASH-17.8)
+      const metricsPanel = document.getElementById('summary-metrics-panel');
+      if (!isNone) {
+        metricsPanel.classList.remove('hidden');
+      } else {
+        metricsPanel.classList.add('hidden');
+      }
+
+      // 10. Báo cáo tài chính ATM summary (DASH-16.7 & DASH-17.9)
+      const financialPanel = document.getElementById('financial-summary-panel');
+      if (!isNone) {
+        financialPanel.classList.remove('hidden');
+      } else {
+        financialPanel.classList.add('hidden');
+      }
+
+      // 11. Banner Đăng ký làm Đối tác (DASH-8.1)
+      const becomePartnerCard = document.getElementById('become-partner-card');
+      if (isNone) {
+        becomePartnerCard.classList.remove('hidden');
+      } else {
+        becomePartnerCard.classList.add('hidden');
+      }
+
+      // 12. Quick Actions cho người dùng chưa nhượng quyền (DASH-12.1.1)
+      const quickPanel = document.getElementById('quick-actions-panel');
+      if (isNone) {
+        quickPanel.classList.remove('hidden');
+      } else {
+        quickPanel.classList.add('hidden');
+      }
+
+      // 13. Nút Quản lý Giấy phép (DASH-10.1)
+      const manageCard = document.getElementById('manage-franchise-card');
+      if (!isNone) {
+        manageCard.classList.remove('hidden');
+      } else {
+        manageCard.classList.add('hidden');
+      }
+
+      // 14. Render Transactions
+      renderRecentTransactions();
+    }
+
+    // RENDER MÀN HÌNH QR ATM ĐỘC LẬP (DASH-19.1 & DASH-19.2)
+    function renderQrScreen() {
+      const isMobile = state.selectedQrType === 'mobile';
+      const titleEl = document.getElementById('qr-atm-title');
+      const idEl = document.getElementById('qr-atm-id');
+      const typeBadge = document.getElementById('qr-atm-type-badge');
+      const statusBadge = document.getElementById('qr-atm-status-badge');
+      const offlineWarning = document.getElementById('qr-offline-warning');
+
+      if (isMobile) {
+        titleEl.innerText = "Mobile ATM Partner";
+        idEl.innerText = "ID: ATM-MOB-9901";
+        typeBadge.innerText = "Mobile ATM";
+        typeBadge.className = "px-2.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/10 text-blue-400";
+      } else {
+        titleEl.innerText = "Merchant ATM - Vie Nail Bar";
+        idEl.innerText = "ID: ATM-MER-4420";
+        typeBadge.innerText = "Merchant ATM";
+        typeBadge.className = "px-2.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400";
+      }
+
+      // Xử lý logic cảnh báo Offline hoạt động (DASH-20.1)
+      if (state.atmOnline) {
+        statusBadge.innerText = "Trực tuyến";
+        statusBadge.className = "px-2.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400";
+        offlineWarning.classList.add('hidden');
+      } else {
+        statusBadge.innerText = "Ngoại tuyến";
+        statusBadge.className = "px-2.5 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-400";
+        offlineWarning.classList.remove('hidden');
+      }
+    }
+
+    // ÁP DỤNG READ-ONLY KHI GIẤY PHÉP HẾT HẠN (DASH-22 - Thẻ phủ bento sang trọng)
+    function applyReadOnlyOverlay(container, gridId) {
+      const actionGrid = document.getElementById(gridId);
+      if (actionGrid) {
+        actionGrid.classList.add('opacity-40');
+      }
+      if (!container.querySelector('.read-only-banner')) {
+        const banner = document.createElement('div');
+        banner.className = "read-only-banner flex items-center gap-2 text-xs font-bold text-rose-400 bg-rose-500/10 p-2.5 rounded-xl mt-3";
+        banner.innerHTML = `<i data-lucide="lock" class="w-4 h-4 shrink-0"></i> <span>Chỉ xem (Giấy phép bị khóa)</span>`;
+        container.appendChild(banner);
+        lucide.createIcons();
+      }
+    }
+
+    // "Mở khoá" lại overlay
+    function removeReadOnlyOverlay(container, gridId) {
+      const actionGrid = document.getElementById(gridId);
+      if (actionGrid) {
+        actionGrid.classList.remove('opacity-40');
+      }
+      const banner = container.querySelector('.read-only-banner');
+      if (banner) {
+        container.removeChild(banner);
+      }
+    }
+
+    // RENDER THANH ĐIỀU HƯỚNG DƯỚI ĐỘNG (DASH-26)
+    function renderBottomNav() {
+      const navContainer = document.getElementById('bottom-nav-bar');
+      navContainer.innerHTML = '';
+
+      const isNone = state.licenseStatus === 'none';
+      const screen = state.currentScreen;
+
+      // Danh sách tất cả item cơ bản
+      let items = [
+        { id: 'p2p_buy_flow', label: 'P2P', icon: 'globe', action: () => changeScreen('p2p_buy_flow') },
+        { id: 'history', label: 'Lịch sử', icon: 'history', action: () => openHistoryScreen() },
+        { id: 'wallet_details', label: 'Ví', icon: 'wallet', action: () => changeScreen('wallet_details') },
+        { id: 'profile', label: 'Cá nhân', icon: 'user', action: () => showToast("Cá nhân", "Quản lý cài đặt tài khoản bảo mật.") }
+      ];
+
+      // Nếu có giấy phép: Thêm nút Scan QR nổi bật ở giữa (DASH-26.3)
+      if (!isNone) {
+        items.splice(2, 0, { id: 'scanner', label: 'Quét QR', icon: 'scan-line', action: () => changeScreen('scanner'), primary: true });
+      }
+
+      // Quy tắc DASH-26.5: Không hiển thị nút đại diện cho chính màn hình đang active
+      let activeId = '';
+      if (screen === 'p2p_buy_flow' || screen === 'p2p_sell_flow') activeId = 'p2p_buy_flow';
+      if (screen === 'wallet_details') activeId = 'wallet_details';
+      if (screen === 'scanner') activeId = 'scanner';
+
+      // Tạo các button điều hướng
+      items.forEach(item => {
+        if (item.id === activeId) return; // Bỏ qua trang hiện tại đúng quy tắc DASH-26.5
+
+        if (item.primary) {
+          // Nút Scan QR tròn nổi bật ở giữa
+          const btn = document.createElement('button');
+          btn.onclick = item.action;
+          btn.className = "w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg shadow-orange-500/20 transform -translate-y-2.5 transition active:scale-95";
+          btn.innerHTML = `<i data-lucide="${item.icon}" class="w-5 h-5"></i>`;
+          navContainer.appendChild(btn);
+        } else {
+          // Các nút định vị bình thường
+          const btn = document.createElement('button');
+          btn.onclick = item.action;
+          btn.className = "flex flex-col items-center justify-center text-slate-400 hover:text-white transition";
+          btn.innerHTML = `
+            <i data-lucide="${item.icon}" class="w-4 h-4"></i>
+            <span class="text-[9px] font-medium mt-1">${item.label}</span>
+          `;
+          navContainer.appendChild(btn);
+        }
+      });
+
+      // Nếu không ở màn hình Home Dashboard, bổ sung nút Home nhanh
+      if (screen !== 'dashboard') {
+        const homeBtn = document.createElement('button');
+        homeBtn.onclick = () => changeScreen('dashboard');
+        homeBtn.className = "flex flex-col items-center justify-center text-orange-500 transition";
+        homeBtn.innerHTML = `
+          <i data-lucide="home" class="w-4 h-4"></i>
+          <span class="text-[9px] font-bold mt-1">Trang chủ</span>
+        `;
+        navContainer.insertBefore(homeBtn, navContainer.firstChild);
+      }
+    }
+
+    // XỬ LÝ KHI BẤM VÀO CÁC NÚT HOẠT ĐỘNG TRONG VÙNG ATM (DASH-22.3)
+    function handleAtmAction(actionType) {
+      if (state.licenseStatus === 'expired') {
+        showToast("Hành động bị khóa", "Gia hạn Giấy phép Nhượng quyền để mở khóa công cụ ATM này.", "warning");
+        return;
+      }
+
+      if (actionType === 'mobile' || actionType === 'merchant') {
+        state.selectedQrType = actionType;
+        changeScreen('qr_screen');
+      } else if (actionType === 'receive_pay') {
+        openReceivePayModal();
+      } else if (actionType === 'settings') {
+        openPortalSettingsModal();
+      }
+    }
+
+    // GIẢ LẬP QUÉT QR THÀNH CÔNG (DASH-21)
+    function simulateScanSuccess() {
+      changeScreen('dashboard');
+      showToast("Quét thành công", "Đã nhận diện thành công mã QR ATM của khách hàng.", "success");
+      
+      // Mở hộp thoại thông tin yêu cầu giao dịch
+      openModal('request-detail-scan');
+    }
+
+    // SUBMIT MÔ PHỎNG GIAO DỊCH P2P MỚI (TÍCH HỢP KHÓA AN TOÀN 1 GIAO DỊCH DUY NHẤT)
+    function submitP2PTransaction() {
+      const amountVal = document.getElementById('input-p2p-amount').value;
+      if (!amountVal || amountVal <= 0) {
+        showToast("Lỗi nhập liệu", "Vui lòng nhập số lượng tiền mặt hợp lệ.", "warning");
+        return;
+      }
+
+      // QUY TẮC BLOCK: Chỉ cho phép tối đa 1 giao dịch xử lý đồng thời đối với người dùng Role 1 chưa có gói nhượng quyền
+      if (state.licenseStatus === 'none') {
+        const hasExisting = state.transactions.some(tx => tx.status === 'Pending' || tx.status === 'Processing');
+        if (hasExisting) {
+          showToast("Giao dịch bị chặn", "Tài khoản cá nhân chỉ được thực hiện tối đa 1 giao dịch xử lý tại một thời điểm.", "warning");
+          return;
+        }
+      }
+
+      changeScreen('dashboard');
+      showToast("Khởi tạo giao dịch", `Đã gửi yêu cầu ${state.p2pFlowMode === 'buy' ? 'Mua' : 'Bán'} $${amountVal} lên hệ thống.`, "success");
+
+      // Thêm giao dịch này vào danh sách lịch sử chờ
+      state.transactions.unshift({
+        id: 'TX-' + Math.floor(1000 + Math.random() * 9000),
+        type: state.p2pFlowMode === 'buy' ? 'Mua Crypto (P2P)' : 'Bán Crypto (P2P)',
+        counterparty: 'Vie Nail Bar (Merchant)',
+        amount: '$' + amountVal,
+        status: 'Pending',
+        time: 'Vừa xong'
+      });
+      updateDashboardUI();
+    }
+
+    // HỦY GIAO DỊCH TIẾN TRÌNH CHO MỤC ĐÍCH KIỂM THỬ THỜI GIAN THỰC
+    function cancelTxSim(txId) {
+      const tx = state.transactions.find(t => t.id === txId);
+      if (tx) {
+        tx.status = 'Cancelled';
+        showToast("Đã hủy giao dịch", `Giao dịch ${txId} đã được hủy. Khóa bảo vệ đã mở, bạn có thể tạo giao dịch mới.`, "info");
+        updateDashboardUI();
+      }
+    }
+
+    // HOÀN THÀNH GIAO DỊCH TIẾN TRÌNH
+    function completeTxSim(txId) {
+      const tx = state.transactions.find(t => t.id === txId);
+      if (tx) {
+        tx.status = 'Completed';
+        showToast("Thành công", `Giao dịch ${txId} hoàn thành. Khóa bảo vệ đã mở, bạn có thể tạo giao dịch mới.`, "success");
+        updateDashboardUI();
+      }
+    }
+
+    // MỞ MODAL QUẢN LÝ TIẾN TRÌNH GIAO DỊCH ĐANG CHẠY (HỦY/HOÀN THÀNH) - PHỤC VỤ CHO THẺ MỚI COMPACT (ĐỒNG BỘ MÀU XANH DƯƠNG)
+    function openActiveTxManageModal(txId) {
+      const tx = state.transactions.find(t => t.id === txId);
+      if (!tx) return;
+      openModalContainer(`
+        <div class="space-y-4">
+          <div class="flex items-center gap-1.5 text-blue-555 font-bold text-sm">
+            <i data-lucide="refresh-cw" class="w-5 h-5 animate-spin"></i> <span>Quản lý giao dịch đang chạy</span>
+          </div>
+          <p class="text-xs text-slate-400">Bạn đang có giao dịch chưa hoàn tất. Vui lòng cập nhật tiến độ hoặc hủy giao dịch để giải phóng tài khoản.</p>
+          <div class="p-3.5 bg-slate-955 rounded-xl space-y-2 text-xs text-slate-300">
+            <div class="flex justify-between"><span class="text-slate-400">Mã đơn:</span> <span class="font-mono font-bold text-white">${tx.id}</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Nội dung:</span> <span class="font-semibold text-white">${tx.type}</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Đối tác:</span> <span class="text-white">${tx.counterparty}</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Tổng tiền:</span> <span class="font-bold text-orange-400">${tx.amount}</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Trạng thái:</span> <span class="text-blue-400 font-bold uppercase">${tx.status === 'Pending' ? 'Đang chờ' : 'Đang xử lý'}</span></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="cancelTxSim('${tx.id}'); closeModal();" class="py-2.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 rounded-xl text-xs font-bold transition">Hủy giao dịch</button>
+            <button onclick="completeTxSim('${tx.id}'); closeModal();" class="py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition">Hoàn thành</button>
+          </div>
+          <button onclick="closeModal()" class="w-full py-2 bg-slate-850 hover:bg-slate-800 text-slate-300 text-xs font-semibold rounded-xl transition">Đóng</button>
+        </div>
+      `);
+    }
+
+    // RENDER DANH SÁCH LỊCH SỬ GIAO DỊCH GẦN ĐÂY (DASH-24.1)
+    function renderRecentTransactions() {
+      const listContainer = document.getElementById('recent-requests-list');
+      if (!listContainer) return;
+      listContainer.innerHTML = '';
+
+      state.transactions.forEach(tx => {
+        let statusColor = "bg-slate-855 text-slate-300";
+        if (tx.status === 'Pending') statusColor = "bg-amber-500/10 text-amber-400";
+        if (tx.status === 'Completed') statusColor = "bg-emerald-500/10 text-emerald-400";
+        if (tx.status === 'Processing') statusColor = "bg-blue-500/10 text-blue-400";
+        if (tx.status === 'Cancelled') statusColor = "bg-rose-500/10 text-rose-400";
+
+        const item = document.createElement('div');
+        item.className = "bg-slate-900 hover:bg-slate-855 rounded-xl p-3 flex justify-between items-center transition cursor-pointer";
+        item.onclick = () => openTxDetail(tx.id);
+        
+        item.innerHTML = `
+          <div class="space-y-1">
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs font-bold text-white">${tx.type}</span>
+              <span class="text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ${statusColor}">${tx.status === 'Pending' ? 'Đang chờ' : tx.status === 'Cancelled' ? 'Đã hủy' : tx.status === 'Completed' ? 'Hoàn tất' : 'Đang xử lý'}</span>
+            </div>
+            <p class="text-[10px] text-slate-400">${tx.counterparty} • ${tx.time}</p>
+          </div>
+          <div class="text-right flex items-center gap-1">
+            <span class="text-xs font-extrabold text-orange-400 block">${tx.amount}</span>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>
+          </div>
+        `;
+        listContainer.appendChild(item);
+      });
+      lucide.createIcons();
+    }
+
+    // CHUYỂN TABS TRONG QUẢN LÝ FRANCHISE LICENSE (DASH-10.5 & 10.6)
+    function switchFranchiseTab(tabKey) {
+      state.activeFranchiseTab = tabKey;
+
+      // Reset style nút tab
+      ['nft', 'inv', 'get', 'hist', 'deleg'].forEach(k => {
+        const btn = document.getElementById(`tab-btn-${k}`);
+        if (btn) {
+          btn.className = "py-3 px-4 border-b-2 border-transparent text-slate-400 hover:text-white shrink-0 transition";
+        }
+      });
+
+      // Highlight tab đang active
+      const activeBtn = document.getElementById(`tab-btn-${tabKey}`);
+      if (activeBtn) {
+        activeBtn.className = "py-3 px-4 border-b-2 border-orange-500 text-orange-400 shrink-0 transition";
+      }
+
+      const view = document.getElementById('franchise-tab-view');
+      view.innerHTML = '';
+
+      if (tabKey === 'nft') {
+        view.innerHTML = `
+          <p class="text-[11px] text-slate-400 leading-relaxed">Danh sách các Giấy phép đối tác dạng NFT đang lưu hành trên địa chỉ ví của bạn:</p>
+          <div class="bg-slate-900 p-4 rounded-xl space-y-3">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400">Mã Serial NFT:</span>
+              <span class="font-mono font-bold text-white">VLVCG15L</span>
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400">Loại giấy phép:</span>
+              <span class="font-bold text-white">${state.activeRoles.mobile && state.activeRoles.merchant ? 'Combo Package' : 'Standard License'}</span>
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400">Bản vị giá trị:</span>
+              <span class="font-bold text-orange-400">$1,500</span>
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400">Trạng thái:</span>
+              <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[9px] font-bold uppercase">ĐANG HOẠT ĐỘNG</span>
+            </div>
+            <div class="flex justify-between items-center text-xs border-t border-slate-855 pt-2">
+              <span class="text-slate-400">Ngày bắt đầu:</span>
+              <span class="text-slate-300 text-[11px]">11/08/2025, 01:36 PM</span>
+            </div>
+          </div>
+        `;
+      } else if (tabKey === 'inv') {
+        view.innerHTML = `
+          <div class="p-6 bg-slate-900 rounded-xl text-center text-slate-500 text-xs">
+            [Kho lưu trữ vật phẩm NFT trống]
+          </div>
+        `;
+      } else if (tabKey === 'get') {
+        view.innerHTML = `
+          <div class="space-y-3">
+            <p class="text-[11px] text-slate-400">Mua thêm gói giấy phép hoặc nhập mã kích hoạt nhượng quyền của bạn.</p>
+            <button onclick="openPurchaseModal()" class="w-full py-2.5 bg-orange-500 text-white font-bold rounded-lg transition text-xs">Đăng ký thêm Giấy phép</button>
+          </div>
+        `;
+      } else if (tabKey === 'hist') {
+        view.innerHTML = `
+          <div class="space-y-2">
+            <div class="p-3 bg-slate-900 rounded-xl flex justify-between items-center text-xs">
+              <div>
+                <span class="font-bold text-white block">Mua Gói nhượng quyền</span>
+                <span class="text-[9px] text-slate-400">Kích hoạt qua hệ thống ví VLINKPAY</span>
+              </div>
+              <span class="font-bold text-slate-400">11/08/2025</span>
+            </div>
+          </div>
+        `;
+      } else if (tabKey === 'deleg') {
+        view.innerHTML = `
+          <div class="p-6 bg-slate-900 rounded-xl text-center text-slate-500 text-xs">
+            [Chưa phát sinh phiên Ủy quyền khai thác ATM nào]
+          </div>
+        `;
+      }
+    }
+
+    // ================= KHU VỰC CÁC POPUP MÔ PHỎNG CHI TIẾT =================
+
+    // Mở popup mua Giấy phép nhượng quyền (DASH-9.1 -> 9.4)
+    function openPurchaseModal() {
+      const isPersonal = state.accountType === 'personal';
+      const comboClass = isPersonal ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-800 cursor-pointer';
+
+      openModalContainer(`
+        <div class="space-y-4">
+          <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+            <i data-lucide="award" class="w-5 h-5 text-orange-500"></i> Kích hoạt Giấy phép Đối tác ATM
+          </h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Chọn một trong hai gói bản quyền nhượng quyền bên dưới để vận hành và bắt đầu thu phí.</p>
+          
+          <div class="space-y-3">
+            <!-- Gói Standard (DASH-9.2) -->
+            <div onclick="selectPackageSim('standard')" class="p-4 bg-slate-855 hover:bg-slate-800 rounded-2xl cursor-pointer transition text-left space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-white">Gói Standard License</span>
+                <span class="text-sm font-extrabold text-orange-400">$1,500</span>
+              </div>
+              <p class="text-[11px] text-slate-400">Kích hoạt vai trò ATM phù hợp dựa vào loại tài khoản của bạn.</p>
+              <div class="bg-slate-900 p-2 rounded-lg text-[10px] text-slate-300">
+                <span class="font-bold text-orange-400">Chi tiết:</span> Bạn là tài khoản <span class="font-bold text-white uppercase">${state.accountType}</span>. Gói này sẽ tự động khởi tạo vai trò <span class="font-bold text-emerald-400 uppercase">${isPersonal ? 'Mobile ATM' : 'Merchant ATM'}</span>.
+              </div>
+            </div>
+
+            <!-- Gói Combo (DASH-9.3 / 9.4) -->
+            <div onclick="${isPersonal ? '' : 'selectPackageSim(\'combo\')'}" class="p-4 bg-slate-855 ${comboClass} rounded-2xl transition text-left space-y-2 relative">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-white">Gói Combo Package</span>
+                <span class="text-sm font-extrabold text-orange-400">$2,500</span>
+              </div>
+              <p class="text-[11px] text-slate-400">Vận hành song song cả hai dạng Mobile ATM và Merchant ATM để tối đa hóa doanh thu.</p>
+              
+              ${isPersonal ? `
+                <div class="bg-rose-500/10 p-2 rounded-lg text-[10px] text-rose-400 font-semibold">
+                  Lưu ý: Chỉ khả dụng đối với các tài khoản Doanh nghiệp (Business).
+                </div>
+              ` : `
+                <div class="bg-emerald-500/10 p-2 rounded-lg text-[10px] text-emerald-400 font-semibold">
+                  Được khuyên dùng cho các cơ sở kinh doanh/doanh nghiệp.
+                </div>
+              `}
+            </div>
+          </div>
+        </div>
+      `);
+    }
+
+    // Mở popup danh sách yêu cầu chờ duyệt (DASH-29.6)
+    function openRequestListModal() {
+      openModalContainer(`
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+              <i data-lucide="list-todo" class="w-5 h-5 text-orange-500"></i> Yêu cầu đang chờ duyệt
+            </h3>
+            <span class="px-2 py-0.5 bg-orange-500/10 text-orange-400 text-[10px] rounded-full font-bold">1 MỚI</span>
+          </div>
+
+          <!-- Chi tiết yêu cầu (DASH-29.6) -->
+          <div class="p-4 bg-slate-855 rounded-2xl space-y-3">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-bold text-white">Yêu cầu từ khách hàng</span>
+              <span class="text-xs font-bold text-orange-400">04:35</span>
+            </div>
+            <div class="space-y-1 text-[11px] text-slate-300 leading-relaxed">
+              <p><strong>Nghiệp vụ:</strong> Mua USDV rút Tiền mặt</p>
+              <p><strong>Số tiền quy đổi:</strong> $500 • Tiền mặt</p>
+              <p><strong>Địa điểm giao dịch:</strong> Cách vị trí của bạn 0.6 dặm</p>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-2">
+              <button onclick="acceptPendingRequest()" class="py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-[11px] font-bold transition">Chấp nhận</button>
+              <button onclick="declinePendingRequest()" class="py-2.5 bg-slate-700 hover:bg-slate-650 text-slate-300 rounded-xl text-[11px] font-bold transition">Từ chối</button>
+            </div>
+          </div>
+        </div>
+      `);
+    }
+
+    // Chấp nhận yêu cầu khách hàng (DASH-29.6)
+    function acceptPendingRequest() {
+      closeModal();
+      state.hasPendingRequest = false;
+
+      state.transactions.unshift({
+        id: 'TX-5000',
+        type: 'Khách mua USDV tiền mặt',
+        counterparty: 'Khách hàng BC22819',
+        amount: '$500',
+        status: 'Processing',
+        time: 'Vừa xong'
+      });
+      updateDashboardUI();
+      showToast("Chấp nhận thành công", "Vui lòng liên hệ điểm hẹn với khách hàng để tiếp nhận tiền mặt.", "success");
+    }
+
+    function declinePendingRequest() {
+      closeModal();
+      state.hasPendingRequest = false;
+      updateDashboardUI();
+      showToast("Từ chối yêu cầu", "Đã từ chối xử lý yêu cầu giao dịch này.", "warning");
+    }
+
+    // Mở popup chức năng Thu/Chi hộ (DASH-16.5 & DASH-17.7)
+    function openReceivePayModal() {
+      openModalContainer(`
+        <div class="space-y-4">
+          <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+            <i data-lucide="handshake" class="w-5 h-5 text-orange-500"></i> Quy trình Thu / Chi Hộ Tiền
+          </h3>
+          <p class="text-xs text-slate-400">Chọn loại nghiệp vụ trực tiếp cần giả lập trên hệ thống VLINKPAY.</p>
+          
+          <div class="space-y-2">
+            <button onclick="startCollectOnBehalf()" class="w-full p-3.5 bg-slate-850 hover:bg-slate-800 rounded-xl text-left flex justify-between items-center transition group">
+              <div>
+                <span class="text-xs font-bold text-white block group-hover:text-orange-400 transition">Thu hộ Tiền mặt</span>
+                <span class="text-[10px] text-slate-400 mt-1 block">Khách giao tiền mặt -> Bạn chuyển khoản USDV tương ứng</span>
+              </div>
+              <i data-lucide="arrow-right-left" class="w-4 h-4 text-slate-400"></i>
+            </button>
+
+            <button onclick="startPayOnBehalf()" class="w-full p-3.5 bg-slate-855 hover:bg-slate-800 rounded-xl text-left flex justify-between items-center transition group">
+              <div>
+                <span class="text-xs font-bold text-white block group-hover:text-orange-400 transition">Chi hộ Tiền mặt</span>
+                <span class="text-[10px] text-slate-400 mt-1 block">Bạn giao tiền mặt -> Khách chuyển tài sản USDV quy đổi</span>
+              </div>
+              <i data-lucide="arrow-right-left" class="w-4 h-4 text-slate-400"></i>
+            </button>
+          </div>
+        </div>
+      `);
+    }
+
+    // Mở mô phỏng khi người dùng nhấp vào kết quả quét QR thành công
+    function openModal(type) {
+      if (type === 'request-detail-scan') {
+        openModalContainer(`
+          <div class="space-y-4">
+            <div class="flex flex-col items-center text-center space-y-2">
+              <div class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center">
+                <i data-lucide="check" class="w-6 h-6"></i>
+              </div>
+              <h3 class="text-sm font-bold text-white">Đã kết nối thành công</h3>
+              <p class="text-[11px] text-slate-400">Thiết lập kết nối an toàn với Khách hàng AD266759</p>
+            </div>
+            
+            <div class="p-3 bg-slate-850 rounded-xl space-y-2 text-xs">
+              <div class="flex justify-between"><span class="text-slate-400">Đối tượng:</span> <span class="font-semibold text-white">Khách vãng lai</span></div>
+              <div class="flex justify-between"><span class="text-slate-400">Nghiệp vụ yêu cầu:</span> <span class="font-semibold text-emerald-400">Bán USDV rút Cash</span></div>
+              <div class="flex justify-between"><span class="text-slate-400">Hạn ngạch giao dịch:</span> <span class="font-bold text-white">$250</span></div>
+              <div class="flex justify-between"><span class="text-slate-400">Biểu phí ước tính:</span> <span class="text-slate-300">1.5% (Chi hộ)</span></div>
+            </div>
+
+            <div class="space-y-2">
+              <button onclick="closeModal(); startPayOnBehalf();" class="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold transition">Khởi chạy Giao dịch ngay</button>
+              <button onclick="closeModal()" class="w-full py-2 bg-slate-800 hover:bg-slate-750 text-slate-400 rounded-xl text-xs font-semibold transition">Đóng</button>
+            </div>
+          </div>
+        `);
+      }
+    }
+
+    function startCollectOnBehalf() {
+      closeModal();
+      showToast("Khởi tạo Thu hộ", "Vui lòng nhận tiền mặt của khách để hoàn tất chuyển giao USDV.", "info");
+    }
+
+    function startPayOnBehalf() {
+      closeModal();
+      showToast("Khởi tạo Chi hộ", "Vui lòng giao tiền mặt cho khách để nhận USDV quy đổi.", "info");
+    }
+
+    // Mở thiết lập Portal hoạt động (DASH-16.5 & DASH-17.7)
+    function openPortalSettingsModal() {
+      openModalContainer(`
+        <div class="space-y-4">
+          <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+            <i data-lucide="sliders" class="w-5 h-5 text-orange-500"></i> Thiết lập Portal Vận Hành
+          </h3>
+          
+          <div class="space-y-3 pt-2">
+            <!-- Bật/Tắt hoạt động -->
+            <div class="flex items-center justify-between p-3 bg-slate-855 rounded-xl">
+              <div>
+                <span class="text-xs font-bold text-white block">Trạng thái hoạt động</span>
+                <span class="text-[9px] text-slate-400">Định vị trực tuyến trên bản đồ khách hàng</span>
+              </div>
+              <button onclick="toggleAtmOnline(!state.atmOnline); openPortalSettingsModal();" class="px-3.5 py-1.5 text-xs rounded-lg font-bold transition ${state.atmOnline ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-rose-500 text-white hover:bg-rose-600'}">
+                ${state.atmOnline ? 'ONLINE' : 'OFFLINE'}
+              </button>
+            </div>
+
+            <!-- Bật/Tắt Walk-In -->
+            <div class="flex items-center justify-between p-3 bg-slate-855 rounded-xl">
+              <div>
+                <span class="text-xs font-bold text-white block">Khách vãng lai (Walk-In)</span>
+                <span class="text-[9px] text-slate-400">Chấp nhận khách hàng trực tiếp đến cửa hàng</span>
+              </div>
+              <span class="px-2.5 py-1 text-[10px] font-bold rounded-full bg-emerald-500/15 text-emerald-400">BẬT</span>
+            </div>
+
+            <!-- Biểu phí dịch vụ -->
+            <div class="flex items-center justify-between p-3 bg-slate-855 rounded-xl">
+              <div>
+                <span class="text-xs font-bold text-white block">Phí dịch vụ mặc định</span>
+                <span class="text-[9px] text-slate-400">Doanh thu thu nhập của đối tác</span>
+              </div>
+              <span class="text-xs font-extrabold text-white">2.5%</span>
+            </div>
+          </div>
+          
+          <button onclick="closeModal()" class="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold transition">Lưu & Đóng</button>
+        </div>
+      `);
+    }
+
+    // Xem Bản đồ Crypto giả lập
+    function openMapSim() {
+      openModalContainer(`
+        <div class="space-y-4">
+          <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+            <i data-lucide="map" class="w-5 h-5 text-orange-500"></i> Bản đồ đối tác ATM gần đây
+          </h3>
+          <p class="text-xs text-slate-400">Hiển thị các trạm ATM trực tuyến trong phạm vi 5 dặm quanh bạn.</p>
+          <div class="h-32 bg-slate-855 rounded-2xl flex flex-col items-center justify-center text-xs text-slate-500 font-bold gap-2">
+            <i data-lucide="navigation" class="w-6 h-6 text-orange-400 animate-pulse"></i>
+            <span>[BẢN ĐỒ MÔ PHỎNG GPS KẾT NỐI]</span>
+          </div>
+          <button onclick="closeModal()" class="w-full py-2 bg-slate-800 hover:bg-slate-705 text-slate-300 text-xs font-bold rounded-xl transition">Đóng</button>
+        </div>
+      `);
+    }
+
+    // Mở màn hình lịch sử toàn diện
+    function openHistoryScreen() {
+      openModalContainer(`
+        <div class="space-y-4">
+          <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+            <i data-lucide="history" class="w-5 h-5 text-orange-500"></i> Lịch sử giao dịch tổng hợp
+          </h3>
+          
+          <!-- Bộ lọc tab phụ lịch sử (DASH-25.2) -->
+          <div class="flex gap-1.5 overflow-x-auto pb-1 text-[10px] font-bold">
+            <span class="bg-orange-500 text-white px-2.5 py-1 rounded-full shrink-0">Tất cả</span>
+            <span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full shrink-0">Mua P2P</span>
+            <span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full shrink-0">Bán P2P</span>
+            <span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full shrink-0">Mobile ATM</span>
+          </div>
+
+          <!-- Danh sách giao dịch (Không viền) -->
+          <div class="space-y-2 max-h-[40vh] overflow-y-auto mobile-scrollbar">
+            ${state.transactions.map(tx => `
+              <div class="p-3 bg-slate-855 rounded-xl flex justify-between items-center text-xs">
+                <div>
+                  <span class="font-bold text-white block">${tx.type}</span>
+                  <span class="text-[9px] text-slate-400">${tx.time}</span>
+                </div>
+                <span class="font-bold text-orange-400">${tx.amount}</span>
+              </div>
+            `).join('')}
+          </div>
+          <button onclick="closeModal()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition">Đóng</button>
+        </div>
+      `);
+    }
+
+    // Xem chi tiết một hóa đơn cụ thể (DASH-24.3)
+    function openTxDetail(txId) {
+      const tx = state.transactions.find(t => t.id === txId) || state.transactions[0];
+      let statusColor = "text-amber-400";
+      if (tx.status === 'Completed') statusColor = "text-emerald-400";
+      if (tx.status === 'Cancelled') statusColor = "text-rose-400";
+
+      openModalContainer(`
+        <div class="space-y-4">
+          <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+            <i data-lucide="file-text" class="w-5 h-5 text-orange-500"></i> Chi tiết mã đơn: ${tx.id}
+          </h3>
+          <div class="p-4 bg-slate-855 rounded-xl space-y-2.5 text-xs text-slate-300">
+            <div class="flex justify-between"><span class="text-slate-400">Loại nghiệp vụ:</span> <span class="font-bold text-white">${tx.type}</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Đối tác thực hiện:</span> <span class="font-semibold text-white">${tx.counterparty}</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Thời gian tạo:</span> <span>${tx.time}</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Trạng thái xử lý:</span> <span class="${statusColor} font-bold uppercase">
+              ${tx.status === 'Pending' ? 'Đang chờ' : tx.status === 'Cancelled' ? 'Đã hủy' : tx.status === 'Completed' ? 'Hoàn tất' : 'Đang xử lý'}
+            </span></div>
+            <div class="flex justify-between border-t border-slate-800 pt-2"><span class="text-slate-400 font-bold">Tổng thanh toán:</span> <span class="text-sm font-black text-white">${tx.amount}</span></div>
+          </div>
+          <button onclick="closeModal()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition">Đóng</button>
+        </div>
+      `);
+    }
+
+    // Sao chép liên kết vào bộ nhớ tạm
+    function copyToClipboard(text) {
+      const el = document.createElement('textarea');
+      el.value = text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      showToast("Sao chép thành công", `ID ATM nhượng quyền ${text} đã được lưu vào bộ nhớ tạm.`, "success");
+    }
+
+    // TRÌNH PHỤ TRỢ MỞ/ĐÓNG MODAL CONTAINER AN TOÀN
+    function openModalContainer(htmlContent) {
+      const modal = document.getElementById('modal-container');
+      const inner = document.getElementById('modal-inner-content');
+      
+      inner.innerHTML = htmlContent;
+      lucide.createIcons();
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      document.getElementById('modal-content').classList.remove('scale-90');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('modal-container');
+      document.getElementById('modal-content').classList.add('scale-90');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    // TOAST SYSTEM ĐỒNG BỘ TRÊN MÀN HÌNH DI ĐỘNG (THAY THẾ WINDOW.ALERTS)
+    let toastTimeout;
+    function showToast(title, message, type = 'info') {
+      const toast = document.getElementById('toast-box');
+      const toastTitle = document.getElementById('toast-title');
+      const toastMsg = document.getElementById('toast-message');
+      const container = document.getElementById('toast-icon-container');
+
+      toastTitle.innerText = title;
+      toastMsg.innerText = message;
+
+      if (type === 'success') {
+        container.className = "p-1 bg-emerald-500/10 rounded-lg text-emerald-400";
+        container.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5"></i>`;
+      } else if (type === 'warning') {
+        container.className = "p-1 bg-rose-500/10 rounded-lg text-rose-400";
+        container.innerHTML = `<i data-lucide="alert-triangle" class="w-5 h-5"></i>`;
+      } else {
+        container.className = "p-1 bg-orange-500/10 rounded-lg text-orange-400";
+        container.innerHTML = `<i data-lucide="bell" class="w-5 h-5"></i>`;
+      }
+      lucide.createIcons();
+
+      toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-20');
+      toast.classList.add('translate-y-0');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        hideToast();
+      }, 4000);
+    }
+
+    function hideToast() {
+      const toast = document.getElementById('toast-box');
+      toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-20');
+      toast.classList.remove('translate-y-0');
+    }
+  </script>
+</body>
+</html>

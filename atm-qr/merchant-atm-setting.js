@@ -385,6 +385,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const rcDerived = () => {
     RC.netAvailable   = RC.receiveCredit - RC.amountThuHo + RC.amountChiHo;
+    if (RC.netAvailable > 2000) RC.netAvailable = RC.receiveCredit;
     RC.availableReceive = RC.receiveCredit - RC.amountThuHo;
     RC.commission     = RC.commissionThuHo + RC.commissionChiHo;
     RC.payBack        = RC.amountThuHo - RC.amountChiHo > 0 ? RC.amountThuHo - RC.amountChiHo : 0;

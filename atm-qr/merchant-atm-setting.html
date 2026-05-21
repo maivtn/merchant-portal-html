@@ -3262,32 +3262,33 @@
       margin-bottom: 14px;
     }
 
-    .vn-bank-review-table {
+    .bank-review-table {
       border: 1px solid #e2e8f0;
       border-radius: 12px;
       overflow: hidden;
     }
 
-    .vn-bank-review-row {
+    .bank-review-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 11px 16px;
-      font-size: 13.5px;
+      align-items: flex-start;
+      padding: 12px 16px;
+      font-size: 14px;
       border-bottom: 1px solid #f1f5f9;
       gap: 12px;
     }
 
-    .vn-bank-review-row:last-child { border-bottom: none; }
+    .bank-review-row:last-child { border-bottom: none; }
 
-    .vn-bank-review-label {
+    .bank-review-label {
       color: var(--muted);
       font-weight: 500;
       flex-shrink: 0;
+      white-space: nowrap;
     }
 
-    .vn-bank-review-value {
-      font-weight: 700;
+    .bank-review-value {
+      font-weight: 600;
       color: var(--text);
       text-align: right;
       word-break: break-all;
@@ -3514,47 +3515,6 @@
 
     .add-bank-confirm-body {
       display: none;
-      padding: 14px 16px 16px;
-      overflow-y: auto;
-      max-height: calc(100dvh - 200px);
-      background: #faf7f2;
-      flex-direction: column;
-      gap: 1px;
-    }
-
-    .add-bank-confirm-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 13px 16px;
-      background: #fff;
-      font-size: 14px;
-    }
-
-    .add-bank-confirm-row:first-child {
-      border-radius: 14px 14px 0 0;
-    }
-
-    .add-bank-confirm-row:last-child {
-      border-radius: 0 0 14px 14px;
-    }
-
-    .add-bank-confirm-row:only-child {
-      border-radius: 14px;
-    }
-
-    .add-bank-confirm-label {
-      color: var(--text);
-      font-weight: 500;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .add-bank-confirm-value {
-      color: var(--text);
-      font-weight: 600;
-      text-align: right;
     }
 
     .add-bank-confirm-view {
@@ -9839,26 +9799,26 @@
           <i data-lucide="shield-check" style="width:15px;height:15px;color:#d97706;flex-shrink:0;margin-top:1px;"></i>
           Please review your bank details carefully before submitting. This information will be used for payouts.
         </div>
-        <div class="add-bank-confirm-body" id="add-bank-confirm-body" style="display:flex;">
-          <div class="add-bank-confirm-row">
-            <span class="add-bank-confirm-label">Bank Name</span>
-            <span class="add-bank-confirm-value" id="confirm-bank-name"></span>
+        <div class="bank-review-table" id="add-bank-confirm-body">
+          <div class="bank-review-row">
+            <span class="bank-review-label">Bank Name</span>
+            <span class="bank-review-value" id="confirm-bank-name"></span>
           </div>
-          <div class="add-bank-confirm-row">
-            <span class="add-bank-confirm-label">Business Name</span>
-            <span class="add-bank-confirm-value" id="confirm-business-name"></span>
+          <div class="bank-review-row">
+            <span class="bank-review-label">Business Name</span>
+            <span class="bank-review-value" id="confirm-business-name"></span>
           </div>
-          <div class="add-bank-confirm-row">
-            <span class="add-bank-confirm-label">Account Number</span>
-            <span class="add-bank-confirm-value" id="confirm-account-number"></span>
+          <div class="bank-review-row">
+            <span class="bank-review-label">Account Number</span>
+            <span class="bank-review-value" id="confirm-account-number"></span>
           </div>
-          <div class="add-bank-confirm-row">
-            <span class="add-bank-confirm-label">Routing Number</span>
-            <span class="add-bank-confirm-value" id="confirm-routing-number"></span>
+          <div class="bank-review-row">
+            <span class="bank-review-label">Routing Number</span>
+            <span class="bank-review-value" id="confirm-routing-number"></span>
           </div>
-          <div class="add-bank-confirm-row">
-            <span class="add-bank-confirm-label">Bank Address</span>
-            <span class="add-bank-confirm-value" id="confirm-bank-address"></span>
+          <div class="bank-review-row">
+            <span class="bank-review-label">Bank Address</span>
+            <span class="bank-review-value" id="confirm-bank-address"></span>
           </div>
         </div>
       </div>
@@ -10306,22 +10266,22 @@
           <i data-lucide="shield-check" style="width:15px;height:15px;color:#d97706;flex-shrink:0;margin-top:1px;"></i>
           Please review your bank details carefully before submitting. This information will be used for payouts.
         </div>
-        <div class="vn-bank-review-table">
-          <div class="vn-bank-review-row">
-            <span class="vn-bank-review-label">Bank Name</span>
-            <span class="vn-bank-review-value" id="rev-vn-bank-name"></span>
+        <div class="bank-review-table">
+          <div class="bank-review-row">
+            <span class="bank-review-label">Bank Name</span>
+            <span class="bank-review-value" id="rev-vn-bank-name"></span>
           </div>
-          <div class="vn-bank-review-row">
-            <span class="vn-bank-review-label">Account Holder</span>
-            <span class="vn-bank-review-value" id="rev-vn-bank-holder"></span>
+          <div class="bank-review-row">
+            <span class="bank-review-label">Account Holder</span>
+            <span class="bank-review-value" id="rev-vn-bank-holder"></span>
           </div>
-          <div class="vn-bank-review-row">
-            <span class="vn-bank-review-label">Account Number</span>
-            <span class="vn-bank-review-value" id="rev-vn-bank-account"></span>
+          <div class="bank-review-row">
+            <span class="bank-review-label">Account Number</span>
+            <span class="bank-review-value" id="rev-vn-bank-account"></span>
           </div>
-          <div class="vn-bank-review-row">
-            <span class="vn-bank-review-label">Bank Address</span>
-            <span class="vn-bank-review-value" id="rev-vn-bank-address"></span>
+          <div class="bank-review-row">
+            <span class="bank-review-label">Bank Address</span>
+            <span class="bank-review-value" id="rev-vn-bank-address"></span>
           </div>
         </div>
       </div>

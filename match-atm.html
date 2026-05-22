@@ -261,11 +261,11 @@
                             class="text-red-500 ml-1.5">*</span></label>
                     <div class="space-y-3">
                         <div
-                            class="atm-type-option border border-[rgba(217,119,6,0.14)] bg-white rounded-xl px-4 flex items-center gap-3 cursor-pointer"
+                            class="atm-type-option border border-[rgba(217,119,6,0.14)] bg-white rounded-xl p-4 flex items-center gap-3 cursor-pointer"
                             role="button" tabindex="0" data-atm-type="mobile"
                             onclick="selectAtmType('mobile', this)"
                             onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectAtmType('mobile', this); }">
-                            <img src="assets/icons/mobileAtm.png" class="w-20 h-20 object-contain"
+                            <img src="assets/icons/mobileAtm.png" class="w-10 h-10 object-contain"
                                 alt="Mobile ATM">
                             <div>
                                 <div class="atm-type-title font-bold text-[15px] text-[#92400e]">Mobile ATM</div>
@@ -273,12 +273,12 @@
                             </div>
                         </div>
                         <div
-                            class="atm-type-option selected rounded-xl px-4 flex items-center gap-3 cursor-pointer border border-[rgba(217,119,6,0.14)] bg-white hover:bg-[#fff7ed] transition-colors"
+                            class="atm-type-option selected rounded-xl p-4 flex items-center gap-3 cursor-pointer border border-[rgba(217,119,6,0.14)] bg-white hover:bg-[#fff7ed] transition-colors"
                             role="button" tabindex="0" data-atm-type="merchant"
                             onclick="selectAtmType('merchant', this)"
                             onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectAtmType('merchant', this); }">
                             <img src="assets/icons/merchantAtm.png"
-                                class="w-20 h-20 object-contain" alt="Merchant ATM">
+                                class="w-10 h-10 object-contain" alt="Merchant ATM">
                             <div>
                                 <div class="atm-type-title font-bold text-[15px] text-slate-700">Merchant ATM</div>
                                 <div class="atm-type-subtitle text-xs text-slate-500 mt-0.5">Visit nearby merchant</div>
@@ -287,7 +287,7 @@
                     </div>
                 </div>
 
-                <button onclick="goToStep(7)"
+                <button onclick="goToStep(getUrlAtmType() === 'merchant' ? 7 : 2)"
                     class="w-full brand-button font-semibold py-3.5 rounded-xl shadow-md active:scale-95 transition-all text-[15px]">
                     Continue
                 </button>

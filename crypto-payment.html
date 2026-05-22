@@ -1138,14 +1138,13 @@
         <!-- Step 2: Payment Details -->
         <div id="payment-details-section" style="display: none;">
           <div class="form-group">
-            <div class="form-group">
-              <label class="form-label">Amount</label>
-              <div class="input-wrapper">
-                <span class="modal-input-icon">$</span>
-                <input type="number" class="minimal-input" placeholder="0.00" id="payment-amount-input">
-              </div>
+            <label class="form-label">Amount</label>
+            <div class="input-wrapper">
+              <span class="modal-input-icon">$</span>
+              <input type="number" class="minimal-input" placeholder="0.00" id="payment-amount-input">
             </div>
-
+          </div>
+          <div class="form-group">
             <label class="form-label">Card Number</label>
             <div class="input-wrapper">
               <iconify-icon icon="solar:card-bold-duotone" class="input-icon"></iconify-icon>
@@ -1348,6 +1347,7 @@
     function showResult(formId, resultId) {
       const amount = document.getElementById('input-amount').value || '100';
       document.getElementById('display-usd-amount').textContent = '$' + parseFloat(amount).toFixed(2);
+      document.getElementById(formId).style.display = 'none';
       document.getElementById(resultId).style.display = 'block';
     }
 
@@ -1462,6 +1462,13 @@
       document.getElementById('card-number-section').style.display = 'block';
       document.getElementById('payment-details-section').style.display = 'none';
     }
+
+    // Close modal when clicking outside
+    window.onclick = function (event) {
+      if (event.target.classList.contains('modal-overlay')) {
+        closeModal(event.target.id);
+      }
+    };
 
     // Copy wallet address
     function copyAddress(btn) {

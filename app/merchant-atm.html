@@ -450,7 +450,7 @@
           </div>
 
           <!-- TÍNH NĂNG NHANH CHO USER THƯỜNG - DI CHUYỂN XUỐNG DƯỚI 2 CARD MUA/BÁN P2P (Đồng bộ phối bento màu mờ sắc nét) -->
-          <div id="quick-actions-panel" class="space-y-1.5">
+          <div id="quick-actions-panel" class="space-y-1.5 hidden">
             <div class="flex justify-between items-center">
               <h4 class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Tính năng nhanh</h4>
             </div>
@@ -925,55 +925,144 @@
 
         <!-- ================= MÀN HÌNH 6: LUỒNG GIAO DỊCH P2P MUA / BÁN (DASH-12.1.1) ================= -->
         <div id="screen-p2p-flow" class="absolute inset-0 bg-slate-950 z-40 hidden flex flex-col">
-          <div class="p-4 border-b border-slate-800/80 flex justify-between items-center bg-slate-900">
-            <h3 class="text-sm font-bold text-white flex items-center gap-1.5" id="p2p-flow-title">
-              <i data-lucide="globe" class="w-4 h-4 text-orange-500"></i> Giao dịch P2P
-            </h3>
-            <button onclick="changeScreen('dashboard')" class="p-1.5 bg-slate-800 hover:bg-slate-755 text-slate-400 hover:text-white rounded-lg transition">
+          <!-- Header -->
+          <div class="p-4 border-b border-slate-800/80 flex items-center justify-between bg-slate-900 flex-shrink-0">
+            <button onclick="changeScreen('dashboard')" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded-lg transition">
               <i data-lucide="arrow-left" class="w-4 h-4"></i>
             </button>
+            <h3 class="text-sm font-bold text-white flex items-center gap-1.5" id="p2p-flow-title">
+              <i data-lucide="shopping-bag" class="w-4 h-4 text-orange-500"></i> Mua Crypto (P2P)
+            </h3>
+            <div class="w-8"></div>
           </div>
-          <div class="flex-1 p-5 space-y-4 overflow-y-auto mobile-scrollbar bg-slate-950">
-            <p class="text-xs text-slate-400" id="p2p-flow-desc">Thực hiện mua/bán Gift Cash với các đối tác gần bạn.</p>
 
-            <div class="bg-slate-900 p-4 rounded-xl space-y-3">
-              <label class="block text-xs font-bold text-slate-300">Nhập số lượng giao dịch quy đổi (USD):</label>
-              <div class="relative">
-                <span class="absolute left-3.5 top-2.5 text-slate-400 font-bold">$</span>
-                <input type="number" id="input-p2p-amount" value="100" class="w-full bg-slate-955 rounded-xl p-2.5 pl-8 text-sm text-white focus:outline-none focus:ring-1 focus:ring-orange-500">
+          <!-- Form body -->
+          <div class="flex-1 overflow-y-auto mobile-scrollbar bg-slate-950">
+            <div class="p-4 space-y-5">
+
+              <!-- Select Type -->
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-slate-300">Select Type <span class="text-rose-400">*</span></label>
+                <div class="relative">
+                  <img id="p2p-type-icon" src="images/usdv.png" alt=""
+                    class="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full object-cover pointer-events-none">
+                  <select id="p2p-select-type" onchange="updateP2PConversion()"
+                    class="w-full bg-slate-800 border border-slate-700 text-white text-sm rounded-xl pl-11 pr-9 py-3 appearance-none focus:outline-none focus:ring-1 focus:ring-orange-500">
+                    <option value="usdv">USDV</option>
+                    <option value="usdt">USDT</option>
+                    <option value="eth">ETH</option>
+                    <option value="doge">DOGE</option>
+                    <option value="vmm">VMM IOU</option>
+                  </select>
+                  <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none"></i>
+                </div>
+                <!-- Available qty row — sell mode only -->
+                <div id="p2p-available-row" class="hidden flex items-start justify-between text-[11px] pt-0.5">
+                  <span id="p2p-available-label" class="text-slate-400">USDV</span>
+                  <div class="text-right">
+                    <div class="text-slate-300">Available Quantity: <span id="p2p-available-qty" class="font-semibold text-white">120,339,016.54</span></div>
+                    <div class="text-slate-400">≈ <span id="p2p-available-usd">$120,339,016.54</span></div>
+                  </div>
+                </div>
               </div>
-              <p class="text-[10px] text-slate-400">Hạn ngạch giao dịch khả dụng tối thiểu từ $10 đến tối đa $5,000.</p>
-            </div>
 
-            <div class="bg-slate-900 p-4 rounded-xl space-y-3">
-              <span class="block text-xs font-bold text-slate-300">Chọn đối tác ATM gần nhất:</span>
+              <!-- Enter Amount -->
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-slate-300">Enter Amount <span class="text-rose-400">*</span></label>
+                <div class="flex gap-2">
+                  <input type="number" id="p2p-amount" value="100" min="10" max="5000"
+                    oninput="updateP2PConversion()"
+                    class="flex-1 bg-slate-800 border border-slate-700 text-white text-sm rounded-xl px-3 py-3 focus:outline-none focus:ring-1 focus:ring-orange-500">
+                  <div class="relative">
+                    <img id="p2p-currency-icon" src="images/usd.png" alt=""
+                      class="absolute left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full object-cover pointer-events-none">
+                    <select id="p2p-currency" onchange="updateP2PConversion()"
+                      class="bg-slate-800 border border-slate-700 text-white text-sm rounded-xl pl-9 pr-7 py-3 appearance-none focus:outline-none focus:ring-1 focus:ring-orange-500">
+                      <option value="usd">USD</option>
+                      <option value="vnd">VND</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none"></i>
+                  </div>
+                </div>
+                <p id="p2p-conversion-text" class="text-[11px] text-slate-400">100 USDV @ $1.00</p>
+              </div>
+
+              <!-- Payment Method -->
+              <div class="space-y-1.5">
+                <label class="text-xs font-bold text-slate-300">Payment Method <span class="text-rose-400">*</span></label>
+                <div class="relative">
+                  <select id="p2p-payment-method"
+                    class="w-full bg-slate-800 border border-slate-700 text-white text-sm rounded-xl px-3 pr-9 py-3 appearance-none focus:outline-none focus:ring-1 focus:ring-orange-500">
+                    <option value="cash">Cash</option>
+                    <option value="bank">Bank Transfer</option>
+                    <option value="zelle">Zelle</option>
+                    <option value="venmo">Venmo</option>
+                  </select>
+                  <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none"></i>
+                </div>
+              </div>
+
+              <!-- Select ATM Type -->
               <div class="space-y-2">
-                <div class="p-3 bg-slate-950 rounded-lg flex justify-between items-center">
-                  <div>
-                    <span class="text-xs font-bold text-white block">Vie Nail Bar (Merchant)</span>
-                    <span class="text-[10px] text-slate-400">Cách bạn: 0.2 dặm • Phí: 1.5%</span>
+                <label class="text-xs font-bold text-slate-300">Select ATM Type <span class="text-rose-400">*</span></label>
+
+                <!-- Mobile ATM -->
+                <div onclick="selectAtmType('mobile')" id="atm-type-mobile"
+                  class="flex items-center gap-3 p-3.5 rounded-xl border-2 border-orange-500 bg-orange-500/10 cursor-pointer transition">
+                  <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="truck" class="w-5 h-5 text-orange-400"></i>
                   </div>
-                  <span class="text-xs font-bold text-emerald-400">Online</span>
+                  <div>
+                    <div class="text-sm font-bold text-orange-400">Mobile ATM</div>
+                    <div class="text-[11px] text-slate-400">ATM will come to you</div>
+                  </div>
                 </div>
-                <div class="p-3 bg-slate-955 rounded-lg flex justify-between items-center">
-                  <div>
-                    <span class="text-xs font-bold text-white block">Mobile ATM - MB1049</span>
-                    <span class="text-[10px] text-slate-400">Cách bạn: 0.6 dặm • Phí: 2.0%</span>
+
+                <!-- Merchant ATM -->
+                <div onclick="selectAtmType('merchant')" id="atm-type-merchant"
+                  class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-700 bg-slate-900 cursor-pointer transition hover:border-slate-600">
+                  <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="store" class="w-5 h-5 text-slate-400"></i>
                   </div>
-                  <span class="text-xs font-bold text-emerald-400">Online</span>
+                  <div>
+                    <div class="text-sm font-bold text-slate-300">Merchant ATM</div>
+                    <div class="text-[11px] text-slate-400">Visit nearby merchant</div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <button onclick="submitP2PTransaction()" class="w-full py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold transition shadow-lg shadow-orange-500/10">
-              Khởi chạy giao dịch
-            </button>
+              <!-- Continue -->
+              <button onclick="submitP2PTransaction()"
+                class="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl text-sm font-bold transition transform active:scale-95 shadow-lg shadow-orange-500/20">
+                Continue
+              </button>
+
+            </div>
           </div>
         </div>
 
       </div>
 
-        <!-- ================= MÀN HÌNH 7: GET LICENSE ================= -->
+        <!-- ================= MÀN HÌNH 7: MAP ATM ================= -->
+        <div id="screen-map" class="absolute inset-0 z-40 hidden flex flex-col bg-slate-100">
+          <!-- Header -->
+          <div class="px-4 py-3 bg-white border-b border-slate-200 flex items-center justify-between flex-shrink-0">
+            <button onclick="changeScreen('dashboard')" class="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-lg transition">
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </button>
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+              <i data-lucide="map-pin" class="w-4 h-4 text-orange-500"></i> ATM Network Map
+            </h3>
+            <div class="w-8"></div>
+          </div>
+          <!-- Map image fills remaining space -->
+          <div class="flex-1 overflow-hidden relative">
+            <img src="map.png" alt="ATM Network Map"
+              class="w-full h-full object-cover object-center">
+          </div>
+        </div>
+
+        <!-- ================= MÀN HÌNH 8: GET LICENSE ================= -->
         <div id="screen-get-license" class="absolute inset-0 bg-white z-40 hidden flex flex-col">
           <!-- Header -->
           <div class="px-4 pt-4 pb-3 bg-white border-b border-slate-100">
@@ -1392,6 +1481,7 @@
       document.getElementById('screen-wallet-details').classList.add('hidden');
       document.getElementById('screen-p2p-flow').classList.add('hidden');
       document.getElementById('screen-get-license').classList.add('hidden');
+      document.getElementById('screen-map').classList.add('hidden');
 
       if (screenName === 'dashboard') {
         document.getElementById('screen-dashboard').classList.remove('hidden');
@@ -1419,14 +1509,21 @@
         state.p2pFlowMode = 'buy';
         document.getElementById('screen-p2p-flow').classList.remove('hidden');
         document.getElementById('p2p-flow-title').innerHTML = `<i data-lucide="shopping-bag" class="w-4 h-4 text-orange-500"></i> Mua Crypto (P2P)`;
-        document.getElementById('p2p-flow-desc').innerText = "Nạp nhanh tài sản USDV bằng Tiền mặt thông qua ATM đối tác.";
+        document.getElementById('p2p-available-row').classList.add('hidden');
+        p2pSelectedAtmType = 'mobile'; selectAtmType('mobile');
+        updateP2PConversion();
         lucide.createIcons();
       } else if (screenName === 'p2p_sell_flow') {
         state.p2pFlowMode = 'sell';
         document.getElementById('screen-p2p-flow').classList.remove('hidden');
         document.getElementById('p2p-flow-title').innerHTML = `<i data-lucide="banknote" class="w-4 h-4 text-orange-500"></i> Bán Crypto (P2P)`;
-        document.getElementById('p2p-flow-desc').innerText = "Thanh khoản tài sản USDV của bạn rút về Tiền mặt nhanh chóng.";
+        document.getElementById('p2p-available-row').classList.remove('hidden');
+        document.getElementById('p2p-available-row').classList.add('flex');
+        p2pSelectedAtmType = 'mobile'; selectAtmType('mobile');
+        updateP2PConversion();
         lucide.createIcons();
+      } else if (screenName === 'map') {
+        document.getElementById('screen-map').classList.remove('hidden');
       } else if (screenName === 'get_license') {
         document.getElementById('screen-get-license').classList.remove('hidden');
         const banner = document.getElementById('gl-info-banner');
@@ -1601,12 +1698,12 @@
       }
 
       // 12. Quick Actions cho người dùng chưa nhượng quyền (DASH-12.1.1)
-      const quickPanel = document.getElementById('quick-actions-panel');
-      if (isNone) {
-        quickPanel.classList.remove('hidden');
-      } else {
-        quickPanel.classList.add('hidden');
-      }
+      // const quickPanel = document.getElementById('quick-actions-panel');
+      // if (isNone) {
+      //   quickPanel.classList.remove('hidden');
+      // } else {
+      //   quickPanel.classList.add('hidden');
+      // }
 
       // 13. Nút Quản lý Giấy phép (DASH-10.1)
       const manageCard = document.getElementById('manage-franchise-card');
@@ -1771,8 +1868,69 @@
     }
 
     // SUBMIT MÔ PHỎNG GIAO DỊCH P2P MỚI (TÍCH HỢP KHÓA AN TOÀN 1 GIAO DỊCH DUY NHẤT)
+    let p2pSelectedAtmType = 'mobile';
+
+    function selectAtmType(type) {
+      p2pSelectedAtmType = type;
+      const mobile = document.getElementById('atm-type-mobile');
+      const merchant = document.getElementById('atm-type-merchant');
+      if (!mobile || !merchant) return;
+      if (type === 'mobile') {
+        mobile.className = 'flex items-center gap-3 p-3.5 rounded-xl border-2 border-orange-500 bg-orange-500/10 cursor-pointer transition';
+        mobile.querySelector('div > div:first-child').className = 'text-sm font-bold text-orange-400';
+        mobile.querySelector('i').className = 'w-5 h-5 text-orange-400';
+        merchant.className = 'flex items-center gap-3 p-3.5 rounded-xl border border-slate-700 bg-slate-900 cursor-pointer transition hover:border-slate-600';
+        merchant.querySelector('div > div:first-child').className = 'text-sm font-bold text-slate-300';
+        merchant.querySelector('i').className = 'w-5 h-5 text-slate-400';
+      } else {
+        merchant.className = 'flex items-center gap-3 p-3.5 rounded-xl border-2 border-orange-500 bg-orange-500/10 cursor-pointer transition';
+        merchant.querySelector('div > div:first-child').className = 'text-sm font-bold text-orange-400';
+        merchant.querySelector('i').className = 'w-5 h-5 text-orange-400';
+        mobile.className = 'flex items-center gap-3 p-3.5 rounded-xl border border-slate-700 bg-slate-900 cursor-pointer transition hover:border-slate-600';
+        mobile.querySelector('div > div:first-child').className = 'text-sm font-bold text-slate-300';
+        mobile.querySelector('i').className = 'w-5 h-5 text-slate-400';
+      }
+    }
+
+    const p2pTokenMeta = {
+      usdv: { icon: 'images/usdv.png', rate: 1,      qty: 120339016.54, usd: 120339016.54 },
+      usdt: { icon: 'images/usdt.png', rate: 1,      qty: 25.45,        usd: 25.45 },
+      eth:  { icon: 'images/eth.png',  rate: 2128.19, qty: 0,           usd: 0.98 },
+      doge: { icon: 'images/doge.png', rate: 0.11,   qty: 151.99,       usd: 15.99 },
+      vmm:  { icon: 'images/vmm.png',  rate: 80,     qty: 900,          usd: 72000 },
+    };
+    const p2pCurrencyIcons = { usd: 'images/usd.png', vnd: 'images/vnd.png' };
+
+    function updateP2PConversion() {
+      const type = document.getElementById('p2p-select-type')?.value || 'usdv';
+      const amt  = parseFloat(document.getElementById('p2p-amount')?.value) || 0;
+      const meta = p2pTokenMeta[type] || p2pTokenMeta.usdv;
+      const rate = meta.rate;
+      const qty  = (rate > 0 ? amt / rate : 0);
+      const qtyStr = qty.toFixed(rate >= 100 ? 5 : 2);
+      const convEl = document.getElementById('p2p-conversion-text');
+      if (convEl) convEl.innerText = `${qtyStr} ${type.toUpperCase()} @ $${rate.toLocaleString()}`;
+
+      // Update type icon
+      const typeIcon = document.getElementById('p2p-type-icon');
+      if (typeIcon) typeIcon.src = meta.icon;
+
+      // Update currency icon
+      const cur = document.getElementById('p2p-currency')?.value || 'usd';
+      const curIcon = document.getElementById('p2p-currency-icon');
+      if (curIcon) curIcon.src = p2pCurrencyIcons[cur] || p2pCurrencyIcons.usd;
+
+      // Update available row (sell mode)
+      const availRow = document.getElementById('p2p-available-row');
+      if (availRow && state.p2pFlowMode === 'sell') {
+        document.getElementById('p2p-available-label').innerText = type.toUpperCase();
+        document.getElementById('p2p-available-qty').innerText  = meta.qty.toLocaleString(undefined, { maximumFractionDigits: 8 });
+        document.getElementById('p2p-available-usd').innerText  = '$' + meta.usd.toLocaleString(undefined, { maximumFractionDigits: 2 });
+      }
+    }
+
     function submitP2PTransaction() {
-      const amountVal = document.getElementById('input-p2p-amount').value;
+      const amountVal = document.getElementById('p2p-amount')?.value || document.getElementById('input-p2p-amount')?.value;
       if (!amountVal || amountVal <= 0) {
         showToast("Lỗi nhập liệu", "Vui lòng nhập số lượng tiền mặt hợp lệ.", "warning");
         return;
@@ -2184,19 +2342,7 @@
 
     // Xem Bản đồ Crypto giả lập
     function openMapSim() {
-      openModalContainer(`
-        <div class="space-y-4">
-          <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
-            <i data-lucide="map" class="w-5 h-5 text-orange-500"></i> Bản đồ đối tác ATM gần đây
-          </h3>
-          <p class="text-xs text-slate-400">Hiển thị các trạm ATM trực tuyến trong phạm vi 5 dặm quanh bạn.</p>
-          <div class="h-32 bg-slate-855 rounded-2xl flex flex-col items-center justify-center text-xs text-slate-500 font-bold gap-2">
-            <i data-lucide="navigation" class="w-6 h-6 text-orange-400 animate-pulse"></i>
-            <span>[BẢN ĐỒ MÔ PHỎNG GPS KẾT NỐI]</span>
-          </div>
-          <button onclick="closeModal()" class="w-full py-2 bg-slate-800 hover:bg-slate-705 text-slate-300 text-xs font-bold rounded-xl transition">Đóng</button>
-        </div>
-      `);
+      changeScreen('map');
     }
 
     // Mở màn hình lịch sử toàn diện

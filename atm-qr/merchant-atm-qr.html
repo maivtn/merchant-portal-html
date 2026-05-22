@@ -8,6 +8,18 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      [data-row="status"], [data-row="fee"] { display: none !important; }
+      .screen-shell { padding: 0; background: transparent; }
+      body { background: transparent; }
+    }
+  </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -55,7 +67,7 @@
               </div>
             </div>
 
-            <div class="atm-detail-row">
+            <div class="atm-detail-row" data-row="status">
               <div class="atm-detail-icon">
                 <i data-lucide="smartphone" style="width:17px;height:17px;"></i>
               </div>
@@ -68,7 +80,7 @@
               </div>
             </div>
 
-            <div class="atm-detail-row">
+            <div class="atm-detail-row" data-row="fee">
               <div class="atm-detail-icon">
                 <i data-lucide="percent" style="width:17px;height:17px;"></i>
               </div>
@@ -137,6 +149,26 @@
         correctLevel: QRCode.CorrectLevel.M,
       });
     });
+
+    window.captureCardImage = () => {
+      if (typeof window.html2canvas !== 'function') return Promise.resolve('');
+      const target = document.querySelector('.phone-frame');
+      if (!target) return Promise.resolve('');
+      const hiddenRows = Array.from(document.querySelectorAll('[data-row="status"], [data-row="fee"]'));
+      hiddenRows.forEach(el => { el.style.display = 'none'; });
+      return window.html2canvas(target, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: '#ffffff',
+      }).then(canvas => {
+        hiddenRows.forEach(el => { el.style.display = ''; });
+        return canvas.toDataURL('image/png');
+      }).catch(() => {
+        hiddenRows.forEach(el => { el.style.display = ''; });
+        return '';
+      });
+    };
   </script>
 </body>
 

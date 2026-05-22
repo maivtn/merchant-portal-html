@@ -1290,12 +1290,15 @@ window.addEventListener('DOMContentLoaded', () => {
     return '';
   };
 
-  const downloadQr = () => {
-    const qrImageUrl = getQrImageUrl();
-    if (!qrImageUrl) return;
+  const downloadQr = async () => {
+    const captureCardImage = qrIframe?.contentWindow?.captureCardImage;
+    const dataUrl = typeof captureCardImage === 'function'
+      ? await captureCardImage().catch(() => '')
+      : getQrImageUrl();
+    if (!dataUrl) return;
 
     const link = document.createElement('a');
-    link.href = qrImageUrl;
+    link.href = dataUrl;
     link.download = 'merchant-atm-qr.png';
     document.body.appendChild(link);
     link.click();

@@ -928,119 +928,179 @@
         </div>
 
         <!-- ================= MÀN HÌNH 6: LUỒNG GIAO DỊCH P2P MUA / BÁN (DASH-12.1.1) ================= -->
-        <div id="screen-p2p-flow" class="absolute inset-0 bg-slate-950 z-40 hidden flex flex-col">
-          <!-- Header -->
-          <div class="p-4 border-b border-slate-800/80 flex items-center justify-between bg-slate-900 flex-shrink-0">
-            <button onclick="changeScreen('dashboard')" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded-lg transition">
-              <i data-lucide="arrow-left" class="w-4 h-4"></i>
-            </button>
-            <h3 class="text-sm font-bold text-white flex items-center gap-1.5" id="p2p-flow-title">
-              <i data-lucide="shopping-bag" class="w-4 h-4 text-orange-500"></i> Mua Crypto (P2P)
-            </h3>
-            <div class="w-8"></div>
+        <div id="screen-p2p-flow" class="absolute inset-0 z-40 hidden flex flex-col" style="background:#0a0f1e;">
+          <!-- Hero Header với gradient depth -->
+          <div id="p2p-flow-header" class="flex-shrink-0 relative overflow-hidden" style="background:linear-gradient(135deg,#c2410c 0%,#ea580c 45%,#fb923c 100%);padding:16px 16px 24px;">
+            <!-- Ambient glow orb -->
+            <div class="absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-20" style="background:radial-gradient(circle,#fff 0%,transparent 70%);"></div>
+            <div class="absolute bottom-0 left-0 w-full h-8 opacity-10" style="background:linear-gradient(180deg,transparent,#000);"></div>
+            <!-- Back button + title row -->
+            <div class="flex items-center justify-between relative z-10">
+              <button onclick="changeScreen('dashboard')" class="p-1.5 rounded-xl transition active:scale-95" style="background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);">
+                <i data-lucide="arrow-left" class="w-4 h-4 text-white"></i>
+              </button>
+              <h3 class="text-sm font-bold text-white flex items-center gap-1.5" id="p2p-flow-title">
+                <i data-lucide="shopping-bag" class="w-4 h-4"></i> Mua Crypto (P2P)
+              </h3>
+              <div class="w-8"></div>
+            </div>
+            <!-- Mode badge row -->
+            <div class="flex items-center gap-2 mt-3 relative z-10">
+              <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold" style="background:rgba(255,255,255,0.2);color:#fff;">
+                <i data-lucide="shield-check" class="w-3 h-3"></i> P2P Secured
+              </div>
+              <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold" style="background:rgba(255,255,255,0.2);color:#fff;">
+                <i data-lucide="zap" class="w-3 h-3"></i> Instant Match
+              </div>
+            </div>
           </div>
 
-          <!-- Form body -->
-          <div class="flex-1 overflow-y-auto mobile-scrollbar bg-slate-950">
-            <div class="p-4 space-y-5">
+          <!-- Form body — elevated card floats over header -->
+          <div class="flex-1 overflow-y-auto mobile-scrollbar" style="background:#0a0f1e;margin-top:-12px;">
+            <div style="background:#111827;border-radius:16px 16px 0 0;padding:20px 16px;min-height:100%;box-shadow:0 -4px 24px rgba(0,0,0,0.5);">
+              <div class="space-y-4">
 
-              <!-- Select Type -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-bold text-slate-300">Select Type <span class="text-rose-400">*</span></label>
-                <div class="relative">
-                  <img id="p2p-type-icon" src="images/usdv.png" alt=""
-                    class="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full object-cover pointer-events-none">
-                  <select id="p2p-select-type" onchange="updateP2PConversion()"
-                    class="w-full bg-slate-800 border border-slate-700 text-white text-sm rounded-xl pl-11 pr-9 py-3 appearance-none focus:outline-none focus:ring-1 focus:ring-orange-500">
-                    <option value="usdv">USDV</option>
-                    <option value="usdt">USDT</option>
-                    <option value="eth">ETH</option>
-                    <option value="doge">DOGE</option>
-                    <option value="vmm">VMM IOU</option>
-                  </select>
-                  <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none"></i>
-                </div>
-                <!-- Available qty row — sell mode only -->
-                <div id="p2p-available-row" class="hidden flex items-start justify-between text-[11px] pt-0.5">
-                  <span id="p2p-available-label" class="text-slate-400">USDV</span>
-                  <div class="text-right">
-                    <div class="text-slate-300">Available Quantity: <span id="p2p-available-qty" class="font-semibold text-white">120,339,016.54</span></div>
-                    <div class="text-slate-400">≈ <span id="p2p-available-usd">$120,339,016.54</span></div>
+                <!-- ─── Select Crypto Type ─── -->
+                <div class="space-y-1.5">
+                  <label class="text-[11px] font-bold uppercase tracking-wider" style="color:#94a3b8;letter-spacing:0.08em;">Select Type <span style="color:#f43f5e;">*</span></label>
+                  <div style="background:#1e293b;border:1px solid #334155;border-radius:14px;padding:4px;box-shadow:inset 0 2px 8px rgba(0,0,0,0.3);">
+                    <div class="relative">
+                      <img id="p2p-type-icon" src="images/usdv.png" alt=""
+                        class="absolute left-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full object-cover pointer-events-none" style="box-shadow:0 2px 6px rgba(0,0,0,0.4);">
+                      <select id="p2p-select-type" onchange="updateP2PConversion()"
+                        class="w-full text-white text-sm appearance-none focus:outline-none"
+                        style="background:transparent;border:none;padding:10px 36px 10px 44px;font-weight:600;">
+                        <option value="usdv" style="background:#1e293b;">USDV</option>
+                        <option value="usdt" style="background:#1e293b;">USDT</option>
+                        <option value="eth" style="background:#1e293b;">ETH</option>
+                        <option value="doge" style="background:#1e293b;">DOGE</option>
+                        <option value="vmm" style="background:#1e293b;">VMM IOU</option>
+                      </select>
+                      <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style="color:#64748b;"></i>
+                    </div>
+                  </div>
+                  <!-- Available qty row — sell mode only -->
+                  <div id="p2p-available-row" class="hidden items-start justify-between text-[11px] pt-1 px-1">
+                    <span id="p2p-available-label" style="color:#64748b;">USDV</span>
+                    <div class="text-right">
+                      <div style="color:#cbd5e1;">Available: <span id="p2p-available-qty" class="font-bold" style="color:#34d399;">120,339,016.54</span></div>
+                      <div style="color:#475569;">≈ <span id="p2p-available-usd">$120,339,016.54</span></div>
+                    </div>
                   </div>
                 </div>
+
+                <!-- ─── Enter Amount ─── -->
+                <div class="space-y-1.5">
+                  <label class="text-[11px] font-bold uppercase tracking-wider" style="color:#94a3b8;letter-spacing:0.08em;">Enter Amount <span style="color:#f43f5e;">*</span></label>
+                  <div style="background:#1e293b;border:1px solid #334155;border-radius:14px;overflow:hidden;box-shadow:inset 0 2px 8px rgba(0,0,0,0.3);">
+                    <div class="flex items-center">
+                      <!-- Amount input -->
+                      <input type="number" id="p2p-amount" value="100" min="10" max="5000"
+                        oninput="updateP2PConversion()"
+                        class="flex-1 text-white text-base font-bold focus:outline-none"
+                        style="background:transparent;border:none;padding:12px 12px 12px 14px;min-width:0;">
+                      <!-- Divider -->
+                      <div style="width:1px;height:24px;background:#334155;flex-shrink:0;"></div>
+                      <!-- Currency picker -->
+                      <div class="relative flex-shrink-0">
+                        <img id="p2p-currency-icon" src="images/usd.png" alt=""
+                          class="absolute left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full object-cover pointer-events-none">
+                        <select id="p2p-currency" onchange="updateP2PConversion()"
+                          class="text-white text-sm font-semibold appearance-none focus:outline-none"
+                          style="background:transparent;border:none;padding:12px 28px 12px 30px;">
+                          <option value="usd" style="background:#1e293b;">USD</option>
+                          <option value="vnd" style="background:#1e293b;">VND</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none" style="color:#64748b;"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Conversion display pill -->
+                  <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl" style="background:#0f172a;border:1px solid #1e293b;">
+                    <i data-lucide="repeat-2" class="w-3 h-3 flex-shrink-0" style="color:#f97316;"></i>
+                    <p id="p2p-conversion-text" class="text-[11px] font-medium" style="color:#94a3b8;">100 USDV @ $1.00</p>
+                  </div>
+                </div>
+
+                <!-- ─── Payment Method ─── -->
+                <div class="space-y-1.5">
+                  <label class="text-[11px] font-bold uppercase tracking-wider" style="color:#94a3b8;letter-spacing:0.08em;">Payment Method <span style="color:#f43f5e;">*</span></label>
+                  <div style="background:#1e293b;border:1px solid #334155;border-radius:14px;padding:4px;box-shadow:inset 0 2px 8px rgba(0,0,0,0.3);">
+                    <div class="relative">
+                      <i data-lucide="credit-card" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style="color:#f97316;"></i>
+                      <select id="p2p-payment-method"
+                        class="w-full text-white text-sm font-semibold appearance-none focus:outline-none"
+                        style="background:transparent;border:none;padding:10px 36px 10px 36px;">
+                        <option value="cash" style="background:#1e293b;">Cash</option>
+                        <option value="bank" style="background:#1e293b;">Bank Transfer</option>
+                        <option value="zelle" style="background:#1e293b;">Zelle</option>
+                        <option value="venmo" style="background:#1e293b;">Venmo</option>
+                      </select>
+                      <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style="color:#64748b;"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ─── Select ATM Type ─── -->
+                <div class="space-y-2">
+                  <label class="text-[11px] font-bold uppercase tracking-wider" style="color:#94a3b8;letter-spacing:0.08em;">Select ATM Type <span style="color:#f43f5e;">*</span></label>
+
+                  <!-- Mobile ATM -->
+                  <div onclick="selectAtmType('mobile')" id="atm-type-mobile" class="cursor-pointer transition-all active:scale-[0.98]"
+                    style="border-radius:14px;border:2px solid #ea580c;background:linear-gradient(135deg,rgba(234,88,12,0.15) 0%,rgba(234,88,12,0.05) 100%);padding:12px 14px;box-shadow:0 4px 16px rgba(234,88,12,0.2),inset 0 1px 0 rgba(255,255,255,0.06);">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(234,88,12,0.2);box-shadow:0 2px 8px rgba(234,88,12,0.3);">
+                        <i id="atm-icon-mobile" data-lucide="truck" class="w-5 h-5" style="color:#fb923c;"></i>
+                      </div>
+                      <div class="flex-1">
+                        <div id="atm-label-mobile" class="text-sm font-bold" style="color:#fb923c;">Mobile ATM</div>
+                        <div class="text-[11px]" style="color:#94a3b8;">ATM will come to you</div>
+                      </div>
+                      <div class="w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0" style="border-color:#ea580c;background:#ea580c;">
+                        <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Merchant ATM -->
+                  <div onclick="selectAtmType('merchant')" id="atm-type-merchant" class="cursor-pointer transition-all active:scale-[0.98]"
+                    style="border-radius:14px;border:1px solid #1e293b;background:#1a2332;padding:12px 14px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:#1e293b;">
+                        <i id="atm-icon-merchant" data-lucide="store" class="w-5 h-5" style="color:#64748b;"></i>
+                      </div>
+                      <div class="flex-1">
+                        <div id="atm-label-merchant" class="text-sm font-bold" style="color:#94a3b8;">Merchant ATM</div>
+                        <div class="text-[11px]" style="color:#475569;">Visit nearby merchant</div>
+                      </div>
+                      <div class="w-4 h-4 rounded-full border-2 flex-shrink-0" style="border-color:#334155;"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Fee summary strip -->
+                <div style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:10px 12px;">
+                  <div class="flex items-center justify-between text-[11px]">
+                    <span style="color:#475569;">Network fee</span>
+                    <span style="color:#94a3b8;">~$0.50</span>
+                  </div>
+                  <div class="flex items-center justify-between text-[11px] mt-1">
+                    <span style="color:#475569;">Estimated time</span>
+                    <div class="flex items-center gap-1" style="color:#34d399;">
+                      <i data-lucide="clock" class="w-3 h-3"></i>
+                      <span>~5 min</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Continue CTA -->
+                <button onclick="submitP2PTransaction()"
+                  class="w-full text-white text-sm font-bold transition-all active:scale-95"
+                  style="padding:14px;border-radius:14px;background:linear-gradient(135deg,#ea580c 0%,#f97316 100%);box-shadow:0 8px 24px rgba(234,88,12,0.4),0 2px 8px rgba(234,88,12,0.2);letter-spacing:0.02em;">
+                  Continue →
+                </button>
+
               </div>
-
-              <!-- Enter Amount -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-bold text-slate-300">Enter Amount <span class="text-rose-400">*</span></label>
-                <div class="flex gap-2">
-                  <input type="number" id="p2p-amount" value="100" min="10" max="5000"
-                    oninput="updateP2PConversion()"
-                    class="flex-1 bg-slate-800 border border-slate-700 text-white text-sm rounded-xl px-3 py-3 focus:outline-none focus:ring-1 focus:ring-orange-500">
-                  <div class="relative">
-                    <img id="p2p-currency-icon" src="images/usd.png" alt=""
-                      class="absolute left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full object-cover pointer-events-none">
-                    <select id="p2p-currency" onchange="updateP2PConversion()"
-                      class="bg-slate-800 border border-slate-700 text-white text-sm rounded-xl pl-9 pr-7 py-3 appearance-none focus:outline-none focus:ring-1 focus:ring-orange-500">
-                      <option value="usd">USD</option>
-                      <option value="vnd">VND</option>
-                    </select>
-                    <i data-lucide="chevron-down" class="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none"></i>
-                  </div>
-                </div>
-                <p id="p2p-conversion-text" class="text-[11px] text-slate-400">100 USDV @ $1.00</p>
-              </div>
-
-              <!-- Payment Method -->
-              <div class="space-y-1.5">
-                <label class="text-xs font-bold text-slate-300">Payment Method <span class="text-rose-400">*</span></label>
-                <div class="relative">
-                  <select id="p2p-payment-method"
-                    class="w-full bg-slate-800 border border-slate-700 text-white text-sm rounded-xl px-3 pr-9 py-3 appearance-none focus:outline-none focus:ring-1 focus:ring-orange-500">
-                    <option value="cash">Cash</option>
-                    <option value="bank">Bank Transfer</option>
-                    <option value="zelle">Zelle</option>
-                    <option value="venmo">Venmo</option>
-                  </select>
-                  <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none"></i>
-                </div>
-              </div>
-
-              <!-- Select ATM Type -->
-              <div class="space-y-2">
-                <label class="text-xs font-bold text-slate-300">Select ATM Type <span class="text-rose-400">*</span></label>
-
-                <!-- Mobile ATM -->
-                <div onclick="selectAtmType('mobile')" id="atm-type-mobile"
-                  class="flex items-center gap-3 p-3.5 rounded-xl border-2 border-orange-500 bg-orange-500/10 cursor-pointer transition">
-                  <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center flex-shrink-0">
-                    <i id="atm-icon-mobile" data-lucide="truck" class="w-5 h-5 text-orange-400"></i>
-                  </div>
-                  <div>
-                    <div id="atm-label-mobile" class="text-sm font-bold text-orange-400">Mobile ATM</div>
-                    <div class="text-[11px] text-slate-400">ATM will come to you</div>
-                  </div>
-                </div>
-
-                <!-- Merchant ATM -->
-                <div onclick="selectAtmType('merchant')" id="atm-type-merchant"
-                  class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-700 bg-slate-900 cursor-pointer transition hover:border-slate-600">
-                  <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center flex-shrink-0">
-                    <i id="atm-icon-merchant" data-lucide="store" class="w-5 h-5 text-slate-400"></i>
-                  </div>
-                  <div>
-                    <div id="atm-label-merchant" class="text-sm font-bold text-slate-300">Merchant ATM</div>
-                    <div class="text-[11px] text-slate-400">Visit nearby merchant</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Continue -->
-              <button onclick="submitP2PTransaction()"
-                class="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl text-sm font-bold transition transform active:scale-95 shadow-lg shadow-orange-500/20">
-                Continue
-              </button>
-
             </div>
           </div>
         </div>
@@ -1652,17 +1712,28 @@
       } else if (screenName === 'p2p_buy_flow') {
         state.p2pFlowMode = 'buy';
         document.getElementById('screen-p2p-flow').classList.remove('hidden');
-        document.getElementById('p2p-flow-title').innerHTML = `<i data-lucide="shopping-bag" class="w-4 h-4 text-orange-500"></i> Mua Crypto (P2P)`;
+        document.getElementById('p2p-flow-title').innerHTML = `<i data-lucide="shopping-bag" class="w-4 h-4"></i> Mua Crypto (P2P)`;
         document.getElementById('p2p-available-row').classList.add('hidden');
+        document.getElementById('p2p-available-row').classList.remove('flex');
+        // Orange theme for Buy
+        const hdrBuy = document.getElementById('p2p-flow-header');
+        if (hdrBuy) hdrBuy.style.background = 'linear-gradient(135deg,#c2410c 0%,#ea580c 45%,#fb923c 100%)';
+        const ctaBuy = document.querySelector('#screen-p2p-flow button[onclick="submitP2PTransaction()"]');
+        if (ctaBuy) ctaBuy.style.cssText = ctaBuy.style.cssText.replace(/background:[^;]+/, 'background:linear-gradient(135deg,#ea580c 0%,#f97316 100%)').replace(/box-shadow:[^;]+/, 'box-shadow:0 8px 24px rgba(234,88,12,0.4),0 2px 8px rgba(234,88,12,0.2)');
         p2pSelectedAtmType = 'mobile'; selectAtmType('mobile');
         updateP2PConversion();
         lucide.createIcons();
       } else if (screenName === 'p2p_sell_flow') {
         state.p2pFlowMode = 'sell';
         document.getElementById('screen-p2p-flow').classList.remove('hidden');
-        document.getElementById('p2p-flow-title').innerHTML = `<i data-lucide="banknote" class="w-4 h-4 text-orange-500"></i> Bán Crypto (P2P)`;
+        document.getElementById('p2p-flow-title').innerHTML = `<i data-lucide="banknote" class="w-4 h-4"></i> Bán Crypto (P2P)`;
         document.getElementById('p2p-available-row').classList.remove('hidden');
         document.getElementById('p2p-available-row').classList.add('flex');
+        // Blue theme for Sell
+        const hdrSell = document.getElementById('p2p-flow-header');
+        if (hdrSell) hdrSell.style.background = 'linear-gradient(135deg,#1d4ed8 0%,#2563eb 45%,#60a5fa 100%)';
+        const ctaSell = document.querySelector('#screen-p2p-flow button[onclick="submitP2PTransaction()"]');
+        if (ctaSell) { ctaSell.style.background = 'linear-gradient(135deg,#2563eb 0%,#3b82f6 100%)'; ctaSell.style.boxShadow = '0 8px 24px rgba(37,99,235,0.4),0 2px 8px rgba(37,99,235,0.2)'; }
         p2pSelectedAtmType = 'mobile'; selectAtmType('mobile');
         updateP2PConversion();
         lucide.createIcons();
@@ -2025,18 +2096,34 @@
 
     function selectAtmType(type) {
       p2pSelectedAtmType = type;
+      const accentColor = state.p2pFlowMode === 'sell' ? '#2563eb' : '#ea580c';
+      const accentLight = state.p2pFlowMode === 'sell' ? '#3b82f6' : '#fb923c';
       const items = ['mobile', 'merchant'];
       items.forEach(t => {
-        const card  = document.getElementById('atm-type-' + t);
-        const label = document.getElementById('atm-label-' + t);
-        const icon  = document.getElementById('atm-icon-' + t);
+        const card   = document.getElementById('atm-type-' + t);
+        const label  = document.getElementById('atm-label-' + t);
+        const icon   = document.getElementById('atm-icon-' + t);
         if (!card) return;
         const active = t === type;
-        card.className  = active
-          ? 'flex items-center gap-3 p-3.5 rounded-xl border-2 border-orange-500 bg-orange-500/10 cursor-pointer transition'
-          : 'flex items-center gap-3 p-3.5 rounded-xl border border-slate-700 bg-slate-900 cursor-pointer transition hover:border-slate-600';
-        if (label) label.className = active ? 'text-sm font-bold text-orange-400' : 'text-sm font-bold text-slate-300';
-        if (icon)  icon.className  = active ? 'w-5 h-5 text-orange-400' : 'w-5 h-5 text-slate-400';
+        // Update card container style
+        card.style.cssText = active
+          ? `border-radius:14px;border:2px solid ${accentColor};background:linear-gradient(135deg,${accentColor}26 0%,${accentColor}0d 100%);padding:12px 14px;box-shadow:0 4px 16px ${accentColor}33,inset 0 1px 0 rgba(255,255,255,0.06);cursor:pointer;transition:all 0.2s;`
+          : 'border-radius:14px;border:1px solid #1e293b;background:#1a2332;padding:12px 14px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);cursor:pointer;transition:all 0.2s;';
+        // Update radio indicator — last child of inner flex row
+        const radio = card.querySelector('.flex > div:last-child');
+        if (radio) {
+          radio.style.cssText = active
+            ? `width:16px;height:16px;border-radius:50%;border:2px solid ${accentColor};background:${accentColor};display:flex;align-items:center;justify-content:center;flex-shrink:0;`
+            : 'width:16px;height:16px;border-radius:50%;border:2px solid #334155;flex-shrink:0;';
+          radio.innerHTML = active ? '<div style="width:6px;height:6px;border-radius:50%;background:#fff;"></div>' : '';
+        }
+        // Update icon wrapper bg + color
+        const iconWrap = card.querySelector('.flex > div:first-child');
+        if (iconWrap) iconWrap.style.cssText = active
+          ? `width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:${accentColor}33;box-shadow:0 2px 8px ${accentColor}4d;`
+          : 'width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#1e293b;';
+        if (label) { label.style.color = active ? accentLight : '#94a3b8'; }
+        if (icon)  { icon.style.color  = active ? accentLight : '#64748b'; icon.className = 'w-5 h-5'; }
       });
     }
 

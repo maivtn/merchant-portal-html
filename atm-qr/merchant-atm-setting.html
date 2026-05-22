@@ -2551,27 +2551,12 @@
       box-shadow: 0 10px 24px rgba(59, 130, 246, 0.12);
     }
 
-    .asset-fee-group__tab:active {
-      transform: scale(0.93);
-      transition-duration: 0.08s;
-    }
-
     .asset-fee-group__tab.active {
       background: var(--blue-soft);
       color: var(--blue);
       border-color: rgba(59, 130, 246, 0.4);
       box-shadow: 0 6px 20px rgba(59, 130, 246, 0.22), 0 0 0 3px rgba(59, 130, 246, 0.1);
       transform: translateY(-2px) scale(1.05);
-    }
-
-    .asset-fee-group__tab.tab-press {
-      animation: tabPress 0.22s cubic-bezier(.34,1.56,.64,1) both;
-    }
-
-    @keyframes tabPress {
-      0%   { transform: scale(1); }
-      40%  { transform: scale(0.9); }
-      100% { transform: translateY(-2px) scale(1.05); }
     }
 
     .asset-fee-group__panel {
@@ -2586,35 +2571,68 @@
 
     .asset-fee-group__panel.active {
       display: block;
-      animation: assetFeeTabIn 0.3s cubic-bezier(.22,1,.36,1) both;
-    }
-
-    .asset-fee-group__panel.leaving {
-      display: block;
-      animation: assetFeeTabOut 0.16s ease both;
-      pointer-events: none;
-    }
-
-    @keyframes assetFeeTabIn {
-      from {
-        opacity: 0;
-        transform: translateY(16px) scale(0.97);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
     }
 
     @keyframes assetFeeTabOut {
-      from {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-      to {
-        opacity: 0;
-        transform: translateY(-8px) scale(0.98);
-      }
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+
+    /* Skeleton */
+    .asset-fee-skeleton {
+      animation: assetFeeTabIn 0.22s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    .afs-bone {
+      background: linear-gradient(90deg, #f0f1f3 25%, #e4e6e9 50%, #f0f1f3 75%);
+      background-size: 300% 100%;
+      animation: afsShimmer 1.5s infinite linear;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    @keyframes afsShimmer {
+      from { background-position: 100% 0; }
+      to   { background-position: -200% 0; }
+    }
+
+    .afs-fee-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .afs-fee-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .afs-asset-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .afs-asset-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .afs-asset-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .afs-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .fee-compare-title {
@@ -10342,46 +10360,6 @@
     </div>
   </div>
 
-  <script>
-    document.querySelectorAll('.asset-fee-group__tabs').forEach(function(tablist) {
-      tablist.addEventListener('click', function(e) {
-        var btn = e.target.closest('.asset-fee-group__tab');
-        if (!btn || btn.classList.contains('active')) return;
-        var key = btn.dataset.assetFeeTab;
-        var container = tablist.closest('.collapse, .asset-fee-group__tabs')?.parentElement || tablist.parentElement;
-
-        // Tab press bounce
-        btn.classList.remove('tab-press');
-        void btn.offsetWidth;
-        btn.classList.add('tab-press');
-        btn.addEventListener('animationend', function() { btn.classList.remove('tab-press'); }, { once: true });
-
-        tablist.querySelectorAll('.asset-fee-group__tab').forEach(function(t) {
-          t.classList.remove('active');
-          t.setAttribute('aria-selected', 'false');
-        });
-        btn.classList.add('active');
-        btn.setAttribute('aria-selected', 'true');
-
-        // Panel exit then enter
-        var current = container.querySelector('.asset-fee-group__panel.active');
-        var next = container.querySelector('[data-asset-fee-panel="' + key + '"]');
-        if (!next || current === next) return;
-
-        if (current) {
-          current.classList.add('leaving');
-          current.classList.remove('active');
-          current.addEventListener('animationend', function() {
-            current.classList.remove('leaving');
-          }, { once: true });
-        }
-
-        setTimeout(function() {
-          next.classList.add('active');
-        }, current ? 130 : 0);
-      });
-    });
-  </script>
   <script defer src="merchant-atm-setting.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

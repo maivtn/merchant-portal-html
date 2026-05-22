@@ -1244,6 +1244,45 @@ window.addEventListener('DOMContentLoaded', () => {
     refreshIcons();
   };
 
+  const buildAssetFeeSkeleton = () => {
+    const b = (s) => `<div class="afs-bone" style="${s}"></div>`;
+    const feeCol = `<div class="afs-fee-col">
+      ${b('height:12px;width:60px;')}
+      ${b('height:6px;width:100%;border-radius:3px;')}
+      <div class="afs-cell">
+        ${b('height:36px;width:90px;border-radius:10px;')}
+        ${b('height:14px;width:88px;')}
+      </div>
+    </div>`;
+    const assetRow = `<div class="afs-asset-item">
+      <div class="afs-asset-name">
+        ${b('height:32px;width:32px;border-radius:50%;')}
+        ${b('height:13px;width:44px;')}
+      </div>
+      <div class="afs-cell">
+        ${b('height:22px;width:36px;border-radius:11px;')}
+        ${b('height:34px;flex:1;max-width:100px;border-radius:9px;')}
+      </div>
+      <div class="afs-cell">
+        ${b('height:22px;width:36px;border-radius:11px;')}
+        ${b('height:34px;flex:1;max-width:100px;border-radius:9px;')}
+      </div>
+    </div>`;
+    const el = document.createElement('div');
+    el.className = 'asset-fee-skeleton';
+    el.innerHTML = `
+      <div class="afs-fee-row">${feeCol}${feeCol}</div>
+      <div class="afs-cell" style="gap:32px;margin-bottom:12px;">
+        ${b('height:12px;width:110px;')}
+        ${b('height:12px;width:64px;')}
+        ${b('height:12px;width:64px;')}
+      </div>
+      <div class="afs-asset-rows">
+        ${assetRow}${assetRow}${assetRow}${assetRow}
+      </div>`;
+    return el;
+  };
+
   const activateAssetFeeTab = (name) => {
     assetFeeTabs.forEach((tab) => {
       const isActive = tab.getAttribute('data-asset-fee-tab') === name;
@@ -1500,7 +1539,34 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   assetFeeTabs.forEach((tab) => {
-    tab.addEventListener('click', () => activateAssetFeeTab(tab.getAttribute('data-asset-fee-tab') || 'online'));
+    tab.addEventListener('click', () => {
+      if (tab.classList.contains('active')) return;
+      const name = tab.getAttribute('data-asset-fee-tab') || 'online';
+      const tablist = tab.closest('[role="tablist"]');
+      const wrap = tablist?.parentElement;
+
+      // Switch tab buttons immediately
+      assetFeeTabs.forEach((t) => {
+        t.classList.toggle('active', t === tab);
+        t.setAttribute('aria-selected', String(t === tab));
+      });
+
+      // Hide current panel immediately
+      const currentPanel = wrap?.querySelector('.asset-fee-group__panel.active');
+      if (currentPanel) currentPanel.classList.remove('active');
+
+      // Show skeleton
+      const skeleton = buildAssetFeeSkeleton();
+      tablist.insertAdjacentElement('afterend', skeleton);
+
+      setTimeout(() => {
+        skeleton.parentNode?.removeChild(skeleton);
+        assetFeePanels.forEach((panel) => {
+          const isActive = panel.getAttribute('data-asset-fee-panel') === name;
+          panel.classList.toggle('active', isActive);
+        });
+      }, 600);
+    });
   });
 
   activateAssetFeeTab(assetFeeTabs.find((tab) => tab.classList.contains('active'))?.getAttribute('data-asset-fee-tab') || 'online');

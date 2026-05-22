@@ -576,7 +576,7 @@
             <!-- <span class="text-[8px] font-bold text-emerald-400 tracking-wider uppercase bg-emerald-500/10 px-1.5 py-0.5 rounded inline-block mb-1 animate-pulse">Đối tác</span> -->
             <h3 class="text-xs font-extrabold text-white">Kiếm thêm thu nhập với Mobile ATM</h3>
             <p class="text-[9.5px] text-slate-400 mt-0.5 mb-2.5 leading-snug">Hợp tác cùng VLINKPAY nạp/rút tiền mặt để nhận hoa hồng.</p>
-            <button onclick="openPurchaseModal()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold py-1.5 px-2.5 rounded-lg shadow-md transition transform active:scale-95">
+            <button onclick="changeScreen('get_license')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold py-1.5 px-2.5 rounded-lg shadow-md transition transform active:scale-95">
               Đăng ký ngay
             </button>
           </div>
@@ -728,49 +728,197 @@
         </div>
 
         <!-- ================= MÀN HÌNH 5: CHI TIẾT VÍ TÀI SẢN (DASH-7.4) ================= -->
-        <div id="screen-wallet-details" class="absolute inset-0 bg-slate-950 z-40 hidden flex flex-col">
-          <div class="p-4 border-b border-slate-800/80 flex justify-between items-center bg-slate-900">
-            <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
-              <i data-lucide="wallet" class="w-4 h-4 text-orange-500"></i> Ví tài sản của tôi
-            </h3>
-            <button onclick="changeScreen('dashboard')" class="p-1.5 bg-slate-800 hover:bg-slate-755 text-slate-400 hover:text-white rounded-lg transition">
+        <div id="screen-wallet-details" class="absolute inset-0 bg-white z-40 hidden flex flex-col">
+          <!-- Header -->
+          <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-white">
+            <button onclick="changeScreen('dashboard')" class="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 rounded-lg transition">
               <i data-lucide="arrow-left" class="w-4 h-4"></i>
             </button>
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+              <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i> My Wallet
+            </h3>
+            <div class="w-8"></div>
           </div>
-          <div class="flex-1 p-5 space-y-4 overflow-y-auto mobile-scrollbar font-medium bg-slate-950">
-            <div class="bg-orange-500/10 p-5 rounded-2xl text-center">
-              <span class="text-xs text-slate-400 block uppercase font-medium tracking-wider mb-1">Tổng tài sản quy đổi</span>
-              <h2 class="text-3xl font-black text-white" id="details-wallet-balance">$7,207.92</h2>
-            </div>
 
-            <h4 class="text-xs font-bold text-slate-300">Phân rã Token chi tiết</h4>
-            <div class="space-y-2">
-              <div class="p-3.5 bg-slate-900 rounded-xl flex justify-between items-center">
-                <div>
-                  <span class="text-xs font-bold text-white block">VLINKPAY USDV</span>
-                  <span class="text-[10px] text-slate-400">Stablecoin gốc của nền tảng</span>
-                </div>
-                <span class="text-sm font-bold text-white">7,207.92 USDV</span>
-              </div>
-              <div class="p-3.5 bg-slate-900 rounded-xl flex justify-between items-center">
-                <div>
-                  <span class="text-xs font-bold text-white block">Ethereum ETH</span>
-                  <span class="text-[10px] text-slate-400">Gas token hoạt động</span>
-                </div>
-                <span class="text-sm font-bold text-white">1.45 ETH</span>
-              </div>
-              <div class="p-3.5 bg-slate-900 rounded-xl flex justify-between items-center">
-                <div>
-                  <span class="text-xs font-bold text-white block">Tether USDT</span>
-                  <span class="text-[10px] text-slate-400">Stablecoin ERC20</span>
-                </div>
-                <span class="text-sm font-bold text-white">250.00 USDT</span>
-              </div>
-            </div>
+          <!-- Scrollable content -->
+          <div class="flex-1 overflow-y-auto mobile-scrollbar bg-white">
+            <div class="px-5 pt-5 pb-8">
 
-            <div class="grid grid-cols-2 gap-2 pt-4">
-              <button onclick="showToast('Nạp tiền', 'Tính năng nạp tiền đang được bảo trì.', 'warning')" class="py-3 bg-orange-500 text-white rounded-xl text-xs font-bold transition">Nạp Token</button>
-              <button onclick="showToast('Rút tiền', 'Tính năng rút tiền đang được bảo trì.', 'warning')" class="py-3 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold transition">Rút Token</button>
+              <!-- Total Balance -->
+              <div class="flex items-center justify-between mb-1">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-sm text-slate-500 font-medium">Total Balance</span>
+                  <i data-lucide="info" class="w-3.5 h-3.5 text-blue-500"></i>
+                </div>
+                <label class="flex items-center gap-1.5 cursor-pointer select-none" onclick="toggleWalletHideSmall()">
+                  <div id="wallet-hide-checkbox"
+                    class="w-4 h-4 border-2 border-slate-400 rounded flex items-center justify-center transition-colors"
+                    style="min-width:16px;min-height:16px;"></div>
+                  <span class="text-[11px] text-slate-500">Hide small wallets</span>
+                </label>
+              </div>
+              <div class="text-2xl font-black text-slate-900 mb-5">$74,519.40</div>
+
+              <!-- Column headers -->
+              <div class="flex justify-between items-center pb-2 border-b border-slate-200 mb-0.5">
+                <span class="text-xs font-bold text-blue-600">Type Value</span>
+                <span class="text-xs font-bold text-blue-600">Price</span>
+              </div>
+
+              <!-- Coin list -->
+              <div id="wallet-coin-list">
+
+                <!-- VMM IOU -->
+                <div class="wallet-coin flex items-center justify-between py-3.5 border-b border-slate-100" data-usd="72000">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0">
+                      <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#1e3a5f"/><text x="50%" y="56%" text-anchor="middle" fill="white" font-size="7" font-family="Inter" font-weight="700" dy=".1em">VMM</text></svg>
+                    </div>
+                    <div>
+                      <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wide leading-none mb-0.5">VMM IOU</div>
+                      <div class="text-base font-bold text-blue-600 leading-none">900</div>
+                      <div class="text-[10px] text-slate-400 mt-0.5">$72,000.00</div>
+                    </div>
+                  </div>
+                  <div class="text-sm text-slate-600 font-medium">$80</div>
+                </div>
+
+                <!-- USDR -->
+                <div class="wallet-coin flex items-center justify-between py-3.5 border-b border-slate-100" data-usd="1062.01">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-green-600 flex items-center justify-center flex-shrink-0">
+                      <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#16a34a"/><text x="50%" y="56%" text-anchor="middle" fill="white" font-size="13" font-family="Inter" font-weight="700" dy=".1em">$</text></svg>
+                    </div>
+                    <div>
+                      <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wide leading-none mb-0.5">USDR</div>
+                      <div class="text-base font-bold text-blue-600 leading-none">1,062.01</div>
+                      <div class="text-[10px] text-slate-400 mt-0.5">$1,062.01</div>
+                    </div>
+                  </div>
+                  <div class="text-sm text-slate-600 font-medium">$1</div>
+                </div>
+
+                <!-- USDV -->
+                <div class="wallet-coin flex items-center justify-between py-3.5 border-b border-slate-100" data-usd="1033.18">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                      <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#22c55e"/><text x="50%" y="56%" text-anchor="middle" fill="white" font-size="13" font-family="Inter" font-weight="700" dy=".1em">$</text></svg>
+                    </div>
+                    <div>
+                      <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wide leading-none mb-0.5">USDV</div>
+                      <div class="text-base font-bold text-blue-600 leading-none">1,033.18</div>
+                      <div class="text-[10px] text-slate-400 mt-0.5">$1,033.18</div>
+                    </div>
+                  </div>
+                  <div class="text-sm text-slate-600 font-medium">$1</div>
+                </div>
+
+                <!-- BTC -->
+                <div class="wallet-coin flex items-center justify-between py-3.5 border-b border-slate-100" data-usd="149.44">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
+                      <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#f97316"/><text x="50%" y="56%" text-anchor="middle" fill="white" font-size="13" font-family="Inter" font-weight="700" dy=".1em">₿</text></svg>
+                    </div>
+                    <div>
+                      <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wide leading-none mb-0.5">BTC</div>
+                      <div class="text-base font-bold text-blue-600 leading-none">0.00192473</div>
+                      <div class="text-[10px] text-slate-400 mt-0.5">$149.44</div>
+                    </div>
+                  </div>
+                  <div class="text-sm text-slate-600 font-medium">$77,641.165</div>
+                </div>
+
+                <!-- VGIFT -->
+                <div class="wallet-coin flex items-center justify-between py-3.5 border-b border-slate-100" data-usd="132.05">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
+                      <svg width="22" height="22" viewBox="0 0 32 32"><polygon points="16,3 20,12 29,14 22,21 24,30 16,26 8,30 10,21 3,14 12,12" fill="#6366f1" opacity="0.85"/></svg>
+                    </div>
+                    <div>
+                      <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wide leading-none mb-0.5">VGIFT</div>
+                      <div class="text-base font-bold text-blue-600 leading-none">132.05</div>
+                      <div class="text-[10px] text-slate-400 mt-0.5">$132.05</div>
+                    </div>
+                  </div>
+                  <div class="text-sm text-slate-600 font-medium">$1</div>
+                </div>
+
+                <!-- VCREDIT -->
+                <div class="wallet-coin flex items-center justify-between py-3.5 border-b border-slate-100" data-usd="55.09">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-violet-100 flex items-center justify-center flex-shrink-0">
+                      <svg width="22" height="22" viewBox="0 0 32 32"><polygon points="16,3 20,12 29,14 22,21 24,30 16,26 8,30 10,21 3,14 12,12" fill="#7c3aed" opacity="0.85"/><circle cx="16" cy="16" r="4" fill="#a78bfa"/></svg>
+                    </div>
+                    <div>
+                      <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wide leading-none mb-0.5">VCREDIT</div>
+                      <div class="text-base font-bold text-blue-600 leading-none">55.09</div>
+                      <div class="text-[10px] text-slate-400 mt-0.5">$55.09</div>
+                    </div>
+                  </div>
+                  <div class="text-sm text-slate-600 font-medium">$1</div>
+                </div>
+
+                <!-- USDT -->
+                <div class="wallet-coin flex items-center justify-between py-3.5 border-b border-slate-100" data-usd="25.45">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-teal-600 flex items-center justify-center flex-shrink-0">
+                      <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0d9488"/><text x="50%" y="56%" text-anchor="middle" fill="white" font-size="13" font-family="Inter" font-weight="700" dy=".1em">₮</text></svg>
+                    </div>
+                    <div>
+                      <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wide leading-none mb-0.5">USDT</div>
+                      <div class="text-base font-bold text-blue-600 leading-none">25.45</div>
+                      <div class="text-[10px] text-slate-400 mt-0.5">$25.45</div>
+                    </div>
+                  </div>
+                  <div class="text-sm text-slate-600 font-medium">$1</div>
+                </div>
+
+                <!-- VPOINT -->
+                <div class="wallet-coin flex items-center justify-between py-3.5 border-b border-slate-100" data-usd="25.10">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full border-2 border-blue-600 bg-white flex items-center justify-center flex-shrink-0">
+                      <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#2563eb" opacity="0.9"/><text x="50%" y="56%" text-anchor="middle" fill="white" font-size="7" font-family="Inter" font-weight="700" dy=".1em">VP</text></svg>
+                    </div>
+                    <div>
+                      <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wide leading-none mb-0.5">VPOINT</div>
+                      <div class="text-base font-bold text-blue-600 leading-none">25.10</div>
+                      <div class="text-[10px] text-slate-400 mt-0.5">$25.10</div>
+                    </div>
+                  </div>
+                  <div class="text-sm text-slate-600 font-medium">$1</div>
+                </div>
+
+                <!-- DOGE -->
+                <div class="wallet-coin flex items-center justify-between py-3.5 border-b border-slate-100" data-usd="15.99">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0">
+                      <svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#ca8a04"/><text x="50%" y="56%" text-anchor="middle" fill="white" font-size="12" font-family="Inter" font-weight="700" dy=".1em">Ð</text></svg>
+                    </div>
+                    <div>
+                      <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wide leading-none mb-0.5">DOGE</div>
+                      <div class="text-base font-bold text-blue-600 leading-none">151.99</div>
+                      <div class="text-[10px] text-slate-400 mt-0.5">$15.99</div>
+                    </div>
+                  </div>
+                  <div class="text-sm text-slate-600 font-medium">$0.11</div>
+                </div>
+
+                <!-- ETH -->
+                <div class="wallet-coin flex items-center justify-between py-3.5" data-usd="0.98">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center flex-shrink-0">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#334155"/><polygon points="12,5 17,12 12,14.5 7,12" fill="white" opacity="0.9"/><polygon points="12,14.5 17,12 12,19 7,12" fill="white" opacity="0.6"/></svg>
+                    </div>
+                    <div>
+                      <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wide leading-none mb-0.5">ETH</div>
+                      <div class="text-base font-bold text-blue-600 leading-none">0</div>
+                      <div class="text-[10px] text-slate-400 mt-0.5">$0.98</div>
+                    </div>
+                  </div>
+                  <div class="text-sm text-slate-600 font-medium">$2,128.19</div>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>
@@ -825,6 +973,201 @@
 
       </div>
 
+        <!-- ================= MÀN HÌNH 7: GET LICENSE ================= -->
+        <div id="screen-get-license" class="absolute inset-0 bg-white z-40 hidden flex flex-col">
+          <!-- Header -->
+          <div class="px-4 pt-4 pb-3 bg-white border-b border-slate-100">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[9px] font-black uppercase tracking-widest bg-orange-500 text-white px-2 py-0.5 rounded-full">Free Purchase Now</span>
+              <button onclick="changeScreen('dashboard')" class="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-lg transition">
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <div class="flex items-end justify-between mt-1">
+              <div>
+                <h2 class="text-2xl font-black text-slate-900 leading-none">GET LICENSE</h2>
+                <p class="text-[10px] text-slate-400 mt-0.5">THE 1 FRANCHISE BETTER</p>
+              </div>
+              <div class="text-right">
+                <div class="text-xl font-black text-slate-900 leading-none">552</div>
+                <div class="text-[9px] text-slate-400 uppercase tracking-wide">Units Left</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scrollable body -->
+          <div class="flex-1 overflow-y-auto mobile-scrollbar bg-white">
+            <div class="px-4 pt-3 pb-8 space-y-4">
+
+              <!-- Info banner -->
+              <div id="gl-info-banner" class="bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2.5 text-[10px] text-emerald-700 leading-relaxed">
+                You already own an ATM Franchise package. Any additional purchases will be issued as inventory.
+              </div>
+
+              <!-- Package: Standard License -->
+              <div class="border border-slate-200 rounded-2xl p-3.5 space-y-2.5">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="award" class="w-4 h-4 text-orange-400"></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="text-[10px] text-slate-400 uppercase tracking-wide font-semibold leading-none">VLINKPAY</div>
+                    <div class="text-xs font-bold text-slate-800 leading-tight">STANDARD LICENSE</div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-[10px] text-slate-400 line-through">$2,000</div>
+                    <div class="text-base font-black text-slate-900">$1,150</div>
+                  </div>
+                </div>
+                <!-- Qty selector -->
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] text-slate-400">Select quantity</span>
+                  <div class="flex items-center gap-2">
+                    <button onclick="adjustQty('standard',-1)" class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition text-sm font-bold">−</button>
+                    <span id="qty-standard" class="text-sm font-bold text-slate-800 w-5 text-center">1</span>
+                    <button onclick="adjustQty('standard',1)" class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition text-sm font-bold">+</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Package: Combo -->
+              <div class="border border-slate-200 rounded-2xl p-3.5 space-y-2.5">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="layers" class="w-4 h-4 text-white"></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="text-[10px] text-slate-400 uppercase tracking-wide font-semibold leading-none">DUAL NODE SYSTEM</div>
+                    <div class="text-xs font-bold text-slate-800 leading-tight">COMBO PACKAGE</div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-[10px] text-slate-400 line-through">$1,000</div>
+                    <div class="text-base font-black text-slate-900">$1,725</div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] text-slate-400">Select quantity</span>
+                  <div class="flex items-center gap-2">
+                    <button onclick="adjustQty('combo',-1)" class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition text-sm font-bold">−</button>
+                    <span id="qty-combo" class="text-sm font-bold text-slate-800 w-5 text-center">0</span>
+                    <button onclick="adjustQty('combo',1)" class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-slate-500 hover:bg-slate-100 transition text-sm font-bold">+</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Checkout summary -->
+              <div class="border-t border-slate-100 pt-4">
+                <h4 class="text-xs font-black text-slate-800 uppercase tracking-wider mb-3">Checkout Summary</h4>
+                <div id="checkout-lines" class="space-y-1.5 text-[11px] text-slate-600 mb-3">
+                  <div class="flex justify-between">
+                    <span>Standard License</span>
+                    <span></span>
+                  </div>
+                  <div class="flex justify-between text-slate-400 pl-2">
+                    <span id="checkout-standard-desc">1 × $1,150 – LICENSE #553</span>
+                    <span id="checkout-standard-amt">$1,150</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full uppercase tracking-wide">⚡ Zero Network Fees</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-bold text-slate-700 uppercase tracking-wide">Total Investment</span>
+                  <span id="checkout-total" class="text-2xl font-black text-orange-500">$1,150</span>
+                </div>
+              </div>
+
+              <!-- Payment source -->
+              <div class="border-t border-slate-100 pt-4">
+                <h4 class="text-xs font-black text-slate-800 uppercase tracking-wider mb-3">Payment Source</h4>
+                <div class="space-y-2" id="payment-sources">
+                  <!-- USDV (selected) -->
+                  <label class="flex items-center gap-3 p-2.5 rounded-xl border-2 border-blue-500 bg-blue-50 cursor-pointer">
+                    <input type="radio" name="pay-src" value="usdv" checked class="accent-blue-500">
+                    <div class="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                      <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#22c55e"/><text x="50%" y="56%" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="Inter" dy=".1em">$</text></svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-[10px] font-bold text-slate-800">USDV</div>
+                      <div class="text-[10px] text-slate-500">$120,339,018.54</div>
+                    </div>
+                  </label>
+                  <!-- USDT -->
+                  <label class="flex items-center gap-3 p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer hover:bg-slate-50">
+                    <input type="radio" name="pay-src" value="usdt" class="accent-blue-500">
+                    <div class="w-7 h-7 rounded-full bg-teal-600 flex items-center justify-center flex-shrink-0">
+                      <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#0d9488"/><text x="50%" y="56%" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="Inter" dy=".1em">₮</text></svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-[10px] font-bold text-slate-800">USDT</div>
+                      <div class="text-[10px] text-slate-500">$9,890,050.13</div>
+                    </div>
+                  </label>
+                  <!-- USD -->
+                  <label class="flex items-center gap-3 p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer hover:bg-slate-50">
+                    <input type="radio" name="pay-src" value="usd" class="accent-blue-500">
+                    <div class="w-7 h-7 rounded-full bg-green-700 flex items-center justify-center flex-shrink-0">
+                      <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#15803d"/><text x="50%" y="56%" text-anchor="middle" fill="white" font-size="11" font-weight="700" font-family="Inter" dy=".1em">$</text></svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-[10px] font-bold text-slate-800">USD</div>
+                      <div class="text-[10px] text-slate-500">$970,073.04</div>
+                    </div>
+                  </label>
+                  <!-- USDC -->
+                  <label class="flex items-center gap-3 p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer hover:bg-slate-50">
+                    <input type="radio" name="pay-src" value="usdc" class="accent-blue-500">
+                    <div class="w-7 h-7 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
+                      <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#3b82f6"/><text x="50%" y="56%" text-anchor="middle" fill="white" font-size="9" font-weight="700" font-family="Inter" dy=".1em">USDC</text></svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-[10px] font-bold text-slate-800">USDC</div>
+                      <div class="text-[10px] text-slate-500">$995,019.52</div>
+                    </div>
+                  </label>
+                  <!-- VRBO -->
+                  <label class="flex items-center gap-3 p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer hover:bg-slate-50">
+                    <input type="radio" name="pay-src" value="vrbo" class="accent-blue-500">
+                    <div class="w-7 h-7 rounded-full bg-slate-400 flex items-center justify-center flex-shrink-0">
+                      <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#94a3b8"/><text x="50%" y="56%" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="Inter" dy=".1em">VRBO</text></svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-[10px] font-bold text-slate-800">VRBO</div>
+                      <div class="text-[10px] text-slate-500">$200.00</div>
+                    </div>
+                  </label>
+                  <!-- Credit Card -->
+                  <label class="flex items-center gap-3 p-2.5 rounded-xl border border-slate-200 bg-white cursor-pointer hover:bg-slate-50">
+                    <input type="radio" name="pay-src" value="card" class="accent-blue-500">
+                    <div class="w-7 h-7 rounded-full bg-slate-700 flex items-center justify-center flex-shrink-0">
+                      <i data-lucide="credit-card" class="w-3.5 h-3.5 text-white"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="text-[10px] font-bold text-slate-800">CREDIT CARD</div>
+                      <div class="text-[10px] text-slate-500">VISA / MASTER</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Terms -->
+              <div class="flex items-start gap-2.5 pt-1">
+                <input type="checkbox" id="gl-terms" class="mt-0.5 accent-slate-800 flex-shrink-0">
+                <label for="gl-terms" class="text-[9.5px] text-slate-500 leading-relaxed cursor-pointer">
+                  I have read, understood, and agreed to the VLINKPAY Member Franchise License NFT Terms &amp; Conditions. I understand that this VLINKPAY-provided privileges, including ATM Processing, Affiliate Rewards, Gift Card issuance, Institutional Access, and eligible Crypto Card/Digital Card Access, subject to VLINKPAY policy, issuer approval, compliance review, and applicable law. I also understand that this license is not equity, not a security, not a guaranteed investment return, does not automatically create a traditional franchise relationship, and cannot be transferred during the first 12 months unless approved by VLINKPAY, terms and conditions.
+                </label>
+              </div>
+
+              <!-- Confirm button -->
+              <button onclick="confirmAcquisition()" class="w-full py-3.5 font-black text-xs rounded-2xl transition transform active:scale-95 flex items-center justify-center gap-2 uppercase tracking-wide text-white" style="background-color:#0f172a;">
+                Confirm Acquisition
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </button>
+
+            </div>
+          </div>
+        </div>
+
       <!-- THANH ĐIỀU HƯỚNG DƯỚI ĐỘNG (BOTTOM NAVIGATION - DASH-26 - Không viền) -->
       <div id="bottom-nav-bar" class="absolute bottom-0 left-0 right-0 h-16 bg-slate-900 px-4 flex justify-around items-center z-45 shrink-0 shadow-[0_-5px_15px_rgba(0,0,0,0.4)]">
         <!-- Render tự động tùy theo trạng thái Giấy phép & Screen định hướng -->
@@ -867,7 +1210,7 @@
       activeFranchiseTab: 'nft',     // Tab quản lý NFT hoạt động: 'nft', 'inv', 'get', 'hist', 'deleg'
       hasPendingRequest: true,       // Giả lập trạng thái yêu cầu đang chờ xử lý
       p2pFlowMode: 'buy',            // 'buy' | 'sell'
-      theme: 'dark',                 // 'dark' | 'light' (Cập nhật lưu trữ Theme mặc định)
+      theme: 'light',                // 'dark' | 'light' (Cập nhật lưu trữ Theme mặc định)
       transactions: [
         { id: 'TX-4402', type: 'Mua USDV bằng Tiền mặt', counterparty: 'Seller AD266759', amount: '$100', status: 'Pending', time: 'Hôm nay • 04:11 PM' },
         { id: 'TX-4399', type: 'Bán USDV bằng Tiền mặt', counterparty: 'Buyer BC992811', amount: '$500', status: 'Completed', time: 'Hôm nay • 10:25 AM' },
@@ -878,6 +1221,7 @@
     // Điểm khởi chạy của ứng dụng
     window.onload = function() {
       lucide.createIcons();
+      setTheme('light');
       setScenario('no-license-personal');
     };
 
@@ -1047,6 +1391,7 @@
       document.getElementById('screen-license-mgmt').classList.add('hidden');
       document.getElementById('screen-wallet-details').classList.add('hidden');
       document.getElementById('screen-p2p-flow').classList.add('hidden');
+      document.getElementById('screen-get-license').classList.add('hidden');
 
       if (screenName === 'dashboard') {
         document.getElementById('screen-dashboard').classList.remove('hidden');
@@ -1082,6 +1427,11 @@
         document.getElementById('p2p-flow-title').innerHTML = `<i data-lucide="banknote" class="w-4 h-4 text-orange-500"></i> Bán Crypto (P2P)`;
         document.getElementById('p2p-flow-desc').innerText = "Thanh khoản tài sản USDV của bạn rút về Tiền mặt nhanh chóng.";
         lucide.createIcons();
+      } else if (screenName === 'get_license') {
+        document.getElementById('screen-get-license').classList.remove('hidden');
+        const banner = document.getElementById('gl-info-banner');
+        if (banner) banner.style.display = state.licenseStatus === 'active' ? '' : 'none';
+        updateGetLicenseCheckout();
       }
 
       // Cập nhật lại Bottom Navigation đồng bộ theo Router
@@ -1935,6 +2285,55 @@
       const modal = document.getElementById('modal-container');
       document.getElementById('modal-content').classList.add('scale-90');
       modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    // GET LICENSE SCREEN
+    const glQty = { standard: 1, combo: 0 };
+    const glPrice = { standard: 1150, combo: 1725 };
+
+    function adjustQty(pkg, delta) {
+      glQty[pkg] = Math.max(0, glQty[pkg] + delta);
+      document.getElementById('qty-' + pkg).innerText = glQty[pkg];
+      updateGetLicenseCheckout();
+    }
+
+    function updateGetLicenseCheckout() {
+      const stdTotal = glQty.standard * glPrice.standard;
+      const comboTotal = glQty.combo * glPrice.combo;
+      const total = stdTotal + comboTotal;
+      const desc = document.getElementById('checkout-standard-desc');
+      const amt = document.getElementById('checkout-standard-amt');
+      const totalEl = document.getElementById('checkout-total');
+      if (desc) desc.innerText = glQty.standard + ' × $' + glPrice.standard.toLocaleString() + ' – LICENSE #553';
+      if (amt) amt.innerText = stdTotal > 0 ? '$' + stdTotal.toLocaleString() : '$0';
+      if (totalEl) totalEl.innerText = '$' + total.toLocaleString();
+    }
+
+    function confirmAcquisition() {
+      const agreed = document.getElementById('gl-terms').checked;
+      if (!agreed) { showToast('Terms Required', 'Please agree to the terms and conditions first.', 'warning'); return; }
+      const total = glQty.standard * glPrice.standard + glQty.combo * glPrice.combo;
+      if (total === 0) { showToast('No Package', 'Please select at least one package.', 'warning'); return; }
+      showToast('Order Confirmed', 'Your license acquisition of $' + total.toLocaleString() + ' is being processed.', 'success');
+      setTimeout(() => changeScreen('dashboard'), 1800);
+    }
+
+    // WALLET HIDE SMALL TOGGLE
+    let walletHideSmall = false;
+    function toggleWalletHideSmall() {
+      walletHideSmall = !walletHideSmall;
+      const cb = document.getElementById('wallet-hide-checkbox');
+      if (walletHideSmall) {
+        cb.innerHTML = '<svg width="10" height="10" viewBox="0 0 10 10"><polyline points="1,5 4,8 9,2" stroke="#3b82f6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        cb.style.borderColor = '#3b82f6';
+      } else {
+        cb.innerHTML = '';
+        cb.style.borderColor = '#94a3b8';
+      }
+      document.querySelectorAll('#wallet-coin-list .wallet-coin').forEach(item => {
+        const val = parseFloat(item.dataset.usd);
+        item.style.display = (walletHideSmall && val < 20) ? 'none' : 'flex';
+      });
     }
 
     // TOAST SYSTEM ĐỒNG BỘ TRÊN MÀN HÌNH DI ĐỘNG (THAY THẾ WINDOW.ALERTS)

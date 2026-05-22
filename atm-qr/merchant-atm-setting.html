@@ -2542,19 +2542,36 @@
       white-space: nowrap;
       cursor: pointer;
       box-shadow: 0 8px 22px rgba(34, 31, 31, 0.05);
-      transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      transition: transform 0.18s cubic-bezier(.34,1.56,.64,1), background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease, box-shadow 0.2s ease;
     }
 
     .asset-fee-group__tab:hover {
-      transform: translateY(-1px);
-      border-color: rgba(217, 119, 6, 0.35);
+      transform: translateY(-2px) scale(1.03);
+      border-color: rgba(59, 130, 246, 0.35);
+      box-shadow: 0 10px 24px rgba(59, 130, 246, 0.12);
+    }
+
+    .asset-fee-group__tab:active {
+      transform: scale(0.93);
+      transition-duration: 0.08s;
     }
 
     .asset-fee-group__tab.active {
       background: var(--blue-soft);
       color: var(--blue);
-      border-color: rgba(217, 119, 6, 0.18);
-      box-shadow: 0 14px 28px rgba(217, 119, 6, 0.12);
+      border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.22), 0 0 0 3px rgba(59, 130, 246, 0.1);
+      transform: translateY(-2px) scale(1.05);
+    }
+
+    .asset-fee-group__tab.tab-press {
+      animation: tabPress 0.22s cubic-bezier(.34,1.56,.64,1) both;
+    }
+
+    @keyframes tabPress {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(0.9); }
+      100% { transform: translateY(-2px) scale(1.05); }
     }
 
     .asset-fee-group__panel {
@@ -2569,17 +2586,34 @@
 
     .asset-fee-group__panel.active {
       display: block;
-      animation: assetFeeTabIn 0.22s ease both;
+      animation: assetFeeTabIn 0.3s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    .asset-fee-group__panel.leaving {
+      display: block;
+      animation: assetFeeTabOut 0.16s ease both;
+      pointer-events: none;
     }
 
     @keyframes assetFeeTabIn {
       from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(16px) scale(0.97);
       }
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes assetFeeTabOut {
+      from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
       }
     }
 
@@ -10312,9 +10346,15 @@
     document.querySelectorAll('.asset-fee-group__tabs').forEach(function(tablist) {
       tablist.addEventListener('click', function(e) {
         var btn = e.target.closest('.asset-fee-group__tab');
-        if (!btn) return;
+        if (!btn || btn.classList.contains('active')) return;
         var key = btn.dataset.assetFeeTab;
         var container = tablist.closest('.collapse, .asset-fee-group__tabs')?.parentElement || tablist.parentElement;
+
+        // Tab press bounce
+        btn.classList.remove('tab-press');
+        void btn.offsetWidth;
+        btn.classList.add('tab-press');
+        btn.addEventListener('animationend', function() { btn.classList.remove('tab-press'); }, { once: true });
 
         tablist.querySelectorAll('.asset-fee-group__tab').forEach(function(t) {
           t.classList.remove('active');
@@ -10323,11 +10363,22 @@
         btn.classList.add('active');
         btn.setAttribute('aria-selected', 'true');
 
-        container.querySelectorAll('.asset-fee-group__panel').forEach(function(panel) {
-          panel.classList.remove('active');
-        });
-        var target = container.querySelector('[data-asset-fee-panel="' + key + '"]');
-        if (target) target.classList.add('active');
+        // Panel exit then enter
+        var current = container.querySelector('.asset-fee-group__panel.active');
+        var next = container.querySelector('[data-asset-fee-panel="' + key + '"]');
+        if (!next || current === next) return;
+
+        if (current) {
+          current.classList.add('leaving');
+          current.classList.remove('active');
+          current.addEventListener('animationend', function() {
+            current.classList.remove('leaving');
+          }, { once: true });
+        }
+
+        setTimeout(function() {
+          next.classList.add('active');
+        }, current ? 130 : 0);
       });
     });
   </script>

@@ -10,6 +10,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- QR Code generator -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <!-- html2canvas for download -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -387,7 +391,7 @@
                 <p id="pending-request-desc" class="text-[10px] text-slate-300 mt-0.5">2 yêu cầu cần xử lý gấp</p>
               </div>
             </div>
-            <button onclick="openRequestListModal()" class="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-[10px] font-semibold transition shadow-md shadow-orange-500/10">
+            <button class="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-[10px] font-semibold transition shadow-md shadow-orange-500/10">
               Xem chi tiết
             </button>
           </div>
@@ -478,11 +482,11 @@
                 <i data-lucide="qr-code" class="w-4.5 h-4.5 text-blue-400 group-hover:scale-110 transition"></i>
                 <span class="text-[9.5px] text-slate-200 font-medium mt-1">Mã QR ATM</span>
               </button>
-              <button onclick="handleAtmAction('receive_pay')" class="flex flex-col items-center justify-center p-2.5 bg-purple-500/10 hover:bg-purple-500/20 active:scale-95 rounded-xl transition relative group">
+              <button class="flex flex-col items-center justify-center p-2.5 bg-purple-500/10 hover:bg-purple-500/20 active:scale-95 rounded-xl transition relative group">
                 <i data-lucide="handshake" class="w-4.5 h-4.5 text-purple-400 group-hover:scale-110 transition"></i>
                 <span class="text-[9.5px] text-slate-200 font-medium mt-1">Thu/Chi hộ</span>
               </button>
-              <button onclick="handleAtmAction('settings')" class="flex flex-col items-center justify-center p-2.5 bg-amber-500/10 hover:bg-amber-500/20 active:scale-95 rounded-xl transition relative group">
+              <button class="flex flex-col items-center justify-center p-2.5 bg-amber-500/10 hover:bg-amber-500/20 active:scale-95 rounded-xl transition relative group">
                 <i data-lucide="sliders" class="w-4.5 h-4.5 text-amber-400 group-hover:scale-110 transition"></i>
                 <span class="text-[9.5px] text-slate-200 font-medium mt-1">Portal</span>
               </button>
@@ -497,11 +501,11 @@
                 <i data-lucide="qr-code" class="w-4.5 h-4.5 text-emerald-400 group-hover:scale-110 transition"></i>
                 <span class="text-[9.5px] text-slate-200 font-medium mt-1">Mã QR ATM</span>
               </button>
-              <button onclick="handleAtmAction('receive_pay')" class="flex flex-col items-center justify-center p-2.5 bg-purple-500/10 hover:bg-purple-500/20 active:scale-95 rounded-xl transition relative group">
+              <button class="flex flex-col items-center justify-center p-2.5 bg-purple-500/10 hover:bg-purple-500/20 active:scale-95 rounded-xl transition relative group">
                 <i data-lucide="handshake" class="w-4.5 h-4.5 text-purple-400 group-hover:scale-110 transition"></i>
                 <span class="text-[9.5px] text-slate-200 font-medium mt-1">Thu/Chi hộ</span>
               </button>
-              <button onclick="handleAtmAction('settings')" class="flex flex-col items-center justify-center p-2.5 bg-amber-500/10 hover:bg-amber-500/20 active:scale-95 rounded-xl transition relative group">
+              <button class="flex flex-col items-center justify-center p-2.5 bg-amber-500/10 hover:bg-amber-500/20 active:scale-95 rounded-xl transition relative group">
                 <i data-lucide="sliders" class="w-4.5 h-4.5 text-amber-400 group-hover:scale-110 transition"></i>
                 <span class="text-[9.5px] text-slate-200 font-medium mt-1">Portal</span>
               </button>
@@ -520,11 +524,11 @@
                 <i data-lucide="qr-code" class="w-4 h-4 text-emerald-400 group-hover:scale-110 transition"></i>
                 <span class="text-[8.5px] text-slate-200 font-semibold mt-1 text-center leading-tight">QR Merch</span>
               </button>
-              <button onclick="handleAtmAction('receive_pay')" class="flex flex-col items-center justify-center p-1.5 py-2.5 bg-purple-500/10 hover:bg-purple-500/20 active:scale-95 rounded-xl transition relative group">
+              <button  class="flex flex-col items-center justify-center p-1.5 py-2.5 bg-purple-500/10 hover:bg-purple-500/20 active:scale-95 rounded-xl transition relative group">
                 <i data-lucide="handshake" class="w-4 h-4 text-purple-400 group-hover:scale-110 transition"></i>
                 <span class="text-[8.5px] text-slate-200 font-semibold mt-1 text-center leading-tight">Thu/Chi</span>
               </button>
-              <button onclick="handleAtmAction('settings')" class="flex flex-col items-center justify-center p-1.5 py-2.5 bg-amber-500/10 hover:bg-amber-500/20 active:scale-95 rounded-xl transition relative group">
+              <button  class="flex flex-col items-center justify-center p-1.5 py-2.5 bg-amber-500/10 hover:bg-amber-500/20 active:scale-95 rounded-xl transition relative group">
                 <i data-lucide="sliders" class="w-4 h-4 text-amber-400 group-hover:scale-110 transition"></i>
                 <span class="text-[8.5px] text-slate-200 font-semibold mt-1 text-center leading-tight">Portal</span>
               </button>
@@ -1010,10 +1014,10 @@
                 <div onclick="selectAtmType('mobile')" id="atm-type-mobile"
                   class="flex items-center gap-3 p-3.5 rounded-xl border-2 border-orange-500 bg-orange-500/10 cursor-pointer transition">
                   <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="truck" class="w-5 h-5 text-orange-400"></i>
+                    <i id="atm-icon-mobile" data-lucide="truck" class="w-5 h-5 text-orange-400"></i>
                   </div>
                   <div>
-                    <div class="text-sm font-bold text-orange-400">Mobile ATM</div>
+                    <div id="atm-label-mobile" class="text-sm font-bold text-orange-400">Mobile ATM</div>
                     <div class="text-[11px] text-slate-400">ATM will come to you</div>
                   </div>
                 </div>
@@ -1022,10 +1026,10 @@
                 <div onclick="selectAtmType('merchant')" id="atm-type-merchant"
                   class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-700 bg-slate-900 cursor-pointer transition hover:border-slate-600">
                   <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center flex-shrink-0">
-                    <i data-lucide="store" class="w-5 h-5 text-slate-400"></i>
+                    <i id="atm-icon-merchant" data-lucide="store" class="w-5 h-5 text-slate-400"></i>
                   </div>
                   <div>
-                    <div class="text-sm font-bold text-slate-300">Merchant ATM</div>
+                    <div id="atm-label-merchant" class="text-sm font-bold text-slate-300">Merchant ATM</div>
                     <div class="text-[11px] text-slate-400">Visit nearby merchant</div>
                   </div>
                 </div>
@@ -1062,7 +1066,142 @@
           </div>
         </div>
 
-        <!-- ================= MÀN HÌNH 8: GET LICENSE ================= -->
+        <!-- ================= MÀN HÌNH 7B: ATM QR DETAIL (replicates merchant-atm-qr.html) ================= -->
+        <div id="screen-atm-qr" class="absolute inset-0 z-40 hidden flex flex-col overflow-y-auto mobile-scrollbar" style="background:linear-gradient(180deg,#fffdf9 0%,#ffffff 32%,#fff 100%);">
+
+          <!-- Amber header shell -->
+          <div style="background:linear-gradient(180deg,#f59e0b 0%,#d97706 100%);" class="px-3 pt-3 pb-3 flex-shrink-0">
+            <!-- Back button row -->
+            <div id="atm-qr-back-row" class="flex justify-between items-center mb-2">
+              <button onclick="changeScreen('dashboard')" class="p-1.5 bg-white/20 hover:bg-white/30 text-white rounded-lg transition">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+              </button>
+              <div class="w-8"></div>
+            </div>
+            <!-- White panel -->
+            <div class="rounded-3xl bg-white overflow-hidden shadow-lg">
+              <div class="px-4 pt-4 text-center">
+                <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest" style="background:#fef3c7;color:#b45309;">
+                  <i data-lucide="qr-code" class="w-3.5 h-3.5"></i>
+                  <span id="atm-qr-chip-label">QR Mobile ATM</span>
+                </span>
+              </div>
+              <div class="flex justify-center px-6 py-3">
+                <img id="atm-qr-illustration" src="../atm-qr/mobile.png" alt="ATM illustration" class="w-40 h-auto object-contain">
+              </div>
+            </div>
+          </div>
+
+          <!-- Detail card -->
+          <div class="bg-white px-4 pb-3 flex-1">
+            <div class="pt-3">
+              <div class="rounded-2xl border overflow-hidden" style="border-color:rgba(17,24,39,0.08);box-shadow:0 6px 16px rgba(17,24,39,0.05);">
+
+                <!-- Name + ID row -->
+                <div class="flex items-center gap-2.5 px-3 py-2">
+                  <div class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(254,243,199,0.6);color:#d97706;">
+                    <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-1.5 min-w-0">
+                      <span id="atm-qr-name" class="text-[12px] font-extrabold truncate" style="color:#0f172a;">VLINKPAY MOBILE ATM 01</span>
+                      <i data-lucide="badge-check" class="w-3.5 h-3.5 shrink-0 text-orange-500"></i>
+                    </div>
+                    <span class="text-[10px] font-semibold" style="color:#7c8494;">ID: <span id="atm-qr-id" class="font-bold" style="color:#374151;">MOB-4K9P2X</span></span>
+                  </div>
+                </div>
+
+                <!-- Status row -->
+                <div id="atm-status-row" class="flex items-center justify-between gap-2 px-3 py-2 border-t" style="border-color:rgba(226,232,240,0.95);">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(254,243,199,0.6);color:#d97706;">
+                      <i data-lucide="smartphone" class="w-3.5 h-3.5"></i>
+                    </div>
+                    <span class="text-[11px] font-medium" style="color:#7c8494;">Status</span>
+                  </div>
+                  <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold" style="background:rgba(220,252,231,0.92);color:#16a34a;">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span>Online
+                  </span>
+                </div>
+
+                <!-- Fee row -->
+                <div id="atm-fee-row" class="flex items-center justify-between gap-2 px-3 py-2 border-t" style="border-color:rgba(226,232,240,0.95);">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(254,243,199,0.6);color:#d97706;">
+                      <i data-lucide="percent" class="w-3.5 h-3.5"></i>
+                    </div>
+                    <span class="text-[11px] font-medium" style="color:#7c8494;">Phí giao dịch</span>
+                  </div>
+                  <span class="text-[12px] font-bold" style="color:#0f172a;">1% – 5%</span>
+                </div>
+
+                <!-- Location row -->
+                <div class="flex items-center justify-between gap-2 px-3 py-2 border-t" style="border-color:rgba(226,232,240,0.95);">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(254,243,199,0.6);color:#d97706;">
+                      <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                    </div>
+                    <span class="text-[11px] font-medium" style="color:#7c8494;">Location</span>
+                  </div>
+                  <span id="atm-qr-location" class="text-[12px] font-bold" style="color:#0f172a;">Quận 1, TP.HCM</span>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- QR section -->
+            <div class="mt-4 pt-3 border-t" style="border-color:rgba(217,119,6,0.08);">
+              <div class="relative rounded-[22px] p-3.5" style="background:#fff;box-shadow:inset 0 0 0 1px rgba(217,119,6,0.12);">
+                <!-- Corner brackets -->
+                <span class="absolute top-2.5 left-2.5 w-4 h-4 border-t-2 border-l-2 rounded-tl-md" style="border-color:#d97706;"></span>
+                <span class="absolute top-2.5 right-2.5 w-4 h-4 border-t-2 border-r-2 rounded-tr-md" style="border-color:#d97706;"></span>
+                <span class="absolute bottom-2.5 left-2.5 w-4 h-4 border-b-2 border-l-2 rounded-bl-md" style="border-color:#d97706;"></span>
+                <span class="absolute bottom-2.5 right-2.5 w-4 h-4 border-b-2 border-r-2 rounded-br-md" style="border-color:#d97706;"></span>
+                <div class="bg-white rounded-[14px] p-2 flex items-center justify-center relative">
+                  <div id="screen-atm-qr-canvas" class="flex items-center justify-center" style="width:168px;height:168px;"></div>
+                  <!-- Center logo -->
+                  <div class="absolute w-9 h-9 rounded-xl bg-white flex items-center justify-center shadow" style="border:1px solid rgba(217,119,6,0.15);">
+                    <img src="https://staging-web-app.vlinkpay.com/assets/images/logoVlink.png" alt="Vlink" class="w-full h-full object-contain p-1">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CTA bar -->
+            <div class="mt-4 rounded-2xl px-4 py-3 text-white flex items-center gap-3" style="background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);">
+              <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="color:#fff;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.15);">
+                <i data-lucide="scan-line" class="w-5 h-5"></i>
+              </div>
+              <p id="atm-qr-cta" class="text-[12px] font-bold leading-snug" style="color:#fff;">Quét để giao dịch trực tiếp với Mobile ATM</p>
+            </div>
+
+            <!-- Download button -->
+            <button onclick="downloadAtmQr()" class="mt-3 w-full flex items-center justify-center gap-2 py-2.5 rounded-2xl border text-[12px] font-bold transition active:scale-95" style="border-color:rgba(217,119,6,0.25);color:#d97706;background:#fffbf0;">
+              <i data-lucide="download" class="w-4 h-4"></i>
+              Download QR Card
+            </button>
+
+          </div>
+        </div>
+
+        <!-- ================= MÀN HÌNH 8: HISTORY ================= -->
+        <div id="screen-history" class="absolute inset-0 bg-white z-40 hidden flex flex-col">
+          <!-- Header -->
+          <div class="px-4 py-3 bg-white border-b border-slate-200 flex items-center justify-between flex-shrink-0">
+            <button onclick="changeScreen('dashboard')" class="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-lg transition">
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </button>
+            <h3 class="text-sm font-bold text-slate-800">Transaction History</h3>
+            <div class="w-8"></div>
+          </div>
+
+          <!-- List -->
+          <div class="flex-1 overflow-y-auto mobile-scrollbar bg-white" id="history-list-container">
+            <!-- rendered by renderHistoryScreen() -->
+          </div>
+        </div>
+
+        <!-- ================= MÀN HÌNH 9: GET LICENSE ================= -->
         <div id="screen-get-license" class="absolute inset-0 bg-white z-40 hidden flex flex-col">
           <!-- Header -->
           <div class="px-4 pt-4 pb-3 bg-white border-b border-slate-100">
@@ -1301,9 +1440,12 @@
       p2pFlowMode: 'buy',            // 'buy' | 'sell'
       theme: 'light',                // 'dark' | 'light' (Cập nhật lưu trữ Theme mặc định)
       transactions: [
-        { id: 'TX-4402', type: 'Mua USDV bằng Tiền mặt', counterparty: 'Seller AD266759', amount: '$100', status: 'Pending', time: 'Hôm nay • 04:11 PM' },
-        { id: 'TX-4399', type: 'Bán USDV bằng Tiền mặt', counterparty: 'Buyer BC992811', amount: '$500', status: 'Completed', time: 'Hôm nay • 10:25 AM' },
-        { id: 'TX-4201', type: 'Giao dịch Mobile ATM', counterparty: 'Partner MB-10492', amount: '$1,200', status: 'Completed', time: 'Hôm qua • 03:30 PM' }
+        { id: 'TX-4402', type: 'Buy USDV with Cash',  counterparty: 'Seller AD266759', amount: '$100', status: 'Declined',  time: 'Aug 18, 2025, 4:11 PM' },
+        { id: 'TX-4401', type: 'Buy USDV with Cash',  counterparty: 'Seller AD266759', amount: '$100', status: 'Completed', time: 'Aug 18, 2025, 4:00 PM' },
+        { id: 'TX-4400', type: 'Buy USDV with Cash',  counterparty: 'Seller AD266759', amount: '$100', status: 'Completed', time: 'Aug 18, 2025, 3:55 PM' },
+        { id: 'TX-4399', type: 'Buy USDV with Cash',  counterparty: 'Seller AD266759', amount: '$100', status: 'Completed', time: 'Aug 18, 2025, 3:50 PM' },
+        { id: 'TX-4398', type: 'Buy USDV with Cash',  counterparty: 'Seller AD266759', amount: '$100', status: 'Completed', time: 'Aug 18, 2025, 2:56 PM' },
+        { id: 'TX-4397', type: 'Buy USDV with Cash',  counterparty: 'Seller AD266759', amount: '$100', status: 'Cancelled', time: 'Aug 18, 2025, 2:27 PM' }
       ]
     };
 
@@ -1482,6 +1624,8 @@
       document.getElementById('screen-p2p-flow').classList.add('hidden');
       document.getElementById('screen-get-license').classList.add('hidden');
       document.getElementById('screen-map').classList.add('hidden');
+      document.getElementById('screen-history').classList.add('hidden');
+      document.getElementById('screen-atm-qr').classList.add('hidden');
 
       if (screenName === 'dashboard') {
         document.getElementById('screen-dashboard').classList.remove('hidden');
@@ -1522,6 +1666,15 @@
         p2pSelectedAtmType = 'mobile'; selectAtmType('mobile');
         updateP2PConversion();
         lucide.createIcons();
+      } else if (screenName === 'atm_qr_mobile') {
+        document.getElementById('screen-atm-qr').classList.remove('hidden');
+        renderAtmQrScreen('mobile');
+      } else if (screenName === 'atm_qr_merchant') {
+        document.getElementById('screen-atm-qr').classList.remove('hidden');
+        renderAtmQrScreen('merchant');
+      } else if (screenName === 'history') {
+        document.getElementById('screen-history').classList.remove('hidden');
+        renderHistoryScreen();
       } else if (screenName === 'map') {
         document.getElementById('screen-map').classList.remove('hidden');
       } else if (screenName === 'get_license') {
@@ -1850,7 +2003,7 @@
 
       if (actionType === 'mobile' || actionType === 'merchant') {
         state.selectedQrType = actionType;
-        changeScreen('qr_screen');
+        changeScreen('atm_qr_' + actionType);
       } else if (actionType === 'receive_pay') {
         openReceivePayModal();
       } else if (actionType === 'settings') {
@@ -1872,24 +2025,19 @@
 
     function selectAtmType(type) {
       p2pSelectedAtmType = type;
-      const mobile = document.getElementById('atm-type-mobile');
-      const merchant = document.getElementById('atm-type-merchant');
-      if (!mobile || !merchant) return;
-      if (type === 'mobile') {
-        mobile.className = 'flex items-center gap-3 p-3.5 rounded-xl border-2 border-orange-500 bg-orange-500/10 cursor-pointer transition';
-        mobile.querySelector('div > div:first-child').className = 'text-sm font-bold text-orange-400';
-        mobile.querySelector('i').className = 'w-5 h-5 text-orange-400';
-        merchant.className = 'flex items-center gap-3 p-3.5 rounded-xl border border-slate-700 bg-slate-900 cursor-pointer transition hover:border-slate-600';
-        merchant.querySelector('div > div:first-child').className = 'text-sm font-bold text-slate-300';
-        merchant.querySelector('i').className = 'w-5 h-5 text-slate-400';
-      } else {
-        merchant.className = 'flex items-center gap-3 p-3.5 rounded-xl border-2 border-orange-500 bg-orange-500/10 cursor-pointer transition';
-        merchant.querySelector('div > div:first-child').className = 'text-sm font-bold text-orange-400';
-        merchant.querySelector('i').className = 'w-5 h-5 text-orange-400';
-        mobile.className = 'flex items-center gap-3 p-3.5 rounded-xl border border-slate-700 bg-slate-900 cursor-pointer transition hover:border-slate-600';
-        mobile.querySelector('div > div:first-child').className = 'text-sm font-bold text-slate-300';
-        mobile.querySelector('i').className = 'w-5 h-5 text-slate-400';
-      }
+      const items = ['mobile', 'merchant'];
+      items.forEach(t => {
+        const card  = document.getElementById('atm-type-' + t);
+        const label = document.getElementById('atm-label-' + t);
+        const icon  = document.getElementById('atm-icon-' + t);
+        if (!card) return;
+        const active = t === type;
+        card.className  = active
+          ? 'flex items-center gap-3 p-3.5 rounded-xl border-2 border-orange-500 bg-orange-500/10 cursor-pointer transition'
+          : 'flex items-center gap-3 p-3.5 rounded-xl border border-slate-700 bg-slate-900 cursor-pointer transition hover:border-slate-600';
+        if (label) label.className = active ? 'text-sm font-bold text-orange-400' : 'text-sm font-bold text-slate-300';
+        if (icon)  icon.className  = active ? 'w-5 h-5 text-orange-400' : 'w-5 h-5 text-slate-400';
+      });
     }
 
     const p2pTokenMeta = {
@@ -2012,7 +2160,7 @@
       if (!listContainer) return;
       listContainer.innerHTML = '';
 
-      state.transactions.forEach(tx => {
+      state.transactions.slice(0, 3).forEach(tx => {
         let statusColor = "bg-slate-855 text-slate-300";
         if (tx.status === 'Pending') statusColor = "bg-amber-500/10 text-amber-400";
         if (tx.status === 'Completed') statusColor = "bg-emerald-500/10 text-emerald-400";
@@ -2345,37 +2493,103 @@
       changeScreen('map');
     }
 
+    // ATM QR SCREEN
+    function renderAtmQrScreen(atmType) {
+      const isMobile = atmType === 'mobile';
+      const meta = isMobile
+        ? { chip: 'QR Mobile ATM', name: 'VLINKPAY MOBILE ATM 01', id: 'MOB-4K9P2X', img: '../atm-qr/mobile.png',   cta: 'Quét để giao dịch trực tiếp với Mobile ATM' }
+        : { chip: 'QR Merchant ATM', name: 'VLINKPAY MERCHANT ATM 01', id: 'MAT-4K9P2X', img: '../atm-qr/merchant.png', cta: 'Quét để giao dịch trực tiếp với Merchant' };
+
+      document.getElementById('atm-qr-chip-label').innerText   = meta.chip;
+      document.getElementById('atm-qr-illustration').src        = meta.img;
+      document.getElementById('atm-qr-name').innerText          = meta.name;
+      document.getElementById('atm-qr-id').innerText            = meta.id;
+      document.getElementById('atm-qr-cta').innerText           = meta.cta;
+
+      // Generate QR
+      const canvas = document.getElementById('screen-atm-qr-canvas');
+      canvas.innerHTML = '';
+      if (typeof QRCode === 'function') {
+        new QRCode(canvas, {
+          text: `https://vlinkpay.com/atm-qr/merchant-atm-info.html?atmType=${atmType}`,
+          width: 168, height: 168,
+          colorDark: '#0f172a', colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.M,
+        });
+      }
+      lucide.createIcons();
+    }
+
+    async function downloadAtmQr() {
+      if (typeof html2canvas !== 'function') {
+        showToast('Lỗi', 'html2canvas chưa tải xong, thử lại.', 'warning'); return;
+      }
+      // Elements to hide during capture
+      const hideIds = ['atm-status-row', 'atm-fee-row', 'atm-qr-back-row'];
+      const downloadBtn = document.querySelector('[onclick="downloadAtmQr()"]');
+
+      hideIds.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+      if (downloadBtn) downloadBtn.style.display = 'none';
+
+      const target = document.getElementById('screen-atm-qr');
+      try {
+        const canvas = await html2canvas(target, { useCORS: true, backgroundColor: '#ffffff', scale: 2 });
+        const link = document.createElement('a');
+        link.download = 'atm-qr-card.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } finally {
+        hideIds.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = ''; });
+        if (downloadBtn) downloadBtn.style.display = '';
+      }
+    }
+
     // Mở màn hình lịch sử toàn diện
     function openHistoryScreen() {
-      openModalContainer(`
-        <div class="space-y-4">
-          <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
-            <i data-lucide="history" class="w-5 h-5 text-orange-500"></i> Lịch sử giao dịch tổng hợp
-          </h3>
-          
-          <!-- Bộ lọc tab phụ lịch sử (DASH-25.2) -->
-          <div class="flex gap-1.5 overflow-x-auto pb-1 text-[10px] font-bold">
-            <span class="bg-orange-500 text-white px-2.5 py-1 rounded-full shrink-0">Tất cả</span>
-            <span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full shrink-0">Mua P2P</span>
-            <span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full shrink-0">Bán P2P</span>
-            <span class="bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full shrink-0">Mobile ATM</span>
-          </div>
+      changeScreen('history');
+    }
 
-          <!-- Danh sách giao dịch (Không viền) -->
-          <div class="space-y-2 max-h-[40vh] overflow-y-auto mobile-scrollbar">
-            ${state.transactions.map(tx => `
-              <div class="p-3 bg-slate-855 rounded-xl flex justify-between items-center text-xs">
-                <div>
-                  <span class="font-bold text-white block">${tx.type}</span>
-                  <span class="text-[9px] text-slate-400">${tx.time}</span>
-                </div>
-                <span class="font-bold text-orange-400">${tx.amount}</span>
-              </div>
-            `).join('')}
+    function renderHistoryScreen() {
+      const container = document.getElementById('history-list-container');
+      if (!container) return;
+
+      const statusCfg = {
+        Completed: { text: 'Completed', cls: 'border border-emerald-400 text-emerald-600 bg-white' },
+        Declined:  { text: 'Declined',  cls: 'bg-rose-100 text-rose-500 border border-rose-200' },
+        Cancelled: { text: 'Cancelled', cls: 'bg-slate-100 text-slate-500 border border-slate-200' },
+        Pending:   { text: 'Pending',   cls: 'bg-amber-100 text-amber-600 border border-amber-200' },
+        Processing:{ text: 'Processing',cls: 'bg-blue-100 text-blue-600 border border-blue-200' },
+      };
+
+      if (!state.transactions.length) {
+        container.innerHTML = `<div class="flex flex-col items-center justify-center h-48 text-slate-400 text-xs gap-2">
+          <i data-lucide="inbox" class="w-8 h-8 text-slate-300"></i>No transactions yet</div>`;
+        lucide.createIcons(); return;
+      }
+
+      container.innerHTML = state.transactions.map((tx, i) => {
+        const s = statusCfg[tx.status] || statusCfg.Pending;
+        const border = i < state.transactions.length - 1 ? 'border-b border-slate-100' : '';
+        return `
+        <div class="px-4 py-3.5 ${border}">
+          <div class="flex items-start justify-between gap-2">
+            <div class="min-w-0">
+              <div class="text-sm font-bold text-slate-900 leading-tight">${tx.type}</div>
+              <div class="text-xs font-semibold text-slate-700 mt-0.5">${tx.counterparty}</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">${tx.time}</div>
+            </div>
+            <div class="flex flex-col items-end gap-1.5 flex-shrink-0">
+              <div class="text-sm font-bold text-slate-900">${tx.amount}</div>
+              <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${s.cls}">${s.text}</span>
+              <button onclick="openTxDetail('${tx.id}')" class="text-[11px] font-semibold text-orange-500 flex items-center gap-0.5">
+                View details <i data-lucide="chevron-right" class="w-3 h-3"></i>
+              </button>
+            </div>
           </div>
-          <button onclick="closeModal()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition">Đóng</button>
-        </div>
-      `);
+        </div>`;
+      }).join('');
+
+      lucide.createIcons();
     }
 
     // Xem chi tiết một hóa đơn cụ thể (DASH-24.3)

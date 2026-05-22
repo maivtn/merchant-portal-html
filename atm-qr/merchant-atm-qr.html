@@ -47,7 +47,7 @@
         </div>
       </div>
 
-      <div class="bg-white px-5 pb-3">
+      <div class="bg-white px-5 pb-3" style="border-left: 1px solid var(--grey-200); border-right: 1px solid var(--grey-200);">
         <div class="section-card pt-3.5">
           <div class="atm-detail-card atm-detail-card--compact">
             <div class="atm-detail-row atm-detail-row--top">
@@ -150,24 +150,33 @@
       });
     });
 
-    window.captureCardImage = () => {
-      if (typeof window.html2canvas !== 'function') return Promise.resolve('');
+    window.captureCardImage = async () => {
+      if (typeof window.html2canvas !== 'function') return '';
       const target = document.querySelector('.phone-frame');
-      if (!target) return Promise.resolve('');
+      if (!target) return '';
+
+      await document.fonts.ready;
+
       const hiddenRows = Array.from(document.querySelectorAll('[data-row="status"], [data-row="fee"]'));
       hiddenRows.forEach(el => { el.style.display = 'none'; });
-      return window.html2canvas(target, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: false,
-        backgroundColor: '#ffffff',
-      }).then(canvas => {
+
+      try {
+        const canvas = await window.html2canvas(target, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: '#ffffff',
+          logging: false,
+          onclone: (doc) => {
+            doc.fonts && doc.fonts.ready;
+          },
+        });
         hiddenRows.forEach(el => { el.style.display = ''; });
         return canvas.toDataURL('image/png');
-      }).catch(() => {
+      } catch {
         hiddenRows.forEach(el => { el.style.display = ''; });
         return '';
-      });
+      }
     };
   </script>
 </body>

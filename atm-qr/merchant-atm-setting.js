@@ -1252,7 +1252,14 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     assetFeePanels.forEach((panel) => {
-      panel.classList.toggle('active', panel.getAttribute('data-asset-fee-panel') === name);
+      const isActive = panel.getAttribute('data-asset-fee-panel') === name;
+      if (isActive) {
+        panel.classList.remove('active');
+        void panel.offsetWidth;
+        panel.classList.add('active');
+      } else {
+        panel.classList.remove('active');
+      }
     });
   };
 
@@ -1290,7 +1297,14 @@ window.addEventListener('DOMContentLoaded', () => {
     return '';
   };
 
+  const waitForIframeReady = () => new Promise((resolve) => {
+    if (!qrIframe) return resolve();
+    if (qrIframe.contentDocument?.readyState === 'complete') return resolve();
+    qrIframe.addEventListener('load', resolve, { once: true });
+  });
+
   const downloadQr = async () => {
+    await waitForIframeReady();
     const captureCardImage = qrIframe?.contentWindow?.captureCardImage;
     const dataUrl = typeof captureCardImage === 'function'
       ? await captureCardImage().catch(() => '')

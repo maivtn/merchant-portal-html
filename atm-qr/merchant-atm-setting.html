@@ -2522,6 +2522,8 @@
       background: transparent;
       scrollbar-width: none;
       margin-top: 0;
+      position: relative;
+      z-index: 1;
     }
 
     .asset-fee-group__tabs::-webkit-scrollbar {
@@ -10306,6 +10308,29 @@
     </div>
   </div>
 
+  <script>
+    document.querySelectorAll('.asset-fee-group__tabs').forEach(function(tablist) {
+      tablist.addEventListener('click', function(e) {
+        var btn = e.target.closest('.asset-fee-group__tab');
+        if (!btn) return;
+        var key = btn.dataset.assetFeeTab;
+        var container = tablist.closest('.collapse, .asset-fee-group__tabs')?.parentElement || tablist.parentElement;
+
+        tablist.querySelectorAll('.asset-fee-group__tab').forEach(function(t) {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        container.querySelectorAll('.asset-fee-group__panel').forEach(function(panel) {
+          panel.classList.remove('active');
+        });
+        var target = container.querySelector('[data-asset-fee-panel="' + key + '"]');
+        if (target) target.classList.add('active');
+      });
+    });
+  </script>
   <script defer src="merchant-atm-setting.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

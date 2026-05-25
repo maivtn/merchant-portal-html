@@ -2854,12 +2854,24 @@
       if (!listContainer) return;
       listContainer.innerHTML = '';
 
-      state.transactions.slice(0, 3).forEach(tx => {
+      let processingShown = 0;
+      const txsToShow = state.licenseStatus === 'none'
+        ? state.transactions.filter(tx => {
+            if (tx.status === 'Processing' || tx.status === 'Pending') {
+              if (processingShown >= 1) return false;
+              processingShown++;
+            }
+            return true;
+          }).slice(0, 3)
+        : state.transactions.slice(0, 3);
+
+      txsToShow.forEach(tx => {
         let statusColor = "bg-blue-500/10 text-blue-400";
         if (tx.status === 'Pending') statusColor = "bg-amber-500/10 text-amber-400";
         if (tx.status === 'Completed') statusColor = "bg-emerald-500/10 text-emerald-400";
         if (tx.status === 'Processing') statusColor = "bg-blue-500/10 text-blue-400";
         if (tx.status === 'Cancelled') statusColor = "bg-rose-500/10 text-rose-400";
+        if (tx.status === 'Declined') statusColor = "bg-rose-500/10 text-rose-400";
 
         const item = document.createElement('div');
         item.className = "bg-slate-900 hover:bg-slate-855 rounded-xl p-3 flex justify-between items-center transition cursor-pointer";
@@ -2869,7 +2881,7 @@
           <div class="space-y-1">
             <div class="flex items-center gap-1.5">
               <span class="text-xs font-bold text-white">${tx.type}</span>
-              <span class="text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ${statusColor}">${tx.status === 'Pending' ? 'Đang chờ' : tx.status === 'Cancelled' ? 'Đã hủy' : tx.status === 'Completed' ? 'Hoàn tất' : 'Đang xử lý'}</span>
+              <span class="text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ${statusColor}">${tx.status === 'Pending' ? 'Đang chờ' : tx.status === 'Processing' ? 'Đang xử lý' : tx.status === 'Completed' ? 'Hoàn tất' : tx.status === 'Cancelled' ? 'Đã hủy' : tx.status === 'Declined' ? 'Từ chối' : tx.status}</span>
             </div>
             <p class="text-[10px] text-slate-400">${tx.counterparty} • ${tx.time}</p>
           </div>

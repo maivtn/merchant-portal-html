@@ -16,18 +16,15 @@ const paymentMethods = [
 ];
 
 const mockBatches = [
-  { id: 'CH-2025-02', purpose: 'Children Education', amount: 5000, currency: 'USD', date: 'Oct 15, 2025', status: 'In Distribution', distributed: 3000 },
-  { id: 'CH-2025-01', purpose: 'Scholarship Programs', amount: 5000, currency: 'USD', date: 'Oct 15, 2025', status: 'Distributed', distributed: 5000 },
+  { id: 'CH-2025-02', purpose: 'Children Education', amount: 5000, currency: 'USD', date: 'Oct 15, 2025', status: 'In Distribution', distributed: 0 },
+  { id: 'CH-2025-01', purpose: 'Scholarship Programs', amount: 5000, currency: 'USD', date: 'Oct 15, 2025', status: 'Distributed', distributed: 3000 },
   { id: 'CH-2025-03', purpose: 'Children Education', amount: 50000000, currency: 'VND', date: 'Oct 15, 2025', status: 'Completed', distributed: 50000000 }
 ];
 
 const mockDistributions = {
-  'CH-2025-02': [
-    { id: 'D-03', batchId: 'CH-2025-02', recipient: 'Con Dao Primary School', address: 'Con Dao, BRVT', amount: 3000, currency: 'USD', date: 'Oct 20, 2025 08:30', status: 'Distributed', hasProof: true }
-  ],
+  'CH-2025-02': [],
   'CH-2025-01': [
-    { id: 'D-01', batchId: 'CH-2025-01', recipient: 'Hoi Khuyen Hoc Xa Thanh My...', address: 'Thanh My Tay, An Giang', amount: 3000, currency: 'USD', date: 'Oct 30, 2025 09:00', status: 'Distributed', hasProof: true },
-    { id: 'D-02', batchId: 'CH-2025-01', recipient: 'Scholarship Support Batch', address: 'VNUHCM', amount: 2000, currency: 'USD', date: 'Oct 18, 2025 14:00', status: 'Distributed', hasProof: true }
+    { id: 'D-01', batchId: 'CH-2025-01', recipient: 'Hoi Khuyen Hoc Xa Thanh My...', address: 'Thanh My Tay, An Giang', amount: 3000, currency: 'USD', date: 'Oct 30, 2025 09:00', status: 'Distributed', hasProof: true }
   ],
   'CH-2025-03': [
     { id: 'D-04', batchId: 'CH-2025-03', recipient: 'Mai Am Tinh Thuong', address: 'District 4, HCMC', amount: 50000000, currency: 'VND', date: 'Oct 25, 2025 10:00', status: 'Distributed', hasProof: false }

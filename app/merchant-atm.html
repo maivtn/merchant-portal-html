@@ -152,7 +152,6 @@
     }
 
     body.light-mode #screen-home .bg-slate-900 {
-      border: 0;
       box-shadow: 0 3px 10px rgba(15, 23, 42, 0.14);
     }
 
@@ -498,7 +497,6 @@
 
     /* ===== DASHBOARD CARD GLOW: border + drop-shadow cùng tông màu nền ===== */
     #screen-home .bg-slate-900 {
-      border: 1px solid rgba(51, 65, 85, 0.55);
       box-shadow: 0 3px 10px rgba(15, 23, 42, 0.14);
     }
 
@@ -808,7 +806,7 @@
 
           <!-- TRẠNG THÁI HOẠT ĐỘNG (ON / OFF - Không viền, phẳng) -->
           <div id="operational-status-panel" class="hidden grid grid-cols-2 gap-2.5">
-            <div id="activity-status-box" class="bg-slate-900 rounded-xl p-2 flex justify-between items-center">
+            <div id="activity-status-box" class="bg-slate-900 rounded-xl p-2 flex justify-between items-center bg-gradient-to-br from-emerald-500/15 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-2 flex justify-between items-center cursor-pointer hover:from-emerald-500/25 hover:border-emerald-500/40 transition">
               <div class="flex items-center gap-1">
                 <img src="images/status.png" class="w-6 h-6 object-contain">
                 <div class="flex gap-1 flex-col">
@@ -821,7 +819,7 @@
                 <span class="w-1 h-1 bg-emerald-400 rounded-full animate-pulse"></span> BẬT
               </span>
             </div>
-            <div id="walk-in-status-box" class="bg-slate-900 rounded-xl p-2 flex justify-between items-center">
+            <div id="walk-in-status-box" class="bg-slate-900 rounded-xl p-2 flex justify-between items-center bg-gradient-to-br from-emerald-500/15 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-2 flex justify-between items-center cursor-pointer hover:from-emerald-500/25 hover:border-emerald-500/40 transition">
               <div class="flex items-center gap-1">
                 <img src="images/walkin.png" class="w-6 h-6 object-contain">
                  <div class="flex gap-1 flex-col">
@@ -834,12 +832,22 @@
                 BẬT
               </span>
             </div>
+            <div id="upgrade-to-merchant-box" class="shadow-md hidden bg-gradient-to-br from-emerald-500/15 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-2 flex justify-between items-center cursor-pointer hover:from-emerald-500/25 hover:border-emerald-500/40 transition" onclick="showToast('Nâng cấp', 'Liên hệ VLINKPAY để đăng ký Merchant ATM.')">
+              <div class="flex items-center gap-1">
+                <img src="images/buff.png" class="w-6 h-6 object-contain" onerror="this.style.display='none'">
+                <div class="flex gap-1 flex-col">
+                  <span class="text-[7px] text-emerald-400 font-medium uppercase tracking-wider block leading-none">Nâng cấp</span>
+                  <span class="text-[10px] font-bold text-white leading-none">Thành Doanh Nghiệp</span>
+                </div>
+              </div>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+            </div>
           </div>
 
           <!-- PRIMARY P2P ACTION CARDS (DASH-12.1.1 - Nâng cấp nền xanh dương cho phím Bán & Đồng bộ danh xưng Crypto P2P) -->
           <div id="p2p-primary-cards" class="grid grid-cols-2 gap-2.5">
             <button
-              class="bg-orange-500 hover:bg-orange-600 rounded-xl p-3 text-left shadow-lg relative overflow-hidden transition transform active:scale-95">
+              class="bg-orange-500 hover:bg-orange-600 rounded-xl px-3 py-2 text-left shadow-lg relative overflow-hidden transition transform active:scale-95">
               <div class="flex items-center justify-between gap-2">
                 <div>
                   <h3 class="text-[11px] font-medium text-white leading-tight">Mua Crypto (P2P)</h3>
@@ -848,7 +856,7 @@
               </div>
             </button>
             <button
-              class="bg-blue-600 hover:bg-blue-700 rounded-xl p-3 text-left shadow-lg relative overflow-hidden transition transform active:scale-95">
+              class="bg-blue-600 hover:bg-blue-700 rounded-xl px-3 py-2 text-left shadow-lg relative overflow-hidden transition transform active:scale-95">
               <div class="flex items-center justify-between gap-2">
                 <div>
                   <h3 class="text-[11px] font-medium text-white leading-tight">Bán Crypto (P2P)</h3>
@@ -977,7 +985,7 @@
                 </div>
               </div>
               <div class="bg-purple-500/10 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5">
-                <img src="images/star.png" class="w-6 h-6 object-contain shrink-0">
+                <img src="images/rating.png" class="w-6 h-6 object-contain shrink-0">
                 <div class="text-right">
                   <span class="text-[7.5px] text-purple-400 font-bold uppercase leading-tight block">Đánh giá</span>
                   <span class="text-[12px] font-black text-purple-400 block">4.9 ★</span>
@@ -2465,17 +2473,19 @@
       // 4. Panel trạng thái hoạt động (DASH-16.4: Bố cục Full khi ẩn Walk-in)
       const optStatusPanel = document.getElementById('operational-status-panel');
       const walkInStatusBox = document.getElementById('walk-in-status-box');
+      const upgradeToMerchantBox = document.getElementById('upgrade-to-merchant-box');
 
       if (!isNone) {
         optStatusPanel.classList.remove('hidden');
+        optStatusPanel.className = "grid grid-cols-2 gap-2.5";
         if (state.activeRoles.merchant) {
-          // Là Merchant hoặc Combo: Hiện cả 2 trạng thái dạng grid 2 cột
+          // Là Merchant hoặc Combo: Hiện Walk-in, ẩn upgrade box
           walkInStatusBox.classList.remove('hidden');
-          optStatusPanel.className = "grid grid-cols-2 gap-2.5";
+          upgradeToMerchantBox.classList.add('hidden');
         } else {
-          // Là Mobile ATM: Ẩn Walk-in, đẩy trạng thái Hoạt động làm FULL width (quy tắc 2 trạng thái cho full)
+          // Là Mobile ATM: Ẩn Walk-in, hiện ô Upgrade to Merchant
           walkInStatusBox.classList.add('hidden');
-          optStatusPanel.className = "grid grid-cols-1 gap-2.5";
+          upgradeToMerchantBox.classList.remove('hidden');
         }
       } else {
         optStatusPanel.classList.add('hidden');

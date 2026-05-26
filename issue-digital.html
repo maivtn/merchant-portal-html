@@ -5552,6 +5552,40 @@ Please present this card before payment.</textarea>
       return String(masked).replace(/,/g, '').trim();
     }
 
+    function applyPhoneMask(el) {
+      const digits = el.value.replace(/\D/g, '').slice(0, 14);
+      let masked = '';
+      if (digits.length === 0) {
+        masked = '';
+      } else if (digits.length <= 3) {
+        masked = `(${digits}`;
+      } else if (digits.length <= 6) {
+        masked = `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+      } else {
+        masked = `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+      }
+      if (el.value !== masked) el.value = masked;
+    }
+
+    function initPhoneMasks() {
+      document.querySelectorAll('.biz-phone-input').forEach(el => {
+        el.addEventListener('input', () => applyPhoneMask(el));
+        el.addEventListener('keydown', e => {
+          // Allow backspace to delete the separator characters naturally
+          if (e.key === 'Backspace') {
+            const pos = el.selectionStart;
+            const val = el.value;
+            if (pos > 0 && /[\s\-\(\)]/.test(val[pos - 1])) {
+              e.preventDefault();
+              el.value = val.slice(0, pos - 1) + val.slice(pos);
+              applyPhoneMask(el);
+              el.setSelectionRange(pos - 1, pos - 1);
+            }
+          }
+        });
+      });
+    }
+
     function handleAssetAmountInput(id, el) {
       const prevPos = el.selectionStart;
       const prev = el.value || '';
@@ -6283,6 +6317,9 @@ Please present this card before payment.</textarea>
         requireVlpChk.addEventListener('change', toggleCryptoPlacementLeg);
         toggleCryptoPlacementLeg();
       }
+
+      // Init phone masks for all phone inputs
+      initPhoneMasks();
 
       // Init AI prompt list with default category
       renderAiPrompts();

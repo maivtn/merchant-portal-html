@@ -2692,38 +2692,40 @@
 
       // Danh sách tất cả item cơ bản
       let items = [
-        { id: 'p2p_buy_flow', label: 'P2P Exchange', icon: 'globe', action: () => changeScreen('p2p_buy_flow') },
-        { id: 'history', label: 'Payment', icon: 'credit-card', action: () => openHistoryScreen() },
-        { id: 'wallet_details', label: 'Wallet Hub', icon: 'wallet', action: () => changeScreen('wallet_details') },
-        { id: 'hamburger', label: 'Menu', icon: 'menu', action: () => openHamburgerMenu() }
+        { id: 'home',          label: 'Home',         icon: 'home',            action: () => changeScreen('dashboard') },
+        { id: 'dashboard',     label: 'Dashboard',    icon: 'layout-dashboard',action: () => changeScreen('dashboard') },
+        { id: 'p2p_buy_flow',  label: 'P2P Exchange', icon: 'globe',           action: () => changeScreen('p2p_buy_flow') },
+        { id: 'history',       label: 'Payment',      icon: 'credit-card',     action: () => openHistoryScreen() },
+        { id: 'wallet_details',label: 'Wallet Hub',   icon: 'wallet',          action: () => changeScreen('wallet_details') },
+        { id: 'hamburger',     label: 'Menu',         icon: 'menu',            action: () => openHamburgerMenu() }
       ];
 
       // Nếu có giấy phép: Thêm nút Scan QR nổi bật ở giữa (DASH-26.3)
       if (!isNone) {
-        items.splice(2, 0, { id: 'scanner', label: 'Quét QR', icon: 'scan-line', action: () => changeScreen('scanner'), primary: true });
+        items.splice(3, 0, { id: 'scanner', label: 'Quét QR', icon: 'scan-line', action: () => changeScreen('scanner'), primary: true });
       }
 
-      // Quy tắc DASH-26.5: Không hiển thị nút đại diện cho chính màn hình đang active
+      // Ẩn item của màn hình đang active
       let activeId = '';
+      if (screen === 'dashboard')                        activeId = 'dashboard';
       if (screen === 'p2p_buy_flow' || screen === 'p2p_sell_flow') activeId = 'p2p_buy_flow';
-      if (screen === 'wallet_details') activeId = 'wallet_details';
-      if (screen === 'scanner') activeId = 'scanner';
+      if (screen === 'wallet_details')                   activeId = 'wallet_details';
+      if (screen === 'scanner')                          activeId = 'scanner';
+      if (screen === 'history')                          activeId = 'history';
 
       // Tạo các button điều hướng
       items.forEach(item => {
-        if (item.id === activeId) return; // Bỏ qua trang hiện tại đúng quy tắc DASH-26.5
+        if (item.id === activeId) return;
 
         if (item.primary) {
-          // Nút Scan QR tròn nổi bật ở giữa
           const btn = document.createElement('button');
           btn.onclick = item.action;
           btn.className = "w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg shadow-orange-500/20 transform -translate-y-2.5 transition active:scale-95";
           btn.innerHTML = `<i data-lucide="${item.icon}" class="w-5 h-5"></i>`;
           navContainer.appendChild(btn);
         } else {
-          // Các nút định vị bình thường
           const btn = document.createElement('button');
-          // btn.onclick = item.action;
+          btn.onclick = item.action;
           btn.className = "flex flex-col items-center justify-center text-slate-400 hover:text-white transition";
           btn.innerHTML = `
             <i data-lucide="${item.icon}" class="w-4 h-4"></i>
@@ -2732,18 +2734,6 @@
           navContainer.appendChild(btn);
         }
       });
-
-      // Nếu không ở màn hình Home Dashboard, bổ sung nút Home nhanh
-      if (screen !== 'dashboard') {
-        const homeBtn = document.createElement('button');
-        homeBtn.onclick = () => changeScreen('dashboard');
-        homeBtn.className = "flex flex-col items-center justify-center text-orange-500 transition";
-        homeBtn.innerHTML = `
-          <i data-lucide="home" class="w-4 h-4"></i>
-          <span class="text-[9px] font-bold mt-1">Trang chủ</span>
-        `;
-        navContainer.insertBefore(homeBtn, navContainer.firstChild);
-      }
     }
 
     // XỬ LÝ KHI BẤM VÀO CÁC NÚT HOẠT ĐỘNG TRONG VÙNG ATM (DASH-22.3)
@@ -3524,17 +3514,18 @@
           {
             label: 'Tài khoản',
             items: [
-              { icon: 'user', label: 'Hồ sơ cá nhân',       action: () => showToast('Hồ sơ', 'Quản lý thông tin cá nhân.') },
-              { icon: 'shield', label: 'Bảo mật',            action: () => showToast('Bảo mật', 'Cài đặt mật khẩu & xác thực 2 lớp.') },
-              { icon: 'bell', label: 'Thông báo',            action: () => showToast('Thông báo', 'Quản lý cài đặt thông báo.') },
+              { icon: 'user',          label: 'Profile',              action: () => showToast('Profile', 'Quản lý thông tin cá nhân.') },
+              { icon: 'history',       label: 'Lịch sử giao dịch',   action: () => { closeHamburgerMenu(); openHistoryScreen(); } },
+              { icon: 'shield',        label: 'Bảo mật',              action: () => showToast('Bảo mật', 'Cài đặt mật khẩu & xác thực 2 lớp.') },
+              { icon: 'bell',          label: 'Thông báo',            action: () => showToast('Thông báo', 'Quản lý cài đặt thông báo.') },
             ]
           },
           {
             label: 'Khác',
             items: [
-              { icon: 'globe', label: 'Ngôn ngữ',            action: () => showToast('Ngôn ngữ', 'Chọn ngôn ngữ hiển thị.') },
-              { icon: 'help-circle', label: 'Trợ giúp & Hỗ trợ', action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
-              { icon: 'log-out', label: 'Đăng xuất',         action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất khỏi hệ thống.'), danger: true },
+              { icon: 'globe',         label: 'Ngôn ngữ',             action: () => showToast('Ngôn ngữ', 'Chọn ngôn ngữ hiển thị.') },
+              { icon: 'help-circle',   label: 'Trợ giúp & Hỗ trợ',   action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
+              { icon: 'log-out',       label: 'Đăng xuất',            action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất khỏi hệ thống.'), danger: true },
             ]
           }
         ]

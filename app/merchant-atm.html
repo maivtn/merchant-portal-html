@@ -717,38 +717,62 @@
           <div class="flex justify-between items-center pt-1">
             <div>
               <h2 id="greet-title" class="text-md font-bold text-white tracking-tight">Xin chào, Sam 👋</h2>
-              <p id="greet-subtitle" class="text-[11px] text-slate-400 mt-0.5">Mua & bán Crypto (P2P) với các đối tác
-                ATM uy tín</p>
+              <!-- <p id="greet-subtitle" class="text-[11px] text-slate-400 mt-0.5">Mua &amp; bán Crypto (P2P) với các đối tác ATM uy tín</p> -->
             </div>
-            <!-- Chuông thông báo có badge -->
-            <button onclick="toggleNotificationPanel()"
-              class="relative p-2 bg-slate-900 hover:bg-slate-800 rounded-xl text-slate-300 transition">
-              <i data-lucide="bell" class="w-4.5 h-4.5"></i>
-              <span id="notification-badge"
-                class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-orange-500 rounded-full ring-2 ring-slate-955 hidden"></span>
+            <!-- Icon ngôn ngữ + Chuông thông báo -->
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleLanguage()" id="lang-btn"
+                class="flex items-center gap-1 p-1 bg-slate-900 hover:bg-slate-800 rounded-xl text-slate-300 transition">
+                <i data-lucide="globe" class="w-3 h-3"></i>
+                <span id="lang-label" class="text-[10px] font-bold leading-none">EN</span>
+              </button>
+              <button onclick="toggleNotificationPanel()"
+                class="relative p-1 bg-slate-900 hover:bg-slate-800 rounded-xl text-slate-300 transition">
+                <i data-lucide="bell" class="w-3 h-3"></i>
+                <span id="notification-badge"
+                  class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-orange-500 rounded-full ring-2 ring-slate-955 hidden"></span>
+              </button>
+            </div>
+          </div>
+          <!-- WALLET COMPACT (không khung, không icon ví) -->
+          <div class="flex items-center justify-between px-0.5">
+            <div class="flex items-center gap-1.5">
+              <span class="text-[11px] font-semibold text-slate-900">Tổng tài sản ví:</span>
+              <span id="wallet-balance"
+                class="text-[13px] font-extrabold text-amber-700 tracking-tight">$7,207.92</span>
+              <button onclick="toggleBalanceVisibility()" class="text-amber-500 hover:text-amber-700 transition">
+                <i id="balance-eye-icon" data-lucide="eye" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <button onclick="changeScreen('wallet_details')"
+              class="text-[11px] font-bold text-amber-600 hover:text-amber-700 transition flex items-center gap-0.5">
+              Xem ví <i data-lucide="chevron-right" class="w-3 h-3"></i>
             </button>
           </div>
 
-          <!-- WALLET SUMMARY CARD (Quy tắc DASH-7.1 -> 7.5 - Thiết kế phẳng không Gradient - Đã xóa biểu tượng nền) -->
-          <div class="rounded-2xl p-4 shadow-lg relative overflow-hidden border border-amber-500/40">
-            <div class="flex items-center justify-between gap-3">
-              <img src="images/wallet.png" class="w-14 h-14 object-contain shrink-0">
-              <div class="flex-1">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-1.5">
-                    <span class="text-[10px] font-semibold text-amber-600 tracking-wider uppercase">Tổng tài sản
-                      ví</span>
-                    <button onclick="toggleBalanceVisibility()" class="text-amber-500 hover:text-amber-700 transition">
-                      <i id="balance-eye-icon" data-lucide="eye" class="w-3.5 h-3.5"></i>
-                    </button>
-                  </div>
-                  <button onclick="changeScreen('wallet_details')"
-                    class="text-[11px] font-bold text-amber-600 hover:text-amber-700 transition flex items-center gap-0.5 border border-amber-400/50 px-2 py-0.5 rounded-lg">
-                    Xem ví <i data-lucide="chevron-right" class="w-3 h-3"></i>
-                  </button>
-                </div>
-                <span id="wallet-balance" class="text-xl font-extrabold text-slate-800 tracking-tight">$7,207.92</span>
+          <!-- BANNER QUẢNG CÁO SLIDER -->
+          <div class="relative overflow-hidden rounded-2xl" id="ad-banner-slider" style="height:110px;">
+            <div id="ad-slider-track" class="flex h-full" style="transition:transform 0.5s ease;width:300%;">
+              <div class="h-full shrink-0" style="width:33.333%;">
+                <img
+                  src="https://vlinkpay-storages-prod.nyc3.cdn.digitaloceanspaces.com/vlinkpay-storages-prod/cryptomap360/posting/0c2b09ef-b84a-4398-abe0-be1839c1c9fc/banner-5.png"
+                  class="w-full h-full object-cover" draggable="false">
               </div>
+              <div class="h-full shrink-0" style="width:33.333%;">
+                <img
+                  src="https://vlinkpay-storages-prod.nyc3.cdn.digitaloceanspaces.com/vlinkpay-storages-prod/cryptomap360/posting/dd35f14d-e2f4-4c17-a42a-f9805abecec9/banner-1.png"
+                  class="w-full h-full object-cover" draggable="false">
+              </div>
+              <div class="h-full shrink-0" style="width:33.333%;">
+                <img
+                  src="https://vlinkpay-storages-prod.nyc3.cdn.digitaloceanspaces.com/vlinkpay-storages-prod/cryptomap360/posting/5615bd4b-cabb-491f-b1f4-db9abb81065f/banner-12.png"
+                  class="w-full h-full object-cover" draggable="false">
+              </div>
+            </div>
+            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-white/90 ad-dot" data-index="0"></span>
+              <span class="w-2 h-2 rounded-full bg-white/40 ad-dot" data-index="1"></span>
+              <span class="w-2 h-2 rounded-full bg-white/40 ad-dot" data-index="2"></span>
             </div>
           </div>
 
@@ -779,7 +803,7 @@
           <div id="renew-license-card" class="bg-rose-500/10 rounded-xl p-3.5 hidden space-y-2.5">
             <div class="flex items-start gap-2.5">
               <div class="w-8 h-8 bg-rose-500/20 text-rose-400 rounded-lg flex items-center justify-center shrink-0">
-                <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> 
+                <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
               </div>
               <div>
                 <h4 class="text-xs font-bold text-white">Gia hạn Giấy phép Nhượng quyền</h4>
@@ -835,9 +859,8 @@
               <div class="flex items-center justify-between gap-2">
                 <div>
                   <h3 class="text-xs font-extrabold text-white leading-tight">Mua Crypto (P2P)</h3>
-                  <p class="text-[8.5px] text-orange-100 mt-1">Buy crypto from a Merchant ATM or Mobile ATM</p>
                 </div>
-                <img src="images/buy.png" class="w-14 h-14 object-contain shrink-0">
+                <img src="images/buy.png" class="w-6 h-6 object-contain shrink-0">
               </div>
             </button>
             <button
@@ -845,9 +868,8 @@
               <div class="flex items-center justify-between gap-2">
                 <div>
                   <h3 class="text-xs font-extrabold text-white leading-tight">Bán Crypto (P2P)</h3>
-                  <p class="text-[8.5px] text-blue-100 mt-1">Sell crypto through a Merchant ATM or Mobile ATM</p>
                 </div>
-                <img src="images/sell.png" class="w-14 h-14 object-contain shrink-0">
+                <img src="images/sell.png" class="w-6 h-6 object-contain shrink-0">
               </div>
             </button>
           </div>
@@ -1007,24 +1029,56 @@
           <!-- Dummy element giữ kết nối với JavaScript cũ để tránh lỗi Runtime -->
           <div id="financial-summary-panel" class="hidden"></div>
 
-          <!-- BANNER MUA GIẤY PHÉP NHƯỢNG QUYỀN (NỀN XANH LÁ NHẠT SANG TRỌNG) -->
-          <div id="become-partner-card"
-            class="bg-emerald-500/10 rounded-xl px-3.5 py-2 relative overflow-hidden border border-emerald-500/30">
-            <div class="flex items-center justify-between gap-2">
-              <img src="images/buy-license.png" class="w-24 h-24 object-contain shrink-0">
+          <!-- BANNER MUA GIẤY PHÉP + VIDEO QUẢNG CÁO -->
+          <div class="flex gap-2 items-stretch">
 
-              <div class="flex-1">
-                <h3 class="text-xs font-extrabold text-white">Kiếm thêm thu nhập với Mobile ATM</h3>
-                <p class="text-[9.5px] text-slate-400 mt-0.5 mb-2.5 leading-snug">Hợp tác cùng VLINKPAY nạp/rút tiền mặt
-                  để nhận hoa hồng.</p>
-                <div class="flex justify-center">
-                  <button onclick="changeScreen('get_license')"
-                    class="bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold py-1.5 px-2.5 rounded-lg shadow-md transition transform active:scale-95">
-                    Đăng ký ngay
-                  </button>
+            <!-- 2/3: become-partner-card -->
+            <div id="become-partner-card"
+              class="bg-emerald-500/10 rounded-xl px-3 py-2 relative overflow-hidden border border-emerald-500/30 flex flex-col justify-between" style="flex:2;">
+              <div class="flex items-center gap-2">
+                <img src="images/buy-license.png" class="w-16 h-16 object-contain shrink-0">
+                <div>
+                  <h3 class="text-xs font-extrabold text-white leading-tight">Kiếm thêm thu nhập với Mobile ATM</h3>
+                 <button onclick="changeScreen('get_license')"
+                class="mt-2 w-full bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold py-1.5 rounded-lg shadow-md transition transform active:scale-95">
+                Đăng ký ngay
+              </button>
                 </div>
               </div>
+              
+            </div>
 
+            <!-- 1/3: Video quảng cáo YouTube -->
+            <div class="relative rounded-xl overflow-hidden cursor-pointer shrink-0 group" style="flex:1;" onclick="openVideoModal()">
+              <img src="https://img.youtube.com/vi/Qm8OoQKC1ow/hqdefault.jpg"
+                class="w-full h-full object-cover" draggable="false">
+              <!-- overlay tối -->
+              <div class="absolute inset-0 bg-black/30 group-hover:bg-black/45 transition"></div>
+              <!-- nút play -->
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-1">
+                <div class="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                  <i data-lucide="play" class="w-4 h-4 text-slate-900" style="margin-left:2px;"></i>
+                </div>
+                <span class="text-white text-[8px] font-bold tracking-wide drop-shadow">Xem video</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- MODAL PHÁT VIDEO YOUTUBE -->
+          <div id="video-modal" class="fixed inset-0 z-[999] flex items-center justify-center bg-black/80 hidden" onclick="closeVideoModal(event)">
+            <div class="relative w-full max-w-sm mx-4 rounded-2xl overflow-hidden shadow-2xl bg-black" onclick="event.stopPropagation()">
+              <button onclick="closeVideoModal()" class="absolute top-2 right-2 z-10 w-7 h-7 bg-black/60 hover:bg-black/90 rounded-full flex items-center justify-center text-white transition">
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+              <div style="position:relative;padding-bottom:56.25%;height:0;">
+                <iframe id="yt-iframe"
+                  src=""
+                  style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen>
+                </iframe>
+              </div>
             </div>
           </div>
 
@@ -1040,7 +1094,7 @@
                 <p class="text-[9.5px] text-slate-400">Xem NFT nhượng quyền của bạn</p>
               </div>
             </div>
-            <button  
+            <button
               class="px-2.5 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 rounded-lg text-[10px] font-bold transition">
               Quản lý
             </button>
@@ -1055,7 +1109,7 @@
               </h4>
               <button class="text-[10px] text-slate-400 hover:text-white font-medium transition">Xem tất cả</button>
             </div>
-            <div class="space-y-1.5" id="recent-requests-list">
+            <div class="space-y-1" id="recent-requests-list">
               <!-- Render tự động qua Javascript -->
             </div>
           </div>
@@ -2064,6 +2118,26 @@
         <!-- Render tự động tùy theo trạng thái Giấy phép & Screen định hướng -->
       </div>
 
+      <!-- HAMBURGER MENU DRAWER -->
+      <div id="hamburger-overlay" class="absolute inset-0 z-[60] bg-black/50 hidden" onclick="closeHamburgerMenu()"></div>
+      <div id="hamburger-drawer"
+        class="absolute bottom-0 left-0 right-0 z-[61] bg-slate-900 rounded-t-2xl shadow-2xl translate-y-full transition-transform duration-300 ease-out"
+        style="max-height:75%;">
+        <!-- Handle bar -->
+        <div class="flex justify-center pt-3 pb-1">
+          <div class="w-10 h-1 bg-slate-700 rounded-full"></div>
+        </div>
+        <!-- Header -->
+        <div class="flex items-center justify-between px-4 py-2 border-b border-slate-800">
+          <span id="hamburger-title" class="text-xs font-bold text-white">Menu</span>
+          <button onclick="closeHamburgerMenu()" class="p-1 text-slate-400 hover:text-white transition">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <!-- Menu items -->
+        <div id="hamburger-menu-list" class="overflow-y-auto mobile-scrollbar pb-6"></div>
+      </div>
+
     </div>
 
   </div>
@@ -2375,20 +2449,20 @@
 
       // 1. Cập nhật lời chào (DASH-5.1)
       const greetTitle = document.getElementById('greet-title');
-      const greetSubtitle = document.getElementById('greet-subtitle');
-      if (isNone) {
-        greetTitle.innerText = "Xin chào, Sam 👋";
-        greetSubtitle.innerText = "Mua & bán Crypto (P2P) với các đối tác ATM uy tín";
-      } else if (state.activeRoles.merchant && !state.activeRoles.mobile) {
-        greetTitle.innerText = "Xin chào, Vie Nail Bar 💅";
-        greetSubtitle.innerText = "Cổng vận hành Merchant ATM của Doanh nghiệp";
-      } else if (state.activeRoles.mobile && !state.activeRoles.merchant) {
-        greetTitle.innerText = "Xin chào, Mobile ATM 🚗";
-        greetSubtitle.innerText = "Đang kết nối hoạt động ATM di động";
-      } else if (state.activeRoles.mobile && state.activeRoles.merchant) {
-        greetTitle.innerText = "Xin chào, Combo Partner 🌟";
-        greetSubtitle.innerText = "Sở hữu bản quyền cả Mobile & Merchant ATM";
-      }
+      // const greetSubtitle = document.getElementById('greet-subtitle');
+      // if (isNone) {
+      //   greetTitle.innerText = "Xin chào, Sam 👋";
+      //   greetSubtitle.innerText = "Mua & bán Crypto (P2P) với các đối tác ATM uy tín";
+      // } else if (state.activeRoles.merchant && !state.activeRoles.mobile) {
+      //   greetTitle.innerText = "Xin chào, Vie Nail Bar 💅";
+      //   greetSubtitle.innerText = "Cổng vận hành Merchant ATM của Doanh nghiệp";
+      // } else if (state.activeRoles.mobile && !state.activeRoles.merchant) {
+      //   greetTitle.innerText = "Xin chào, Mobile ATM 🚗";
+      //   greetSubtitle.innerText = "Đang kết nối hoạt động ATM di động";
+      // } else if (state.activeRoles.mobile && state.activeRoles.merchant) {
+      //   greetTitle.innerText = "Xin chào, Combo Partner 🌟";
+      //   greetSubtitle.innerText = "Sở hữu bản quyền cả Mobile & Merchant ATM";
+      // }
 
       // 2. Thẻ Pending Requests (DASH-16.3 & DASH-17.5)
       const pendingReqCard = document.getElementById('pending-requests-card');
@@ -2621,7 +2695,7 @@
         { id: 'p2p_buy_flow', label: 'P2P', icon: 'globe', action: () => changeScreen('p2p_buy_flow') },
         { id: 'history', label: 'Lịch sử', icon: 'history', action: () => openHistoryScreen() },
         { id: 'wallet_details', label: 'Ví', icon: 'wallet', action: () => changeScreen('wallet_details') },
-        { id: 'profile', label: 'Cá nhân', icon: 'user', action: () => showToast("Cá nhân", "Quản lý cài đặt tài khoản bảo mật.") }
+        { id: 'hamburger', label: 'Menu', icon: 'menu', action: () => openHamburgerMenu() }
       ];
 
       // Nếu có giấy phép: Thêm nút Scan QR nổi bật ở giữa (DASH-26.3)
@@ -2857,12 +2931,12 @@
       let processingShown = 0;
       const txsToShow = state.licenseStatus === 'none'
         ? state.transactions.filter(tx => {
-            if (tx.status === 'Processing' || tx.status === 'Pending') {
-              if (processingShown >= 1) return false;
-              processingShown++;
-            }
-            return true;
-          }).slice(0, 3)
+          if (tx.status === 'Processing' || tx.status === 'Pending') {
+            if (processingShown >= 1) return false;
+            processingShown++;
+          }
+          return true;
+        }).slice(0, 3)
         : state.transactions.slice(0, 3);
 
       txsToShow.forEach(tx => {
@@ -2874,20 +2948,22 @@
         if (tx.status === 'Declined') statusColor = "bg-rose-500/10 text-rose-400";
 
         const item = document.createElement('div');
-        item.className = "bg-slate-900 hover:bg-slate-855 rounded-xl p-3 flex justify-between items-center transition cursor-pointer";
+        item.className = "bg-slate-900 hover:bg-slate-855 rounded-lg px-2.5 py-1.5 flex justify-between items-center transition cursor-pointer";
         // item.onclick = () => openTxDetail(tx.id);
 
         item.innerHTML = `
-          <div class="space-y-1">
-            <div class="flex items-center gap-1.5">
-              <span class="text-xs font-bold text-white">${tx.type}</span>
-              <span class="text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ${statusColor}">${tx.status === 'Pending' ? 'Đang chờ' : tx.status === 'Processing' ? 'Đang xử lý' : tx.status === 'Completed' ? 'Hoàn tất' : tx.status === 'Cancelled' ? 'Đã hủy' : tx.status === 'Declined' ? 'Từ chối' : tx.status}</span>
+          <div class="flex items-center gap-2 min-w-0">
+            <div class="min-w-0">
+              <div class="flex items-center gap-1">
+                <span class="text-[10px] font-bold text-white truncate">${tx.type}</span>
+                <span class="text-[8px] px-1 py-0.5 rounded font-bold uppercase shrink-0 ${statusColor}">${tx.status === 'Pending' ? 'Đang chờ' : tx.status === 'Processing' ? 'Đang xử lý' : tx.status === 'Completed' ? 'Hoàn tất' : tx.status === 'Cancelled' ? 'Đã hủy' : tx.status === 'Declined' ? 'Từ chối' : tx.status}</span>
+              </div>
+              <p class="text-[9px] text-slate-400 truncate">${tx.counterparty} • ${tx.time}</p>
             </div>
-            <p class="text-[10px] text-slate-400">${tx.counterparty} • ${tx.time}</p>
           </div>
-          <div class="text-right flex items-center gap-1">
-            <span class="text-xs font-extrabold text-orange-400 block">${tx.amount}</span>
-            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500"></i>
+          <div class="flex items-center gap-0.5 shrink-0 ml-2">
+            <span class="text-[11px] font-extrabold text-orange-400">${tx.amount}</span>
+            <i data-lucide="chevron-right" class="w-3 h-3 text-slate-500"></i>
           </div>
         `;
         listContainer.appendChild(item);
@@ -3439,6 +3515,210 @@
       toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-20');
       toast.classList.remove('translate-y-0');
     }
+
+    // HAMBURGER MENU DRAWER
+    const HAMBURGER_MENUS = {
+      none: {
+        title: 'Tài khoản Cá nhân',
+        groups: [
+          {
+            label: 'Tài khoản',
+            items: [
+              { icon: 'user', label: 'Hồ sơ cá nhân',       action: () => showToast('Hồ sơ', 'Quản lý thông tin cá nhân.') },
+              { icon: 'shield', label: 'Bảo mật',            action: () => showToast('Bảo mật', 'Cài đặt mật khẩu & xác thực 2 lớp.') },
+              { icon: 'bell', label: 'Thông báo',            action: () => showToast('Thông báo', 'Quản lý cài đặt thông báo.') },
+            ]
+          },
+          {
+            label: 'Khác',
+            items: [
+              { icon: 'globe', label: 'Ngôn ngữ',            action: () => showToast('Ngôn ngữ', 'Chọn ngôn ngữ hiển thị.') },
+              { icon: 'help-circle', label: 'Trợ giúp & Hỗ trợ', action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
+              { icon: 'log-out', label: 'Đăng xuất',         action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất khỏi hệ thống.'), danger: true },
+            ]
+          }
+        ]
+      },
+      mobile: {
+        title: 'Mobile ATM Partner',
+        groups: [
+          {
+            label: 'ATM Di động',
+            items: [
+              { icon: 'qr-code', label: 'Mã QR Mobile ATM',  action: () => { closeHamburgerMenu(); handleAtmAction('mobile'); } },
+              { icon: 'arrow-left-right', label: 'Thu / Chi hộ', action: () => showToast('Thu / Chi hộ', 'Quản lý giao dịch thu chi hộ.') },
+              { icon: 'shield-check', label: 'Giấy phép',     action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
+              { icon: 'sliders', label: 'Portal Settings',    action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
+            ]
+          },
+          {
+            label: 'Tài khoản',
+            items: [
+              { icon: 'user', label: 'Hồ sơ cá nhân',        action: () => showToast('Hồ sơ', 'Quản lý thông tin cá nhân.') },
+              { icon: 'help-circle', label: 'Trợ giúp & Hỗ trợ', action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
+              { icon: 'log-out', label: 'Đăng xuất',          action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất khỏi hệ thống.'), danger: true },
+            ]
+          }
+        ]
+      },
+      merchant: {
+        title: 'Merchant ATM – Doanh nghiệp',
+        groups: [
+          {
+            label: 'Merchant ATM',
+            items: [
+              { icon: 'qr-code', label: 'Mã QR Merchant',    action: () => { closeHamburgerMenu(); handleAtmAction('merchant'); } },
+              { icon: 'users', label: 'Walk-in Management',   action: () => showToast('Walk-in', 'Quản lý khách hàng vãng lai.') },
+              { icon: 'arrow-left-right', label: 'Thu / Chi hộ', action: () => showToast('Thu / Chi hộ', 'Quản lý giao dịch thu chi hộ.') },
+              { icon: 'shield-check', label: 'Giấy phép',     action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
+              { icon: 'sliders', label: 'Portal Settings',    action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
+            ]
+          },
+          {
+            label: 'Doanh nghiệp',
+            items: [
+              { icon: 'building-2', label: 'Hồ sơ doanh nghiệp', action: () => showToast('Doanh nghiệp', 'Quản lý thông tin doanh nghiệp.') },
+              { icon: 'help-circle', label: 'Trợ giúp & Hỗ trợ', action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
+              { icon: 'log-out', label: 'Đăng xuất',           action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất khỏi hệ thống.'), danger: true },
+            ]
+          }
+        ]
+      },
+      combo: {
+        title: 'Combo ATM Partner',
+        groups: [
+          {
+            label: 'ATM Di động',
+            items: [
+              { icon: 'qr-code', label: 'Mã QR Mobile ATM',  action: () => { closeHamburgerMenu(); handleAtmAction('mobile'); } },
+            ]
+          },
+          {
+            label: 'Merchant ATM',
+            items: [
+              { icon: 'qr-code', label: 'Mã QR Merchant',    action: () => { closeHamburgerMenu(); handleAtmAction('merchant'); } },
+              { icon: 'users', label: 'Walk-in Management',   action: () => showToast('Walk-in', 'Quản lý khách hàng vãng lai.') },
+            ]
+          },
+          {
+            label: 'Quản lý',
+            items: [
+              { icon: 'arrow-left-right', label: 'Thu / Chi hộ', action: () => showToast('Thu / Chi hộ', 'Quản lý giao dịch thu chi hộ.') },
+              { icon: 'shield-check', label: 'Giấy phép',     action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
+              { icon: 'sliders', label: 'Portal Settings',    action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
+              { icon: 'help-circle', label: 'Trợ giúp & Hỗ trợ', action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
+              { icon: 'log-out', label: 'Đăng xuất',          action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất khỏi hệ thống.'), danger: true },
+            ]
+          }
+        ]
+      }
+    };
+
+    function getMenuKey() {
+      if (state.licenseStatus === 'none') return 'none';
+      if (state.activeRoles.mobile && state.activeRoles.merchant) return 'combo';
+      if (state.activeRoles.merchant) return 'merchant';
+      return 'mobile';
+    }
+
+    function openHamburgerMenu() {
+      const key = getMenuKey();
+      const config = HAMBURGER_MENUS[key];
+
+      document.getElementById('hamburger-title').textContent = config.title;
+
+      const list = document.getElementById('hamburger-menu-list');
+      list.innerHTML = '';
+
+      config.groups.forEach(group => {
+        const section = document.createElement('div');
+        section.className = 'px-4 pt-3';
+
+        const groupLabel = document.createElement('p');
+        groupLabel.className = 'text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1.5';
+        groupLabel.textContent = group.label;
+        section.appendChild(groupLabel);
+
+        group.items.forEach(item => {
+          const btn = document.createElement('button');
+          btn.className = `w-full flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 transition ${item.danger ? 'hover:bg-rose-500/10 text-rose-400' : 'hover:bg-slate-800 text-slate-200'}`;
+          btn.innerHTML = `
+            <i data-lucide="${item.icon}" class="w-4 h-4 shrink-0 ${item.danger ? 'text-rose-400' : 'text-slate-400'}"></i>
+            <span class="text-[11px] font-semibold">${item.label}</span>
+          `;
+          btn.onclick = item.action;
+          section.appendChild(btn);
+        });
+
+        list.appendChild(section);
+      });
+
+      lucide.createIcons();
+
+      document.getElementById('hamburger-overlay').classList.remove('hidden');
+      requestAnimationFrame(() => {
+        document.getElementById('hamburger-drawer').style.transform = 'translateY(0)';
+      });
+    }
+
+    function closeHamburgerMenu() {
+      document.getElementById('hamburger-drawer').style.transform = 'translateY(100%)';
+      setTimeout(() => document.getElementById('hamburger-overlay').classList.add('hidden'), 300);
+    }
+
+    // VIDEO MODAL
+    function openVideoModal() {
+      document.getElementById('yt-iframe').src = 'https://www.youtube.com/embed/Qm8OoQKC1ow?autoplay=1&rel=0';
+      document.getElementById('video-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+    function closeVideoModal() {
+      document.getElementById('yt-iframe').src = '';
+      document.getElementById('video-modal').classList.add('hidden');
+    }
+
+    // LANGUAGE TOGGLE
+    const LANGS = ['EN', 'VI'];
+    let langIdx = 0;
+    function toggleLanguage() {
+      langIdx = (langIdx + 1) % LANGS.length;
+      document.getElementById('lang-label').textContent = LANGS[langIdx];
+    }
+
+    // AD BANNER SLIDER
+    (function () {
+      const track = document.getElementById('ad-slider-track');
+      const dots = document.querySelectorAll('.ad-dot');
+      const total = 3;
+      let current = 0;
+      let timer;
+
+      function goTo(idx) {
+        current = (idx + total) % total;
+        track.style.transform = 'translateX(-' + (current * 33.333) + '%)';
+        dots.forEach((d, i) => {
+          d.style.background = i === current ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.4)';
+        });
+      }
+
+      function next() { goTo(current + 1); }
+
+      function start() { timer = setInterval(next, 3500); }
+      function stop() { clearInterval(timer); }
+
+      const slider = document.getElementById('ad-banner-slider');
+      let startX = 0;
+      slider.addEventListener('touchstart', e => { stop(); startX = e.touches[0].clientX; }, { passive: true });
+      slider.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 30) goTo(dx < 0 ? current + 1 : current - 1);
+        start();
+      }, { passive: true });
+
+      dots.forEach(d => d.addEventListener('click', () => { stop(); goTo(+d.dataset.index); start(); }));
+
+      start();
+    })();
   </script>
 </body>
 

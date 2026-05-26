@@ -310,21 +310,22 @@ window.addEventListener('DOMContentLoaded', () => {
     if (uploadSection) uploadSection.style.display = method === 'usdv' ? 'none' : '';
 
     if (method === 'usdv') {
-      const bal   = WALLET.usdv;
-      const need  = RC.payBack;
-      const ok    = bal >= need;
+      const bal  = WALLET.usdv;
+      const selectedDates = repaymentDateSelect ? repaymentDateSelect.getValue() : [];
+      const need = selectedDates.reduce((sum, val) => {
+        const d = CLOSING_DATES.find(x => x.date === val);
+        return sum + (d ? d.payBack : 0);
+      }, 0);
+      const ok   = need > 0 && bal >= need;
       const balEl = document.getElementById('repayment-usdv-balance');
-      if (balEl) balEl.textContent = "$"+ bal.toLocaleString('en-US', { minimumFractionDigits: 2 }) ;
+      if (balEl) balEl.textContent = '$' + bal.toLocaleString('en-US', { minimumFractionDigits: 2 });
       const statusEl = document.getElementById('repayment-usdv-status');
-      if (statusEl) {
-        statusEl.textContent   = ok ? 'Sufficient' : 'Insufficient';
-        statusEl.dataset.ok    = ok ? '1' : '0';
-      }
       const warnEl = document.getElementById('repayment-usdv-warn');
-      if (warnEl) warnEl.style.display = ok ? 'none' : 'flex';
+      if (warnEl) warnEl.style.display = need > 0 && !ok ? 'flex' : 'none';
       if (submitRepaymentBtn) submitRepaymentBtn.disabled = !ok;
     } else {
-      if (submitRepaymentBtn) submitRepaymentBtn.disabled = repaymentFiles.length === 0;
+      const selectedDates = repaymentDateSelect ? repaymentDateSelect.getValue() : [];
+      if (submitRepaymentBtn) submitRepaymentBtn.disabled = repaymentFiles.length === 0 || selectedDates.length === 0;
     }
   };
 
@@ -347,12 +348,111 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ── Closing date mock data ───────────────────────────────────────
+  const CLOSING_DATES = [
+    { date: 'May 19, 2025', thuHo: 1200.00, chiHo:  350.00, payBack:  850.00 },
+    { date: 'May 12, 2025', thuHo:  500.00, chiHo:  200.00, payBack:  300.00 },
+    { date: 'May 05, 2025', thuHo:  800.00, chiHo:  100.00, payBack:  700.00 },
+    { date: 'Apr 28, 2025', thuHo:  950.00, chiHo:  950.00, payBack:    0.00 },
+    { date: 'Apr 21, 2025', thuHo:  600.00, chiHo:  400.00, payBack:  200.00 },
+    { date: 'Apr 14, 2025', thuHo:  750.00, chiHo:  750.00, payBack:    0.00 },
+  ];
+
+  let repaymentDateSelect = null;
+
+  const initRepaymentDateSelect = () => {
+    const el = document.getElementById('repayment-dates-select');
+    if (!el || repaymentDateSelect) return;
+
+    const opts = CLOSING_DATES
+      .filter(d => d.payBack > 0)
+      .map(d => ({ value: d.date, text: d.date }));
+
+    repaymentDateSelect = new TomSelect(el, {
+      plugins: ['remove_button', 'checkbox_options'],
+      placeholder: 'Select closing dates to pay...',
+      maxItems: null,
+      options: opts,
+      render: {
+        option(data, escape) {
+          const d = CLOSING_DATES.find(x => x.date === data.value);
+          return `<div class="ts-date-option">
+            <span class="ts-date-option__date">${escape(data.text)}</span>
+            <span class="ts-date-option__amount">${d ? fmtUSD(d.payBack) : ''}</span>
+          </div>`;
+        },
+        item(data, escape) {
+          const d = CLOSING_DATES.find(x => x.date === data.value);
+          return `<div title="${escape(data.text)}">${escape(data.text)}${d ? ' · ' + fmtUSD(d.payBack) : ''}</div>`;
+        },
+      },
+      onChange() {
+        renderRepaymentDateChips();
+        updateRepaymentTotal();
+        syncRepaymentAccount();
+      },
+    });
+  };
+
+  const renderRepaymentDateChips = () => {
+    const list = document.getElementById('repayment-dates-list');
+    if (!list || !repaymentDateSelect) return;
+    const selected = repaymentDateSelect.getValue();
+    list.innerHTML = '';
+    selected.forEach(val => {
+      const d = CLOSING_DATES.find(x => x.date === val);
+      if (!d) return;
+      const tooltipContent = [
+        `<span>Đã thu hộ: <strong>${fmtUSD(d.thuHo)}</strong></span>`,
+        `<span>Đã chi hộ: <strong>${fmtUSD(d.chiHo)}</strong></span>`,
+        `<span>Pay Back to VLINKPAY: <strong>${fmtUSD(d.payBack)}</strong></span>`,
+      ].join('<br>');
+
+      const chip = document.createElement('div');
+      chip.className = 'repayment-date-chip';
+      chip.innerHTML = `
+        <span class="repayment-date-chip__date">${d.date}</span>
+        <span class="repayment-date-chip__amount">${fmtUSD(d.payBack)}</span>
+        <button type="button" class="repayment-date-chip__info" data-tooltip="${encodeURIComponent(tooltipContent)}" aria-label="Details">i</button>
+      `;
+      list.appendChild(chip);
+    });
+
+    list.querySelectorAll('.repayment-date-chip__info').forEach(btn => {
+      if (window.tippy) {
+        tippy(btn, {
+          content: decodeURIComponent(btn.dataset.tooltip),
+          allowHTML: true,
+          placement: 'top',
+          arrow: true,
+        });
+      }
+    });
+  };
+
+  const updateRepaymentTotal = () => {
+    const el = document.getElementById('repayment-total-amount');
+    if (!el || !repaymentDateSelect) return;
+    const selected = repaymentDateSelect.getValue();
+    const total = selected.reduce((sum, val) => {
+      const d = CLOSING_DATES.find(x => x.date === val);
+      return sum + (d ? d.payBack : 0);
+    }, 0);
+    el.textContent = fmtUSD(total);
+  };
+
   const openRepaymentModal = () => {
     repaymentFiles = [];
     if (repaymentFileInput) repaymentFileInput.value = '';
     if (repaymentCameraInput) repaymentCameraInput.value = '';
     renderRepaymentPreviews();
     if (submitRepaymentBtn) submitRepaymentBtn.disabled = true;
+    initRepaymentDateSelect();
+    if (repaymentDateSelect) {
+      repaymentDateSelect.clear(true);
+      renderRepaymentDateChips();
+      updateRepaymentTotal();
+    }
     syncRepaymentAccount();
     repaymentModal?.classList.add('active');
     repaymentModal?.setAttribute('aria-hidden', 'false');
@@ -365,12 +465,15 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   const syncRepaymentSubmit = () => {
-    if (submitRepaymentBtn) submitRepaymentBtn.disabled = repaymentFiles.length === 0;
+    const selectedDates = repaymentDateSelect ? repaymentDateSelect.getValue() : [];
+    const method = document.getElementById('repayment-payment-method')?.value || 'bank';
+    if (method === 'usdv') return;
+    if (submitRepaymentBtn) submitRepaymentBtn.disabled = repaymentFiles.length === 0 || selectedDates.length === 0;
   };
 
   // ── Wallet balances (mock) ───────────────────────────────────────
   const WALLET = {
-    usdv: 620.00,  // USDV wallet balance
+    usdv: 1820.00,  // USDV wallet balance
   };
 
   // ── Credit card data ────────────────────────────────────────────
@@ -1844,65 +1947,74 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   const settlementData = [
-    { type: 'pay',     title: 'Pay to VLINKPAY', datetime: '2026-05-13T16:00:00', method: 'Bank Transfer',  amount: '−$850',   amountClass: 'pay',     status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-up-right'  },
-    { type: 'receive', title: 'VLINKPAY Payout',  datetime: '2026-05-12T10:05:00', method: 'Bank Transfer',  amount: '+$320',   amountClass: 'receive', status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-down-left' },
-    { type: 'pay',     title: 'Pay to VLINKPAY', datetime: '2026-05-10T09:42:00', method: 'Wallet Balance', amount: '−$600',   amountClass: 'pay',     status: 'waiting-review', statusLabel: 'Waiting Review', icon: 'arrow-up-right'  },
-    { type: 'receive', title: 'VLINKPAY Payout',  datetime: '2026-05-08T14:30:00', method: 'Bank Transfer',  amount: '+$280',   amountClass: 'receive', status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-down-left' },
-    { type: 'pay',     title: 'Pay to VLINKPAY', datetime: '2026-04-30T11:15:00', method: 'Bank Transfer',  amount: '−$1,200', amountClass: 'pay',     status: 'waiting-review', statusLabel: 'Waiting Review', icon: 'arrow-up-right'  },
-    { type: 'receive', title: 'VLINKPAY Payout',  datetime: '2026-04-28T08:00:00', method: 'USDV',           amount: '+$500',   amountClass: 'receive', status: 'completed',      statusLabel: 'Completed',      icon: 'arrow-down-left' },
+    { date: 'May 19, 2025', thuHo: 1200.00, chiHo:  350.00, commission:  46.75, payBack:  850.00, vlinkpayPayout:    0, status: 'completed',      statusLabel: 'Completed'      },
+    { date: 'May 12, 2025', thuHo:  500.00, chiHo:  200.00, commission:  21.25, payBack:  300.00, vlinkpayPayout:    0, status: 'waiting-review', statusLabel: 'Waiting Review' },
+    { date: 'May 05, 2025', thuHo:  800.00, chiHo:  100.00, commission:  27.00, payBack:  700.00, vlinkpayPayout:    0, status: 'completed',      statusLabel: 'Completed'      },
+    { date: 'Apr 28, 2025', thuHo:  950.00, chiHo:  950.00, commission:  71.25, payBack:    0.00, vlinkpayPayout:    0, status: 'completed',      statusLabel: 'Completed'      },
+    { date: 'Apr 21, 2025', thuHo:  600.00, chiHo:  850.00, commission:  43.88, payBack:    0.00, vlinkpayPayout:  250, status: 'completed',      statusLabel: 'Completed'      },
+    { date: 'Apr 14, 2025', thuHo:  750.00, chiHo: 1200.00, commission:  58.13, payBack:    0.00, vlinkpayPayout:  450, status: 'processing',     statusLabel: 'Processing'     },
   ];
 
   const settlementGrid  = document.getElementById('settlement-grid');
   const settlementTbody = document.getElementById('settlement-tbody');
 
+  const fmtSettlementNum = (n) => n > 0 ? fmtUSD(n) : '—';
+
   const renderSettlementGrid = (items) => {
     if (!settlementGrid) return;
     settlementGrid.innerHTML = items.length === 0
       ? '<div class="col-12 text-center py-4 text-muted" style="font-size:13px;">No records found.</div>'
-      : items.map(item => `
+      : items.map(item => {
+          const hasPayBack = item.payBack > 0;
+          const hasPayout  = item.vlinkpayPayout > 0;
+          return `
         <div class="col-12 col-sm-6">
           <div class="settlement-item">
-            <div class="settlement-item__icon settlement-item__icon--${item.type}">
-              <i data-lucide="${item.icon}" class="w-4 h-4"></i>
+            <div class="settlement-item__icon settlement-item__icon--${hasPayBack ? 'pay' : 'receive'}">
+              <i data-lucide="${hasPayBack ? 'arrow-up-right' : 'arrow-down-left'}" class="w-4 h-4"></i>
             </div>
             <div class="settlement-item__main">
-              <div class="settlement-item__title">${item.title}</div>
-              <div class="settlement-item__meta">${fmtSettlementDate(item.datetime)} · ${item.method}</div>
+              <div class="settlement-item__title">${item.date}</div>
+              <div class="settlement-item__meta">
+                Thu hộ ${fmtUSD(item.thuHo)} &nbsp;·&nbsp; Chi hộ ${fmtUSD(item.chiHo)}
+              </div>
+              <div class="settlement-item__meta">
+                ${hasPayBack ? `Pay Back <strong style="color:#ea580c">${fmtUSD(item.payBack)}</strong>` : ''}
+                ${hasPayout  ? `VLINKPAY Payout <strong style="color:#16a34a">${fmtUSD(item.vlinkpayPayout)}</strong>` : ''}
+              </div>
             </div>
             <div class="settlement-item__right">
-              <span class="settlement-item__amount settlement-item__amount--${item.amountClass}">${item.amount}</span>
               <span class="history-badge history-badge--${item.status}">${item.statusLabel}</span>
-              <a href="merchant-atm-settlement-detail.html?type=${item.type}&status=${item.status}" class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></a>
+              <a href="merchant-atm-settlement-detail.html?date=${encodeURIComponent(item.date)}&status=${item.status}" class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></a>
             </div>
           </div>
-        </div>`).join('');
+        </div>`;
+        }).join('');
     refreshIcons();
   };
 
   const renderSettlementTable = (items) => {
     if (!settlementTbody) return;
     settlementTbody.innerHTML = items.length === 0
-      ? '<tr><td colspan="6" class="text-center py-4 text-muted" style="font-size:13px;">No records found.</td></tr>'
+      ? '<tr><td colspan="8" class="text-center py-4 text-muted" style="font-size:13px;">No records found.</td></tr>'
       : items.map(item => `
         <tr>
-          <td class="td-title">${item.title}</td>
-          <td class="td-date">${fmtSettlementDate(item.datetime)}</td>
-          <td class="td-seller">${item.method}</td>
-          <td class="td-amount" style="color:${item.amountClass === 'pay' ? '#ea580c' : '#16a34a'};">${item.amount}</td>
+          <td class="td-date">${item.date}</td>
+          <td class="td-num">${fmtUSD(item.thuHo)}</td>
+          <td class="td-num">${fmtUSD(item.chiHo)}</td>
+          <td class="td-num">${fmtUSD(item.commission)}</td>
+          <td class="td-num ${item.payBack > 0 ? 'td-num--pay' : 'td-num--zero'}">${fmtSettlementNum(item.payBack)}</td>
+          <td class="td-num ${item.vlinkpayPayout > 0 ? 'td-num--receive' : 'td-num--zero'}">${fmtSettlementNum(item.vlinkpayPayout)}</td>
           <td><span class="history-badge history-badge--${item.status}">${item.statusLabel}</span></td>
-          <td class="td-chevron"><a href="merchant-atm-settlement-detail.html?type=${item.type}&status=${item.status}" class="view-details-link">View details <i data-lucide="chevron-right" class="w-4 h-4"></i></a></td>
+          <td class="td-chevron"><a href="merchant-atm-settlement-detail.html?date=${encodeURIComponent(item.date)}&status=${item.status}" class="view-details-link">View details <i data-lucide="chevron-right" class="w-4 h-4"></i></a></td>
         </tr>`).join('');
     refreshIcons();
   };
 
   const getSettlementFiltered = () => {
-    const type   = document.getElementById('settlement-type-select')?.dataset.filterValue   || '';
     const status = document.getElementById('settlement-status-select')?.dataset.filterValue || '';
-    const method = document.getElementById('settlement-method-select')?.dataset.filterValue || '';
     return settlementData.filter(item =>
-      (!type   || item.title       === type)   &&
-      (!status || item.statusLabel === status) &&
-      (!method || item.method      === method)
+      !status || item.statusLabel === status
     );
   };
 

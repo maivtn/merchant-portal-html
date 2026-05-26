@@ -151,7 +151,7 @@
       border: 0;
     }
 
-    body.light-mode #screen-dashboard .bg-slate-900 {
+    body.light-mode #screen-home .bg-slate-900 {
       border: 0;
       box-shadow: 0 3px 10px rgba(15, 23, 42, 0.14);
     }
@@ -497,51 +497,51 @@
     }
 
     /* ===== DASHBOARD CARD GLOW: border + drop-shadow cùng tông màu nền ===== */
-    #screen-dashboard .bg-slate-900 {
+    #screen-home .bg-slate-900 {
       border: 1px solid rgba(51, 65, 85, 0.55);
       box-shadow: 0 3px 10px rgba(15, 23, 42, 0.14);
     }
 
-    #screen-dashboard .bg-blue-500\/10 {
+    #screen-home .bg-blue-500\/10 {
       border: 1px solid rgba(59, 130, 246, 0.28);
       box-shadow: 0 3px 10px rgba(59, 130, 246, 0.14);
     }
 
-    #screen-dashboard .bg-orange-500\/10 {
+    #screen-home .bg-orange-500\/10 {
       border: 1px solid rgba(249, 115, 22, 0.28);
       box-shadow: 0 3px 10px rgba(249, 115, 22, 0.14);
     }
 
-    #screen-dashboard .bg-emerald-500\/10 {
+    #screen-home .bg-emerald-500\/10 {
       border: 1px solid rgba(16, 185, 129, 0.3);
       box-shadow: 0 3px 10px rgba(16, 185, 129, 0.14);
     }
 
-    #screen-dashboard .bg-purple-500\/10 {
+    #screen-home .bg-purple-500\/10 {
       border: 1px solid rgba(168, 85, 247, 0.28);
       box-shadow: 0 3px 10px rgba(168, 85, 247, 0.14);
     }
 
-    #screen-dashboard .bg-amber-500\/10 {
+    #screen-home .bg-amber-500\/10 {
       border: 1px solid rgba(245, 158, 11, 0.28);
       box-shadow: 0 3px 10px rgba(245, 158, 11, 0.14);
     }
 
-    #screen-dashboard .bg-sky-500\/10 {
+    #screen-home .bg-sky-500\/10 {
       border: 1px solid rgba(14, 165, 233, 0.28);
       box-shadow: 0 3px 10px rgba(14, 165, 233, 0.14);
     }
 
-    #screen-dashboard .bg-rose-500\/10 {
+    #screen-home .bg-rose-500\/10 {
       border: 1px solid rgba(244, 63, 94, 0.28);
       box-shadow: 0 3px 10px rgba(244, 63, 94, 0.14);
     }
 
-    #screen-dashboard .bg-orange-600 {
+    #screen-home .bg-orange-600 {
       box-shadow: 0 6px 18px rgba(234, 88, 12, 0.38);
     }
 
-    #screen-dashboard .bg-blue-600 {
+    #screen-home .bg-blue-600 {
       box-shadow: 0 6px 18px rgba(37, 99, 235, 0.38);
     }
 
@@ -711,7 +711,7 @@
       <div id="app-viewport" class="flex-1 overflow-y-auto mobile-scrollbar bg-slate-950 pb-20 relative">
 
         <!-- ================= MÀN HÌNH 1: DASHBOARD CHÍNH ================= -->
-        <div id="screen-dashboard" class="p-4 space-y-2.5">
+        <div id="screen-home" class="p-4 space-y-2.5">
 
           <!-- LỜI CHÀO / HEADER (DASH-5.1 & DASH-5.2) -->
           <div class="flex justify-between items-center pt-1">
@@ -719,8 +719,13 @@
               <h2 id="greet-title" class="text-md font-bold text-white tracking-tight">Xin chào, Sam 👋</h2>
               <!-- <p id="greet-subtitle" class="text-[11px] text-slate-400 mt-0.5">Mua &amp; bán Crypto (P2P) với các đối tác ATM uy tín</p> -->
             </div>
-            <!-- Icon ngôn ngữ + Chuông thông báo -->
+            <!-- Search + Icon ngôn ngữ + Chuông thông báo -->
             <div class="flex items-center gap-1.5">
+              <div class="flex items-center gap-1 bg-slate-900 rounded-xl px-2 py-1">
+                <i data-lucide="search" class="w-3 h-3 text-slate-400 shrink-0"></i>
+                <input type="text" placeholder="Tìm kiếm..."
+                  class="bg-transparent text-[10px] text-slate-200 placeholder-slate-500 outline-none w-24" style="border:0!important;" />
+              </div>
               <button onclick="toggleLanguage()" id="lang-btn"
                 class="flex items-center gap-1 p-1 bg-slate-900 hover:bg-slate-800 rounded-xl text-slate-300 transition">
                 <i data-lucide="globe" class="w-3 h-3"></i>
@@ -752,28 +757,8 @@
 
           <!-- BANNER QUẢNG CÁO SLIDER -->
           <div class="relative overflow-hidden rounded-2xl" id="ad-banner-slider" style="height:110px;">
-            <div id="ad-slider-track" class="flex h-full" style="transition:transform 0.5s ease;width:300%;">
-              <div class="h-full shrink-0" style="width:33.333%;">
-                <img
-                  src="https://vlinkpay-storages-prod.nyc3.cdn.digitaloceanspaces.com/vlinkpay-storages-prod/cryptomap360/posting/0c2b09ef-b84a-4398-abe0-be1839c1c9fc/banner-5.png"
-                  class="w-full h-full object-cover" draggable="false">
-              </div>
-              <div class="h-full shrink-0" style="width:33.333%;">
-                <img
-                  src="https://vlinkpay-storages-prod.nyc3.cdn.digitaloceanspaces.com/vlinkpay-storages-prod/cryptomap360/posting/dd35f14d-e2f4-4c17-a42a-f9805abecec9/banner-1.png"
-                  class="w-full h-full object-cover" draggable="false">
-              </div>
-              <div class="h-full shrink-0" style="width:33.333%;">
-                <img
-                  src="https://vlinkpay-storages-prod.nyc3.cdn.digitaloceanspaces.com/vlinkpay-storages-prod/cryptomap360/posting/5615bd4b-cabb-491f-b1f4-db9abb81065f/banner-12.png"
-                  class="w-full h-full object-cover" draggable="false">
-              </div>
-            </div>
-            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-white/90 ad-dot" data-index="0"></span>
-              <span class="w-2 h-2 rounded-full bg-white/40 ad-dot" data-index="1"></span>
-              <span class="w-2 h-2 rounded-full bg-white/40 ad-dot" data-index="2"></span>
-            </div>
+            <div id="ad-slider-track" class="flex h-full" style="transition:transform 0.5s ease;"></div>
+            <div id="ad-dots-container" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5"></div>
           </div>
 
           <!-- IN PROGRESS TRANSACTION CARD (Màn hình giao dịch đang xử lý) - ĐƯA LÊN TRÊN NGAY DƯỚI VÍ -->
@@ -823,30 +808,29 @@
 
           <!-- TRẠNG THÁI HOẠT ĐỘNG (ON / OFF - Không viền, phẳng) -->
           <div id="operational-status-panel" class="hidden grid grid-cols-2 gap-2.5">
-            <div id="activity-status-box" class="bg-slate-900 rounded-xl p-2.5 flex justify-between items-center">
-              <div class="flex items-center gap-1.5">
-                <img src="images/status.png" class="w-8 h-8 object-contain">
-                <div>
-                  <span class="text-[8.5px] text-slate-400 font-medium uppercase tracking-wider block">Trạng thái</span>
-                  <span class="text-xs font-bold text-white">Hoạt động</span>
+            <div id="activity-status-box" class="bg-slate-900 rounded-xl p-2 flex justify-between items-center">
+              <div class="flex items-center gap-1">
+                <img src="images/status.png" class="w-6 h-6 object-contain">
+                <div class="flex gap-1 flex-col">
+                  <span class="text-[7px] text-slate-400 font-medium uppercase tracking-wider block leading-none">Trạng thái</span>
+                  <span class="text-[10px] font-bold text-white leading-none">Hoạt động</span>
                 </div>
               </div>
               <span id="badge-activity-status"
-                class="px-2 py-0.5 text-[9px] font-bold rounded bg-emerald-500/15 text-emerald-400 flex items-center gap-1">
+                class="px-1.5 py-0.5 text-[8px] font-bold rounded bg-emerald-500/15 text-emerald-400 flex items-center gap-1">
                 <span class="w-1 h-1 bg-emerald-400 rounded-full animate-pulse"></span> BẬT
               </span>
             </div>
-            <div id="walk-in-status-box" class="bg-slate-900 rounded-xl p-2.5 flex justify-between items-center">
-              <div class="flex items-center gap-1.5">
-                <img src="images/walkin.png" class="w-8 h-8 object-contain">
-                <div>
-                  <span class="text-[8.5px] text-slate-400 font-medium uppercase tracking-wider block">Khách vãng
-                    lai</span>
-                  <span class="text-xs font-bold text-white">Walk-in</span>
+            <div id="walk-in-status-box" class="bg-slate-900 rounded-xl p-2 flex justify-between items-center">
+              <div class="flex items-center gap-1">
+                <img src="images/walkin.png" class="w-6 h-6 object-contain">
+                 <div class="flex gap-1 flex-col">
+                    <span class="text-[7px] text-slate-400 font-medium uppercase tracking-wider block leading-none">Khách vãng lai</span>
+                   <span class="text-[10px] font-bold text-white leading-none">Walk-in</span>
                 </div>
               </div>
               <span
-                class="px-2 py-0.5 text-[9px] font-bold rounded bg-emerald-500/15 text-emerald-400 flex items-center gap-1">
+                class="px-1.5 py-0.5 text-[8px] font-bold rounded bg-emerald-500/15 text-emerald-400 flex items-center gap-1">
                 BẬT
               </span>
             </div>
@@ -858,7 +842,7 @@
               class="bg-orange-500 hover:bg-orange-600 rounded-xl p-3 text-left shadow-lg relative overflow-hidden transition transform active:scale-95">
               <div class="flex items-center justify-between gap-2">
                 <div>
-                  <h3 class="text-xs font-extrabold text-white leading-tight">Mua Crypto (P2P)</h3>
+                  <h3 class="text-[11px] font-medium text-white leading-tight">Mua Crypto (P2P)</h3>
                 </div>
                 <img src="images/buy.png" class="w-6 h-6 object-contain shrink-0">
               </div>
@@ -867,7 +851,7 @@
               class="bg-blue-600 hover:bg-blue-700 rounded-xl p-3 text-left shadow-lg relative overflow-hidden transition transform active:scale-95">
               <div class="flex items-center justify-between gap-2">
                 <div>
-                  <h3 class="text-xs font-extrabold text-white leading-tight">Bán Crypto (P2P)</h3>
+                  <h3 class="text-[11px] font-medium text-white leading-tight">Bán Crypto (P2P)</h3>
                 </div>
                 <img src="images/sell.png" class="w-6 h-6 object-contain shrink-0">
               </div>
@@ -1045,7 +1029,13 @@
               </button>
                 </div>
               </div>
-              
+
+            </div>
+
+            <!-- 2/3: partner-license-slider (shown when has license) -->
+            <div id="partner-license-slider" class="hidden relative overflow-hidden rounded-xl" style="flex:2;">
+              <div id="partner-slider-track" class="flex h-full" style="transition:transform 0.5s ease;height:100%;"></div>
+              <div id="partner-dots-container" class="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex gap-1"></div>
             </div>
 
             <!-- 1/3: Video quảng cáo YouTube -->
@@ -2114,7 +2104,7 @@
 
       <!-- THANH ĐIỀU HƯỚNG DƯỚI ĐỘNG (BOTTOM NAVIGATION - DASH-26 - Không viền) -->
       <div id="bottom-nav-bar"
-        class="absolute bottom-0 left-0 right-0 h-16 bg-slate-900 px-4 flex justify-around items-center z-45 shrink-0 shadow-[0_-5px_15px_rgba(0,0,0,0.4)]">
+        class="absolute bottom-0 left-0 right-0 h-16 bg-slate-900 flex items-center z-45 shrink-0 shadow-[0_-5px_15px_rgba(0,0,0,0.4)]">
         <!-- Render tự động tùy theo trạng thái Giấy phép & Screen định hướng -->
       </div>
 
@@ -2357,7 +2347,7 @@
       state.currentScreen = screenName;
 
       // Ẩn tất cả màn hình
-      document.getElementById('screen-dashboard').classList.add('hidden');
+      document.getElementById('screen-home').classList.add('hidden');
       document.getElementById('screen-scanner').classList.add('hidden');
       document.getElementById('screen-qr').classList.add('hidden');
       document.getElementById('screen-license-mgmt').classList.add('hidden');
@@ -2369,14 +2359,14 @@
       document.getElementById('screen-atm-qr').classList.add('hidden');
 
       if (screenName === 'dashboard') {
-        document.getElementById('screen-dashboard').classList.remove('hidden');
+        document.getElementById('screen-home').classList.remove('hidden');
         updateDashboardUI();
       } else if (screenName === 'scanner') {
         // DASH-22.3: Nếu giấy phép hết hạn, khóa hành động mở quét QR
         if (state.licenseStatus === 'expired') {
           showToast("Hành động bị khóa", "Gia hạn Giấy phép Nhượng quyền để mở khóa công cụ ATM này.", "warning");
           state.currentScreen = 'dashboard';
-          document.getElementById('screen-dashboard').classList.remove('hidden');
+          document.getElementById('screen-home').classList.remove('hidden');
           updateDashboardUI();
           return;
         }
@@ -2539,44 +2529,10 @@
 
       const isComboActive = state.activeRoles.mobile && state.activeRoles.merchant && !isNone;
 
-      if (isComboActive) {
-        // Nếu là Combo: Ẩn 2 vùng riêng biệt, hiển thị 1 vùng tích hợp duy nhất (DASH-015)
-        areaCombo.classList.remove('hidden');
-        areaMobile.classList.add('hidden');
-        areaMerchant.classList.add('hidden');
-        if (isExpired) {
-          applyReadOnlyOverlay(areaCombo, 'grid-combo-actions');
-        } else {
-          removeReadOnlyOverlay(areaCombo, 'grid-combo-actions');
-        }
-      } else {
-        // Không phải Combo: Ẩn vùng Combo, hiển thị theo phân vai Standard thông thường
-        areaCombo.classList.add('hidden');
-
-        // Mobile ATM Area
-        if (state.activeRoles.mobile && !isNone) {
-          areaMobile.classList.remove('hidden');
-          if (isExpired) {
-            applyReadOnlyOverlay(areaMobile, 'grid-mobile-actions');
-          } else {
-            removeReadOnlyOverlay(areaMobile, 'grid-mobile-actions');
-          }
-        } else {
-          areaMobile.classList.add('hidden');
-        }
-
-        // Merchant ATM Area
-        if (state.activeRoles.merchant && !isNone) {
-          areaMerchant.classList.remove('hidden');
-          if (isExpired) {
-            applyReadOnlyOverlay(areaMerchant, 'grid-merchant-actions');
-          } else {
-            removeReadOnlyOverlay(areaMerchant, 'grid-merchant-actions');
-          }
-        } else {
-          areaMerchant.classList.add('hidden');
-        }
-      }
+      // Tất cả các area ATM đều ẩn — chức năng đã chuyển vào hamburger menu
+      areaCombo.classList.add('hidden');
+      areaMobile.classList.add('hidden');
+      areaMerchant.classList.add('hidden');
 
       // 9. Hiệu suất summary (DASH-16.6 & DASH-17.8)
       const metricsPanel = document.getElementById('summary-metrics-panel');
@@ -2596,10 +2552,13 @@
 
       // 11. Banner Đăng ký làm Đối tác (DASH-8.1)
       const becomePartnerCard = document.getElementById('become-partner-card');
+      const partnerLicenseSlider = document.getElementById('partner-license-slider');
       if (isNone) {
         becomePartnerCard.classList.remove('hidden');
+        partnerLicenseSlider.classList.add('hidden');
       } else {
         becomePartnerCard.classList.add('hidden');
+        partnerLicenseSlider.classList.remove('hidden');
       }
 
       // 12. Quick Actions cho người dùng chưa nhượng quyền (DASH-12.1.1)
@@ -2610,13 +2569,8 @@
       //   quickPanel.classList.add('hidden');
       // }
 
-      // 13. Nút Quản lý Giấy phép (DASH-10.1)
-      const manageCard = document.getElementById('manage-franchise-card');
-      if (!isNone) {
-        manageCard.classList.remove('hidden');
-      } else {
-        manageCard.classList.add('hidden');
-      }
+      // 13. Nút Quản lý Giấy phép — ẩn, đã chuyển vào hamburger menu
+      document.getElementById('manage-franchise-card').classList.add('hidden');
 
       // 14. Render Transactions
       renderRecentTransactions();
@@ -2690,50 +2644,63 @@
       const isNone = state.licenseStatus === 'none';
       const screen = state.currentScreen;
 
-      // Danh sách tất cả item cơ bản
-      let items = [
-        { id: 'home',          label: 'Home',         icon: 'home',            action: () => changeScreen('dashboard') },
-        { id: 'dashboard',     label: 'Dashboard',    icon: 'layout-dashboard',action: () => changeScreen('dashboard') },
-        { id: 'p2p_buy_flow',  label: 'P2P Exchange', icon: 'globe',           action: () => changeScreen('p2p_buy_flow') },
-        { id: 'history',       label: 'Payment',      icon: 'credit-card',     action: () => openHistoryScreen() },
-        { id: 'wallet_details',label: 'Wallet Hub',   icon: 'wallet',          action: () => changeScreen('wallet_details') },
-        { id: 'hamburger',     label: 'Menu',         icon: 'menu',            action: () => openHamburgerMenu() }
+      // 4 item cố định — Home luôn ẩn vì mặc định đang ở trang này
+      // Bố cục: [Dashboard] [P2P Exchange] ([SCAN]) [Wallet Hub] [Menu]
+      const BASE_LEFT  = [
+        { id: 'dashboard',     label: 'Dashboard',    icon: 'layout-dashboard', action: () => changeScreen('dashboard') },
+        { id: 'p2p_buy_flow',  label: 'P2P Exchange', icon: 'globe',            action: () => changeScreen('p2p_buy_flow') },
+      ];
+      const BASE_RIGHT = [
+        { id: 'wallet_details',label: 'Wallet Hub',   icon: 'wallet',           action: () => changeScreen('wallet_details') },
+        { id: 'hamburger',     label: 'Menu',         icon: 'menu',             action: () => openHamburgerMenu() },
       ];
 
-      // Nếu có giấy phép: Thêm nút Scan QR nổi bật ở giữa (DASH-26.3)
-      if (!isNone) {
-        items.splice(3, 0, { id: 'scanner', label: 'Quét QR', icon: 'scan-line', action: () => changeScreen('scanner'), primary: true });
+      // Màn hình đang active → ẩn item tương ứng
+      const ACTIVE_MAP = {
+        dashboard:      'dashboard',
+        p2p_buy_flow:   'p2p_buy_flow',
+        p2p_sell_flow:  'p2p_buy_flow',
+        wallet_details: 'wallet_details',
+        scanner:        'scanner',
+      };
+      const activeId = ACTIVE_MAP[screen] || '';
+
+      const makeBtn = (item, active = false) => {
+        const btn = document.createElement('button');
+        btn.onclick = item.action;
+        const isActive = active || item.id === activeId;
+        btn.className = `flex-1 flex flex-col items-center justify-center transition ${isActive ? 'text-slate-400 hover:text-white' : 'text-slate-400 hover:text-white'}`;
+        btn.innerHTML = `
+          <i data-lucide="${item.icon}" class="w-4 h-4"></i>
+          <span class="text-[9px] font-medium mt-1">${item.label}</span>
+        `;
+        return btn;
+      };
+
+      if (isNone) {
+        const onDashboard = screen === 'dashboard';
+        const homeSlot = onDashboard
+          ? { id: 'dashboard', label: 'Dashboard', icon: 'layout-dashboard', action: () => changeScreen('dashboard') }
+          : { id: 'home',      label: 'Home',      icon: 'home',             action: () => changeScreen('dashboard') };
+        navContainer.appendChild(makeBtn(homeSlot, onDashboard));
+        [BASE_LEFT[1], ...BASE_RIGHT]
+          .filter(item => item.id !== activeId)
+          .forEach(item => navContainer.appendChild(makeBtn(item)));
+      } else {
+        BASE_LEFT.forEach(item => navContainer.appendChild(makeBtn(item)));
+
+        const scanActive = activeId === 'scanner';
+        const scanWrap = document.createElement('div');
+        scanWrap.className = 'flex-1 flex items-center justify-center';
+        const scanBtn = document.createElement('button');
+        scanBtn.onclick = () => changeScreen('scanner');
+        scanBtn.className = `w-12 h-12 ${scanActive ? 'bg-orange-600' : 'bg-orange-500 hover:bg-orange-600'} text-white rounded-full flex items-center justify-center shadow-lg shadow-orange-500/20 transform -translate-y-2.5 transition active:scale-95`;
+        scanBtn.innerHTML = `<i data-lucide="scan-line" class="w-5 h-5"></i>`;
+        scanWrap.appendChild(scanBtn);
+        navContainer.appendChild(scanWrap);
+
+        BASE_RIGHT.forEach(item => navContainer.appendChild(makeBtn(item)));
       }
-
-      // Ẩn item của màn hình đang active
-      let activeId = '';
-      if (screen === 'dashboard')                        activeId = 'dashboard';
-      if (screen === 'p2p_buy_flow' || screen === 'p2p_sell_flow') activeId = 'p2p_buy_flow';
-      if (screen === 'wallet_details')                   activeId = 'wallet_details';
-      if (screen === 'scanner')                          activeId = 'scanner';
-      if (screen === 'history')                          activeId = 'history';
-
-      // Tạo các button điều hướng
-      items.forEach(item => {
-        if (item.id === activeId) return;
-
-        if (item.primary) {
-          const btn = document.createElement('button');
-          btn.onclick = item.action;
-          btn.className = "w-12 h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center shadow-lg shadow-orange-500/20 transform -translate-y-2.5 transition active:scale-95";
-          btn.innerHTML = `<i data-lucide="${item.icon}" class="w-5 h-5"></i>`;
-          navContainer.appendChild(btn);
-        } else {
-          const btn = document.createElement('button');
-          btn.onclick = item.action;
-          btn.className = "flex flex-col items-center justify-center text-slate-400 hover:text-white transition";
-          btn.innerHTML = `
-            <i data-lucide="${item.icon}" class="w-4 h-4"></i>
-            <span class="text-[9px] font-medium mt-1">${item.label}</span>
-          `;
-          navContainer.appendChild(btn);
-        }
-      });
     }
 
     // XỬ LÝ KHI BẤM VÀO CÁC NÚT HOẠT ĐỘNG TRONG VÙNG ATM (DASH-22.3)
@@ -3514,18 +3481,18 @@
           {
             label: 'Tài khoản',
             items: [
-              { icon: 'user',          label: 'Profile',              action: () => showToast('Profile', 'Quản lý thông tin cá nhân.') },
-              { icon: 'history',       label: 'Lịch sử giao dịch',   action: () => { closeHamburgerMenu(); openHistoryScreen(); } },
-              { icon: 'shield',        label: 'Bảo mật',              action: () => showToast('Bảo mật', 'Cài đặt mật khẩu & xác thực 2 lớp.') },
-              { icon: 'bell',          label: 'Thông báo',            action: () => showToast('Thông báo', 'Quản lý cài đặt thông báo.') },
+              { icon: 'user',        color: 'blue',   label: 'Profile',            action: () => showToast('Profile', 'Quản lý thông tin cá nhân.') },
+              { icon: 'history',     color: 'purple', label: 'Lịch sử giao dịch',  action: () => { closeHamburgerMenu(); openHistoryScreen(); } },
+              { icon: 'shield',      color: 'emerald',label: 'Bảo mật',             action: () => showToast('Bảo mật', 'Cài đặt mật khẩu & xác thực 2 lớp.') },
+              { icon: 'bell',        color: 'amber',  label: 'Thông báo',           action: () => showToast('Thông báo', 'Quản lý cài đặt thông báo.') },
             ]
           },
           {
             label: 'Khác',
             items: [
-              { icon: 'globe',         label: 'Ngôn ngữ',             action: () => showToast('Ngôn ngữ', 'Chọn ngôn ngữ hiển thị.') },
-              { icon: 'help-circle',   label: 'Trợ giúp & Hỗ trợ',   action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
-              { icon: 'log-out',       label: 'Đăng xuất',            action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất khỏi hệ thống.'), danger: true },
+              { icon: 'globe',       color: 'sky',    label: 'Ngôn ngữ',            action: () => showToast('Ngôn ngữ', 'Chọn ngôn ngữ hiển thị.') },
+              { icon: 'help-circle', color: 'indigo', label: 'Trợ giúp & Hỗ trợ',  action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
+              { icon: 'log-out',     color: 'rose',   label: 'Đăng xuất',           action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất.'), danger: true },
             ]
           }
         ]
@@ -3536,18 +3503,18 @@
           {
             label: 'ATM Di động',
             items: [
-              { icon: 'qr-code', label: 'Mã QR Mobile ATM',  action: () => { closeHamburgerMenu(); handleAtmAction('mobile'); } },
-              { icon: 'arrow-left-right', label: 'Thu / Chi hộ', action: () => showToast('Thu / Chi hộ', 'Quản lý giao dịch thu chi hộ.') },
-              { icon: 'shield-check', label: 'Giấy phép',     action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
-              { icon: 'sliders', label: 'Portal Settings',    action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
+              { icon: 'qr-code',          color: 'blue',   label: 'Mã QR Mobile ATM',   action: () => { closeHamburgerMenu(); handleAtmAction('mobile'); } },
+              { icon: 'arrow-left-right', color: 'teal',   label: 'Thu / Chi hộ',        action: () => showToast('Thu / Chi hộ', 'Quản lý giao dịch thu chi hộ.') },
+              { icon: 'shield-check',     color: 'emerald',label: 'Giấy phép',            action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
+              { icon: 'sliders',          color: 'amber',  label: 'Portal Settings',      action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
             ]
           },
           {
             label: 'Tài khoản',
             items: [
-              { icon: 'user', label: 'Hồ sơ cá nhân',        action: () => showToast('Hồ sơ', 'Quản lý thông tin cá nhân.') },
-              { icon: 'help-circle', label: 'Trợ giúp & Hỗ trợ', action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
-              { icon: 'log-out', label: 'Đăng xuất',          action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất khỏi hệ thống.'), danger: true },
+              { icon: 'user',        color: 'blue',   label: 'Hồ sơ cá nhân',       action: () => showToast('Hồ sơ', 'Quản lý thông tin cá nhân.') },
+              { icon: 'help-circle', color: 'indigo', label: 'Trợ giúp & Hỗ trợ',   action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
+              { icon: 'log-out',     color: 'rose',   label: 'Đăng xuất',            action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất.'), danger: true },
             ]
           }
         ]
@@ -3558,19 +3525,20 @@
           {
             label: 'Merchant ATM',
             items: [
-              { icon: 'qr-code', label: 'Mã QR Merchant',    action: () => { closeHamburgerMenu(); handleAtmAction('merchant'); } },
-              { icon: 'users', label: 'Walk-in Management',   action: () => showToast('Walk-in', 'Quản lý khách hàng vãng lai.') },
-              { icon: 'arrow-left-right', label: 'Thu / Chi hộ', action: () => showToast('Thu / Chi hộ', 'Quản lý giao dịch thu chi hộ.') },
-              { icon: 'shield-check', label: 'Giấy phép',     action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
-              { icon: 'sliders', label: 'Portal Settings',    action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
+              { icon: 'qr-code',          color: 'emerald',label: 'Mã QR Merchant',       action: () => { closeHamburgerMenu(); handleAtmAction('merchant'); } },
+              { icon: 'users',            color: 'blue',   label: 'Walk-in Management',   action: () => showToast('Walk-in', 'Quản lý khách hàng vãng lai.') },
+              { icon: 'credit-card',      color: 'violet', label: 'Payment Process',       action: () => showToast('Payment Process', 'Quản lý quy trình thanh toán Merchant ATM.') },
+              { icon: 'arrow-left-right', color: 'teal',   label: 'Thu / Chi hộ',         action: () => showToast('Thu / Chi hộ', 'Quản lý giao dịch thu chi hộ.') },
+              { icon: 'shield-check',     color: 'emerald',label: 'Giấy phép',             action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
+              { icon: 'sliders',          color: 'amber',  label: 'Portal Settings',       action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
             ]
           },
           {
             label: 'Doanh nghiệp',
             items: [
-              { icon: 'building-2', label: 'Hồ sơ doanh nghiệp', action: () => showToast('Doanh nghiệp', 'Quản lý thông tin doanh nghiệp.') },
-              { icon: 'help-circle', label: 'Trợ giúp & Hỗ trợ', action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
-              { icon: 'log-out', label: 'Đăng xuất',           action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất khỏi hệ thống.'), danger: true },
+              { icon: 'building-2',  color: 'violet', label: 'Hồ sơ doanh nghiệp',  action: () => showToast('Doanh nghiệp', 'Quản lý thông tin doanh nghiệp.') },
+              { icon: 'help-circle', color: 'indigo', label: 'Trợ giúp & Hỗ trợ',   action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
+              { icon: 'log-out',     color: 'rose',   label: 'Đăng xuất',            action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất.'), danger: true },
             ]
           }
         ]
@@ -3581,24 +3549,24 @@
           {
             label: 'ATM Di động',
             items: [
-              { icon: 'qr-code', label: 'Mã QR Mobile ATM',  action: () => { closeHamburgerMenu(); handleAtmAction('mobile'); } },
+              { icon: 'qr-code', color: 'blue',    label: 'Mã QR Mobile ATM',  action: () => { closeHamburgerMenu(); handleAtmAction('mobile'); } },
             ]
           },
           {
             label: 'Merchant ATM',
             items: [
-              { icon: 'qr-code', label: 'Mã QR Merchant',    action: () => { closeHamburgerMenu(); handleAtmAction('merchant'); } },
-              { icon: 'users', label: 'Walk-in Management',   action: () => showToast('Walk-in', 'Quản lý khách hàng vãng lai.') },
+              { icon: 'qr-code', color: 'emerald', label: 'Mã QR Merchant',    action: () => { closeHamburgerMenu(); handleAtmAction('merchant'); } },
+              { icon: 'users',   color: 'blue',    label: 'Walk-in Management', action: () => showToast('Walk-in', 'Quản lý khách hàng vãng lai.') },
             ]
           },
           {
             label: 'Quản lý',
             items: [
-              { icon: 'arrow-left-right', label: 'Thu / Chi hộ', action: () => showToast('Thu / Chi hộ', 'Quản lý giao dịch thu chi hộ.') },
-              { icon: 'shield-check', label: 'Giấy phép',     action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
-              { icon: 'sliders', label: 'Portal Settings',    action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
-              { icon: 'help-circle', label: 'Trợ giúp & Hỗ trợ', action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
-              { icon: 'log-out', label: 'Đăng xuất',          action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất khỏi hệ thống.'), danger: true },
+              { icon: 'arrow-left-right', color: 'teal',   label: 'Thu / Chi hộ',       action: () => showToast('Thu / Chi hộ', 'Quản lý giao dịch thu chi hộ.') },
+              { icon: 'shield-check',     color: 'emerald',label: 'Giấy phép',            action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
+              { icon: 'sliders',          color: 'amber',  label: 'Portal Settings',      action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
+              { icon: 'help-circle',      color: 'indigo', label: 'Trợ giúp & Hỗ trợ',  action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
+              { icon: 'log-out',          color: 'rose',   label: 'Đăng xuất',            action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất.'), danger: true },
             ]
           }
         ]
@@ -3630,12 +3598,26 @@
         groupLabel.textContent = group.label;
         section.appendChild(groupLabel);
 
+        const COLOR_CLASSES = {
+          blue:    { bg: 'hover:bg-blue-500/15',    text: 'hover:text-blue-300',    icon: 'group-hover:text-blue-300',    chevron: 'text-blue-400' },
+          purple:  { bg: 'hover:bg-purple-500/15',  text: 'hover:text-purple-300',  icon: 'group-hover:text-purple-300',  chevron: 'text-purple-400' },
+          emerald: { bg: 'hover:bg-emerald-500/15', text: 'hover:text-emerald-300', icon: 'group-hover:text-emerald-300', chevron: 'text-emerald-400' },
+          amber:   { bg: 'hover:bg-amber-500/15',   text: 'hover:text-amber-300',   icon: 'group-hover:text-amber-300',   chevron: 'text-amber-400' },
+          sky:     { bg: 'hover:bg-sky-500/15',     text: 'hover:text-sky-300',     icon: 'group-hover:text-sky-300',     chevron: 'text-sky-400' },
+          indigo:  { bg: 'hover:bg-indigo-500/15',  text: 'hover:text-indigo-300',  icon: 'group-hover:text-indigo-300',  chevron: 'text-indigo-400' },
+          teal:    { bg: 'hover:bg-teal-500/15',    text: 'hover:text-teal-300',    icon: 'group-hover:text-teal-300',    chevron: 'text-teal-400' },
+          violet:  { bg: 'hover:bg-violet-500/15',  text: 'hover:text-violet-300',  icon: 'group-hover:text-violet-300',  chevron: 'text-violet-400' },
+          rose:    { bg: 'hover:bg-rose-500/20',    text: 'hover:text-rose-200',    icon: 'group-hover:text-rose-200',    chevron: 'text-rose-300' },
+        };
+
         group.items.forEach(item => {
+          const c = COLOR_CLASSES[item.color] || COLOR_CLASSES.blue;
           const btn = document.createElement('button');
-          btn.className = `w-full flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 transition ${item.danger ? 'hover:bg-rose-500/10 text-rose-400' : 'hover:bg-slate-800 text-slate-200'}`;
+          btn.className = `group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 transition-all duration-200 ease-out active:scale-[0.97] text-slate-200 ${c.bg} ${c.text} hover:pl-4`;
           btn.innerHTML = `
-            <i data-lucide="${item.icon}" class="w-4 h-4 shrink-0 ${item.danger ? 'text-rose-400' : 'text-slate-400'}"></i>
-            <span class="text-[11px] font-semibold">${item.label}</span>
+            <i data-lucide="${item.icon}" class="w-4 h-4 shrink-0 transition-all duration-200 text-slate-400 ${c.icon} group-hover:scale-110"></i>
+            <span class="text-[11px] font-semibold tracking-wide">${item.label}</span>
+            <i data-lucide="chevron-right" class="w-3 h-3 ml-auto opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ${c.chevron}"></i>
           `;
           btn.onclick = item.action;
           section.appendChild(btn);
@@ -3676,28 +3658,49 @@
       document.getElementById('lang-label').textContent = LANGS[langIdx];
     }
 
-    // AD BANNER SLIDER
-    (function () {
-      const track = document.getElementById('ad-slider-track');
-      const dots = document.querySelectorAll('.ad-dot');
-      const total = 3;
+    // BANNER SLIDERS — rendered from data/banner-sliders.json
+    function initBannerSlider({ sliderId, trackId, dotsContainerId, dotClass, images, dotSize }) {
+      const track = document.getElementById(trackId);
+      const dotsContainer = document.getElementById(dotsContainerId);
+      const total = images.length;
+      const pct = 100 / total;
+
+      track.style.width = (total * 100) + '%';
+      track.innerHTML = images.map(() =>
+        `<div class="h-full shrink-0" style="width:${pct}%;"></div>`
+      ).join('');
+
+      const slides = track.querySelectorAll('div');
+      images.forEach((item, i) => {
+        const img = document.createElement('img');
+        img.src = item.src;
+        img.alt = item.alt || '';
+        img.className = 'w-full h-full object-cover';
+        img.draggable = false;
+        slides[i].appendChild(img);
+      });
+
+      const ds = dotSize || '2';
+      dotsContainer.innerHTML = images.map((_, i) =>
+        `<span class="w-${ds} h-${ds} rounded-full ${dotClass}" data-index="${i}" style="background:${i === 0 ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.4)'};cursor:pointer;"></span>`
+      ).join('');
+      const dots = dotsContainer.querySelectorAll('.' + dotClass);
+
       let current = 0;
       let timer;
 
       function goTo(idx) {
         current = (idx + total) % total;
-        track.style.transform = 'translateX(-' + (current * 33.333) + '%)';
+        track.style.transform = 'translateX(-' + (current * pct) + '%)';
         dots.forEach((d, i) => {
           d.style.background = i === current ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.4)';
         });
       }
 
-      function next() { goTo(current + 1); }
-
-      function start() { timer = setInterval(next, 3500); }
+      function start() { timer = setInterval(() => goTo(current + 1), 3500); }
       function stop() { clearInterval(timer); }
 
-      const slider = document.getElementById('ad-banner-slider');
+      const slider = document.getElementById(sliderId);
       let startX = 0;
       slider.addEventListener('touchstart', e => { stop(); startX = e.touches[0].clientX; }, { passive: true });
       slider.addEventListener('touchend', e => {
@@ -3709,7 +3712,29 @@
       dots.forEach(d => d.addEventListener('click', () => { stop(); goTo(+d.dataset.index); start(); }));
 
       start();
-    })();
+    }
+
+    fetch('data/banner-sliders.json')
+      .then(r => r.json())
+      .then(data => {
+        initBannerSlider({
+          sliderId: 'ad-banner-slider',
+          trackId: 'ad-slider-track',
+          dotsContainerId: 'ad-dots-container',
+          dotClass: 'ad-dot',
+          images: data.adBannerSlider,
+          dotSize: '2'
+        });
+        initBannerSlider({
+          sliderId: 'partner-license-slider',
+          trackId: 'partner-slider-track',
+          dotsContainerId: 'partner-dots-container',
+          dotClass: 'partner-slide-dot',
+          images: data.partnerLicenseSlider,
+          dotSize: '1.5'
+        });
+      })
+      .catch(() => console.warn('banner-sliders.json not found'));
   </script>
 </body>
 

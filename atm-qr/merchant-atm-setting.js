@@ -370,7 +370,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     repaymentDateSelect = new TomSelect(el, {
       plugins: ['remove_button', 'checkbox_options'],
-      placeholder: 'Select closing dates to pay...',
+      placeholder: 'Select settlement dates to pay...',
       maxItems: null,
       options: opts,
       render: {

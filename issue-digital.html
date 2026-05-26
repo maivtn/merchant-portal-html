@@ -5271,6 +5271,25 @@ Please present this card before payment.</textarea>
       const step4 = document.getElementById('step4Card');
       if (step4) step4.style.display = (typeId === '5') ? 'none' : '';
 
+      // Membership: swap Step 3 (Expiry) and Step 4 (Benefits) positions
+      if (step3 && step4 && step3.parentNode) {
+        if (typeId === '2') {
+          // Move step4 before step3 (Benefits at pos 3, Expiry at pos 4)
+          if (step3.previousElementSibling !== step4) {
+            step3.parentNode.insertBefore(step4, step3);
+          }
+          document.getElementById('sbadge-4').textContent = 'Step 3:';
+          document.getElementById('sbadge-3').textContent = 'Step 4:';
+        } else {
+          // Restore original order: Expiry at pos 3, Benefits at pos 4
+          if (step4.previousElementSibling !== step3) {
+            step3.parentNode.insertBefore(step3, step4);
+          }
+          document.getElementById('sbadge-3').textContent = 'Step 3:';
+          document.getElementById('sbadge-4').textContent = 'Step 4:';
+        }
+      }
+
       // Show/hide step 5 (Purchase Price — for Membership & Discount)
       const step5 = document.getElementById('step5Card');
       if (step5) step5.style.display = (typeId === '2' || typeId === '3') ? '' : 'none';

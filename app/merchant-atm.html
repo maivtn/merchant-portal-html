@@ -1520,17 +1520,6 @@
               </h3>
               <div class="w-8"></div>
             </div>
-            <!-- Mode badge row -->
-            <div class="flex items-center gap-2 mt-3 relative z-10">
-              <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold"
-                style="background:rgba(255,255,255,0.2);color:#fff;">
-                <i data-lucide="shield-check" class="w-3 h-3"></i> P2P Secured
-              </div>
-              <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold"
-                style="background:rgba(255,255,255,0.2);color:#fff;">
-                <i data-lucide="zap" class="w-3 h-3"></i> Instant Match
-              </div>
-            </div>
           </div>
 
           <!-- Form body — elevated card floats over header -->
@@ -2645,10 +2634,10 @@
       const screen = state.currentScreen;
 
       // 4 item cố định — Home luôn ẩn vì mặc định đang ở trang này
-      // Bố cục: [Dashboard] [P2P Exchange] ([SCAN]) [Wallet Hub] [Menu]
+      // Bố cục: [Dashboard] [Exchange Hub] ([SCAN]) [Wallet Hub] [Menu]
       const BASE_LEFT  = [
         { id: 'dashboard',     label: 'Dashboard',    icon: 'layout-dashboard', action: () => changeScreen('dashboard') },
-        { id: 'p2p_buy_flow',  label: 'P2P Exchange', icon: 'globe',            action: () => changeScreen('p2p_buy_flow') },
+        { id: 'p2p_buy_flow',  label: 'Exchange Hub', icon: 'globe',            action: () => openExchangeHubMenu() },
       ];
       const BASE_RIGHT = [
         { id: 'wallet_details',label: 'Wallet Hub',   icon: 'wallet',           action: () => changeScreen('wallet_details') },
@@ -3481,10 +3470,8 @@
           {
             label: 'Tài khoản',
             items: [
-              { icon: 'user',        color: 'blue',   label: 'Profile',            action: () => showToast('Profile', 'Quản lý thông tin cá nhân.') },
-              { icon: 'history',     color: 'purple', label: 'Lịch sử giao dịch',  action: () => { closeHamburgerMenu(); openHistoryScreen(); } },
-              { icon: 'shield',      color: 'emerald',label: 'Bảo mật',             action: () => showToast('Bảo mật', 'Cài đặt mật khẩu & xác thực 2 lớp.') },
-              { icon: 'bell',        color: 'amber',  label: 'Thông báo',           action: () => showToast('Thông báo', 'Quản lý cài đặt thông báo.') },
+              { icon: 'user',        color: 'blue',   label: 'Profile',            action: () => {} },
+              { icon: 'shield',      color: 'emerald',label: 'KYC',             action: () => {} },
             ]
           },
           {
@@ -3504,15 +3491,14 @@
             label: 'ATM Di động',
             items: [
               { icon: 'qr-code',          color: 'blue',   label: 'Mã QR Mobile ATM',   action: () => { closeHamburgerMenu(); handleAtmAction('mobile'); } },
-              { icon: 'arrow-left-right', color: 'teal',   label: 'Thu / Chi hộ',        action: () => showToast('Thu / Chi hộ', 'Quản lý giao dịch thu chi hộ.') },
-              { icon: 'shield-check',     color: 'emerald',label: 'Giấy phép',            action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
-              { icon: 'sliders',          color: 'amber',  label: 'Portal Settings',      action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
             ]
           },
           {
             label: 'Tài khoản',
             items: [
               { icon: 'user',        color: 'blue',   label: 'Hồ sơ cá nhân',       action: () => showToast('Hồ sơ', 'Quản lý thông tin cá nhân.') },
+               { icon: 'shield',      color: 'emerald',label: 'KYB',             action: () => {} },
+              { icon: 'shield-check',     color: 'emerald',label: 'Giấy phép',            action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
               { icon: 'help-circle', color: 'indigo', label: 'Trợ giúp & Hỗ trợ',   action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
               { icon: 'log-out',     color: 'rose',   label: 'Đăng xuất',            action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất.'), danger: true },
             ]
@@ -3525,18 +3511,17 @@
           {
             label: 'Merchant ATM',
             items: [
-              { icon: 'qr-code',          color: 'emerald',label: 'Mã QR Merchant',       action: () => { closeHamburgerMenu(); handleAtmAction('merchant'); } },
-              { icon: 'users',            color: 'blue',   label: 'Walk-in Management',   action: () => showToast('Walk-in', 'Quản lý khách hàng vãng lai.') },
+              { icon: 'qr-code',          color: 'emerald',label: 'Mã QR Merchant ATM',       action: () => { closeHamburgerMenu(); handleAtmAction('merchant'); } },
+              { icon: 'gift',            color: 'blue',   label: 'Gift & Voucher Management',   action: () => showToast('Gift & Voucher Management', 'Quản lý card voucher') },
               { icon: 'credit-card',      color: 'violet', label: 'Payment Process',       action: () => showToast('Payment Process', 'Quản lý quy trình thanh toán Merchant ATM.') },
-              { icon: 'arrow-left-right', color: 'teal',   label: 'Thu / Chi hộ',         action: () => showToast('Thu / Chi hộ', 'Quản lý giao dịch thu chi hộ.') },
-              { icon: 'shield-check',     color: 'emerald',label: 'Giấy phép',             action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
-              { icon: 'sliders',          color: 'amber',  label: 'Portal Settings',       action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
             ]
           },
           {
             label: 'Doanh nghiệp',
             items: [
               { icon: 'building-2',  color: 'violet', label: 'Hồ sơ doanh nghiệp',  action: () => showToast('Doanh nghiệp', 'Quản lý thông tin doanh nghiệp.') },
+               { icon: 'shield',      color: 'emerald',label: 'KYB',             action: () => {} },
+              { icon: 'shield-check',     color: 'emerald',label: 'Giấy phép',             action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
               { icon: 'help-circle', color: 'indigo', label: 'Trợ giúp & Hỗ trợ',   action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
               { icon: 'log-out',     color: 'rose',   label: 'Đăng xuất',            action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất.'), danger: true },
             ]
@@ -3547,24 +3532,20 @@
         title: 'Combo ATM Partner',
         groups: [
           {
-            label: 'ATM Di động',
-            items: [
-              { icon: 'qr-code', color: 'blue',    label: 'Mã QR Mobile ATM',  action: () => { closeHamburgerMenu(); handleAtmAction('mobile'); } },
-            ]
-          },
-          {
             label: 'Merchant ATM',
             items: [
-              { icon: 'qr-code', color: 'emerald', label: 'Mã QR Merchant',    action: () => { closeHamburgerMenu(); handleAtmAction('merchant'); } },
-              { icon: 'users',   color: 'blue',    label: 'Walk-in Management', action: () => showToast('Walk-in', 'Quản lý khách hàng vãng lai.') },
+              { icon: 'qr-code', color: 'blue',    label: 'Mã QR Mobile ATM',  action: () => { closeHamburgerMenu(); handleAtmAction('mobile'); } },
+              { icon: 'qr-code',     color: 'emerald', label: 'Mã QR Merchant ATM',    action: () => { closeHamburgerMenu(); handleAtmAction('merchant'); } },
+              { icon: 'gift',            color: 'blue',   label: 'Gift & Voucher Management',   action: () => showToast('Gift & Voucher Management', 'Quản lý card voucher') },
+              { icon: 'credit-card', color: 'violet',  label: 'Payment Process',    action: () => showToast('Payment Process', 'Quản lý quy trình thanh toán Merchant ATM.') },
             ]
           },
           {
-            label: 'Quản lý',
+            label: 'Doanh nghiệp',
             items: [
-              { icon: 'arrow-left-right', color: 'teal',   label: 'Thu / Chi hộ',       action: () => showToast('Thu / Chi hộ', 'Quản lý giao dịch thu chi hộ.') },
+              { icon: 'building-2',  color: 'violet', label: 'Hồ sơ doanh nghiệp',  action: () => showToast('Doanh nghiệp', 'Quản lý thông tin doanh nghiệp.') },
+               { icon: 'shield',      color: 'emerald',label: 'KYB',             action: () => {} },
               { icon: 'shield-check',     color: 'emerald',label: 'Giấy phép',            action: () => { closeHamburgerMenu(); changeScreen('license_management'); } },
-              { icon: 'sliders',          color: 'amber',  label: 'Portal Settings',      action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
               { icon: 'help-circle',      color: 'indigo', label: 'Trợ giúp & Hỗ trợ',  action: () => showToast('Hỗ trợ', 'Liên hệ đội ngũ hỗ trợ VLINKPAY.') },
               { icon: 'log-out',          color: 'rose',   label: 'Đăng xuất',            action: () => showToast('Đăng xuất', 'Bạn đã đăng xuất.'), danger: true },
             ]
@@ -3580,9 +3561,36 @@
       return 'mobile';
     }
 
-    function openHamburgerMenu() {
-      const key = getMenuKey();
-      const config = HAMBURGER_MENUS[key];
+    function openExchangeHubMenu() {
+      openHamburgerMenu({
+        title: 'Exchange Hub',
+        groups: [
+          {
+            label: 'P2P Exchange',
+            items: [
+              { icon: 'sliders',           color: 'amber',  label: 'Portal ATM Setting', action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
+              { icon: 'arrow-down-circle', color: 'emerald',label: 'Buy Crypto (P2P)',   action: () => { closeHamburgerMenu(); changeScreen('p2p_buy_flow'); } },
+              { icon: 'arrow-up-circle',   color: 'rose',   label: 'Sell Crypto (P2P)',  action: () => { closeHamburgerMenu(); changeScreen('p2p_sell_flow'); } },
+              { icon: 'clock',             color: 'indigo', label: 'History',            action: () => { closeHamburgerMenu(); changeScreen('history'); } },
+            ]
+          },
+          {
+            label: 'Platform Exchange',
+            items: [
+              { icon: 'trending-up',   color: 'emerald', label: 'Buy',  action: () => showToast('Platform Buy',  'Mua coin trên sàn nền tảng.') },
+              { icon: 'trending-down', color: 'rose',    label: 'Sell', action: () => showToast('Platform Sell', 'Bán coin trên sàn nền tảng.') },
+              { icon: 'repeat-2',      color: 'violet',  label: 'Swap', action: () => showToast('Platform Swap', 'Hoán đổi coin trên sàn nền tảng.') },
+            ]
+          }
+        ]
+      });
+    }
+
+    function openHamburgerMenu(config) {
+      if (!config) {
+        const key = getMenuKey();
+        config = HAMBURGER_MENUS[key];
+      }
 
       document.getElementById('hamburger-title').textContent = config.title;
 

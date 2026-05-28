@@ -46,24 +46,22 @@
     }
 
     .option-icon-wrapper {
-      width: 64px;
-      height: 64px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      border-radius: 16px;
-      background: rgba(0, 167, 111, 0.08);
+      /* border-radius: 16px; */
+      /* background: rgba(0, 167, 111, 0.08); */
       color: var(--primary-main);
     }
 
     .payment-option-item:nth-of-type(2) .option-icon-wrapper {
-      background: rgba(0, 184, 217, 0.08);
+      /* background: rgba(0, 184, 217, 0.08); */
       color: #00B8D9;
     }
 
     .payment-option-item:nth-of-type(3) .option-icon-wrapper {
-      background: rgba(255, 171, 0, 0.08);
+      /* background: rgba(255, 171, 0, 0.08); */
       color: #FFAB00;
     }
 
@@ -401,6 +399,18 @@
         flex-shrink: 0;
       }
     }
+
+    @media (max-width: 767px) {
+      .payment-option-item {
+        padding: 16px;
+        gap: 12px;
+      }
+
+      .option-icon-wrapper img {
+        width: 60px;
+        height: 60px;
+      }
+    }
   </style>
 </head>
 
@@ -444,14 +454,14 @@
       <!-- Page Tabs -->
       <div class="page-tabs">
         <a href="gift-card-payment.html" class="page-tab active">Gift Card Payment</a>
-        <a href="crypto-payment.html" class="page-tab">Crypto Payment</a>
+        <a href="crypto-payment.html" class="page-tab">Crypto Card Payment</a>
       </div>
 
       <div class="payment-options-list">
         <!-- Option 1: Quick Pay -->
         <div class="payment-option-item" onclick="openModal('modal-quick-pay')">
           <div class="option-icon-wrapper">
-            <iconify-icon icon="solar:bolt-bold-duotone" width="32"></iconify-icon>
+            <img src="images/icon-payment/enter-amount.png" alt="Enter Amount" width="80" height="80" style="object-fit:contain;">
           </div>
           <div class="option-content">
             <div class="option-title">Enter Amount</div>
@@ -464,11 +474,11 @@
         <!-- Option 2: Scan QR -->
         <div class="payment-option-item" onclick="openScanGiftCardModal()">
           <div class="option-icon-wrapper">
-            <iconify-icon icon="solar:qr-code-bold-duotone" width="32"></iconify-icon>
+            <img src="images/icon-payment/scan-vlinkpayc-card.png" alt="Scan VLINKPAY Card" width="80" height="80" style="object-fit:contain;">
           </div>
           <div class="option-content">
             <div class="option-title">Scan VLINKPAY Issued Card QR</div>
-            <div class="option-description">Accept gift cards and vouchers purchased by customers on VLINKPAY.</div>
+            <div class="option-description">Accept gift cards and vouchers purchased by customers on VLINKPAY, including E-Gift Cards and E-Vouchers.</div>
           </div>
           <iconify-icon icon="eva:chevron-right-fill" class="option-arrow" width="24"></iconify-icon>
         </div>
@@ -476,11 +486,11 @@
         <!-- Option 3: Manual Entry -->
         <div class="payment-option-item" onclick="openModal('modal-card-details')">
           <div class="option-icon-wrapper">
-            <iconify-icon icon="solar:card-bold-duotone" width="32"></iconify-icon>
+            <img src="images/icon-payment/scan-store-card.png" alt="Scan Store Card" width="80" height="80" style="object-fit:contain;">
           </div>
           <div class="option-content">
             <div class="option-title">Scan Store Digital Card QR</div>
-            <div class="option-description">Accept digital cards issued by the merchant at the store.
+            <div class="option-description">Accept digital cards issued by the merchant at the store, including gift cards, memberships, prepaid cards, discounts, and promotions.
             </div>
           </div>
           <iconify-icon icon="eva:chevron-right-fill" class="option-arrow" width="24"></iconify-icon>
@@ -493,7 +503,7 @@
   <div id="modal-quick-pay" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="modal-title">Quick Pay (QR Generation)</span>
+        <span class="modal-title">Quick Pay</span>
         <div class="close-btn" onclick="closeModal('modal-quick-pay')">
           <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
         </div>
@@ -538,7 +548,7 @@
   <div id="modal-card-details" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="modal-title">Enter Card Details</span>
+        <span class="modal-title">Scan Store Digital Card QR</span>
         <div class="close-btn" onclick="ecdClose()">
           <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
         </div>
@@ -897,7 +907,7 @@
   <div id="modal-scan-gift-card" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="modal-title">Scan Gift Card QR</span>
+        <span class="modal-title">Scan VLINKPAY Issued Card QR</span>
         <div class="close-btn" onclick="closeScanGiftCardModal()">
           <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
         </div>
@@ -907,7 +917,7 @@
       <div class="modal-body" id="sgc-step1">
         <div class="form-group" style="margin-bottom:28px">
           <label class="form-label sgc-label">
-            Gift Card QR Code <span style="color:#ff5630">*</span>
+            Card QR Code <span style="color:#ff5630">*</span>
           </label>
           <div class="input-wrapper">
             <input type="text" class="minimal-input sgc-qr-input" id="sgcQrInput" placeholder="Enter or scan QR code"

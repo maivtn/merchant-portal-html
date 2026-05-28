@@ -36,6 +36,33 @@
     { type: "section", label: "GIFT CARD CENTER" },
     {
       type: "group",
+      label: "Create New",
+      icon: "solar:add-circle-bold-duotone",
+      iconWidth: 26,
+      children: [
+        {
+          label: "Issue Digital",
+          href: "issue-digital.html",
+          relatedPages: [ 
+            "issue-digital.html", 
+          ],
+        },
+
+        {
+          label: "Quick Setup",
+          href: "issue-card.html",
+          relatedPages: ["issue-card.html"],
+        },
+
+        {
+          label: "Advanced Setup",
+          href: "",
+          relatedPages: [""],
+        },
+      ],
+    },
+    {
+      type: "group",
       label: "Gift & Voucher Management",
       icon: "solar:folder-with-files-bold-duotone",
       iconWidth: 26,
@@ -46,8 +73,6 @@
           relatedPages: [
             "gift-card-details.html",
             "voucher-details.html",
-            "issue-card.html",
-            "issue-digital.html",
             "issue-digital-details.html",
             "issue-digital-membership-details.html",
             "product-history.html",

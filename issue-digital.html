@@ -1647,8 +1647,7 @@
     .biz-phone-wrap {
       flex: 1;
       display: flex;
-      align-items: center;
-      height: 40px;
+      align-items: stretch;
       border: 1.5px solid var(--c-border);
       border-radius: var(--radius-sm);
       background: var(--c-surface);
@@ -1662,7 +1661,6 @@
     }
 
     .biz-dial-select {
-      height: 100%;
       border: none;
       outline: none;
       background: var(--c-surface-subtle);
@@ -1670,7 +1668,7 @@
       font-family: inherit;
       color: var(--c-text-1);
       font-weight: 600;
-      padding: 0 8px 0 10px;
+      padding: 8px 8px 8px 10px;
       cursor: pointer;
       appearance: none;
       -webkit-appearance: none;
@@ -1679,21 +1677,19 @@
 
     .biz-phone-divider {
       width: 1px;
-      height: 22px;
       background: var(--c-border);
       flex-shrink: 0;
     }
 
     .biz-phone-input {
       flex: 1;
-      height: 100%;
       border: none;
       outline: none;
       background: transparent;
       font-size: 13px;
       font-family: inherit;
       color: var(--c-text-1);
-      padding: 0 12px;
+      padding: 8px 12px;
     }
 
     .biz-phone-input::placeholder {
@@ -3479,18 +3475,30 @@
                 </div>
                 <div class="color-dot" style="background:#DBCD43" onclick="selectColor(this,'#DBCD43')" title="Gold">
                 </div> -->
-                <div class="color-dot" style="background:#1E293B" onclick="selectColor(this,'#1E293B')" title="Slate Dark"></div>
-                <div class="color-dot" style="background:#064E3B" onclick="selectColor(this,'#064E3B')" title="Emerald Dark"></div>
-                <div class="color-dot" style="background:#7F1D1D" onclick="selectColor(this,'#7F1D1D')" title="Red Dark"></div>
-                <div class="color-dot" style="background:#4C1D95" onclick="selectColor(this,'#4C1D95')" title="Violet Dark"></div>
-                <div class="color-dot" style="background:#3B82F6" onclick="selectColor(this,'#3B82F6')" title="Blue"></div>
-                <div class="color-dot" style="background:#10B981" onclick="selectColor(this,'#10B981')" title="Green"></div>
-                <div class="color-dot" style="background:#F59E0B" onclick="selectColor(this,'#F59E0B')" title="Amber"></div>
-                <div class="color-dot" style="background:#EC4899" onclick="selectColor(this,'#EC4899')" title="Pink"></div>
-                <div class="color-dot" style="background:#06B6D4" onclick="selectColor(this,'#06B6D4')" title="Cyan"></div>
-                <div class="color-dot" style="background:#8B5CF6" onclick="selectColor(this,'#8B5CF6')" title="Purple"></div>
-                <div class="color-dot" style="background:#FFD84D" onclick="selectColor(this,'#FFD84D')" title="Yellow"></div>
-                <div class="color-dot" style="background:#DBCD43" onclick="selectColor(this,'#DBCD43')" title="Gold"></div>
+                <div class="color-dot" style="background:#1E293B" onclick="selectColor(this,'#1E293B')"
+                  title="Slate Dark"></div>
+                <div class="color-dot" style="background:#064E3B" onclick="selectColor(this,'#064E3B')"
+                  title="Emerald Dark"></div>
+                <div class="color-dot" style="background:#7F1D1D" onclick="selectColor(this,'#7F1D1D')"
+                  title="Red Dark"></div>
+                <div class="color-dot" style="background:#4C1D95" onclick="selectColor(this,'#4C1D95')"
+                  title="Violet Dark"></div>
+                <div class="color-dot" style="background:#3B82F6" onclick="selectColor(this,'#3B82F6')" title="Blue">
+                </div>
+                <div class="color-dot" style="background:#10B981" onclick="selectColor(this,'#10B981')" title="Green">
+                </div>
+                <div class="color-dot" style="background:#F59E0B" onclick="selectColor(this,'#F59E0B')" title="Amber">
+                </div>
+                <div class="color-dot" style="background:#EC4899" onclick="selectColor(this,'#EC4899')" title="Pink">
+                </div>
+                <div class="color-dot" style="background:#06B6D4" onclick="selectColor(this,'#06B6D4')" title="Cyan">
+                </div>
+                <div class="color-dot" style="background:#8B5CF6" onclick="selectColor(this,'#8B5CF6')" title="Purple">
+                </div>
+                <div class="color-dot" style="background:#FFD84D" onclick="selectColor(this,'#FFD84D')" title="Yellow">
+                </div>
+                <div class="color-dot" style="background:#DBCD43" onclick="selectColor(this,'#DBCD43')" title="Gold">
+                </div>
                 <div class="color-dot color-picker-btn" title="Custom color">
                   <iconify-icon class="pick-color-icon" icon="mdi:eyedropper" width="12"></iconify-icon>
                   <input type="color"
@@ -3831,10 +3839,6 @@
                   <input type="text" class="input-minimal" placeholder="Enter full name (optional)" id="holderName"
                     oninput="updateCardHolder(this.value)">
                 </div>
-                <!-- Email: placeholder changes for Membership -->
-                <div class="form-field" id="emailFieldWrap">
-                  <input type="email" class="input-minimal" placeholder="Enter email address" id="holderEmail">
-                </div>
                 <!-- Birthday: only for Membership -->
                 <div class="form-field" id="birthdayField" style="display:none;">
                   <div class="date-input-wrap flatpickr-clear-wrap">
@@ -3852,9 +3856,13 @@
                   </div>
                 </div>
 
-
+                <!-- Email: placeholder changes for Membership -->
+                <div class="form-field" id="emailFieldWrap">
+                  <input type="email" class="input-minimal" placeholder="Enter email address" id="holderEmail">
+                </div>
               </div>
-              <div class="customer-row" id="membershipContactRow" style="display:none; margin-top: 12px;">
+
+              <div class="membership-contact-col" id="membershipContactRow" style="display:none; margin-top: 12px;">
                 <!-- Membership-only: extra contact fields -->
                 <div class="biz-phone-wrap">
                   <select class="biz-dial-select">
@@ -3886,6 +3894,13 @@
                 </div>
                 <div class="form-field">
                   <input type="text" class="input-minimal" id="holderAddress" placeholder="Address (optional)">
+                </div>
+                <div class="addr-trigger-wrap">
+                  <button type="button" class="addr-trigger-btn" id="openAddressModal">
+                    <iconify-icon icon="solar:map-point-bold-duotone" width="16"></iconify-icon>
+                    <span id="addrBtnLabel">Enter Address</span>
+                  </button>
+                  <div class="addr-summary" id="addrSummary" style="display:none;"></div>
                 </div>
               </div>
             </div>
@@ -4097,8 +4112,8 @@
                 </div>
                 <div class="mb-add-row">
                   <button class="mb-add-btn" onclick="openAddBenefitModal()">
-                    <i data-lucide="plus" style="width:14px;height:14px;"></i>
-                    Add More Benefit
+                    <i data-lucide="plus" style="width:12px;height:12px;"></i>
+                    Add Benefit
                   </button>
                 </div>
                 <div class="mb-selected-area is-empty" id="mbSelectedArea">
@@ -5371,6 +5386,10 @@ Please present this card before payment.</textarea>
       const isMembership = typeId === '2';
       const isCrypto = typeId === '5';
 
+      // PIN stripe: hidden for Membership
+      const cbStripe = document.querySelector('.cb-stripe');
+      if (cbStripe) cbStripe.style.display = isMembership ? 'none' : '';
+
       // Show/hide Step 2 (Customer Details — hidden for Crypto Card)
       const step2 = document.getElementById('step2Card');
       if (step2) step2.style.display = isCrypto ? 'none' : '';
@@ -5389,12 +5408,24 @@ Please present this card before payment.</textarea>
         syncBirthdayRequired();
       }
 
-      // Membership-only: show phone/address, otherwise hide + clear
+      // Membership-only: show phone/address trigger, otherwise hide + clear
       if (membershipContactRow) {
         membershipContactRow.style.display = isMembership ? '' : 'none';
         if (!isMembership) {
           if (holderPhone) holderPhone.value = '';
           if (holderAddress) holderAddress.value = '';
+          ['holderCity', 'holderState', 'holderZipCode'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+          });
+          const holderCountry = document.getElementById('holderCountry');
+          if (holderCountry) holderCountry.value = 'US';
+          const addrSummary = document.getElementById('addrSummary');
+          const addrBtnLabel = document.getElementById('addrBtnLabel');
+          const openAddressModal = document.getElementById('openAddressModal');
+          if (addrSummary) addrSummary.style.display = 'none';
+          if (addrBtnLabel) addrBtnLabel.textContent = 'Enter Address';
+          if (openAddressModal) openAddressModal.classList.remove('has-value');
         }
       }
 
@@ -6834,14 +6865,14 @@ Please present this card before payment.</textarea>
     ══════════════════════════════════════════ */
     const AB_ICONS = [
       { el: 'dollar-sign', bg: '#c8fae5', color: '#00a76f' },
-      { el: 'refresh-cw',  bg: '#c8fae5', color: '#00a76f' },
-      { el: 'percent',     bg: '#ffe4cc', color: '#cc5500' },
-      { el: 'cake',        bg: '#e0d4ff', color: '#7c3aed' },
-      { el: 'users',       bg: '#fff9cc', color: '#b8860b' },
-      { el: 'sofa',        bg: '#ffd4d4', color: '#d32f2f' },
-      { el: 'tag',         bg: '#fff9cc', color: '#b8860b' },
-      { el: 'gift',        bg: '#ffd4d4', color: '#d32f2f' },
-      { el: 'gift',        bg: '#e0d4ff', color: '#7c3aed' },
+      { el: 'refresh-cw', bg: '#c8fae5', color: '#00a76f' },
+      { el: 'percent', bg: '#ffe4cc', color: '#cc5500' },
+      { el: 'cake', bg: '#e0d4ff', color: '#7c3aed' },
+      { el: 'users', bg: '#fff9cc', color: '#b8860b' },
+      { el: 'sofa', bg: '#ffd4d4', color: '#d32f2f' },
+      { el: 'tag', bg: '#fff9cc', color: '#b8860b' },
+      { el: 'gift', bg: '#ffd4d4', color: '#d32f2f' },
+      { el: 'gift', bg: '#e0d4ff', color: '#7c3aed' },
     ];
     const AB_ICON_SYMBOLS = ['$', '↩', '%', '🎂', '👥', '☕', '🏷', '🎁', '🎁'];
 
@@ -6873,7 +6904,7 @@ Please present this card before payment.</textarea>
           <span>Upload</span>
         </button>
       </div>`;
-      grid.innerHTML = uploadBtnHtml + AB_ICONS.map(function(ic, i) {
+      grid.innerHTML = uploadBtnHtml + AB_ICONS.map(function (ic, i) {
         return '<button class="ab-icon-btn" style="background:' + ic.bg + ';color:' + ic.color + '" onclick="selectAbIcon(' + i + ')" id="ab-icon-btn-' + i + '">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">' + abIconPath(ic.el) + '</svg>' +
           '</button>';
@@ -6888,21 +6919,21 @@ Please present this card before payment.</textarea>
       var file = input.files && input.files[0];
       if (!file) return;
       var reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         abUploadedIconDataUrl = e.target.result;
         abSelectedIcon = null;
-        document.querySelectorAll('#addBenefitModal .ab-icon-btn').forEach(function(b) { b.classList.remove('selected'); });
+        document.querySelectorAll('#addBenefitModal .ab-icon-btn').forEach(function (b) { b.classList.remove('selected'); });
         document.getElementById('abIconError').style.display = 'none';
         var wrap = document.getElementById('abIconUploadWrap');
         if (wrap) {
           wrap.innerHTML = '<div class="ab-upload-preview-box">' +
             '<img src="' + abUploadedIconDataUrl + '" alt="Uploaded icon" />' +
             '<button type="button" class="ab-upload-remove-btn" onclick="removeAbUploadedIcon()" title="Remove image">' +
-              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">' +
-                '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>' +
-              '</svg>' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">' +
+            '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>' +
+            '</svg>' +
             '</button>' +
-          '</div>';
+            '</div>';
         }
         input.value = '';
       };
@@ -6914,8 +6945,8 @@ Please present this card before payment.</textarea>
       var wrap = document.getElementById('abIconUploadWrap');
       if (wrap) wrap.innerHTML = '<button type="button" class="ab-icon-upload-btn" onclick="triggerAbIconUpload()">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">' +
-          '<polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>' +
-          '<path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>' +
+        '<polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>' +
+        '<path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>' +
         '</svg><span>Upload</span></button>';
     }
 
@@ -6923,7 +6954,7 @@ Please present this card before payment.</textarea>
       abSelectedIcon = i;
       abUploadedIconDataUrl = null;
       removeAbUploadedIcon();
-      document.querySelectorAll('#addBenefitModal .ab-icon-btn').forEach(function(b, idx) {
+      document.querySelectorAll('#addBenefitModal .ab-icon-btn').forEach(function (b, idx) {
         b.classList.toggle('selected', idx === i);
       });
       document.getElementById('abIconError').style.display = 'none';
@@ -6964,7 +6995,7 @@ Please present this card before payment.</textarea>
       document.getElementById('abRolloverType').value = '';
       document.getElementById('abCycleField').value = '';
       document.getElementById('abCycleField').disabled = true;
-      ['abIconError', 'abNameError', 'abUnitError'].forEach(function(id) {
+      ['abIconError', 'abNameError', 'abUnitError'].forEach(function (id) {
         var el = document.getElementById(id);
         if (el) el.style.display = 'none';
       });
@@ -7011,15 +7042,60 @@ Please present this card before payment.</textarea>
       var prevSelected = Object.keys(mbSelected);
       initMbBenefitSelect();
       if (mbTomSelect && prevSelected.length > 0) {
-        prevSelected.forEach(function(id) { mbTomSelect.addItem(id, true); });
+        prevSelected.forEach(function (id) { mbTomSelect.addItem(id, true); });
       }
 
       closeAddBenefitModal();
     }
 
-    document.getElementById('addBenefitModal').addEventListener('click', function(e) {
+    document.getElementById('addBenefitModal').addEventListener('click', function (e) {
       if (e.target === e.currentTarget) closeAddBenefitModal();
     });
+
+    // ── Address Modal ──
+    (function () {
+      const backdrop = document.getElementById('addrModalBackdrop');
+      const openBtn = document.getElementById('openAddressModal');
+      const closeBtn = document.getElementById('closeAddressModal');
+      const cancelBtn = document.getElementById('cancelAddressModal');
+      const saveBtn = document.getElementById('saveAddressModal');
+      const summary = document.getElementById('addrSummary');
+      const btnLabel = document.getElementById('addrBtnLabel');
+
+      function openModal() { backdrop.style.display = 'flex'; }
+      function closeModal() { backdrop.style.display = 'none'; }
+
+      if (openBtn) openBtn.addEventListener('click', openModal);
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+      if (backdrop) backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
+
+      if (saveBtn) saveBtn.addEventListener('click', () => {
+        const addr = (document.getElementById('holderAddress') || {}).value?.trim() || '';
+        const city = (document.getElementById('holderCity') || {}).value?.trim() || '';
+        const state = (document.getElementById('holderState') || {}).value?.trim() || '';
+        const zip = (document.getElementById('holderZipCode') || {}).value?.trim() || '';
+        const country = document.getElementById('holderCountry');
+        const countryLabel = country ? country.options[country.selectedIndex].text : '';
+
+        const line1 = addr;
+        const line2 = [city, state].filter(Boolean).join(', ');
+        const line3 = [zip, countryLabel].filter(Boolean).join(' ');
+        const text = [line1, line2, line3].filter(Boolean).join(' · ');
+
+        if (text) {
+          summary.textContent = text;
+          summary.style.display = '';
+          btnLabel.textContent = 'Edit Address';
+          openBtn.classList.add('has-value');
+        } else {
+          summary.style.display = 'none';
+          btnLabel.textContent = 'Enter Address';
+          openBtn.classList.remove('has-value');
+        }
+        closeModal();
+      });
+    })();
   </script>
 
   <!-- ═══ LOGO LIBRARY MODAL ═══ -->
@@ -7886,10 +7962,12 @@ Please present this card before payment.</textarea>
       gap: 8px;
       align-items: flex-start;
     }
+
     #membershipBenefits .mb-select-wrap {
       flex: 1;
       min-width: 0;
     }
+
     #membershipBenefits .mb-selected-area {
       flex: 0 0 100%;
     }
@@ -7902,12 +7980,12 @@ Please present this card before payment.</textarea>
       margin-top: 0;
       margin-bottom: 0;
     }
+
     .mb-add-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      height: 34px;
-      padding: 0 14px;
+      padding: 8px 14px;
       border-radius: 8px;
       border: 1.5px dashed #00a76f;
       background: #f0fdf7;
@@ -7918,6 +7996,7 @@ Please present this card before payment.</textarea>
       cursor: pointer;
       transition: .2s;
     }
+
     .mb-add-btn:hover {
       background: #d1fae5;
       border-color: #007b55;
@@ -7929,14 +8008,18 @@ Please present this card before payment.</textarea>
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.5);
+      background: rgba(0, 0, 0, .5);
       z-index: 1200;
       align-items: center;
       justify-content: center;
       backdrop-filter: blur(4px);
       padding: 16px;
     }
-    #addBenefitModal.open { display: flex; }
+
+    #addBenefitModal.open {
+      display: flex;
+    }
+
     #addBenefitModal .ab-box {
       background: #fff;
       width: 100%;
@@ -7944,13 +8027,22 @@ Please present this card before payment.</textarea>
       max-height: 95vh;
       overflow-y: auto;
       border-radius: 16px;
-      box-shadow: 0 24px 48px -8px rgba(0,0,0,.2);
+      box-shadow: 0 24px 48px -8px rgba(0, 0, 0, .2);
       animation: abModalIn .25s ease-out;
     }
+
     @keyframes abModalIn {
-      from { opacity: 0; transform: scale(.95); }
-      to   { opacity: 1; transform: scale(1); }
+      from {
+        opacity: 0;
+        transform: scale(.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
+
     #addBenefitModal .ab-head {
       display: flex;
       justify-content: space-between;
@@ -7958,16 +8050,19 @@ Please present this card before payment.</textarea>
       padding: 24px;
       border-bottom: 1px solid #f4f6f8;
     }
+
     #addBenefitModal .ab-title {
       font-size: 22px;
       font-weight: 700;
       color: #161c24;
     }
+
     #addBenefitModal .ab-desc {
       font-size: 14px;
       color: #637381;
       margin-top: 4px;
     }
+
     #addBenefitModal .ab-close {
       width: 32px;
       height: 32px;
@@ -7982,30 +8077,43 @@ Please present this card before payment.</textarea>
       transition: .2s;
       flex-shrink: 0;
     }
-    #addBenefitModal .ab-close:hover { background: #f4f6f8; color: #212b36; }
-    #addBenefitModal .ab-close svg { width: 20px; height: 20px; }
+
+    #addBenefitModal .ab-close:hover {
+      background: #f4f6f8;
+      color: #212b36;
+    }
+
+    #addBenefitModal .ab-close svg {
+      width: 20px;
+      height: 20px;
+    }
+
     #addBenefitModal .ab-body {
       padding: 24px;
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
+
     #addBenefitModal .ab-section-label {
       font-size: 14px;
       font-weight: 600;
       color: #212b36;
       margin-bottom: 4px;
     }
+
     #addBenefitModal .ab-section-desc {
       font-size: 13px;
       color: #637381;
       margin-bottom: 12px;
     }
+
     #addBenefitModal .ab-icon-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 12px;
     }
+
     #addBenefitModal .ab-icon-btn {
       aspect-ratio: 1;
       border-radius: 12px;
@@ -8018,13 +8126,22 @@ Please present this card before payment.</textarea>
       background: none;
       padding: 0;
     }
+
     #addBenefitModal .ab-icon-btn:hover {
       transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0,0,0,.12);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
       border-color: #00a76f;
     }
-    #addBenefitModal .ab-icon-btn.selected { border-color: #00a76f; }
-    #addBenefitModal .ab-icon-btn svg { width: 28px; height: 28px; }
+
+    #addBenefitModal .ab-icon-btn.selected {
+      border-color: #00a76f;
+    }
+
+    #addBenefitModal .ab-icon-btn svg {
+      width: 28px;
+      height: 28px;
+    }
+
     #addBenefitModal .ab-icon-upload-btn {
       aspect-ratio: 1;
       border-radius: 12px;
@@ -8041,104 +8158,426 @@ Please present this card before payment.</textarea>
       padding: 0;
       box-sizing: border-box;
     }
-    #addBenefitModal .ab-icon-upload-btn:hover { border-color: #919eab; background: #f4f6f8; }
-    #addBenefitModal .ab-icon-upload-btn svg { width: 20px; height: 20px; color: #637381; }
-    #addBenefitModal .ab-icon-upload-btn span { font-size: 11px; font-weight: 500; color: #637381; }
-    #addBenefitModal .ab-icon-upload-wrap { position: relative; aspect-ratio: 1; }
-    #addBenefitModal .ab-upload-preview-box { position: relative; width: 100%; height: 100%; }
-    #addBenefitModal .ab-upload-preview-box img {
-      width: 100%; height: 100%; object-fit: cover;
-      border-radius: 12px; display: block; border: 2px solid #00a76f;
+
+    #addBenefitModal .ab-icon-upload-btn:hover {
+      border-color: #919eab;
+      background: #f4f6f8;
     }
+
+    #addBenefitModal .ab-icon-upload-btn svg {
+      width: 20px;
+      height: 20px;
+      color: #637381;
+    }
+
+    #addBenefitModal .ab-icon-upload-btn span {
+      font-size: 11px;
+      font-weight: 500;
+      color: #637381;
+    }
+
+    #addBenefitModal .ab-icon-upload-wrap {
+      position: relative;
+      aspect-ratio: 1;
+    }
+
+    #addBenefitModal .ab-upload-preview-box {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    #addBenefitModal .ab-upload-preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+      border: 2px solid #00a76f;
+    }
+
     #addBenefitModal .ab-upload-remove-btn {
-      position: absolute; top: -9px; right: -9px;
-      width: 22px; height: 22px;
-      background: #fff; border: 1.5px solid #dfe3e8; border-radius: 50%;
-      padding: 0; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 3;
-      box-shadow: 0 1px 6px rgba(0,0,0,.18);
+      position: absolute;
+      top: -9px;
+      right: -9px;
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border: 1.5px solid #dfe3e8;
+      border-radius: 50%;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 3;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, .18);
       transition: background .15s, border-color .15s;
     }
-    #addBenefitModal .ab-upload-remove-btn:hover { background: #ff5630; border-color: #ff5630; color: #fff; }
-    #addBenefitModal .ab-upload-remove-btn svg { width: 11px; height: 11px; pointer-events: none; }
-    #addBenefitModal .ab-icon-error { color: #ff5630; font-size: 12px; margin-top: 4px; display: none; }
-    #addBenefitModal .ab-form-group { display: flex; flex-direction: column; gap: 6px; }
-    #addBenefitModal .ab-form-label { font-size: 14px; font-weight: 600; color: #212b36; }
-    #addBenefitModal .ab-form-label .req { color: #ff5630; margin-left: 2px; }
+
+    #addBenefitModal .ab-upload-remove-btn:hover {
+      background: #ff5630;
+      border-color: #ff5630;
+      color: #fff;
+    }
+
+    #addBenefitModal .ab-upload-remove-btn svg {
+      width: 11px;
+      height: 11px;
+      pointer-events: none;
+    }
+
+    #addBenefitModal .ab-icon-error {
+      color: #ff5630;
+      font-size: 12px;
+      margin-top: 4px;
+      display: none;
+    }
+
+    #addBenefitModal .ab-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    #addBenefitModal .ab-form-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #212b36;
+    }
+
+    #addBenefitModal .ab-form-label .req {
+      color: #ff5630;
+      margin-left: 2px;
+    }
+
     #addBenefitModal .ab-form-input,
     #addBenefitModal .ab-form-select {
-      width: 100%; height: 44px; padding: 0 14px;
-      border: 1px solid #dfe3e8; border-radius: 8px;
-      font-size: 14px; font-family: inherit; color: #212b36;
-      outline: none; transition: all .2s; background: #fff; box-sizing: border-box;
+      width: 100%;
+      height: 44px;
+      padding: 0 14px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #212b36;
+      outline: none;
+      transition: all .2s;
+      background: #fff;
+      box-sizing: border-box;
     }
-    #addBenefitModal .ab-form-input::placeholder { color: #919eab; }
+
+    #addBenefitModal .ab-form-input::placeholder {
+      color: #919eab;
+    }
+
     #addBenefitModal .ab-form-input:focus,
     #addBenefitModal .ab-form-select:focus {
       border-color: #212b36;
-      box-shadow: 0 0 0 3px rgba(33,43,54,.08);
+      box-shadow: 0 0 0 3px rgba(33, 43, 54, .08);
     }
+
     #addBenefitModal .ab-form-select {
-      padding-right: 40px; appearance: none; cursor: pointer;
+      padding-right: 40px;
+      appearance: none;
+      cursor: pointer;
       background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 14px center #fff;
     }
-    #addBenefitModal .ab-form-select option[value=""] { color: #919eab; }
-    #addBenefitModal .ab-form-error { color: #ff5630; font-size: 12px; display: none; }
+
+    #addBenefitModal .ab-form-select option[value=""] {
+      color: #919eab;
+    }
+
+    #addBenefitModal .ab-form-error {
+      color: #ff5630;
+      font-size: 12px;
+      display: none;
+    }
+
     #addBenefitModal .ab-suggestions-label {
-      font-size: 12px; font-weight: 500; color: #637381;
-      margin-top: 8px; margin-bottom: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #637381;
+      margin-top: 8px;
+      margin-bottom: 6px;
     }
-    #addBenefitModal .ab-chips-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    #addBenefitModal .ab-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
     #addBenefitModal .ab-chip {
-      padding: 6px 12px; border-radius: 6px;
-      border: 1px solid #dfe3e8; background: #fff;
-      font-size: 13px; font-weight: 500; color: #637381;
-      cursor: pointer; transition: .2s; font-family: inherit;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #dfe3e8;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      color: #637381;
+      cursor: pointer;
+      transition: .2s;
+      font-family: inherit;
     }
-    #addBenefitModal .ab-chip:hover { border-color: #00a76f; background: #f0fdf7; color: #00a76f; }
+
+    #addBenefitModal .ab-chip:hover {
+      border-color: #00a76f;
+      background: #f0fdf7;
+      color: #00a76f;
+    }
+
     #addBenefitModal .ab-form-grid-2 {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
-    #addBenefitModal .ab-label-with-tip { display: inline-flex; align-items: center; gap: 6px; }
+
+    #addBenefitModal .ab-label-with-tip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     #addBenefitModal .ab-label-tip {
-      position: relative; display: inline-flex; align-items: center;
-      justify-content: center; color: #637381; cursor: help; flex-shrink: 0;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #637381;
+      cursor: help;
+      flex-shrink: 0;
     }
-    #addBenefitModal .ab-label-tip:hover { color: #00a76f; }
+
+    #addBenefitModal .ab-label-tip:hover {
+      color: #00a76f;
+    }
+
     #addBenefitModal .ab-tip-bubble {
-      position: absolute; left: 50%; transform: translateX(-50%);
-      bottom: calc(100% + 8px); z-index: 10000;
-      max-width: 360px; min-width: 200px;
-      padding: 10px 12px; font-size: 11px; line-height: 1.5;
-      color: #fff; font-weight: 400; background: #1e293b;
-      border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      white-space: normal; opacity: 0; visibility: hidden;
-      transition: opacity .15s, visibility .15s; pointer-events: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: calc(100% + 8px);
+      z-index: 10000;
+      max-width: 360px;
+      min-width: 200px;
+      padding: 10px 12px;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #fff;
+      font-weight: 400;
+      background: #1e293b;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      white-space: normal;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .15s, visibility .15s;
+      pointer-events: none;
     }
-    #addBenefitModal .ab-label-tip:hover .ab-tip-bubble { opacity: 1; visibility: visible; }
+
+    #addBenefitModal .ab-label-tip:hover .ab-tip-bubble {
+      opacity: 1;
+      visibility: visible;
+    }
+
     #addBenefitModal .ab-tip-bubble::after {
-      content: ''; position: absolute; top: 100%; left: 50%; margin-left: -6px;
-      border: 6px solid transparent; border-top-color: #1e293b;
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -6px;
+      border: 6px solid transparent;
+      border-top-color: #1e293b;
     }
+
     #addBenefitModal .ab-foot {
-      display: flex; gap: 12px; padding: 24px;
+      display: flex;
+      gap: 12px;
+      padding: 24px;
       border-top: 1px solid #f4f6f8;
     }
+
     #addBenefitModal .ab-btn-cancel {
-      flex: 1; height: 44px; border: 1px solid #dfe3e8; border-radius: 8px;
-      background: #fff; font-size: 14px; font-weight: 600; color: #212b36;
-      cursor: pointer; font-family: inherit; transition: .2s;
+      flex: 1;
+      height: 44px;
+      border: 1px solid #dfe3e8;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      color: #212b36;
+      cursor: pointer;
+      font-family: inherit;
+      transition: .2s;
     }
-    #addBenefitModal .ab-btn-cancel:hover { background: #f9fafb; border-color: #919eab; }
+
+    #addBenefitModal .ab-btn-cancel:hover {
+      background: #f9fafb;
+      border-color: #919eab;
+    }
+
     #addBenefitModal .ab-btn-create {
-      flex: 1; height: 44px; border: none; border-radius: 8px;
-      background: #00a76f; color: #fff;
-      font-size: 14px; font-weight: 600; font-family: inherit;
-      cursor: pointer; transition: .2s;
+      flex: 1;
+      height: 44px;
+      border: none;
+      border-radius: 8px;
+      background: #00a76f;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: .2s;
     }
+
     #addBenefitModal .ab-btn-create:hover {
       background: #007b55;
-      box-shadow: 0 4px 12px rgba(0,167,111,.24);
+      box-shadow: 0 4px 12px rgba(0, 167, 111, .24);
+    }
+
+    /* ── Membership contact column ── */
+    .membership-contact-col {
+      display: flex;
+      /* flex-direction: column; */
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* ── Address trigger button + summary ── */
+    .addr-trigger-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 40px;
+      padding: 0 14px;
+      border-radius: var(--radius-sm);
+      border: 1.5px dashed var(--c-border);
+      background: var(--c-surface);
+      color: var(--c-text-2);
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+
+    .addr-trigger-btn:hover,
+    .addr-trigger-btn.has-value {
+      border-color: var(--primary-main);
+      color: var(--primary-main);
+    }
+
+    .addr-summary {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--c-text-2);
+      line-height: 1.5;
+    }
+
+    /* ── Address Modal ── */
+    .addr-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .addr-modal {
+      background: var(--c-surface);
+      border-radius: 12px;
+      width: min(480px, 95vw);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .18);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .addr-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--c-border);
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .addr-modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--c-text-3);
+      display: flex;
+      align-items: center;
+    }
+
+    .addr-modal-close:hover {
+      color: var(--c-text-1);
+    }
+
+    .addr-modal-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .addr-modal-body .customer-row {
+      gap: 10px;
+    }
+
+    .addr-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 12px 20px;
+      border-top: 1px solid var(--c-border);
+    }
+
+    .addr-foot-cancel {
+      height: 36px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: 1.5px solid var(--c-border);
+      background: var(--c-surface);
+      color: var(--c-text-2);
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .addr-foot-cancel:hover {
+      border-color: var(--c-text-2);
+    }
+
+    .addr-foot-save {
+      height: 36px;
+      padding: 0 20px;
+      border-radius: 8px;
+      border: none;
+      background: var(--primary-main);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .addr-foot-save:hover {
+      background: var(--primary-dark);
+    }
+
+    .addr-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 36px;
+      cursor: pointer;
     }
   </style>
 
@@ -8151,8 +8590,10 @@ Please present this card before payment.</textarea>
           <div class="ab-desc">Fill in the required information to create a new benefit</div>
         </div>
         <button class="ab-close" onclick="closeAddBenefitModal()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
       </div>
@@ -8171,7 +8612,8 @@ Please present this card before payment.</textarea>
         <!-- Benefit Name -->
         <div class="ab-form-group">
           <label class="ab-form-label">Benefit Name <span class="req">*</span></label>
-          <input type="text" class="ab-form-input" id="abBenefitName" placeholder="Enter benefit name" oninput="clearAbError('abNameError')" />
+          <input type="text" class="ab-form-input" id="abBenefitName" placeholder="Enter benefit name"
+            oninput="clearAbError('abNameError')" />
           <div class="ab-form-error" id="abNameError">Benefit name is required</div>
           <div class="ab-suggestions-label">Suggestions</div>
           <div class="ab-chips-row">
@@ -8201,7 +8643,8 @@ Please present this card before payment.</textarea>
               Rollover Type
               <span class="ab-label-tip" aria-label="More info">
                 <iconify-icon icon="mdi:information-outline" width="16" height="16"></iconify-icon>
-                <span class="ab-tip-bubble">Reset: Any unused balance or usage count will expire at the end of the cycle. Rollover: Any unused balance or usage count will be carried forward to the next cycle.</span>
+                <span class="ab-tip-bubble">Reset: Any unused balance or usage count will expire at the end of the
+                  cycle. Rollover: Any unused balance or usage count will be carried forward to the next cycle.</span>
               </span>
             </label>
             <select class="ab-form-select" id="abRolloverType" onchange="onAbRolloverChange()">
@@ -8226,6 +8669,66 @@ Please present this card before payment.</textarea>
       <div class="ab-foot">
         <button class="ab-btn-cancel" onclick="closeAddBenefitModal()">Cancel</button>
         <button class="ab-btn-create" onclick="submitAddBenefit()">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Address Modal ── -->
+  <div class="addr-modal-backdrop" id="addrModalBackdrop" style="display:none;">
+    <div class="addr-modal">
+      <div class="addr-modal-header">
+        <span>Address</span>
+        <button type="button" class="addr-modal-close" id="closeAddressModal">
+          <iconify-icon icon="solar:close-circle-bold" width="20"></iconify-icon>
+        </button>
+      </div>
+      <div class="addr-modal-body">
+        <div class="form-field">
+          <label class="field-label">Address</label>
+          <input class="input-minimal" type="text" id="holderAddress" placeholder="123 Street">
+        </div>
+        <div class="customer-row" style="flex-wrap:wrap;">
+          <div class="form-field" style="flex:1;min-width:140px;">
+            <label class="field-label">City</label>
+            <input class="input-minimal" type="text" id="holderCity" placeholder="Enter City">
+          </div>
+          <div class="form-field" style="flex:1;min-width:100px;">
+            <label class="field-label">State</label>
+            <input class="input-minimal" type="text" id="holderState" placeholder="Enter State">
+          </div>
+        </div>
+        <div class="customer-row" style="flex-wrap:wrap;">
+          <div class="form-field" style="flex:1;min-width:140px;">
+            <label class="field-label">Zip Code</label>
+            <input class="input-minimal" type="text" id="holderZipCode" placeholder="Enter Zip Code">
+          </div>
+          <div class="form-field" style="flex:1;min-width:140px;">
+            <label class="field-label">Country</label>
+            <select class="input-minimal addr-select" id="holderCountry">
+              <option value="US">United States</option>
+              <option value="VN">Vietnam</option>
+              <option value="GB">United Kingdom</option>
+              <option value="AU">Australia</option>
+              <option value="CA">Canada</option>
+              <option value="SG">Singapore</option>
+              <option value="JP">Japan</option>
+              <option value="KR">South Korea</option>
+              <option value="CN">China</option>
+              <option value="IN">India</option>
+              <option value="MY">Malaysia</option>
+              <option value="TH">Thailand</option>
+              <option value="ID">Indonesia</option>
+              <option value="PH">Philippines</option>
+              <option value="HK">Hong Kong</option>
+              <option value="TW">Taiwan</option>
+              <option value="AE">UAE</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="addr-modal-footer">
+        <button type="button" class="addr-foot-cancel" id="cancelAddressModal">Cancel</button>
+        <button type="button" class="addr-foot-save" id="saveAddressModal">Save</button>
       </div>
     </div>
   </div>

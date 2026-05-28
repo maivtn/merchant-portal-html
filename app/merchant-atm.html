@@ -548,6 +548,18 @@
     }
 
     /* Light mode: giữ glow tông màu, không cần override */
+
+    /* ── Screen transition animations ─────────────────────────────────────── */
+    @keyframes screenSlideIn {
+      from { transform: translateX(100%); }
+      to   { transform: translateX(0); }
+    }
+    @keyframes screenSlideOut {
+      from { transform: translateX(0); }
+      to   { transform: translateX(100%); }
+    }
+    .screen-slide-in  { animation: screenSlideIn  0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+    .screen-slide-out { animation: screenSlideOut 0.22s ease-in both; }
   </style>
 </head>
 
@@ -2108,7 +2120,7 @@
 
       <!-- THANH ĐIỀU HƯỚNG DƯỚI ĐỘNG (BOTTOM NAVIGATION - DASH-26 - Không viền) -->
       <div id="bottom-nav-bar"
-        class="absolute bottom-0 left-0 right-0 h-16 bg-slate-900 flex items-center z-45 shrink-0 shadow-[0_-5px_15px_rgba(0,0,0,0.4)]">
+        class="absolute bottom-0 left-0 right-0 h-16 bg-slate-900 flex items-center z-[45] shrink-0 shadow-[0_-5px_15px_rgba(0,0,0,0.4)]">
         <!-- Render tự động tùy theo trạng thái Giấy phép & Screen định hướng -->
       </div>
 
@@ -2347,20 +2359,28 @@
     }
 
     // CHUYỂN ĐỔI MÀN HÌNH ROUTER TRÊN ĐIỆN THOẠI MÔ PHỎNG (DASH-27)
+    // CHUYỂN ĐỔI MÀN HÌNH ROUTER TRÊN ĐIỆN THOẠI MÔ PHỎNG (DASH-27)
     function changeScreen(screenName) {
       state.currentScreen = screenName;
 
-      // Ẩn tất cả màn hình
+      // Ẩn tất cả màn hình, xoá animation cũ
+      const _overlayIds = ['screen-scanner','screen-qr','screen-license-mgmt',
+        'screen-wallet-details','screen-p2p-flow','screen-get-license',
+        'screen-map','screen-history','screen-atm-qr'];
       document.getElementById('screen-home').classList.add('hidden');
-      document.getElementById('screen-scanner').classList.add('hidden');
-      document.getElementById('screen-qr').classList.add('hidden');
-      document.getElementById('screen-license-mgmt').classList.add('hidden');
-      document.getElementById('screen-wallet-details').classList.add('hidden');
-      document.getElementById('screen-p2p-flow').classList.add('hidden');
-      document.getElementById('screen-get-license').classList.add('hidden');
-      document.getElementById('screen-map').classList.add('hidden');
-      document.getElementById('screen-history').classList.add('hidden');
-      document.getElementById('screen-atm-qr').classList.add('hidden');
+      _overlayIds.forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove('screen-slide-in');
+        el.classList.add('hidden');
+      });
+
+      // Hiện màn hình mục tiêu (có slide-in cho overlay)
+      function showOverlay(id) {
+        const el = document.getElementById(id);
+        el.classList.remove('hidden');
+        void el.offsetWidth; // reflow để restart animation
+        el.classList.add('screen-slide-in');
+      }
 
       if (screenName === 'dashboard') {
         document.getElementById('screen-home').classList.remove('hidden');
@@ -2374,19 +2394,19 @@
           updateDashboardUI();
           return;
         }
-        document.getElementById('screen-scanner').classList.remove('hidden');
+        showOverlay('screen-scanner');
       } else if (screenName === 'qr_screen') {
-        document.getElementById('screen-qr').classList.remove('hidden');
+        showOverlay('screen-qr');
         renderQrScreen();
       } else if (screenName === 'license_management') {
-        document.getElementById('screen-license-mgmt').classList.remove('hidden');
+        showOverlay('screen-license-mgmt');
         switchFranchiseTab(state.activeFranchiseTab);
       } else if (screenName === 'wallet_details') {
-        document.getElementById('screen-wallet-details').classList.remove('hidden');
+        showOverlay('screen-wallet-details');
         document.getElementById('details-wallet-balance').innerText = state.balanceVisible ? "$7,207.92" : "$••••••";
       } else if (screenName === 'p2p_buy_flow') {
         state.p2pFlowMode = 'buy';
-        document.getElementById('screen-p2p-flow').classList.remove('hidden');
+        showOverlay('screen-p2p-flow');
         document.getElementById('p2p-flow-title').innerHTML = `<i data-lucide="shopping-bag" class="w-4 h-4"></i> Mua Crypto (P2P)`;
         document.getElementById('p2p-available-row').classList.add('hidden');
         document.getElementById('p2p-available-row').classList.remove('flex');
@@ -2400,7 +2420,7 @@
         lucide.createIcons();
       } else if (screenName === 'p2p_sell_flow') {
         state.p2pFlowMode = 'sell';
-        document.getElementById('screen-p2p-flow').classList.remove('hidden');
+        showOverlay('screen-p2p-flow');
         document.getElementById('p2p-flow-title').innerHTML = `<i data-lucide="banknote" class="w-4 h-4"></i> Bán Crypto (P2P)`;
         document.getElementById('p2p-available-row').classList.remove('hidden');
         document.getElementById('p2p-available-row').classList.add('flex');
@@ -2413,18 +2433,18 @@
         updateP2PConversion();
         lucide.createIcons();
       } else if (screenName === 'atm_qr_mobile') {
-        document.getElementById('screen-atm-qr').classList.remove('hidden');
+        showOverlay('screen-atm-qr');
         renderAtmQrScreen('mobile');
       } else if (screenName === 'atm_qr_merchant') {
-        document.getElementById('screen-atm-qr').classList.remove('hidden');
+        showOverlay('screen-atm-qr');
         renderAtmQrScreen('merchant');
       } else if (screenName === 'history') {
-        document.getElementById('screen-history').classList.remove('hidden');
+        showOverlay('screen-history');
         renderHistoryScreen();
       } else if (screenName === 'map') {
-        document.getElementById('screen-map').classList.remove('hidden');
+        showOverlay('screen-map');
       } else if (screenName === 'get_license') {
-        document.getElementById('screen-get-license').classList.remove('hidden');
+        showOverlay('screen-get-license');
         const banner = document.getElementById('gl-info-banner');
         if (banner) banner.style.display = state.licenseStatus === 'active' ? '' : 'none';
         updateGetLicenseCheckout();
@@ -3530,7 +3550,8 @@
             items: [
               { icon: 'qr-code',          color: 'emerald',label: 'Mã QR Merchant ATM',       action: () => { closeHamburgerMenu(); handleAtmAction('merchant'); } },
               { icon: 'gift',            color: 'blue',   label: 'Gift & Voucher Management',   action: () => showToast('Gift & Voucher Management', 'Quản lý card voucher') },
-              { icon: 'credit-card',      color: 'violet', label: 'Payment Process',       action: () => showToast('Payment Process', 'Quản lý quy trình thanh toán Merchant ATM.') },
+              { icon: 'dollar-sign',      color: 'violet', label: 'Payment Process',       action: () => showToast('Payment Process', 'Quản lý quy trình thanh toán Merchant ATM.') },
+              { icon: 'credit-card', color: 'violet',  label: 'Issue Card',    action: () => showToast('Issue Card', 'Tạo card.') },
             ]
           },
           {
@@ -3554,7 +3575,8 @@
               { icon: 'qr-code', color: 'blue',    label: 'Mã QR Mobile ATM',  action: () => { closeHamburgerMenu(); handleAtmAction('mobile'); } },
               { icon: 'qr-code',     color: 'emerald', label: 'Mã QR Merchant ATM',    action: () => { closeHamburgerMenu(); handleAtmAction('merchant'); } },
               { icon: 'gift',            color: 'blue',   label: 'Gift & Voucher Management',   action: () => showToast('Gift & Voucher Management', 'Quản lý card voucher') },
-              { icon: 'credit-card', color: 'violet',  label: 'Payment Process',    action: () => showToast('Payment Process', 'Quản lý quy trình thanh toán Merchant ATM.') },
+              { icon: 'dollar-sign', color: 'violet',  label: 'Payment Process',    action: () => showToast('Payment Process', 'Quản lý quy trình thanh toán Merchant ATM.') },
+               { icon: 'credit-card', color: 'violet',  label: 'Issue Card',    action: () => showToast('Issue Card', 'Tạo card.') },
             ]
           },
           {

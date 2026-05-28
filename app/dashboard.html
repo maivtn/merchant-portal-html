@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="global.css">
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <script src="global.js" defer></script>
+  <style>
+    /* ─── BUSINESS (DARK) THEME ─────────────────────────────────────────────── */
+    body.is-business {
+      background-color: #0c1425;
+    }
+
+    body.is-business .sidebar {
+      background-color: #111c2d;
+      border-color: #1e2d45;
+    }
+
+    body.is-business .top-header {
+      background-color: #111c2d;
+      border-color: #1e2d45;
+    }
+
+    body.is-business .user-card {
+      background-color: #1a2840;
+      border-color: #1e2d45;
+    }
+
+    body.is-business .page-title {
+      color: #f1f5f9;
+    }
+
+    body.is-business .breadcrumbs span {
+      color: #64748b;
+    }
+
+    body.is-business .hamburger-btn span {
+      background-color: #94a3b8;
+    }
+
+    body.is-business .sidebar-nav-section {
+      color: #475569;
+    }
+
+    body.is-business .sidebar-nav-link,
+    body.is-business .sidebar-group-toggle {
+      color: #94a3b8;
+    }
+
+    body.is-business .sidebar-nav-link:hover,
+    body.is-business .sidebar-group-toggle:hover {
+      background-color: #1a2840;
+      color: #f1f5f9;
+    }
+
+    body.is-business .sidebar-logo img {
+      filter: brightness(0) invert(1) opacity(0.85);
+    }
+
+    body.is-business .user-info div:first-child {
+      color: #f1f5f9;
+    }
+
+    body.is-business .user-info div:last-child {
+      color: #64748b;
+    }
+
+    /* Business card */
+    .biz-card {
+      background: #152033;
+      border-radius: 18px;
+      padding: 20px;
+      border: 1px solid #1e2d45;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .biz-card-icon {
+      width: 74px;
+      height: 74px;
+      flex-shrink: 0;
+      border-radius: 14px;
+      background: #0c1a2c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .biz-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #f59e0b;
+      text-decoration: none;
+      display: block;
+      line-height: 1.3;
+    }
+
+    .biz-card-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .biz-card-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .biz-card-actions {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .biz-stat-box {
+      background: #0c1425;
+      border: 1px solid #1e2d45;
+      border-radius: 10px;
+      padding: 10px 14px;
+      text-align: center;
+      flex-shrink: 0;
+      min-width: 108px;
+    }
+
+    .biz-stat-label {
+      font-size: 11px;
+      color: #475569;
+      line-height: 1.4;
+    }
+
+    .biz-stat-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-top: 3px;
+    }
+
+    .biz-btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      border: none;
+      border-radius: 9px;
+      color: #1a0a00;
+      font-weight: 700;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .biz-btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .biz-btn-secondary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: transparent;
+      border: 1px solid #1e2d45;
+      border-radius: 9px;
+      color: #94a3b8;
+      font-weight: 500;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .biz-btn-secondary:hover {
+      background: #1a2840;
+      color: #e2e8f0;
+    }
+
+    .biz-data-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .biz-data-label {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
+    .biz-data-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    .biz-url-section-label {
+      font-size: 11px;
+      color: #475569;
+      margin-bottom: 5px;
+    }
+
+    .biz-url-box {
+      background: #0c1425;
+      border: 1px solid #1e2d45;
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .biz-url-link {
+      font-size: 12px;
+      color: #60a5fa;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .biz-url-actions {
+      display: flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .biz-icon-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      border: none;
+      background: #1a3a5f;
+      color: #60a5fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+
+    .biz-icon-btn:hover {
+      background: #1e4a7a;
+    }
+
+    /* ─── PERSONAL (LIGHT) THEME ────────────────────────────────────────────── */
+    body.is-personal {
+      background-color: #edf1f7;
+    }
+
+    .personal-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .personal-card-icon {
+      width: 68px;
+      height: 68px;
+      flex-shrink: 0;
+      border-radius: 14px;
+      background: #eff6ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .personal-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #2563eb;
+      text-decoration: none;
+      display: block;
+      line-height: 1.3;
+    }
+
+    .personal-card-title:hover {
+      text-decoration: underline;
+    }
+
+    .personal-card-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .personal-card-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .personal-card-actions {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .personal-stat-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      text-align: center;
+      flex-shrink: 0;
+      min-width: 108px;
+    }
+
+    .personal-stat-label {
+      font-size: 11px;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+
+    .personal-stat-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 3px;
+    }
+
+    .personal-btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: #2563eb;
+      border: none;
+      border-radius: 9px;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .personal-btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .personal-btn-secondary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: transparent;
+      border: 1px solid #d1d5db;
+      border-radius: 9px;
+      color: #6b7280;
+      font-weight: 500;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .personal-btn-secondary:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+    }
+
+    .personal-data-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .personal-data-label {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .personal-data-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .personal-url-section-label {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 5px;
+    }
+
+    .personal-url-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .personal-url-link {
+      font-size: 12px;
+      color: #2563eb;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .personal-url-actions {
+      display: flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .personal-icon-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      border: none;
+      background: #dbeafe;
+      color: #2563eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+
+    .personal-icon-btn:hover {
+      background: #bfdbfe;
+    }
+
+    /* ─── DASHBOARD GRID ──────────────────────────────────────────────────────── */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .biz-card,
+      .personal-card {
+        flex-direction: column;
+      }
+
+      .biz-card-icon,
+      .personal-card-icon {
+        width: 54px;
+        height: 54px;
+      }
+
+      .biz-card-row,
+      .personal-card-row {
+        flex-direction: column;
+      }
+
+      .biz-stat-box,
+      .personal-stat-box {
+        min-width: unset;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-content"></div>
+  </aside>
+
+  <header class="top-header">
+    <div class="header-left">
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="header-right"></div>
+  </header>
+
+  <main class="main">
+    <div class="page-header">
+      <h1 class="page-title">Dashboard</h1>
+      <div class="breadcrumbs">
+        <span>Overview</span>
+        <span class="breadcrumbs-dot"></span>
+        <span style="font-weight:500">Dashboard</span>
+      </div>
+    </div>
+
+    <div class="dashboard-grid" id="dashboardGrid"></div>
+  </main>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var role = (params.get('role') || 'business').toLowerCase().trim();
+      var isPersonal = role === 'personal';
+
+      document.body.classList.add(isPersonal ? 'is-personal' : 'is-business');
+
+      var grid = document.getElementById('dashboardGrid');
+      if (isPersonal) {
+        renderPersonal(grid);
+      } else {
+        renderBusiness(grid);
+      }
+
+      /* ═══════════════════════════ BUSINESS ═══════════════════════════════════ */
+      function renderBusiness(container) {
+        var cards = [
+          {
+            icon: 'solar:wallet-money-bold-duotone', iconColor: '#f59e0b',
+            title: 'Payment Process', titleHref: null,
+            layout: 'actions+stat',
+            actions: [
+              { icon: 'solar:gift-linear', label: 'Payment Gift Card', href: 'gift-card-payment.html', primary: true },
+              { icon: 'solar:card-bold', label: 'Payment Crypto', href: 'crypto-payment.html', primary: false }
+            ],
+            stat: { label: 'This month\nRevenue', value: '$0.00' }
+          },
+          {
+            icon: 'solar:transfer-horizontal-bold-duotone', iconColor: '#60a5fa',
+            title: 'P2P Cash Hub', titleHref: null,
+            layout: 'actions+stat',
+            actions: [
+              { icon: 'solar:settings-bold', label: 'Portal ATM Setting', href: 'merchant-atm.html', primary: true },
+              { icon: 'solar:history-bold', label: 'History', href: 'card-transaction-history.html', primary: false }
+            ],
+            stat: { label: 'This month\nTransaction', value: '$501.00' }
+          },
+          {
+            icon: 'solar:gift-bold-duotone', iconColor: '#a78bfa',
+            title: 'Gift Card Center', titleHref: 'digital-gifts-management.html',
+            layout: 'data+url',
+            data: [{ label: 'Total Sales:', value: '$9,025.00' }],
+            urlBox: { label: 'Store URL', url: 'https://staging-web-app.vlinkpay.com/quanpm', href: '#' }
+          },
+          {
+            icon: 'solar:bitcoin-circle-bold-duotone', iconColor: '#34d399',
+            title: 'Token Hub', titleHref: null,
+            layout: 'actions',
+            actions: [
+              { icon: 'solar:download-minimalistic-bold', label: 'Receive (Buy) Token', href: '#', primary: true },
+              { icon: 'solar:upload-minimalistic-bold', label: 'Send Out (Sell) Token', href: '#', primary: false }
+            ]
+          },
+          {
+            icon: 'solar:ticker-star-bold-duotone', iconColor: '#fb923c',
+            title: 'VMM Token', titleHref: null,
+            layout: 'data+actions',
+            data: [{ label: 'Market Price:', value: '$0.001941' }],
+            actions: [
+              { icon: 'solar:wallet-bold', label: 'My Wallet', href: '#', primary: false }
+            ]
+          },
+          {
+            icon: 'solar:bag-bold-duotone', iconColor: '#f472b6',
+            title: 'Program Hub', titleHref: null,
+            layout: 'data+actions',
+            highlight: true,
+            data: [{ label: 'Total Bonus:', value: '$101,165.00' }],
+            actions: [
+              { icon: 'solar:arrow-right-up-bold', label: 'Go to IOU Program', href: '#', primary: true }
+            ]
+          },
+          {
+            icon: 'solar:users-group-two-rounded-bold-duotone', iconColor: '#2dd4bf',
+            title: 'Affiliate Program', titleHref: null,
+            layout: 'data+url',
+            data: [
+              { label: 'This Week Bonus:', value: '$0.00' },
+              { label: 'Total Members:', value: '50' }
+            ],
+            urlBox: { label: 'Referral Link', url: 'https://staging-web-app.vlinkpay.com?ref=0D2E1454', href: '#' }
+          },
+          {
+            icon: 'solar:planet-bold-duotone', iconColor: '#38bdf8',
+            title: 'Global Pool', titleHref: null,
+            layout: 'data',
+            data: [{ label: 'Total:', value: '$11.75' }]
+          }
+        ];
+
+        container.innerHTML = cards.map(function (c) {
+          var titleEl = c.titleHref
+            ? '<a href="' + c.titleHref + '" class="biz-card-title">' + c.title + '</a>'
+            : '<span class="biz-card-title">' + c.title + '</span>';
+
+          var iconEl = '<div class="biz-card-icon">'
+            + '<iconify-icon icon="' + c.icon + '" width="38" style="color:' + c.iconColor + '"></iconify-icon>'
+            + '</div>';
+
+          var body = buildBizBody(c, titleEl);
+
+          var borderStyle = c.highlight ? 'border-color:rgba(245,158,11,0.35);' : '';
+          return '<div class="biz-card" style="' + borderStyle + '">' + iconEl
+            + '<div class="biz-card-body">' + body + '</div></div>';
+        }).join('');
+      }
+
+      function buildBizBody(c, titleEl) {
+        var out = titleEl;
+
+        if (c.layout === 'actions+stat') {
+          var btns = c.actions.map(function (a) {
+            return '<a href="' + a.href + '" class="' + (a.primary ? 'biz-btn-primary' : 'biz-btn-secondary') + '">'
+              + '<iconify-icon icon="' + a.icon + '" width="15"></iconify-icon>' + a.label + '</a>';
+          }).join('');
+          var statHtml = '<div class="biz-stat-box"><div class="biz-stat-label">'
+            + c.stat.label.replace('\n', '<br>') + '</div>'
+            + '<div class="biz-stat-value">' + c.stat.value + '</div></div>';
+          out += '<div class="biz-card-row"><div class="biz-card-actions">' + btns + '</div>' + statHtml + '</div>';
+
+        } else if (c.layout === 'actions') {
+          out += c.actions.map(function (a) {
+            return '<a href="' + a.href + '" class="' + (a.primary ? 'biz-btn-primary' : 'biz-btn-secondary') + '">'
+              + '<iconify-icon icon="' + a.icon + '" width="15"></iconify-icon>' + a.label + '</a>';
+          }).join('');
+
+        } else if (c.layout === 'data+actions') {
+          out += bizDataRows(c.data);
+          out += c.actions.map(function (a) {
+            return '<a href="' + a.href + '" class="' + (a.primary ? 'biz-btn-primary' : 'biz-btn-secondary') + '">'
+              + '<iconify-icon icon="' + a.icon + '" width="15"></iconify-icon>' + a.label + '</a>';
+          }).join('');
+
+        } else if (c.layout === 'data+url') {
+          out += bizDataRows(c.data);
+          if (c.urlBox) {
+            out += '<div><div class="biz-url-section-label">' + c.urlBox.label + '</div>'
+              + '<div class="biz-url-box">'
+              + '<a href="' + c.urlBox.href + '" class="biz-url-link">' + c.urlBox.url + '</a>'
+              + '<div class="biz-url-actions">'
+              + '<button class="biz-icon-btn" title="Copy" onclick="navigator.clipboard.writeText(\'' + c.urlBox.url + '\')">'
+              + '<iconify-icon icon="solar:copy-bold" width="13"></iconify-icon></button>'
+              + '<button class="biz-icon-btn" title="Show QR">'
+              + '<iconify-icon icon="solar:qr-code-bold" width="13"></iconify-icon></button>'
+              + '</div></div></div>';
+          }
+
+        } else if (c.layout === 'data') {
+          out += bizDataRows(c.data);
+        }
+
+        return out;
+      }
+
+      function bizDataRows(data) {
+        return (data || []).map(function (d) {
+          return '<div class="biz-data-row">'
+            + '<span class="biz-data-label">' + d.label + '</span>'
+            + '<span class="biz-data-value">' + d.value + '</span>'
+            + '</div>';
+        }).join('');
+      }
+
+      /* ═══════════════════════════ PERSONAL ═══════════════════════════════════ */
+      function renderPersonal(container) {
+        var cards = [
+          {
+            icon: 'solar:transfer-horizontal-bold-duotone',
+            title: 'P2P Cash Hub', titleHref: '#',
+            layout: 'actions+stat',
+            actions: [
+              { icon: 'solar:cart-bold', label: 'Buy Gift Cash', href: '#', primary: true },
+              { icon: 'solar:tag-price-bold', label: 'Sell Gift Cash', href: '#', primary: false }
+            ],
+            stat: { label: 'This month\nTransaction', value: '$0.00' }
+          },
+          {
+            icon: 'solar:gift-bold-duotone',
+            title: 'Gift Card Center', titleHref: '#',
+            layout: 'data',
+            data: [
+              { label: 'This Week Bonus:', value: '$0.00' },
+              { label: 'Total Bonus:', value: '$0.00' }
+            ]
+          },
+          {
+            icon: 'solar:bag-bold-duotone',
+            title: 'Program Hub', titleHref: '#',
+            layout: 'data+actions',
+            data: [{ label: 'Total Bonus:', value: '$78.57' }],
+            actions: [
+              { icon: 'solar:arrow-right-up-bold', label: 'Go to IOU Program', href: '#', primary: false }
+            ]
+          },
+          {
+            icon: 'solar:bitcoin-circle-bold-duotone',
+            title: 'Token Hub', titleHref: '#',
+            layout: 'actions',
+            actions: [
+              { icon: 'solar:download-minimalistic-bold', label: 'Receive (Buy) Token', href: '#', primary: true },
+              { icon: 'solar:upload-minimalistic-bold', label: 'Send Out (Sell) Token', href: '#', primary: false }
+            ]
+          },
+          {
+            icon: 'solar:ticker-star-bold-duotone',
+            title: 'VMM Token', titleHref: '#',
+            layout: 'data+actions',
+            data: [{ label: 'Market Price:', value: '$0.000663' }],
+            actions: [
+              { icon: 'solar:wallet-bold', label: 'My Wallet', href: '#', primary: false }
+            ]
+          },
+          {
+            icon: 'solar:users-group-two-rounded-bold-duotone',
+            title: 'Affiliate Program', titleHref: '#',
+            layout: 'data+url',
+            data: [
+              { label: 'This Week Bonus:', value: '$0.00' },
+              { label: 'Total Members:', value: '0' }
+            ],
+            urlBox: { label: 'Referral Link', url: 'vlinkpay.com...C884A316', href: '#' }
+          },
+          {
+            icon: 'solar:planet-bold-duotone',
+            title: 'Global Pool', titleHref: '#',
+            layout: 'data',
+            data: [{ label: 'Total:', value: '$35.49' }]
+          }
+        ];
+
+        container.innerHTML = cards.map(function (c) {
+          var titleEl = '<a href="' + (c.titleHref || '#') + '" class="personal-card-title">' + c.title + '</a>';
+          var iconEl = '<div class="personal-card-icon">'
+            + '<iconify-icon icon="' + c.icon + '" width="34" style="color:#2563eb"></iconify-icon>'
+            + '</div>';
+          var body = buildPersonalBody(c, titleEl);
+          return '<div class="personal-card">' + iconEl
+            + '<div class="personal-card-body">' + body + '</div></div>';
+        }).join('');
+      }
+
+      function buildPersonalBody(c, titleEl) {
+        var out = titleEl;
+
+        if (c.layout === 'actions+stat') {
+          var btns = c.actions.map(function (a) {
+            return '<a href="' + a.href + '" class="' + (a.primary ? 'personal-btn-primary' : 'personal-btn-secondary') + '">'
+              + '<iconify-icon icon="' + a.icon + '" width="15"></iconify-icon>' + a.label + '</a>';
+          }).join('');
+          var statHtml = '<div class="personal-stat-box"><div class="personal-stat-label">'
+            + c.stat.label.replace('\n', '<br>') + '</div>'
+            + '<div class="personal-stat-value">' + c.stat.value + '</div></div>';
+          out += '<div class="personal-card-row"><div class="personal-card-actions">' + btns + '</div>' + statHtml + '</div>';
+
+        } else if (c.layout === 'actions') {
+          out += c.actions.map(function (a) {
+            return '<a href="' + a.href + '" class="' + (a.primary ? 'personal-btn-primary' : 'personal-btn-secondary') + '">'
+              + '<iconify-icon icon="' + a.icon + '" width="15"></iconify-icon>' + a.label + '</a>';
+          }).join('');
+
+        } else if (c.layout === 'data+actions') {
+          out += personalDataRows(c.data);
+          out += c.actions.map(function (a) {
+            return '<a href="' + a.href + '" class="' + (a.primary ? 'personal-btn-primary' : 'personal-btn-secondary') + '">'
+              + '<iconify-icon icon="' + a.icon + '" width="15"></iconify-icon>' + a.label + '</a>';
+          }).join('');
+
+        } else if (c.layout === 'data+url') {
+          out += personalDataRows(c.data);
+          if (c.urlBox) {
+            out += '<div><div class="personal-url-section-label">' + c.urlBox.label + '</div>'
+              + '<div class="personal-url-box">'
+              + '<a href="' + c.urlBox.href + '" class="personal-url-link">' + c.urlBox.url + '</a>'
+              + '<div class="personal-url-actions">'
+              + '<button class="personal-icon-btn" title="Copy" onclick="navigator.clipboard.writeText(\'' + c.urlBox.url + '\')">'
+              + '<iconify-icon icon="solar:copy-bold" width="13"></iconify-icon></button>'
+              + '<button class="personal-icon-btn" title="Show QR">'
+              + '<iconify-icon icon="solar:qr-code-bold" width="13"></iconify-icon></button>'
+              + '</div></div></div>';
+          }
+
+        } else if (c.layout === 'data') {
+          out += personalDataRows(c.data);
+        }
+
+        return out;
+      }
+
+      function personalDataRows(data) {
+        return (data || []).map(function (d) {
+          return '<div class="personal-data-row">'
+            + '<span class="personal-data-label">' + d.label + '</span>'
+            + '<span class="personal-data-value">' + d.value + '</span>'
+            + '</div>';
+        }).join('');
+      }
+    })();
+  </script>
+</body>
+
+</html>

@@ -4095,6 +4095,12 @@
                 <div class="mb-select-wrap">
                   <select class="mb-select" id="mbBenefitSelect" multiple placeholder="Select Benefit"></select>
                 </div>
+                <div class="mb-add-row">
+                  <button class="mb-add-btn" onclick="openAddBenefitModal()">
+                    <i data-lucide="plus" style="width:14px;height:14px;"></i>
+                    Add More Benefit
+                  </button>
+                </div>
                 <div class="mb-selected-area is-empty" id="mbSelectedArea">
                   <div class="mb-selected-label">Selected Benefits</div>
                   <div class="mb-cards-row" id="mbCardsRow">
@@ -6822,6 +6828,198 @@ Please present this card before payment.</textarea>
     bindBackdropClose('logoPreviewModal', closeLogoPreview);
     bindBackdropClose('aiLogoModal', closeAiLogoModal);
     bindMasterQrVerifyModal();
+
+    /* ══════════════════════════════════════════
+       ADD MORE BENEFIT MODAL
+    ══════════════════════════════════════════ */
+    const AB_ICONS = [
+      { el: 'dollar-sign', bg: '#c8fae5', color: '#00a76f' },
+      { el: 'refresh-cw',  bg: '#c8fae5', color: '#00a76f' },
+      { el: 'percent',     bg: '#ffe4cc', color: '#cc5500' },
+      { el: 'cake',        bg: '#e0d4ff', color: '#7c3aed' },
+      { el: 'users',       bg: '#fff9cc', color: '#b8860b' },
+      { el: 'sofa',        bg: '#ffd4d4', color: '#d32f2f' },
+      { el: 'tag',         bg: '#fff9cc', color: '#b8860b' },
+      { el: 'gift',        bg: '#ffd4d4', color: '#d32f2f' },
+      { el: 'gift',        bg: '#e0d4ff', color: '#7c3aed' },
+    ];
+    const AB_ICON_SYMBOLS = ['$', '↩', '%', '🎂', '👥', '☕', '🏷', '🎁', '🎁'];
+
+    function abIconPath(name) {
+      const paths = {
+        'dollar-sign': '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+        'refresh-cw': '<polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>',
+        'percent': '<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
+        'cake': '<path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v2"/><path d="M12 8v2"/><path d="M17 8v2"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/>',
+        'users': '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+        'sofa': '<path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z"/><path d="M4 18v2"/><path d="M20 18v2"/><path d="M12 4v9"/>',
+        'tag': '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>',
+        'gift': '<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>',
+      };
+      return paths[name] || '';
+    }
+
+    let abSelectedIcon = null;
+    let abUploadedIconDataUrl = null;
+
+    function buildAbIconGrid() {
+      const grid = document.getElementById('abIconGrid');
+      const uploadBtnHtml = `<div class="ab-icon-upload-wrap" id="abIconUploadWrap">
+        <button type="button" class="ab-icon-upload-btn" onclick="triggerAbIconUpload()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
+            <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+          </svg>
+          <span>Upload</span>
+        </button>
+      </div>`;
+      grid.innerHTML = uploadBtnHtml + AB_ICONS.map(function(ic, i) {
+        return '<button class="ab-icon-btn" style="background:' + ic.bg + ';color:' + ic.color + '" onclick="selectAbIcon(' + i + ')" id="ab-icon-btn-' + i + '">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">' + abIconPath(ic.el) + '</svg>' +
+          '</button>';
+      }).join('');
+    }
+
+    function triggerAbIconUpload() {
+      document.getElementById('abIconFileInput').click();
+    }
+
+    function handleAbIconUpload(input) {
+      var file = input.files && input.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        abUploadedIconDataUrl = e.target.result;
+        abSelectedIcon = null;
+        document.querySelectorAll('#addBenefitModal .ab-icon-btn').forEach(function(b) { b.classList.remove('selected'); });
+        document.getElementById('abIconError').style.display = 'none';
+        var wrap = document.getElementById('abIconUploadWrap');
+        if (wrap) {
+          wrap.innerHTML = '<div class="ab-upload-preview-box">' +
+            '<img src="' + abUploadedIconDataUrl + '" alt="Uploaded icon" />' +
+            '<button type="button" class="ab-upload-remove-btn" onclick="removeAbUploadedIcon()" title="Remove image">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">' +
+                '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>' +
+              '</svg>' +
+            '</button>' +
+          '</div>';
+        }
+        input.value = '';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeAbUploadedIcon() {
+      abUploadedIconDataUrl = null;
+      var wrap = document.getElementById('abIconUploadWrap');
+      if (wrap) wrap.innerHTML = '<button type="button" class="ab-icon-upload-btn" onclick="triggerAbIconUpload()">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">' +
+          '<polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>' +
+          '<path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>' +
+        '</svg><span>Upload</span></button>';
+    }
+
+    function selectAbIcon(i) {
+      abSelectedIcon = i;
+      abUploadedIconDataUrl = null;
+      removeAbUploadedIcon();
+      document.querySelectorAll('#addBenefitModal .ab-icon-btn').forEach(function(b, idx) {
+        b.classList.toggle('selected', idx === i);
+      });
+      document.getElementById('abIconError').style.display = 'none';
+    }
+
+    function fillAbName(v) {
+      document.getElementById('abBenefitName').value = v;
+      clearAbError('abNameError');
+    }
+
+    function clearAbError(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    }
+
+    function onAbRolloverChange() {
+      var cycleEl = document.getElementById('abCycleField');
+      var rolloverVal = document.getElementById('abRolloverType').value;
+      if (rolloverVal) {
+        cycleEl.disabled = false;
+      } else {
+        cycleEl.disabled = true;
+        cycleEl.value = '';
+      }
+    }
+
+    function openAddBenefitModal() {
+      buildAbIconGrid();
+      document.getElementById('addBenefitModal').classList.add('open');
+    }
+
+    function closeAddBenefitModal() {
+      document.getElementById('addBenefitModal').classList.remove('open');
+      abSelectedIcon = null;
+      abUploadedIconDataUrl = null;
+      document.getElementById('abBenefitName').value = '';
+      document.getElementById('abBenefitUnit').value = '';
+      document.getElementById('abRolloverType').value = '';
+      document.getElementById('abCycleField').value = '';
+      document.getElementById('abCycleField').disabled = true;
+      ['abIconError', 'abNameError', 'abUnitError'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+    }
+
+    function submitAddBenefit() {
+      var valid = true;
+      if (abSelectedIcon === null && !abUploadedIconDataUrl) {
+        document.getElementById('abIconError').style.display = 'block';
+        valid = false;
+      }
+      var name = document.getElementById('abBenefitName').value.trim();
+      if (!name) {
+        document.getElementById('abNameError').style.display = 'block';
+        valid = false;
+      }
+      var unit = document.getElementById('abBenefitUnit').value;
+      if (!unit) {
+        document.getElementById('abUnitError').style.display = 'block';
+        valid = false;
+      }
+      if (!valid) return;
+
+      var ic = abSelectedIcon !== null ? AB_ICONS[abSelectedIcon] : null;
+      var iconDisplay;
+      if (abUploadedIconDataUrl) {
+        iconDisplay = '<img src="' + abUploadedIconDataUrl + '" style="width:24px;height:24px;border-radius:4px;object-fit:cover;display:block;">';
+      } else {
+        iconDisplay = AB_ICON_SYMBOLS[abSelectedIcon] || '★';
+      }
+
+      var newBenefit = {
+        id: 'custom_' + Date.now(),
+        name: name,
+        unit: unit,
+        icon: iconDisplay,
+        iconBg: ic ? ic.bg : '#f4f6f8',
+        iconColor: ic ? ic.color : '#637381',
+      };
+
+      MB_BENEFITS.push(newBenefit);
+
+      // Rebuild TomSelect with updated MB_BENEFITS, restoring current selections
+      var prevSelected = Object.keys(mbSelected);
+      initMbBenefitSelect();
+      if (mbTomSelect && prevSelected.length > 0) {
+        prevSelected.forEach(function(id) { mbTomSelect.addItem(id, true); });
+      }
+
+      closeAddBenefitModal();
+    }
+
+    document.getElementById('addBenefitModal').addEventListener('click', function(e) {
+      if (e.target === e.currentTarget) closeAddBenefitModal();
+    });
   </script>
 
   <!-- ═══ LOGO LIBRARY MODAL ═══ -->
@@ -7680,7 +7878,341 @@ Please present this card before payment.</textarea>
     .tc-btn-save:hover {
       background: #007a52;
     }
+
+    /* ── Add More Benefit button ── */
+    .mb-add-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+    .mb-add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 8px;
+      border: 1.5px dashed #00a76f;
+      background: #f0fdf7;
+      color: #00a76f;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: .2s;
+    }
+    .mb-add-btn:hover {
+      background: #d1fae5;
+      border-color: #007b55;
+      color: #007b55;
+    }
+
+    /* ── Add Benefit Modal ── */
+    #addBenefitModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 1200;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      padding: 16px;
+    }
+    #addBenefitModal.open { display: flex; }
+    #addBenefitModal .ab-box {
+      background: #fff;
+      width: 100%;
+      max-width: 600px;
+      max-height: 95vh;
+      overflow-y: auto;
+      border-radius: 16px;
+      box-shadow: 0 24px 48px -8px rgba(0,0,0,.2);
+      animation: abModalIn .25s ease-out;
+    }
+    @keyframes abModalIn {
+      from { opacity: 0; transform: scale(.95); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    #addBenefitModal .ab-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 24px;
+      border-bottom: 1px solid #f4f6f8;
+    }
+    #addBenefitModal .ab-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #161c24;
+    }
+    #addBenefitModal .ab-desc {
+      font-size: 14px;
+      color: #637381;
+      margin-top: 4px;
+    }
+    #addBenefitModal .ab-close {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: #637381;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: .2s;
+      flex-shrink: 0;
+    }
+    #addBenefitModal .ab-close:hover { background: #f4f6f8; color: #212b36; }
+    #addBenefitModal .ab-close svg { width: 20px; height: 20px; }
+    #addBenefitModal .ab-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    #addBenefitModal .ab-section-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #212b36;
+      margin-bottom: 4px;
+    }
+    #addBenefitModal .ab-section-desc {
+      font-size: 13px;
+      color: #637381;
+      margin-bottom: 12px;
+    }
+    #addBenefitModal .ab-icon-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+    #addBenefitModal .ab-icon-btn {
+      aspect-ratio: 1;
+      border-radius: 12px;
+      border: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all .2s;
+      background: none;
+      padding: 0;
+    }
+    #addBenefitModal .ab-icon-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,.12);
+      border-color: #00a76f;
+    }
+    #addBenefitModal .ab-icon-btn.selected { border-color: #00a76f; }
+    #addBenefitModal .ab-icon-btn svg { width: 28px; height: 28px; }
+    #addBenefitModal .ab-icon-upload-btn {
+      aspect-ratio: 1;
+      border-radius: 12px;
+      border: 2px dashed #dfe3e8;
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: .2s;
+      width: 100%;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    #addBenefitModal .ab-icon-upload-btn:hover { border-color: #919eab; background: #f4f6f8; }
+    #addBenefitModal .ab-icon-upload-btn svg { width: 20px; height: 20px; color: #637381; }
+    #addBenefitModal .ab-icon-upload-btn span { font-size: 11px; font-weight: 500; color: #637381; }
+    #addBenefitModal .ab-icon-upload-wrap { position: relative; aspect-ratio: 1; }
+    #addBenefitModal .ab-upload-preview-box { position: relative; width: 100%; height: 100%; }
+    #addBenefitModal .ab-upload-preview-box img {
+      width: 100%; height: 100%; object-fit: cover;
+      border-radius: 12px; display: block; border: 2px solid #00a76f;
+    }
+    #addBenefitModal .ab-upload-remove-btn {
+      position: absolute; top: -9px; right: -9px;
+      width: 22px; height: 22px;
+      background: #fff; border: 1.5px solid #dfe3e8; border-radius: 50%;
+      padding: 0; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 3;
+      box-shadow: 0 1px 6px rgba(0,0,0,.18);
+      transition: background .15s, border-color .15s;
+    }
+    #addBenefitModal .ab-upload-remove-btn:hover { background: #ff5630; border-color: #ff5630; color: #fff; }
+    #addBenefitModal .ab-upload-remove-btn svg { width: 11px; height: 11px; pointer-events: none; }
+    #addBenefitModal .ab-icon-error { color: #ff5630; font-size: 12px; margin-top: 4px; display: none; }
+    #addBenefitModal .ab-form-group { display: flex; flex-direction: column; gap: 6px; }
+    #addBenefitModal .ab-form-label { font-size: 14px; font-weight: 600; color: #212b36; }
+    #addBenefitModal .ab-form-label .req { color: #ff5630; margin-left: 2px; }
+    #addBenefitModal .ab-form-input,
+    #addBenefitModal .ab-form-select {
+      width: 100%; height: 44px; padding: 0 14px;
+      border: 1px solid #dfe3e8; border-radius: 8px;
+      font-size: 14px; font-family: inherit; color: #212b36;
+      outline: none; transition: all .2s; background: #fff; box-sizing: border-box;
+    }
+    #addBenefitModal .ab-form-input::placeholder { color: #919eab; }
+    #addBenefitModal .ab-form-input:focus,
+    #addBenefitModal .ab-form-select:focus {
+      border-color: #212b36;
+      box-shadow: 0 0 0 3px rgba(33,43,54,.08);
+    }
+    #addBenefitModal .ab-form-select {
+      padding-right: 40px; appearance: none; cursor: pointer;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 14px center #fff;
+    }
+    #addBenefitModal .ab-form-select option[value=""] { color: #919eab; }
+    #addBenefitModal .ab-form-error { color: #ff5630; font-size: 12px; display: none; }
+    #addBenefitModal .ab-suggestions-label {
+      font-size: 12px; font-weight: 500; color: #637381;
+      margin-top: 8px; margin-bottom: 6px;
+    }
+    #addBenefitModal .ab-chips-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    #addBenefitModal .ab-chip {
+      padding: 6px 12px; border-radius: 6px;
+      border: 1px solid #dfe3e8; background: #fff;
+      font-size: 13px; font-weight: 500; color: #637381;
+      cursor: pointer; transition: .2s; font-family: inherit;
+    }
+    #addBenefitModal .ab-chip:hover { border-color: #00a76f; background: #f0fdf7; color: #00a76f; }
+    #addBenefitModal .ab-form-grid-2 {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    #addBenefitModal .ab-label-with-tip { display: inline-flex; align-items: center; gap: 6px; }
+    #addBenefitModal .ab-label-tip {
+      position: relative; display: inline-flex; align-items: center;
+      justify-content: center; color: #637381; cursor: help; flex-shrink: 0;
+    }
+    #addBenefitModal .ab-label-tip:hover { color: #00a76f; }
+    #addBenefitModal .ab-tip-bubble {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      bottom: calc(100% + 8px); z-index: 10000;
+      max-width: 360px; min-width: 200px;
+      padding: 10px 12px; font-size: 11px; line-height: 1.5;
+      color: #fff; font-weight: 400; background: #1e293b;
+      border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      white-space: normal; opacity: 0; visibility: hidden;
+      transition: opacity .15s, visibility .15s; pointer-events: none;
+    }
+    #addBenefitModal .ab-label-tip:hover .ab-tip-bubble { opacity: 1; visibility: visible; }
+    #addBenefitModal .ab-tip-bubble::after {
+      content: ''; position: absolute; top: 100%; left: 50%; margin-left: -6px;
+      border: 6px solid transparent; border-top-color: #1e293b;
+    }
+    #addBenefitModal .ab-foot {
+      display: flex; gap: 12px; padding: 24px;
+      border-top: 1px solid #f4f6f8;
+    }
+    #addBenefitModal .ab-btn-cancel {
+      flex: 1; height: 44px; border: 1px solid #dfe3e8; border-radius: 8px;
+      background: #fff; font-size: 14px; font-weight: 600; color: #212b36;
+      cursor: pointer; font-family: inherit; transition: .2s;
+    }
+    #addBenefitModal .ab-btn-cancel:hover { background: #f9fafb; border-color: #919eab; }
+    #addBenefitModal .ab-btn-create {
+      flex: 1; height: 44px; border: none; border-radius: 8px;
+      background: #00a76f; color: #fff;
+      font-size: 14px; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: .2s;
+    }
+    #addBenefitModal .ab-btn-create:hover {
+      background: #007b55;
+      box-shadow: 0 4px 12px rgba(0,167,111,.24);
+    }
   </style>
+
+  <!-- ═══ ADD MORE BENEFIT MODAL ═══ -->
+  <div id="addBenefitModal">
+    <div class="ab-box" role="dialog" aria-labelledby="abModalTitle">
+      <div class="ab-head">
+        <div>
+          <div class="ab-title" id="abModalTitle">Create New Benefit</div>
+          <div class="ab-desc">Fill in the required information to create a new benefit</div>
+        </div>
+        <button class="ab-close" onclick="closeAddBenefitModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <input type="file" id="abIconFileInput" accept="image/*" style="display:none" onchange="handleAbIconUpload(this)">
+
+      <div class="ab-body">
+        <!-- Icon -->
+        <div>
+          <div class="ab-section-label">Benefit Icon</div>
+          <div class="ab-section-desc">Select a preset icon or upload your own image</div>
+          <div class="ab-icon-grid" id="abIconGrid"></div>
+          <div class="ab-icon-error" id="abIconError">Please select or upload an icon</div>
+        </div>
+
+        <!-- Benefit Name -->
+        <div class="ab-form-group">
+          <label class="ab-form-label">Benefit Name <span class="req">*</span></label>
+          <input type="text" class="ab-form-input" id="abBenefitName" placeholder="Enter benefit name" oninput="clearAbError('abNameError')" />
+          <div class="ab-form-error" id="abNameError">Benefit name is required</div>
+          <div class="ab-suggestions-label">Suggestions</div>
+          <div class="ab-chips-row">
+            <button class="ab-chip" onclick="fillAbName('Discount')">Discount</button>
+            <button class="ab-chip" onclick="fillAbName('Cashback')">Cashback</button>
+            <button class="ab-chip" onclick="fillAbName('Gift')">Gift</button>
+            <button class="ab-chip" onclick="fillAbName('Birthday')">Birthday</button>
+          </div>
+        </div>
+
+        <!-- Benefit Unit -->
+        <div class="ab-form-group">
+          <label class="ab-form-label">Benefit Unit <span class="req">*</span></label>
+          <select class="ab-form-select" id="abBenefitUnit" onchange="clearAbError('abUnitError')">
+            <option value="" disabled selected>Select benefit unit</option>
+            <option value="$">USD ($)</option>
+            <option value="%">Percentage (%)</option>
+            <option value="pts">Points</option>
+          </select>
+          <div class="ab-form-error" id="abUnitError">Benefit unit is required</div>
+        </div>
+
+        <!-- Rollover + Cycle -->
+        <div class="ab-form-grid-2">
+          <div class="ab-form-group">
+            <label class="ab-form-label ab-label-with-tip">
+              Rollover Type
+              <span class="ab-label-tip" aria-label="More info">
+                <iconify-icon icon="mdi:information-outline" width="16" height="16"></iconify-icon>
+                <span class="ab-tip-bubble">Reset: Any unused balance or usage count will expire at the end of the cycle. Rollover: Any unused balance or usage count will be carried forward to the next cycle.</span>
+              </span>
+            </label>
+            <select class="ab-form-select" id="abRolloverType" onchange="onAbRolloverChange()">
+              <option value="" selected>Select rollover type</option>
+              <option value="Reset">Reset</option>
+              <option value="Rollover">Rollover</option>
+            </select>
+          </div>
+          <div class="ab-form-group">
+            <label class="ab-form-label">Cycle</label>
+            <select class="ab-form-select" id="abCycleField" disabled>
+              <option value="" selected>Select cycle</option>
+              <option value="Daily">Daily</option>
+              <option value="Monthly">Monthly</option>
+              <option value="Quarterly">Quarterly</option>
+              <option value="Yearly">Yearly</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="ab-foot">
+        <button class="ab-btn-cancel" onclick="closeAddBenefitModal()">Cancel</button>
+        <button class="ab-btn-create" onclick="submitAddBenefit()">Create</button>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

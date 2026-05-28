@@ -355,6 +355,7 @@ window.addEventListener('DOMContentLoaded', () => {
     { date: 'May 05, 2025', thuHo:  800.00, chiHo:  100.00, payBack:  700.00 },
     { date: 'Apr 28, 2025', thuHo:  950.00, chiHo:  950.00, payBack:    0.00 },
     { date: 'Apr 21, 2025', thuHo:  600.00, chiHo:  400.00, payBack:  200.00 },
+    { date: 'Apr 20, 2025', thuHo:  700.00, chiHo: 1100.00, payBack:  300.00 },
     { date: 'Apr 14, 2025', thuHo:  750.00, chiHo:  750.00, payBack:    0.00 },
   ];
 
@@ -1971,7 +1972,7 @@ window.addEventListener('DOMContentLoaded', () => {
           const showResetBtn  = item.status === 'pending' && hasPayBack;
           const detailUrl     = `merchant-atm-settlement-detail.html?date=${encodeURIComponent(item.date)}&status=${item.status}`;
           const actionLink    = showResetBtn
-            ? `<button class="history-item-view-link" style="color:#d97706;background:none;border:none;cursor:pointer;padding:0;font-family:inherit;font-size:inherit;" data-reset-id="${item.id}"><i data-lucide="refresh-cw" class="w-3 h-3"></i> Reset Credit</button>`
+            ? `<button class="history-item-view-link"  data-reset-id="${item.id}"><i data-lucide="refresh-cw" class="w-3 h-3"></i> Reset Credit</button>`
             : `<a href="${detailUrl}" class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></a>`;
           return `
         <div class="col-12 col-sm-6">
@@ -2007,7 +2008,7 @@ window.addEventListener('DOMContentLoaded', () => {
           const showResetBtn = item.status === 'pending' && item.payBack > 0;
           const detailUrl    = `merchant-atm-settlement-detail.html?date=${encodeURIComponent(item.date)}&status=${item.status}`;
           const actionCell   = showResetBtn
-            ? `<button class="view-details-link" style="color:#d97706;background:none;border:none;cursor:pointer;padding:0;font-family:inherit;font-size:inherit;" data-reset-id="${item.id}"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Reset Credit</button>`
+            ? `<button class="view-details-link"  data-reset-id="${item.id}"> Reset Credit <i data-lucide="refresh-cw" class="w-4 h-4"></i></button>`
             : `<a href="${detailUrl}" class="view-details-link">View details <i data-lucide="chevron-right" class="w-4 h-4"></i></a>`;
           return `
         <tr>
@@ -2060,14 +2061,13 @@ window.addEventListener('DOMContentLoaded', () => {
   const openResetCreditFromSettlement = (itemId) => {
     const item = settlementData.find(d => d.id === itemId);
     if (!item) return;
-    RC.amountThuHo     = item.thuHo;
-    RC.amountChiHo     = item.chiHo;
-    RC.commissionThuHo = item.commission / 2;
-    RC.commissionChiHo = item.commission / 2;
-    rcDerived();
-    openResetCreditModal();
-    const subtitleEl = document.querySelector('#reset-credit-modal .cancel-modal-subtitle');
-    if (subtitleEl) subtitleEl.innerHTML = `Settlement <strong>${item.date}</strong> &nbsp;·&nbsp; Pay Back <strong style="color:#ea580c">${fmtUSD(item.payBack)}</strong>`;
+    openRepaymentModal();
+    if (repaymentDateSelect && item.date) {
+      repaymentDateSelect.setValue([item.date]);
+      renderRepaymentDateChips();
+      updateRepaymentTotal();
+      syncRepaymentAccount();
+    }
   };
 
   document.getElementById('history-settlement-section')?.addEventListener('click', (e) => {

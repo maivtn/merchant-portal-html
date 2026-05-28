@@ -470,20 +470,6 @@
               </div>
             </div>
             <div id="proof-view-meta" style="font-size:11.5px;color:#94a3b8;margin-top:8px;">Uploaded by merchant · May 13, 2026 · 09:42 AM</div>
-            <div id="proof-upload-more" style="display:none; margin-top:14px; padding-top:14px; border-top:1px solid #f1f5f9;">
-              <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:8px;">Upload More Proof</div>
-              <input type="file" id="proof-more-file-input"   accept="image/*,.pdf" multiple style="display:none;" />
-              <input type="file" id="proof-more-camera-input" accept="image/*" capture="camera" multiple style="display:none;" />
-              <div class="proof-upload-btns">
-                <button type="button" class="proof-upload-btn" id="proof-more-take-photo">
-                  <i data-lucide="camera" class="w-5 h-5"></i>Take photo
-                </button>
-                <button type="button" class="proof-upload-btn" id="proof-more-choose-file">
-                  <i data-lucide="folder-open" class="w-5 h-5"></i>Choose file
-                </button>
-              </div>
-              <div class="proof-preview-grid" id="proof-more-preview"></div>
-            </div>
           </div>
         </div>
 
@@ -521,7 +507,7 @@
       { date: 'Apr 28, 2025', thuHo:  950.00, chiHo:  950.00, commission:  71.25, payBack:    0.00, vlinkpayPayout:    0, status: 'completed',      statusLabel: 'Completed'      },
       { date: 'Apr 21, 2025', thuHo:  600.00, chiHo:  850.00, commission:  43.88, payBack:    0.00, vlinkpayPayout:  250, status: 'completed',      statusLabel: 'Completed'      },
       { date: 'Apr 14, 2025', thuHo:  750.00, chiHo: 1200.00, commission:  58.13, payBack:    0.00, vlinkpayPayout:  450, status: 'processing',     statusLabel: 'Processing'     },
-      { date: 'Apr 07, 2025', thuHo:  700.00, chiHo: 1100.00, commission:  45.50, payBack:    0.00, vlinkpayPayout:  400, status: 'pending',        statusLabel: 'Pending'        },
+      { date: 'Apr 20, 2025', thuHo:  700.00, chiHo: 1100.00, commission:  45.50, payBack:  300.00, vlinkpayPayout:  400, status: 'pending',        statusLabel: 'Pending'        },
     ];
 
     const params = new URLSearchParams(location.search);
@@ -553,14 +539,14 @@
     const hasPayout   = row.vlinkpayPayout > 0;
 
     const badgeHTML = (meta, label) =>
-      `<span class="status-badge ${meta.cls}"><i data-lucide="${meta.icon}" style="width:11px;height:11px;"></i>${label}</span>`;
+      `<span class="status-badge ${meta.cls}">${label}</span>`;
 
     // Hero
     const heroIconEl = document.getElementById('hero-icon');
     heroIconEl.className = `amount-hero__icon amount-hero__icon--${hasPayBack ? 'pay' : 'receive'}`;
     heroIconEl.innerHTML = `<i data-lucide="${hasPayBack ? 'arrow-up-right' : hasPayout ? 'arrow-down-left' : 'check'}" class="w-4 h-4"></i>`;
     document.getElementById('hero-date').textContent = row.date || '—';
-    document.getElementById('hero-status-wrap').innerHTML = badgeHTML(sm, row.statusLabel);
+    // document.getElementById('hero-status-wrap').innerHTML = badgeHTML(sm, row.statusLabel);
 
     // Summary
     const set = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
@@ -581,14 +567,11 @@
     if (statusBadgeEl) statusBadgeEl.innerHTML = badgeHTML(sm, row.statusLabel);
 
     // Proof — Pay Back
-    // if (hasPayBack) {
-    //   document.getElementById('proof-view-section').style.display = '';
-    //   if (row.status === 'waiting-review')
-    //     document.getElementById('proof-upload-more').style.display = '';
-    // }
+    if (hasPayBack)
+      document.getElementById('proof-view-section').style.display = '';
 
     // Proof — Payout
-    if (hasPayout && isCompleted)
+    if (hasPayout)
       document.getElementById('proof-payout-section').style.display = '';
 
     // Actions
@@ -596,11 +579,11 @@
     //   ? `<button class="btn-detail-primary" id="submit-more-btn">
     //        <i data-lucide="upload" class="w-4 h-4"></i> Submit Updated Proof
     //      </button>` : '';
-    const resetCreditBtn = row.status === 'pending' && hasPayout
+    const resetCreditBtn = row.status === 'pending' && hasPayBack
       ? `<button class="btn-detail-primary" id="open-reset-credit-detail-btn" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
            <i data-lucide="refresh-cw" class="w-4 h-4"></i> Reset Credit
          </button>` : '';
-    document.getElementById('detail-actions').innerHTML = submitMoreBtn + resetCreditBtn;
+    document.getElementById('detail-actions').innerHTML =  resetCreditBtn;
 
     lucide.createIcons();
 
@@ -671,9 +654,9 @@
       </div>
       <!-- Payout summary -->
       <div style="margin:0 20px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:14px;padding:16px;">
-        <div style="font-size:11px;font-weight:700;color:#92400e;letter-spacing:.06em;margin-bottom:6px;">VLINKPAY PAYOUT</div>
+        <div style="font-size:11px;font-weight:700;color:#92400e;letter-spacing:.06em;margin-bottom:6px;">PAY BACK TO VLINKPAY</div>
         <div style="font-size:26px;font-weight:800;color:#d97706;" id="rc-detail-payout"></div>
-        <div style="font-size:12px;color:#78716c;margin-top:4px;">Amount to be credited to your account</div>
+        <div style="font-size:12px;color:#78716c;margin-top:4px;">Amount owed to VLINKPAY</div>
       </div>
       <!-- Summary rows -->
       <div style="margin:0 20px 20px;display:flex;flex-direction:column;gap:10px;">
@@ -708,23 +691,23 @@
       const params  = new URLSearchParams(location.search);
       const date    = params.get('date') || '';
       const SETTLEMENT_DATA_REF = [
-        { date: 'May 19, 2025', thuHo: 1200.00, chiHo:  350.00, commission:  46.75, vlinkpayPayout:    0, status: 'completed'      },
-        { date: 'May 12, 2025', thuHo:  500.00, chiHo:  200.00, commission:  21.25, vlinkpayPayout:    0, status: 'waiting-review' },
-        { date: 'May 05, 2025', thuHo:  800.00, chiHo:  100.00, commission:  27.00, vlinkpayPayout:    0, status: 'completed'      },
-        { date: 'Apr 28, 2025', thuHo:  950.00, chiHo:  950.00, commission:  71.25, vlinkpayPayout:    0, status: 'completed'      },
-        { date: 'Apr 21, 2025', thuHo:  600.00, chiHo:  850.00, commission:  43.88, vlinkpayPayout:  250, status: 'completed'      },
-        { date: 'Apr 14, 2025', thuHo:  750.00, chiHo: 1200.00, commission:  58.13, vlinkpayPayout:  450, status: 'processing'     },
-        { date: 'Apr 07, 2025', thuHo:  700.00, chiHo: 1100.00, commission:  45.50, vlinkpayPayout:  400, status: 'pending'        },
+        { date: 'May 19, 2025', thuHo: 1200.00, chiHo:  350.00, commission:  46.75, payBack:  850.00, vlinkpayPayout:    0, status: 'completed'      },
+        { date: 'May 12, 2025', thuHo:  500.00, chiHo:  200.00, commission:  21.25, payBack:  300.00, vlinkpayPayout:    0, status: 'waiting-review' },
+        { date: 'May 05, 2025', thuHo:  800.00, chiHo:  100.00, commission:  27.00, payBack:  700.00, vlinkpayPayout:    0, status: 'completed'      },
+        { date: 'Apr 28, 2025', thuHo:  950.00, chiHo:  950.00, commission:  71.25, payBack:    0.00, vlinkpayPayout:    0, status: 'completed'      },
+        { date: 'Apr 21, 2025', thuHo:  600.00, chiHo:  850.00, commission:  43.88, payBack:    0.00, vlinkpayPayout:  250, status: 'completed'      },
+        { date: 'Apr 14, 2025', thuHo:  750.00, chiHo: 1200.00, commission:  58.13, payBack:    0.00, vlinkpayPayout:  450, status: 'processing'     },
+        { date: 'Apr 20, 2025', thuHo:  700.00, chiHo: 1100.00, commission:  45.50, payBack:  300.00, vlinkpayPayout:  400, status: 'pending'        },
       ];
       const r = SETTLEMENT_DATA_REF.find(d => d.date === date);
-      if (!r || r.status !== 'pending' || r.vlinkpayPayout <= 0) return;
+      if (!r || r.status !== 'pending' || r.payBack <= 0) return;
 
       const fmt = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2 });
       const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
 
       // Populate modal fields
       set('rc-detail-date',       r.date);
-      set('rc-detail-payout',     fmt(r.vlinkpayPayout));
+      set('rc-detail-payout',     fmt(r.payBack));
       set('rc-detail-thu-ho',     fmt(r.thuHo));
       set('rc-detail-chi-ho',     fmt(r.chiHo));
       set('rc-detail-commission', fmt(r.commission));
@@ -746,7 +729,7 @@
           title: 'Reset Credit Submitted',
           html: `<div style="font-size:13px;color:#64748b;">
             Settlement <strong>${r.date}</strong> has been submitted for credit reset.<br><br>
-            VLINKPAY Payout of <strong style="color:#16a34a;">${fmt(r.vlinkpayPayout)}</strong> will be processed shortly.
+            Pay Back amount of <strong style="color:#ea580c;">${fmt(r.payBack)}</strong> will be processed shortly.
           </div>`,
           confirmButtonText: 'Done',
           confirmButtonColor: '#d97706',

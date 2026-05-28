@@ -1947,14 +1947,13 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   const settlementData = [
-    { id: 1, date: 'May 20, 2025', thuHo:  500.00, chiHo:  200.00, commission:  21.25, payBack:  300.00, vlinkpayPayout:    0, status: 'pending',        statusLabel: 'Pending'        },
+    { id: 8, date: 'Apr 20, 2025', thuHo:  700.00, chiHo: 1100.00, commission:  45.50, payBack:  300.00, vlinkpayPayout:  0, status: 'pending',        statusLabel: 'Pending'        },
     { id: 2, date: 'May 19, 2025', thuHo: 1200.00, chiHo:  350.00, commission:  46.75, payBack:  850.00, vlinkpayPayout:    0, status: 'completed',      statusLabel: 'Completed'      },
     { id: 3, date: 'May 12, 2025', thuHo:  500.00, chiHo:  200.00, commission:  21.25, payBack:  300.00, vlinkpayPayout:    0, status: 'waiting-review', statusLabel: 'Waiting Review' },
     { id: 4, date: 'May 05, 2025', thuHo:  800.00, chiHo:  100.00, commission:  27.00, payBack:  700.00, vlinkpayPayout:    0, status: 'completed',      statusLabel: 'Completed'      },
     { id: 5, date: 'Apr 28, 2025', thuHo:  950.00, chiHo:  950.00, commission:  71.25, payBack:    0.00, vlinkpayPayout:    0, status: 'completed',      statusLabel: 'Completed'      },
     { id: 6, date: 'Apr 21, 2025', thuHo:  600.00, chiHo:  850.00, commission:  43.88, payBack:    0.00, vlinkpayPayout:  250, status: 'completed',      statusLabel: 'Completed'      },
     { id: 7, date: 'Apr 14, 2025', thuHo:  750.00, chiHo: 1200.00, commission:  58.13, payBack:    0.00, vlinkpayPayout:  450, status: 'processing',     statusLabel: 'Processing'     },
-    { id: 8, date: 'Apr 07, 2025', thuHo:  700.00, chiHo: 1100.00, commission:  45.50, payBack:    0.00, vlinkpayPayout:  400, status: 'pending',        statusLabel: 'Pending'        },
   ];
 
   const settlementGrid  = document.getElementById('settlement-grid');
@@ -1969,10 +1968,10 @@ window.addEventListener('DOMContentLoaded', () => {
       : items.map(item => {
           const hasPayBack    = item.payBack > 0;
           const hasPayout     = item.vlinkpayPayout > 0;
-          const showResetBtn  = item.status === 'pending' && hasPayout;
+          const showResetBtn  = item.status === 'pending' && hasPayBack;
           const detailUrl     = `merchant-atm-settlement-detail.html?date=${encodeURIComponent(item.date)}&status=${item.status}`;
           const actionLink    = showResetBtn
-            ? `<a href="${detailUrl}&action=reset-credit" class="history-item-view-link" style="color:#d97706;"><i data-lucide="refresh-cw" class="w-3 h-3"></i> Reset Credit</a>`
+            ? `<button class="history-item-view-link" style="color:#d97706;background:none;border:none;cursor:pointer;padding:0;font-family:inherit;font-size:inherit;" data-reset-id="${item.id}"><i data-lucide="refresh-cw" class="w-3 h-3"></i> Reset Credit</button>`
             : `<a href="${detailUrl}" class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></a>`;
           return `
         <div class="col-12 col-sm-6">
@@ -2005,10 +2004,10 @@ window.addEventListener('DOMContentLoaded', () => {
     settlementTbody.innerHTML = items.length === 0
       ? '<tr><td colspan="8" class="text-center py-4 text-muted" style="font-size:13px;">No records found.</td></tr>'
       : items.map(item => {
-          const showResetBtn = item.status === 'pending' && item.vlinkpayPayout > 0;
+          const showResetBtn = item.status === 'pending' && item.payBack > 0;
           const detailUrl    = `merchant-atm-settlement-detail.html?date=${encodeURIComponent(item.date)}&status=${item.status}`;
           const actionCell   = showResetBtn
-            ? `<a href="${detailUrl}&action=reset-credit" class="view-details-link" style="color:#d97706;"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Reset Credit</a>`
+            ? `<button class="view-details-link" style="color:#d97706;background:none;border:none;cursor:pointer;padding:0;font-family:inherit;font-size:inherit;" data-reset-id="${item.id}"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Reset Credit</button>`
             : `<a href="${detailUrl}" class="view-details-link">View details <i data-lucide="chevron-right" class="w-4 h-4"></i></a>`;
           return `
         <tr>
@@ -2056,6 +2055,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Initial render
   renderSettlement(settlementData);
+
+  // Reset Credit — click on settlement item opens reset-credit-modal
+  const openResetCreditFromSettlement = (itemId) => {
+    const item = settlementData.find(d => d.id === itemId);
+    if (!item) return;
+    RC.amountThuHo     = item.thuHo;
+    RC.amountChiHo     = item.chiHo;
+    RC.commissionThuHo = item.commission / 2;
+    RC.commissionChiHo = item.commission / 2;
+    rcDerived();
+    openResetCreditModal();
+    const subtitleEl = document.querySelector('#reset-credit-modal .cancel-modal-subtitle');
+    if (subtitleEl) subtitleEl.innerHTML = `Settlement <strong>${item.date}</strong> &nbsp;·&nbsp; Pay Back <strong style="color:#ea580c">${fmtUSD(item.payBack)}</strong>`;
+  };
+
+  document.getElementById('history-settlement-section')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-reset-id]');
+    if (!btn) return;
+    openResetCreditFromSettlement(parseInt(btn.dataset.resetId));
+  });
 
   // Restore settlement type filter from URL after initial render
   if (urlParams.get('tab') === 'history' && urlParams.get('subnav') === 'settlement') {

@@ -3910,7 +3910,7 @@
               <div class="customer-row">
                 <!-- Name: always visible -->
                 <div class="form-field">
-                  <input type="text" class="input-minimal" placeholder="Enter full name (optional)" id="holderName"
+                  <input type="text" class="input-minimal" placeholder="Enter full name" id="holderName"
                     oninput="updateCardHolder(this.value)">
                 </div>
                 <!-- Birthday: only for Membership -->
@@ -5544,11 +5544,11 @@
         if (emailInput) emailInput.placeholder = 'Recipient Email';
       } else if (isMembership) {
         if (step2TitleLabel) step2TitleLabel.textContent = 'Customer Details';
-        if (nameInput) nameInput.placeholder = 'Enter full name (optional)';
-        if (emailInput) emailInput.placeholder = 'Enter member email (optional)';
+        if (nameInput) nameInput.placeholder = 'Enter full name';
+        if (emailInput) emailInput.placeholder = 'Enter member email';
       } else {
         if (step2TitleLabel) step2TitleLabel.textContent = 'Customer Details';
-        if (nameInput) nameInput.placeholder = 'Enter full name (optional)';
+        if (nameInput) nameInput.placeholder = 'Enter full name';
         if (emailInput) emailInput.placeholder = 'Enter email address';
       }
 
@@ -7183,6 +7183,17 @@
       { el: 'gift', bg: '#e0d4ff', color: '#7c3aed' },
     ];
     const AB_ICON_SYMBOLS = ['$', '↩', '%', '🎂', '👥', '☕', '🏷', '🎁', '🎁'];
+    const AB_ICON_SUGGESTIONS = [
+      { name: 'Monthly Credit',  unit: '$'   },
+      { name: 'Cashback',        unit: '%'   },
+      { name: 'Discount',        unit: '%'   },
+      { name: 'Birthday Gift',   unit: '$'   },
+      { name: 'Group Discount',  unit: '%'   },
+      { name: 'Free Lounge',     unit: 'pts' },
+      { name: 'Store Discount',  unit: '%'   },
+      { name: 'Free Gift',       unit: '$'   },
+      { name: 'Gift Voucher',    unit: '$'   },
+    ];
 
     function abIconPath(name) {
       const paths = {
@@ -7266,6 +7277,13 @@
         b.classList.toggle('selected', idx === i);
       });
       document.getElementById('abIconError').style.display = 'none';
+      var suggestion = AB_ICON_SUGGESTIONS[i];
+      if (suggestion) {
+        var nameEl = document.getElementById('abBenefitName');
+        var unitEl = document.getElementById('abBenefitUnit');
+        if (nameEl) { nameEl.value = suggestion.name; clearAbError('abNameError'); }
+        if (unitEl) { unitEl.value = suggestion.unit; clearAbError('abUnitError'); }
+      }
     }
 
     function fillAbName(v) {

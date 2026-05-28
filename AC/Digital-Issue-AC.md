@@ -83,7 +83,7 @@
 
 ### Step 2 — Customer Details
 
-- **Holder Name:** #holderName, placeholder "Enter full name (optional)", `oninput="updateCardHolder(this.value)"`
+- **Holder Name:** #holderName, placeholder "Enter full name", `oninput="updateCardHolder(this.value)"`
 - **Email:** #holderEmail, placeholder "Enter email address" (đổi khi Membership)
 - **Birthday:** #birthdayField (ẩn mặc định), chỉ hiện khi card type = Membership; #holderBirthday dùng **Flatpickr**, format ngày, `maxDate: 'today'`, placeholder "Birthday (optional)"
 

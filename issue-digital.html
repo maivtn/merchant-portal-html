@@ -2171,6 +2171,7 @@
       color: var(--c-text-2);
       margin-bottom: 6px;
     }
+
     .field-label .req {
       color: #ff5630;
       margin-left: 2px;
@@ -3261,6 +3262,61 @@
     .text-danger {
       color: #dc2626;
     }
+
+    /* Membership discount section inside Purchase Price step */
+    .membership-discount-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 10px;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .membership-sale-price {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px 14px;
+      background: var(--c-primary-low);
+      border: 1.5px solid rgba(0, 167, 111, 0.22);
+      border-radius: var(--radius-md);
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--c-text-2);
+    }
+
+    .membership-sale-price .sale-final {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--c-primary);
+    }
+
+    .membership-sale-price .sale-original {
+      text-decoration: line-through;
+      color: var(--c-text-3);
+      font-size: 13px;
+    }
+
+    .membership-sale-price .sale-badge {
+      background: var(--c-primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    .membership-discount-divider {
+      height: 1px;
+      background: var(--c-border);
+      margin: 14px 0 14px;
+    }
   </style>
 </head>
 
@@ -4164,6 +4220,26 @@
                   <input type="text" placeholder="Custom" id="customPrice" oninput="clearPresets('price')">
                 </div>
               </div>
+
+              <!-- Discount for Membership -->
+              <div id="membershipDiscountSection" style="display:none;">
+                <div class="membership-discount-label">
+                  <iconify-icon icon="material-symbols:percent-discount-rounded" width="14"></iconify-icon>
+                  Discount (Optional)
+                </div>
+                <div class="preset-row" id="membershipDiscountRow">
+                  <button class="preset-btn" onclick="selectMembershipDiscount(5,this)">5%</button>
+                  <button class="preset-btn" onclick="selectMembershipDiscount(10,this)">10%</button>
+                  <button class="preset-btn" onclick="selectMembershipDiscount(15,this)">15%</button>
+                  <button class="preset-btn" onclick="selectMembershipDiscount(20,this)">20%</button>
+                  <div class="custom-input-row">
+                    <span class="symbol">%</span>
+                    <input type="text" id="membershipDiscountInput" placeholder="Custom"
+                      oninput="onMembershipDiscountInput(this)">
+                  </div>
+                </div>
+                <div id="membershipSalePriceDisplay" class="membership-sale-price" style="display:none;"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -4218,16 +4294,13 @@
               </div>
               <div class="terms-box" id="termsBox">
                 <textarea class="terms-textarea" id="termsTextarea" rows="3" placeholder="Enter terms and conditions..."
-                  oninput="syncTermsToCard()">Valid for services only. Not applicable to products.
-No cash value.
-Valid for one-time use per invoice.
-Please present this card before payment.</textarea>
+                  oninput="syncTermsToCard()"></textarea>
               </div>
               <div class="suggested-label" id="suggestedTermsLabel">Suggested Terms</div>
               <div class="suggested-terms" id="suggestedTermsBox">
                 <div class="term-chip" onclick="addTerm('Valid for services only. Not applicable to products.')">
                   <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
-                  Valid for services only...
+                  Valid for services only.
                 </div>
                 <div class="term-chip" onclick="addTerm('No cash value.')">
                   <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
@@ -4235,12 +4308,17 @@ Please present this card before payment.</textarea>
                 </div>
                 <div class="term-chip" onclick="addTerm('Valid for one-time use per invoice.')">
                   <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
-                  One-time use only
+                  Valid for one-time use per invoice
                 </div>
                 <div class="term-chip" onclick="addTerm('Please present this card before payment.')">
                   <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
-                  Present before payment
+                  Please present this card before payment
                 </div>
+                <div class="term-chip" onclick="addTerm('Discount and membership credit cannot be used together.')">
+                  <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
+                  Discount and membership credit cannot be used together
+                </div>
+
               </div>
             </div>
           </div>
@@ -4320,7 +4398,7 @@ Please present this card before payment.</textarea>
           </div>
         </div>
 
-        <div class="step-card">
+        <div class="step-card" id="fee-section">
           <div class="step-body step-body--fee">
             <div class="fee-row">
               <span class="fee-label">Platform Service Fee</span>
@@ -4335,29 +4413,32 @@ Please present this card before payment.</textarea>
               </span>
               <span class="fee-value" data-fee-display>$0.00</span>
             </div>
-            <div class=" divider">
-            </div>
-            <div class="fee-row">
-              <span class="fee-label">Total Fees <span id="reloadTotalFeesTipTrigger" class="reload-summary-info-icon"
-                  title="Fees overview">
-                  <i data-lucide="info" style="width:12px;height:12px;"></i>
-                </span></span>
-              <span class="fee-value" data-fee-display>$0.00</span>
-            </div>
-            <div class="fee-row fee-row--payment-method">
-              <span class="fee-label">Fee Payment Method <span id="feePaymentMethodTipTrigger"
-                  class="reload-summary-info-icon" title="Fee payment method info">
-                  <i data-lucide="info" style="width:12px;height:12px;"></i>
-                </span></span>
-              <span class="fee-value">
-                <select id="feeTokenSelect" class="fee-token-select crypto-select" aria-label="Pay fees in token"
-                  placeholder="Select token"></select>
-              </span>
-            </div>
-            <div class="fee-row">
-              <span class="fee-label">Exchange Rate <span class="small" id="feeEstimatedRateText">1 USDV =
-                  $1.00</span></span>
-              <span class="fee-value" id="feeYouPayText">0.00 USDV</span>
+
+            <div id="cryptoFeeDetails" >
+              <div class=" divider">
+              </div>
+              <div class="fee-row">
+                <span class="fee-label">Total Fees <span id="reloadTotalFeesTipTrigger" class="reload-summary-info-icon"
+                    title="Fees overview">
+                    <i data-lucide="info" style="width:12px;height:12px;"></i>
+                  </span></span>
+                <span class="fee-value" data-fee-display>$0.00</span>
+              </div>
+              <div class="fee-row fee-row--payment-method">
+                <span class="fee-label">Fee Payment Method <span id="feePaymentMethodTipTrigger"
+                    class="reload-summary-info-icon" title="Fee payment method info">
+                    <i data-lucide="info" style="width:12px;height:12px;"></i>
+                  </span></span>
+                <span class="fee-value">
+                  <select id="feeTokenSelect" class="fee-token-select crypto-select" aria-label="Pay fees in token"
+                    placeholder="Select token"></select>
+                </span>
+              </div>
+              <div class="fee-row">
+                <span class="fee-label">Exchange Rate <span class="small" id="feeEstimatedRateText">1 USDV =
+                    $1.00</span></span>
+                <span class="fee-value" id="feeYouPayText">0.00 USDV</span>
+              </div>
             </div>
           </div>
 
@@ -5225,7 +5306,7 @@ Please present this card before payment.</textarea>
       const badgeEl = document.getElementById('cfValueBadge');
       if (!badgeEl) return;
       const typeId = currentTypeId;
-      if (!CARD_SHOW_VALUE[typeId]) { badgeEl.style.display = 'none'; return; }
+      if (!CARD_SHOW_VALUE[typeId]) { badgeEl.style.display = 'none'; updateMembershipSalePrice(); return; }
       // Find active preset or custom input value
       let val = '';
       if (typeId === '3') {
@@ -5256,6 +5337,7 @@ Please present this card before payment.</textarea>
       badgeEl.textContent = val;
       badgeEl.style.display = '';
       updateFeeDisplay();
+      updateMembershipSalePrice();
     }
 
     let currentTypeId = '0';
@@ -5326,6 +5408,18 @@ Please present this card before payment.</textarea>
       // Show/hide step 5 (Purchase Price — for Membership & Discount)
       const step5 = document.getElementById('step5Card');
       if (step5) step5.style.display = (typeId === '2' || typeId === '3') ? '' : 'none';
+      // Show Discount section inside Purchase Price only for Membership
+      const mbDiscSection = document.getElementById('membershipDiscountSection');
+      if (mbDiscSection) {
+        mbDiscSection.style.display = (typeId === '2') ? '' : 'none';
+        if (typeId !== '2') {
+          document.querySelectorAll('#membershipDiscountRow .preset-btn').forEach(b => b.classList.remove('active'));
+          const mbDiscInput = document.getElementById('membershipDiscountInput');
+          if (mbDiscInput) mbDiscInput.value = '';
+          const mbSaleDisplay = document.getElementById('membershipSalePriceDisplay');
+          if (mbSaleDisplay) mbSaleDisplay.style.display = 'none';
+        }
+      }
 
       // Update Step 4 content
       const vg = document.getElementById('valueGroup');
@@ -5364,6 +5458,10 @@ Please present this card before payment.</textarea>
       if (vlpRow) {
         vlpRow.style.display = (typeId === '5') ? '' : 'none';
       }
+
+      // Crypto-only fee details (Total Fees, Fee Payment Method, Exchange Rate)
+      // const cryptoFeeDetails = document.getElementById('cryptoFeeDetails');
+      // if (cryptoFeeDetails) cryptoFeeDetails.style.display = (typeId === '5') ? '' : 'none';
       toggleCryptoPlacementLeg();
       const termsStepTitle = document.getElementById('termsStepTitle');
       const cbTermsSectionTitle = document.getElementById('cbTermsSectionTitle');
@@ -5524,12 +5622,77 @@ Please present this card before payment.</textarea>
       if (el) el.textContent = rankText ? rankText.toUpperCase() : '';
     }
 
+    /* ──────────────────────────────────────────────
+       AUTO-FILL FROM MEMBERSHIP PACKAGE
+    ────────────────────────────────────────────── */
+    function applyMembershipPackage(rankName) {
+      if (currentTypeId !== '2') return;
+      const pkg = MEMBERSHIP_PACKAGES.find(p => p.name === rankName.toUpperCase());
+      if (!pkg) return;
+
+      // Fill Price
+      const priceBtns = Array.from(document.querySelectorAll('#step5Card .collapse-wrap .preset-row:first-child .preset-btn'));
+      const customPriceInput = document.getElementById('customPrice');
+      priceBtns.forEach(b => b.classList.remove('active'));
+      if (customPriceInput) customPriceInput.value = '';
+      const matchPriceBtn = priceBtns.find(b => parseFloat(b.textContent.replace(/[^0-9.]/g, '')) === pkg.price);
+      if (matchPriceBtn) {
+        matchPriceBtn.classList.add('active');
+      } else if (customPriceInput) {
+        customPriceInput.value = pkg.price;
+      }
+
+      // Fill Discount
+      const discBtns = Array.from(document.querySelectorAll('#membershipDiscountRow .preset-btn'));
+      const customDiscInput = document.getElementById('membershipDiscountInput');
+      discBtns.forEach(b => b.classList.remove('active'));
+      if (customDiscInput) customDiscInput.value = '';
+      if (pkg.discount) {
+        const matchDiscBtn = discBtns.find(b => parseFloat(b.textContent) === pkg.discount);
+        if (matchDiscBtn) {
+          matchDiscBtn.classList.add('active');
+        } else if (customDiscInput) {
+          customDiscInput.value = pkg.discount;
+        }
+      }
+      updateMembershipSalePrice();
+
+      // Fill Benefits
+      mbSelected = {};
+      pkg.benefits.forEach(b => { mbSelected[b.id] = b.value; });
+      initMbBenefitSelect();
+      if (mbTomSelect) {
+        pkg.benefits.forEach(b => { mbTomSelect.addItem(b.id, true); });
+      }
+
+      // Fill Expiration
+      const expirationSelect = document.getElementById('expirationSelect');
+      if (expirationSelect && pkg.periodDays) {
+        const optVals = Array.from(expirationSelect.options).map(o => o.value);
+        if (optVals.includes(String(pkg.periodDays))) {
+          expirationSelect.value = String(pkg.periodDays);
+        } else {
+          expirationSelect.value = 'custom';
+          const d = new Date();
+          d.setDate(d.getDate() + pkg.periodDays);
+          const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).replace(',', '');
+          const customDate = document.getElementById('customDate');
+          if (customDate) customDate.value = dateStr;
+        }
+        onExpirationChange();
+      }
+
+      updateCardValueBadge();
+    }
+
     function toggleRank(btn) {
       const wasActive = btn.classList.contains('active');
       document.querySelectorAll('.rank-pill').forEach(p => p.classList.remove('active'));
       if (!wasActive) {
         btn.classList.add('active');
-        updateCardRank(btn.textContent.trim());
+        const rankName = btn.textContent.trim();
+        updateCardRank(rankName);
+        applyMembershipPackage(rankName);
       } else {
         updateCardRank('');
       }
@@ -6058,6 +6221,58 @@ Please present this card before payment.</textarea>
     }
 
     /* ──────────────────────────────────────────────
+       MEMBERSHIP DISCOUNT (inside Purchase Price step)
+    ────────────────────────────────────────────── */
+    function getMembershipDiscountPct() {
+      const activeBtn = document.querySelector('#membershipDiscountRow .preset-btn.active');
+      const customInput = document.getElementById('membershipDiscountInput');
+      if (activeBtn) return parseFloat(activeBtn.textContent) || 0;
+      if (customInput && customInput.value) return Math.min(100, Math.max(0, parseFloat(customInput.value) || 0));
+      return 0;
+    }
+
+    function getActivePurchasePrice() {
+      const priceRow = document.querySelector('#step5Card .collapse-wrap .preset-row');
+      if (!priceRow) return 0;
+      const activeBtn = priceRow.querySelector('.preset-btn.active');
+      const customInput = document.getElementById('customPrice');
+      if (activeBtn) return parseFloat((activeBtn.textContent || '').replace(/[^0-9.]/g, '')) || 0;
+      if (customInput && customInput.value) return parseFloat(customInput.value) || 0;
+      return 0;
+    }
+
+    function updateMembershipSalePrice() {
+      const display = document.getElementById('membershipSalePriceDisplay');
+      if (!display) return;
+      if (currentTypeId !== '2') { display.style.display = 'none'; return; }
+      const price = getActivePurchasePrice();
+      const discountPct = getMembershipDiscountPct();
+      if (!price || !discountPct) { display.style.display = 'none'; return; }
+      const salePrice = Math.max(0, price * (1 - discountPct / 100));
+      const fmt = (n) => '$' + (n % 1 === 0 ? n : n.toFixed(2));
+      display.style.display = '';
+      display.innerHTML =
+        '<iconify-icon icon="solar:tag-price-bold-duotone" width="18" style="color:var(--c-primary);flex-shrink:0"></iconify-icon>' +
+        '<span class="sale-original">' + fmt(price) + '</span>' +
+        '<span style="color:var(--c-text-3);margin:0 2px">&#8594;</span>' +
+        '<span class="sale-final">' + fmt(salePrice) + '</span>' +
+        '<span class="sale-badge">-' + Math.round(discountPct) + '%</span>';
+    }
+
+    function selectMembershipDiscount(pct, btn) {
+      document.querySelectorAll('#membershipDiscountRow .preset-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const input = document.getElementById('membershipDiscountInput');
+      if (input) input.value = '';
+      updateMembershipSalePrice();
+    }
+
+    function onMembershipDiscountInput(input) {
+      document.querySelectorAll('#membershipDiscountRow .preset-btn').forEach(b => b.classList.remove('active'));
+      updateMembershipSalePrice();
+    }
+
+    /* ──────────────────────────────────────────────
        BENEFIT TOGGLE
     ────────────────────────────────────────────── */
     /* ──────────────────────────────────────────────
@@ -6072,6 +6287,89 @@ Please present this card before payment.</textarea>
       { id: 'free_lounge', name: 'Free Lounge', unit: 'times', icon: '☕', iconBg: '#f0fdf4', iconColor: '#16a34a' },
     ];
     let mbSelected = {}; // { id: value }
+
+    /* ──────────────────────────────────────────────
+       MEMBERSHIP PACKAGES (mirrors benefits-setup.html PACKAGES)
+    ────────────────────────────────────────────── */
+    const MEMBERSHIP_PACKAGES = [
+      {
+        id: 'PKG001', name: 'STARTER',
+        price: 30, currency: 'USD', discount: 1,
+        billingCycle: 'Monthly', periodDays: 30,
+        status: 'APPROVED', saleStatus: 'ACTIVE',
+        description: 'Entry-level membership with basic cashback.',
+        benefits: [
+          { id: 'cashback', value: '1' },
+        ]
+      },
+      {
+        id: 'PKG002', name: 'BRONZE',
+        price: 50, currency: 'USD', discount: 2,
+        billingCycle: 'Monthly', periodDays: 30,
+        status: 'APPROVED', saleStatus: 'ACTIVE',
+        description: 'Monthly plan with credit & cashback rewards.',
+        benefits: [
+          { id: 'monthly_credit', value: '5' },
+          { id: 'cashback', value: '1' },
+        ]
+      },
+      {
+        id: 'PKG003', name: 'SILVER',
+        price: 150, currency: 'USD', discount: 3,
+        billingCycle: 'Yearly', periodDays: 365,
+        status: 'APPROVED', saleStatus: 'ACTIVE',
+        description: 'Annual plan with credit, cashback & birthday bonus.',
+        benefits: [
+          { id: 'monthly_credit', value: '10' },
+          { id: 'cashback', value: '2' },
+          { id: 'birthday_gift', value: '20' },
+        ]
+      },
+      {
+        id: 'PKG004', name: 'GOLD',
+        price: 500, currency: 'USD', discount: 5,
+        billingCycle: 'Yearly', periodDays: 365,
+        status: 'APPROVED', saleStatus: 'ACTIVE',
+        description: 'Premium annual plan with discount & lounge access.',
+        benefits: [
+          { id: 'monthly_credit', value: '50' },
+          { id: 'cashback', value: '5' },
+          { id: 'discount', value: '10' },
+          { id: 'birthday_gift', value: '50' },
+          { id: 'free_lounge', value: '2' },
+        ]
+      },
+      {
+        id: 'PKG005', name: 'PLATINUM',
+        price: 1200, currency: 'USD', discount: 7,
+        billingCycle: 'Yearly', periodDays: 365,
+        status: 'APPROVED', saleStatus: 'ACTIVE',
+        description: 'Top-tier annual plan with group discount & full benefits.',
+        benefits: [
+          { id: 'monthly_credit', value: '100' },
+          { id: 'cashback', value: '8' },
+          { id: 'discount', value: '15' },
+          { id: 'birthday_gift', value: '100' },
+          { id: 'group_discount', value: '20' },
+          { id: 'free_lounge', value: '5' },
+        ]
+      },
+      {
+        id: 'PKG006', name: 'ELITE',
+        price: 2000, currency: 'USD', discount: 9,
+        billingCycle: 'Yearly', periodDays: 365,
+        status: 'APPROVED', saleStatus: 'ACTIVE',
+        description: 'Exclusive elite plan with maximum rewards & privileges.',
+        benefits: [
+          { id: 'monthly_credit', value: '200' },
+          { id: 'cashback', value: '10' },
+          { id: 'discount', value: '20' },
+          { id: 'birthday_gift', value: '200' },
+          { id: 'group_discount', value: '25' },
+          { id: 'free_lounge', value: '10' },
+        ]
+      },
+    ];
     let mbTomSelect = null;
 
     function initMbBenefitSelect() {
@@ -7044,11 +7342,16 @@ Please present this card before payment.</textarea>
 
       MB_BENEFITS.push(newBenefit);
 
-      // Rebuild TomSelect with updated MB_BENEFITS, restoring current selections
+      // Rebuild TomSelect with updated MB_BENEFITS
       var prevSelected = Object.keys(mbSelected);
       initMbBenefitSelect();
+      // Restore existing selections silently (preserve entered values)
       if (mbTomSelect && prevSelected.length > 0) {
         prevSelected.forEach(function (id) { mbTomSelect.addItem(id, true); });
+      }
+      // Auto-select new benefit — no silent flag so onChange fires → updates mbSelected + renders cards
+      if (mbTomSelect) {
+        mbTomSelect.addItem(newBenefit.id);
       }
 
       closeAddBenefitModal();
@@ -7060,16 +7363,16 @@ Please present this card before payment.</textarea>
 
     // ── Address Modal (Bootstrap) ──
     function saveAddressToInput() {
-      const addr  = (document.getElementById('holderAddressDetail') || {}).value?.trim() || '';
-      const city  = (document.getElementById('holderCity')          || {}).value?.trim() || '';
-      const state = (document.getElementById('holderState')         || {}).value?.trim() || '';
-      const zip   = (document.getElementById('holderZipCode')       || {}).value?.trim() || '';
+      const addr = (document.getElementById('holderAddressDetail') || {}).value?.trim() || '';
+      const city = (document.getElementById('holderCity') || {}).value?.trim() || '';
+      const state = (document.getElementById('holderState') || {}).value?.trim() || '';
+      const zip = (document.getElementById('holderZipCode') || {}).value?.trim() || '';
       const country = document.getElementById('holderCountry');
       const countryLabel = country ? country.options[country.selectedIndex].text : '';
 
       const line2 = [city, state].filter(Boolean).join(', ');
       const line3 = [zip, countryLabel].filter(Boolean).join(' ');
-      const text  = [addr, line2, line3].filter(Boolean).join(', ');
+      const text = [addr, line2, line3].filter(Boolean).join(', ');
 
       const triggerInput = document.getElementById('holderAddress');
       if (triggerInput) triggerInput.value = text;
@@ -8423,6 +8726,7 @@ Please present this card before payment.</textarea>
       align-items: center;
       cursor: pointer;
     }
+
     .addr-input-icon {
       position: absolute;
       left: 12px;
@@ -8430,11 +8734,15 @@ Please present this card before payment.</textarea>
       pointer-events: none;
       flex-shrink: 0;
     }
+
     .addr-trigger-input {
       padding-left: 36px;
       cursor: pointer;
     }
-    .addr-trigger-input:focus { outline: none; }
+
+    .addr-trigger-input:focus {
+      outline: none;
+    }
 
     /* ── Membership contact column ── */
     .membership-contact-col {

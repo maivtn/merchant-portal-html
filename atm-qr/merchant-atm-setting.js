@@ -1947,12 +1947,14 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   const settlementData = [
-    { date: 'May 19, 2025', thuHo: 1200.00, chiHo:  350.00, commission:  46.75, payBack:  850.00, vlinkpayPayout:    0, status: 'completed',      statusLabel: 'Completed'      },
-    { date: 'May 12, 2025', thuHo:  500.00, chiHo:  200.00, commission:  21.25, payBack:  300.00, vlinkpayPayout:    0, status: 'waiting-review', statusLabel: 'Waiting Review' },
-    { date: 'May 05, 2025', thuHo:  800.00, chiHo:  100.00, commission:  27.00, payBack:  700.00, vlinkpayPayout:    0, status: 'completed',      statusLabel: 'Completed'      },
-    { date: 'Apr 28, 2025', thuHo:  950.00, chiHo:  950.00, commission:  71.25, payBack:    0.00, vlinkpayPayout:    0, status: 'completed',      statusLabel: 'Completed'      },
-    { date: 'Apr 21, 2025', thuHo:  600.00, chiHo:  850.00, commission:  43.88, payBack:    0.00, vlinkpayPayout:  250, status: 'completed',      statusLabel: 'Completed'      },
-    { date: 'Apr 14, 2025', thuHo:  750.00, chiHo: 1200.00, commission:  58.13, payBack:    0.00, vlinkpayPayout:  450, status: 'processing',     statusLabel: 'Processing'     },
+    { id: 1, date: 'May 20, 2025', thuHo:  500.00, chiHo:  200.00, commission:  21.25, payBack:  300.00, vlinkpayPayout:    0, status: 'pending',        statusLabel: 'Pending'        },
+    { id: 2, date: 'May 19, 2025', thuHo: 1200.00, chiHo:  350.00, commission:  46.75, payBack:  850.00, vlinkpayPayout:    0, status: 'completed',      statusLabel: 'Completed'      },
+    { id: 3, date: 'May 12, 2025', thuHo:  500.00, chiHo:  200.00, commission:  21.25, payBack:  300.00, vlinkpayPayout:    0, status: 'waiting-review', statusLabel: 'Waiting Review' },
+    { id: 4, date: 'May 05, 2025', thuHo:  800.00, chiHo:  100.00, commission:  27.00, payBack:  700.00, vlinkpayPayout:    0, status: 'completed',      statusLabel: 'Completed'      },
+    { id: 5, date: 'Apr 28, 2025', thuHo:  950.00, chiHo:  950.00, commission:  71.25, payBack:    0.00, vlinkpayPayout:    0, status: 'completed',      statusLabel: 'Completed'      },
+    { id: 6, date: 'Apr 21, 2025', thuHo:  600.00, chiHo:  850.00, commission:  43.88, payBack:    0.00, vlinkpayPayout:  250, status: 'completed',      statusLabel: 'Completed'      },
+    { id: 7, date: 'Apr 14, 2025', thuHo:  750.00, chiHo: 1200.00, commission:  58.13, payBack:    0.00, vlinkpayPayout:  450, status: 'processing',     statusLabel: 'Processing'     },
+    { id: 8, date: 'Apr 07, 2025', thuHo:  700.00, chiHo: 1100.00, commission:  45.50, payBack:    0.00, vlinkpayPayout:  400, status: 'pending',        statusLabel: 'Pending'        },
   ];
 
   const settlementGrid  = document.getElementById('settlement-grid');
@@ -1965,8 +1967,13 @@ window.addEventListener('DOMContentLoaded', () => {
     settlementGrid.innerHTML = items.length === 0
       ? '<div class="col-12 text-center py-4 text-muted" style="font-size:13px;">No records found.</div>'
       : items.map(item => {
-          const hasPayBack = item.payBack > 0;
-          const hasPayout  = item.vlinkpayPayout > 0;
+          const hasPayBack    = item.payBack > 0;
+          const hasPayout     = item.vlinkpayPayout > 0;
+          const showResetBtn  = item.status === 'pending' && hasPayout;
+          const detailUrl     = `merchant-atm-settlement-detail.html?date=${encodeURIComponent(item.date)}&status=${item.status}`;
+          const actionLink    = showResetBtn
+            ? `<a href="${detailUrl}&action=reset-credit" class="history-item-view-link" style="color:#d97706;"><i data-lucide="refresh-cw" class="w-3 h-3"></i> Reset Credit</a>`
+            : `<a href="${detailUrl}" class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></a>`;
           return `
         <div class="col-12 col-sm-6">
           <div class="settlement-item">
@@ -1985,7 +1992,7 @@ window.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="settlement-item__right">
               <span class="history-badge history-badge--${item.status}">${item.statusLabel}</span>
-              <a href="merchant-atm-settlement-detail.html?date=${encodeURIComponent(item.date)}&status=${item.status}" class="history-item-view-link">View details <i data-lucide="chevron-right" class="w-3 h-3"></i></a>
+              ${actionLink}
             </div>
           </div>
         </div>`;
@@ -1997,7 +2004,13 @@ window.addEventListener('DOMContentLoaded', () => {
     if (!settlementTbody) return;
     settlementTbody.innerHTML = items.length === 0
       ? '<tr><td colspan="8" class="text-center py-4 text-muted" style="font-size:13px;">No records found.</td></tr>'
-      : items.map(item => `
+      : items.map(item => {
+          const showResetBtn = item.status === 'pending' && item.vlinkpayPayout > 0;
+          const detailUrl    = `merchant-atm-settlement-detail.html?date=${encodeURIComponent(item.date)}&status=${item.status}`;
+          const actionCell   = showResetBtn
+            ? `<a href="${detailUrl}&action=reset-credit" class="view-details-link" style="color:#d97706;"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Reset Credit</a>`
+            : `<a href="${detailUrl}" class="view-details-link">View details <i data-lucide="chevron-right" class="w-4 h-4"></i></a>`;
+          return `
         <tr>
           <td class="td-date">${item.date}</td>
           <td class="td-num">${fmtUSD(item.thuHo)}</td>
@@ -2006,8 +2019,9 @@ window.addEventListener('DOMContentLoaded', () => {
           <td class="td-num ${item.payBack > 0 ? 'td-num--pay' : 'td-num--zero'}">${fmtSettlementNum(item.payBack)}</td>
           <td class="td-num ${item.vlinkpayPayout > 0 ? 'td-num--receive' : 'td-num--zero'}">${fmtSettlementNum(item.vlinkpayPayout)}</td>
           <td><span class="history-badge history-badge--${item.status}">${item.statusLabel}</span></td>
-          <td class="td-chevron"><a href="merchant-atm-settlement-detail.html?date=${encodeURIComponent(item.date)}&status=${item.status}" class="view-details-link">View details <i data-lucide="chevron-right" class="w-4 h-4"></i></a></td>
-        </tr>`).join('');
+          <td class="td-chevron">${actionCell}</td>
+        </tr>`;
+        }).join('');
     refreshIcons();
   };
 

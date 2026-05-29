@@ -1,0 +1,2549 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Ads Hub — Cổng thông tin Quảng cáo AI</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          boxShadow: {
+            'premium': '0 10px 30px -10px rgba(99, 102, 241, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02)',
+            'card-hover': '0 20px 40px -15px rgba(99, 102, 241, 0.15), 0 1px 10px rgba(99, 102, 241, 0.05)',
+            'btn-indigo-glow': '0 4px 14px 0 rgba(99, 102, 241, 0.4)',
+            'btn-violet-glow': '0 4px 14px 0 rgba(139, 92, 246, 0.4)',
+            'input-glow': '0 0 0 4px rgba(99, 102, 241, 0.1)',
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    /* Tuỳ chỉnh thanh cuộn mượt mà chuẩn Premium */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f8fafc;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    /* Chuyển động mượt mà cho hiệu ứng hover */
+    .transition-all-300 {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* Chuyển động siêu tốc cho click phản hồi vật lý */
+    .btn-bounce {
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .btn-bounce:active {
+      transform: scale(0.96);
+    }
+  </style>
+</head>
+<body class="bg-[#f8fafc] text-slate-800 font-sans min-h-screen flex flex-col antialiased">
+
+  <!-- HỆ THỐNG TOAST THÔNG BÁO CAO CẤP -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 pointer-events-none max-w-sm w-full"></div>
+
+  <!-- MODAL XEM CHI TIẾT BANNER HOẶC LÝ DO TỪ CHỐI -->
+  <div id="global-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full mx-4 shadow-2xl border border-slate-100 transform scale-95 transition-transform duration-300" id="modal-content-box">
+      <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+        <h3 class="text-lg font-bold text-slate-900" id="modal-title">Tiêu đề Modal</h3>
+        <button onclick="closeModal()" class="p-1 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors btn-bounce">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="space-y-4" id="modal-body">
+        <!-- Nội dung động sẽ render ở đây -->
+      </div>
+      <div class="mt-6 flex justify-end gap-3" id="modal-footer">
+        <button onclick="closeModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-medium hover:bg-slate-50 transition-colors btn-bounce">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BỐ CỤC CHÍNH (DESKTOP-FIRST) -->
+  <div class="flex flex-1 overflow-hidden">
+    
+    <!-- SIDEBAR NAV CHUẨN ĐỒNG NHẤT -->
+    <aside class="w-72 bg-white border-r border-slate-100 flex flex-col shrink-0 hidden md:flex">
+      <div class="p-6 border-b border-slate-100/80 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-md shadow-indigo-200 hover:rotate-12 transition-transform duration-300">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <span class="text-xs font-semibold tracking-wider text-slate-400 uppercase">Đối tác Merchant</span>
+          <h1 class="text-base font-extrabold text-slate-950 bg-gradient-to-r from-indigo-950 to-indigo-800 bg-clip-text text-transparent">AI Ads Portal</h1>
+        </div>
+      </div>
+      
+      <!-- DANH SÁCH MENU SIDEBAR -->
+      <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+        <div class="px-3 mb-3 text-xs font-semibold tracking-wider text-slate-400 uppercase">AI Ads</div>
+        
+        <button data-screen="hub" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl text-sm font-semibold transition-all-300 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 btn-bounce">
+          <i data-lucide="grid" class="w-5 h-5"></i>
+          AI Ads Hub
+        </button>
+        
+        <button data-screen="manage" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl text-sm font-semibold transition-all-300 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 btn-bounce">
+          <i data-lucide="layers" class="w-5 h-5"></i>
+          Manage Banner
+        </button>
+        
+        <button data-screen="create-ad" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl text-sm font-semibold transition-all-300 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 btn-bounce">
+          <i data-lucide="plus-circle" class="w-5 h-5"></i>
+          Create Ad
+        </button>
+        
+        <button data-screen="transactions" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl text-sm font-semibold transition-all-300 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 btn-bounce">
+          <i data-lucide="history" class="w-5 h-5"></i>
+          Transaction History
+        </button>
+        
+        <button data-screen="buy-package" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl text-sm font-semibold transition-all-300 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 btn-bounce">
+          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+          Buy Package
+        </button>
+      </nav>
+
+      <!-- PHẦN THÔNG TIN GÓI NHANH Ở ĐÁY SIDEBAR -->
+      <div class="p-4 m-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-indigo-200 transition-all-300 group">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+          <span class="text-xs font-semibold text-slate-500 group-hover:text-slate-700 transition-colors" id="sidebar-plan-badge">Gói: Premium (Active)</span>
+        </div>
+        <p class="text-[11px] text-slate-400">Tokens khả dụng: <strong class="text-indigo-600 font-bold group-hover:text-indigo-700 transition-colors" id="sidebar-token-count">420</strong></p>
+      </div>
+    </aside>
+
+    <!-- KHU VỰC NỘI DUNG CHÍNH -->
+    <main class="flex-1 flex flex-col overflow-y-auto">
+      
+      <!-- THANH ĐẦU TRANG (HEADER) -->
+      <header class="bg-white border-b border-slate-100 h-20 px-6 flex items-center justify-between sticky top-0 z-30 shrink-0">
+        <div class="flex items-center gap-4">
+          <!-- Hamburger menu cho điện thoại -->
+          <button id="mobile-menu-btn" class="p-2 -ml-2 rounded-xl text-slate-500 hover:bg-slate-50 md:hidden transition-colors btn-bounce">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+          <div class="relative w-64 hidden sm:block">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+              <i data-lucide="search" class="w-4 h-4"></i>
+            </span>
+            <input type="text" placeholder="Tìm kiếm tính năng, banner..." class="w-full bg-slate-50 text-slate-800 text-sm pl-10 pr-4 py-2 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <!-- Thông báo dạng Chuông -->
+          <button class="p-2.5 text-slate-500 hover:text-indigo-600 hover:bg-slate-50 rounded-full transition-all relative btn-bounce">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-indigo-600 rounded-full"></span>
+          </button>
+
+          <div class="h-6 w-px bg-slate-200"></div>
+
+          <!-- Hồ sơ User -->
+          <div class="flex items-center gap-3 pl-1 group cursor-pointer">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-100 to-indigo-200 border-2 border-indigo-50 flex items-center justify-center font-bold text-indigo-700 text-sm shadow-inner group-hover:scale-105 transition-all duration-300">
+              JM
+            </div>
+            <div class="hidden sm:block">
+              <h4 class="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors" id="header-user-name">John Merchant</h4>
+              <p class="text-xs text-slate-400 font-medium">Quản trị viên Ads</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- BANNER DI ĐỘNG KHI SIDEBAR BỊ ẨN -->
+      <div id="mobile-menu-drawer" class="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-sm hidden md:hidden">
+        <div class="w-72 bg-white h-full flex flex-col p-6 animate-slide-in relative">
+          <button id="close-mobile-menu" class="absolute top-5 right-5 p-2 rounded-full hover:bg-slate-100 text-slate-500 btn-bounce">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+          <div class="flex items-center gap-3 mb-8">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-md">
+              <i data-lucide="sparkles" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <span class="text-[10px] font-semibold tracking-wider text-slate-400 uppercase">Đối tác Merchant</span>
+              <h2 class="text-sm font-extrabold text-indigo-950">AI Ads Portal</h2>
+            </div>
+          </div>
+          <nav class="space-y-2 flex-1">
+            <button data-screen="hub" class="mobile-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold transition-colors text-left text-slate-600 hover:bg-slate-50 hover:text-indigo-600 btn-bounce">
+              <i data-lucide="grid" class="w-5 h-5"></i> AI Ads Hub
+            </button>
+            <button data-screen="manage" class="mobile-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold transition-colors text-left text-slate-600 hover:bg-slate-50 hover:text-indigo-600 btn-bounce">
+              <i data-lucide="layers" class="w-5 h-5"></i> Manage Banner
+            </button>
+            <button data-screen="create-ad" class="mobile-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold transition-colors text-left text-slate-600 hover:bg-slate-50 hover:text-indigo-600 btn-bounce">
+              <i data-lucide="plus-circle" class="w-5 h-5"></i> Create Ad
+            </button>
+            <button data-screen="transactions" class="mobile-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold transition-colors text-left text-slate-600 hover:bg-slate-50 hover:text-indigo-600 btn-bounce">
+              <i data-lucide="history" class="w-5 h-5"></i> Transaction History
+            </button>
+            <button data-screen="buy-package" class="mobile-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-semibold transition-colors text-left text-slate-600 hover:bg-slate-50 hover:text-indigo-600 btn-bounce">
+              <i data-lucide="shopping-bag" class="w-5 h-5"></i> Buy Package
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      <!-- KHU VỰC HIỂN THỊ CÁC MÀN HÌNH ĐỘNG -->
+      <div class="flex-1 p-6 lg:p-8 space-y-8 max-w-7xl w-full mx-auto">
+        
+        <!-- ================= MÀN HÌNH 1: AI ADS HUB ================= -->
+        <section id="screen-hub" class="screen-section space-y-8">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">AI Ads Hub</h2>
+              <p class="text-sm text-slate-500 mt-1">Tổng quan về gói quảng cáo hiện tại, dung lượng token, banner và tiến độ kiểm duyệt.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <button onclick="switchScreen('create-ad')" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 hover:shadow-btn-indigo-glow hover:-translate-y-0.5 text-white font-semibold text-sm shadow-md shadow-indigo-100 hover:shadow-lg transition-all duration-300 flex items-center gap-2 btn-bounce">
+                <i data-lucide="sparkles" class="w-4 h-4"></i> Tạo quảng cáo ngay
+              </button>
+            </div>
+          </div>
+
+          <!-- Hàng 1: Thẻ Gói hiện tại & Nâng cấp -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Thẻ gói hiện tại -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium flex flex-col justify-between relative overflow-hidden group hover:shadow-card-hover hover:-translate-y-1 hover:border-indigo-100 transition-all-300">
+              <div class="absolute -right-8 -top-8 w-24 h-24 bg-indigo-50 rounded-full group-hover:scale-125 transition-transform duration-500"></div>
+              <div class="relative">
+                <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Gói hiện tại</span>
+                <h3 class="text-3xl font-black text-slate-900 mt-2 flex items-center gap-2">
+                  <span id="hub-current-plan-name">Premium</span>
+                  <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Đang hoạt động
+                  </span>
+                </h3>
+                <p class="text-xs text-slate-400 mt-3 flex items-center gap-1">
+                  <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Gia hạn tiếp theo: Jun 15, 2026
+                </p>
+              </div>
+            </div>
+
+            <!-- Thẻ nâng cấp -->
+            <div class="lg:col-span-2 bg-gradient-to-r from-slate-900 to-indigo-950 rounded-3xl p-6 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-6 relative overflow-hidden shadow-xl shadow-slate-900/10 hover:shadow-indigo-950/20 hover:-translate-y-1 transition-all-300">
+              <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-indigo-600/10 rounded-full blur-2xl"></div>
+              <div class="space-y-2 relative">
+                <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest px-2 py-0.5 rounded-md bg-indigo-500/10 border border-indigo-500/20">Upgrade Available</span>
+                <h3 class="text-xl font-bold tracking-tight">Nâng cấp lên gói Platinum</h3>
+                <p class="text-xs text-slate-300 max-w-md leading-relaxed">Tận hưởng tối đa 10 Banners hoạt động đồng thời, nhận ngay 2000 AI Tokens và vị trí xuất hiện VIP cao cấp nhất trên toàn mạng lưới.</p>
+              </div>
+              <button onclick="goToUpgradeScreen()" class="bg-white text-slate-950 hover:bg-slate-50 font-bold text-sm px-6 py-3 rounded-2xl shrink-0 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 relative btn-bounce">
+                Nâng cấp Gói
+              </button>
+            </div>
+          </div>
+
+          <!-- Hàng 2: Grid Thống kê (Tokens, Banner, Review) -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- AI Tokens -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium hover:shadow-card-hover hover:-translate-y-1 transition-all-300 group">
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">AI Tokens khả dụng</span>
+                <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                  <i data-lucide="coins" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-3xl font-extrabold text-slate-900" id="hub-token-val">420</h4>
+                <p class="text-xs text-indigo-600 hover:text-indigo-800 hover:underline cursor-pointer flex items-center gap-1 transition-colors" onclick="switchScreen('transactions')">
+                  Xem lịch sử tiêu dùng <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                </p>
+              </div>
+            </div>
+
+            <!-- Banner Usage -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium hover:shadow-card-hover hover:-translate-y-1 transition-all-300 group">
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Hạn ngạch Banner</span>
+                <div class="w-10 h-10 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-violet-600 group-hover:text-white transition-all duration-300">
+                  <i data-lucide="image" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <div class="space-y-3">
+                <div class="flex justify-between items-baseline">
+                  <h4 class="text-3xl font-extrabold text-slate-900" id="hub-usage-text">2 / 3 <span class="text-xs font-medium text-slate-400">đang dùng</span></h4>
+                </div>
+                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                  <div id="hub-usage-progress" class="bg-indigo-600 h-full rounded-full transition-all duration-500" style="width: 66.6%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review Status -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium hover:shadow-card-hover hover:-translate-y-1 transition-all-300 group">
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Kiểm duyệt hôm nay</span>
+                <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
+                  <i data-lucide="clock" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-3xl font-extrabold text-slate-900" id="hub-review-val">1 Đang Chờ</h4>
+                <p class="text-xs text-indigo-600 hover:text-indigo-800 hover:underline cursor-pointer flex items-center gap-1 transition-colors" onclick="switchScreen('manage')">
+                  Xem chi tiết các banner <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hàng 3: Hành động nhanh (Quick Actions) -->
+          <div class="space-y-4">
+            <h3 class="text-lg font-bold text-slate-900">Hành động nhanh</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Upload Banner -->
+              <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium hover:shadow-card-hover hover:-translate-y-1.5 transition-all-300 group flex flex-col justify-between h-48 cursor-pointer" onclick="goToUploadBanner()">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <h4 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">Tải lên Banner có sẵn</h4>
+                    <p class="text-xs text-slate-400 mt-1 max-w-sm">Tải lên tệp thiết kế của riêng bạn và điền thông tin để chuyển trực tiếp cho quản trị viên kiểm duyệt.</p>
+                  </div>
+                  <div class="w-10 h-10 rounded-xl bg-slate-50 text-slate-500 group-hover:bg-indigo-50 group-hover:text-indigo-600 flex items-center justify-center transition-all-300 group-hover:scale-110">
+                    <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+                  </div>
+                </div>
+                <button class="self-start text-xs font-bold bg-slate-50 text-slate-900 px-5 py-2.5 rounded-xl border border-slate-100 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-transparent group-hover:shadow-btn-indigo-glow transition-all-300 btn-bounce">
+                  Upload Banner
+                </button>
+              </div>
+
+              <!-- Create Banner with AI -->
+              <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium hover:shadow-card-hover hover:-translate-y-1.5 transition-all-300 group flex flex-col justify-between h-48 cursor-pointer" onclick="goToCreateWithAI()">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <h4 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">Thiết kế Banner với AI</h4>
+                    <p class="text-xs text-slate-400 mt-1 max-w-sm">Sử dụng sức mạnh của trí tuệ nhân tạo để kiến tạo banner quảng cáo chuyên nghiệp theo mô tả prompt.</p>
+                  </div>
+                  <div class="w-10 h-10 rounded-xl bg-slate-50 text-slate-500 group-hover:bg-violet-50 group-hover:text-violet-600 flex items-center justify-center transition-all-300 group-hover:scale-110">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                  </div>
+                </div>
+                <button class="self-start text-xs font-bold bg-slate-50 text-slate-900 px-5 py-2.5 rounded-xl border border-slate-100 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-transparent group-hover:shadow-btn-indigo-glow transition-all-300 btn-bounce">
+                  Create with AI
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hàng 4: Danh sách Banner gần đây -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-bold text-slate-900">Banners gần đây</h3>
+              <button onclick="switchScreen('manage')" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 hover:underline transition-colors btn-bounce">Quản lý tất cả</button>
+            </div>
+            
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-premium overflow-hidden">
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-50/80 border-b border-slate-100 text-slate-400 uppercase tracking-wider text-[10px] font-bold">
+                      <th class="py-4 px-6">Banner</th>
+                      <th class="py-4 px-6">Nguồn</th>
+                      <th class="py-4 px-6">Trạng thái</th>
+                      <th class="py-4 px-6 text-right">Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody id="hub-recent-banners-tbody" class="divide-y divide-slate-100/60 text-sm text-slate-600">
+                    <!-- Sẽ render bằng JS từ DB -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hàng 5: Vị trí hiển thị của Banners -->
+          <div class="p-6 bg-slate-50 border border-slate-100 rounded-3xl">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest text-center mb-4">Các cổng quảng cáo liên kết hỗ trợ hiển thị Banner</h4>
+            <div class="flex flex-wrap items-center justify-center gap-6 md:gap-12 opacity-75">
+              <span class="text-sm font-extrabold text-slate-500 tracking-wider hover:text-indigo-600 hover:scale-105 transition-all duration-300 cursor-default">VLINKPAY</span>
+              <span class="text-sm font-extrabold text-slate-500 tracking-wider hover:text-indigo-600 hover:scale-105 transition-all duration-300 cursor-default">CryptoMap360</span>
+              <span class="text-sm font-extrabold text-slate-500 tracking-wider hover:text-indigo-600 hover:scale-105 transition-all duration-300 cursor-default">BitcoinNailBar</span>
+              <span class="text-sm font-extrabold text-slate-500 tracking-wider hover:text-indigo-600 hover:scale-105 transition-all duration-300 cursor-default">NailHub AI</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= MÀN HÌNH 2: MANAGE BANNER ================= -->
+        <section id="screen-manage" class="screen-section space-y-8 hidden">
+          <div>
+            <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Quản lý Banner</h2>
+            <p class="text-sm text-slate-500 mt-1">Xem, tìm kiếm, lọc và điều hành vòng đời trạng thái của các Banners quảng cáo đã khởi tạo.</p>
+          </div>
+
+          <!-- Tổng quan thông số -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-premium flex items-center justify-between hover:shadow-card-hover hover:-translate-y-0.5 transition-all-300 group">
+              <div>
+                <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Tổng số Banner</p>
+                <h4 class="text-3xl font-extrabold text-slate-900 mt-1" id="manage-stat-total">0</h4>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <i data-lucide="folders" class="w-6 h-6"></i>
+              </div>
+            </div>
+            
+            <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-premium flex items-center justify-between hover:shadow-card-hover hover:-translate-y-0.5 transition-all-300 group">
+              <div>
+                <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Banners Đang chạy</p>
+                <h4 class="text-3xl font-extrabold text-emerald-600 mt-1" id="manage-stat-active">0</h4>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <i data-lucide="activity" class="w-6 h-6"></i>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-premium flex items-center justify-between hover:shadow-card-hover hover:-translate-y-0.5 transition-all-300 group">
+              <div>
+                <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Banners Đang chờ duyệt</p>
+                <h4 class="text-3xl font-extrabold text-amber-500 mt-1" id="manage-stat-pending">0</h4>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <i data-lucide="file-warning" class="w-6 h-6"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Khu vực bộ lọc tìm kiếm -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium">
+            <div class="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
+              <div class="flex flex-col sm:flex-row gap-3 flex-1">
+                <!-- Nhập tìm kiếm -->
+                <div class="relative flex-1">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                  </span>
+                  <input type="text" id="filter-search" placeholder="Tìm tên banner..." class="w-full bg-slate-50 text-slate-800 text-sm pl-10 pr-4 py-2.5 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+                </div>
+                
+                <!-- Dropdown lọc Trạng thái -->
+                <select id="filter-status" class="bg-slate-50 text-slate-700 text-sm px-4 py-2.5 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300 cursor-pointer">
+                  <option value="all">Tất cả Trạng thái</option>
+                  <option value="draft">Nháp (Draft)</option>
+                  <option value="pending_review">Chờ duyệt (Pending)</option>
+                  <option value="approved">Đã duyệt (Approved)</option>
+                  <option value="active">Đang hoạt động (Active)</option>
+                  <option value="rejected">Bị từ chối (Rejected)</option>
+                  <option value="expired">Hết hạn (Expired)</option>
+                  <option value="paused">Đã dừng (Paused)</option>
+                </select>
+
+                <!-- Dropdown lọc Nguồn -->
+                <select id="filter-source" class="bg-slate-50 text-slate-700 text-sm px-4 py-2.5 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300 cursor-pointer">
+                  <option value="all">Tất cả Nguồn</option>
+                  <option value="uploaded">Tải lên thủ công</option>
+                  <option value="ai_generated">Tạo từ AI</option>
+                </select>
+              </div>
+
+              <button onclick="switchScreen('create-ad')" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 hover:shadow-btn-indigo-glow hover:-translate-y-0.5 text-white font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 btn-bounce">
+                <i data-lucide="plus" class="w-4 h-4"></i> Tạo quảng cáo mới
+              </button>
+            </div>
+          </div>
+
+          <!-- Bảng Danh sách Banners -->
+          <div class="bg-white rounded-3xl border border-slate-100 shadow-premium overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50/80 border-b border-slate-100 text-slate-400 uppercase tracking-wider text-[10px] font-bold">
+                    <th class="py-4 px-6">Banner</th>
+                    <th class="py-4 px-6">Nguồn cung</th>
+                    <th class="py-4 px-6">Trạng thái</th>
+                    <th class="py-4 px-6 text-right">Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="manage-banners-tbody" class="divide-y divide-slate-100/60 text-sm text-slate-600">
+                  <!-- Sẽ render động qua JS kèm phân trang -->
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- Điều hướng phân trang -->
+            <div class="p-6 flex flex-col sm:flex-row items-center justify-between border-t border-slate-100 gap-4">
+              <span class="text-xs text-slate-400 font-medium" id="pagination-text">Đang hiển thị 1-5 trong tổng số 8</span>
+              <div class="flex items-center gap-2">
+                <button onclick="prevPage()" id="btn-prev-page" class="p-2 border border-slate-200 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:hover:bg-transparent transition-all btn-bounce">
+                  <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                </button>
+                <div class="flex items-center gap-1.5" id="page-numbers-container">
+                  <!-- Trang sẽ render động -->
+                </div>
+                <button onclick="nextPage()" id="btn-next-page" class="p-2 border border-slate-200 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:hover:bg-transparent transition-all btn-bounce">
+                  <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= MÀN HÌNH 3 & 4: BUY PACKAGE & UPGRADE STATE ================= -->
+        <section id="screen-buy-package" class="screen-section space-y-8 hidden">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Gói dịch vụ Quảng cáo</h2>
+              <p class="text-sm text-slate-500 mt-1">Chọn gói phù hợp nhất với mô hình vận hành và nhu cầu marketing của doanh nghiệp.</p>
+            </div>
+          </div>
+
+          <!-- ================= KỊCH BẢN A: CHƯA CÓ GÓI HOẠT ĐỘNG (Screen 3) ================= -->
+          <div id="sub-scenario-unsubscribed" class="space-y-8">
+            <!-- Khối thẻ so sánh 3 gói -->
+            <div id="package-cards-anchor" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <!-- Basic Card -->
+              <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-premium flex flex-col justify-between relative overflow-hidden group hover:shadow-card-hover hover:-translate-y-2 hover:border-slate-200 transition-all-300">
+                <div class="space-y-6">
+                  <div>
+                    <h3 class="text-xl font-bold text-slate-900">Basic</h3>
+                    <p class="text-xs text-slate-400 mt-1">Dành cho quảng cáo đơn giản</p>
+                  </div>
+                  <div class="flex items-baseline gap-1">
+                    <span class="text-4xl font-extrabold text-slate-900">$29</span>
+                    <span class="text-xs text-slate-400">/ tháng</span>
+                  </div>
+                  <div class="h-px bg-slate-100"></div>
+                  <ul class="space-y-4 text-xs font-medium text-slate-600">
+                    <li class="flex items-center gap-3">
+                      <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i> 1 Banner hoạt động
+                    </li>
+                    <li class="flex items-center gap-3 text-slate-400">
+                      <i data-lucide="x" class="w-4 h-4"></i> Không có Doanh nghiệp nổi bật
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i> Kiểm duyệt tiêu chuẩn
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i> 100 AI Tokens
+                    </li>
+                  </ul>
+                </div>
+                <button onclick="buyPackageDirectly('Basic')" class="mt-8 w-full py-3 rounded-2xl bg-slate-50 hover:bg-indigo-600 text-slate-800 hover:text-white font-bold text-xs border border-slate-100 hover:border-transparent hover:shadow-btn-indigo-glow hover:scale-[1.02] transition-all-300 btn-bounce">
+                  Chọn gói Basic
+                </button>
+              </div>
+
+              <!-- Premium Card -->
+              <div class="bg-white rounded-3xl p-8 border-2 border-indigo-600 shadow-premium flex flex-col justify-between relative overflow-hidden group hover:shadow-card-hover hover:-translate-y-2 hover:shadow-indigo-100/50 transition-all-300">
+                <div class="absolute right-0 top-0 bg-indigo-600 text-white text-[10px] font-extrabold px-4 py-1.5 rounded-bl-2xl uppercase tracking-wider">
+                  Khuyên dùng
+                </div>
+                <div class="space-y-6">
+                  <div>
+                    <h3 class="text-xl font-bold text-slate-900">Premium</h3>
+                    <p class="text-xs text-slate-400 mt-1">Sự lựa chọn tối ưu, phổ biến</p>
+                  </div>
+                  <div class="flex items-baseline gap-1">
+                    <span class="text-4xl font-extrabold text-slate-900">$79</span>
+                    <span class="text-xs text-slate-400">/ tháng</span>
+                  </div>
+                  <div class="h-px bg-slate-100"></div>
+                  <ul class="space-y-4 text-xs font-medium text-slate-600">
+                    <li class="flex items-center gap-3">
+                      <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i> 3 Banners hoạt động
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i> Doanh nghiệp nổi bật tiêu chuẩn
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i> Ưu tiên kiểm duyệt hàng đầu
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i> 500 AI Tokens
+                    </li>
+                  </ul>
+                </div>
+                <button onclick="buyPackageDirectly('Premium')" class="mt-8 w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs hover:shadow-btn-indigo-glow hover:scale-[1.02] transition-all-300 btn-bounce">
+                  Chọn gói Premium
+                </button>
+              </div>
+
+              <!-- Platinum Card -->
+              <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-premium flex flex-col justify-between relative overflow-hidden group hover:shadow-card-hover hover:-translate-y-2 hover:border-indigo-200 transition-all-300">
+                <div class="space-y-6">
+                  <div>
+                    <h3 class="text-xl font-bold text-slate-900">Platinum</h3>
+                    <p class="text-xs text-slate-400 mt-1">Độ phủ thương hiệu tối đa</p>
+                  </div>
+                  <div class="flex items-baseline gap-1">
+                    <span class="text-4xl font-extrabold text-slate-900">$199</span>
+                    <span class="text-xs text-slate-400">/ tháng</span>
+                  </div>
+                  <div class="h-px bg-slate-100"></div>
+                  <ul class="space-y-4 text-xs font-medium text-slate-600">
+                    <li class="flex items-center gap-3">
+                      <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i> 10 Banners hoạt động
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i> Doanh nghiệp nổi bật độ ưu tiên cao
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i> Ưu tiên kiểm duyệt cao cấp nhất (VIP)
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i> 2000 AI Tokens
+                    </li>
+                  </ul>
+                </div>
+                <button onclick="buyPackageDirectly('Platinum')" class="mt-8 w-full py-3 rounded-2xl bg-slate-50 hover:bg-indigo-600 text-slate-800 hover:text-white font-bold text-xs border border-slate-100 hover:border-transparent hover:shadow-btn-indigo-glow hover:scale-[1.02] transition-all-300 btn-bounce">
+                  Chọn gói Platinum
+                </button>
+              </div>
+            </div>
+
+            <!-- Bảng đối chiếu so sánh chi tiết -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-bold text-slate-900">So sánh các đặc quyền</h3>
+              <div class="bg-white rounded-3xl border border-slate-100 shadow-premium overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-50/80 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      <th class="py-4 px-6">Tính năng đặc quyền</th>
+                      <th class="py-4 px-6">Basic</th>
+                      <th class="py-4 px-6">Premium</th>
+                      <th class="py-4 px-6">Platinum</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 text-xs font-semibold text-slate-600">
+                    <tr class="hover:bg-slate-50/50 transition-colors">
+                      <td class="py-4 px-6 font-bold text-slate-700">Dung lượng Banner tối đa</td>
+                      <td class="py-4 px-6">1 Banner</td>
+                      <td class="py-4 px-6 text-indigo-600">3 Banners</td>
+                      <td class="py-4 px-6 text-indigo-600">10 Banners</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors">
+                      <td class="py-4 px-6 font-bold text-slate-700">Doanh nghiệp Nổi bật (Featured)</td>
+                      <td class="py-4 px-6 text-slate-400">Không hỗ trợ</td>
+                      <td class="py-4 px-6">Có hỗ trợ</td>
+                      <td class="py-4 px-6">Mức độ Ưu tiên cao</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors">
+                      <td class="py-4 px-6 font-bold text-slate-700">Cấp độ kiểm duyệt quảng cáo</td>
+                      <td class="py-4 px-6">Tiêu chuẩn</td>
+                      <td class="py-4 px-6 text-amber-500">Ưu tiên</td>
+                      <td class="py-4 px-6 text-emerald-500">Đặc quyền VIP</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors">
+                      <td class="py-4 px-6 font-bold text-slate-700">Ngân sách Token AI ban đầu</td>
+                      <td class="py-4 px-6">100 Tokens</td>
+                      <td class="py-4 px-6">500 Tokens</td>
+                      <td class="py-4 px-6">2000 Tokens</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= KỊCH BẢN B: NÂNG CẤP TỪ GÓI BASIC (Screen 4) ================= -->
+          <div id="sub-scenario-upgradable" class="space-y-8 hidden">
+            <!-- Thẻ mô tả gói hiện hữu -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium">
+              <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400">Thông tin gói hiện tại</span>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100/80 hover:border-slate-300 transition-colors duration-300">
+                  <span class="text-xs text-slate-400">Tên gói</span>
+                  <p class="text-xl font-extrabold text-slate-950 mt-1">Basic Plan</p>
+                  <p class="text-[11px] text-indigo-600 font-semibold mt-1">Gói hoạt động hiện thời</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100/80 hover:border-slate-300 transition-colors duration-300">
+                  <span class="text-xs text-slate-400">Hạn ngạch Banner đang sử dụng</span>
+                  <p class="text-xl font-extrabold text-slate-950 mt-1">1 / 1 Banner</p>
+                  <p class="text-[11px] text-amber-500 font-semibold mt-1">Đã dùng hết dung lượng</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100/80 hover:border-slate-300 transition-colors duration-300">
+                  <span class="text-xs text-slate-400">Số dư Token AI còn lại</span>
+                  <p class="text-xl font-extrabold text-slate-950 mt-1">80 Tokens</p>
+                  <p class="text-[11px] text-slate-400 mt-1">Khởi đầu gốc: 100 Tokens</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Khối đề xuất nâng cấp -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-bold text-slate-900">Khuyên dùng Nâng cấp</h3>
+              
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Gói Basic (Hiện tại) -->
+                <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm opacity-75 flex flex-col justify-between hover:shadow-md transition-all-300">
+                  <div>
+                    <span class="text-xs font-bold text-slate-400">GÓI HIỆN TẠI</span>
+                    <h4 class="text-xl font-extrabold text-slate-900 mt-1">Basic</h4>
+                    <p class="text-xs text-slate-400 mt-3">✓ 1 Banner hoạt động</p>
+                    <p class="text-xs text-slate-400 mt-2">✕ Không Doanh nghiệp nổi bật</p>
+                    <p class="text-xs text-slate-400 mt-2">✓ Duyệt tiêu chuẩn</p>
+                    <p class="text-xs text-slate-400 mt-2">✓ 100 AI Tokens</p>
+                  </div>
+                  <button disabled class="mt-8 w-full py-2.5 rounded-xl bg-slate-100 text-slate-400 font-bold text-xs cursor-not-allowed">
+                    Gói đang sử dụng
+                  </button>
+                </div>
+
+                <!-- Gói Premium (Khuyên dùng) -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-indigo-600 shadow-premium flex flex-col justify-between relative hover:shadow-card-hover hover:-translate-y-2 hover:shadow-indigo-100/55 transition-all-300">
+                  <div class="absolute right-4 top-4 bg-indigo-600 text-white text-[9px] font-bold px-2 py-1 rounded">KHUYÊN DÙNG</div>
+                  <div>
+                    <span class="text-xs font-bold text-indigo-600">NÂNG CẤP PHÙ HỢP NHẤT</span>
+                    <h4 class="text-xl font-extrabold text-slate-900 mt-1">Premium</h4>
+                    <p class="text-xs text-slate-600 mt-3">✓ 3 Banners hoạt động</p>
+                    <p class="text-xs text-slate-600 mt-2">✓ Có Doanh nghiệp nổi bật</p>
+                    <p class="text-xs text-slate-600 mt-2">✓ Ưu tiên kiểm duyệt hàng đầu</p>
+                    <p class="text-xs text-slate-600 mt-2">✓ 500 AI Tokens</p>
+                  </div>
+                  <button onclick="selectUpgradePackage('Premium')" class="mt-8 w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 hover:shadow-btn-indigo-glow hover:scale-[1.02] text-white font-bold text-xs transition-all-300 btn-bounce">
+                    Nâng cấp lên Premium
+                  </button>
+                </div>
+
+                <!-- Gói Platinum -->
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium flex flex-col justify-between hover:shadow-card-hover hover:-translate-y-2 hover:border-indigo-200 transition-all-300">
+                  <div>
+                    <span class="text-xs font-bold text-slate-400">GÓI TỐI ĐA</span>
+                    <h4 class="text-xl font-extrabold text-slate-900 mt-1">Platinum</h4>
+                    <p class="text-xs text-slate-600 mt-3">✓ 10 Banners hoạt động</p>
+                    <p class="text-xs text-slate-600 mt-2">✓ Doanh nghiệp nổi bật VIP</p>
+                    <p class="text-xs text-slate-600 mt-2">✓ Ưu tiên kiểm duyệt cao nhất</p>
+                    <p class="text-xs text-slate-600 mt-2">✓ 2000 AI Tokens</p>
+                  </div>
+                  <button onclick="selectUpgradePackage('Platinum')" class="mt-8 w-full py-2.5 rounded-xl bg-slate-50 hover:bg-indigo-600 hover:text-white hover:border-transparent hover:shadow-btn-indigo-glow hover:scale-[1.02] text-slate-800 font-bold text-xs border border-slate-100 transition-all-300 btn-bounce">
+                    Xem Platinum
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bảng so sánh thay đổi chi tiết -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-bold text-slate-900">Chi tiết thay đổi sau khi nâng cấp</h3>
+              <div class="bg-white rounded-3xl border border-slate-100 shadow-premium overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-50/80 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      <th class="py-4 px-6">Đặc quyền</th>
+                      <th class="py-4 px-6">Basic (Hiện tại)</th>
+                      <th class="py-4 px-6 text-indigo-600">Premium (Mới đề xuất)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 text-xs font-semibold text-slate-600">
+                    <tr class="hover:bg-slate-50/50 transition-colors">
+                      <td class="py-4 px-6 font-bold text-slate-700">Hạn mức Banner hoạt động</td>
+                      <td class="py-4 px-6">1 Banner</td>
+                      <td class="py-4 px-6 text-emerald-600">3 Banners</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors">
+                      <td class="py-4 px-6 font-bold text-slate-700">Hỗ trợ Doanh nghiệp Nổi bật</td>
+                      <td class="py-4 px-6 text-slate-400">Không</td>
+                      <td class="py-4 px-6 text-emerald-600">Có</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors">
+                      <td class="py-4 px-6 font-bold text-slate-700">Mức độ ưu tiên kiểm duyệt</td>
+                      <td class="py-4 px-6">Tiêu chuẩn</td>
+                      <td class="py-4 px-6 text-emerald-600">Ưu tiên hàng đầu (Priority)</td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 transition-colors">
+                      <td class="py-4 px-6 font-bold text-slate-700">Ngân sách Token AI cung cấp</td>
+                      <td class="py-4 px-6">100 Tokens</td>
+                      <td class="py-4 px-6 text-emerald-600">500 Tokens</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Thẻ tóm tắt hoá đơn đặt hàng -->
+            <div class="bg-white rounded-3xl p-6 border border-indigo-100 bg-indigo-50/20 shadow-premium max-w-xl hover:shadow-card-hover transition-all-300">
+              <h3 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <i data-lucide="receipt" class="w-5 h-5 text-indigo-600"></i> Tóm tắt đơn hàng nâng cấp
+              </h3>
+              
+              <div class="space-y-2.5 text-xs font-medium text-slate-600">
+                <div class="flex justify-between">
+                  <span>Gói nâng cấp mục tiêu:</span>
+                  <span class="font-bold text-slate-900" id="order-target-plan">Premium</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Phí gói dịch vụ hàng tháng:</span>
+                  <span class="font-bold text-slate-900" id="order-plan-price">$79.00 / tháng</span>
+                </div>
+                <div class="h-px bg-slate-200/60 my-2"></div>
+                <div class="flex justify-between text-sm font-bold">
+                  <span class="text-slate-900">Tổng thanh toán ban đầu:</span>
+                  <span class="text-indigo-600" id="order-total-price">$79.00 / tháng</span>
+                </div>
+              </div>
+
+              <div class="mt-6">
+                <button onclick="confirmUpgradePlan()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 hover:shadow-btn-indigo-glow hover:-translate-y-0.5 text-white font-bold text-xs transition-all duration-300 btn-bounce">
+                  Xác nhận Nâng cấp Gói
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= MÀN HÌNH 5: CREATE AD (MÀN CHỌN HÌNH THỨC) ================= -->
+        <section id="screen-create-ad" class="screen-section space-y-8 hidden">
+          <div>
+            <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Tạo Quảng cáo</h2>
+            <p class="text-sm text-slate-500 mt-1">Chọn phương thức khởi tạo thiết kế banner quảng cáo phù hợp nhất.</p>
+          </div>
+
+          <!-- 2 thẻ lựa chọn lớn -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Tải lên trực tiếp -->
+            <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-premium hover:shadow-card-hover hover:-translate-y-1.5 transition-all-300 group flex flex-col justify-between cursor-pointer" onclick="goToUploadBanner()">
+              <div class="space-y-4">
+                <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                  <i data-lucide="image-plus" class="w-7 h-7"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">Tải lên Banner có sẵn</h3>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed">Phụ hợp nhất với các đối tác đã có đội ngũ thiết kế riêng hoặc tác phẩm banner hoàn chỉnh ở máy tính.</p>
+                </div>
+                <div class="h-px bg-slate-100"></div>
+                <ul class="space-y-2.5 text-xs text-slate-500 font-medium">
+                  <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Hỗ trợ tệp định dạng JPG, PNG, WEBP</li>
+                  <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Tuỳ chỉnh đường dẫn đích (Target URL)</li>
+                  <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Tuỳ chỉnh lịch trình hoạt động cụ thể</li>
+                </ul>
+              </div>
+              <button class="mt-8 w-full py-3 rounded-2xl bg-slate-50 hover:bg-indigo-600 text-slate-800 hover:text-white font-bold text-xs border border-slate-100 hover:border-transparent hover:shadow-btn-indigo-glow hover:scale-[1.02] transition-all-300 btn-bounce">
+                Tải lên Banner ngay
+              </button>
+            </div>
+
+            <!-- Khởi tạo bằng AI -->
+            <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-premium hover:shadow-card-hover hover:-translate-y-1.5 transition-all-300 group flex flex-col justify-between cursor-pointer" onclick="goToCreateWithAI()">
+              <div class="space-y-4">
+                <div class="w-14 h-14 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-violet-600 group-hover:text-white transition-all duration-300">
+                  <i data-lucide="sparkles" class="w-7 h-7"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-slate-900 group-hover:text-violet-600 transition-colors">Tạo Banner bằng trí tuệ nhân tạo (AI)</h3>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed">Phù hợp nhất khi bạn cần ý tưởng độc đáo, sáng tạo lập tức chỉ bằng cách gõ mô tả dạng chữ.</p>
+                </div>
+                <div class="h-px bg-slate-100"></div>
+                <ul class="space-y-2.5 text-xs text-slate-500 font-medium">
+                  <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-violet-500"></i> Hỗ trợ ảnh tham chiếu (Reference image)</li>
+                  <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-violet-500"></i> Đề xuất prompt thông minh có sẵn</li>
+                  <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-violet-500"></i> Trả về một kết quả banner xuất sắc nhất</li>
+                </ul>
+              </div>
+              <button class="mt-8 w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs hover:shadow-btn-indigo-glow hover:scale-[1.02] transition-all-300 btn-bounce">
+                Thiết kế bằng AI ngay
+              </button>
+            </div>
+          </div>
+
+          <!-- Trạng thái gói hiển thị bên dưới -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium hover:shadow-md transition-shadow duration-300">
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Trạng thái hạn ngạch tài khoản</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm font-semibold text-slate-700">
+              <div class="p-4 rounded-2xl bg-slate-50 border border-transparent hover:border-slate-200 hover:bg-white transition-all duration-300 flex items-center gap-3">
+                <i data-lucide="award" class="w-5 h-5 text-indigo-600"></i>
+                <div>
+                  <span class="text-xs text-slate-400 font-normal">Gói hiện hữu</span>
+                  <p id="create-plan-name">Premium</p>
+                </div>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-transparent hover:border-slate-200 hover:bg-white transition-all duration-300 flex items-center gap-3">
+                <i data-lucide="image" class="w-5 h-5 text-indigo-600"></i>
+                <div>
+                  <span class="text-xs text-slate-400 font-normal">Dung lượng Banner</span>
+                  <p id="create-plan-usage">2 / 3 Banners</p>
+                </div>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-transparent hover:border-slate-200 hover:bg-white transition-all duration-300 flex items-center gap-3">
+                <i data-lucide="coins" class="w-5 h-5 text-indigo-600"></i>
+                <div>
+                  <span class="text-xs text-slate-400 font-normal">Token khả dụng</span>
+                  <p id="create-plan-tokens">420 Tokens</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= MÀN HÌNH 6: UPLOAD BANNER ================= -->
+        <section id="screen-upload" class="screen-section space-y-8 hidden">
+          <div class="flex items-center gap-4">
+            <button onclick="switchScreen('create-ad')" class="p-2 border border-slate-200 hover:bg-slate-50 hover:text-indigo-600 rounded-xl text-slate-500 transition-colors btn-bounce">
+              <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <div>
+              <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Tải lên Banner</h2>
+              <p class="text-sm text-slate-500 mt-1">Đăng tải tệp ảnh thiết kế quảng cáo hoàn chỉnh của bạn và khai báo thông tin.</p>
+            </div>
+          </div>
+
+          <!-- Khối tải lên -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Cột trái: Vùng Upload & Review -->
+            <div class="lg:col-span-2 space-y-6">
+              <!-- Vùng kéo thả tệp -->
+              <div id="upload-dropzone" class="bg-white border-2 border-dashed border-slate-300 hover:border-indigo-500 hover:shadow-card-hover rounded-3xl p-10 flex flex-col items-center justify-center text-center cursor-pointer transition-all-300 group">
+                <input type="file" id="upload-file-input" class="hidden" accept="image/*">
+                <div class="w-14 h-14 rounded-full bg-slate-50 text-slate-500 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-all duration-300" id="upload-icon-box">
+                  <i data-lucide="cloud-upload" class="w-7 h-7"></i>
+                </div>
+                <h4 class="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors duration-300">Kéo và thả tệp ảnh banner của bạn ở đây</h4>
+                <p class="text-xs text-slate-400 mt-1">Hoặc click để duyệt tìm kiếm tệp tin từ máy tính</p>
+                <span class="text-[10px] font-semibold text-slate-400 bg-slate-50 border px-2 py-0.5 rounded mt-4">Hỗ trợ JPG, PNG, WEBP tối đa 5MB</span>
+              </div>
+
+              <!-- Trạng thái xem trước tệp đã tải -->
+              <div id="upload-preview-card" class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium hidden hover:shadow-card-hover transition-shadow duration-300">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-sm font-bold text-slate-950">Ảnh đã tải lên</h3>
+                  <button onclick="removeUploadedImage()" class="text-xs font-bold text-rose-600 hover:text-rose-800 hover:underline transition-colors btn-bounce">Xóa ảnh</button>
+                </div>
+                <div class="aspect-[16/6] bg-slate-100 rounded-2xl overflow-hidden relative border border-slate-200">
+                  <img id="upload-preview-img" src="" alt="Xem trước Banner" class="w-full h-full object-cover">
+                </div>
+                <div class="flex items-center justify-between mt-4">
+                  <div>
+                    <p class="text-xs font-bold text-slate-900" id="upload-file-name">banner-preview.png</p>
+                    <p class="text-[10px] text-emerald-500 font-semibold mt-0.5 flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> Sẵn sàng lưu hành
+                    </p>
+                  </div>
+                  <button onclick="triggerUploadFileSelect()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 hover:underline transition-colors btn-bounce">Thay đổi ảnh</button>
+                </div>
+              </div>
+
+              <!-- Gợi ý lịch sử tải lên gần đây -->
+              <div class="space-y-3">
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Thư viện ảnh mẫu đề xuất</h4>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <!-- Mẫu 1 -->
+                  <div onclick="selectMockUpload('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=60', 'nail_summer_offer.jpg')" class="bg-white rounded-2xl p-2 border border-slate-100 hover:border-indigo-600 hover:shadow-card-hover hover:-translate-y-1 shadow-sm cursor-pointer transition-all duration-300 group">
+                    <div class="aspect-[16/10] bg-slate-50 rounded-xl overflow-hidden mb-1.5 border border-transparent group-hover:border-indigo-100 transition-all duration-300">
+                      <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&auto=format&fit=crop&q=60" alt="Mẫu 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <p class="text-[10px] font-bold text-slate-700 text-center truncate group-hover:text-indigo-600 transition-colors duration-300">Nail Summer Offer</p>
+                  </div>
+                  <!-- Mẫu 2 -->
+                  <div onclick="selectMockUpload('https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800&auto=format&fit=crop&q=60', 'crypto_payment_ad.jpg')" class="bg-white rounded-2xl p-2 border border-slate-100 hover:border-indigo-600 hover:shadow-card-hover hover:-translate-y-1 shadow-sm cursor-pointer transition-all duration-300 group">
+                    <div class="aspect-[16/10] bg-slate-50 rounded-xl overflow-hidden mb-1.5 border border-transparent group-hover:border-indigo-100 transition-all duration-300">
+                      <img src="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=400&auto=format&fit=crop&q=60" alt="Mẫu 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <p class="text-[10px] font-bold text-slate-700 text-center truncate group-hover:text-indigo-600 transition-colors duration-300">Crypto accepted</p>
+                  </div>
+                  <!-- Mẫu 3 -->
+                  <div onclick="selectMockUpload('https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=60', 'grand_opening_sale.jpg')" class="bg-white rounded-2xl p-2 border border-slate-100 hover:border-indigo-600 hover:shadow-card-hover hover:-translate-y-1 shadow-sm cursor-pointer transition-all duration-300 group">
+                    <div class="aspect-[16/10] bg-slate-50 rounded-xl overflow-hidden mb-1.5 border border-transparent group-hover:border-indigo-100 transition-all duration-300">
+                      <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=400&auto=format&fit=crop&q=60" alt="Mẫu 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <p class="text-[10px] font-bold text-slate-700 text-center truncate group-hover:text-indigo-600 transition-colors duration-300">Grand Opening</p>
+                  </div>
+                  <!-- Mẫu 4 -->
+                  <div onclick="selectMockUpload('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop&q=60', 'gift_card_promotion.jpg')" class="bg-white rounded-2xl p-2 border border-slate-100 hover:border-indigo-600 hover:shadow-card-hover hover:-translate-y-1 shadow-sm cursor-pointer transition-all duration-300 group">
+                    <div class="aspect-[16/10] bg-slate-50 rounded-xl overflow-hidden mb-1.5 border border-transparent group-hover:border-indigo-100 transition-all duration-300">
+                      <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&auto=format&fit=crop&q=60" alt="Mẫu 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <p class="text-[10px] font-bold text-slate-700 text-center truncate group-hover:text-indigo-600 transition-colors duration-300">Gift Card Promo</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cột phải: Thông tin Đệ trình (Submission Details) -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium h-fit space-y-6 hover:shadow-card-hover transition-all duration-300">
+              <h3 class="text-base font-bold text-slate-900 border-b border-slate-50 pb-3">Chi tiết thông tin đăng tải</h3>
+              
+              <!-- Tên Banner quảng cáo -->
+              <div class="space-y-1.5">
+                <label for="upload-name-input" class="text-xs font-bold text-slate-700">Tên Banner quảng cáo *</label>
+                <input type="text" id="upload-name-input" placeholder="Ví dụ: Khuyến mãi Nails tháng 6" class="w-full bg-slate-50 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+              </div>
+
+              <!-- Đường dẫn đích -->
+              <div class="space-y-1.5">
+                <label for="upload-target-url" class="text-xs font-bold text-slate-700 flex justify-between">
+                  <span>Đường dẫn URL đích (Target URL)</span>
+                  <span class="text-slate-400 font-normal">Tùy chọn</span>
+                </label>
+                <input type="url" id="upload-target-url" placeholder="https://example.com" class="w-full bg-slate-50 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+              </div>
+
+              <!-- Lịch trình chạy -->
+              <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-bold text-slate-700">Lịch trình hiển thị</label>
+                  <span class="text-slate-400 text-xs">Tùy chọn</span>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="space-y-1">
+                    <span class="text-[10px] text-slate-400 font-semibold">Ngày bắt đầu</span>
+                    <input type="date" id="upload-start-date" class="w-full bg-slate-50 text-slate-800 text-xs p-2 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+                  </div>
+                  <div class="space-y-1">
+                    <span class="text-[10px] text-slate-400 font-semibold">Ngày kết thúc</span>
+                    <input type="date" id="upload-end-date" class="w-full bg-slate-50 text-slate-800 text-xs p-2 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+                  </div>
+                </div>
+                <p class="text-[11px] text-slate-400 italic leading-relaxed mt-1">Đường dẫn đích và Lịch trình có thể để trống. Nếu điền một ngày, bắt buộc phải chọn cả hai ngày.</p>
+              </div>
+
+              <div class="pt-4 border-t border-slate-100 flex flex-col gap-3">
+                <button onclick="saveDraftUpload()" class="w-full py-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 font-semibold text-xs transition-all duration-300 btn-bounce">
+                  Lưu bản nháp (Save Draft)
+                </button>
+                <button onclick="submitUploadForReview()" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 hover:shadow-btn-indigo-glow hover:-translate-y-0.5 text-white font-bold text-xs transition-all duration-300 btn-bounce">
+                  Gửi duyệt kiểm tra (Submit for Review)
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= MÀN HÌNH 7: CREATE BANNER WITH AI ================= -->
+        <section id="screen-create-ai" class="screen-section space-y-8 hidden">
+          <div class="flex items-center gap-4">
+            <button onclick="switchScreen('create-ad')" class="p-2 border border-slate-200 hover:bg-slate-50 hover:text-indigo-600 rounded-xl text-slate-500 transition-all btn-bounce">
+              <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <div>
+              <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Tạo Banner bằng Trí tuệ Nhân tạo</h2>
+              <p class="text-sm text-slate-500 mt-1">Kiến tạo các thiết kế quảng cáo đột phá từ những dòng mô tả ý tưởng.</p>
+            </div>
+          </div>
+
+          <!-- ================= TRẠNG THÁI 1: TRƯỚC KHI GENERATE ================= -->
+          <div id="ai-generator-before" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Khu vực nhập liệu -->
+            <div class="lg:col-span-2 bg-white rounded-3xl p-6 border border-slate-100 shadow-premium space-y-6 hover:shadow-card-hover transition-all duration-300">
+              <h3 class="text-base font-bold text-slate-950 flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-5 h-5 text-indigo-600 animate-pulse"></i> Trình tạo Banner AI nâng cao
+              </h3>
+
+              <!-- Upload Ảnh tham chiếu (Reference) -->
+              <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-bold text-slate-700">Ảnh mẫu tham chiếu phong cách</label>
+                  <span class="text-slate-400 text-xs">Tùy chọn</span>
+                </div>
+                <div id="ai-ref-dropzone" class="border border-dashed border-slate-200 hover:border-indigo-500 rounded-2xl p-4 flex items-center justify-center gap-3 cursor-pointer transition-all duration-300 hover:bg-slate-50/50 group" onclick="triggerRefUpload()">
+                  <input type="file" id="ai-ref-file-input" class="hidden" accept="image/*" onchange="handleRefFileChange(event)">
+                  <i data-lucide="image" class="w-5 h-5 text-slate-400 group-hover:scale-110 transition-transform duration-300" id="ai-ref-icon"></i>
+                  <span class="text-xs text-slate-500 font-medium" id="ai-ref-text">Tải lên hoặc kéo thả ảnh mẫu tham khảo ở đây</span>
+                </div>
+              </div>
+
+              <!-- Nội dung Prompt chính -->
+              <div class="space-y-1.5">
+                <label for="ai-prompt-input" class="text-xs font-bold text-slate-700">Mô tả ý tưởng quảng cáo của bạn (Prompt) *</label>
+                <textarea id="ai-prompt-input" rows="4" placeholder="Mô tả cụ thể tông màu, văn bản, bố cục, ngành nghề mong muốn..." class="w-full bg-slate-50 text-slate-800 text-xs p-3.5 rounded-2xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300 resize-none"></textarea>
+              </div>
+
+              <!-- Gợi ý Prompt Badge (Suggested Prompts) -->
+              <div class="space-y-2.5">
+                <span class="text-xs font-bold text-slate-700 flex items-center gap-1">
+                  <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-amber-500 animate-bounce"></i> Ý tưởng thiết kế gợi ý từ chuyên gia
+                </span>
+                <div class="flex flex-wrap gap-2" id="suggested-prompts-container">
+                  <!-- Được lấp đầy qua Javascript từ spec gợi ý -->
+                </div>
+                <p class="text-[11px] text-slate-400">Click một thẻ gợi ý bên trên để đưa nội dung vào khung soạn thảo. Bạn có thể thoải mái chỉnh sửa văn bản trước khi yêu cầu AI xử lý.</p>
+              </div>
+
+              <!-- Trình kích hoạt Generate -->
+              <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
+                <button onclick="generateAIBanner()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 hover:shadow-btn-indigo-glow hover:-translate-y-0.5 text-white font-bold text-xs transition-all duration-300 shadow-md shadow-indigo-100 hover:shadow-lg flex items-center gap-2 btn-bounce">
+                  <i data-lucide="play" class="w-4 h-4"></i> Tạo ảnh thiết kế ngay
+                </button>
+              </div>
+            </div>
+
+            <!-- Cột phải: Ngân sách Token & Quy tắc -->
+            <div class="space-y-6">
+              <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium space-y-4 hover:shadow-card-hover transition-all duration-300">
+                <h3 class="text-sm font-bold text-slate-900 border-b border-slate-50 pb-3">Chi tiết Gói & Token</h3>
+                
+                <div class="space-y-3.5 text-xs font-medium text-slate-600">
+                  <div class="flex justify-between hover:text-slate-900 transition-colors">
+                    <span>Gói quảng cáo hiện tại:</span>
+                    <span class="font-bold text-slate-900" id="ai-current-plan">Premium</span>
+                  </div>
+                  <div class="flex justify-between hover:text-slate-900 transition-colors">
+                    <span>Số dư Token khả dụng:</span>
+                    <span class="font-bold text-indigo-600" id="ai-current-tokens">420 Tokens</span>
+                  </div>
+                  <div class="flex justify-between hover:text-slate-900 transition-colors">
+                    <span>Chi phí mỗi lần tạo:</span>
+                    <span class="font-bold text-slate-900">30 Tokens</span>
+                  </div>
+                  <div class="h-px bg-slate-100"></div>
+                  <div class="flex justify-between text-slate-400">
+                    <span>Quy tắc kết quả:</span>
+                    <span>Tạo 1 kết quả tối ưu nhất</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Thẻ hướng dẫn chuyên sâu -->
+              <div class="bg-slate-900 text-white rounded-3xl p-6 relative overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-indigo-950/20 hover:-translate-y-0.5 transition-all-300 duration-300">
+                <div class="absolute -right-12 -bottom-12 w-32 h-32 bg-indigo-600/10 rounded-full blur-xl"></div>
+                <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2">Mẹo tạo prompt tối ưu</h4>
+                <p class="text-[11px] text-slate-300 leading-relaxed">Để kết quả tốt nhất, bạn nên khai báo các thành phần gồm: Đối tượng trung tâm (Nail Spa, Bitcoin), Tông màu chủ đạo (Gold, Pink), phong cách nghệ thuật (Luxury, Modern) và Nội dung chữ kêu gọi hành động cụ thể.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- MÀN HÌNH CHỜ/LOAD KHI ĐANG TẠO -->
+          <div id="ai-generator-loading" class="hidden bg-white border border-slate-100 shadow-premium rounded-3xl p-16 flex flex-col items-center justify-center text-center space-y-6 animate-pulse">
+            <div class="w-16 h-16 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 relative">
+              <i data-lucide="loader-2" class="w-8 h-8 animate-spin"></i>
+              <span class="absolute inset-0 rounded-full border-4 border-indigo-100 border-t-indigo-600 animate-ping opacity-30"></span>
+            </div>
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-slate-900">AI đang tiến hành phân tích & thiết kế Banner</h3>
+              <p class="text-xs text-slate-400 max-w-sm mx-auto">Hệ thống đang sử dụng 30 Tokens để xử lý ý tưởng mô tả và tối ưu hóa tệp đồ họa chất lượng cao nhất...</p>
+            </div>
+            <div class="w-64 bg-slate-100 h-2 rounded-full overflow-hidden">
+              <div class="bg-gradient-to-r from-indigo-500 to-violet-500 h-full rounded-full transition-all duration-1000" id="ai-loading-progress" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- ================= TRẠNG THÁI 2: SAU KHI GENERATE KẾT QUẢ BANNER ================= -->
+          <div id="ai-generator-after" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Cột trái: Kết quả & Kiểm duyệt -->
+            <div class="lg:col-span-2 space-y-6">
+              <!-- Nhắc nhở prompt ban đầu -->
+              <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-premium flex items-center justify-between gap-4">
+                <div class="space-y-1">
+                  <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Nội dung Prompt đã tạo</span>
+                  <p class="text-xs font-semibold text-slate-800 italic" id="ai-result-prompt-summary">"Create a luxury banner for a nail salon promotion..."</p>
+                </div>
+                <button onclick="backToPromptEdit()" class="px-3.5 py-1.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-950 font-bold text-xs shrink-0 transition-colors btn-bounce">
+                  Chỉnh sửa Prompt
+                </button>
+              </div>
+
+              <!-- Kết quả thiết kế Banner (AI Result) -->
+              <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium space-y-4 hover:shadow-card-hover transition-shadow duration-300">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> Kết quả tối ưu nhất tự động sinh ra
+                  </h3>
+                  <span class="text-[10px] font-bold text-slate-400 bg-slate-50 border px-2 py-0.5 rounded">Khuyên dùng sử dụng</span>
+                </div>
+                
+                <!-- Bảng Preview Banner động sinh -->
+                <div class="aspect-[16/7] rounded-2xl bg-slate-100 overflow-hidden relative border border-slate-200 group" id="ai-result-image-box">
+                  <img id="ai-result-preview-img" src="" alt="AI Generated Banner" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                  
+                  <!-- Watermark lựa chọn -->
+                  <div id="ai-selected-badge" class="absolute top-4 right-4 bg-emerald-500/90 text-white backdrop-blur-sm text-xs font-bold px-3 py-1.5 rounded-xl shadow-lg flex items-center gap-1.5 hidden opacity-0 transition-all duration-300">
+                    <i data-lucide="check-circle" class="w-4 h-4"></i> Đã chọn dùng Banner này
+                  </div>
+                </div>
+
+                <!-- Các nút hành động chính cho AI Result -->
+                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                  <button id="btn-use-this-banner" onclick="useThisBanner()" class="flex-1 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 hover:shadow-btn-indigo-glow hover:-translate-y-0.5 text-white font-bold text-xs transition-all duration-300 flex items-center justify-center gap-2 shadow-md shadow-indigo-100 btn-bounce">
+                    <i data-lucide="check" class="w-4 h-4"></i> Đồng ý sử dụng Banner này
+                  </button>
+                  <button onclick="generateAgain()" class="py-3.5 px-5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 font-semibold text-xs transition-all duration-300 flex items-center justify-center gap-2 btn-bounce">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Tạo lại thiết kế khác (30 Tokens)
+                  </button>
+                </div>
+              </div>
+
+              <!-- Lịch sử các phiên tạo cũ (Generated History) -->
+              <div class="space-y-3">
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Phiên bản lịch sử tạo ra</h4>
+                <div class="grid grid-cols-3 sm:grid-cols-4 gap-4" id="ai-history-thumbnails">
+                  <!-- Render động các tệp tạo ảnh cũ -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Cột phải: Submission Details (Bị khóa cho đến khi 'Đồng ý sử dụng Banner này') -->
+            <div id="ai-submission-panel" class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium h-fit space-y-6 opacity-60 pointer-events-none transition-all duration-300 hover:shadow-card-hover">
+              <div class="flex items-center justify-between border-b border-slate-50 pb-3">
+                <h3 class="text-base font-bold text-slate-900">Chi tiết đệ trình quảng cáo</h3>
+                <span class="text-[10px] text-amber-500 font-bold uppercase tracking-wider" id="ai-lock-status">Bị khoá</span>
+              </div>
+
+              <!-- Tên Banner quảng cáo -->
+              <div class="space-y-1.5">
+                <label for="ai-name-input" class="text-xs font-bold text-slate-700">Tên Banner quảng cáo *</label>
+                <input type="text" id="ai-name-input" placeholder="Ví dụ: AI Thiết kế Banner Sang Trọng" class="w-full bg-slate-50 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+              </div>
+
+              <!-- Đường dẫn URL đích -->
+              <div class="space-y-1.5">
+                <label for="ai-target-url" class="text-xs font-bold text-slate-700 flex justify-between">
+                  <span>Đường dẫn URL đích (Target URL)</span>
+                  <span class="text-slate-400 font-normal">Tùy chọn</span>
+                </label>
+                <input type="url" id="ai-target-url" placeholder="https://example.com" class="w-full bg-slate-50 text-slate-800 text-xs px-3.5 py-2.5 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+              </div>
+
+              <!-- Lịch trình chạy -->
+              <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-bold text-slate-700">Lịch trình hiển thị</label>
+                  <span class="text-slate-400 text-xs">Tùy chọn</span>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="space-y-1">
+                    <span class="text-[10px] text-slate-400 font-semibold">Ngày bắt đầu</span>
+                    <input type="date" id="ai-start-date" class="w-full bg-slate-50 text-slate-800 text-xs p-2 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+                  </div>
+                  <div class="space-y-1">
+                    <span class="text-[10px] text-slate-400 font-semibold">Ngày kết thúc</span>
+                    <input type="date" id="ai-end-date" class="w-full bg-slate-50 text-slate-800 text-xs p-2 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+                  </div>
+                </div>
+                <p class="text-[11px] text-slate-400 italic leading-relaxed mt-1">Đường dẫn đích và Lịch trình có thể để trống. Nếu điền một ngày, bắt buộc phải chọn cả hai ngày.</p>
+              </div>
+
+              <div class="pt-4 border-t border-slate-100 flex flex-col gap-3">
+                <button onclick="saveAIDraft()" class="w-full py-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 font-semibold text-xs transition-colors duration-300 btn-bounce">
+                  Lưu bản nháp (Save Draft)
+                </button>
+                <button onclick="submitAIBannerForReview()" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 hover:shadow-btn-indigo-glow hover:-translate-y-0.5 text-white font-bold text-xs transition-all duration-300 btn-bounce">
+                  Gửi duyệt kiểm tra (Submit for Review)
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= MÀN HÌNH BONUS: TRANSACTION HISTORY ================= -->
+        <section id="screen-transactions" class="screen-section space-y-8 hidden">
+          <div>
+            <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Lịch sử Giao dịch</h2>
+            <p class="text-sm text-slate-500 mt-1">Xem chi tiết các giao dịch mua bán gói dịch vụ, nâng cấp và sử dụng tokens trong quá khứ.</p>
+          </div>
+
+          <div class="bg-white rounded-3xl border border-slate-100 shadow-premium overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50/80 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    <th class="py-4 px-6">Mã giao dịch</th>
+                    <th class="py-4 px-6">Thời gian</th>
+                    <th class="py-4 px-6">Sự kiện/Mô tả</th>
+                    <th class="py-4 px-6">Loại hình</th>
+                    <th class="py-4 px-6 text-right">Biến động số dư</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-xs font-semibold text-slate-600">
+                  <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="py-4 px-6 font-bold text-slate-900">#TXN-9843</td>
+                    <td class="py-4 px-6 text-slate-400">29 Th05, 2026</td>
+                    <td class="py-4 px-6 text-slate-700">Nâng cấp từ Gói Basic lên Gói Premium</td>
+                    <td class="py-4 px-6">
+                      <span class="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 text-[10px]">Mua gói dịch vụ</span>
+                    </td>
+                    <td class="py-4 px-6 text-right text-rose-600 font-bold">-$79.00</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="py-4 px-6 font-bold text-slate-900">#TXN-8201</td>
+                    <td class="py-4 px-6 text-slate-400">29 Th05, 2026</td>
+                    <td class="py-4 px-6 text-slate-700">Sử dụng Token AI sinh mẫu quảng cáo "Luxury Nails"</td>
+                    <td class="py-4 px-6">
+                      <span class="px-2.5 py-0.5 rounded-full bg-violet-50 text-violet-600 text-[10px]">Tiêu dùng AI</span>
+                    </td>
+                    <td class="py-4 px-6 text-right text-slate-500 font-bold">-30 Tokens</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="py-4 px-6 font-bold text-slate-900">#TXN-4309</td>
+                    <td class="py-4 px-6 text-slate-400">15 Th05, 2026</td>
+                    <td class="py-4 px-6 text-slate-700">Gia hạn thành viên - Gói Basic tháng 5</td>
+                    <td class="py-4 px-6">
+                      <span class="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 text-[10px]">Mua gói dịch vụ</span>
+                    </td>
+                    <td class="py-4 px-6 text-right text-rose-600 font-bold">-$29.00</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="py-4 px-6 font-bold text-slate-900">#TXN-2104</td>
+                    <td class="py-4 px-6 text-slate-400">15 Th05, 2026</td>
+                    <td class="py-4 px-6 text-slate-700">Tặng kèm định kỳ Token AI (Basic Plan)</td>
+                    <td class="py-4 px-6">
+                      <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px]">Nạp Tokens</span>
+                    </td>
+                    <td class="py-4 px-6 text-right text-emerald-600 font-bold">+100 Tokens</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        
+      </div>
+    </main>
+  </div>
+
+  <!-- SCRIPT LOGIC TOÀN CỤC CHUẨN ĐẸP -->
+  <script>
+    /* ================= DỮ LIỆU ĐỀ XUẤT BAN ĐẦU (MOCK DATA) ================= */
+    const initialBanners = [
+      {
+        id: "banner-1",
+        name: "Promo Hè Rực Rỡ 2026",
+        imageUrl: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=60",
+        source: "uploaded",
+        targetUrl: "https://vlinkpay.com/summer-promo",
+        startDate: "2026-06-01",
+        endDate: "2026-06-30",
+        status: "active",
+        createdAt: "2026-05-20"
+      },
+      {
+        id: "banner-2",
+        name: "Thẻ Tặng Quà Ưu Đãi Lớn",
+        imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop&q=60",
+        source: "ai_generated",
+        targetUrl: "https://cryptomap360.com/gift-card",
+        startDate: "2026-06-10",
+        endDate: "2026-06-25",
+        status: "pending_review",
+        createdAt: "2026-05-28"
+      },
+      {
+        id: "banner-3",
+        name: "Bitcoin Nails Grand Opening",
+        imageUrl: "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=60",
+        source: "uploaded",
+        targetUrl: "https://bitcoinnailbar.xyz/opening",
+        startDate: "2026-05-15",
+        endDate: "2026-06-15",
+        status: "draft",
+        createdAt: "2026-05-27"
+      },
+      {
+        id: "banner-4",
+        name: "Crypto Payment Banner V2",
+        imageUrl: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800&auto=format&fit=crop&q=60",
+        source: "ai_generated",
+        targetUrl: "https://nailhub.ai/crypto-pay",
+        startDate: "2026-05-01",
+        endDate: "2026-05-20",
+        status: "rejected",
+        reviewNote: "Hình ảnh chứa văn bản có độ phân giải quá thấp, không đủ tiêu chuẩn để hiển thị trên thiết bị di động. Vui lòng tạo lại hoặc thay đổi ảnh sắc nét hơn.",
+        createdAt: "2026-05-01"
+      },
+      {
+        id: "banner-5",
+        name: "Tri Ân Khách Hàng Thân Thiết",
+        imageUrl: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop&q=60",
+        source: "uploaded",
+        targetUrl: "https://vlinkpay.com/loyalty",
+        startDate: "2026-04-01",
+        endDate: "2026-04-30",
+        status: "expired",
+        createdAt: "2026-03-25"
+      },
+      {
+        id: "banner-6",
+        name: "Lễ Hội Nail Nghệ Thuật 2026",
+        imageUrl: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=60",
+        source: "ai_generated",
+        targetUrl: "https://nailhub.ai/art-festival",
+        startDate: "2026-05-05",
+        endDate: "2026-06-05",
+        status: "paused",
+        createdAt: "2026-05-02"
+      }
+    ];
+
+    const suggestedPrompts = [
+      {
+        label: 'Luxury Nail',
+        prompt: 'Create a luxury banner for a nail salon promotion with elegant gold accents, soft pink background, premium beauty style, and a clear “Book Now” call-to-action.'
+      },
+      {
+        label: 'Crypto Payment',
+        prompt: 'Create a modern banner announcing that this merchant accepts crypto payments, using a clean fintech style, blue and purple colors, and a “Pay with Crypto” call-to-action.'
+      },
+      {
+        label: 'Gift Card Discount',
+        prompt: 'Create a promotional banner for a gift card discount campaign, highlighting a special offer, bright modern colors, and a clear “Buy Gift Card” call-to-action.'
+      },
+      {
+        label: 'Featured Merchant',
+        prompt: 'Create a professional featured merchant banner that highlights the business name, trust, service quality, and a “View Merchant” call-to-action.'
+      },
+      {
+        label: 'Grand Opening',
+        prompt: 'Create a grand opening banner for a new business, using a festive modern style, bold headline, limited-time offer, and a “Learn More” call-to-action.'
+      },
+      {
+        label: 'Limited Offer',
+        prompt: 'Create a high-converting banner for a limited-time special offer, with bold typography, urgency, promotional colors, and a clear “Claim Offer” call-to-action.'
+      }
+    ];
+
+    // Trạng thái hệ thống trong phiên làm việc hiện tại
+    let dbBanners = [...initialBanners];
+    let currentActivePlan = 'Premium'; // Có thể đổi sang 'Basic' khi mô phỏng nâng cấp
+    let currentTokens = 420;
+    
+    // Phân trang
+    let currentPage = 1;
+    const itemsPerPage = 5;
+
+    // Ảnh tải lên giả lập lưu trữ tạm thời
+    let tempUploadedImageUrl = "";
+    let tempUploadedFileName = "";
+
+    // Dữ liệu tạo bằng AI giả lập tạm thời
+    let currentAIResultUrl = "";
+    let isAIBannerSelected = false;
+    let aiHistoryList = [
+      { id: 'r01', url: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=60' },
+      { id: 'r02', url: 'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800&auto=format&fit=crop&q=60' }
+    ];
+
+    /* ================= CHẠY LẦN ĐẦU KHI TẢI TRANG ================= */
+    window.addEventListener('DOMContentLoaded', () => {
+      // Khởi tạo icons của Lucide
+      lucide.createIcons();
+      
+      // Chuyển sang màn hình AI Ads Hub làm mặc định ban đầu
+      switchScreen('hub');
+
+      // Nạp các gợi ý Prompt cho AI
+      renderSuggestedPrompts();
+
+      // Thiết lập lắng nghe sự kiện
+      setupEventListeners();
+    });
+
+    /* ================= CƠ CHẾ CHUYỂN MÀN HÌNH CHUYÊN NGHIỆP ================= */
+    function switchScreen(screenId) {
+      // Ẩn toàn bộ các màn hình
+      document.querySelectorAll('.screen-section').forEach(section => {
+        section.classList.add('hidden');
+      });
+
+      // Hiển thị màn hình mục tiêu
+      const targetSection = document.getElementById(`screen-${screenId}`);
+      if (targetSection) {
+        targetSection.classList.remove('hidden');
+      }
+
+      // Cập nhật trạng thái active của Menu Sidebar (Cả trên Desktop và Mobile)
+      updateSidebarActiveState(screenId);
+
+      // Cập nhật dữ liệu hiển thị động
+      refreshAllUIData();
+
+      // Đóng menu di động nếu đang mở
+      document.getElementById('mobile-menu-drawer').classList.add('hidden');
+
+      // Khi người dùng chuyển sang trang mua gói cước bằng menu chính, mặc định hiển thị kịch bản mua gói mới
+      if (screenId === 'buy-package') {
+        togglePackageScenario('unsubscribed');
+      }
+
+      // Cuộn lên đầu trang
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateSidebarActiveState(screenId) {
+      // Phục vụ cho Sidebar chính
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const target = btn.getAttribute('data-screen');
+        if (target === screenId || 
+            (screenId === 'upload' && target === 'create-ad') || 
+            (screenId === 'create-ai' && target === 'create-ad')) {
+          btn.classList.remove('text-slate-600', 'hover:bg-slate-50', 'hover:text-indigo-600');
+          btn.classList.add('bg-indigo-50', 'text-indigo-600', 'translate-x-1');
+        } else {
+          btn.classList.add('text-slate-600', 'hover:bg-slate-50', 'hover:text-indigo-600');
+          btn.classList.remove('bg-indigo-50', 'text-indigo-600', 'translate-x-1');
+        }
+      });
+
+      // Phục vụ cho Mobile Menu
+      document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+        const target = btn.getAttribute('data-screen');
+        if (target === screenId || 
+            (screenId === 'upload' && target === 'create-ad') || 
+            (screenId === 'create-ai' && target === 'create-ad')) {
+          btn.classList.remove('text-slate-600', 'hover:bg-slate-50');
+          btn.classList.add('bg-indigo-50', 'text-indigo-600');
+        } else {
+          btn.classList.add('text-slate-600', 'hover:bg-slate-50');
+          btn.classList.remove('bg-indigo-50', 'text-indigo-600');
+        }
+      });
+    }
+
+    /* ================= CẬP NHẬT DỮ LIỆU TOÀN DIỆN TRÊN UI ================= */
+    function refreshAllUIData() {
+      // 1. Cập nhật Số dư Token, Tên Gói trên Header/Sidebar
+      document.getElementById('sidebar-plan-badge').innerText = `Gói: ${currentActivePlan} (Active)`;
+      document.getElementById('sidebar-token-count').innerText = currentTokens;
+
+      // 2. Thống kê ở màn hình Hub
+      document.getElementById('hub-current-plan-name').innerText = currentActivePlan;
+      document.getElementById('hub-token-val').innerText = currentTokens;
+      
+      const planLimits = { 'Basic': 1, 'Premium': 3, 'Platinum': 10 };
+      const currentLimit = planLimits[currentActivePlan] || 3;
+      const countUsed = dbBanners.filter(b => b.status === 'active' || b.status === 'pending_review').length;
+      document.getElementById('hub-usage-text').innerHTML = `${countUsed} / ${currentLimit} <span class="text-xs font-medium text-slate-400">đang dùng</span>`;
+      
+      const progressPercent = Math.min(100, (countUsed / currentLimit) * 100);
+      document.getElementById('hub-usage-progress').style.width = `${progressPercent}%`;
+
+      const pendingCount = dbBanners.filter(b => b.status === 'pending_review').length;
+      document.getElementById('hub-review-val').innerText = `${pendingCount} Đang Chờ`;
+
+      // 3. Render danh sách banner gần đây ở màn hình Hub
+      renderRecentBannersTable();
+
+      // 4. Cập nhật số liệu màn hình Manage Banner
+      document.getElementById('manage-stat-total').innerText = dbBanners.length;
+      document.getElementById('manage-stat-active').innerText = dbBanners.filter(b => b.status === 'active').length;
+      document.getElementById('manage-stat-pending').innerText = pendingCount;
+      
+      // Render danh sách banner có phân trang
+      renderManageBannersTable();
+
+      // 5. Cập nhật thông số màn hình Create Ad
+      document.getElementById('create-plan-name').innerText = currentActivePlan;
+      document.getElementById('create-plan-usage').innerText = `${countUsed} / ${planLimits[currentActivePlan]} Banners`;
+      document.getElementById('create-plan-tokens').innerText = `${currentTokens} Tokens`;
+
+      // 6. Cập nhật thông số màn hình AI Generator
+      document.getElementById('ai-current-plan').innerText = currentActivePlan;
+      document.getElementById('ai-current-tokens').innerText = `${currentTokens} Tokens`;
+    }
+
+    /* ================= RENDER CÁC BẢNG DỮ LIỆU BANNER ================= */
+    function renderRecentBannersTable() {
+      const tbody = document.getElementById('hub-recent-banners-tbody');
+      tbody.innerHTML = "";
+      
+      // Lấy 3 banner mới nhất dựa vào ID hoặc danh sách
+      const recent = dbBanners.slice(0, 3);
+      
+      if (recent.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-slate-400">Không có dữ liệu banner.</td></tr>`;
+        return;
+      }
+
+      recent.forEach(banner => {
+        const statusBadge = getStatusBadgeHTML(banner.status);
+        const sourceBadge = banner.source === 'ai_generated' ? 'Tạo từ AI' : 'Tải lên thủ công';
+        const actionBtn = getActionButtonHTML(banner);
+
+        tbody.innerHTML += `
+          <tr class="hover:bg-indigo-50/35 transition-colors group">
+            <td class="py-4 px-6 flex items-center gap-3">
+              <div class="w-12 h-8 bg-slate-100 rounded-lg overflow-hidden shrink-0 border border-slate-200 group-hover:scale-105 duration-300">
+                <img src="${banner.imageUrl}" class="w-full h-full object-cover">
+              </div>
+              <span class="font-bold text-slate-900 truncate max-w-[150px] group-hover:text-indigo-600 transition-colors">${banner.name}</span>
+            </td>
+            <td class="py-4 px-6 font-medium text-slate-500">${sourceBadge}</td>
+            <td class="py-4 px-6">${statusBadge}</td>
+            <td class="py-4 px-6 text-right">${actionBtn}</td>
+          </tr>
+        `;
+      });
+      lucide.createIcons();
+    }
+
+    function renderManageBannersTable() {
+      const tbody = document.getElementById('manage-banners-tbody');
+      tbody.innerHTML = "";
+
+      const searchQuery = document.getElementById('filter-search').value.toLowerCase().trim();
+      const statusFilter = document.getElementById('filter-status').value;
+      const sourceFilter = document.getElementById('filter-source').value;
+
+      // Thực hiện lọc dữ liệu
+      let filtered = dbBanners.filter(b => {
+        const matchesSearch = b.name.toLowerCase().includes(searchQuery);
+        const matchesStatus = statusFilter === 'all' || b.status === statusFilter;
+        const matchesSource = sourceFilter === 'all' || b.source === sourceFilter;
+        return matchesSearch && matchesStatus && matchesSource;
+      });
+
+      // Phân trang
+      const totalItems = filtered.length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+      
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+      const paginatedItems = filtered.slice(startIndex, endIndex);
+
+      // Cập nhật mô tả Phân trang
+      const pagText = document.getElementById('pagination-text');
+      if (totalItems === 0) {
+        pagText.innerText = "Không tìm thấy kết quả nào";
+        tbody.innerHTML = `<tr><td colspan="4" class="py-12 text-center text-slate-400">Không tìm thấy banner phù hợp với tiêu chí lọc.</td></tr>`;
+        document.getElementById('btn-prev-page').disabled = true;
+        document.getElementById('btn-next-page').disabled = true;
+        document.getElementById('page-numbers-container').innerHTML = "";
+        return;
+      }
+
+      pagText.innerText = `Đang hiển thị ${startIndex + 1}-${endIndex} trong tổng số ${totalItems}`;
+
+      paginatedItems.forEach(banner => {
+        const statusBadge = getStatusBadgeHTML(banner.status);
+        const sourceBadge = banner.source === 'ai_generated' ? 'Tạo từ AI' : 'Tải lên thủ công';
+        const actionBtn = getActionButtonHTML(banner);
+
+        tbody.innerHTML += `
+          <tr class="hover:bg-indigo-50/35 transition-colors group">
+            <td class="py-4 px-6 flex items-center gap-3">
+              <div class="w-14 h-9 bg-slate-100 rounded-lg overflow-hidden shrink-0 border border-slate-200 group-hover:scale-105 duration-300">
+                <img src="${banner.imageUrl}" class="w-full h-full object-cover">
+              </div>
+              <div>
+                <p class="font-bold text-slate-900 truncate max-w-[180px] group-hover:text-indigo-600 transition-colors">${banner.name}</p>
+                <p class="text-[10px] text-slate-400 font-medium">Khởi tạo: ${banner.createdAt}</p>
+              </div>
+            </td>
+            <td class="py-4 px-6 font-semibold text-slate-500">${sourceBadge}</td>
+            <td class="py-4 px-6">${statusBadge}</td>
+            <td class="py-4 px-6 text-right">${actionBtn}</td>
+          </tr>
+        `;
+      });
+
+      // Cập nhật trạng thái nút Prev/Next
+      document.getElementById('btn-prev-page').disabled = currentPage === 1;
+      document.getElementById('btn-next-page').disabled = currentPage === totalPages;
+
+      // Vẽ các nút số trang
+      const pagesContainer = document.getElementById('page-numbers-container');
+      pagesContainer.innerHTML = "";
+      for (let i = 1; i <= totalPages; i++) {
+        const isActive = i === currentPage;
+        pagesContainer.innerHTML += `
+          <button onclick="goToPage(${i})" class="w-8 h-8 rounded-lg text-xs font-bold transition-all btn-bounce ${isActive ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200' : 'border border-slate-200 text-slate-500 hover:bg-slate-50 hover:border-slate-300'}">
+            ${i}
+          </button>
+        `;
+      }
+
+      lucide.createIcons();
+    }
+
+    function getStatusBadgeHTML(status) {
+      const styles = {
+        draft: 'bg-slate-100 text-slate-600 border-slate-200',
+        pending_review: 'bg-amber-50 text-amber-600 border-amber-200',
+        approved: 'bg-emerald-50 text-emerald-600 border-emerald-200',
+        active: 'bg-indigo-50 text-indigo-600 border-indigo-200',
+        rejected: 'bg-rose-50 text-rose-600 border-rose-200',
+        expired: 'bg-red-50 text-red-600 border-red-200',
+        paused: 'bg-slate-100 text-slate-500 border-slate-200/60'
+      };
+      
+      const labels = {
+        draft: 'Bản nháp',
+        pending_review: 'Chờ kiểm duyệt',
+        approved: 'Đã phê duyệt',
+        active: 'Đang hoạt động',
+        rejected: 'Bị từ chối',
+        expired: 'Đã hết hạn',
+        paused: 'Đang tạm dừng'
+      };
+
+      return `<span class="px-2.5 py-1 rounded-full text-xs font-semibold border ${styles[status]}">${labels[status]}</span>`;
+    }
+
+    function getActionButtonHTML(banner) {
+      // Logic xử lý hành động linh hoạt dựa trên Trạng thái theo đúng Spec đề ra
+      if (banner.status === 'draft') {
+        return `
+          <div class="flex items-center justify-end gap-1.5">
+            <button onclick="submitDraftDirectly('${banner.id}')" class="px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white hover:shadow-btn-indigo-glow font-bold text-xs transition-all duration-300 btn-bounce" title="Nộp duyệt nhanh">Đệ trình</button>
+            <button onclick="editBanner('${banner.id}')" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-indigo-600 transition-all duration-300 btn-bounce" title="Chỉnh sửa"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+            <button onclick="deleteBanner('${banner.id}')" class="p-1.5 rounded-lg hover:bg-rose-50 text-rose-500 transition-all duration-300 btn-bounce" title="Xóa bỏ"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+          </div>
+        `;
+      } else if (banner.status === 'pending_review') {
+        return `
+          <div class="flex items-center justify-end gap-1.5">
+            <button onclick="viewBannerDetails('${banner.id}')" class="px-3 py-1.5 rounded-lg bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-900 font-bold text-xs transition-all duration-300 btn-bounce">Xem</button>
+            <button onclick="withdrawReview('${banner.id}')" class="px-3 py-1.5 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white hover:shadow-md font-bold text-xs transition-all duration-300 btn-bounce">Thu hồi</button>
+          </div>
+        `;
+      } else if (banner.status === 'active') {
+        return `
+          <div class="flex items-center justify-end gap-1.5">
+            <button onclick="viewBannerDetails('${banner.id}')" class="px-3 py-1.5 rounded-lg bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-900 font-bold text-xs transition-all duration-300 btn-bounce">Xem</button>
+            <button onclick="pauseBanner('${banner.id}')" class="px-3 py-1.5 rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white font-bold text-xs transition-all duration-300 btn-bounce">Tạm dừng</button>
+          </div>
+        `;
+      } else if (banner.status === 'rejected') {
+        return `
+          <div class="flex items-center justify-end gap-1.5">
+            <button onclick="showRejectionReason('${banner.id}')" class="px-2.5 py-1.5 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white font-bold text-xs transition-all duration-300 btn-bounce">Lý do</button>
+            <button onclick="editBanner('${banner.id}')" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-indigo-600 transition-all duration-300 btn-bounce" title="Sửa lại"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+          </div>
+        `;
+      } else if (banner.status === 'expired') {
+        return `
+          <div class="flex items-center justify-end gap-1.5">
+            <button onclick="viewBannerDetails('${banner.id}')" class="px-3 py-1.5 rounded-lg bg-slate-50 text-slate-700 hover:bg-slate-100 hover:text-slate-900 font-bold text-xs transition-all duration-300 btn-bounce">Xem</button>
+            <button onclick="duplicateBanner('${banner.id}')" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-indigo-600 transition-all duration-300 btn-bounce" title="Nhân bản"><i data-lucide="copy" class="w-4 h-4"></i></button>
+          </div>
+        `;
+      } else if (banner.status === 'paused') {
+        return `
+          <div class="flex items-center justify-end gap-1.5">
+            <button onclick="resumeBanner('${banner.id}')" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 hover:shadow-btn-indigo-glow font-bold text-xs transition-all duration-300 btn-bounce">Khởi chạy lại</button>
+            <button onclick="editBanner('${banner.id}')" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-indigo-600 transition-all duration-300 btn-bounce"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+          </div>
+        `;
+      } else if (banner.status === 'approved') {
+        return `
+          <div class="flex items-center justify-end gap-1.5">
+            <button onclick="activateApprovedBanner('${banner.id}')" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-md font-bold text-xs transition-all duration-300 btn-bounce">Kích hoạt</button>
+          </div>
+        `;
+      }
+      return `<button onclick="viewBannerDetails('${banner.id}')" class="text-xs text-indigo-600 font-bold hover:underline btn-bounce">Xem</button>`;
+    }
+
+    /* ================= PHÂN TRANG DANH SÁCH BANNER ================= */
+    function goToPage(page) {
+      currentPage = page;
+      renderManageBannersTable();
+    }
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderManageBannersTable();
+      }
+    }
+    function nextPage() {
+      currentPage++;
+      renderManageBannersTable();
+    }
+
+    /* ================= THIẾT LẬP LẮNG NGHE SỰ KIỆN GIAO DIỆN ================= */
+    function setupEventListeners() {
+      // Điều hướng Sidebar PC
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetScreen = btn.getAttribute('data-screen');
+          switchScreen(targetScreen);
+        });
+      });
+
+      // Điều hướng Mobile Menu Drawer
+      document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetScreen = btn.getAttribute('data-screen');
+          switchScreen(targetScreen);
+        });
+      });
+
+      // Bật menu Mobile
+      document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+        document.getElementById('mobile-menu-drawer').classList.remove('hidden');
+      });
+
+      // Tắt menu Mobile
+      document.getElementById('close-mobile-menu').addEventListener('click', () => {
+        document.getElementById('mobile-menu-drawer').classList.add('hidden');
+      });
+
+      // Đóng drawer khi nhấn ra ngoài vùng sidebar di động
+      document.getElementById('mobile-menu-drawer').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('mobile-menu-drawer')) {
+          document.getElementById('mobile-menu-drawer').classList.add('hidden');
+        }
+      });
+
+      // Bộ lọc bên màn hình Manage Banner
+      document.getElementById('filter-search').addEventListener('input', () => {
+        currentPage = 1;
+        renderManageBannersTable();
+      });
+      document.getElementById('filter-status').addEventListener('change', () => {
+        currentPage = 1;
+        renderManageBannersTable();
+      });
+      document.getElementById('filter-source').addEventListener('change', () => {
+        currentPage = 1;
+        renderManageBannersTable();
+      });
+
+      // Kéo thả vùng Upload Banner thủ công
+      const dropzone = document.getElementById('upload-dropzone');
+      const fileInput = document.getElementById('upload-file-input');
+
+      dropzone.addEventListener('click', () => {
+        fileInput.click();
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        handleManualFileSelect(e.target.files[0]);
+      });
+
+      dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('border-indigo-500', 'bg-indigo-50/20');
+      });
+
+      dropzone.addEventListener('dragleave', () => {
+        dropzone.classList.remove('border-indigo-500', 'bg-indigo-50/20');
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('border-indigo-500', 'bg-indigo-50/20');
+        if (e.dataTransfer.files.length > 0) {
+          handleManualFileSelect(e.dataTransfer.files[0]);
+        }
+      });
+    }
+
+    /* ================= LOGIC TOAST THÔNG BÁO TINH TẾ ================= */
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      
+      const toast = document.createElement('div');
+      toast.className = 'bg-white rounded-2xl p-4 shadow-xl border border-slate-100 flex items-center gap-3 transform translate-x-12 opacity-0 transition-all duration-300 pointer-events-auto';
+      
+      let icon = '<i data-lucide="check-circle" class="w-5 h-5 text-emerald-500"></i>';
+      if (type === 'error') {
+        icon = '<i data-lucide="alert-circle" class="w-5 h-5 text-rose-500"></i>';
+      } else if (type === 'warning') {
+        icon = '<i data-lucide="alert-triangle" class="w-5 h-5 text-amber-500"></i>';
+      }
+
+      toast.innerHTML = `
+        <div class="shrink-0">${icon}</div>
+        <div class="flex-1">
+          <p class="text-xs font-bold text-slate-900">${message}</p>
+        </div>
+        <button class="text-slate-400 hover:text-slate-600 transition-colors btn-bounce" onclick="this.parentElement.remove()">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      `;
+
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      // Trigger animation vào
+      setTimeout(() => {
+        toast.classList.remove('translate-x-12', 'opacity-0');
+      }, 50);
+
+      // Tự động xoá sau 3.5 giây
+      setTimeout(() => {
+        toast.classList.add('translate-x-12', 'opacity-0');
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }, 3500);
+    }
+
+    /* ================= CÁC HÀM XỬ LÝ LIÊN QUAN MODAL CHI TIẾT ================= */
+    function openModal(title, bodyHTML) {
+      document.getElementById('modal-title').innerText = title;
+      document.getElementById('modal-body').innerHTML = bodyHTML;
+      
+      const modal = document.getElementById('global-modal');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        document.getElementById('modal-content-box').classList.remove('scale-95');
+      }, 50);
+      lucide.createIcons();
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('global-modal');
+      document.getElementById('modal-content-box').classList.add('scale-95');
+      modal.classList.add('opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    /* ================= HÀNH ĐỘNG HẠN CHẾ TRÊN BANNER (LIFECYCLE) ================= */
+    function viewBannerDetails(id) {
+      const banner = dbBanners.find(b => b.id === id);
+      if (!banner) return;
+
+      const dateRangeStr = (banner.startDate && banner.endDate) ? `${banner.startDate} tới ${banner.endDate}` : 'Không thiết lập lịch';
+      const body = `
+        <div class="space-y-4">
+          <div class="aspect-[16/8] bg-slate-100 rounded-2xl overflow-hidden border">
+            <img src="${banner.imageUrl}" class="w-full h-full object-cover">
+          </div>
+          <div class="grid grid-cols-2 gap-4 text-xs">
+            <div>
+              <span class="text-slate-400 font-semibold">Tên Banner:</span>
+              <p class="font-bold text-slate-900 mt-0.5">${banner.name}</p>
+            </div>
+            <div>
+              <span class="text-slate-400 font-semibold">Nguồn gốc:</span>
+              <p class="font-bold text-slate-900 mt-0.5">${banner.source === 'ai_generated' ? 'Tạo từ AI' : 'Tải lên thủ công'}</p>
+            </div>
+            <div>
+              <span class="text-slate-400 font-semibold">Đường dẫn đích (URL):</span>
+              <p class="font-bold text-indigo-600 truncate mt-0.5">${banner.targetUrl || 'Không thiết lập'}</p>
+            </div>
+            <div>
+              <span class="text-slate-400 font-semibold">Trạng thái:</span>
+              <p class="font-bold text-slate-900 mt-0.5">${banner.status.toUpperCase()}</p>
+            </div>
+          </div>
+          <div class="p-3 bg-slate-50 rounded-xl text-xs text-slate-500">
+            <strong>Lịch hoạt động:</strong> ${dateRangeStr}
+          </div>
+        </div>
+      `;
+      openModal("Chi tiết Banner Quảng cáo", body);
+    }
+
+    // hiển thị lý do từ chối kiểm duyệt
+    function showRejectionReason(id) {
+      const banner = dbBanners.find(b => b.id === id);
+      if (!banner) return;
+
+      const body = `
+        <div class="space-y-4 text-sm text-slate-700">
+          <div class="p-4 bg-rose-50 border border-rose-100 rounded-2xl text-rose-700">
+            <p class="font-bold flex items-center gap-2 mb-1">
+              <i data-lucide="alert-octagon" class="w-5 h-5"></i> Lý do từ chối kiểm duyệt:
+            </p>
+            <p class="text-xs leading-relaxed mt-1 font-medium">${banner.reviewNote || "Không xác định lý do."}</p>
+          </div>
+          <p class="text-xs text-slate-500">Bạn có thể nhấp vào nút "Sửa lại" ở bảng thao tác bên ngoài để chỉnh sửa hình ảnh hoặc thay đổi nội dung đệ trình lên hệ thống kiểm duyệt lại.</p>
+        </div>
+      `;
+      openModal("Thông tin kiểm duyệt từ hệ thống", body);
+    }
+
+    function editBanner(id) {
+      const banner = dbBanners.find(b => b.id === id);
+      if (!banner) return;
+      
+      if (banner.source === 'uploaded') {
+        switchScreen('upload');
+        // Điền lại dữ liệu
+        document.getElementById('upload-name-input').value = banner.name;
+        document.getElementById('upload-target-url').value = banner.targetUrl || '';
+        document.getElementById('upload-start-date').value = banner.startDate || '';
+        document.getElementById('upload-end-date').value = banner.endDate || '';
+        
+        // Xem trước ảnh cũ
+        tempUploadedImageUrl = banner.imageUrl;
+        tempUploadedFileName = banner.name + ".png";
+        document.getElementById('upload-preview-img').src = banner.imageUrl;
+        document.getElementById('upload-file-name').innerText = tempUploadedFileName;
+        document.getElementById('upload-dropzone').classList.add('hidden');
+        document.getElementById('upload-preview-card').classList.remove('hidden');
+
+        showToast("Đã tải dữ liệu Banner vào trình chỉnh sửa tải lên!");
+      } else {
+        // AI Generated edit
+        switchScreen('create-ai');
+        // Trực tiếp mở trạng thái 2 (after)
+        document.getElementById('ai-generator-before').classList.add('hidden');
+        document.getElementById('ai-generator-after').classList.remove('hidden');
+        
+        currentAIResultUrl = banner.imageUrl;
+        document.getElementById('ai-result-preview-img').src = banner.imageUrl;
+        document.getElementById('ai-name-input').value = banner.name;
+        document.getElementById('ai-target-url').value = banner.targetUrl || '';
+        document.getElementById('ai-start-date').value = banner.startDate || '';
+        document.getElementById('ai-end-date').value = banner.endDate || '';
+        document.getElementById('ai-result-prompt-summary').innerText = `Chỉnh sửa: "${banner.name}"`;
+
+        // Khoá mở panel đệ trình
+        useThisBanner();
+        showToast("Đã nạp dữ liệu vào trình thiết kế AI!");
+      }
+    }
+
+    function deleteBanner(id) {
+      dbBanners = dbBanners.filter(b => b.id !== id);
+      showToast("Đã xóa bản nháp Banner thành công!", "warning");
+      refreshAllUIData();
+    }
+
+    function withdrawReview(id) {
+      const banner = dbBanners.find(b => b.id === id);
+      if (banner) {
+        banner.status = 'draft';
+        showToast("Đã thu hồi kiểm duyệt Banner thành công! Chuyển trạng thái về Nháp.");
+        refreshAllUIData();
+      }
+    }
+
+    function pauseBanner(id) {
+      const banner = dbBanners.find(b => b.id === id);
+      if (banner) {
+        banner.status = 'paused';
+        showToast("Đã tạm dừng hiển thị Banner thành công!", "warning");
+        refreshAllUIData();
+      }
+    }
+
+    function resumeBanner(id) {
+      const banner = dbBanners.find(b => b.id === id);
+      if (banner) {
+        banner.status = 'active';
+        showToast("Đã tiếp tục hiển thị Banner quảng cáo!");
+        refreshAllUIData();
+      }
+    }
+
+    function activateApprovedBanner(id) {
+      const banner = dbBanners.find(b => b.id === id);
+      if (banner) {
+        banner.status = 'active';
+        showToast("Kích hoạt quảng cáo thành công!");
+        refreshAllUIData();
+      }
+    }
+
+    function duplicateBanner(id) {
+      const banner = dbBanners.find(b => b.id === id);
+      if (!banner) return;
+
+      const dup = {
+        ...banner,
+        id: "banner-" + Date.now(),
+        name: banner.name + " (Bản sao)",
+        status: 'draft',
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+
+      dbBanners.unshift(dup);
+      showToast("Nhân bản banner thành công! Chuyển trạng thái về Bản nháp.");
+      refreshAllUIData();
+    }
+
+    function submitDraftDirectly(id) {
+      const banner = dbBanners.find(b => b.id === id);
+      if (banner) {
+        banner.status = 'pending_review';
+        showToast("Đã đệ trình nộp duyệt Banner!");
+        refreshAllUIData();
+      }
+    }
+
+    /* ================= ĐIỀU HƯỚNG NHANH CÁC LỰA CHỌN KHÁC NHAU ================= */
+    function goToUploadBanner() {
+      switchScreen('upload');
+      // Reset form
+      document.getElementById('upload-name-input').value = "";
+      document.getElementById('upload-target-url').value = "";
+      document.getElementById('upload-start-date').value = "";
+      document.getElementById('upload-end-date').value = "";
+      removeUploadedImage();
+    }
+
+    function goToCreateWithAI() {
+      switchScreen('create-ai');
+      // Trả về trạng thái ban đầu (State 1)
+      document.getElementById('ai-generator-before').classList.remove('hidden');
+      document.getElementById('ai-generator-loading').classList.add('hidden');
+      document.getElementById('ai-generator-after').classList.add('hidden');
+      
+      document.getElementById('ai-prompt-input').value = "";
+      
+      // Xoá tham chiếu ảnh cũ
+      const refBox = document.getElementById('ai-ref-dropzone');
+      refBox.className = "border border-dashed border-slate-200 hover:border-indigo-500 rounded-2xl p-4 flex items-center justify-center gap-3 cursor-pointer transition-colors duration-300";
+      document.getElementById('ai-ref-text').innerText = "Tải lên hoặc kéo thả ảnh mẫu tham khảo ở đây";
+      document.getElementById('ai-ref-icon').className = "w-5 h-5 text-slate-400";
+      document.getElementById('ai-ref-file-input').value = "";
+    }
+
+    function goToUpgradeScreen() {
+      switchScreen('buy-package');
+      togglePackageScenario('upgradable');
+    }
+
+    function scrollToPackages() {
+      const target = document.getElementById('package-cards-anchor');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    /* ================= LOGIC XỬ LÝ SCREEN MUA GÓI & NÂNG CẤP ================= */
+    function togglePackageScenario(mode) {
+      const subUn = document.getElementById('sub-scenario-unsubscribed');
+      const subUp = document.getElementById('sub-scenario-upgradable');
+
+      if (mode === 'unsubscribed') {
+        if (subUn) subUn.classList.remove('hidden');
+        if (subUp) subUp.classList.add('hidden');
+      } else {
+        if (subUp) subUp.classList.remove('hidden');
+        if (subUn) subUn.classList.add('hidden');
+      }
+    }
+
+    function buyPackageDirectly(planName) {
+      currentActivePlan = planName;
+      
+      const tokensAmount = planName === 'Basic' ? 100 : planName === 'Premium' ? 500 : 2000;
+      currentTokens = tokensAmount;
+
+      showToast(`Chúc mừng! Bạn đã đăng ký thành công gói ${planName}. Nhận ngay ${tokensAmount} AI Tokens.`);
+      switchScreen('hub');
+    }
+
+    function selectUpgradePackage(planName) {
+      document.getElementById('order-target-plan').innerText = planName;
+      const price = planName === 'Premium' ? '$79.00 / tháng' : '$199.00 / tháng';
+      document.getElementById('order-plan-price').innerText = price;
+      document.getElementById('order-total-price').innerText = price;
+      
+      showToast(`Đã chọn nâng cấp mục tiêu lên Gói ${planName}. Vui lòng xác nhận thanh toán phía dưới.`);
+    }
+
+    function confirmUpgradePlan() {
+      const plan = document.getElementById('order-target-plan').innerText;
+      currentActivePlan = plan;
+      
+      const tokensAmount = plan === 'Premium' ? 500 : 2000;
+      currentTokens = tokensAmount;
+
+      showToast(`Hệ thống xác nhận! Giao dịch thành công. Tài khoản của bạn được nâng cấp lên gói ${plan}.`);
+      switchScreen('hub');
+    }
+
+    /* ================= LOGIC FORM TẢI LÊN BANNER (UPLOAD) ================= */
+    function triggerUploadFileSelect() {
+      document.getElementById('upload-file-input').click();
+    }
+
+    function handleManualFileSelect(file) {
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        tempUploadedImageUrl = e.target.result;
+        tempUploadedFileName = file.name;
+
+        document.getElementById('upload-preview-img').src = tempUploadedImageUrl;
+        document.getElementById('upload-file-name').innerText = tempUploadedFileName;
+        
+        document.getElementById('upload-dropzone').classList.add('hidden');
+        document.getElementById('upload-preview-card').classList.remove('hidden');
+        
+        showToast("Đã nạp file thành công!");
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function selectMockUpload(url, name) {
+      tempUploadedImageUrl = url;
+      tempUploadedFileName = name;
+
+      document.getElementById('upload-preview-img').src = url;
+      document.getElementById('upload-file-name').innerText = name;
+      
+      document.getElementById('upload-dropzone').classList.add('hidden');
+      document.getElementById('upload-preview-card').classList.remove('hidden');
+
+      showToast(`Đã chọn mẫu ảnh: ${name}`);
+    }
+
+    function removeUploadedImage() {
+      tempUploadedImageUrl = "";
+      tempUploadedFileName = "";
+      
+      document.getElementById('upload-preview-card').classList.add('hidden');
+      document.getElementById('upload-dropzone').classList.remove('hidden');
+      document.getElementById('upload-file-input').value = "";
+    }
+
+    // Các hàm kiểm tra điều kiện (Validation) cho biểu mẫu đệ trình
+    function validateSubmission(name, targetUrl, startDate, endDate, hasImage) {
+      if (!hasImage) {
+        showToast("Bạn bắt buộc phải tải lên tệp banner trước khi đệ trình!", "error");
+        return false;
+      }
+      
+      if (!name.trim()) {
+        showToast("Tên Banner quảng cáo không được để trống!", "error");
+        return false;
+      }
+
+      if (targetUrl) {
+        try {
+          new URL(targetUrl);
+        } catch (_) {
+          showToast("URL đích không hợp lệ! Vui lòng nhập định dạng chuẩn như https://example.com", "error");
+          return false;
+        }
+      }
+
+      if (startDate || endDate) {
+        if (!startDate || !endDate) {
+          showToast("Khi thiết lập lịch trình hoạt động, bạn buộc phải chọn đầy đủ cả Ngày Bắt Đầu và Kết Thúc!", "error");
+          return false;
+        }
+        
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        if (end <= start) {
+          showToast("Ngày kết thúc phải diễn ra muộn hơn Ngày bắt đầu!", "error");
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    function saveDraftUpload() {
+      const name = document.getElementById('upload-name-input').value;
+      const targetUrl = document.getElementById('upload-target-url').value;
+      const startDate = document.getElementById('upload-start-date').value;
+      const endDate = document.getElementById('upload-end-date').value;
+
+      if (!tempUploadedImageUrl) {
+        showToast("Không thể lưu nháp do chưa có hình ảnh banner!", "error");
+        return;
+      }
+
+      const newBanner = {
+        id: "banner-" + Date.now(),
+        name: name.trim() || "Bản nháp " + (dbBanners.length + 1),
+        imageUrl: tempUploadedImageUrl,
+        source: 'uploaded',
+        targetUrl: targetUrl || undefined,
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
+        status: 'draft',
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+
+      dbBanners.unshift(newBanner);
+      showToast("Đã lưu bản nháp thành công!");
+      switchScreen('manage');
+    }
+
+    function submitUploadForReview() {
+      const name = document.getElementById('upload-name-input').value;
+      const targetUrl = document.getElementById('upload-target-url').value;
+      const startDate = document.getElementById('upload-start-date').value;
+      const endDate = document.getElementById('upload-end-date').value;
+
+      const isValid = validateSubmission(name, targetUrl, startDate, endDate, !!tempUploadedImageUrl);
+      if (!isValid) return;
+
+      const newBanner = {
+        id: "banner-" + Date.now(),
+        name: name.trim(),
+        imageUrl: tempUploadedImageUrl,
+        source: 'uploaded',
+        targetUrl: targetUrl || undefined,
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
+        status: 'pending_review',
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+
+      dbBanners.unshift(newBanner);
+      showToast("Đã gửi duyệt thành công! Trực kiểm tra phê duyệt từ Banners Hub.");
+      switchScreen('manage');
+    }
+
+    /* ================= LOGIC TRÌNH TẠO BANNER AI (CREATE WITH AI) ================= */
+    function renderSuggestedPrompts() {
+      const container = document.getElementById('suggested-prompts-container');
+      container.innerHTML = "";
+      
+      suggestedPrompts.forEach(item => {
+        container.innerHTML += `
+          <button onclick="fillPrompt('${item.prompt}')" class="px-3.5 py-2 text-xs font-semibold bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 text-slate-700 hover:text-indigo-600 rounded-xl hover:-translate-y-0.5 hover:shadow-sm hover:shadow-indigo-100 transition-all duration-300 text-left btn-bounce">
+            # ${item.label}
+          </button>
+        `;
+      });
+    }
+
+    function fillPrompt(promptText) {
+      document.getElementById('ai-prompt-input').value = promptText;
+      showToast("Đã điền nội dung Prompt gợi ý vào khung soạn thảo!");
+    }
+
+    // click upload file tham chiếu
+    function triggerRefUpload() {
+      document.getElementById('ai-ref-file-input').click();
+    }
+
+    function handleRefFileChange(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const refBox = document.getElementById('ai-ref-dropzone');
+      refBox.className = "border border-indigo-500 bg-indigo-50/20 rounded-2xl p-4 flex items-center justify-center gap-3 cursor-pointer transition-colors duration-300";
+      document.getElementById('ai-ref-text').innerText = `Đã đính kèm ảnh mẫu: ${file.name}`;
+      document.getElementById('ai-ref-icon').className = "w-5 h-5 text-indigo-600";
+      
+      showToast(`Đã nhận ảnh mẫu tham chiếu: ${file.name}`);
+    }
+
+    function generateAIBanner() {
+      const prompt = document.getElementById('ai-prompt-input').value.trim();
+      if (!prompt) {
+        showToast("Vui lòng điền nội dung mô tả ý tưởng quảng cáo (Prompt)!", "error");
+        return;
+      }
+
+      if (currentTokens < 30) {
+        showToast("Số dư Token AI của bạn không đủ để thực hiện yêu cầu này! Vui lòng mua thêm gói.", "error");
+        return;
+      }
+
+      // Ẩn bảng 1 và mở Trình chờ (Loading)
+      document.getElementById('ai-generator-before').classList.add('hidden');
+      document.getElementById('ai-generator-loading').classList.remove('hidden');
+
+      let percent = 0;
+      const progress = document.getElementById('ai-loading-progress');
+      
+      const interval = setInterval(() => {
+        percent += 20;
+        progress.style.width = `${percent}%`;
+        if (percent >= 100) {
+          clearInterval(interval);
+          
+          // Trừ token giả định
+          currentTokens -= 30;
+          
+          // Kết quả tạo ra
+          finishAIGeneration(prompt);
+        }
+      }, 300);
+    }
+
+    function finishAIGeneration(prompt) {
+      // Ẩn loading và mở bảng kết quả (State 2)
+      document.getElementById('ai-generator-loading').classList.add('hidden');
+      document.getElementById('ai-generator-after').classList.remove('hidden');
+
+      // Chọn ngẫu nhiên một ảnh tuyệt đẹp từ Unsplash để mô phỏng làm kết quả AI tuyệt đỉnh
+      const mockResultPool = [
+        "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=60",
+        "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800&auto=format&fit=crop&q=60",
+        "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=60",
+        "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop&q=60"
+      ];
+      
+      // Chọn ngẫu nhiên
+      currentAIResultUrl = mockResultPool[Math.floor(Math.random() * mockResultPool.length)];
+      
+      // Đổ dữ liệu vào UI
+      document.getElementById('ai-result-preview-img').src = currentAIResultUrl;
+      document.getElementById('ai-result-prompt-summary').innerText = `"${prompt}"`;
+      
+      // Đặt tên banner tạm thời
+      document.getElementById('ai-name-input').value = "AI Banner - " + (prompt.substring(0, 20) || "Thiết Kế Mẫu");
+
+      // Reset các trường nhập liệu submission
+      document.getElementById('ai-target-url').value = "";
+      document.getElementById('ai-start-date').value = "";
+      document.getElementById('ai-end-date').value = "";
+
+      // Khoá nút use banner và Reset trạng thái
+      isAIBannerSelected = false;
+      const subPanel = document.getElementById('ai-submission-panel');
+      subPanel.classList.add('opacity-60', 'pointer-events-none');
+      document.getElementById('ai-lock-status').innerText = "Bị khóa";
+      document.getElementById('ai-selected-badge').classList.add('hidden', 'opacity-0');
+      document.getElementById('btn-use-this-banner').className = "flex-1 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 hover:shadow-btn-indigo-glow hover:-translate-y-0.5 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-md shadow-indigo-100 btn-bounce";
+      
+      // Đổ lại danh sách Thumbnail Lịch Sử
+      renderAIHistory();
+
+      showToast("Sinh ảnh thiết kế thành công! Đã tiêu phí 30 Tokens.");
+      refreshAllUIData();
+    }
+
+    function renderAIHistory() {
+      // Đưa kết quả mới sinh vào đầu lịch sử
+      const exists = aiHistoryList.some(item => item.url === currentAIResultUrl);
+      if (!exists) {
+        aiHistoryList.unshift({
+          id: 'r' + Date.now(),
+          url: currentAIResultUrl
+        });
+      }
+
+      const container = document.getElementById('ai-history-thumbnails');
+      container.innerHTML = "";
+      
+      aiHistoryList.slice(0, 4).forEach((hist, index) => {
+        container.innerHTML += `
+          <div onclick="selectHistoryImage('${hist.url}')" class="bg-white rounded-2xl p-2 border border-slate-100 hover:border-indigo-600 hover:shadow-card-hover hover:-translate-y-1 shadow-sm cursor-pointer transition-all duration-300 group">
+            <div class="aspect-[16/10] bg-slate-50 rounded-xl overflow-hidden mb-1 border border-transparent group-hover:border-indigo-100 transition-all duration-300">
+              <img src="${hist.url}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <p class="text-[9px] font-bold text-slate-400 group-hover:text-indigo-600 text-center uppercase tracking-wide transition-colors duration-300">Mẫu #${index + 1}</p>
+          </div>
+        `;
+      });
+    }
+
+    function selectHistoryImage(url) {
+      currentAIResultUrl = url;
+      document.getElementById('ai-result-preview-img').src = url;
+      
+      // Đặt lại nút use banner khi thay đổi ảnh lịch sử
+      isAIBannerSelected = false;
+      document.getElementById('ai-submission-panel').classList.add('opacity-60', 'pointer-events-none');
+      document.getElementById('ai-lock-status').innerText = "Bị khóa";
+      document.getElementById('ai-selected-badge').classList.add('hidden', 'opacity-0');
+      document.getElementById('btn-use-this-banner').className = "flex-1 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-md btn-bounce";
+      
+      showToast("Đã nạp ảnh mẫu được chọn từ lịch sử!");
+    }
+
+    function useThisBanner() {
+      isAIBannerSelected = true;
+      
+      // Mở khóa panel Đệ trình thông tin quảng cáo phía bên phải
+      const subPanel = document.getElementById('ai-submission-panel');
+      subPanel.classList.remove('opacity-60', 'pointer-events-none');
+      document.getElementById('ai-lock-status').innerText = "Sẵn sàng";
+      
+      // Hiển thị Watermark "Đã chọn" ngay trên ảnh Preview
+      const badge = document.getElementById('ai-selected-badge');
+      badge.classList.remove('hidden');
+      setTimeout(() => {
+        badge.classList.remove('opacity-0');
+      }, 50);
+
+      // Thay đổi giao diện nút Đã chọn thành công
+      document.getElementById('btn-use-this-banner').className = "flex-1 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 hover:shadow-md text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 btn-bounce";
+
+      showToast("Đã kích hoạt sử dụng mẫu ảnh quảng cáo này!");
+    }
+
+    function generateAgain() {
+      if (currentTokens < 30) {
+        showToast("Không đủ Token để chạy tạo lại!", "error");
+        return;
+      }
+      
+      // Quay lại màn hình chờ để tạo lại mẫu khác
+      document.getElementById('ai-generator-after').classList.add('hidden');
+      document.getElementById('ai-generator-loading').classList.remove('hidden');
+      document.getElementById('ai-loading-progress').style.width = "0%";
+
+      let percent = 0;
+      const progress = document.getElementById('ai-loading-progress');
+      
+      const interval = setInterval(() => {
+        percent += 20;
+        progress.style.width = `${percent}%`;
+        if (percent >= 100) {
+          clearInterval(interval);
+          currentTokens -= 30;
+          finishAIGeneration("Tái lập: " + document.getElementById('ai-prompt-input').value.trim());
+        }
+      }, 300);
+    }
+
+    function backToPromptEdit() {
+      // Quay trở về State 1
+      document.getElementById('ai-generator-after').classList.add('hidden');
+      document.getElementById('ai-generator-before').classList.remove('hidden');
+    }
+
+    function saveAIDraft() {
+      const name = document.getElementById('ai-name-input').value;
+      const targetUrl = document.getElementById('ai-target-url').value;
+      const startDate = document.getElementById('ai-start-date').value;
+      const endDate = document.getElementById('ai-end-date').value;
+
+      if (!currentAIResultUrl) {
+        showToast("Không tìm thấy tệp ảnh mẫu thiết kế để lưu nháp!", "error");
+        return;
+      }
+
+      const newBanner = {
+        id: "banner-" + Date.now(),
+        name: name.trim() || "Bản nháp AI",
+        imageUrl: currentAIResultUrl,
+        source: 'ai_generated',
+        targetUrl: targetUrl || undefined,
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
+        status: 'draft',
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+
+      dbBanners.unshift(newBanner);
+      showToast("Đã lưu bản nháp thiết kế AI thành công!");
+      switchScreen('manage');
+    }
+
+    function submitAIBannerForReview() {
+      const name = document.getElementById('ai-name-input').value;
+      const targetUrl = document.getElementById('ai-target-url').value;
+      const startDate = document.getElementById('ai-start-date').value;
+      const endDate = document.getElementById('ai-end-date').value;
+
+      const isValid = validateSubmission(name, targetUrl, startDate, endDate, !!currentAIResultUrl);
+      if (!isValid) return;
+
+      const newBanner = {
+        id: "banner-" + Date.now(),
+        name: name.trim(),
+        imageUrl: currentAIResultUrl,
+        source: 'ai_generated',
+        targetUrl: targetUrl || undefined,
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
+        status: 'pending_review',
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+
+      dbBanners.unshift(newBanner);
+      showToast("Đã đệ trình nộp mẫu thiết kế AI duyệt thành công!");
+      switchScreen('manage');
+    }
+  </script>
+</body>
+</html>

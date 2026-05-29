@@ -974,7 +974,7 @@
               </div>
             </div>
 
-            <!-- Cột phải: Thông tin Đệ trình (Submission Details) -->
+            <!-- Cột phải: Thông tin Gửi duyệt (Submission Details) -->
             <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium h-fit space-y-6 hover:shadow-card-hover transition-all duration-300">
               <h3 class="text-base font-bold text-slate-900 border-b border-slate-50 pb-3">Chi tiết thông tin đăng tải</h3>
               
@@ -1017,7 +1017,7 @@
                   Lưu bản nháp (Save Draft)
                 </button>
                 <button onclick="submitUploadForReview()" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 hover:shadow-btn-indigo-glow hover:-translate-y-0.5 text-white font-bold text-xs transition-all duration-300 btn-bounce">
-                  Gửi duyệt kiểm tra (Submit for Review)
+                  Gửi duyệt kiểm tra
                 </button>
               </div>
             </div>
@@ -1232,7 +1232,7 @@
                   Lưu bản nháp (Save Draft)
                 </button>
                 <button onclick="submitAIBannerForReview()" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 hover:shadow-btn-indigo-glow hover:-translate-y-0.5 text-white font-bold text-xs transition-all duration-300 btn-bounce">
-                  Gửi duyệt kiểm tra (Submit for Review)
+                  Gửi duyệt kiểm tra
                 </button>
               </div>
             </div>
@@ -1672,7 +1672,7 @@
       if (banner.status === 'draft') {
         return `
           <div class="flex items-center justify-end gap-1.5">
-            <button onclick="submitDraftDirectly('${banner.id}')" class="px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white hover:shadow-btn-indigo-glow font-bold text-xs transition-all duration-300 btn-bounce" title="Nộp duyệt nhanh">Đệ trình</button>
+            <button onclick="submitDraftDirectly('${banner.id}')" class="px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white hover:shadow-btn-indigo-glow font-bold text-xs transition-all duration-300 btn-bounce" title="Nộp duyệt nhanh">Gửi duyệt</button>
             <button onclick="editBanner('${banner.id}')" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-indigo-600 transition-all duration-300 btn-bounce" title="Chỉnh sửa"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
             <button onclick="deleteBanner('${banner.id}')" class="p-1.5 rounded-lg hover:bg-rose-50 text-rose-500 transition-all duration-300 btn-bounce" title="Xóa bỏ"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
@@ -2424,7 +2424,7 @@
     function useThisBanner() {
       isAIBannerSelected = true;
       
-      // Mở khóa panel Đệ trình thông tin quảng cáo phía bên phải
+      // Mở khóa panel Gửi duyệt thông tin quảng cáo phía bên phải
       const subPanel = document.getElementById('ai-submission-panel');
       subPanel.classList.remove('opacity-60', 'pointer-events-none');
       document.getElementById('ai-lock-status').innerText = "Sẵn sàng";

@@ -12,6 +12,8 @@
 
   <script src="global.js" defer></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
   <link rel="stylesheet" href="global.css">
   <style>
     /* ── Icon reset ──────────────────────────────────── */
@@ -782,6 +784,9 @@
       font-weight: 600;
       color: #212b36;
       margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .section-desc {
@@ -1403,7 +1408,7 @@
       <div class="toolbar">
         <div class="search-wrap">
           <i data-lucide="search"></i>
-          <input type="text" class="search-input" id="searchInput" placeholder="Benefit ID/Name" oninput="onSearch()" />
+          <input type="text" class="search-input" id="searchInput" placeholder="Benefit ID, Name" oninput="onSearch()" />
         </div>
         <div class="status-wrap">
           <span class="status-label">Status</span>
@@ -1527,7 +1532,12 @@
       <div class="modal-body">
         <!-- Icon selection -->
         <div>
-          <div class="section-label">Benefit Icon</div>
+          <div class="section-label">
+            Benefit Icon
+            <span class="label-tooltip" data-tip="Choose a preset icon that represents this benefit, or upload your own image." aria-label="More info">
+              <iconify-icon icon="mdi:information-outline" width="15" height="15"></iconify-icon>
+            </span>
+          </div>
           <div class="section-desc">Select a preset icon or upload your own image</div>
           <div class="icon-grid" id="iconGrid"></div>
           <div class="icon-error" id="iconError">Please select or upload an icon</div>
@@ -1535,7 +1545,11 @@
 
         <!-- Benefit Name -->
         <div class="form-group">
-          <label class="form-label">Benefit Name <span class="req">*</span></label>
+          <label class="form-label form-label-with-tip">Benefit Name <span class="req">*</span>
+            <span class="label-tooltip" data-tip="A short, descriptive name shown to cardholders on their membership card." aria-label="More info">
+              <iconify-icon icon="mdi:information-outline" width="15" height="15"></iconify-icon>
+            </span>
+          </label>
           <input type="text" class="form-input" id="benefitName" placeholder="Enter benefit name"
             oninput="clearError('nameError')" />
           <div class="form-error" id="nameError">Benefit name is required</div>
@@ -1550,7 +1564,11 @@
 
         <!-- Benefit Unit -->
         <div class="form-group">
-          <label class="form-label">Benefit Unit <span class="req">*</span></label>
+          <label class="form-label form-label-with-tip">Benefit Unit <span class="req">*</span>
+            <span class="label-tooltip" data-tip="The measurement unit: USD ($) for monetary values, Percentage (%) for rate-based benefits, or Points for loyalty credits." aria-label="More info">
+              <iconify-icon icon="mdi:information-outline" width="15" height="15"></iconify-icon>
+            </span>
+          </label>
           <select class="form-select" id="benefitUnit" onchange="clearError('unitError')">
             <option value="" disabled selected>Select benefit unit</option>
             <option value="USD ($)">USD ($)</option>
@@ -1565,11 +1583,8 @@
           <div class="form-group">
             <label class="form-label form-label-with-tip">
               Rollover Type
-              <span class="label-tooltip" aria-label="More info">
+              <span class="label-tooltip" data-tip="Reset: Unused balance expires at end of cycle. Rollover: Unused balance carries forward and is added to the next cycle." aria-label="More info">
                 <iconify-icon icon="mdi:information-outline" width="16" height="16"></iconify-icon>
-                <span class="label-tooltip-bubble">Reset: Any unused balance or usage count will expire at the end of
-                  the cycle, and the system will restore the original allocated amount for the new cycle. Rollover: Any
-                  unused balance or usage count will be carried forward and added to the next cycle.</span>
               </span>
             </label>
             <select class="form-select" id="rolloverType">
@@ -1581,6 +1596,9 @@
           <div class="form-group">
             <label class="form-label form-label-with-tip">
               Cycle
+              <span class="label-tooltip" data-tip="How often this benefit resets or renews. Requires Rollover Type to be set first." aria-label="More info">
+                <iconify-icon icon="mdi:information-outline" width="15" height="15"></iconify-icon>
+              </span>
             </label>
             <select class="form-select" id="cycleField" disabled>
               <option value="" selected>Select cycle</option>
@@ -1643,6 +1661,17 @@
       { el: 'tag', bg: '#fff9cc', color: '#b8860b' },
       { el: 'gift', bg: '#ffd4d4', color: '#d32f2f' },
       { el: 'gift', bg: '#e0d4ff', color: '#7c3aed' },
+    ];
+    const ICON_SUGGESTIONS = [
+      { name: 'Monthly Credit', unit: 'USD ($)'        },
+      { name: 'Cashback',       unit: 'Percentage (%)'  },
+      { name: 'Discount',       unit: 'Percentage (%)'  },
+      { name: 'Birthday Gift',  unit: 'USD ($)'         },
+      { name: 'Group Discount', unit: 'Percentage (%)'  },
+      { name: 'Free Lounge',    unit: 'Points'          },
+      { name: 'Store Discount', unit: 'Percentage (%)'  },
+      { name: 'Free Gift',      unit: 'USD ($)'         },
+      { name: 'Gift Voucher',   unit: 'USD ($)'         },
     ];
 
     function benefitIconHtml(idx, dataUrl) {
@@ -1921,7 +1950,7 @@
 
       // Update search placeholder + status options
       const si = document.getElementById('searchInput');
-      si.placeholder = tab === 'benefit' ? 'Benefit ID/Name' : 'Search by Package ID or Name';
+      si.placeholder = tab === 'benefit' ? 'Benefit ID, Name' : 'Search by Package ID or Name';
 
       const sf = document.getElementById('statusFilter');
       if (tab === 'benefit') {
@@ -2086,11 +2115,17 @@
 
     function selectIcon(i) {
       selectedIcon = i;
-      // Clear any uploaded image when a preset is selected
       uploadedIconDataUrl = null;
       removeUploadedIcon();
       document.querySelectorAll('.icon-btn').forEach((b, idx) => b.classList.toggle('selected', idx === i));
       document.getElementById('iconError').style.display = 'none';
+      const suggestion = ICON_SUGGESTIONS[i];
+      if (suggestion) {
+        const nameEl = document.getElementById('benefitName');
+        const unitEl = document.getElementById('benefitUnit');
+        if (nameEl) { nameEl.value = suggestion.name; clearError('nameError'); }
+        if (unitEl) { unitEl.value = suggestion.unit; clearError('unitError'); }
+      }
     }
 
     function fillName(v) {
@@ -2108,9 +2143,24 @@
       }
     }
 
+    function initModalTooltips() {
+      if (typeof tippy === 'undefined') return;
+      document.querySelectorAll('#createModal .label-tooltip[data-tip]').forEach(function (el) {
+        if (el._tippy) el._tippy.destroy();
+        tippy(el, {
+          content: el.getAttribute('data-tip'),
+          theme: 'light',
+          placement: 'top',
+          maxWidth: 300,
+          appendTo: document.body,
+        });
+      });
+    }
+
     function openModal() {
       buildIconGrid();
       document.getElementById('createModal').classList.add('open');
+      initModalTooltips();
     }
 
     function closeModal() {

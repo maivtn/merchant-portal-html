@@ -182,7 +182,7 @@
 - [ ] Search Box:
   - Width: Full (mobile) / 240px (desktop)
   - Height: 40px
-  - Placeholder: "Benefit ID/Name"
+  - Placeholder: "Benefit ID, Name"
   - Icon: Search (lucide-react, size 16px)
   - Icon position: left 11px
   - Border: 1px solid #dfe3e8

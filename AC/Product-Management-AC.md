@@ -75,7 +75,7 @@ Màn hình **Product Management** cho phép quản lý các sản phẩm Gift & 
 **GIVEN** người dùng muốn tìm kiếm sản phẩm  
 **WHEN** nhập text vào ô search  
 **THEN**:
-- ✓ Placeholder: "Product ID / Name / Card Number"
+- ✓ Placeholder: "Product ID, Name, Card Number"
 - ✓ Search icon hiển thị bên phải input
 - ✓ Tìm kiếm theo Product ID, Product Name, và Card Number (case-insensitive)
 - ✓ Kết quả tìm kiếm cập nhật real-time khi nhập

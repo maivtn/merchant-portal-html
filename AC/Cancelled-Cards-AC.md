@@ -282,7 +282,7 @@
 - [ ] Search Input:
   - Label floating: "Search" (font 11px, weight 600, color #637381)
   - Label position: top -9px, left 10px, background white, padding 0 4px
-  - Placeholder: "Product ID / Name / Card Number"
+  - Placeholder: "Product ID, Name, Card Number"
   - Height: 32px (mobile) / 40px (desktop)
   - Border: 1px solid #dfe3e8
   - Border radius: 8px

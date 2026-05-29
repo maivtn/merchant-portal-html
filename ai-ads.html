@@ -1100,11 +1100,6 @@
                     <span>Chi phí lần tạo này:</span>
                     <span class="font-bold text-slate-900">- Tokens</span>
                   </div>
-                  <div class="h-px bg-slate-100"></div>
-                  <div class="flex justify-between text-slate-400">
-                    <span>Quy tắc kết quả:</span>
-                    <span>Tạo 1 kết quả tối ưu nhất</span>
-                  </div>
                 </div>
               </div>
 
@@ -1186,10 +1181,32 @@
               </div>
             </div>
 
-            <!-- Cột phải: Submission Details (Bị khóa cho đến khi 'Đồng ý sử dụng Banner này') -->
+            <!-- Cột phải: Token Info + Submission Details -->
+            <div class="space-y-6">
+
+            <!-- Ngân sách Token (luôn hiển thị sau khi tạo) -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium space-y-4 hover:shadow-card-hover transition-all duration-300">
+              <h3 class="text-sm font-bold text-slate-900 border-b border-slate-50 pb-3">Chi tiết Gói & Token</h3>
+              <div class="space-y-3.5 text-xs font-medium text-slate-600">
+                <div class="flex justify-between hover:text-slate-900 transition-colors">
+                  <span>Gói quảng cáo hiện tại:</span>
+                  <span class="font-bold text-slate-900" id="ai-current-plan-2">Premium</span>
+                </div>
+                <div class="flex justify-between hover:text-slate-900 transition-colors">
+                  <span>Số dư Token khả dụng:</span>
+                  <span class="font-bold text-indigo-600" id="ai-current-tokens-2">420 Tokens</span>
+                </div>
+                <div class="flex justify-between hover:text-slate-900 transition-colors">
+                  <span>Chi phí lần tạo này:</span>
+                  <span class="font-bold text-amber-600" id="ai-last-cost">- Tokens</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submission Details (Bị khóa cho đến khi 'Đồng ý sử dụng Banner này') -->
             <div id="ai-submission-panel" class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium h-fit space-y-6 opacity-60 pointer-events-none transition-all duration-300 hover:shadow-card-hover">
               <div class="flex items-center justify-between border-b border-slate-50 pb-3">
-                <h3 class="text-base font-bold text-slate-900">Chi tiết đệ trình quảng cáo</h3>
+                <h3 class="text-base font-bold text-slate-900">Chi tiết quảng cáo</h3>
                 <span class="text-[10px] text-amber-500 font-bold uppercase tracking-wider" id="ai-lock-status">Bị khoá</span>
               </div>
 
@@ -1235,6 +1252,7 @@
                   Gửi duyệt kiểm tra
                 </button>
               </div>
+            </div>
             </div>
           </div>
         </section>
@@ -1384,6 +1402,38 @@
       {
         label: 'Limited Offer',
         prompt: 'Create a high-converting banner for a limited-time special offer, with bold typography, urgency, promotional colors, and a clear “Claim Offer” call-to-action.'
+      },
+      {
+        label: 'Minimalist',
+        prompt: 'Create a minimalist banner with generous white space, clean sans-serif typography, a single accent color, and a subtle “Discover More” call-to-action. Style: Swiss/International design.'
+      },
+      {
+        label: 'Retro Vintage',
+        prompt: 'Create a retro vintage banner with warm sepia tones, distressed textures, classic serif fonts, retro badge elements, and a nostalgic “Shop Classic” call-to-action.'
+      },
+      {
+        label: 'Neon Dark',
+        prompt: 'Create a neon-lit dark mode banner with a near-black background, vivid neon pink and cyan glow effects, bold futuristic typography, and an electrifying “Get Started” call-to-action.'
+      },
+      {
+        label: 'Art Deco',
+        prompt: 'Create an Art Deco banner with geometric symmetry, gold and black palette, ornate line patterns, elegant serif typography, and a luxurious “Experience Elegance” call-to-action.'
+      },
+      {
+        label: 'Glassmorphism',
+        prompt: 'Create a glassmorphism banner with a vibrant blurred gradient background, frosted-glass card overlay, soft shadows, clean white text, and a modern “Explore Now” call-to-action.'
+      },
+      {
+        label: 'Pastel Kawaii',
+        prompt: 'Create a cute pastel kawaii banner with soft pink and lavender tones, rounded bubbly fonts, charming illustrated icons, and a playful “Shop Cute” call-to-action.'
+      },
+      {
+        label: 'Bauhaus Bold',
+        prompt: 'Create a Bauhaus-inspired banner with primary colors (red, blue, yellow), strong geometric shapes, grid-based layout, bold sans-serif type, and a striking “Join Us” call-to-action.'
+      },
+      {
+        label: 'Japanese Zen',
+        prompt: 'Create a Japanese zen minimalist banner with soft ink-wash textures, natural muted tones, subtle sakura motifs, clean spacing, and a serene “Find Your Balance” call-to-action.'
       }
     ];
 
@@ -1521,9 +1571,11 @@
       document.getElementById('create-plan-usage').innerText = `${countUsed} / ${planLimits[currentActivePlan]} Banners`;
       document.getElementById('create-plan-tokens').innerText = `${currentTokens} Tokens`;
 
-      // 6. Cập nhật thông số màn hình AI Generator
+      // 6. Cập nhật thông số màn hình AI Generator (cả 2 trạng thái before/after)
       document.getElementById('ai-current-plan').innerText = currentActivePlan;
       document.getElementById('ai-current-tokens').innerText = `${currentTokens} Tokens`;
+      document.getElementById('ai-current-plan-2').innerText = currentActivePlan;
+      document.getElementById('ai-current-tokens-2').innerText = `${currentTokens} Tokens`;
     }
 
     /* ================= RENDER CÁC BẢNG DỮ LIỆU BANNER ================= */
@@ -2331,18 +2383,22 @@
           clearInterval(interval);
           
           // Trừ token giả định
-          currentTokens -= 30;
-          
+          const generationCost = 30;
+          currentTokens -= generationCost;
+
           // Kết quả tạo ra
-          finishAIGeneration(prompt);
+          finishAIGeneration(prompt, generationCost);
         }
       }, 300);
     }
 
-    function finishAIGeneration(prompt) {
+    function finishAIGeneration(prompt, cost = 30) {
       // Ẩn loading và mở bảng kết quả (State 2)
       document.getElementById('ai-generator-loading').classList.add('hidden');
       document.getElementById('ai-generator-after').classList.remove('hidden');
+
+      // Cập nhật chi phí lần tạo này vào card token (state 2)
+      document.getElementById('ai-last-cost').innerText = `- ${cost} Tokens`;
 
       // Chọn ngẫu nhiên một ảnh tuyệt đẹp từ Unsplash để mô phỏng làm kết quả AI tuyệt đỉnh
       const mockResultPool = [

@@ -220,6 +220,12 @@
       box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08) !important;
     }
 
+    /* Bảo vệ text-white bên trong gradient header (hero card, các badge màu) */
+    body.light-mode .tx-hero-hdr,
+    body.light-mode .tx-hero-hdr * {
+      color: white !important;
+    }
+
     /* ================= TỰ ĐỘNG CHUYỂN ĐỔI SẮC ĐỘ MÀU CHỮ SÁNG ĐỂ NỔI BẬT (DEEP TEXT CONTRAST) ================= */
     body.light-mode .text-orange-400 {
       color: #ea580c !important;
@@ -2591,7 +2597,7 @@
       const payBg      = isMaker ? 'bg-orange-50' : 'bg-blue-50';
       return `
         <div class="mx-4 mt-4 rounded-2xl overflow-hidden" style="box-shadow:0 2px 12px rgba(15,23,42,0.10);">
-          <div class="bg-gradient-to-br ${gradient} px-4 py-3 flex items-center justify-between">
+          <div class="tx-hero-hdr bg-gradient-to-br ${gradient} px-4 py-3 flex items-center justify-between">
             <div class="flex items-center gap-2.5">
               <div class="w-8 h-8 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
                 <i data-lucide="${typeIcon}" class="w-4 h-4 text-white"></i>

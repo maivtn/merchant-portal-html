@@ -597,79 +597,33 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════
-       LUXURY UI ENHANCEMENT — Nâng cấp thẩm mỹ sang trọng hiện đại
-       Giữ nguyên bố cục & logic sáng/tối, chỉ nâng cấp thẩm mỹ.
+       LUXURY UI — ID-based selectors, đảm bảo override đúng
        ═══════════════════════════════════════════════════════════════ */
 
-    /* ── DARK MODE: Nền tổng thể giàu chiều sâu ─────────────────── */
+    /* ── DARK MODE: Body background ─────────────────────────────── */
     body:not(.light-mode) {
-      background: #070c1a !important;
+      background-color: #070c1a !important;
       background-image:
         radial-gradient(ellipse 70% 45% at 15% -5%, rgba(59,130,246,0.07) 0%, transparent 65%),
         radial-gradient(ellipse 60% 40% at 85% 105%, rgba(249,115,22,0.05) 0%, transparent 65%) !important;
     }
 
-    /* ── DARK MODE: Panel điều khiển bên trái ────────────────────── */
-    body:not(.light-mode) > div:first-child {
-      background: linear-gradient(180deg, #0b1120 0%, #080e1c 100%) !important;
+    /* ── DARK MODE: Left control panel ──────────────────────────── */
+    body:not(.light-mode) #control-panel {
+      background-color: transparent !important;
+      background-image: linear-gradient(180deg, #0b1120 0%, #080e1c 100%) !important;
       border-right: 1px solid rgba(255,255,255,0.05) !important;
       box-shadow: 4px 0 40px rgba(0,0,0,0.55) !important;
     }
 
-    /* ── DARK MODE: Logo VLINKPAY badge ─────────────────────────── */
-    body:not(.light-mode) .bg-orange-500.rounded-xl {
-      background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%) !important;
-      box-shadow: 0 4px 20px rgba(234,88,12,0.5), inset 0 1px 0 rgba(255,255,255,0.12) !important;
-    }
-
-    /* ── DARK MODE: Scenario buttons — glass card ────────────────── */
-    body:not(.light-mode) button.bg-slate-855 {
-      background: linear-gradient(135deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.02) 100%) !important;
-      border: 1px solid rgba(255,255,255,0.07) !important;
-      transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease !important;
-    }
-
-    body:not(.light-mode) button.bg-slate-855:hover {
-      background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%) !important;
-      border-color: rgba(255,255,255,0.12) !important;
-      transform: translateY(-1px) !important;
-    }
-
-    /* ── DARK MODE: Control row items (inline settings) ─────────── */
-    body:not(.light-mode) div.bg-slate-855.rounded-lg {
-      background: rgba(255,255,255,0.04) !important;
-      border: 1px solid rgba(255,255,255,0.06) !important;
-    }
-
-    /* ── DARK MODE: Select dropdowns ──────────────────────────────── */
-    body:not(.light-mode) select.bg-slate-855 {
-      background: rgba(255,255,255,0.05) !important;
-      border: 1px solid rgba(255,255,255,0.08) !important;
-    }
-
-    /* ── DARK MODE: Toggle button row ──────────────────────────── */
-    body:not(.light-mode) .bg-slate-800.p-1.rounded-md {
-      background: rgba(255,255,255,0.07) !important;
-      border: 1px solid rgba(255,255,255,0.05) !important;
-    }
-
-    body:not(.light-mode) .bg-slate-700 {
-      background: rgba(255,255,255,0.14) !important;
-    }
-
-    /* ── DARK MODE: Bottom status / compliance card ─────────────── */
-    body:not(.light-mode) .bg-slate-855.p-4.rounded-xl {
-      background: rgba(255,255,255,0.04) !important;
-      border: 1px solid rgba(255,255,255,0.06) !important;
-    }
-
-    /* ── DARK MODE: Simulator right area ─────────────────────────── */
-    body:not(.light-mode) > div:nth-child(2) {
-      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(15,25,50,0.6) 0%, rgba(4,7,14,0.85) 100%) !important;
+    /* ── DARK MODE: Simulator area ───────────────────────────────── */
+    body:not(.light-mode) #simulator-area {
+      background-color: transparent !important;
+      background-image: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(15,25,50,0.55) 0%, rgba(4,7,14,0.9) 100%) !important;
     }
 
     /* ── DARK MODE: Phone frame ──────────────────────────────────── */
-    body:not(.light-mode) .border-slate-800.rounded-\[50px\] {
+    body:not(.light-mode) #phone-frame {
       border-color: #1c2a42 !important;
       box-shadow:
         0 40px 100px rgba(0,0,0,0.9),
@@ -678,24 +632,23 @@
         inset 0 1px 0 rgba(255,255,255,0.09) !important;
     }
 
-    /* ── DARK MODE: Phone notch ──────────────────────────────────── */
-    body:not(.light-mode) .bg-slate-855.rounded-b-3xl {
-      background: #1a2538 !important;
-    }
-
-    /* ── DARK MODE: Status bar ───────────────────────────────────── */
-    body:not(.light-mode) .h-10.bg-slate-900.px-6 {
-      background: rgba(8,13,26,0.95) !important;
+    /* ── DARK MODE: Logo badge gradient ─────────────────────────── */
+    body:not(.light-mode) .bg-orange-500.rounded-xl {
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, #fb923c 0%, #ea580c 100%) !important;
+      box-shadow: 0 4px 20px rgba(234,88,12,0.5), inset 0 1px 0 rgba(255,255,255,0.12) !important;
     }
 
     /* ── DARK MODE: App viewport ─────────────────────────────────── */
     body:not(.light-mode) #app-viewport {
-      background: linear-gradient(180deg, #080d1a 0%, #060a16 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(180deg, #080d1a 0%, #060a16 100%) !important;
     }
 
-    /* ── DARK MODE: Dashboard header sticky ─────────────────────── */
+    /* ── DARK MODE: Dashboard sticky header ─────────────────────── */
     body:not(.light-mode) #header-page {
-      background: linear-gradient(180deg, #080d1a 0%, #080d1a 80%, transparent 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(180deg, #080d1a 0%, #080d1a 80%, transparent 100%) !important;
     }
 
     /* ── DARK MODE: Wallet balance glow ─────────────────────────── */
@@ -703,77 +656,78 @@
       text-shadow: 0 0 24px rgba(217,119,6,0.45) !important;
     }
 
-    /* ── DARK MODE: General bg-slate-900 cards in phone ─────────── */
+    /* ── DARK MODE: Cards inside phone (bg-slate-900) ────────────── */
     body:not(.light-mode) #app-viewport .bg-slate-900 {
-      background: rgba(255,255,255,0.04) !important;
+      background-color: rgba(255,255,255,0.038) !important;
       border: 1px solid rgba(255,255,255,0.07) !important;
     }
 
-    /* ── DARK MODE: Colored glass metric/action cards ─────────────  */
+    /* ── DARK MODE: Colored glass cards ─────────────────────────── */
     body:not(.light-mode) #app-viewport .bg-blue-500\/10 {
-      background: linear-gradient(135deg, rgba(59,130,246,0.16) 0%, rgba(59,130,246,0.06) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(59,130,246,0.16) 0%, rgba(59,130,246,0.06) 100%) !important;
       border: 1px solid rgba(59,130,246,0.24) !important;
       box-shadow: 0 4px 18px rgba(59,130,246,0.1), inset 0 1px 0 rgba(255,255,255,0.05) !important;
     }
 
     body:not(.light-mode) #app-viewport .bg-emerald-500\/10 {
-      background: linear-gradient(135deg, rgba(16,185,129,0.16) 0%, rgba(16,185,129,0.06) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(16,185,129,0.16) 0%, rgba(16,185,129,0.06) 100%) !important;
       border: 1px solid rgba(16,185,129,0.24) !important;
       box-shadow: 0 4px 18px rgba(16,185,129,0.1), inset 0 1px 0 rgba(255,255,255,0.05) !important;
     }
 
     body:not(.light-mode) #app-viewport .bg-purple-500\/10 {
-      background: linear-gradient(135deg, rgba(168,85,247,0.16) 0%, rgba(168,85,247,0.06) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(168,85,247,0.16) 0%, rgba(168,85,247,0.06) 100%) !important;
       border: 1px solid rgba(168,85,247,0.24) !important;
       box-shadow: 0 4px 18px rgba(168,85,247,0.1), inset 0 1px 0 rgba(255,255,255,0.05) !important;
     }
 
     body:not(.light-mode) #app-viewport .bg-amber-500\/10 {
-      background: linear-gradient(135deg, rgba(245,158,11,0.16) 0%, rgba(245,158,11,0.06) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(245,158,11,0.16) 0%, rgba(245,158,11,0.06) 100%) !important;
       border: 1px solid rgba(245,158,11,0.24) !important;
       box-shadow: 0 4px 18px rgba(245,158,11,0.1), inset 0 1px 0 rgba(255,255,255,0.05) !important;
     }
 
     body:not(.light-mode) #app-viewport .bg-rose-500\/10 {
-      background: linear-gradient(135deg, rgba(244,63,94,0.16) 0%, rgba(244,63,94,0.06) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(244,63,94,0.16) 0%, rgba(244,63,94,0.06) 100%) !important;
       border: 1px solid rgba(244,63,94,0.24) !important;
       box-shadow: 0 4px 18px rgba(244,63,94,0.1), inset 0 1px 0 rgba(255,255,255,0.05) !important;
     }
 
     body:not(.light-mode) #app-viewport .bg-sky-500\/10 {
-      background: linear-gradient(135deg, rgba(14,165,233,0.16) 0%, rgba(14,165,233,0.06) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(14,165,233,0.16) 0%, rgba(14,165,233,0.06) 100%) !important;
       border: 1px solid rgba(14,165,233,0.24) !important;
       box-shadow: 0 4px 18px rgba(14,165,233,0.1), inset 0 1px 0 rgba(255,255,255,0.05) !important;
     }
 
     body:not(.light-mode) #app-viewport .bg-orange-500\/10 {
-      background: linear-gradient(135deg, rgba(249,115,22,0.16) 0%, rgba(249,115,22,0.06) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(249,115,22,0.16) 0%, rgba(249,115,22,0.06) 100%) !important;
       border: 1px solid rgba(249,115,22,0.24) !important;
       box-shadow: 0 4px 18px rgba(249,115,22,0.1), inset 0 1px 0 rgba(255,255,255,0.05) !important;
     }
 
-    /* ── DARK MODE: P2P primary action buttons ───────────────────── */
+    /* ── DARK MODE: P2P Buy/Sell buttons with glow ───────────────── */
     body:not(.light-mode) #p2p-primary-cards .bg-orange-500 {
-      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
       box-shadow: 0 8px 28px rgba(234,88,12,0.45), inset 0 1px 0 rgba(255,255,255,0.15) !important;
     }
 
     body:not(.light-mode) #p2p-primary-cards .bg-blue-600 {
-      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
       box-shadow: 0 8px 28px rgba(29,78,216,0.45), inset 0 1px 0 rgba(255,255,255,0.15) !important;
     }
 
-    /* ── DARK MODE: Screen sub-headers ──────────────────────────── */
-    body:not(.light-mode) #app-viewport > div > .border-b.bg-slate-900,
-    body:not(.light-mode) #app-viewport > div > div > .border-b.bg-slate-900 {
-      background: rgba(9,14,26,0.97) !important;
-      border-bottom-color: rgba(255,255,255,0.07) !important;
-      backdrop-filter: blur(12px) !important;
-    }
-
-    /* ── DARK MODE: Bottom nav — true glass effect ───────────────── */
+    /* ── DARK MODE: Bottom nav — glassmorphism ───────────────────── */
     body:not(.light-mode) #bottom-nav-bar {
-      background: rgba(6,10,22,0.93) !important;
+      background-color: rgba(6,10,22,0.93) !important;
       backdrop-filter: blur(28px) saturate(180%) !important;
       -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
       border-top: 1px solid rgba(255,255,255,0.07) !important;
@@ -782,26 +736,29 @@
 
     /* ── DARK MODE: Hamburger drawer ─────────────────────────────── */
     body:not(.light-mode) #hamburger-drawer {
-      background: linear-gradient(180deg, #0e1628 0%, #0a1020 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(180deg, #0e1628 0%, #0a1020 100%) !important;
       border-top: 1px solid rgba(255,255,255,0.07) !important;
     }
 
-    /* ── DARK MODE: Toast notification — premium glass ───────────── */
+    /* ── DARK MODE: Toast notification ──────────────────────────── */
     body:not(.light-mode) #toast-box > div {
-      background: linear-gradient(135deg, rgba(12,19,36,0.97) 0%, rgba(8,13,26,0.97) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(12,19,36,0.97) 0%, rgba(8,13,26,0.97) 100%) !important;
       border: 1px solid rgba(255,255,255,0.1) !important;
       backdrop-filter: blur(28px) !important;
       box-shadow: 0 24px 64px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.06) !important;
     }
 
-    /* ── DARK MODE: Modal backdrop & content ──────────────────────── */
+    /* ── DARK MODE: Modal ─────────────────────────────────────────── */
     body:not(.light-mode) #modal-content {
-      background: linear-gradient(180deg, #111827 0%, #0a1222 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(180deg, #111827 0%, #0a1222 100%) !important;
       border: 1px solid rgba(255,255,255,0.08) !important;
       box-shadow: 0 32px 80px rgba(0,0,0,0.85), inset 0 1px 0 rgba(255,255,255,0.05) !important;
     }
 
-    /* ── DARK MODE: Scrollbar refinement ─────────────────────────── */
+    /* ── DARK MODE: Scrollbar ─────────────────────────────────────── */
     body:not(.light-mode) .mobile-scrollbar::-webkit-scrollbar-track {
       background: rgba(6,10,22,0.6) !important;
     }
@@ -829,26 +786,28 @@
        LIGHT MODE LUXURY OVERRIDES
        ══════════════════════════════════════════════════════════════ */
 
-    /* ── LIGHT MODE: Body background — premium off-white gradient ── */
+    /* ── LIGHT MODE: Body background ────────────────────────────── */
     body.light-mode {
-      background: linear-gradient(140deg, #eef3ff 0%, #f8fafc 45%, #f0f8ff 100%) !important;
-      background-attachment: fixed !important;
+      background-color: #f0f4ff !important;
+      background-image: linear-gradient(140deg, #eef3ff 0%, #f8fafc 45%, #f0f8ff 100%) !important;
     }
 
     /* ── LIGHT MODE: Left control panel ─────────────────────────── */
-    body.light-mode > div:first-child {
-      background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%) !important;
+    body.light-mode #control-panel {
+      background-color: #ffffff !important;
+      background-image: none !important;
       border-right: 1px solid #dde6f0 !important;
       box-shadow: 4px 0 28px rgba(15,23,42,0.07) !important;
     }
 
-    /* ── LIGHT MODE: Simulator background ────────────────────────── */
-    body.light-mode > div:nth-child(2) {
-      background: linear-gradient(135deg, #e8eef9 0%, #f0f5ff 100%) !important;
+    /* ── LIGHT MODE: Simulator area ─────────────────────────────── */
+    body.light-mode #simulator-area {
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, #e8eef9 0%, #f0f5ff 100%) !important;
     }
 
     /* ── LIGHT MODE: Phone frame ─────────────────────────────────── */
-    body.light-mode .border-slate-800.rounded-\[50px\] {
+    body.light-mode #phone-frame {
       border-color: #c2cfde !important;
       box-shadow:
         0 40px 90px rgba(15,23,42,0.16),
@@ -857,113 +816,123 @@
         inset 0 2px 0 rgba(255,255,255,1) !important;
     }
 
-    /* ── LIGHT MODE: Phone notch ─────────────────────────────────── */
-    body.light-mode .bg-slate-855.rounded-b-3xl {
-      background: #c8d4e4 !important;
-    }
-
     /* ── LIGHT MODE: App viewport ────────────────────────────────── */
     body.light-mode #app-viewport {
-      background: #f2f6fd !important;
+      background-color: #f2f6fd !important;
+      background-image: none !important;
     }
 
-    /* ── LIGHT MODE: Header sticky ───────────────────────────────── */
+    /* ── LIGHT MODE: Dashboard sticky header ─────────────────────── */
     body.light-mode #header-page {
-      background: linear-gradient(180deg, #f2f6fd 90%, transparent 100%) !important;
+      background-color: #f2f6fd !important;
+      background-image: none !important;
     }
 
     /* ── LIGHT MODE: Dashboard cards ─────────────────────────────── */
     body.light-mode #screen-home .bg-slate-900 {
-      background: #ffffff !important;
+      background-color: #ffffff !important;
+      background-image: none !important;
       border: 1px solid #e6edf7 !important;
       box-shadow: 0 2px 14px rgba(15,23,42,0.07), 0 1px 3px rgba(15,23,42,0.04) !important;
     }
 
-    /* ── LIGHT MODE: Colored glass metric/action cards ───────────── */
+    /* ── LIGHT MODE: Colored glass metric cards ──────────────────── */
     body.light-mode .bg-blue-500\/10 {
-      background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.04) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.04) 100%) !important;
       border: 1px solid rgba(59,130,246,0.2) !important;
       box-shadow: 0 2px 10px rgba(59,130,246,0.09) !important;
     }
 
     body.light-mode .bg-emerald-500\/10 {
-      background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.04) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.04) 100%) !important;
       border: 1px solid rgba(16,185,129,0.2) !important;
       box-shadow: 0 2px 10px rgba(16,185,129,0.09) !important;
     }
 
     body.light-mode .bg-purple-500\/10 {
-      background: linear-gradient(135deg, rgba(168,85,247,0.1) 0%, rgba(168,85,247,0.04) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(168,85,247,0.1) 0%, rgba(168,85,247,0.04) 100%) !important;
       border: 1px solid rgba(168,85,247,0.2) !important;
       box-shadow: 0 2px 10px rgba(168,85,247,0.09) !important;
     }
 
     body.light-mode .bg-amber-500\/10 {
-      background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(245,158,11,0.04) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(245,158,11,0.04) 100%) !important;
       border: 1px solid rgba(245,158,11,0.2) !important;
       box-shadow: 0 2px 10px rgba(245,158,11,0.09) !important;
     }
 
     body.light-mode .bg-rose-500\/10 {
-      background: linear-gradient(135deg, rgba(244,63,94,0.1) 0%, rgba(244,63,94,0.04) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(244,63,94,0.1) 0%, rgba(244,63,94,0.04) 100%) !important;
       border: 1px solid rgba(244,63,94,0.2) !important;
       box-shadow: 0 2px 10px rgba(244,63,94,0.09) !important;
     }
 
     body.light-mode .bg-sky-500\/10 {
-      background: linear-gradient(135deg, rgba(14,165,233,0.1) 0%, rgba(14,165,233,0.04) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(14,165,233,0.1) 0%, rgba(14,165,233,0.04) 100%) !important;
       border: 1px solid rgba(14,165,233,0.2) !important;
       box-shadow: 0 2px 10px rgba(14,165,233,0.09) !important;
     }
 
     body.light-mode .bg-orange-500\/10 {
-      background: linear-gradient(135deg, rgba(249,115,22,0.1) 0%, rgba(249,115,22,0.04) 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, rgba(249,115,22,0.1) 0%, rgba(249,115,22,0.04) 100%) !important;
       border: 1px solid rgba(249,115,22,0.2) !important;
       box-shadow: 0 2px 10px rgba(249,115,22,0.09) !important;
     }
 
-    /* ── LIGHT MODE: P2P primary action buttons ──────────────────── */
+    /* ── LIGHT MODE: P2P primary buttons ─────────────────────────── */
     body.light-mode #p2p-primary-cards .bg-orange-500 {
-      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
       box-shadow: 0 6px 20px rgba(234,88,12,0.38) !important;
     }
 
     body.light-mode #p2p-primary-cards .bg-blue-600 {
-      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+      background-color: transparent !important;
+      background-image: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
       box-shadow: 0 6px 20px rgba(29,78,216,0.38) !important;
     }
 
-    /* ── LIGHT MODE: Bottom nav — glass blur ────────────────────── */
+    /* ── LIGHT MODE: Bottom nav glassmorphism ────────────────────── */
     body.light-mode #bottom-nav-bar {
-      background: rgba(255,255,255,0.94) !important;
+      background-color: rgba(255,255,255,0.94) !important;
       backdrop-filter: blur(24px) saturate(160%) !important;
       -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
       border-top: 1px solid rgba(15,23,42,0.08) !important;
-      box-shadow: 0 -6px 28px rgba(15,23,42,0.07), inset 0 1px 0 rgba(255,255,255,0.9) !important;
+      box-shadow: 0 -6px 28px rgba(15,23,42,0.07) !important;
     }
 
-    /* ── LIGHT MODE: Toast notification ──────────────────────────── */
+    /* ── LIGHT MODE: Toast ────────────────────────────────────────── */
     body.light-mode #toast-box > div {
-      background: rgba(255,255,255,0.97) !important;
+      background-color: rgba(255,255,255,0.97) !important;
+      background-image: none !important;
       border: 1px solid rgba(15,23,42,0.09) !important;
       box-shadow: 0 16px 48px rgba(15,23,42,0.12), 0 2px 8px rgba(15,23,42,0.06) !important;
     }
 
-    /* ── LIGHT MODE: Recent tx items ─────────────────────────────── */
+    /* ── LIGHT MODE: Recent tx list items ────────────────────────── */
     body.light-mode #recent-requests-list > div {
-      background: #ffffff !important;
+      background-color: #ffffff !important;
+      background-image: none !important;
       border: 1px solid #e8f0fa !important;
       box-shadow: 0 2px 10px rgba(15,23,42,0.05) !important;
     }
 
-    /* ── LIGHT MODE: Modal ───────────────────────────────────────── */
+    /* ── LIGHT MODE: Modal ────────────────────────────────────────── */
     body.light-mode #modal-content {
-      background: #ffffff !important;
+      background-color: #ffffff !important;
+      background-image: none !important;
       border: 1px solid #dde6f0 !important;
       box-shadow: 0 24px 64px rgba(15,23,42,0.16), 0 4px 16px rgba(15,23,42,0.08) !important;
     }
 
-    /* ── UNIVERSAL: Smoother screen transitions ───────────────────── */
+    /* ── UNIVERSAL: Smoother screen slide transitions ─────────────── */
     @keyframes screenSlideIn {
       from { transform: translateX(100%); opacity: 0.5; }
       to   { transform: translateX(0);    opacity: 1;   }
@@ -981,23 +950,13 @@
     .screen-slide-out {
       animation: screenSlideOut 0.24s cubic-bezier(0.55, 0, 0.55, 0.08) both !important;
     }
-
-    /* ── UNIVERSAL: Refined pulse animation ─────────────────────── */
-    @keyframes elegantPulse {
-      0%, 100% { opacity: 1;   box-shadow: 0 0 0 0 currentColor; }
-      50%       { opacity: 0.7; box-shadow: 0 0 0 3px transparent; }
-    }
-
-    .w-1.h-1.bg-emerald-400.rounded-full.animate-pulse {
-      animation: elegantPulse 2.2s ease-in-out infinite !important;
-    }
   </style>
 </head>
 
 <body class="bg-slate-955 text-slate-100 min-h-screen flex flex-col xl:flex-row overflow-x-hidden">
 
   <!-- BẢNG ĐIỀU KHIỂN GIẢ LẬP (BÊN TRÁI DESKTOP) -->
-  <div class="w-full xl:w-96 bg-slate-900 p-6 flex flex-col justify-between shrink-0">
+  <div id="control-panel" class="w-full xl:w-96 bg-slate-900 p-6 flex flex-col justify-between shrink-0">
     <div>
       <div class="flex items-center gap-3 mb-6">
         <div
@@ -1145,10 +1104,10 @@
   </div>
 
   <!-- KHU VỰC THIẾT BỊ DI ĐỘNG GIẢ LẬP (Ở BÊN PHẢI) -->
-  <div class="flex-1 flex items-center justify-center p-4 md:p-8 bg-slate-950/40">
+  <div id="simulator-area" class="flex-1 flex items-center justify-center p-4 md:p-8 bg-slate-950/40">
 
     <!-- KHUNG ĐIỆN THOẠI CHUẨN PREMIUM (FLAT DESIGN SHADOWS) -->
-    <div
+    <div id="phone-frame"
       class="w-full max-w-[412px] h-[840px] bg-slate-900 rounded-[50px] border-[8px] border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.7)] relative flex flex-col overflow-hidden">
 
       <!-- Tai thỏ / Camera di động mô phỏng -->
@@ -1206,10 +1165,11 @@
                   class="bg-transparent text-[10px] text-slate-200 placeholder-slate-500 outline-none w-24"
                   style="border:0!important;" />
               </div>
-              <button onclick="toggleLanguage()" id="lang-btn"
+              <button onclick="toggleLangDropdown(event)" id="lang-btn"
                 class="flex items-center gap-1 p-1 bg-slate-900 hover:bg-slate-800 rounded-xl text-slate-300 transition">
                 <i data-lucide="globe" class="w-3 h-3"></i>
                 <span id="lang-label" class="text-[10px] font-bold leading-none">EN</span>
+                <i data-lucide="chevron-down" id="lang-chevron" class="w-2.5 h-2.5 transition-transform duration-200"></i>
               </button>
               <button onclick="toggleNotificationPanel()"
                 class="relative p-1 bg-slate-900 hover:bg-slate-800 rounded-xl text-slate-300 transition">
@@ -4683,13 +4643,110 @@
       document.getElementById('video-modal').classList.add('hidden');
     }
 
-    // LANGUAGE TOGGLE
-    const LANGS = ['EN', 'VI'];
-    let langIdx = 0;
-    function toggleLanguage() {
-      langIdx = (langIdx + 1) % LANGS.length;
-      document.getElementById('lang-label').textContent = LANGS[langIdx];
+    // LANGUAGE DROPDOWN
+    const LANGS = [
+      { code: 'EN', label: 'English' },
+      { code: 'VI', label: 'Tiếng Việt' },
+      { code: 'ZH', label: '中文' },
+      { code: 'KO', label: '한국어' },
+      { code: 'JA', label: '日本語' },
+      { code: 'ES', label: 'Español' },
+      { code: 'FR', label: 'Français' },
+    ];
+    let currentLang = 'EN';
+    let _langDropdownCloseHandler = null;
+
+    function toggleLangDropdown(e) {
+      e.stopPropagation();
+      const existing = document.getElementById('lang-floating-dropdown');
+      if (existing) { closeLangDropdown(); return; }
+
+      const btn = document.getElementById('lang-btn');
+      const rect = btn.getBoundingClientRect();
+      const isDark = !document.body.classList.contains('light-mode');
+
+      const dropdown = document.createElement('div');
+      dropdown.id = 'lang-floating-dropdown';
+      const bg     = isDark ? '#111c2e' : '#ffffff';
+      const border  = isDark ? 'rgba(255,255,255,0.10)' : '#dde6f0';
+      const shadow  = isDark
+        ? '0 12px 40px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)'
+        : '0 8px 32px rgba(15,23,42,0.14), 0 2px 8px rgba(15,23,42,0.08)';
+
+      dropdown.style.cssText = `
+        position:fixed;
+        right:${Math.round(window.innerWidth - rect.right)}px;
+        top:${Math.round(rect.bottom + 6)}px;
+        z-index:99999;
+        animation:langDropIn 0.18s cubic-bezier(0.22,0.61,0.36,1) both;
+      `;
+      dropdown.innerHTML = `
+        <style>
+          @keyframes langDropIn {
+            from { opacity:0; transform:translateY(-6px) scale(0.96); }
+            to   { opacity:1; transform:translateY(0)   scale(1);    }
+          }
+          #lang-floating-dropdown .lang-item:hover { background: ${isDark ? 'rgba(255,255,255,0.07)' : '#f0f5ff'} !important; }
+        </style>
+        <div style="
+          background:${bg};
+          border:1px solid ${border};
+          border-radius:14px;
+          overflow:hidden;
+          min-width:138px;
+          box-shadow:${shadow};
+          padding:4px 0;
+        ">
+          ${LANGS.map(l => {
+            const isActive = l.code === currentLang;
+            const codeColor = isActive ? '#f97316' : (isDark ? '#cbd5e1' : '#1e293b');
+            const nameColor = isDark ? '#64748b' : '#94a3b8';
+            const rowBg = isActive ? (isDark ? 'rgba(249,115,22,0.08)' : 'rgba(249,115,22,0.06)') : 'transparent';
+            return `<button class="lang-item" onclick="selectLang('${l.code}')" style="
+              display:flex;align-items:center;gap:8px;
+              width:100%;padding:7px 12px;
+              background:${rowBg};border:none;cursor:pointer;text-align:left;
+              transition:background 0.15s;
+            ">
+              <span style="font-size:10px;font-weight:700;color:${codeColor};min-width:22px;font-family:Inter,sans-serif;">${l.code}</span>
+              <span style="font-size:9.5px;color:${nameColor};font-family:Inter,sans-serif;">${l.label}</span>
+              ${isActive ? `<span style="margin-left:auto;color:#f97316;font-size:10px;">✓</span>` : ''}
+            </button>`;
+          }).join('')}
+        </div>
+      `;
+
+      document.body.appendChild(dropdown);
+
+      // Rotate chevron
+      document.getElementById('lang-chevron').style.transform = 'rotate(180deg)';
+
+      // Close on outside click
+      _langDropdownCloseHandler = function(ev) {
+        if (!dropdown.contains(ev.target)) closeLangDropdown();
+      };
+      setTimeout(() => document.addEventListener('click', _langDropdownCloseHandler), 0);
     }
+
+    function closeLangDropdown() {
+      const el = document.getElementById('lang-floating-dropdown');
+      if (el) el.remove();
+      const chevron = document.getElementById('lang-chevron');
+      if (chevron) chevron.style.transform = '';
+      if (_langDropdownCloseHandler) {
+        document.removeEventListener('click', _langDropdownCloseHandler);
+        _langDropdownCloseHandler = null;
+      }
+    }
+
+    function selectLang(code) {
+      currentLang = code;
+      document.getElementById('lang-label').textContent = code;
+      closeLangDropdown();
+    }
+
+    // Keep backward-compat alias
+    function toggleLanguage() { document.getElementById('lang-btn').click(); }
 
     // BANNER SLIDERS — rendered from data/banner-sliders.json
     function initBannerSlider({ sliderId, trackId, dotsContainerId, dotClass, images, dotSize }) {

@@ -1887,7 +1887,7 @@
                       khoá</span>
                   </div>
                   <div class="space-y-1.5">
-                    <label class="text-xs font-bold text-slate-700">Tên Banner *</label>
+                    <label class="text-xs font-bold text-slate-700 flex justify-between"><span>Tên Banner</span><span class="text-slate-400 font-normal">Tùy chọn</span></label>
                     <input type="text" id="adv-name-input" placeholder="Ví dụ: Banner AI tháng 6"
                       class="w-full bg-slate-50 text-slate-800 text-xs px-3 py-2.5 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
                   </div>
@@ -3622,8 +3622,7 @@
 
     function advSaveDraft() {
       if (!advCurrentBannerUrl) { showToast('Chưa có banner nào được tạo!', 'error'); return; }
-      const name = document.getElementById('adv-name-input').value.trim();
-      if (!name) { showToast('Vui lòng nhập tên Banner!', 'error'); return; }
+      const name = document.getElementById('adv-name-input').value.trim() || 'Banner AI';
       const newBanner = {
         id: 'banner-' + Date.now(),
         name,
@@ -3641,7 +3640,7 @@
 
     function advSubmitForReview() {
       if (!advBannerSelected) { showToast('Vui lòng chọn banner trước khi gửi duyệt!', 'error'); return; }
-      const name = document.getElementById('adv-name-input').value.trim();
+      const name = document.getElementById('adv-name-input').value.trim() || 'Banner AI';
       const targetUrl = document.getElementById('adv-target-url').value.trim();
       const startDate = document.getElementById('adv-start-date').value;
       const endDate = document.getElementById('adv-end-date').value;

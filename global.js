@@ -87,15 +87,32 @@
       ],
     },
     {
-      type: "link",
+      type: "group",
       label: "Marketing Tools",
       icon: "solar:chart-square-bold-duotone",
       iconWidth: 24,
-      href: "marketing-tools.html",
-      relatedPages: [
-        "marketing-create.html",
-        "marketing-edit.html",
-        "marketing-details.html",
+      children: [
+        {
+          label: "Spiner",
+          children: [
+            { label: "Create Campaign", href: "marketing-create.html" },
+            {
+              label: "Campaign Management",
+              href: "marketing-tools.html",
+              relatedPages: ["marketing-edit.html", "marketing-details.html"],
+            },
+          ],
+        },
+        {
+          label: "AI Ads Hub",
+          children: [
+            { label: "Create Ads", href: "ai-ads-create.html" },
+            { label: "AI Ads Hub", href: "ai-ads.html" },
+            { label: "Manage Banner", href: "ai-ads-banner.html" },
+            { label: "Buy Package", href: "ai-ads-buy-package.html" },
+            { label: "Transaction History", href: "ai-ads-history.html" }
+          ],
+        },
       ],
     },
     {
@@ -310,7 +327,7 @@
       .split("?")[0]
       .split("#")[0];
 
-    // Helper: check if a menu item or any of its relatedPages matches current page
+    // Helper: check if a menu item or any of its relatedPages/children matches current page
     function isItemActive(item) {
       const raw = (item.href || "").split("/").pop().toLowerCase();
       const hrefPage = raw.split("?")[0].split("#")[0];
@@ -322,6 +339,8 @@
             (p || "").toLowerCase().split("?")[0].split("#")[0] === curPage,
         )
       )
+        return true;
+      if (item.children && item.children.some((c) => isItemActive(c)))
         return true;
       return false;
     }
@@ -383,10 +402,23 @@
         <div class="submenu">\n`;
 
         for (const child of item.children || []) {
-          const childActive = isItemActive(child);
-          html += `  <a href="${resolvePortalHref(child.href)}" class="sub-item${childActive ? " active" : ""}">
-            <span class="dot"></span>${child.label}
-          </a>\n`;
+          if (child.children && child.children.length) {
+            const activeSubChild = child.children.find((sc) => isItemActive(sc));
+            const subGroupCls = activeSubChild ? " sub-group-active" : "";
+            html += `  <div class="sub-group${subGroupCls}">
+              <div class="sub-group-header"><span class="dot"></span>${child.label}</div>
+              <div class="sub-submenu">`;
+            for (const subChild of child.children) {
+              const subActive = isItemActive(subChild);
+              html += `<a href="${resolvePortalHref(subChild.href)}" class="sub-sub-item${subActive ? " active" : ""}"><span class="dot"></span>${subChild.label}</a>`;
+            }
+            html += `</div></div>\n`;
+          } else {
+            const childActive = isItemActive(child);
+            html += `  <a href="${resolvePortalHref(child.href)}" class="sub-item${childActive ? " active" : ""}">
+              <span class="dot"></span>${child.label}
+            </a>\n`;
+          }
         }
         html += `</div>\n`;
       }

@@ -16,6 +16,10 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <!-- html2canvas for download -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <!-- Tippy.js tooltip -->
+  <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+  <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css"/>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -560,6 +564,17 @@
     }
     .screen-slide-in  { animation: screenSlideIn  0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
     .screen-slide-out { animation: screenSlideOut 0.22s ease-in both; }
+
+    /* Tippy custom theme */
+    .tippy-box[data-theme~='vlinkpay'] {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 11px;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      max-width: 180px;
+    }
+    .tippy-box[data-theme~='vlinkpay'] .tippy-arrow { color: #0f172a; }
   </style>
 </head>
 
@@ -782,18 +797,18 @@
 
           <!-- PENDING REQUESTS ALERT CARD (Chỉ hiển thị khi có yêu cầu và có Giấy phép hoạt động) -->
           <div id="pending-requests-card"
-            class="bg-orange-500/10 rounded-xl p-3 flex items-center justify-between hidden">
-            <div class="flex items-center gap-2.5">
-              <div class=" text-orange-400 flex items-center justify-center">
-                <img src="images/clock.png" class="w-8 h-8 object-contain">
+            class="bg-orange-500/10 rounded-xl px-2 py-1.5 flex items-center justify-between hidden">
+            <div class="flex items-center gap-2">
+              <div class="text-orange-400 flex items-center justify-center">
+                <img src="images/clock.png" class="w-6 h-6 object-contain">
               </div>
               <div>
-                <h4 class="text-xs font-bold text-white">Yêu cầu đang chờ</h4>
-                <p id="pending-request-desc" class="text-[10px] text-slate-300 mt-0.5">1 yêu cầu cần xử lý</p>
+                <h4 class="text-[10px] font-bold text-white">Yêu cầu đang chờ</h4>
+                <p id="pending-request-desc" class="text-[9px] text-slate-300 mt-0.5">1 yêu cầu cần xử lý</p>
               </div>
             </div>
             <button
-              class="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-[10px] font-semibold transition shadow-md shadow-orange-500/10">
+              class="px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-[9px] font-semibold transition shadow-md shadow-orange-500/10 shrink-0">
               Xem chi tiết
             </button>
           </div>
@@ -821,7 +836,7 @@
           </div>
 
           <!-- TRẠNG THÁI HOẠT ĐỘNG (ON / OFF - Không viền, phẳng) -->
-          <div id="operational-status-panel" class="hidden grid grid-cols-2 gap-2.5">
+          <div id="operational-status-panel" data-role="mobile_atm merchant_atm combo_atm" data-show-as="grid" style="display:none;grid-auto-flow:column;grid-auto-columns:1fr;gap:0.625rem;">
             <div id="activity-status-box" class="bg-slate-900 rounded-xl p-2 flex justify-between items-center bg-gradient-to-br from-emerald-500/15 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-2 flex justify-between items-center cursor-pointer hover:from-emerald-500/25 hover:border-emerald-500/40 transition">
               <div class="flex items-center gap-1">
                 <img src="images/status.png" class="w-6 h-6 object-contain">
@@ -835,7 +850,16 @@
                 <span class="w-1 h-1 bg-emerald-400 rounded-full animate-pulse"></span> BẬT
               </span>
             </div>
-            <div id="walk-in-status-box" class="bg-slate-900 rounded-xl p-2 flex justify-between items-center bg-gradient-to-br from-emerald-500/15 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-2 flex justify-between items-center cursor-pointer hover:from-emerald-500/25 hover:border-emerald-500/40 transition">
+            <div class="bg-slate-900 rounded-xl py-1 px-2 flex justify-between items-center bg-gradient-to-br from-emerald-500/15 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-2 flex justify-between items-center cursor-pointer hover:from-emerald-500/25 hover:border-emerald-500/40 transition"  data-role="mobile_atm">
+              <div class="flex items-center gap-1">
+                <img src="images/car.png" class="w-7 h-7 object-contain">
+                <div class="flex gap-1 flex-col ml-2">
+                  <span class="text-[7px] text-slate-400 font-medium uppercase tracking-wider block leading-none">Show QR</span>
+                  <span class="text-[10px] font-bold text-white leading-none">Mobile ATM</span>
+                </div>
+              </div>
+            </div>
+            <div id="walk-in-status-box" class="bg-slate-900 rounded-xl p-2 flex justify-between items-center bg-gradient-to-br from-emerald-500/15 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-2 flex justify-between items-center cursor-pointer hover:from-emerald-500/25 hover:border-emerald-500/40 transition" data-role="merchant_atm combo_atm">
               <div class="flex items-center gap-1">
                 <img src="images/walkin.png" class="w-6 h-6 object-contain">
                  <div class="flex gap-1 flex-col">
@@ -848,25 +872,48 @@
                 BẬT
               </span>
             </div>
-            <div id="upgrade-to-merchant-box" class="shadow-md hidden bg-gradient-to-br from-emerald-500/15 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-2 flex justify-between items-center cursor-pointer hover:from-emerald-500/25 hover:border-emerald-500/40 transition" onclick="showToast('Nâng cấp', 'Liên hệ VLINKPAY để đăng ký Merchant ATM.')">
+            <!-- <div class="bg-slate-900 rounded-xl py-1 px-2 flex justify-between items-center bg-gradient-to-br from-emerald-500/15 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-2 flex justify-between items-center cursor-pointer hover:from-emerald-500/25 hover:border-emerald-500/40 transition"  data-role="merchant_atm">
               <div class="flex items-center gap-1">
-                <img src="images/buff.png" class="w-6 h-6 object-contain" onerror="this.style.display='none'">
+                <img src="images/merchant.png" class="w-6 h-6 object-contain">
                 <div class="flex gap-1 flex-col">
-                  <span class="text-[7px] text-emerald-400 font-medium uppercase tracking-wider block leading-none">Nâng cấp</span>
-                  <span class="text-[10px] font-bold text-white leading-none">Thành Doanh Nghiệp</span>
+                  <span class="text-[7px] text-slate-400 font-medium uppercase tracking-wider block leading-none">Show QR</span>
+                  <span class="text-[10px] font-bold text-white leading-none">Merchant ATM</span>
                 </div>
               </div>
-              <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
-            </div>
+            </div> -->
           </div>
 
+          <!-- <div class="hidden grid grid-cols-2 gap-2.5" data-role="merchant_atm combo_atm">
+            <div class="bg-slate-900 rounded-xl py-1 px-2 flex justify-between items-center bg-gradient-to-br from-emerald-500/15 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-2 flex justify-between items-center cursor-pointer hover:from-emerald-500/25 hover:border-emerald-500/40 transition">
+              <div class="flex items-center gap-1">
+                <img src="images/merchant.png" class="w-9 h-9 object-contain">
+                <div class="flex gap-1 flex-col ml-2">
+                  <span class="text-[7px] text-slate-400 font-medium uppercase tracking-wider block leading-none">Show QR</span>
+                  <span class="text-[10px] font-bold text-white leading-none">Merchant ATM</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-slate-900 rounded-xl py-1 px-2 flex justify-between items-center bg-gradient-to-br from-emerald-500/15 to-emerald-600/5 border border-emerald-500/20 rounded-xl p-2 flex justify-between items-center cursor-pointer hover:from-emerald-500/25 hover:border-emerald-500/40 transition">
+              <div class="flex items-center gap-1">
+                <img src="images/payment.png" class="w-9 h-9 object-contain">
+                <div class="flex gap-1 flex-col ml-2">
+                  <span class="text-[7px] text-slate-400 font-medium uppercase tracking-wider block leading-none">Payment</span>
+                  <span class="text-[10px] font-bold text-white leading-none">Payment Processing</span>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+
           <!-- PRIMARY P2P ACTION CARDS (DASH-12.1.1 - Nâng cấp nền xanh dương cho phím Bán & Đồng bộ danh xưng Crypto P2P) -->
-          <div id="p2p-primary-cards" class="grid grid-cols-2 gap-2.5">
+          <div id="p2p-primary-cards" class="grid grid-cols-2 gap-2.5" data-role="no_package">
             <button
               class="bg-orange-500 hover:bg-orange-600 rounded-xl px-3 py-2 text-left shadow-lg relative overflow-hidden transition transform active:scale-95">
               <div class="flex items-center justify-between gap-2">
-                <div>
+                <div class="flex items-center gap-1">
                   <h3 class="text-[11px] font-medium text-white leading-tight">Mua Crypto (P2P)</h3>
+                  <i data-lucide="info" class="w-3 h-3 text-white/60 shrink-0 cursor-pointer"
+                     data-tippy-content="Mua USDT/USDV bằng tiền mặt qua đối tác ATM gần bạn."></i>
                 </div>
                 <img src="images/buy.png" class="w-6 h-6 object-contain shrink-0">
               </div>
@@ -874,8 +921,10 @@
             <button
               class="bg-blue-600 hover:bg-blue-700 rounded-xl px-3 py-2 text-left shadow-lg relative overflow-hidden transition transform active:scale-95">
               <div class="flex items-center justify-between gap-2">
-                <div>
+                <div class="flex items-center gap-1">
                   <h3 class="text-[11px] font-medium text-white leading-tight">Bán Crypto (P2P)</h3>
+                  <i data-lucide="info" class="w-3 h-3 text-white/60 shrink-0 cursor-pointer"
+                     data-tippy-content="Bán USDT/USDV để nhận tiền mặt qua đối tác ATM gần bạn."></i>
                 </div>
                 <img src="images/sell.png" class="w-6 h-6 object-contain shrink-0">
               </div>
@@ -883,32 +932,28 @@
           </div>
 
           <!-- TÍNH NĂNG NHANH CHO USER THƯỜNG - DI CHUYỂN XUỐNG DƯỚI 2 CARD MUA/BÁN P2P (Đồng bộ phối bento màu mờ sắc nét) -->
-          <div id="quick-actions-panel" class="space-y-1.5 hidden">
-            <div class="flex justify-between items-center">
-              <h4 class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Tính năng nhanh</h4>
-            </div>
+          <!-- <div id="quick-actions-panel" class="space-y-1.5 hidden" data-role="no_package">
             <div class="grid grid-cols-3 gap-2">
               <button onclick="openMapSim()"
-                class="bg-blue-500/10 hover:bg-blue-500/20 p-2.5 rounded-xl flex flex-col items-center text-center transition">
+                class="bg-blue-500/10 hover:bg-blue-500/20 p-1.5 rounded-xl flex flex-col items-center text-center transition">
                 <i data-lucide="map" class="w-3.5 h-3.5 text-blue-400"></i>
                 <span class="text-[9px] text-slate-300 font-semibold mt-1 leading-tight">Bản đồ</span>
               </button>
               <button
-                class="bg-orange-500/10 hover:bg-orange-500/20 p-2.5 rounded-xl flex flex-col items-center text-center transition">
+                class="bg-orange-500/10 hover:bg-orange-500/20 p-1.5 rounded-xl flex flex-col items-center text-center transition">
                 <i data-lucide="arrow-down-circle" class="w-3.5 h-3.5 text-orange-400"></i>
                 <span class="text-[9px] text-slate-300 font-semibold mt-1 leading-tight">Mua P2P</span>
               </button>
               <button
-                class="bg-emerald-500/10 hover:bg-emerald-500/20 p-2.5 rounded-xl flex flex-col items-center text-center transition">
+                class="bg-emerald-500/10 hover:bg-emerald-500/20 p-1.5 rounded-xl flex flex-col items-center text-center transition">
                 <i data-lucide="arrow-up-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
                 <span class="text-[9px] text-slate-300 font-semibold mt-1 leading-tight">Bán P2P</span>
               </button>
             </div>
-          </div>
+          </div> -->
 
           <!-- KHU VỰC CHỨC NĂNG MOBILE ATM (DASH-16.1 & DASH-16.5 - Đã xóa title & rating và background, tô màu nền cho item) -->
-          <div id="area-mobile-atm" class="hidden space-y-2 relative">
-            <!-- 3 Nút chức năng chính của Mobile ATM (Màu phối đồng bộ Combo ATM) -->
+          <!-- <div id="area-mobile-atm" class="hidden space-y-2 relative" data-role="mobile_atm">
             <div class="grid grid-cols-3 gap-2" id="grid-mobile-actions">
               <button onclick="handleAtmAction('mobile')"
                 class="flex flex-col items-center justify-center p-2.5 bg-blue-500/10 hover:bg-blue-500/20 active:scale-95 rounded-xl transition relative group">
@@ -926,11 +971,10 @@
                 <span class="text-[9.5px] text-slate-200 font-medium mt-1">Portal Setting</span>
               </button>
             </div>
-          </div>
+          </div> -->
 
           <!-- KHU VỰC CHỨC NĂNG MERCHANT ATM (DASH-17.1 & DASH-17.7 - Đã xóa title & rating và background, tô màu nền cho item) -->
-          <div id="area-merchant-atm" class="hidden space-y-2 relative">
-            <!-- 3 Nút chức năng chính của Merchant ATM (Màu phối đồng bộ Combo ATM) -->
+          <!-- <div id="area-merchant-atm" class="hidden space-y-2 relative" data-role="merchant_atm">
             <div class="grid grid-cols-3 gap-2" id="grid-merchant-actions">
               <button onclick="handleAtmAction('merchant')"
                 class="flex flex-col items-center justify-center p-2.5 bg-emerald-500/10 hover:bg-emerald-500/20 active:scale-95 rounded-xl transition relative group">
@@ -948,39 +992,38 @@
                 <span class="text-[9.5px] text-slate-200 font-medium mt-1">Portal Setting</span>
               </button>
             </div>
-          </div>
+          </div> -->
 
           <!-- KHU VỰC CHỨC NĂNG COMBO ATM (HỢP NHẤT - DASH-015: 4 NÚT TRÊN 1 HÀNG DUY NHẤT) -->
-          <div id="area-combo-atm" class="hidden space-y-2 relative">
-            <!-- 4 Nút hành động ngang trên 1 hàng phẳng mượt - Phối màu bento riêng biệt -->
+          <!-- <div id="area-combo-atm" class="hidden space-y-2 relative" data-role="combo_atm">
             <div class="grid grid-cols-4 gap-1.5" id="grid-combo-actions">
               <button onclick="handleAtmAction('mobile')"
-                class="flex flex-col items-center justify-center p-1.5 py-2.5 bg-blue-500/10 hover:bg-blue-500/20 active:scale-95 rounded-xl transition relative group">
+                class="flex flex-col items-center justify-center p-0.5 py-2.5 bg-blue-500/10 hover:bg-blue-500/20 active:scale-95 rounded-xl transition relative group">
                 <img src="images/car.png" class="w-8 h-8 object-contain group-hover:scale-110 transition">
                 <span class="text-[8.5px] text-slate-200 font-semibold mt-1 text-center leading-tight">QR Mobile</span>
               </button>
               <button onclick="handleAtmAction('merchant')"
-                class="flex flex-col items-center justify-center p-1.5 py-2.5 bg-emerald-500/10 hover:bg-emerald-500/20 active:scale-95 rounded-xl transition relative group">
+                class="flex flex-col items-center justify-center p-0.5 py-2.5 bg-emerald-500/10 hover:bg-emerald-500/20 active:scale-95 rounded-xl transition relative group">
                 <img src="images/merchant.png" class="w-8 h-8 object-contain group-hover:scale-110 transition">
                 <span class="text-[8.5px] text-slate-200 font-semibold mt-1 text-center leading-tight">QR
                   Merchant</span>
               </button>
               <button
-                class="flex flex-col items-center justify-center p-1.5 py-2.5 bg-purple-500/10 hover:bg-purple-500/20 active:scale-95 rounded-xl transition relative group">
+                class="flex flex-col items-center justify-center p-0.5 py-2.5 bg-purple-500/10 hover:bg-purple-500/20 active:scale-95 rounded-xl transition relative group">
                 <img src="images/thuchi.png" class="w-8 h-8 object-contain group-hover:scale-110 transition">
                 <span class="text-[8.5px] text-slate-200 font-semibold mt-1 text-center leading-tight">Thu/Chi Hộ</span>
               </button>
               <button
-                class="flex flex-col items-center justify-center p-1.5 py-2.5 bg-amber-500/10 hover:bg-amber-500/20 active:scale-95 rounded-xl transition relative group">
+                class="flex flex-col items-center justify-center p-0.5 py-2.5 bg-amber-500/10 hover:bg-amber-500/20 active:scale-95 rounded-xl transition relative group">
                 <img src="images/setting.png" class="w-8 h-8 object-contain group-hover:scale-110 transition">
                 <span class="text-[8.5px] text-slate-200 font-semibold mt-1 text-center leading-tight">Portal
                   Setting</span>
               </button>
             </div>
-          </div>
+          </div> -->
 
           <!-- HIỆU SUẤT HOẠT ĐỘNG & NHẬN CHI HỘ (HỢP NHẤT TRỰC QUAN KHÔNG CÒN TIÊU ĐỀ PHỤ - MỖI Ô 1 MÀU TRỰC QUAN & CĂN GIỮA) -->
-          <div id="summary-metrics-panel" class="hidden space-y-2">
+          <div id="summary-metrics-panel" class="hidden space-y-2" data-role="mobile_atm merchant_atm combo_atm">
             <h4 class="text-[10px] font-bold text-slate-300 flex items-center gap-1 uppercase tracking-wider mt-4">
               <img src="images/thongke.png" class="w-5 h-5 object-contain"> Hiệu suất hoạt động ATM
             </h4>
@@ -1035,14 +1078,14 @@
           </div>
 
           <!-- Dummy element giữ kết nối với JavaScript cũ để tránh lỗi Runtime -->
-          <div id="financial-summary-panel" class="hidden"></div>
+          <div id="financial-summary-panel" class="hidden" data-role="mobile_atm merchant_atm combo_atm"></div>
 
           <!-- BANNER MUA GIẤY PHÉP + VIDEO QUẢNG CÁO -->
           <div class="flex gap-2 items-stretch">
 
             <!-- 2/3: become-partner-card -->
             <div id="become-partner-card"
-              class="bg-emerald-500/10 rounded-xl px-3 py-2 relative overflow-hidden border border-emerald-500/30 flex flex-col justify-between" style="flex:2;">
+              class="bg-emerald-500/10 rounded-xl px-3 py-2 relative overflow-hidden border border-emerald-500/30 flex flex-col justify-between" data-role="no_package" style="flex:2;">
               <div class="flex items-center gap-2">
                 <img src="images/buy-license.png" class="w-16 h-16 object-contain shrink-0">
                 <div>
@@ -1057,7 +1100,7 @@
             </div>
 
             <!-- 2/3: partner-license-slider (shown when has license) -->
-            <div id="partner-license-slider" class="hidden relative overflow-hidden rounded-xl" style="flex:2;">
+            <div id="partner-license-slider" class="hidden relative overflow-hidden rounded-xl" data-role="mobile_atm merchant_atm combo_atm" style="flex:2;">
               <div id="partner-slider-track" class="flex h-full" style="transition:transform 0.5s ease;height:100%;"></div>
               <div id="partner-dots-container" class="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex gap-1"></div>
             </div>
@@ -2204,6 +2247,14 @@
     // Điểm khởi chạy của ứng dụng
     window.onload = function () {
       lucide.createIcons();
+      tippy('[data-tippy-content]', {
+        placement: 'top',
+        theme: 'vlinkpay',
+        appendTo: document.body,
+        arrow: true,
+        animation: 'shift-away',
+        duration: [150, 100],
+      });
       setTheme('light');
       setScenario('no-license-personal');
     };
@@ -2460,30 +2511,40 @@
       lucide.createIcons();
     }
 
+    // LẤY ROLE HIỆN TẠI DỰA THEO STATE
+    function getCurrentRole() {
+      if (state.licenseStatus === 'active') {
+        if (state.activeRoles.mobile && state.activeRoles.merchant) return 'combo_atm';
+        if (state.activeRoles.mobile) return 'mobile_atm';
+        if (state.activeRoles.merchant) return 'merchant_atm';
+      }
+      return 'no_package';
+    }
+
+    // ẨN/HIỆN CÁC THẺ THEO data-role
+    function applyRoleVisibility(role) {
+      document.querySelectorAll('[data-role]').forEach(el => {
+        const roles = el.dataset.role.split(/\s+/);
+        const visible = roles.includes(role);
+        if (el.dataset.showAs) {
+          // Grid/flex containers: dùng style.display để tránh xung đột với Tailwind hidden !important
+          el.style.display = visible ? el.dataset.showAs : 'none';
+        } else {
+          el.classList.toggle('hidden', !visible);
+        }
+      });
+    }
+
     // UPDATE TOÀN BỘ SỐ LIỆU VÀ CÁC THÀNH PHẦN DASHBOARD CHÍNH
     function updateDashboardUI() {
       const isNone = state.licenseStatus === 'none';
       const isActive = state.licenseStatus === 'active';
       const isExpired = state.licenseStatus === 'expired';
 
-      // 1. Cập nhật lời chào (DASH-5.1)
-      const greetTitle = document.getElementById('greet-title');
-      // const greetSubtitle = document.getElementById('greet-subtitle');
-      // if (isNone) {
-      //   greetTitle.innerText = "Xin chào, Sam 👋";
-      //   greetSubtitle.innerText = "Mua & bán Crypto (P2P) với các đối tác ATM uy tín";
-      // } else if (state.activeRoles.merchant && !state.activeRoles.mobile) {
-      //   greetTitle.innerText = "Xin chào, Vie Nail Bar 💅";
-      //   greetSubtitle.innerText = "Cổng vận hành Merchant ATM của Doanh nghiệp";
-      // } else if (state.activeRoles.mobile && !state.activeRoles.merchant) {
-      //   greetTitle.innerText = "Xin chào, Mobile ATM 🚗";
-      //   greetSubtitle.innerText = "Đang kết nối hoạt động ATM di động";
-      // } else if (state.activeRoles.mobile && state.activeRoles.merchant) {
-      //   greetTitle.innerText = "Xin chào, Combo Partner 🌟";
-      //   greetSubtitle.innerText = "Sở hữu bản quyền cả Mobile & Merchant ATM";
-      // }
+      // Áp dụng ẩn/hiện theo data-role
+      applyRoleVisibility(getCurrentRole());
 
-      // 2. Thẻ Pending Requests (DASH-16.3 & DASH-17.5)
+      // 1. Thẻ Pending Requests — conditional: cần license active VÀ có request
       const pendingReqCard = document.getElementById('pending-requests-card');
       if (isActive && state.hasPendingRequest) {
         pendingReqCard.classList.remove('hidden');
@@ -2491,7 +2552,7 @@
         pendingReqCard.classList.add('hidden');
       }
 
-      // 3. Banner Gia hạn Giấy phép (DASH-11.1)
+      // 2. Banner Gia hạn Giấy phép (DASH-11.1)
       const renewCard = document.getElementById('renew-license-card');
       if (isExpired) {
         renewCard.classList.remove('hidden');
@@ -2499,53 +2560,24 @@
         renewCard.classList.add('hidden');
       }
 
-      // 4. Panel trạng thái hoạt động (DASH-16.4: Bố cục Full khi ẩn Walk-in)
-      const optStatusPanel = document.getElementById('operational-status-panel');
-      const walkInStatusBox = document.getElementById('walk-in-status-box');
-      const upgradeToMerchantBox = document.getElementById('upgrade-to-merchant-box');
-
-      if (!isNone) {
-        optStatusPanel.classList.remove('hidden');
-        optStatusPanel.className = "grid grid-cols-2 gap-2.5";
-        if (state.activeRoles.merchant) {
-          // Là Merchant hoặc Combo: Hiện Walk-in, ẩn upgrade box
-          walkInStatusBox.classList.remove('hidden');
-          upgradeToMerchantBox.classList.add('hidden');
-        } else {
-          // Là Mobile ATM: Ẩn Walk-in, hiện ô Upgrade to Merchant
-          walkInStatusBox.classList.add('hidden');
-          upgradeToMerchantBox.classList.remove('hidden');
-        }
-      } else {
-        optStatusPanel.classList.add('hidden');
-      }
-
-      // 5. Giao diện người dùng Cá nhân (P2P Primary Cards) (DASH-12.1.1)
-      const p2pPrimary = document.getElementById('p2p-primary-cards');
-      if (isNone) {
-        p2pPrimary.classList.remove('hidden');
-      } else {
-        p2pPrimary.classList.add('hidden');
-      }
-
-      // 6. Giao dịch cá nhân đang tiến hành (In-progress Transaction) (DASH-12.1.1) - Cập nhật tối giản bằng màu xanh dương
+      // 3. Giao dịch cá nhân đang tiến hành — conditional: chỉ no_package + có activeTx
       const inProgressCard = document.getElementById('in-progress-card');
       const activeTx = state.transactions.find(tx => tx.status === 'Pending' || tx.status === 'Processing');
 
       if (isNone && activeTx) {
         inProgressCard.classList.remove('hidden');
-        inProgressCard.className = "bg-blue-500/10 rounded-xl p-2.5 flex items-center justify-between";
+        inProgressCard.className = "bg-blue-500/10 rounded-xl px-2 py-1.5 flex items-center justify-between";
         inProgressCard.innerHTML = `
-          <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-blue-500/20 text-blue-400 rounded-lg flex items-center justify-center">
-              <i data-lucide="refresh-cw" class="w-3.5 h-3.5 animate-spin"></i>
+          <div class="flex items-center gap-1.5">
+            <div class="w-6 h-6 bg-blue-500/20 text-blue-400 rounded-lg flex items-center justify-center">
+              <i data-lucide="refresh-cw" class="w-3 h-3 animate-spin"></i>
             </div>
             <div>
-              <h4 class="text-xs font-bold text-white">Giao dịch đang tiến hành</h4>
-              <p class="text-[10px] text-slate-300 mt-0.5">${activeTx.amount} • Mua USDV từ Seller ATM-HJK123</p>
+              <h4 class="text-[10px] font-bold text-white">Giao dịch đang tiến hành</h4>
+              <p class="text-[9px] text-slate-300 mt-0.5">${activeTx.amount} • Mua USDV từ Seller ATM-HJK123</p>
             </div>
           </div>
-          <button  class="px-2.5 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-[10px] font-semibold transition shadow-md shadow-blue-500/10 shrink-0">
+          <button class="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-[9px] font-semibold transition shadow-md shadow-blue-500/10 shrink-0">
             Xem chi tiết
           </button>
         `;
@@ -2553,57 +2585,10 @@
         inProgressCard.classList.add('hidden');
       }
 
-      // 7, 8 & New: Phân phối hiển thị vùng chức năng ATM theo gói Combo hoặc Standard (DASH-015)
-      const areaMobile = document.getElementById('area-mobile-atm');
-      const areaMerchant = document.getElementById('area-merchant-atm');
-      const areaCombo = document.getElementById('area-combo-atm');
-
-      const isComboActive = state.activeRoles.mobile && state.activeRoles.merchant && !isNone;
-
-      // Tất cả các area ATM đều ẩn — chức năng đã chuyển vào hamburger menu
-      areaCombo.classList.add('hidden');
-      areaMobile.classList.add('hidden');
-      areaMerchant.classList.add('hidden');
-
-      // 9. Hiệu suất summary (DASH-16.6 & DASH-17.8)
-      const metricsPanel = document.getElementById('summary-metrics-panel');
-      if (!isNone) {
-        metricsPanel.classList.remove('hidden');
-      } else {
-        metricsPanel.classList.add('hidden');
-      }
-
-      // 10. Báo cáo tài chính ATM summary (DASH-16.7 & DASH-17.9)
-      const financialPanel = document.getElementById('financial-summary-panel');
-      if (!isNone) {
-        financialPanel.classList.remove('hidden');
-      } else {
-        financialPanel.classList.add('hidden');
-      }
-
-      // 11. Banner Đăng ký làm Đối tác (DASH-8.1)
-      const becomePartnerCard = document.getElementById('become-partner-card');
-      const partnerLicenseSlider = document.getElementById('partner-license-slider');
-      if (isNone) {
-        becomePartnerCard.classList.remove('hidden');
-        partnerLicenseSlider.classList.add('hidden');
-      } else {
-        becomePartnerCard.classList.add('hidden');
-        partnerLicenseSlider.classList.remove('hidden');
-      }
-
-      // 12. Quick Actions cho người dùng chưa nhượng quyền (DASH-12.1.1)
-      // const quickPanel = document.getElementById('quick-actions-panel');
-      // if (isNone) {
-      //   quickPanel.classList.remove('hidden');
-      // } else {
-      //   quickPanel.classList.add('hidden');
-      // }
-
-      // 13. Nút Quản lý Giấy phép — ẩn, đã chuyển vào hamburger menu
+      // 4. Nút Quản lý Giấy phép — ẩn, đã chuyển vào hamburger menu
       document.getElementById('manage-franchise-card').classList.add('hidden');
 
-      // 14. Render Transactions
+      // 5. Render Transactions
       renderRecentTransactions();
     }
 
@@ -3715,15 +3700,18 @@
       const track = document.getElementById(trackId);
       const dotsContainer = document.getElementById(dotsContainerId);
       const total = images.length;
-      const pct = 100 / total;
+      // Clone slide đầu vào cuối để loop liền mạch (total + 1 slots)
+      const extImages = [...images, images[0]];
+      const slots = extImages.length;
+      const pct = 100 / slots;
 
-      track.style.width = (total * 100) + '%';
-      track.innerHTML = images.map(() =>
+      track.style.width = (slots * 100) + '%';
+      track.innerHTML = extImages.map(() =>
         `<div class="h-full shrink-0" style="width:${pct}%;"></div>`
       ).join('');
 
       const slides = track.querySelectorAll('div');
-      images.forEach((item, i) => {
+      extImages.forEach((item, i) => {
         const img = document.createElement('img');
         img.src = item.src;
         img.alt = item.alt || '';
@@ -3738,19 +3726,48 @@
       ).join('');
       const dots = dotsContainer.querySelectorAll('.' + dotClass);
 
-      let current = 0;
+      let current = 0; // chỉ số thực (0 … total-1)
+      let pos = 0;     // vị trí track (0 … total, total = clone)
       let timer;
+      let transitioning = false;
 
-      function goTo(idx) {
-        current = (idx + total) % total;
-        track.style.transform = 'translateX(-' + (current * pct) + '%)';
+      function updateDots(idx) {
         dots.forEach((d, i) => {
-          d.style.background = i === current ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.4)';
+          d.style.background = i === idx ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.4)';
         });
       }
 
+      function slideTo(newPos, animated) {
+        track.style.transition = animated ? 'transform 0.5s ease' : 'none';
+        track.style.transform = 'translateX(-' + (newPos * pct) + '%)';
+        pos = newPos;
+      }
+
+      // Sau khi transition tới clone (pos = total), reset không animation về pos 0
+      track.addEventListener('transitionend', () => {
+        if (pos === total) {
+          transitioning = false;
+          slideTo(0, false);
+          pos = 0;
+        } else {
+          transitioning = false;
+        }
+      });
+
+      function goTo(idx) {
+        if (transitioning) return;
+        // Bình thường hoá idx về 0…total-1
+        const realIdx = ((idx % total) + total) % total;
+        // Nếu đang ở slide cuối thực và muốn tiến → chuyển tới clone rồi snap về 0
+        const nextPos = (pos === total - 1 && idx > current) ? total : realIdx;
+        transitioning = true;
+        current = realIdx;
+        updateDots(current);
+        slideTo(nextPos, true);
+      }
+
       function start() { timer = setInterval(() => goTo(current + 1), 3500); }
-      function stop() { clearInterval(timer); }
+      function stop()  { clearInterval(timer); }
 
       const slider = document.getElementById(sliderId);
       let startX = 0;

@@ -63,12 +63,12 @@
     },
     {
       type: "group",
-      label: "Gift & Voucher Management",
+      label: "Product Management",
       icon: "solar:folder-with-files-bold-duotone",
       iconWidth: 26,
       children: [
         {
-          label: "Product Management",
+          label: "Products",
           href: "product-list.html",
           relatedPages: [
             "gift-card-details.html",
@@ -80,7 +80,7 @@
         },
 
         {
-          label: "Cancelled Cards",
+          label: "Cancelled Products",
           href: "cancelled-cards.html",
           relatedPages: ["cancelled-card-list.html"],
         },

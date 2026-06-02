@@ -1144,6 +1144,21 @@
             </div>
           </div>
 
+          <!-- ========== MODE TABS ========== -->
+          <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-2xl w-fit">
+            <button id="mode-tab-quick" onclick="switchAIMode('quick')"
+              class="flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-bold transition-all duration-200 bg-white text-slate-900 shadow-sm">
+              <i data-lucide="zap" class="w-3.5 h-3.5 text-indigo-600"></i> Quick
+            </button>
+            <button id="mode-tab-advanced" onclick="switchAIMode('advanced')"
+              class="flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-bold transition-all duration-200 text-slate-500 hover:text-slate-700">
+              <i data-lucide="message-square" class="w-3.5 h-3.5"></i> Nâng cao
+            </button>
+          </div>
+
+          <!-- ========== QUICK MODE WRAPPER ========== -->
+          <div id="ai-mode-quick">
+
           <!-- ================= TRẠNG THÁI 1: TRƯỚC KHI GENERATE ================= -->
           <div id="ai-generator-before" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Khu vực nhập liệu -->
@@ -1245,18 +1260,19 @@
                   <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Nội dung Prompt đã tạo</span>
                   <p class="text-xs font-semibold text-slate-800 italic" id="ai-result-prompt-summary">"Create a luxury banner for a nail salon promotion..."</p>
                 </div>
-                <button onclick="backToPromptEdit()" class="px-3.5 py-1.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-950 font-bold text-xs shrink-0 transition-colors btn-bounce">
+                <!-- <button onclick="backToPromptEdit()" class="px-3.5 py-1.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-950 font-bold text-xs shrink-0 transition-colors btn-bounce">
                   Chỉnh sửa Prompt
-                </button>
+                </button> -->
               </div>
 
               <!-- Kết quả thiết kế Banner (AI Result) -->
               <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium space-y-4 hover:shadow-card-hover transition-shadow duration-300">
                 <div class="flex items-center justify-between">
                   <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> Kết quả tối ưu nhất tự động sinh ra
+                    <span id="quick-result-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                    <span id="quick-result-header-text">Kết quả tối ưu nhất tự động sinh ra</span>
                   </h3>
-                  <span class="text-[10px] font-bold text-slate-400 bg-slate-50 border px-2 py-0.5 rounded">Khuyên dùng sử dụng</span>
+                  <span id="quick-result-badge" class="text-[10px] font-bold text-slate-400 bg-slate-50 border px-2 py-0.5 rounded">Khuyên dùng sử dụng</span>
                 </div>
                 
                 <!-- Bảng Preview Banner động sinh -->
@@ -1274,7 +1290,7 @@
                   <button id="btn-use-this-banner" onclick="useThisBanner()" class="flex-1 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 hover:shadow-btn-indigo-glow hover:-translate-y-0.5 text-white font-bold text-xs transition-all duration-300 flex items-center justify-center gap-2 shadow-md shadow-indigo-100 btn-bounce">
                     <i data-lucide="check" class="w-4 h-4"></i> Đồng ý sử dụng Banner này
                   </button>
-                  <button onclick="generateAgain()" class="py-3.5 px-5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 font-semibold text-xs transition-all duration-300 flex items-center justify-center gap-2 btn-bounce">
+                  <button onclick="backToPromptEdit()" class="py-3.5 px-5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 font-semibold text-xs transition-all duration-300 flex items-center justify-center gap-2 btn-bounce">
                     <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Tạo lại thiết kế khác
                   </button>
                 </div>
@@ -1363,6 +1379,181 @@
             </div>
             </div>
           </div>
+
+          </div><!-- /ai-mode-quick -->
+
+          <!-- ========== ADVANCED MODE WRAPPER (Chat) ========== -->
+          <div id="ai-mode-advanced" class="hidden space-y-5">
+            <div class="flex gap-5" style="height:640px;">
+
+              <!-- ── Chat Column ── -->
+              <div class="flex-1 flex flex-col bg-white rounded-3xl border border-slate-100 shadow-premium overflow-hidden min-w-0">
+
+                <!-- Messages area -->
+                <div id="adv-chat-messages" class="flex-1 overflow-y-auto p-5 space-y-5">
+
+                  <!-- AI greeting bubble -->
+                  <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center shrink-0 shadow-md shadow-indigo-200">
+                      <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-100 rounded-2xl rounded-tl-sm p-4 max-w-xl shadow-sm">
+                      <p class="text-sm text-slate-700 leading-relaxed">Xin chào! Tôi là <strong>AI Banner Designer</strong>. Hãy mô tả banner bạn muốn tạo — tông màu, phong cách, ngành nghề, nội dung kêu gọi hành động — hoặc đính kèm ảnh tham chiếu để tôi hiểu rõ hơn.</p>
+                      <!-- Quick suggested prompts -->
+                      <div class="flex flex-wrap gap-2 mt-3" id="adv-suggested-chips">
+                        <button onclick="advUseChip('Luxury Nail Salon — gold accents, soft pink, elegant, Book Now CTA')" class="text-[11px] font-semibold bg-white border border-indigo-100 text-indigo-600 px-3 py-1 rounded-full hover:bg-indigo-50 transition-colors btn-bounce">Luxury Nail</button>
+                        <button onclick="advUseChip('Crypto payment banner — fintech style, blue & purple, Pay with Crypto CTA')" class="text-[11px] font-semibold bg-white border border-indigo-100 text-indigo-600 px-3 py-1 rounded-full hover:bg-indigo-50 transition-colors btn-bounce">Crypto Payment</button>
+                        <button onclick="advUseChip('Gift card promotional banner — bright modern colors, special offer, Buy Gift Card CTA')" class="text-[11px] font-semibold bg-white border border-indigo-100 text-indigo-600 px-3 py-1 rounded-full hover:bg-indigo-50 transition-colors btn-bounce">Gift Card</button>
+                        <button onclick="advUseChip('Grand opening banner — festive modern style, bold headline, limited-time offer, Learn More CTA')" class="text-[11px] font-semibold bg-white border border-indigo-100 text-indigo-600 px-3 py-1 rounded-full hover:bg-indigo-50 transition-colors btn-bounce">Grand Opening</button>
+                        <button onclick="advUseChip('Neon dark mode banner — near-black bg, vivid neon pink & cyan glow, futuristic typography, Get Started CTA')" class="text-[11px] font-semibold bg-white border border-indigo-100 text-indigo-600 px-3 py-1 rounded-full hover:bg-indigo-50 transition-colors btn-bounce">Neon Dark</button>
+                        <button onclick="advUseChip('Minimalist banner — generous white space, single accent color, clean sans-serif, Discover More CTA')" class="text-[11px] font-semibold bg-white border border-indigo-100 text-indigo-600 px-3 py-1 rounded-full hover:bg-indigo-50 transition-colors btn-bounce">Minimalist</button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Dynamic messages rendered by JS -->
+
+                </div><!-- /adv-chat-messages -->
+
+                <!-- Attachment preview strip -->
+                <div id="adv-attach-strip" class="hidden px-4 pt-2 pb-1 border-t border-slate-50 bg-white">
+                  <div id="adv-attach-thumbs" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <!-- Input bar -->
+                <div class="border-t border-slate-100 p-3 bg-white shrink-0">
+                  <div class="flex items-end gap-2 bg-slate-50 rounded-2xl border border-slate-200 px-3 py-2 focus-within:border-indigo-400 focus-within:bg-white focus-within:shadow-input-glow transition-all duration-300">
+                    <button onclick="triggerAdvAttach()" title="Đính kèm ảnh tham chiếu"
+                      class="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 shrink-0 transition-all btn-bounce">
+                      <i data-lucide="image-plus" class="w-5 h-5"></i>
+                    </button>
+                    <input type="file" id="adv-attach-input" class="hidden" accept="image/*" multiple onchange="handleAdvAttach(event)">
+                    <textarea id="adv-prompt-textarea" rows="1"
+                      placeholder="Mô tả banner bạn muốn tạo… (Shift+Enter để xuống dòng)"
+                      class="flex-1 bg-transparent text-sm text-slate-800 resize-none focus:outline-none py-1 max-h-36 overflow-y-auto leading-relaxed"
+                      oninput="autoResizeAdvTextarea(this)"
+                      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAdvMessage();}"></textarea>
+                    <button onclick="sendAdvMessage()" id="adv-send-btn" title="Gửi (Enter)"
+                      class="p-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shrink-0 transition-all btn-bounce">
+                      <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                  <p class="text-[11px] text-slate-400 mt-1.5 text-center">
+                    <kbd class="bg-slate-100 px-1 py-0.5 rounded text-[10px] text-slate-500 font-mono">Enter</kbd> để gửi ·
+                    <kbd class="bg-slate-100 px-1 py-0.5 rounded text-[10px] text-slate-500 font-mono">Shift+Enter</kbd> xuống dòng
+                  </p>
+                </div>
+
+              </div><!-- /chat column -->
+
+              <!-- ── Right Sidebar ── -->
+              <div class="w-72 shrink-0 flex flex-col gap-5 overflow-y-auto">
+
+                <!-- Token card -->
+                <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-premium space-y-3 hover:shadow-card-hover transition-all duration-300">
+                  <h3 class="text-xs font-bold text-slate-900 border-b border-slate-50 pb-2.5">Token & Gói hiện tại</h3>
+                  <div class="space-y-3 text-xs font-medium text-slate-600">
+                    <div class="flex justify-between">
+                      <span>Gói hiện tại:</span>
+                      <span class="font-bold text-slate-900" id="adv-current-plan">Premium</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span>Token khả dụng:</span>
+                      <span class="font-bold text-indigo-600" id="adv-current-tokens">420 Tokens</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span>Chi phí sử dụng:</span>
+                      <span class="font-bold text-amber-600" id="adv-last-cost">—</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Banner result card (visible only after user selects a banner) -->
+                <div id="adv-banner-result-panel" class="hidden bg-white rounded-3xl p-5 border border-indigo-100 shadow-premium space-y-3 hover:shadow-card-hover transition-all duration-300">
+                  <h3 class="text-xs font-bold text-slate-900 border-b border-slate-50 pb-2.5 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-indigo-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                    Banner đã chọn
+                  </h3>
+                  <div class="aspect-[16/7] rounded-xl overflow-hidden border border-slate-200 bg-slate-100 relative">
+                    <img id="adv-banner-preview-img" src="" alt="Banner" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 ring-2 ring-indigo-500 ring-inset rounded-xl pointer-events-none"></div>
+                  </div>
+                  <p class="text-[11px] text-slate-400 text-center">Click <strong class="text-indigo-600">Dùng banner này</strong> trên tin nhắn khác để đổi lựa chọn</p>
+                </div>
+
+                <!-- Submission panel -->
+                <div id="adv-submission-panel" class="bg-white rounded-3xl p-5 border border-slate-100 shadow-premium space-y-5 opacity-60 pointer-events-none transition-all duration-300">
+                  <div class="flex items-center justify-between border-b border-slate-50 pb-2.5">
+                    <h3 class="text-xs font-bold text-slate-900">Chi tiết quảng cáo</h3>
+                    <span class="text-[10px] text-amber-500 font-bold uppercase tracking-wider" id="adv-lock-label">Bị khoá</span>
+                  </div>
+                  <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-700">Tên Banner *</label>
+                    <input type="text" id="adv-name-input" placeholder="Ví dụ: Banner AI tháng 6"
+                      class="w-full bg-slate-50 text-slate-800 text-xs px-3 py-2.5 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+                  </div>
+                  <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-700 flex justify-between">
+                      <span>Target URL</span><span class="text-slate-400 font-normal">Tùy chọn</span>
+                    </label>
+                    <input type="url" id="adv-target-url" placeholder="https://example.com"
+                      class="w-full bg-slate-50 text-slate-800 text-xs px-3 py-2.5 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+                  </div>
+                  <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-700 flex justify-between">
+                      <span>Lịch trình</span><span class="text-slate-400 font-normal">Tùy chọn</span>
+                    </label>
+                    <div class="grid grid-cols-2 gap-2">
+                      <div>
+                        <span class="text-[10px] text-slate-400 font-semibold block mb-1">Bắt đầu</span>
+                        <input type="date" id="adv-start-date"
+                          class="w-full bg-slate-50 text-slate-800 text-xs p-2 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+                      </div>
+                      <div>
+                        <span class="text-[10px] text-slate-400 font-semibold block mb-1">Kết thúc</span>
+                        <input type="date" id="adv-end-date"
+                          class="w-full bg-slate-50 text-slate-800 text-xs p-2 rounded-xl border border-slate-200/60 focus:outline-none focus:border-indigo-500 focus:bg-white focus:shadow-input-glow transition-all duration-300">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-2 pt-1 border-t border-slate-100">
+                    <button onclick="advSaveDraft()"
+                      class="w-full py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold text-xs transition-colors btn-bounce">Lưu nháp</button>
+                    <button onclick="advSubmitForReview()"
+                      class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 hover:shadow-btn-indigo-glow text-white font-bold text-xs transition-all btn-bounce">Gửi duyệt kiểm tra</button>
+                  </div>
+                </div>
+
+              </div><!-- /sidebar -->
+
+            </div><!-- /flex row -->
+
+            <!-- ── Generated Images History (below chat) ── -->
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-premium p-5 space-y-4">
+              <div class="flex items-center justify-between">
+                <h4 class="text-xs font-bold text-slate-900 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
+                  Hình đã tạo bằng AI
+                </h4>
+                <span class="text-[11px] text-slate-400 font-medium">Mới nhất → Cũ nhất · Tất cả các phiên chat</span>
+              </div>
+
+              <!-- Empty state -->
+              <div id="adv-history-empty" class="flex flex-col items-center justify-center py-6 text-center">
+                <div class="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center mb-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                </div>
+                <p class="text-xs text-slate-400 font-medium">Chưa có hình nào được tạo.</p>
+                <p class="text-[11px] text-slate-300 mt-1">Gửi mô tả để AI bắt đầu thiết kế.</p>
+              </div>
+
+              <!-- Image grid (newest first) -->
+              <div id="adv-history-grid" class="hidden grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+
+          </div><!-- /ai-mode-advanced -->
+
         </section>
 
         <!-- ================= MÀN HÌNH BONUS: TRANSACTION HISTORY ================= -->
@@ -2303,6 +2494,8 @@
 
     function goToCreateWithAI() {
       switchScreen('create-ai');
+      // Always open in Quick mode
+      switchAIMode('quick');
       // Trả về trạng thái ban đầu (State 1)
       document.getElementById('ai-generator-before').classList.remove('hidden');
       document.getElementById('ai-generator-loading').classList.add('hidden');
@@ -2679,9 +2872,15 @@
       // Hiển thị Watermark "Đã chọn" ngay trên ảnh Preview
       const badge = document.getElementById('ai-selected-badge');
       badge.classList.remove('hidden');
-      setTimeout(() => {
-        badge.classList.remove('opacity-0');
-      }, 50);
+      setTimeout(() => { badge.classList.remove('opacity-0'); }, 50);
+
+      // Đổi header card → "Banner đã chọn"
+      const dot = document.getElementById('quick-result-dot');
+      const ht  = document.getElementById('quick-result-header-text');
+      const rdBadge = document.getElementById('quick-result-badge');
+      if (dot) { dot.classList.remove('animate-pulse', 'bg-emerald-500'); dot.classList.add('bg-indigo-600'); }
+      if (ht)  ht.textContent = 'Banner đã chọn';
+      if (rdBadge) { rdBadge.textContent = 'Đã chọn'; rdBadge.className = 'text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded'; }
 
       // Thay đổi giao diện nút Đã chọn thành công
       document.getElementById('btn-use-this-banner').className = "flex-1 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 hover:shadow-md text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 btn-bounce";
@@ -2696,6 +2895,14 @@
       }
       
       // Quay lại màn hình chờ để tạo lại mẫu khác
+      // Reset result card header back to pre-selection state
+      const dot2 = document.getElementById('quick-result-dot');
+      const ht2  = document.getElementById('quick-result-header-text');
+      const rb2  = document.getElementById('quick-result-badge');
+      if (dot2) { dot2.classList.add('animate-pulse','bg-emerald-500'); dot2.classList.remove('bg-indigo-600'); }
+      if (ht2)  ht2.textContent = 'Kết quả tối ưu nhất tự động sinh ra';
+      if (rb2)  { rb2.textContent = 'Khuyên dùng sử dụng'; rb2.className = 'text-[10px] font-bold text-slate-400 bg-slate-50 border px-2 py-0.5 rounded'; }
+
       document.getElementById('ai-generator-after').classList.add('hidden');
       document.getElementById('ai-generator-loading').classList.remove('hidden');
       document.getElementById('ai-loading-progress').style.width = "0%";
@@ -2771,6 +2978,305 @@
 
       dbBanners.unshift(newBanner);
       showToast("Đã đệ trình nộp mẫu thiết kế AI duyệt thành công!");
+      switchScreen('manage');
+    }
+
+    /* ================================================================
+       ADVANCED MODE — Chat-style AI Banner
+    ================================================================ */
+    let advAttachedImages = [];       // [{file, url}]
+    let advCurrentBannerUrl = '';
+    let advBannerSelected = false;
+    let advCurrentAIMode = 'quick';
+    let advGeneratedHistory = [];     // all generated banner URLs, newest first
+
+    const advBannerPool = [
+      'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=900&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=900&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=900&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=900&auto=format&fit=crop&q=80',
+    ];
+
+    function switchAIMode(mode) {
+      advCurrentAIMode = mode;
+      const tabQuick = document.getElementById('mode-tab-quick');
+      const tabAdv   = document.getElementById('mode-tab-advanced');
+      const paneQuick = document.getElementById('ai-mode-quick');
+      const paneAdv   = document.getElementById('ai-mode-advanced');
+
+      const activeClass = ['bg-white', 'text-slate-900', 'shadow-sm'];
+      const inactiveClass = ['text-slate-500', 'hover:text-slate-700'];
+
+      if (mode === 'quick') {
+        tabQuick.classList.add(...activeClass);
+        tabQuick.classList.remove(...inactiveClass);
+        tabAdv.classList.remove(...activeClass);
+        tabAdv.classList.add(...inactiveClass);
+        paneQuick.classList.remove('hidden');
+        paneAdv.classList.add('hidden');
+      } else {
+        tabAdv.classList.add(...activeClass);
+        tabAdv.classList.remove(...inactiveClass);
+        tabQuick.classList.remove(...activeClass);
+        tabQuick.classList.add(...inactiveClass);
+        paneAdv.classList.remove('hidden');
+        paneQuick.classList.add('hidden');
+        // Sync token display
+        document.getElementById('adv-current-plan').textContent = currentActivePlan;
+        document.getElementById('adv-current-tokens').textContent = currentTokens + ' Tokens';
+        lucide.createIcons();
+      }
+    }
+
+    function advUseChip(text) {
+      const ta = document.getElementById('adv-prompt-textarea');
+      ta.value = text;
+      autoResizeAdvTextarea(ta);
+      ta.focus();
+    }
+
+    function autoResizeAdvTextarea(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 144) + 'px';
+    }
+
+    function triggerAdvAttach() {
+      document.getElementById('adv-attach-input').click();
+    }
+
+    function handleAdvAttach(event) {
+      const files = Array.from(event.target.files);
+      files.forEach(file => {
+        const url = URL.createObjectURL(file);
+        advAttachedImages.push({ file, url });
+      });
+      event.target.value = '';
+      renderAdvAttachStrip();
+    }
+
+    function renderAdvAttachStrip() {
+      const strip = document.getElementById('adv-attach-strip');
+      const thumbsEl = document.getElementById('adv-attach-thumbs');
+      if (!advAttachedImages.length) {
+        strip.classList.add('hidden');
+        return;
+      }
+      strip.classList.remove('hidden');
+      thumbsEl.innerHTML = advAttachedImages.map((img, i) => `
+        <div class="relative group">
+          <img src="${img.url}" alt="" class="w-14 h-14 object-cover rounded-xl border border-slate-200">
+          <button onclick="removeAdvAttach(${i})" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function removeAdvAttach(index) {
+      URL.revokeObjectURL(advAttachedImages[index].url);
+      advAttachedImages.splice(index, 1);
+      renderAdvAttachStrip();
+    }
+
+    function sendAdvMessage() {
+      const ta = document.getElementById('adv-prompt-textarea');
+      const text = ta.value.trim();
+      if (!text && !advAttachedImages.length) return;
+
+      const messagesEl = document.getElementById('adv-chat-messages');
+
+      // --- Render user bubble ---
+      const imagesHTML = advAttachedImages.map(img =>
+        `<img src="${img.url}" alt="" class="w-24 h-16 object-cover rounded-xl border border-slate-200">`
+      ).join('');
+
+      const userBubble = document.createElement('div');
+      userBubble.className = 'flex justify-end items-end gap-3';
+      userBubble.innerHTML = `
+        <div class="max-w-xl space-y-2">
+          ${imagesHTML ? `<div class="flex flex-wrap gap-2 justify-end">${imagesHTML}</div>` : ''}
+          ${text ? `<div class="bg-indigo-600 text-white rounded-2xl rounded-br-sm px-4 py-3 text-sm leading-relaxed shadow-md shadow-indigo-200 ml-8">${text.replace(/\n/g, '<br>')}</div>` : ''}
+        </div>
+        <div class="w-8 h-8 rounded-xl bg-indigo-100 flex items-center justify-center shrink-0 font-bold text-indigo-700 text-xs shadow-inner">
+          JM
+        </div>
+      `;
+      messagesEl.appendChild(userBubble);
+
+      // Clear inputs
+      const capturedPrompt = text;
+      ta.value = '';
+      autoResizeAdvTextarea(ta);
+      const capturedImages = [...advAttachedImages];
+      advAttachedImages = [];
+      renderAdvAttachStrip();
+
+      // Scroll to bottom
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      // --- Render AI "thinking" bubble ---
+      const thinkingBubble = document.createElement('div');
+      thinkingBubble.className = 'flex items-start gap-3';
+      thinkingBubble.id = 'adv-thinking-bubble';
+      thinkingBubble.innerHTML = `
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center shrink-0 shadow-md shadow-indigo-200">
+          <svg class="w-4 h-4 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>
+        </div>
+        <div class="bg-slate-50 border border-slate-100 rounded-2xl rounded-tl-sm p-4 shadow-sm">
+          <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-bounce" style="animation-delay:0ms"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-bounce" style="animation-delay:150ms"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-bounce" style="animation-delay:300ms"></span>
+            <span class="ml-1">AI đang tạo banner…</span>
+          </div>
+        </div>
+      `;
+      messagesEl.appendChild(thinkingBubble);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      // Deduct tokens
+      const cost = 30;
+      currentTokens = Math.max(0, currentTokens - cost);
+      document.getElementById('adv-current-tokens').textContent = currentTokens + ' Tokens';
+      document.getElementById('adv-last-cost').textContent = '−' + cost + ' Tokens';
+      // Sync quick-mode token displays
+      const tkEls = ['hub-token-val','ai-current-tokens','ai-current-tokens-2','sidebar-token-count'];
+      tkEls.forEach(id => { const el = document.getElementById(id); if (el) el.textContent = currentTokens; });
+
+      // --- Simulate AI response after delay ---
+      setTimeout(() => {
+        const resultUrl = advBannerPool[Math.floor(Math.random() * advBannerPool.length)];
+        advCurrentBannerUrl = resultUrl;
+        advBannerSelected = false;
+
+        // Remove thinking bubble
+        const thinking = document.getElementById('adv-thinking-bubble');
+        if (thinking) thinking.remove();
+
+        // Render AI response bubble
+        const aiBubble = document.createElement('div');
+        aiBubble.className = 'flex items-start gap-3';
+        aiBubble.innerHTML = `
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center shrink-0 shadow-md shadow-indigo-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+          </div>
+          <div class="max-w-xl space-y-3">
+            <div class="bg-slate-50 border border-slate-100 rounded-2xl rounded-tl-sm p-4 shadow-sm">
+              <p class="text-sm text-slate-700 leading-relaxed">Tôi đã tạo banner theo mô tả của bạn. Hãy xem kết quả bên dưới — nếu bạn muốn điều chỉnh, cứ tiếp tục mô tả thêm!</p>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 shadow-sm">
+              <img src="${resultUrl}" alt="AI Generated Banner" class="w-full object-cover" style="max-height:200px;object-fit:cover;">
+            </div>
+            <div class="flex gap-2">
+              <button onclick="advUseThisBanner('${resultUrl}')" class="flex-1 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition-all hover:shadow-btn-indigo-glow btn-bounce flex items-center justify-center gap-1.5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                Dùng banner này
+              </button>
+            </div>
+          </div>
+        `;
+        messagesEl.appendChild(aiBubble);
+
+        // Panel only appears when user explicitly selects a banner
+
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+
+        // Add to history (newest first)
+        advGeneratedHistory.unshift(resultUrl);
+        renderAdvHistory();
+      }, 2800);
+    }
+
+    function advUseThisBanner(url) {
+      if (!url && !advCurrentBannerUrl) return;
+      if (url) advCurrentBannerUrl = url;
+      advBannerSelected = true;
+
+      // Show panel with the selected banner
+      document.getElementById('adv-banner-preview-img').src = advCurrentBannerUrl;
+      document.getElementById('adv-banner-result-panel').classList.remove('hidden');
+
+      // Unlock submission panel
+      const panel = document.getElementById('adv-submission-panel');
+      panel.classList.remove('opacity-60', 'pointer-events-none');
+      document.getElementById('adv-lock-label').textContent = 'Đã mở khoá';
+      document.getElementById('adv-lock-label').className = 'text-[10px] text-emerald-500 font-bold uppercase tracking-wider';
+
+      renderAdvHistory();
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      showToast('Banner đã được chọn! Điền thông tin bên cạnh rồi gửi duyệt.');
+    }
+
+    function renderAdvHistory() {
+      const grid  = document.getElementById('adv-history-grid');
+      const empty = document.getElementById('adv-history-empty');
+      if (!grid || !empty) return;
+
+      if (!advGeneratedHistory.length) {
+        grid.classList.add('hidden');
+        empty.classList.remove('hidden');
+        return;
+      }
+
+      empty.classList.add('hidden');
+      grid.classList.remove('hidden');
+
+      grid.innerHTML = advGeneratedHistory.map((url, i) => {
+        const num = advGeneratedHistory.length - i; // #N from newest
+        const isSelected = url === advCurrentBannerUrl && advBannerSelected;
+        return `
+          <div onclick="advUseThisBanner('${url}')"
+            class="group cursor-pointer space-y-1.5 ${isSelected ? 'ring-2 ring-indigo-500 rounded-2xl' : ''}">
+            <div class="aspect-[16/7] rounded-xl overflow-hidden border ${isSelected ? 'border-indigo-400' : 'border-slate-200 group-hover:border-indigo-400'} transition-all duration-200 relative bg-slate-100">
+              <img src="${url}" alt="Banner #${num}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              ${isSelected ? '<div class="absolute inset-0 bg-indigo-600/10 flex items-end justify-end p-1.5"><span class="text-[9px] font-bold bg-indigo-600 text-white px-1.5 py-0.5 rounded-full">Đang chọn</span></div>' : ''}
+            </div>
+            <p class="text-[10px] text-slate-400 font-medium text-center">Banner #${num}</p>
+          </div>`;
+      }).join('');
+    }
+
+    function advSaveDraft() {
+      if (!advCurrentBannerUrl) { showToast('Chưa có banner nào được tạo!', 'error'); return; }
+      const name = document.getElementById('adv-name-input').value.trim();
+      if (!name) { showToast('Vui lòng nhập tên Banner!', 'error'); return; }
+      const newBanner = {
+        id: 'banner-' + Date.now(),
+        name,
+        imageUrl: advCurrentBannerUrl,
+        source: 'ai_generated',
+        targetUrl: document.getElementById('adv-target-url').value || undefined,
+        startDate: document.getElementById('adv-start-date').value || undefined,
+        endDate: document.getElementById('adv-end-date').value || undefined,
+        status: 'draft',
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+      dbBanners.unshift(newBanner);
+      showToast('Đã lưu bản nháp Banner AI (Advanced)!');
+    }
+
+    function advSubmitForReview() {
+      if (!advBannerSelected) { showToast('Vui lòng chọn banner trước khi gửi duyệt!', 'error'); return; }
+      const name = document.getElementById('adv-name-input').value.trim();
+      const targetUrl = document.getElementById('adv-target-url').value.trim();
+      const startDate = document.getElementById('adv-start-date').value;
+      const endDate = document.getElementById('adv-end-date').value;
+      const isValid = validateSubmission(name, targetUrl, startDate, endDate, !!advCurrentBannerUrl);
+      if (!isValid) return;
+      const newBanner = {
+        id: 'banner-' + Date.now(),
+        name,
+        imageUrl: advCurrentBannerUrl,
+        source: 'ai_generated',
+        targetUrl: targetUrl || undefined,
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
+        status: 'pending_review',
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+      dbBanners.unshift(newBanner);
+      showToast('Đã gửi duyệt banner AI (Advanced) thành công!');
       switchScreen('manage');
     }
   </script>

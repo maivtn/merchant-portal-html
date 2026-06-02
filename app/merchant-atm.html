@@ -2356,6 +2356,9 @@
       if (state.currentScreen === 'qr_screen') {
         renderQrScreen();
       }
+
+      // Đồng bộ toàn bộ dashboard (ẩn/hiện pending requests, v.v.)
+      updateDashboardUI();
     }
 
     // CHUYỂN ĐỔI CHẾ ĐỘ SÁNG / TỐI TOÀN CỤC (LIGHT / DARK THEME)
@@ -2546,9 +2549,9 @@
       // Áp dụng ẩn/hiện theo data-role
       applyRoleVisibility(getCurrentRole());
 
-      // 1. Thẻ Pending Requests — conditional: cần license active VÀ có request
+      // 1. Thẻ Pending Requests — conditional: cần license active VÀ có request VÀ ATM đang bật
       const pendingReqCard = document.getElementById('pending-requests-card');
-      if (isActive && state.hasPendingRequest) {
+      if (isActive && state.hasPendingRequest && state.atmOnline) {
         pendingReqCard.classList.remove('hidden');
       } else {
         pendingReqCard.classList.add('hidden');

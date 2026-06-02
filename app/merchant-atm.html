@@ -961,7 +961,7 @@
       background: linear-gradient(135deg, rgba(217,119,6,0.11) 0%, rgba(6,10,22,0.55) 100%) !important;
       border: 1px solid rgba(217,119,6,0.22) !important;
       border-radius: 16px !important;
-      padding: 10px 14px !important;
+      padding: 4px 8px !important;
       backdrop-filter: blur(16px) saturate(160%) !important;
       -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
       box-shadow: 0 2px 18px rgba(217,119,6,0.10), inset 0 1px 0 rgba(255,255,255,0.07) !important;
@@ -1154,7 +1154,7 @@
       background: linear-gradient(135deg, rgba(251,191,36,0.09) 0%, rgba(255,255,255,0.95) 100%) !important;
       border: 1px solid rgba(217,119,6,0.16) !important;
       border-radius: 16px !important;
-      padding: 10px 14px !important;
+      padding: 4px 8px !important;
       box-shadow: 0 2px 12px rgba(217,119,6,0.08) !important;
     }
 
@@ -1446,8 +1446,6 @@
 
           <!-- PENDING REQUESTS + PROCESSING TX ROW -->
           <div id="pending-area-wrapper" class="flex gap-2">
-
-            <!-- PENDING REQUESTS ALERT CARD (Chỉ hiển thị khi có yêu cầu và có Giấy phép hoạt động) -->
             <div id="pending-requests-card"
               class="flex-1 bg-orange-500/10 rounded-xl px-2 py-1.5 flex items-center justify-between hidden">
               <div class="flex items-center gap-2">
@@ -1486,28 +1484,7 @@
 
           </div>
 
-          <!-- BANNER GIA HẠN GIẤY PHÉP (DASH-11.1) -->
-          <div id="renew-license-card" class="bg-rose-500/10 rounded-xl p-3.5 hidden space-y-2.5">
-            <div class="flex items-start gap-2.5">
-              <div class="w-8 h-8 bg-rose-500/20 text-rose-400 rounded-lg flex items-center justify-center shrink-0">
-                <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
-              </div>
-              <div>
-                <h4 class="text-xs font-bold text-white">Gia hạn Giấy phép Nhượng quyền</h4>
-                <p class="text-[10px] text-slate-300 mt-0.5 leading-normal">Công cụ ATM của bạn đang bị khóa tạm thời
-                  cho đến khi Giấy phép hoạt động trở lại.</p>
-              </div>
-            </div>
-            <div class="flex gap-2">
-              <button onclick="openPurchaseModal()"
-                class="flex-1 py-1 bg-rose-500 hover:bg-rose-600 text-white rounded-lg text-[11px] font-semibold text-center transition">Gia
-                hạn ngay</button>
-              <button onclick="changeScreen('license_management')"
-                class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-755 text-slate-300 rounded-lg text-[11px] font-semibold text-center transition">Chi
-                tiết</button>
-            </div>
-          </div>
-
+         
           <!-- TRẠNG THÁI HOẠT ĐỘNG (ON / OFF - Không viền, phẳng) -->
           <div id="operational-status-panel" data-role="mobile_atm merchant_atm combo_atm" data-show-as="grid"
             style="display:none;grid-auto-flow:column;grid-auto-columns:1fr;gap:0.625rem;">
@@ -1588,7 +1565,7 @@
 
 
           <!-- PRIMARY P2P ACTION CARDS (DASH-12.1.1 - Nâng cấp nền xanh dương cho phím Bán & Đồng bộ danh xưng Crypto P2P) -->
-          <div id="p2p-primary-cards" class="grid grid-cols-2 gap-2.5" data-role="no_package">
+          <div id="p2p-primary-cards" class="grid grid-cols-2 gap-2.5 !mt-0" data-role="no_package">
             <button
               class="bg-orange-500 hover:bg-orange-600 rounded-xl px-3 py-2 text-left shadow-lg relative overflow-hidden transition transform active:scale-95">
               <div class="flex items-center justify-between gap-2">
@@ -2622,6 +2599,11 @@
         </div>
       </div>
 
+      <!-- ================= MÀN HÌNH: HOME DASHBOARD ================= -->
+      <div id="screen-home-dashboard" class="absolute inset-0 z-40 hidden flex flex-col">
+        <iframe id="iframe-home-dashboard" src="home-dashboard.html" class="flex-1 w-full border-0" style="min-height:0;"></iframe>
+      </div>
+
       <!-- ================= MÀN HÌNH 8: HISTORY ================= -->
       <div id="screen-history" class="absolute inset-0 bg-white z-40 hidden flex flex-col">
         <!-- Header -->
@@ -2960,6 +2942,7 @@
       atmOnline: true,               // Trạng thái bật/tắt hoạt động của ATM (DASH-030)
       balanceVisible: true,          // Ẩn/hiện tổng tài sản (DASH-075)
       currentScreen: 'dashboard',    // Router hiện tại: 'dashboard', 'scanner', 'qr', 'license_management', 'wallet_details', 'p2p_flow'
+      navActive: 'home',             // 'home' | 'dashboard' | 'exchange' | 'wallet'
       selectedQrType: 'mobile',      // 'mobile' | 'merchant'
       activeFranchiseTab: 'nft',     // Tab quản lý NFT hoạt động: 'nft', 'inv', 'get', 'hist', 'deleg'
       hasPendingRequest: true,       // Giả lập trạng thái yêu cầu đang chờ xử lý
@@ -2967,13 +2950,14 @@
       txDetail: { role: 'taker', status: 'pending' },
       theme: 'light',                // 'dark' | 'light' (Cập nhật lưu trữ Theme mặc định)
       transactions: [
-        { id: 'TX-4403', type: 'Buy USDV with Cash', counterparty: 'Seller AD266759', amount: '$200', status: 'Processing', time: 'Aug 18, 2025, 5:00 PM' },
-        { id: 'TX-4402', type: 'Buy USDV with Cash', counterparty: 'Seller AD266759', amount: '$100', status: 'Declined', time: 'Aug 18, 2025, 4:11 PM' },
-        { id: 'TX-4401', type: 'Buy USDV with Cash', counterparty: 'Seller AD266759', amount: '$100', status: 'Completed', time: 'Aug 18, 2025, 4:00 PM' },
-        { id: 'TX-4400', type: 'Buy USDV with Cash', counterparty: 'Seller AD266759', amount: '$100', status: 'Completed', time: 'Aug 18, 2025, 3:55 PM' },
-        { id: 'TX-4399', type: 'Buy USDV with Cash', counterparty: 'Seller AD266759', amount: '$100', status: 'Completed', time: 'Aug 18, 2025, 3:50 PM' },
-        { id: 'TX-4398', type: 'Buy USDV with Cash', counterparty: 'Seller AD266759', amount: '$100', status: 'Completed', time: 'Aug 18, 2025, 2:56 PM' },
-        { id: 'TX-4397', type: 'Buy USDV with Cash', counterparty: 'Seller AD266759', amount: '$100', status: 'Cancelled', time: 'Aug 18, 2025, 2:27 PM' }
+        { id: 'TX-4404', type: 'Sell USDV for Cash',  counterparty: 'Buyer  BK391047',  amount: '$150', status: 'Completed',  time: 'Aug 18, 2025, 5:30 PM' },
+        { id: 'TX-4403', type: 'Buy USDV with Cash',  counterparty: 'Seller AD266759', amount: '$200', status: 'Processing', time: 'Aug 18, 2025, 5:00 PM' },
+        { id: 'TX-4402', type: 'Buy USDV with Cash',  counterparty: 'Seller AD266759', amount: '$100', status: 'Declined',   time: 'Aug 18, 2025, 4:11 PM' },
+        { id: 'TX-4401', type: 'Buy USDV with Cash',  counterparty: 'Seller AD266759', amount: '$100', status: 'Completed',  time: 'Aug 18, 2025, 4:00 PM' },
+        { id: 'TX-4400', type: 'Sell USDV for Cash',  counterparty: 'Buyer  MK004512',  amount: '$80',  status: 'Cancelled',  time: 'Aug 18, 2025, 3:55 PM' },
+        { id: 'TX-4399', type: 'Buy USDV with Cash',  counterparty: 'Seller AD266759', amount: '$100', status: 'Completed',  time: 'Aug 18, 2025, 3:50 PM' },
+        { id: 'TX-4398', type: 'Buy USDV with Cash',  counterparty: 'Seller AD266759', amount: '$100', status: 'Completed',  time: 'Aug 18, 2025, 2:56 PM' },
+        { id: 'TX-4397', type: 'Buy USDV with Cash',  counterparty: 'Seller AD266759', amount: '$100', status: 'Cancelled',  time: 'Aug 18, 2025, 2:27 PM' }
       ]
     };
 
@@ -3040,7 +3024,8 @@
       document.getElementById('select-account-type').value = state.accountType;
       toggleAtmOnline(state.atmOnline);
 
-      // Reset màn hình về dashboard trang chủ
+      // Reset nav và màn hình về trạng thái mặc định
+      state.navActive = 'home';
       changeScreen('dashboard');
     }
 
@@ -3607,7 +3592,8 @@
       // Ẩn tất cả màn hình, xoá animation cũ
       const _overlayIds = ['screen-scanner', 'screen-qr', 'screen-license-mgmt',
         'screen-wallet-details', 'screen-p2p-flow', 'screen-get-license',
-        'screen-map', 'screen-history', 'screen-atm-qr', 'screen-tx-detail'];
+        'screen-map', 'screen-history', 'screen-atm-qr', 'screen-tx-detail',
+        'screen-home-dashboard'];
       document.getElementById('screen-home').classList.add('hidden');
       _overlayIds.forEach(id => {
         const el = document.getElementById(id);
@@ -3644,7 +3630,8 @@
         switchFranchiseTab(state.activeFranchiseTab);
       } else if (screenName === 'wallet_details') {
         showOverlay('screen-wallet-details');
-        document.getElementById('details-wallet-balance').innerText = state.balanceVisible ? "$7,207.92" : "$••••••";
+        const _walBal = document.getElementById('details-wallet-balance');
+        if (_walBal) _walBal.innerText = state.balanceVisible ? "$7,207.92" : "$••••••";
       } else if (screenName === 'p2p_buy_flow') {
         state.p2pFlowMode = 'buy';
         showOverlay('screen-p2p-flow');
@@ -3692,6 +3679,8 @@
       } else if (screenName === 'tx_detail') {
         showOverlay('screen-tx-detail');
         renderTxDetailScreen();
+      } else if (screenName === 'home_dashboard') {
+        showOverlay('screen-home-dashboard');
       }
 
       // Cập nhật lại Bottom Navigation đồng bộ theo Router
@@ -3757,12 +3746,12 @@
       }
 
       // 2. Banner Gia hạn Giấy phép (DASH-11.1)
-      const renewCard = document.getElementById('renew-license-card');
-      if (isExpired) {
-        renewCard.classList.remove('hidden');
-      } else {
-        renewCard.classList.add('hidden');
-      }
+      // const renewCard = document.getElementById('renew-license-card');
+      // if (isExpired) {
+      //   renewCard.classList.remove('hidden');
+      // } else {
+      //   renewCard.classList.add('hidden');
+      // }
 
       // 3. Giao dịch cá nhân đang tiến hành — conditional: chỉ no_package + có activeTx
       const inProgressCard = document.getElementById('in-progress-card');
@@ -3857,70 +3846,58 @@
     }
 
     // RENDER THANH ĐIỀU HƯỚNG DƯỚI ĐỘNG (DASH-26)
+    // ─── Bottom nav action handlers ──────────────────────────────────────────
+    function navGoHome()     { state.navActive = 'home';      changeScreen('dashboard'); }
+    function navGoDashboard(){ state.navActive = 'dashboard'; changeScreen('home_dashboard'); }
+    function navGoExchange() { state.navActive = 'exchange';  openExchangeHubMenu(); renderBottomNav(); }
+    function navGoWallet()   { state.navActive = 'wallet';    changeScreen('wallet_details'); }
+    function navGoMenu()     { openHamburgerMenu(); }
+    function navGoScan()     { changeScreen('scanner'); }
+
     function renderBottomNav() {
-      const navContainer = document.getElementById('bottom-nav-bar');
-      navContainer.innerHTML = '';
+      const nav = document.getElementById('bottom-nav-bar');
+      if (!nav) return;
 
-      const isNone = state.licenseStatus === 'none';
-      const screen = state.currentScreen;
-
-      // 4 item cố định — Home luôn ẩn vì mặc định đang ở trang này
-      // Bố cục: [Dashboard] [Exchange Hub] ([SCAN]) [Wallet Hub] [Menu]
-      const BASE_LEFT = [
-        { id: 'dashboard', label: 'Dashboard', icon: 'layout-dashboard', action: () => changeScreen('dashboard') },
-        { id: 'p2p_buy_flow', label: 'Exchange Hub', icon: 'globe', action: () => openExchangeHubMenu() },
-      ];
-      const BASE_RIGHT = [
-        { id: 'wallet_details', label: 'Wallet Hub', icon: 'wallet', action: () => changeScreen('wallet_details') },
-        { id: 'hamburger', label: 'Menu', icon: 'menu', action: () => openHamburgerMenu() },
-      ];
-
-      // Màn hình đang active → ẩn item tương ứng
-      const ACTIVE_MAP = {
-        dashboard: 'dashboard',
-        p2p_buy_flow: 'p2p_buy_flow',
-        p2p_sell_flow: 'p2p_buy_flow',
-        wallet_details: 'wallet_details',
-        scanner: 'scanner',
-      };
-      const activeId = ACTIVE_MAP[screen] || '';
-
-      const makeBtn = (item, active = false) => {
-        const btn = document.createElement('button');
-        btn.onclick = item.action;
-        const isActive = active || item.id === activeId;
-        btn.className = `flex-1 flex flex-col items-center justify-center transition ${isActive ? 'text-slate-400 hover:text-white' : 'text-slate-400 hover:text-white'}`;
-        btn.innerHTML = `
-          <i data-lucide="${item.icon}" class="w-4 h-4"></i>
-          <span class="text-[9px] font-medium mt-1">${item.label}</span>
-        `;
-        return btn;
+      // Bảng nút với onclick là tên hàm global
+      const BTN = {
+        home:     { label: 'Home',         icon: 'home',             fn: 'navGoHome()' },
+        dashboard:{ label: 'Dashboard',    icon: 'layout-dashboard', fn: 'navGoDashboard()' },
+        exchange: { label: 'Exchange Hub', icon: 'globe',            fn: 'navGoExchange()' },
+        wallet:   { label: 'Wallet Hub',   icon: 'wallet',           fn: 'navGoWallet()' },
+        menu:     { label: 'Menu',         icon: 'menu',             fn: 'navGoMenu()' },
       };
 
-      if (isNone) {
-        const onDashboard = screen === 'dashboard';
-        const homeSlot = onDashboard
-          ? { id: 'dashboard', label: 'Dashboard', icon: 'layout-dashboard', action: () => changeScreen('dashboard') }
-          : { id: 'home', label: 'Home', icon: 'home', action: () => changeScreen('dashboard') };
-        navContainer.appendChild(makeBtn(homeSlot, onDashboard));
-        [BASE_LEFT[1], ...BASE_RIGHT]
-          .filter(item => item.id !== activeId)
-          .forEach(item => navContainer.appendChild(makeBtn(item)));
-      } else {
-        BASE_LEFT.forEach(item => navContainer.appendChild(makeBtn(item)));
+      // Bố cục theo navActive
+      // home      → [Dashboard] [Exchange Hub] (SCAN) [Wallet Hub]  [Menu]
+      // wallet    → [Home]      [Dashboard]    (SCAN) [Exchange Hub] [Menu]
+      // exchange  → [Home]      [Dashboard]    (SCAN) [Wallet Hub]  [Menu]
+      // dashboard → [Home]      [Exchange Hub] (SCAN) [Wallet Hub]  [Menu]
+      const LAYOUTS = {
+        home:      { left: ['dashboard', 'exchange'], right: ['wallet',   'menu'] },
+        wallet:    { left: ['home',      'dashboard'], right: ['exchange', 'menu'] },
+        exchange:  { left: ['home',      'dashboard'], right: ['wallet',   'menu'] },
+        dashboard: { left: ['home',      'exchange'],  right: ['wallet',   'menu'] },
+      };
+      const layout = LAYOUTS[state.navActive] || LAYOUTS.home;
 
-        const scanActive = activeId === 'scanner';
-        const scanWrap = document.createElement('div');
-        scanWrap.className = 'flex-1 flex items-center justify-center';
-        const scanBtn = document.createElement('button');
-        scanBtn.onclick = () => changeScreen('scanner');
-        scanBtn.className = `w-12 h-12 ${scanActive ? 'bg-orange-600' : 'bg-orange-500 hover:bg-orange-600'} text-white rounded-full flex items-center justify-center shadow-lg shadow-orange-500/20 transform -translate-y-2.5 transition active:scale-95`;
-        scanBtn.innerHTML = `<i data-lucide="scan-line" class="w-5 h-5"></i>`;
-        scanWrap.appendChild(scanBtn);
-        navContainer.appendChild(scanWrap);
+      const mkBtn = (key) => {
+        const b = BTN[key];
+        return `<button onclick="${b.fn}" class="flex-1 flex flex-col items-center justify-center h-full gap-0.5 text-slate-400 hover:text-white transition active:scale-95">
+          <i data-lucide="${b.icon}" class="w-4 h-4 shrink-0"></i>
+          <span class="text-[9px] font-medium leading-none">${b.label}</span>
+        </button>`;
+      };
 
-        BASE_RIGHT.forEach(item => navContainer.appendChild(makeBtn(item)));
-      }
+      const scanActive = state.currentScreen === 'scanner';
+      const scanHtml = `<div class="flex-1 flex items-center justify-center">
+        <button onclick="navGoScan()" class="w-12 h-12 ${scanActive ? 'bg-orange-600' : 'bg-orange-500 hover:bg-orange-600'} text-white rounded-full flex items-center justify-center shadow-lg shadow-orange-500/20 -translate-y-2.5 transition active:scale-95">
+          <i data-lucide="scan-line" class="w-5 h-5"></i>
+        </button>
+      </div>`;
+
+      nav.innerHTML = layout.left.map(mkBtn).join('') + scanHtml + layout.right.map(mkBtn).join('');
+
+      lucide.createIcons();
     }
 
     // XỬ LÝ KHI BẤM VÀO CÁC NÚT HOẠT ĐỘNG TRONG VÙNG ATM (DASH-22.3)
@@ -4102,8 +4079,8 @@
     // RENDER DANH SÁCH LỊCH SỬ GIAO DỊCH GẦN ĐÂY (DASH-24.1)
     function getTxIconConfig(type) {
       const t = (type || '').toLowerCase();
-      if (t.includes('buy') && t.includes('cash'))   return { icon: 'arrow-right-left', bg: 'bg-orange-500/15', color: 'text-orange-400' };
-      if (t.includes('sell') && t.includes('cash'))  return { icon: 'arrow-right-left', bg: 'bg-blue-500/15',   color: 'text-blue-400'   };
+      if (t.includes('buy') && t.includes('cash'))   return { icon: 'arrow-down-circle', bg: 'bg-orange-500/15', color: 'text-orange-400' };
+      if (t.includes('sell') && t.includes('cash'))  return { icon: 'arrow-up-circle',   bg: 'bg-blue-500/15',   color: 'text-blue-400'   };
       if (t.includes('swap'))                        return { icon: 'repeat-2',          bg: 'bg-violet-500/15', color: 'text-violet-400' };
       if (t.includes('withdraw'))                    return { icon: 'arrow-up-right',    bg: 'bg-rose-500/15',   color: 'text-rose-400'   };
       if (t.includes('deposit'))                     return { icon: 'arrow-down-left',   bg: 'bg-emerald-500/15',color: 'text-emerald-400'};
@@ -5055,6 +5032,7 @@
       let pos = 0;     // vị trí track (0 … total, total = clone)
       let timer;
       let transitioning = false;
+      let guardTimer;  // fallback: reset transitioning nếu transitionend không fire (element hidden)
 
       function updateDots(idx) {
         dots.forEach((d, i) => {
@@ -5070,6 +5048,7 @@
 
       // Sau khi transition tới clone (pos = total), reset không animation về pos 0
       track.addEventListener('transitionend', () => {
+        clearTimeout(guardTimer);
         if (pos === total) {
           transitioning = false;
           slideTo(0, false);
@@ -5086,6 +5065,9 @@
         // Nếu đang ở slide cuối thực và muốn tiến → chuyển tới clone rồi snap về 0
         const nextPos = (pos === total - 1 && idx > current) ? total : realIdx;
         transitioning = true;
+        clearTimeout(guardTimer);
+        // Nếu element đang hidden, transitionend không fire → reset sau 600ms
+        guardTimer = setTimeout(() => { transitioning = false; }, 600);
         current = realIdx;
         updateDots(current);
         slideTo(nextPos, true);

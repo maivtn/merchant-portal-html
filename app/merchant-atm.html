@@ -771,7 +771,7 @@
           <!-- WALLET COMPACT (không khung, không icon ví) -->
           <div class="flex items-center justify-between px-0.5">
             <div class="flex items-center gap-1.5">
-              <span class="text-[11px] font-semibold text-slate-900">Tổng tài sản ví:</span>
+              <span class="text-[11px] font-semibold text-slate-400">Tổng tài sản ví:</span>
               <span id="wallet-balance"
                 class="text-[13px] font-extrabold text-amber-700 tracking-tight">$7,207.92</span>
               <button onclick="toggleBalanceVisibility()" class="text-amber-500 hover:text-amber-700 transition">
@@ -809,7 +809,7 @@
             </div>
             <button
               class="px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-[9px] font-semibold transition shadow-md shadow-orange-500/10 shrink-0">
-              Xem chi tiết
+              Chi tiết
             </button>
           </div>
 
@@ -1022,60 +1022,7 @@
             </div>
           </div> -->
 
-          <!-- HIỆU SUẤT HOẠT ĐỘNG & NHẬN CHI HỘ (HỢP NHẤT TRỰC QUAN KHÔNG CÒN TIÊU ĐỀ PHỤ - MỖI Ô 1 MÀU TRỰC QUAN & CĂN GIỮA) -->
-          <div id="summary-metrics-panel" class="hidden space-y-2" data-role="mobile_atm merchant_atm combo_atm">
-            <h4 class="text-[10px] font-bold text-slate-300 flex items-center gap-1 uppercase tracking-wider mt-4">
-              <img src="images/thongke.png" class="w-5 h-5 object-contain"> Hiệu suất hoạt động ATM
-            </h4>
-            <!-- Row 1: Thống kê Giao dịch (Mỗi ô 1 màu nền & chữ số màu căn giữa) -->
-            <div class="grid grid-cols-3 gap-2">
-              <div class="bg-blue-500/10 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5">
-                <img src="images/giaodich.png" class="w-6 h-6 object-contain shrink-0">
-                <div class="text-right">
-                  <span class="text-[7.5px] text-blue-400 font-bold uppercase leading-tight block">Giao dịch</span>
-                  <span class="text-[12px] font-black text-blue-400 block">300</span>
-                </div>
-              </div>
-              <div class="bg-emerald-500/10 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5">
-                <img src="images/thanhcong.png" class="w-6 h-6 object-contain shrink-0">
-                <div class="text-right">
-                  <span class="text-[7.5px] text-emerald-400 font-bold uppercase leading-tight block">Thành công</span>
-                  <span class="text-[12px] font-black text-emerald-400 block">248</span>
-                </div>
-              </div>
-              <div class="bg-purple-500/10 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5">
-                <img src="images/rating.png" class="w-6 h-6 object-contain shrink-0">
-                <div class="text-right">
-                  <span class="text-[7.5px] text-purple-400 font-bold uppercase leading-tight block">Đánh giá</span>
-                  <span class="text-[12px] font-black text-purple-400 block">4.9 ★</span>
-                </div>
-              </div>
-            </div>
-            <!-- Row 2: Thống kê Tài chính Nhận Hộ Chi Hộ (Mỗi ô 1 màu nền & chữ số màu căn giữa) -->
-            <div class="grid grid-cols-3 gap-2">
-              <div class="bg-sky-500/10 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5">
-                <img src="images/thuho.png" class="w-6 h-6 object-contain shrink-0">
-                <div class="text-right">
-                  <span class="text-[7.5px] text-sky-400 font-bold uppercase leading-tight block">Đã Thu Hộ</span>
-                  <span class="text-[12px] font-black text-sky-400 block">$850</span>
-                </div>
-              </div>
-              <div class="bg-rose-500/10 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5">
-                <img src="images/chiho.png" class="w-6 h-6 object-contain shrink-0">
-                <div class="text-right">
-                  <span class="text-[7.5px] text-rose-400 font-bold uppercase leading-tight block">Đã Chi Hộ</span>
-                  <span class="text-[12px] font-black text-rose-400 block">$900</span>
-                </div>
-              </div>
-              <div class="bg-amber-500/10 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5">
-                <img src="images/comission.png" class="w-6 h-6 object-contain shrink-0">
-                <div class="text-right">
-                  <span class="text-[7.5px] text-amber-400 font-bold uppercase leading-tight block">Hoa Hồng</span>
-                  <span class="text-[12px] font-black text-amber-400 block">$63.76</span>
-                </div>
-              </div>
-            </div>
-          </div>
+         
 
           <!-- Dummy element giữ kết nối với JavaScript cũ để tránh lỗi Runtime -->
           <div id="financial-summary-panel" class="hidden" data-role="mobile_atm merchant_atm combo_atm"></div>
@@ -1158,12 +1105,67 @@
           </div>
 
           <!-- BẢN ĐỒ ATM GẦN ĐÂY -->
-          <div class="mt-3 rounded-2xl overflow-hidden">
+          <div class="mt-3 overflow-hidden">
+             <h4 id="recent-requests-title"
+                class="text-[10px] font-bold text-slate-300 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                <img src="images/3d-map.png" class="w-5 h-5 object-contain">ATM Gần Đây
+              </h4>
             <img src="images/map.png" alt="Bản đồ ATM" class="w-full h-full object-cover">
           </div>
-
+ <!-- HIỆU SUẤT HOẠT ĐỘNG & NHẬN CHI HỘ (HỢP NHẤT TRỰC QUAN KHÔNG CÒN TIÊU ĐỀ PHỤ - MỖI Ô 1 MÀU TRỰC QUAN & CĂN GIỮA) -->
+          <div id="summary-metrics-panel" class="hidden space-y-2" data-role="mobile_atm merchant_atm combo_atm">
+            <h4 class="text-[10px] font-bold text-slate-300 flex items-center gap-1 uppercase tracking-wider mt-4">
+              <img src="images/thongke.png" class="w-5 h-5 object-contain"> Hiệu suất hoạt động ATM
+            </h4>
+            <div class="grid grid-cols-3 gap-2">
+              <div class="bg-blue-500/10 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5">
+                <img src="images/giaodich.png" class="w-6 h-6 object-contain shrink-0">
+                <div class="text-right">
+                  <span class="text-[7.5px] text-blue-400 font-bold uppercase leading-tight block">Giao dịch</span>
+                  <span class="text-[12px] font-black text-blue-400 block">300</span>
+                </div>
+              </div>
+              <div class="bg-emerald-500/10 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5">
+                <img src="images/thanhcong.png" class="w-6 h-6 object-contain shrink-0">
+                <div class="text-right">
+                  <span class="text-[7.5px] text-emerald-400 font-bold uppercase leading-tight block">Thành công</span>
+                  <span class="text-[12px] font-black text-emerald-400 block">248</span>
+                </div>
+              </div>
+              <div class="bg-purple-500/10 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5">
+                <img src="images/rating.png" class="w-6 h-6 object-contain shrink-0">
+                <div class="text-right">
+                  <span class="text-[7.5px] text-purple-400 font-bold uppercase leading-tight block">Đánh giá</span>
+                  <span class="text-[12px] font-black text-purple-400 block">4.9 ★</span>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-2">
+              <div class="bg-sky-500/10 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5">
+                <img src="images/thuho.png" class="w-6 h-6 object-contain shrink-0">
+                <div class="text-right">
+                  <span class="text-[7.5px] text-sky-400 font-bold uppercase leading-tight block">Đã Thu Hộ</span>
+                  <span class="text-[12px] font-black text-sky-400 block">$850</span>
+                </div>
+              </div>
+              <div class="bg-rose-500/10 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5">
+                <img src="images/chiho.png" class="w-6 h-6 object-contain shrink-0">
+                <div class="text-right">
+                  <span class="text-[7.5px] text-rose-400 font-bold uppercase leading-tight block">Đã Chi Hộ</span>
+                  <span class="text-[12px] font-black text-rose-400 block">$900</span>
+                </div>
+              </div>
+              <div class="bg-amber-500/10 rounded-lg py-1 px-2 flex items-center justify-between gap-1.5">
+                <img src="images/comission.png" class="w-6 h-6 object-contain shrink-0">
+                <div class="text-right">
+                  <span class="text-[7.5px] text-amber-400 font-bold uppercase leading-tight block">Hoa Hồng</span>
+                  <span class="text-[12px] font-black text-amber-400 block">$63.76</span>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- DANH SÁCH LỊCH SỬ GIAO DỊCH GẦN ĐÂY (DASH-24.1) -->
-          <div class="space-y-1.5 mt-3">
+          <div class="space-y-1.5 mt-5">
             <div class="flex justify-between items-center">
               <h4 id="recent-requests-title"
                 class="text-[10px] font-bold text-slate-300 font-semibold uppercase tracking-wider flex items-center gap-1.5">
@@ -2578,7 +2580,7 @@
             </div>
           </div>
           <button class="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-[9px] font-semibold transition shadow-md shadow-blue-500/10 shrink-0">
-            Xem chi tiết
+            Chi tiết
           </button>
         `;
       } else {
@@ -3591,17 +3593,19 @@
     }
 
     function openExchangeHubMenu() {
+      const hasLicense = state.licenseStatus === 'active';
+      const p2pItems = [
+        ...(hasLicense ? [{ icon: 'sliders', color: 'amber', label: 'Portal ATM Setting', action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } }] : []),
+        { icon: 'arrow-down-circle', color: 'emerald', label: 'Buy Crypto (P2P)',  action: () => { closeHamburgerMenu(); changeScreen('p2p_buy_flow'); } },
+        { icon: 'arrow-up-circle',   color: 'rose',    label: 'Sell Crypto (P2P)', action: () => { closeHamburgerMenu(); changeScreen('p2p_sell_flow'); } },
+        { icon: 'clock',             color: 'indigo',  label: 'History',           action: () => { closeHamburgerMenu(); changeScreen('history'); } },
+      ];
       openHamburgerMenu({
         title: 'Exchange Hub',
         groups: [
           {
             label: 'P2P Exchange',
-            items: [
-              { icon: 'sliders',           color: 'amber',  label: 'Portal ATM Setting', action: () => { closeHamburgerMenu(); openPortalSettingsModal(); } },
-              { icon: 'arrow-down-circle', color: 'emerald',label: 'Buy Crypto (P2P)',   action: () => { closeHamburgerMenu(); changeScreen('p2p_buy_flow'); } },
-              { icon: 'arrow-up-circle',   color: 'rose',   label: 'Sell Crypto (P2P)',  action: () => { closeHamburgerMenu(); changeScreen('p2p_sell_flow'); } },
-              { icon: 'clock',             color: 'indigo', label: 'History',            action: () => { closeHamburgerMenu(); changeScreen('history'); } },
-            ]
+            items: p2pItems,
           },
           {
             label: 'Platform Exchange',

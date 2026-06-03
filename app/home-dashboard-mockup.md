@@ -103,8 +103,8 @@
 │  │  [icon-p2p]   Trung tâm P2P Cash                        │   │
 │  │  ─────────────────────────────────────────────────────  │   │
 │  │  (không có ATM role)                                     │   │
-│  │  [BTN-PRIMARY: 💰 Mua Gift Cash]                         │   │
-│  │  [BTN-SEC:     💸 Bán Gift Cash]                         │   │
+│  │  [BTN-PRIMARY: Buy Crypto (P2P)]                         │   │
+│  │  [BTN-SEC:     Sell Crypto (P2P)]                         │   │
 │  │                                                          │   │
 │  │  (có ATM role: isMobileOrMerchantAtm = true)             │   │
 │  │  [BTN-PRIMARY: ⚙️  Cài đặt cổng ATM]                    │   │

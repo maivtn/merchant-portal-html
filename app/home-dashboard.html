@@ -89,7 +89,8 @@
     /* ─── LAYOUTS ─────────────────────────────────────── */
     .stat-actions { display: flex; gap: 8px; align-items: flex-start; }
     .actions-col  { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 0; }
-    .actions-row  { display: flex; gap: 5px; flex-wrap: wrap; }
+    .actions-row  { display: flex; gap: 5px; flex-wrap: nowrap; }
+    .stat-actions .actions-row { flex: 1; min-width: 0; }
 
     /* ─── BUTTONS ─────────────────────────────────────── */
     .btn-primary {
@@ -240,7 +241,7 @@
       function personalCards() {
         return [
           card('solar:transfer-horizontal-bold-duotone','#e06400','P2P Cash Hub','#',
-            '<div class="stat-actions"><div class="actions-col">'
+            '<div class="stat-actions"><div class="actions-row">'
             + btnP('solar:cart-bold','Buy Crypto (P2P)','#')
             + btnS('solar:tag-price-bold','Sell Crypto (P2P)','#')
             + '</div>' + stat('Giao dịch\ntháng','$1,234') + '</div>',

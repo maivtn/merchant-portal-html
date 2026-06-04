@@ -1,0 +1,541 @@
+/* =========================================================
+   AI Ads Portal Design System
+   Source: ai-ads.html
+   Purpose: shared tokens, reusable components, responsive rules
+   ========================================================= */
+
+:root {
+  /* Color tokens */
+  --color-primary-50: #eef2ff;
+  --color-primary-100: #e0e7ff;
+  --color-primary-500: #6366f1;
+  --color-primary-600: #4f46e5;
+  --color-primary-700: #4338ca;
+  --color-secondary-500: #8b5cf6;
+  --color-secondary-600: #7c3aed;
+
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+  --color-slate-950: #020617;
+
+  --color-success-50: #ecfdf5;
+  --color-success-500: #10b981;
+  --color-success-600: #059669;
+  --color-warning-50: #fffbeb;
+  --color-warning-500: #f59e0b;
+  --color-danger-50: #fef2f2;
+  --color-danger-500: #ef4444;
+
+  --color-bg-page: #f8fafc;
+  --color-bg-surface: #ffffff;
+  --color-bg-muted: #f8fafc;
+  --color-border-soft: #f1f5f9;
+  --color-border-default: #e2e8f0;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+
+  /* Typography */
+  --font-family-base: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 1.75rem;
+  --radius-full: 9999px;
+
+  /* Shadow */
+  --shadow-premium: 0 10px 30px -10px rgba(99, 102, 241, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --shadow-card-hover: 0 20px 40px -15px rgba(99, 102, 241, 0.15), 0 1px 10px rgba(99, 102, 241, 0.05);
+  --shadow-btn-primary: 0 4px 14px rgba(99, 102, 241, 0.4);
+  --shadow-btn-secondary: 0 4px 14px rgba(139, 92, 246, 0.4);
+  --shadow-input-focus: 0 0 0 4px rgba(99, 102, 241, 0.1);
+
+  /* Border */
+  --border-width-default: 1px;
+  --border-width-strong: 2px;
+
+  /* Breakpoints reference */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* Motion */
+  --motion-fast: 160ms;
+  --motion-normal: 240ms;
+  --motion-slow: 320ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body.ds-app,
+body {
+  font-family: var(--font-family-base);
+  background: var(--color-bg-page);
+  color: var(--color-slate-800);
+}
+
+/* ===== Base components ===== */
+.ds-card {
+  background: var(--color-bg-surface);
+  border: var(--border-width-default) solid var(--color-border-soft);
+  border-radius: var(--radius-3xl);
+  box-shadow: var(--shadow-premium);
+}
+
+.ds-card-interactive {
+  transition: transform var(--motion-slow) var(--ease-standard), box-shadow var(--motion-slow) var(--ease-standard), border-color var(--motion-slow) var(--ease-standard);
+}
+
+.ds-card-interactive:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--color-primary-100);
+}
+
+.ds-section-title {
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-tight);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--color-text-primary);
+}
+
+.ds-section-desc {
+  margin-top: var(--space-1);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  color: var(--color-slate-500);
+}
+
+.ds-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  min-height: 2.5rem;
+  padding: 0.625rem 1.25rem;
+  transition: all var(--motion-normal) var(--ease-standard);
+  cursor: pointer;
+}
+
+.ds-button:active { transform: scale(0.96); }
+
+.ds-button-primary {
+  color: white;
+  background: linear-gradient(90deg, var(--color-primary-600), var(--color-secondary-500));
+  box-shadow: 0 8px 18px -12px rgba(79, 70, 229, 0.8);
+}
+
+.ds-button-primary:hover {
+  filter: brightness(0.98);
+  box-shadow: var(--shadow-btn-primary);
+  transform: translateY(-1px);
+}
+
+.ds-button-secondary {
+  color: var(--color-slate-800);
+  background: var(--color-slate-50);
+  border: var(--border-width-default) solid var(--color-border-soft);
+}
+
+.ds-button-secondary:hover {
+  color: white;
+  background: var(--color-primary-600);
+  border-color: transparent;
+  box-shadow: var(--shadow-btn-primary);
+}
+
+.ds-button-ghost {
+  color: var(--color-slate-600);
+  background: transparent;
+}
+
+.ds-button-ghost:hover {
+  color: var(--color-primary-600);
+  background: var(--color-slate-50);
+}
+
+.ds-input,
+.ds-select,
+.ds-textarea {
+  width: 100%;
+  background: var(--color-slate-50);
+  color: var(--color-slate-800);
+  border: var(--border-width-default) solid rgba(226, 232, 240, 0.72);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  padding: 0.625rem 1rem;
+  outline: none;
+  transition: all var(--motion-normal) var(--ease-standard);
+}
+
+.ds-input:focus,
+.ds-select:focus,
+.ds-textarea:focus {
+  background: white;
+  border-color: var(--color-primary-500);
+  box-shadow: var(--shadow-input-focus);
+}
+
+.ds-label {
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-slate-500);
+  margin-bottom: var(--space-2);
+}
+
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: var(--radius-full);
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.ds-badge-success { background: var(--color-success-50); color: var(--color-success-600); border-color: #d1fae5; }
+.ds-badge-warning { background: var(--color-warning-50); color: var(--color-warning-500); border-color: #fef3c7; }
+.ds-badge-danger { background: var(--color-danger-50); color: var(--color-danger-500); border-color: #fee2e2; }
+.ds-badge-info { background: var(--color-primary-50); color: var(--color-primary-600); border-color: var(--color-primary-100); }
+.ds-badge-neutral { background: var(--color-slate-50); color: var(--color-slate-500); border-color: var(--color-border-soft); }
+
+.ds-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.ds-table th {
+  background: rgba(248, 250, 252, 0.8);
+  color: var(--color-slate-400);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.625rem;
+  font-weight: 800;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.ds-table td {
+  padding: 1rem 1.5rem;
+  font-size: var(--font-size-sm);
+  color: var(--color-slate-600);
+  border-bottom: 1px solid rgba(241, 245, 249, 0.65);
+}
+
+.ds-table tr:hover td { background: rgba(248, 250, 252, 0.5); }
+
+.ds-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-slate-600);
+  transition: all var(--motion-normal) var(--ease-standard);
+}
+
+.ds-nav-item:hover,
+.ds-nav-item.is-active {
+  background: var(--color-primary-50);
+  color: var(--color-primary-600);
+}
+
+.ds-empty-state {
+  text-align: center;
+  padding: var(--space-10) var(--space-6);
+  border: 1px dashed var(--color-border-default);
+  border-radius: var(--radius-2xl);
+  background: var(--color-slate-50);
+}
+
+.ds-alert {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  font-size: var(--font-size-sm);
+}
+
+.ds-alert-info { background: var(--color-primary-50); color: var(--color-primary-700); border-color: var(--color-primary-100); }
+.ds-alert-warning { background: var(--color-warning-50); color: #b45309; border-color: #fef3c7; }
+.ds-alert-success { background: var(--color-success-50); color: var(--color-success-600); border-color: #d1fae5; }
+.ds-alert-danger { background: var(--color-danger-50); color: #b91c1c; border-color: #fee2e2; }
+
+.ds-tabs {
+  display: inline-flex;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  background: var(--color-slate-50);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+}
+
+.ds-tab {
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.875rem;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-slate-500);
+}
+
+.ds-tab.is-active {
+  color: var(--color-primary-600);
+  background: white;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+.ds-skeleton {
+  border-radius: var(--radius-md);
+  background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+  background-size: 200% 100%;
+  animation: dsSkeleton 1.2s ease-in-out infinite;
+}
+
+@keyframes dsSkeleton {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ===== Original behavior migrated from ai-ads.html ===== */
+/* Tuỳ chỉnh thanh cuộn mượt mà chuẩn Premium */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f8fafc;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Chuyển động mượt mà cho hiệu ứng hover */
+    .transition-all-300 {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Chuyển động siêu tốc cho click phản hồi vật lý */
+    .btn-bounce {
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .btn-bounce:active {
+      transform: scale(0.96);
+    }
+
+    /* ========== CHAT HỖ TRỢ: Animation slide-up ========== */
+    #support-chat-panel {
+      transform-origin: bottom right;
+      animation: chatSlideUp 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes chatSlideUp {
+      from {
+        opacity: 0;
+        transform: scale(0.88) translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* ========== MOBILE: Thu nhỏ font size và khoảng cách ========== */
+    @media (max-width: 640px) {
+
+      /* Padding khu vực nội dung chính */
+      .flex-1.p-6 {
+        padding: 1rem !important;
+      }
+
+      /* Tiêu đề trang (text-2xl) */
+      h2.text-2xl {
+        font-size: 1.125rem !important;
+        line-height: 1.5rem !important;
+      }
+
+      /* Tiêu đề section (text-lg, text-xl) */
+      h3.text-lg,
+      h3.text-xl,
+      h4.text-lg,
+      h4.text-xl {
+        font-size: 0.9375rem !important;
+        line-height: 1.375rem !important;
+      }
+
+      /* Số liệu lớn trong thẻ stat (text-3xl, text-4xl) */
+      h4.text-3xl {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important;
+      }
+
+      span.text-4xl {
+        font-size: 1.875rem !important;
+        line-height: 2.25rem !important;
+      }
+
+      h3.text-3xl {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important;
+      }
+
+      /* Header chiều cao và padding */
+      header.h-20 {
+        height: 3.5rem !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+      }
+
+      /* Card padding: p-6, p-8 -> nhỏ hơn */
+      .rounded-3xl.p-6 {
+        padding: 1rem !important;
+      }
+
+      .rounded-3xl.p-8 {
+        padding: 1rem !important;
+      }
+
+      .rounded-3xl.p-5 {
+        padding: 0.875rem !important;
+      }
+
+      /* Table cell padding */
+      table th,
+      table td {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.6875rem !important;
+      }
+
+      /* Nút bấm padding */
+      .px-5.py-2\.5 {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.75rem !important;
+      }
+
+      .px-6.py-3 {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.75rem !important;
+      }
+
+      /* Khoảng cách giữa các row */
+      .space-y-8>*+* {
+        margin-top: 1.25rem !important;
+      }
+
+      .space-y-6>*+* {
+        margin-top: 1rem !important;
+      }
+
+      /* Toast container full width trên mobile */
+      #toast-container {
+        right: 0.75rem !important;
+        left: 0.75rem !important;
+        max-width: 100% !important;
+      }
+    }
+
+/* Select: custom chevron spacing */
+select,
+.ds-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.75rem !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%230f172a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem 1rem;
+}
+
+select::-ms-expand,
+.ds-select::-ms-expand {
+  display: none;
+}
+
+/* Select shell: fixed custom arrow position */
+.ds-select-shell {
+  position: relative;
+  display: block;
+  min-width: 12rem;
+}
+
+.ds-select-shell select,
+select.ds-select-control,
+.ds-select.ds-select-control {
+  width: 100%;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  padding-right: 3.25rem !important;
+  background-image: none !important;
+}
+
+.ds-select-chevron {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--color-slate-600);
+}
+
+.ds-select-shell:focus-within .ds-select-chevron {
+  color: var(--color-primary-600);
+}

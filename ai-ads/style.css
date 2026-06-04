@@ -1205,3 +1205,150 @@ select.ds-select-control,
 @media (max-width: 768px) {
   .ds-interaction-grid { grid-template-columns: 1fr; }
 }
+
+/* ===== Partner / Distribution Network Showcase ===== */
+.ds-partner-showcase {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem;
+  border-radius: var(--radius-3xl);
+  border: 1px solid rgba(224, 231, 255, 0.85);
+  background:
+    radial-gradient(circle at top left, rgba(99, 102, 241, 0.12), transparent 30%),
+    linear-gradient(135deg, #ffffff 0%, #f8fafc 52%, #eef2ff 100%);
+  box-shadow: var(--shadow-premium);
+}
+
+.ds-partner-showcase::after {
+  content: '';
+  position: absolute;
+  right: -4rem;
+  top: -4rem;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 9999px;
+  background: rgba(139, 92, 246, 0.12);
+  filter: blur(1.5rem);
+  pointer-events: none;
+}
+
+.ds-partner-showcase-header {
+  position: relative;
+  z-index: 1;
+  max-width: 46rem;
+  margin: 0 auto 1.25rem;
+  text-align: center;
+}
+
+.ds-partner-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .375rem;
+  padding: .25rem .625rem;
+  border-radius: var(--radius-full);
+  background: rgba(79, 70, 229, .08);
+  border: 1px solid rgba(99, 102, 241, .16);
+  color: var(--color-primary-600);
+  font-size: .6875rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.ds-partner-showcase-header h4 {
+  margin-top: .75rem;
+  color: var(--color-slate-950);
+  font-size: 1rem;
+  line-height: 1.35;
+  font-weight: 900;
+  letter-spacing: -.01em;
+}
+
+.ds-partner-showcase-header p {
+  margin-top: .375rem;
+  color: var(--color-slate-500);
+  font-size: .8125rem;
+  line-height: 1.6;
+}
+
+.ds-partner-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .875rem;
+}
+
+.ds-partner-card {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  min-height: 4.75rem;
+  padding: .875rem;
+  border-radius: var(--radius-2xl);
+  border: 1px solid rgba(226, 232, 240, .8);
+  background: rgba(255, 255, 255, .82);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .03);
+  backdrop-filter: blur(10px);
+  transition: transform var(--motion-normal) var(--ease-standard), box-shadow var(--motion-normal) var(--ease-standard), border-color var(--motion-normal) var(--ease-standard), background var(--motion-normal) var(--ease-standard);
+}
+
+.ds-partner-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(99, 102, 241, .28);
+  background: #ffffff;
+  box-shadow: var(--shadow-card-hover);
+}
+
+.ds-partner-logo {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 950;
+  letter-spacing: .05em;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 10px 20px -12px rgba(15, 23, 42, .5);
+  transition: transform var(--motion-normal) var(--ease-bounce);
+}
+
+.ds-partner-card:hover .ds-partner-logo {
+  transform: scale(1.08) rotate(-3deg);
+}
+
+.ds-partner-logo-vlinkpay { background: linear-gradient(135deg, #020617, #4f46e5); }
+.ds-partner-logo-cryptomap { background: linear-gradient(135deg, #0f766e, #22c55e); }
+.ds-partner-logo-bitcoin { background: linear-gradient(135deg, #92400e, #f59e0b); }
+.ds-partner-logo-nailhub { background: linear-gradient(135deg, #7c3aed, #ec4899); }
+
+.ds-partner-card strong {
+  display: block;
+  color: var(--color-slate-950);
+  font-size: .875rem;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: -.01em;
+}
+
+.ds-partner-card span {
+  display: block;
+  margin-top: .1875rem;
+  color: var(--color-slate-400);
+  font-size: .6875rem;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+@media (max-width: 1024px) {
+  .ds-partner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .ds-partner-showcase { padding: 1rem; }
+  .ds-partner-grid { grid-template-columns: 1fr; }
+  .ds-partner-card { min-height: 4.25rem; }
+}

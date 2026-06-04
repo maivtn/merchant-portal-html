@@ -845,3 +845,33 @@ Nên refactor thêm một vòng để giảm bớt class Tailwind dài trong HTM
 - Table → `.ds-table`.
 
 Cách làm này giúp HTML ngắn hơn, dễ maintain hơn và đồng bộ tốt hơn khi mở rộng AI Ads Portal.
+
+
+## 6. Interaction & Hover States
+
+### Control hover baseline
+Tất cả component control cần có cảm giác tương tác rõ ràng, không chỉ đổi màu nhẹ. Bộ CSS mới đã bổ sung hover/focus/active cho các nhóm sau:
+
+| Component group | Hover behavior | Focus behavior | Active behavior |
+|---|---|---|---|
+| Button | Lift `-1px`, tăng shadow/glow | Focus ring indigo | Scale `0.97` |
+| Icon Button | Nền indigo-50, icon indigo, shadow mềm | Focus ring | Scale `0.97` |
+| Input / Select / Textarea | Nền trắng, border indigo soft, ring nhẹ | Border primary + focus ring | Không scale để tránh lệch form |
+| Select Chevron | Đổi màu primary, scale nhẹ | Rotate 180° khi focus-within | Theo select |
+| Checkbox / Radio | Label đổi primary, control scale nhẹ, ring mềm | Outline primary | Native checked state |
+| Toggle | Track sáng hơn, checked state đậm hơn | Focus ring trên track | Thumb transition |
+| Upload Zone | Lift `-2px`, border dashed primary, shadow card | N/A | N/A |
+| Badge / Alert | Lift nhẹ, shadow mềm | N/A | N/A |
+| Nav / Pagination / Dropdown | Slide nhẹ, background primary-50 | Focus ring | Scale nhẹ |
+| Table Row | Background primary tint, text rõ hơn | N/A | N/A |
+
+### Implementation rules
+- Hover không được làm layout nhảy mạnh. Ưu tiên `transform` nhỏ từ `-1px` đến `-2px`.
+- Form controls không nên scale vì dễ gây lệch layout, chỉ đổi `border`, `background`, `box-shadow`.
+- Disabled state phải tắt hover nâng cấp: dùng `:not(:disabled)` hoặc class `cursor-not-allowed`.
+- Luôn hỗ trợ `prefers-reduced-motion: reduce` để giảm animation cho người dùng nhạy cảm chuyển động.
+
+### CSS classes added
+- `.ds-field-shell`, `.ds-field-icon`
+- `.ds-interaction-grid`, `.ds-interaction-card`, `.ds-hover-preview`
+- Extended hover/focus rules cho `.ds-button`, `.ds-icon-button`, `.ds-input`, `.ds-select`, `.ds-textarea`, `.ds-checkbox`, `.ds-radio`, `.ds-toggle`, `.ds-upload-zone`, `.ds-page-btn`, `.ds-dropdown-item`, `.ds-accordion-header`.

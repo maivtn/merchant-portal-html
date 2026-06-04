@@ -8,6 +8,7 @@
   /* Color tokens */
   --color-primary-50: #eef2ff;
   --color-primary-100: #e0e7ff;
+  --color-primary-200: #c7d2fe;
   --color-primary-500: #6366f1;
   --color-primary-600: #4f46e5;
   --color-primary-700: #4338ca;
@@ -857,4 +858,350 @@ select.ds-select-control,
   .ds-overview-shell { padding: 1rem .75rem 2.5rem; }
   .ds-spec-grid { grid-template-columns: 1fr; }
   .ds-overview-sidebar nav { grid-template-columns: 1fr; }
+}
+
+
+/* =========================================================
+   Interaction & Hover States — Design System Controls
+   Purpose: make controls feel clickable in component overview and app screens
+   ========================================================= */
+:root {
+  --control-hover-bg: #ffffff;
+  --control-hover-border: var(--color-primary-200, #c7d2fe);
+  --control-hover-ring: 0 0 0 4px rgba(99, 102, 241, 0.08);
+  --control-hover-lift: translateY(-1px);
+  --control-active-scale: scale(0.97);
+}
+
+/* Global interactive baseline */
+.ds-button,
+.ds-icon-button,
+.ds-input,
+.ds-select,
+.ds-textarea,
+.ds-select-control,
+.ds-upload-zone,
+.ds-checkbox,
+.ds-radio,
+.ds-toggle,
+.ds-nav-item,
+.ds-page-btn,
+.ds-dropdown-item,
+.ds-accordion-header,
+.ds-badge,
+.ds-alert,
+.ds-token-swatch,
+.ds-spec-item {
+  transition:
+    color var(--motion-normal) var(--ease-standard),
+    background-color var(--motion-normal) var(--ease-standard),
+    border-color var(--motion-normal) var(--ease-standard),
+    box-shadow var(--motion-normal) var(--ease-standard),
+    transform var(--motion-normal) var(--ease-standard),
+    opacity var(--motion-normal) var(--ease-standard);
+}
+
+/* Button controls */
+.ds-button:hover:not(:disabled):not(.cursor-not-allowed) {
+  transform: var(--control-hover-lift);
+}
+
+.ds-button:focus-visible,
+.ds-icon-button:focus-visible,
+.ds-page-btn:focus-visible,
+.ds-dropdown-item:focus-visible,
+.ds-accordion-header:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-input-focus);
+}
+
+.ds-button:active:not(:disabled):not(.cursor-not-allowed),
+.ds-icon-button:active:not(:disabled),
+.ds-page-btn:active:not(:disabled),
+.ds-dropdown-item:active,
+.ds-accordion-header:active {
+  transform: var(--control-active-scale);
+}
+
+.ds-icon-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  color: var(--color-primary-600);
+  background: var(--color-primary-50);
+  border-color: var(--color-primary-100);
+  box-shadow: 0 10px 24px -16px rgba(79, 70, 229, 0.6);
+}
+
+/* Text controls */
+.ds-input:hover:not(:disabled):not(:focus),
+.ds-select:hover:not(:disabled):not(:focus),
+.ds-select-control:hover:not(:disabled):not(:focus),
+.ds-textarea:hover:not(:disabled):not(:focus) {
+  background: var(--control-hover-bg);
+  border-color: var(--control-hover-border);
+  box-shadow: var(--control-hover-ring);
+}
+
+.ds-input:focus-visible,
+.ds-select:focus-visible,
+.ds-select-control:focus-visible,
+.ds-textarea:focus-visible {
+  outline: none;
+  background: #fff;
+  border-color: var(--color-primary-500);
+  box-shadow: var(--shadow-input-focus);
+}
+
+.ds-input:disabled,
+.ds-select:disabled,
+.ds-select-control:disabled,
+.ds-textarea:disabled {
+  cursor: not-allowed;
+  opacity: .65;
+  background: var(--color-slate-100);
+}
+
+/* Search/input wrappers with icon */
+.ds-field-shell {
+  position: relative;
+}
+
+.ds-field-shell:hover .ds-field-icon,
+.ds-field-shell:focus-within .ds-field-icon {
+  color: var(--color-primary-600);
+}
+
+/* Select wrapper: hover border + arrow feedback */
+.ds-select-shell:hover .ds-select,
+.ds-select-shell:hover .ds-select-control {
+  background: #fff;
+  border-color: var(--control-hover-border);
+  box-shadow: var(--control-hover-ring);
+}
+
+.ds-select-shell:hover .ds-select-chevron {
+  color: var(--color-primary-600);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.ds-select-shell:focus-within .ds-select-chevron {
+  color: var(--color-primary-600);
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Validation state hover should keep semantic meaning */
+.ds-input.is-error:hover,
+.ds-select.is-error:hover,
+.ds-select-control.is-error:hover,
+.ds-textarea.is-error:hover {
+  border-color: var(--color-danger-500);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, .10);
+}
+
+.ds-input.is-success:hover,
+.ds-select.is-success:hover,
+.ds-select-control.is-success:hover,
+.ds-textarea.is-success:hover {
+  border-color: var(--color-success-500);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, .10);
+}
+
+/* Checkbox / radio */
+.ds-checkbox:hover,
+.ds-radio:hover,
+.ds-toggle:hover {
+  color: var(--color-primary-700);
+}
+
+.ds-checkbox input,
+.ds-radio input {
+  cursor: pointer;
+  transition: transform var(--motion-fast) var(--ease-bounce), box-shadow var(--motion-normal) var(--ease-standard);
+}
+
+.ds-checkbox:hover input,
+.ds-radio:hover input {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, .10);
+}
+
+.ds-checkbox input:focus-visible,
+.ds-radio input:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* Toggle */
+.ds-toggle { cursor: pointer; }
+
+.ds-toggle:hover .ds-toggle-track {
+  background: var(--color-slate-300);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, .08);
+}
+
+.ds-toggle:hover input:checked + .ds-toggle-track {
+  background: var(--color-primary-700);
+}
+
+.ds-toggle:hover .ds-toggle-track::after {
+  box-shadow: 0 4px 10px rgba(15, 23, 42, .18);
+}
+
+.ds-toggle input:focus-visible + .ds-toggle-track {
+  box-shadow: var(--shadow-input-focus);
+}
+
+/* Upload/drop controls */
+.ds-upload-zone:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-primary-500);
+  background: linear-gradient(180deg, #ffffff 0%, var(--color-primary-50) 100%);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.ds-upload-zone:hover i,
+.ds-upload-zone:hover svg {
+  transform: translateY(-1px) scale(1.06);
+}
+
+/* Navigation/tabs/pagination */
+.ds-nav-item:hover,
+.ds-overview-sidebar a:hover {
+  transform: translateX(2px);
+  box-shadow: inset 3px 0 0 var(--color-primary-600);
+}
+
+.ds-tab:hover,
+.ds-page-btn:hover:not(.is-active) {
+  color: var(--color-primary-600);
+  background: var(--color-primary-50);
+  border-color: var(--color-primary-100);
+  transform: translateY(-1px);
+}
+
+.ds-page-btn:hover:not(.is-active) {
+  box-shadow: 0 8px 20px -16px rgba(79, 70, 229, .65);
+}
+
+/* Badges / alerts / info blocks */
+.ds-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px -14px rgba(15, 23, 42, .28);
+}
+
+.ds-alert:hover,
+.ds-toast:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-premium);
+}
+
+/* Cards, token previews and spec blocks */
+.ds-token-swatch:hover,
+.ds-spec-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-primary-100);
+  box-shadow: var(--shadow-premium);
+}
+
+.ds-token-swatch:hover .ds-token-color {
+  transform: scale(1.02);
+}
+
+.ds-card-interactive:hover .ds-button-secondary {
+  color: white;
+  background: var(--color-primary-600);
+  border-color: transparent;
+  box-shadow: var(--shadow-btn-primary);
+}
+
+/* Data controls */
+.ds-table tbody tr {
+  transition: background-color var(--motion-normal) var(--ease-standard), transform var(--motion-normal) var(--ease-standard);
+}
+
+.ds-table tbody tr:hover {
+  background: rgba(238, 242, 255, .35);
+}
+
+.ds-table tbody tr:hover td {
+  color: var(--color-slate-800);
+}
+
+.ds-dropdown-item:hover {
+  transform: translateX(2px);
+}
+
+.ds-accordion-header:hover {
+  color: var(--color-primary-600);
+  background: var(--color-primary-50);
+}
+
+/* Interaction demo helpers */
+.ds-interaction-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ds-interaction-card {
+  padding: 1rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-slate-50);
+}
+
+.ds-interaction-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-primary-100);
+  background: #fff;
+  box-shadow: var(--shadow-premium);
+}
+
+.ds-hover-preview {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .75rem;
+  font-weight: 800;
+  color: var(--color-slate-500);
+}
+
+.ds-hover-preview::before {
+  content: '';
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  background: var(--color-primary-500);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, .12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-button,
+  .ds-icon-button,
+  .ds-card-interactive,
+  .ds-input,
+  .ds-select,
+  .ds-select-control,
+  .ds-textarea,
+  .ds-upload-zone,
+  .ds-checkbox input,
+  .ds-radio input,
+  .ds-toggle-track,
+  .ds-toggle-track::after,
+  .ds-nav-item,
+  .ds-overview-sidebar a,
+  .ds-page-btn,
+  .ds-dropdown-item,
+  .ds-accordion-header,
+  .ds-badge,
+  .ds-alert,
+  .ds-token-swatch,
+  .ds-spec-item,
+  .ds-interaction-card {
+    transition-duration: 1ms !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .ds-interaction-grid { grid-template-columns: 1fr; }
 }

@@ -3,217 +3,370 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Ads Portal — Component Overview</title>
+  <title>AI Ads Portal — Design System Component Overview</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="ds-app bg-slate-50 text-slate-800 antialiased">
-  <div class="max-w-7xl mx-auto px-5 py-8 lg:py-12 space-y-10">
-    <header class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-      <div>
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold border border-indigo-100 mb-4">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-          AI Ads Portal Design System
+  <div class="ds-overview-shell space-y-8">
+    <header class="ds-card p-6 lg:p-8 overflow-hidden relative">
+      <div class="absolute -right-16 -top-16 w-56 h-56 bg-indigo-50 rounded-full blur-xl"></div>
+      <div class="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-bold border border-indigo-100 mb-4">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            AI Ads Portal Design System
+          </div>
+          <h1 class="text-3xl lg:text-5xl font-black tracking-tight text-slate-950">Component Overview</h1>
+          <p class="text-sm lg:text-base text-slate-500 mt-3 max-w-3xl leading-relaxed">Bộ overview đầy đủ hơn cho design system: foundation tokens, form controls, buttons, cards, navigation, feedback, overlay, data display và các pattern thường dùng trong dashboard SaaS/merchant portal.</p>
         </div>
-        <h1 class="text-3xl lg:text-4xl font-black tracking-tight text-slate-950">Component Overview</h1>
-        <p class="text-sm text-slate-500 mt-2 max-w-2xl">Trang kiểm tra nhanh các component chính dùng chung cho AI Ads Hub: button, input, select, card, badge, tabs, modal preview, table, navigation, empty state, alert và loading.</p>
-      </div>
-      <div class="flex flex-wrap gap-3">
-        <a href="ai-ads-refactored.html" class="ds-button ds-button-primary">Mở HTML chính</a>
-        <a href="design-system.md" class="ds-button ds-button-secondary">Xem design-system.md</a>
+        <div class="flex flex-wrap gap-3">
+          <a href="ai-ads-refactored.html" class="ds-button ds-button-primary"><i data-lucide="external-link" class="w-4 h-4"></i>Mở HTML chính</a>
+          <a href="design-system.md" class="ds-button ds-button-secondary"><i data-lucide="book-open" class="w-4 h-4"></i>Xem tài liệu</a>
+        </div>
       </div>
     </header>
 
-    <section class="ds-card p-6 space-y-5">
-      <div>
-        <h2 class="ds-section-title">Design Tokens</h2>
-        <p class="ds-section-desc">Foundation chính đã được đưa vào CSS variables trong `style.css`.</p>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-        <div class="rounded-2xl p-4 bg-indigo-50 border border-indigo-100"><div class="h-10 rounded-xl bg-indigo-600 mb-3"></div><p class="text-xs font-bold">Primary</p><p class="text-[11px] text-slate-400">#4f46e5</p></div>
-        <div class="rounded-2xl p-4 bg-violet-50 border border-violet-100"><div class="h-10 rounded-xl bg-violet-500 mb-3"></div><p class="text-xs font-bold">Secondary</p><p class="text-[11px] text-slate-400">#8b5cf6</p></div>
-        <div class="rounded-2xl p-4 bg-emerald-50 border border-emerald-100"><div class="h-10 rounded-xl bg-emerald-500 mb-3"></div><p class="text-xs font-bold">Success</p><p class="text-[11px] text-slate-400">#10b981</p></div>
-        <div class="rounded-2xl p-4 bg-amber-50 border border-amber-100"><div class="h-10 rounded-xl bg-amber-500 mb-3"></div><p class="text-xs font-bold">Warning</p><p class="text-[11px] text-slate-400">#f59e0b</p></div>
-        <div class="rounded-2xl p-4 bg-red-50 border border-red-100"><div class="h-10 rounded-xl bg-red-500 mb-3"></div><p class="text-xs font-bold">Danger</p><p class="text-[11px] text-slate-400">#ef4444</p></div>
-        <div class="rounded-2xl p-4 bg-slate-50 border border-slate-200"><div class="h-10 rounded-xl bg-slate-900 mb-3"></div><p class="text-xs font-bold">Heading</p><p class="text-[11px] text-slate-400">#0f172a</p></div>
-        <div class="rounded-2xl p-4 bg-white border border-slate-200"><div class="h-10 rounded-xl bg-slate-500 mb-3"></div><p class="text-xs font-bold">Body</p><p class="text-[11px] text-slate-400">#64748b</p></div>
-        <div class="rounded-2xl p-4 bg-white border border-slate-200"><div class="h-10 rounded-xl bg-slate-100 mb-3"></div><p class="text-xs font-bold">Surface</p><p class="text-[11px] text-slate-400">#ffffff</p></div>
-      </div>
-    </section>
-
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="ds-card p-6 space-y-5">
-        <div>
-          <h2 class="text-xl font-extrabold text-slate-950">Buttons</h2>
-          <p class="text-sm text-slate-500 mt-1">Primary cho CTA chính, secondary/ghost cho action phụ.</p>
+    <div class="ds-overview-grid">
+      <aside class="ds-card ds-overview-sidebar p-4">
+        <div class="px-3 pb-3 mb-3 border-b border-slate-100">
+          <p class="text-[11px] font-black uppercase tracking-widest text-slate-400">Component Index</p>
         </div>
-        <div class="flex flex-wrap gap-3">
-          <button class="ds-button ds-button-primary"><i data-lucide="sparkles" class="w-4 h-4"></i>Create with AI</button>
-          <button class="ds-button ds-button-secondary"><i data-lucide="upload-cloud" class="w-4 h-4"></i>Upload Banner</button>
-          <button class="ds-button ds-button-ghost"><i data-lucide="x" class="w-4 h-4"></i>Cancel</button>
-          <button class="ds-button ds-button-primary opacity-60 cursor-not-allowed" disabled>Loading...</button>
-        </div>
-      </div>
-
-      <div class="ds-card p-6 space-y-5">
-        <div>
-          <h2 class="text-xl font-extrabold text-slate-950">Badges</h2>
-          <p class="text-sm text-slate-500 mt-1">Dùng cho trạng thái banner, package và review.</p>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          <span class="ds-badge ds-badge-success">Active</span>
-          <span class="ds-badge ds-badge-warning">Pending Review</span>
-          <span class="ds-badge ds-badge-danger">Rejected</span>
-          <span class="ds-badge ds-badge-info">Approved</span>
-          <span class="ds-badge ds-badge-neutral">Draft</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="ds-card p-6 space-y-6">
-      <div>
-        <h2 class="text-xl font-extrabold text-slate-950">Inputs & Selects</h2>
-        <p class="text-sm text-slate-500 mt-1">Form control dùng chung cho filter toolbar và submission form.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label class="ds-label">Banner name</label>
-          <input class="ds-input" placeholder="Summer campaign banner">
-        </div>
-        <div>
-          <label class="ds-label">Status</label>
-          <div class="ds-select-shell">
-            <select class="ds-select ds-select-control">
-              <option>All Status</option>
-              <option>Active</option>
-              <option>Pending Review</option>
-              <option>Rejected</option>
-            </select>
-            <i data-lucide="chevron-down" class="ds-select-chevron w-4 h-4"></i>
-          </div>
-        </div>
-        <div>
-          <label class="ds-label">Target URL</label>
-          <input class="ds-input" placeholder="https://example.com">
-        </div>
-      </div>
-    </section>
-
-    <section class="space-y-5">
-      <div>
-        <h2 class="ds-section-title">Cards</h2>
-        <p class="ds-section-desc">Stat card, quick action card và pricing card.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="ds-card ds-card-interactive p-6">
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">AI credit</span>
-            <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center"><i data-lucide="coins" class="w-5 h-5"></i></div>
-          </div>
-          <h3 class="text-3xl font-extrabold text-slate-950">420</h3>
-          <p class="text-xs text-indigo-600 mt-1 font-semibold">View usage history</p>
-        </div>
-        <div class="ds-card ds-card-interactive p-6">
-          <div class="w-12 h-12 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center mb-4"><i data-lucide="sparkles" class="w-6 h-6"></i></div>
-          <h3 class="text-lg font-extrabold text-slate-950">Create Banner with AI</h3>
-          <p class="text-sm text-slate-500 mt-2">Generate one result per prompt and submit it for review.</p>
-          <button class="ds-button ds-button-secondary mt-5">Start</button>
-        </div>
-        <div class="ds-card p-6 border-2 border-indigo-600 relative overflow-hidden">
-          <div class="absolute right-0 top-0 bg-indigo-600 text-white text-[10px] font-extrabold px-4 py-1.5 rounded-bl-2xl uppercase tracking-wider">Recommended</div>
-          <h3 class="text-xl font-extrabold text-slate-950">Premium</h3>
-          <p class="text-xs text-slate-400 mt-1">Best for active merchants</p>
-          <div class="flex items-baseline gap-1 mt-5"><span class="text-4xl font-black text-slate-950">$79</span><span class="text-xs text-slate-400">/ month</span></div>
-          <ul class="mt-5 space-y-2 text-sm text-slate-600">
-            <li>✓ 3 active banners</li>
-            <li>✓ Priority review</li>
-            <li>✓ 500 AI credit</li>
-          </ul>
-          <button class="ds-button ds-button-primary w-full mt-6">Choose Premium</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="ds-card p-6 space-y-5">
-        <h2 class="text-xl font-extrabold text-slate-950">Tabs</h2>
-        <div class="ds-tabs">
-          <button class="ds-tab is-active">All</button>
-          <button class="ds-tab">Uploaded</button>
-          <button class="ds-tab">AI Generated</button>
-        </div>
-      </div>
-      <div class="ds-card p-6 space-y-5">
-        <h2 class="text-xl font-extrabold text-slate-950">Alerts</h2>
-        <div class="space-y-3">
-          <div class="ds-alert ds-alert-info"><i data-lucide="info" class="w-4 h-4 mt-0.5"></i><span>Banner will be reviewed by admin before publishing.</span></div>
-          <div class="ds-alert ds-alert-warning"><i data-lucide="triangle-alert" class="w-4 h-4 mt-0.5"></i><span>Your current plan is near the banner limit.</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="ds-card overflow-hidden">
-      <div class="p-6 border-b border-slate-100">
-        <h2 class="text-xl font-extrabold text-slate-950">Table</h2>
-        <p class="text-sm text-slate-500 mt-1">Banner management table pattern.</p>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="ds-table">
-          <thead>
-            <tr><th>Banner</th><th>Source</th><th>Status</th><th class="text-right">Action</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Summer Promo</td><td>AI Generated</td><td><span class="ds-badge ds-badge-success">Active</span></td><td class="text-right"><button class="text-indigo-600 font-bold text-xs">View</button></td></tr>
-            <tr><td>Merchant Upgrade</td><td>Uploaded</td><td><span class="ds-badge ds-badge-warning">Pending</span></td><td class="text-right"><button class="text-indigo-600 font-bold text-xs">View</button></td></tr>
-            <tr><td>Holiday Sale</td><td>AI Generated</td><td><span class="ds-badge ds-badge-neutral">Draft</span></td><td class="text-right"><button class="text-indigo-600 font-bold text-xs">Edit</button></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="ds-card p-6 space-y-5">
-        <h2 class="text-xl font-extrabold text-slate-950">Navigation</h2>
-        <nav class="space-y-2">
-          <button class="ds-nav-item is-active"><i data-lucide="grid" class="w-5 h-5"></i>AI Ads Hub</button>
-          <button class="ds-nav-item"><i data-lucide="layers" class="w-5 h-5"></i>Manage Banner</button>
-          <button class="ds-nav-item"><i data-lucide="plus-circle" class="w-5 h-5"></i>Create Ad</button>
+        <nav>
+          <a href="#foundation"><i data-lucide="palette" class="w-4 h-4"></i>Foundation</a>
+          <a href="#typography"><i data-lucide="type" class="w-4 h-4"></i>Typography</a>
+          <a href="#buttons"><i data-lucide="mouse-pointer-click" class="w-4 h-4"></i>Buttons</a>
+          <a href="#forms"><i data-lucide="form-input" class="w-4 h-4"></i>Forms</a>
+          <a href="#selection"><i data-lucide="check-square" class="w-4 h-4"></i>Selection</a>
+          <a href="#cards"><i data-lucide="layout-dashboard" class="w-4 h-4"></i>Cards</a>
+          <a href="#status"><i data-lucide="badge-check" class="w-4 h-4"></i>Status</a>
+          <a href="#navigation"><i data-lucide="navigation" class="w-4 h-4"></i>Navigation</a>
+          <a href="#data"><i data-lucide="table-2" class="w-4 h-4"></i>Data Display</a>
+          <a href="#feedback"><i data-lucide="message-square-warning" class="w-4 h-4"></i>Feedback</a>
+          <a href="#overlays"><i data-lucide="panel-top-open" class="w-4 h-4"></i>Overlays</a>
+          <a href="#states"><i data-lucide="loader" class="w-4 h-4"></i>States</a>
         </nav>
-      </div>
-      <div class="ds-card p-6 lg:col-span-2 space-y-5">
-        <h2 class="text-xl font-extrabold text-slate-950">Empty State & Loading</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="ds-empty-state">
-            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-4"><i data-lucide="image-off" class="w-6 h-6"></i></div>
-            <h3 class="font-extrabold text-slate-950">No banner yet</h3>
-            <p class="text-sm text-slate-500 mt-1">Create your first banner to start advertising.</p>
-            <button class="ds-button ds-button-primary mt-5">Create Banner</button>
-          </div>
-          <div class="space-y-3 p-5 rounded-2xl border border-slate-100 bg-slate-50">
-            <div class="ds-skeleton h-5 w-2/3"></div>
-            <div class="ds-skeleton h-28 w-full"></div>
-            <div class="flex gap-3"><div class="ds-skeleton h-10 w-28"></div><div class="ds-skeleton h-10 w-24"></div></div>
-          </div>
-        </div>
-      </div>
-    </section>
+      </aside>
 
-    <section class="ds-card p-6 space-y-5">
-      <h2 class="text-xl font-extrabold text-slate-950">Modal Preview</h2>
-      <div class="max-w-lg bg-white rounded-3xl p-6 border border-slate-100 shadow-premium">
-        <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
-          <h3 class="text-lg font-bold text-slate-900">Banner Review Detail</h3>
-          <button class="p-1 rounded-full hover:bg-slate-100 text-slate-400"><i data-lucide="x" class="w-5 h-5"></i></button>
-        </div>
-        <p class="text-sm text-slate-600 leading-relaxed">This modal pattern is used for banner detail, rejection reason and confirmation flows.</p>
-        <div class="mt-6 flex justify-end gap-3">
-          <button class="ds-button ds-button-secondary">Close</button>
-          <button class="ds-button ds-button-primary">Confirm</button>
-        </div>
-      </div>
-    </section>
+      <main class="space-y-8">
+        <section id="foundation" class="ds-card p-6 space-y-6">
+          <div>
+            <h2 class="ds-section-title">01. Foundation Tokens</h2>
+            <p class="ds-section-desc">Các token nền tảng đang được khai báo trong `style.css` để thống nhất màu sắc, khoảng cách, bo góc, shadow và motion.</p>
+          </div>
+
+          <div class="space-y-4">
+            <h3 class="text-base font-extrabold text-slate-950">Colors</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-3">
+              <div class="ds-token-swatch"><div class="ds-token-color bg-indigo-600"></div><p class="ds-token-name">Primary 600</p><p class="ds-token-value">#4f46e5</p></div>
+              <div class="ds-token-swatch"><div class="ds-token-color bg-indigo-50"></div><p class="ds-token-name">Primary 50</p><p class="ds-token-value">#eef2ff</p></div>
+              <div class="ds-token-swatch"><div class="ds-token-color bg-violet-500"></div><p class="ds-token-name">Secondary</p><p class="ds-token-value">#8b5cf6</p></div>
+              <div class="ds-token-swatch"><div class="ds-token-color bg-emerald-500"></div><p class="ds-token-name">Success</p><p class="ds-token-value">#10b981</p></div>
+              <div class="ds-token-swatch"><div class="ds-token-color bg-amber-500"></div><p class="ds-token-name">Warning</p><p class="ds-token-value">#f59e0b</p></div>
+              <div class="ds-token-swatch"><div class="ds-token-color bg-red-500"></div><p class="ds-token-name">Danger</p><p class="ds-token-value">#ef4444</p></div>
+              <div class="ds-token-swatch"><div class="ds-token-color bg-slate-900"></div><p class="ds-token-name">Text Primary</p><p class="ds-token-value">#0f172a</p></div>
+              <div class="ds-token-swatch"><div class="ds-token-color bg-slate-100"></div><p class="ds-token-name">Border/Muted</p><p class="ds-token-value">#f1f5f9</p></div>
+            </div>
+          </div>
+
+          <div class="ds-spec-grid">
+            <div class="ds-spec-item">
+              <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-3">Spacing</p>
+              <div class="space-y-3">
+                <div class="flex items-center gap-3"><span class="ds-code-pill">--space-2</span><div class="h-3 w-8 bg-indigo-200 rounded"></div><span class="text-xs text-slate-500">8px</span></div>
+                <div class="flex items-center gap-3"><span class="ds-code-pill">--space-4</span><div class="h-3 w-16 bg-indigo-300 rounded"></div><span class="text-xs text-slate-500">16px</span></div>
+                <div class="flex items-center gap-3"><span class="ds-code-pill">--space-6</span><div class="h-3 w-24 bg-indigo-400 rounded"></div><span class="text-xs text-slate-500">24px</span></div>
+                <div class="flex items-center gap-3"><span class="ds-code-pill">--space-8</span><div class="h-3 w-32 bg-indigo-500 rounded"></div><span class="text-xs text-slate-500">32px</span></div>
+              </div>
+            </div>
+            <div class="ds-spec-item">
+              <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-3">Radius</p>
+              <div class="grid grid-cols-4 gap-3 text-center">
+                <div><div class="h-14 bg-white border border-slate-200 rounded-lg"></div><p class="text-[11px] mt-2 font-bold text-slate-500">lg</p></div>
+                <div><div class="h-14 bg-white border border-slate-200 rounded-xl"></div><p class="text-[11px] mt-2 font-bold text-slate-500">xl</p></div>
+                <div><div class="h-14 bg-white border border-slate-200 rounded-2xl"></div><p class="text-[11px] mt-2 font-bold text-slate-500">2xl</p></div>
+                <div><div class="h-14 bg-white border border-slate-200 rounded-3xl"></div><p class="text-[11px] mt-2 font-bold text-slate-500">3xl</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="typography" class="ds-card p-6 space-y-6">
+          <div>
+            <h2 class="ds-section-title">02. Typography</h2>
+            <p class="ds-section-desc">Font chính là Inter. Dùng heading đậm cho dashboard, body trung tính để dễ đọc dữ liệu.</p>
+          </div>
+          <div class="space-y-5">
+            <div><p class="text-[11px] font-black uppercase tracking-widest text-slate-400">Display / Page Title</p><h1 class="text-4xl font-black tracking-tight text-slate-950 mt-1">AI Ads Hub Overview</h1></div>
+            <div><p class="text-[11px] font-black uppercase tracking-widest text-slate-400">Section Title</p><h2 class="text-2xl font-extrabold tracking-tight text-slate-950 mt-1">Manage Banner</h2></div>
+            <div><p class="text-[11px] font-black uppercase tracking-widest text-slate-400">Card Title</p><h3 class="text-lg font-bold text-slate-950 mt-1">Create Banner with AI</h3></div>
+            <div><p class="text-[11px] font-black uppercase tracking-widest text-slate-400">Body / Description</p><p class="text-sm text-slate-500 leading-relaxed mt-1 max-w-3xl">Sử dụng mô tả prompt, ảnh tham chiếu và ngân sách AI credit để tạo banner. Mỗi lần generate trả về một kết quả và có thể submit để admin review.</p></div>
+            <div><p class="text-[11px] font-black uppercase tracking-widest text-slate-400">Caption</p><p class="text-xs text-slate-400 font-medium mt-1">Last updated: Jun 04, 2026</p></div>
+          </div>
+        </section>
+
+        <section id="buttons" class="ds-card p-6 space-y-6">
+          <div>
+            <h2 class="ds-section-title">03. Buttons</h2>
+            <p class="ds-section-desc">CTA chính dùng primary gradient. Action phụ dùng secondary/ghost. Destructive action dùng danger.</p>
+          </div>
+          <div class="space-y-5">
+            <div class="flex flex-wrap gap-3">
+              <button class="ds-button ds-button-primary"><i data-lucide="sparkles" class="w-4 h-4"></i>Create with AI</button>
+              <button class="ds-button ds-button-secondary"><i data-lucide="upload-cloud" class="w-4 h-4"></i>Upload Banner</button>
+              <button class="ds-button ds-button-ghost"><i data-lucide="x" class="w-4 h-4"></i>Cancel</button>
+              <button class="ds-button ds-button-success"><i data-lucide="check" class="w-4 h-4"></i>Approve</button>
+              <button class="ds-button ds-button-danger"><i data-lucide="trash-2" class="w-4 h-4"></i>Delete</button>
+              <button class="ds-button ds-button-primary opacity-60 cursor-not-allowed" disabled>Disabled</button>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <button class="ds-button ds-button-primary ds-button-sm">Small</button>
+              <button class="ds-button ds-button-primary">Default</button>
+              <button class="ds-button ds-button-primary ds-button-lg">Large</button>
+              <button class="ds-icon-button"><i data-lucide="bell" class="w-4 h-4"></i></button>
+              <button class="ds-icon-button"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+        </section>
+
+        <section id="forms" class="ds-card p-6 space-y-6">
+          <div>
+            <h2 class="ds-section-title">04. Forms</h2>
+            <p class="ds-section-desc">Bao gồm input, search, select có custom chevron, textarea, validation state và upload zone.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            <div>
+              <label class="ds-label">Banner name</label>
+              <input class="ds-input" placeholder="Summer campaign banner">
+              <p class="ds-help-text">Tên nên ngắn, dễ nhận diện.</p>
+            </div>
+            <div>
+              <label class="ds-label">Search</label>
+              <div class="relative">
+                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input class="ds-input pl-10" placeholder="Search banner...">
+              </div>
+            </div>
+            <div>
+              <label class="ds-label">Status</label>
+              <div class="ds-select-shell">
+                <select class="ds-select ds-select-control">
+                  <option>All Status</option>
+                  <option>Draft</option>
+                  <option>Pending Review</option>
+                  <option>Approved</option>
+                  <option>Active</option>
+                  <option>Rejected</option>
+                </select>
+                <i data-lucide="chevron-down" class="ds-select-chevron w-4 h-4"></i>
+              </div>
+            </div>
+            <div>
+              <label class="ds-label">Success state</label>
+              <input class="ds-input is-success" value="https://vlinkpay.com">
+              <p class="ds-help-text text-emerald-600 font-semibold">URL hợp lệ.</p>
+            </div>
+            <div>
+              <label class="ds-label">Error state</label>
+              <input class="ds-input is-error" value="invalid-url">
+              <p class="ds-error-text">Vui lòng nhập URL hợp lệ.</p>
+            </div>
+            <div>
+              <label class="ds-label">AI Prompt</label>
+              <textarea class="ds-textarea" placeholder="Describe the banner you want AI to generate..."></textarea>
+            </div>
+          </div>
+          <div class="ds-upload-zone">
+            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-4"><i data-lucide="upload-cloud" class="w-7 h-7"></i></div>
+            <h3 class="font-extrabold text-slate-950">Upload banner file</h3>
+            <p class="text-sm text-slate-500 mt-1">PNG, JPG hoặc WEBP. Khuyến nghị tỉ lệ 16:9.</p>
+            <button class="ds-button ds-button-secondary mt-5">Choose File</button>
+          </div>
+        </section>
+
+        <section id="selection" class="ds-card p-6 space-y-6">
+          <div>
+            <h2 class="ds-section-title">05. Selection Controls</h2>
+            <p class="ds-section-desc">Dùng cho filter, setting và các lựa chọn trong form tạo quảng cáo.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="ds-spec-item space-y-3">
+              <p class="font-extrabold text-slate-950">Checkbox</p>
+              <label class="ds-checkbox"><input type="checkbox" checked> Submit for review</label>
+              <label class="ds-checkbox"><input type="checkbox"> Feature this banner</label>
+            </div>
+            <div class="ds-spec-item space-y-3">
+              <p class="font-extrabold text-slate-950">Radio</p>
+              <label class="ds-radio"><input type="radio" name="source" checked> Upload manually</label>
+              <label class="ds-radio"><input type="radio" name="source"> Generate with AI</label>
+            </div>
+            <div class="ds-spec-item space-y-3">
+              <p class="font-extrabold text-slate-950">Toggle</p>
+              <label class="ds-toggle"><input type="checkbox" checked><span class="ds-toggle-track"></span> Auto renew</label>
+              <label class="ds-toggle"><input type="checkbox"><span class="ds-toggle-track"></span> Pause banner</label>
+            </div>
+          </div>
+        </section>
+
+        <section id="cards" class="space-y-5">
+          <div>
+            <h2 class="ds-section-title">06. Cards</h2>
+            <p class="ds-section-desc">Stat card, quick action card, pricing card, invoice summary và media card.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+            <div class="ds-card ds-card-interactive p-6">
+              <div class="flex items-center justify-between mb-4"><span class="text-xs font-bold text-slate-400 uppercase tracking-wider">AI Credit</span><div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center"><i data-lucide="coins" class="w-5 h-5"></i></div></div>
+              <h3 class="text-3xl font-extrabold text-slate-950">420</h3>
+              <p class="text-xs text-indigo-600 mt-1 font-semibold">View usage history</p>
+            </div>
+            <div class="ds-card ds-card-interactive p-6">
+              <div class="w-12 h-12 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center mb-4"><i data-lucide="sparkles" class="w-6 h-6"></i></div>
+              <h3 class="text-lg font-extrabold text-slate-950">Create with AI</h3>
+              <p class="text-sm text-slate-500 mt-2">Generate one banner result per prompt.</p>
+              <button class="ds-button ds-button-secondary mt-5">Start</button>
+            </div>
+            <div class="ds-card p-6 border-2 border-indigo-600 relative overflow-hidden">
+              <div class="absolute right-0 top-0 bg-indigo-600 text-white text-[10px] font-extrabold px-4 py-1.5 rounded-bl-2xl uppercase tracking-wider">Recommended</div>
+              <h3 class="text-xl font-extrabold text-slate-950">Premium</h3>
+              <div class="flex items-baseline gap-1 mt-5"><span class="text-4xl font-black text-slate-950">$79</span><span class="text-xs text-slate-400">/ month</span></div>
+              <ul class="mt-5 space-y-2 text-sm text-slate-600"><li>✓ 3 active banners</li><li>✓ Priority review</li><li>✓ 500 AI credit</li></ul>
+              <button class="ds-button ds-button-primary w-full mt-6">Choose Premium</button>
+            </div>
+            <div class="ds-card p-6 bg-indigo-50/40 border-indigo-100">
+              <h3 class="text-base font-extrabold text-slate-950 flex items-center gap-2"><i data-lucide="receipt" class="w-5 h-5 text-indigo-600"></i>Order Summary</h3>
+              <div class="mt-5 space-y-3 text-sm text-slate-600"><div class="flex justify-between"><span>Plan</span><strong>Premium</strong></div><div class="flex justify-between"><span>Monthly fee</span><strong>$79.00</strong></div><div class="h-px bg-slate-200"></div><div class="flex justify-between text-slate-950"><span>Total</span><strong class="text-indigo-600">$79.00</strong></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="status" class="ds-card p-6 space-y-6">
+          <div>
+            <h2 class="ds-section-title">07. Status, Badges & Progress</h2>
+            <p class="ds-section-desc">Dùng để biểu thị lifecycle của banner, package, review và usage limit.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="ds-badge ds-badge-success"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Active</span>
+            <span class="ds-badge ds-badge-warning"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Pending Review</span>
+            <span class="ds-badge ds-badge-danger">Rejected</span>
+            <span class="ds-badge ds-badge-info">Approved</span>
+            <span class="ds-badge ds-badge-neutral">Draft</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="ds-spec-item">
+              <div class="flex justify-between text-sm font-bold text-slate-700 mb-2"><span>Banner usage</span><span>2 / 3</span></div>
+              <div class="ds-progress"><div class="ds-progress-bar" style="width: 66%"></div></div>
+            </div>
+            <div class="ds-stepper">
+              <div class="ds-step is-done"><span class="ds-step-dot"><i data-lucide="check" class="w-3.5 h-3.5"></i></span>Draft</div><span class="ds-step-line"></span>
+              <div class="ds-step is-active"><span class="ds-step-dot">2</span>Review</div><span class="ds-step-line"></span>
+              <div class="ds-step"><span class="ds-step-dot">3</span>Publish</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="navigation" class="ds-card p-6 space-y-6">
+          <div>
+            <h2 class="ds-section-title">08. Navigation</h2>
+            <p class="ds-section-desc">Sidebar, topbar, tabs, breadcrumb và pagination.</p>
+          </div>
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
+            <div class="ds-spec-item bg-white">
+              <p class="font-extrabold text-slate-950 mb-3">Sidebar Menu</p>
+              <nav class="space-y-2">
+                <button class="ds-nav-item is-active"><i data-lucide="grid" class="w-5 h-5"></i>AI Ads Hub</button>
+                <button class="ds-nav-item"><i data-lucide="layers" class="w-5 h-5"></i>Manage Banner</button>
+                <button class="ds-nav-item"><i data-lucide="plus-circle" class="w-5 h-5"></i>Create Ad</button>
+              </nav>
+            </div>
+            <div class="xl:col-span-2 space-y-5">
+              <div class="ds-topbar-demo">
+                <div class="flex items-center gap-3"><button class="ds-icon-button"><i data-lucide="menu" class="w-4 h-4"></i></button><div class="relative hidden sm:block"><i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i><input class="ds-input pl-10 w-64" placeholder="Search..."></div></div>
+                <div class="flex items-center gap-3"><button class="ds-icon-button"><i data-lucide="bell" class="w-4 h-4"></i></button><div class="ds-avatar ds-avatar-md">JM</div></div>
+              </div>
+              <div class="ds-breadcrumb"><a href="#">Home</a><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i><a href="#">AI Ads</a><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i><span>Manage Banner</span></div>
+              <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="ds-tabs"><button class="ds-tab is-active">All</button><button class="ds-tab">Uploaded</button><button class="ds-tab">AI Generated</button></div>
+                <div class="ds-pagination"><button class="ds-page-btn"><i data-lucide="chevron-left" class="w-4 h-4"></i></button><button class="ds-page-btn is-active">1</button><button class="ds-page-btn">2</button><button class="ds-page-btn">3</button><button class="ds-page-btn"><i data-lucide="chevron-right" class="w-4 h-4"></i></button></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="data" class="ds-card overflow-hidden">
+          <div class="p-6 border-b border-slate-100">
+            <h2 class="ds-section-title">09. Data Display</h2>
+            <p class="ds-section-desc">Table, avatar, dropdown action và metadata dùng cho dashboard/data management.</p>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="ds-table">
+              <thead><tr><th>Banner</th><th>Owner</th><th>Source</th><th>Status</th><th>Usage</th><th class="text-right">Action</th></tr></thead>
+              <tbody>
+                <tr><td><strong class="text-slate-900">Summer Promo</strong><p class="text-xs text-slate-400">Created Jun 04</p></td><td><div class="flex items-center gap-2"><span class="ds-avatar ds-avatar-sm">JM</span>John Merchant</div></td><td>AI Generated</td><td><span class="ds-badge ds-badge-success">Active</span></td><td><div class="ds-progress w-28"><div class="ds-progress-bar" style="width:76%"></div></div></td><td class="text-right"><button class="text-indigo-600 font-bold text-xs">View</button></td></tr>
+                <tr><td><strong class="text-slate-900">Merchant Upgrade</strong><p class="text-xs text-slate-400">Created Jun 02</p></td><td><div class="flex items-center gap-2"><span class="ds-avatar ds-avatar-sm">AL</span>Alice</div></td><td>Uploaded</td><td><span class="ds-badge ds-badge-warning">Pending</span></td><td><div class="ds-progress w-28"><div class="ds-progress-bar" style="width:32%"></div></div></td><td class="text-right"><button class="text-indigo-600 font-bold text-xs">Review</button></td></tr>
+                <tr><td><strong class="text-slate-900">Holiday Sale</strong><p class="text-xs text-slate-400">Draft saved</p></td><td><div class="flex items-center gap-2"><span class="ds-avatar ds-avatar-sm">DN</span>Daniel</div></td><td>AI Generated</td><td><span class="ds-badge ds-badge-neutral">Draft</span></td><td><div class="ds-progress w-28"><div class="ds-progress-bar" style="width:12%"></div></div></td><td class="text-right"><button class="text-indigo-600 font-bold text-xs">Edit</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="p-6 border-t border-slate-100 flex flex-wrap gap-4 items-center justify-between">
+            <div class="ds-avatar-stack"><span class="ds-avatar ds-avatar-md">JM</span><span class="ds-avatar ds-avatar-md">AL</span><span class="ds-avatar ds-avatar-md">DN</span><span class="ds-avatar ds-avatar-md bg-slate-100 text-slate-500">+4</span></div>
+            <div class="ds-dropdown-menu"><button class="ds-dropdown-item"><i data-lucide="eye" class="w-4 h-4"></i>View detail</button><button class="ds-dropdown-item"><i data-lucide="copy" class="w-4 h-4"></i>Duplicate</button><button class="ds-dropdown-item text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i>Delete</button></div>
+          </div>
+        </section>
+
+        <section id="feedback" class="ds-card p-6 space-y-6">
+          <div>
+            <h2 class="ds-section-title">10. Feedback</h2>
+            <p class="ds-section-desc">Alert, toast, tooltip và confirmation message.</p>
+          </div>
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+            <div class="space-y-3">
+              <div class="ds-alert ds-alert-info"><i data-lucide="info" class="w-4 h-4 mt-0.5"></i><span>Banner will be reviewed by admin before publishing.</span></div>
+              <div class="ds-alert ds-alert-success"><i data-lucide="check-circle" class="w-4 h-4 mt-0.5"></i><span>Your banner has been submitted successfully.</span></div>
+              <div class="ds-alert ds-alert-warning"><i data-lucide="triangle-alert" class="w-4 h-4 mt-0.5"></i><span>Your current plan is near the banner limit.</span></div>
+              <div class="ds-alert ds-alert-danger"><i data-lucide="circle-alert" class="w-4 h-4 mt-0.5"></i><span>Banner was rejected because it violates policy.</span></div>
+            </div>
+            <div class="space-y-4">
+              <div class="ds-toast"><div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i data-lucide="check" class="w-4 h-4"></i></div><div><h4 class="font-extrabold text-slate-950 text-sm">Saved successfully</h4><p class="text-xs text-slate-500 mt-1">Your campaign settings were updated.</p></div></div>
+              <div class="flex items-center gap-4"><span class="ds-tooltip-demo" data-tooltip="Credit consumed per AI generation"><button class="ds-button ds-button-secondary"><i data-lucide="help-circle" class="w-4 h-4"></i>Tooltip</button></span><button class="ds-button ds-button-danger">Confirm Delete</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="overlays" class="ds-card p-6 space-y-6">
+          <div>
+            <h2 class="ds-section-title">11. Overlays</h2>
+            <p class="ds-section-desc">Modal, drawer, dropdown và accordion cho flow xem chi tiết hoặc cấu hình nâng cao.</p>
+          </div>
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+            <div class="ds-modal-demo-backdrop">
+              <div class="max-w-lg bg-white rounded-3xl p-6 border border-slate-100 shadow-premium mx-auto">
+                <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100"><h3 class="text-lg font-bold text-slate-900">Banner Review Detail</h3><button class="p-1 rounded-full hover:bg-slate-100 text-slate-400"><i data-lucide="x" class="w-5 h-5"></i></button></div>
+                <p class="text-sm text-slate-600 leading-relaxed">Used for banner detail, rejection reason, purchase confirmation and upgrade confirmation.</p>
+                <div class="mt-6 flex justify-end gap-3"><button class="ds-button ds-button-secondary">Close</button><button class="ds-button ds-button-primary">Confirm</button></div>
+              </div>
+            </div>
+            <div class="space-y-5">
+              <div class="ds-drawer-demo"><div class="flex items-center justify-between"><h3 class="font-extrabold text-slate-950">Filter Drawer</h3><i data-lucide="x" class="w-5 h-5 text-slate-400"></i></div><div class="mt-5 space-y-4"><div><label class="ds-label">Source</label><div class="ds-select-shell"><select class="ds-select ds-select-control"><option>All Source</option><option>Uploaded</option><option>AI Generated</option></select><i data-lucide="chevron-down" class="ds-select-chevron w-4 h-4"></i></div></div><button class="ds-button ds-button-primary w-full">Apply Filter</button></div></div>
+              <div class="space-y-2"><div class="ds-accordion-item"><button class="ds-accordion-header">Why was my banner rejected?<i data-lucide="chevron-down" class="w-4 h-4"></i></button><div class="ds-accordion-body">Show clear reason, policy rule and suggested next action.</div></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="states" class="ds-card p-6 space-y-6">
+          <div>
+            <h2 class="ds-section-title">12. States & Loading</h2>
+            <p class="ds-section-desc">Empty state, skeleton, loading spinner và no-permission state.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="ds-empty-state"><div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-4"><i data-lucide="image-off" class="w-6 h-6"></i></div><h3 class="font-extrabold text-slate-950">No banner yet</h3><p class="text-sm text-slate-500 mt-1">Create your first banner to start advertising.</p><button class="ds-button ds-button-primary mt-5">Create Banner</button></div>
+            <div class="space-y-3 p-5 rounded-2xl border border-slate-100 bg-slate-50"><div class="ds-skeleton h-5 w-2/3"></div><div class="ds-skeleton h-28 w-full"></div><div class="flex gap-3"><div class="ds-skeleton h-10 w-28"></div><div class="ds-skeleton h-10 w-24"></div></div></div>
+            <div class="ds-empty-state"><div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center mx-auto mb-4"><i data-lucide="lock" class="w-6 h-6"></i></div><h3 class="font-extrabold text-slate-950">Permission needed</h3><p class="text-sm text-slate-500 mt-1">Upgrade your package to unlock this feature.</p><button class="ds-button ds-button-secondary mt-5">Upgrade Plan</button></div>
+          </div>
+        </section>
+      </main>
+    </div>
   </div>
 
   <script>lucide.createIcons();</script>

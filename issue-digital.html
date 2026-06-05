@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   <!-- Flatpickr -->
@@ -144,7 +145,7 @@
       grid-template-columns: 420px 1fr;
       gap: 28px;
       align-items: start;
-      margin-top: 28px;
+      margin-top: 12px;
     }
 
     /* ═══════════════════════════════════════════════════════
@@ -189,10 +190,9 @@
     }
 
     .required-note {
-      font-size: 12px;
+      font-size: 10px;
       color: #ff5630;
       font-weight: 500;
-      margin-bottom: 16px;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -1369,6 +1369,23 @@
       flex-wrap: wrap;
     }
 
+    .radio-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--c-text-1);
+    }
+    .radio-option input[type="radio"] {
+      margin: 0;
+      cursor: pointer;
+      accent-color: var(--primary-main);
+      width: 15px;
+      height: 15px;
+    }
+
     .crypto-placement-option {
       display: inline-flex;
       align-items: center;
@@ -1729,28 +1746,51 @@
     ═══════════════════════════════════════════════════════ */
     .step-card {
       background: var(--c-surface);
-      border-radius: var(--radius-lg);
-      box-shadow: 0 0 2px rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12);
-      margin-bottom: 12px;
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
       overflow: hidden;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .step-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
     }
 
-    .step-card:last-child {
-      margin-bottom: 0;
+    .step-divider {
+      border: none;
+      margin: 10px 0;
+    }
+
+    .terms-chk-label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .terms-chk-label input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--c-primary);
+      cursor: pointer;
+      margin: 0;
     }
 
     .step-header {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 8px 20px;
+      padding: 6px 16px;
       cursor: pointer;
       user-select: none;
+      background: var(--c-surface-subtle);
+      border-bottom: 1px solid var(--c-border);
       transition: background var(--transition-base);
     }
 
     .step-header:hover {
-      background: var(--c-surface-subtle);
+      background: #eef2f7;
     }
 
     .step-badge {
@@ -1839,12 +1879,10 @@
     }
 
     .step-body {
-      padding: 0 20px 20px;
+      padding:   12px;
     }
 
-    .step-body--fee {
-      padding: 20px !important;
-    }
+    .step-body--fee {padding: 12px;}
 
     .crypto-summary-step {
       margin-bottom: 12px;
@@ -2010,74 +2048,118 @@
     /* ═══════════════════════════════════════════════════════
        STEP 1 — CARD TYPE GRID
     ═══════════════════════════════════════════════════════ */
-    .card-type-grid {
+    /* ── Card Type Tab Bar ── */
+    .card-type-tabs-wrap {
+      position: relative;
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+      align-items: stretch;
+      border-bottom: 2px solid var(--c-border);
+      margin-bottom: 0;
+      margin-top: 16px;
+      background: var(--c-surface);
+    }
+
+    .card-type-tabs {
+      display: flex;
+      align-items: stretch;
+      flex: 1;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .card-type-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-nav-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      flex-shrink: 0;
+      border: none;
+      background: var(--c-surface);
+      color: var(--c-text-2);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      padding: 0;
+    }
+
+    .tab-nav-btn:hover {
+      background: var(--c-primary-low);
+      color: var(--c-primary);
+    }
+
+    @media (max-width: 767px) {
+      .tab-nav-btn {
+        display: flex;
+      }
+
+      .card-type-tabs-wrap {
+        margin-bottom: 0;
+      }
     }
 
     .card-type-item {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
-      gap: 6px;
-      padding: 12px 16px;
-      border: 1.5px solid var(--c-border);
-      border-radius: var(--radius-md);
+      gap: 7px;
+      padding: 12px 18px;
+      border: none;
+      border-bottom: 3px solid transparent;
+      border-radius: 0;
       cursor: pointer;
-      transition: all var(--transition-base);
-      background: var(--c-surface);
-      min-width: 80px;
+      transition: background 0.18s, border-color 0.18s, color 0.18s;
+      background: transparent;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-bottom: -2px;
     }
 
     .card-type-item:hover {
-      border-color: rgba(0, 167, 111, 0.4);
       background: var(--c-primary-low);
+      border-bottom-color: rgba(0, 167, 111, 0.35);
     }
 
     .card-type-item.active {
-      border-color: var(--c-primary);
+      border-bottom: 2px solid var(--c-primary);
       background: var(--c-primary-low);
-      box-shadow: 0 0 0 3px rgba(0, 167, 111, 0.12);
+      box-shadow: inset 0 -3px 0 var(--c-primary);
     }
 
     .card-type-item.disabled {
-      opacity: 0.45;
+      opacity: 0.4;
       cursor: not-allowed;
-      filter: grayscale(0.3);
+      filter: grayscale(0.4);
     }
 
     .card-type-item.disabled:hover {
-      border-color: var(--c-border);
-      background: var(--c-surface);
+      border-bottom-color: transparent;
+      background: transparent;
     }
 
     .card-type-icon {
-      color: var(--c-text-3);
       display: flex;
       align-items: center;
-    }
-
-    @media (min-width: 768px) {
-      .card-type-icon img {
-        width: 54px;
-        height: 54px;
-      }
+      flex-shrink: 0;
+      opacity: 0.6;
     }
 
     .card-type-item.active .card-type-icon {
-      color: var(--c-primary);
+      opacity: 1;
     }
 
     .card-type-item span {
       font-size: 13px;
-      font-weight: 600;
-      color: var(--c-text-2);
-      white-space: nowrap;
+      font-weight: 500;
+      color: var(--grey-500);
     }
 
     .card-type-item.active span {
       color: var(--c-primary);
+      font-weight: 700;
     }
 
     /* Rank grid */
@@ -2092,7 +2174,6 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 10px;
     }
 
     .rank-pill {
@@ -2149,7 +2230,7 @@
     }
 
     /* ═══════════════════════════════════════════════════════
-       STEP 2 — CUSTOMER DETAILS
+       STEP 2 — Customer Information
     ═══════════════════════════════════════════════════════ */
     .form-row {
       display: flex;
@@ -2326,17 +2407,18 @@
     }
 
     .expiry-select {
-      flex: 0 0 auto;
-      min-width: 160px;
-      max-width: 200px;
+      flex: 1 1 auto;
+      min-width: 120px;
+      max-width: 180px;
     }
 
     @media (max-width: 767px) {
       .expiry-row {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
       }
 
       .expiry-select {
+        min-width: 0;
         max-width: 100%;
         width: 100%;
       }
@@ -2351,16 +2433,16 @@
     .preset-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 14px;
+      gap: 8px;
+      margin-bottom: 11px;
     }
 
     .preset-btn {
-      padding: 9px 20px;
+      padding: 7px 16px;
       border: 1.5px solid var(--c-border);
       border-radius: var(--radius-md);
       background: var(--c-surface);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--c-text-2);
       cursor: pointer;
@@ -2385,8 +2467,8 @@
       align-items: center;
       border: 1.5px solid var(--c-border);
       border-radius: var(--radius-md);
-      padding: 0 12px;
-      height: 42px;
+      padding: 0 10px;
+      height: 34px;
       background: var(--c-surface);
       transition: border-color var(--transition-base);
     }
@@ -2399,14 +2481,14 @@
       color: var(--c-text-3);
       margin-right: 6px;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 13px;
     }
 
     .custom-input-row input {
       border: none;
       outline: none;
       width: 70px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       font-family: inherit;
       color: var(--c-text-1);
@@ -2448,7 +2530,7 @@
     .mb-select-wrap .ts-control {
       border: 1px solid var(--c-border);
       border-radius: var(--radius-sm);
-      min-height: 42px;
+      min-height: 38px;
       padding: 0 10px;
     }
 
@@ -2459,8 +2541,8 @@
     }
 
     .mb-select-wrap .ts-control .mb-item-icon {
-      width: 26px;
-      height: 26px;
+      width: 20px;
+      height: 20px;
       border-radius: 6px;
       display: inline-flex;
       align-items: center;
@@ -2551,7 +2633,6 @@
     .mb-selected-area {
       background: var(--c-surface-subtle);
       border-radius: var(--radius-sm);
-      padding: 12px;
       margin-top: 10px;
     }
 
@@ -2707,11 +2788,17 @@
       background: transparent;
     }
 
+    .suggested-terms-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 14px 0 8px;
+    }
     .suggested-label {
       font-size: 11px;
       font-weight: 500;
       color: var(--grey-600);
-      margin: 14px 0 8px;
+      margin: 0;
     }
 
     .suggested-terms {
@@ -2733,7 +2820,15 @@
       display: flex;
       align-items: center;
       gap: 4px;
-      max-width: calc(50% - 3px);
+      max-width: calc(30% - 3px);
+      min-width: 0;
+    }
+
+    .term-chip span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-width: 0;
     }
 
     .term-chip:hover {
@@ -3044,7 +3139,7 @@
       .create-card-layout {
         grid-template-columns: 1fr;
         gap: 20px;
-        margin-top: 20px;
+        margin-top: 12px;
       }
     }
 
@@ -3055,18 +3150,18 @@
       }
 
       .page-header {
-        position: fixed;
+        /* position: fixed;
         top: 48px;
         left: 0;
         right: 0;
         z-index: 25;
         background: var(--c-surface);
-        margin: 8px 16px;
+        margin: 8px 16px; */
       }
 
       .create-card-layout {
         gap: 16px;
-        margin-top: 56px;
+        /* margin-top: 56px; */
       }
 
       .panel-card {
@@ -3078,15 +3173,15 @@
       }
 
       .panel-card-preview-card {
-        position: fixed;
-        top: 72px;
+        /* position: fixed;
+        top: 92px;
         left: 16px;
         right: 16px;
-        z-index: 20;
+        z-index: 20; */
       }
 
       .step-body {
-        padding: 0 12px 12px;
+        padding: 0 12px 14px;
       }
 
       .step-body--fee {
@@ -3098,17 +3193,13 @@
       }
 
       .step-header {
-        padding: 0px 12px;
+        padding: 12px;
         flex-wrap: wrap;
       }
 
-      /* On mobile: terms buttons drop below the title row */
-      .terms-actions-header {
-        order: 3;
-        width: 100%;
-        margin-left: 0;
-        margin-top: 8px;
-        padding-bottom: 4px;
+      .suggested-terms-header {
+        flex-wrap: wrap;
+        gap: 6px;
       }
 
       .panel-card-header {
@@ -3134,18 +3225,15 @@
         margin-left: auto;
       }
 
-      .card-type-grid {
-        gap: 6px;
-      }
+
 
       .card-type-item {
-        min-width: calc(33.333% - 8px);
-        flex: 1 1 calc(33.333% - 8px);
-        padding: 4px 8px;
+        padding: 8px 12px;
+        gap: 5px;
       }
 
       .card-type-item span {
-        font-size: 10px;
+        font-size: 12px;
       }
 
       .payment-grid {
@@ -3274,12 +3362,62 @@
       color: #dc2626;
     }
 
+    /* Membership Step 4 merged sub-sections */
+    #membershipStep4Extras {
+      margin-bottom: 4px;
+    }
+
+    .mb-step4-sub {
+      padding: 0
+    }
+
+    .mb-step4-sub-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey-700);
+      text-transform: none;
+      letter-spacing: 0;
+      margin-bottom: 10px;
+    }
+
+    .mb-label-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mb-label-row .mb-step4-sub-label {
+      min-width: 100px;
+    }
+    .mb-price-discount-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+    }
+    .mb-price-discount-item {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .mb-price-discount-item .custom-input-row {
+      width: 100%;
+    }
+    .mb-price-discount-item .custom-input-row input {
+      width: 100%;
+      min-width: 0;
+    }
+
+    .mb-step4-divider {
+      border: none;
+      border-top: 1px solid var(--grey-200);
+      margin: 6px 0;
+    }
+
     /* Membership discount section inside Purchase Price step */
     .membership-discount-label {
       font-size: 11px;
       font-weight: 700;
       color: var(--c-text-3);
-      text-transform: uppercase;
       letter-spacing: 0.6px;
       margin-bottom: 10px;
       margin-top: 2px;
@@ -3293,7 +3431,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 8px;
-      padding: 10px 14px;
+      padding: 7px 14px;
       background: var(--c-primary-low);
       border: 1.5px solid rgba(0, 167, 111, 0.22);
       border-radius: var(--radius-md);
@@ -3321,6 +3459,24 @@
       font-weight: 700;
       padding: 2px 8px;
       border-radius: 20px;
+    }
+
+    @media (max-width: 767px) {
+      .membership-sale-price {
+        font-size: 11px;
+        gap: 5px;
+        padding: 5px 10px;
+      }
+      .membership-sale-price .sale-final {
+        font-size: 14px;
+      }
+      .membership-sale-price .sale-original {
+        font-size: 11px;
+      }
+      .membership-sale-price .sale-badge {
+        font-size: 10px;
+        padding: 1px 6px;
+      }
     }
 
     .membership-discount-divider {
@@ -3363,14 +3519,49 @@
   <main class="main">
     <!-- Page Header -->
     <div class="page-header page-header--between">
-      <a href="#" class="back-btn" title="Back" onclick="event.preventDefault(); window.history.back(); return false;">
-        <i class="icon-back"></i>
-        Back
-      </a>
-      <h1 class="page-title" style="margin:0;">Issue Digital</h1>
+      <div>
+        <h1 class="page-title" style="margin:0;">Issue Digital</h1>
+        <p class="page-description" style="margin:0;">Store Issue - bán trực tiếp cho khách hàng tại cửa hàng</p>
+      </div>
       <button class="btn-save-draft" onclick="saveDraft()">
         <i data-lucide="save" style="width:16px;height:16px;"></i>
         <span class="btn-save-text">Save for update later</span>
+      </button>
+    </div>
+
+    <!-- Card type tab bar — full width below page header -->
+    <div class="card-type-tabs-wrap" id="cardTypeTabBar">
+      <button class="tab-nav-btn tab-nav-prev" onclick="navigateTab(-1)" aria-label="Previous tab">
+        <i data-lucide="chevron-left" style="width:18px;height:18px;"></i>
+      </button>
+      <div class="card-type-tabs" id="cardTypeTabScroll">
+        <div class="card-type-item active" onclick="selectCardType(this,'Gift Card','0')">
+          <div class="card-type-icon"><img src="images/issue-digital/icon-gift-card.png" width="20" height="20"></div>
+          <span>Gift Card</span>
+        </div>
+        <div class="card-type-item" onclick="selectCardType(this,'Membership','2')">
+          <div class="card-type-icon"><img src="images/issue-digital/icon-membership.png" width="20" height="20"></div>
+          <span>Membership</span>
+        </div>
+        <div class="card-type-item" onclick="selectCardType(this,'Crypto Card','5')">
+          <div class="card-type-icon"><img src="images/issue-digital/icon-crypto-card.png" width="20" height="20"></div>
+          <span>Crypto Card</span>
+        </div>
+        <div class="card-type-item" onclick="selectCardType(this,'Prepaid Card','4')">
+          <div class="card-type-icon"><img src="images/issue-digital/icon-prepaid.png" width="20" height="20"></div>
+          <span>Prepaid Card</span>
+        </div>
+        <div class="card-type-item" onclick="selectCardType(this,'Discount','3')">
+          <div class="card-type-icon"><img src="images/issue-digital/icon-discount.png" width="20" height="20"></div>
+          <span>Discount</span>
+        </div>
+        <div class="card-type-item" onclick="selectCardType(this,'Promotion','1')">
+          <div class="card-type-icon"><img src="images/issue-digital/icon-promotion.png" width="20" height="20"></div>
+          <span>Promotion</span>
+        </div>
+      </div>
+      <button class="tab-nav-btn tab-nav-next" onclick="navigateTab(1)" aria-label="Next tab">
+        <i data-lucide="chevron-right" style="width:18px;height:18px;"></i>
       </button>
     </div>
 
@@ -3826,55 +4017,27 @@
 
       <!-- ══════════════════ RIGHT PANEL ══════════════════ -->
       <div class="right-panel">
+
         <p class="required-note">
           * required
         </p>
 
-        <!-- STEP 1: Select Product - ẩn khi role=personal -->
-        <div class="step-card" id="step1SelectProductLine">
+        <!-- STEP 1: Card Details — only visible for Discount & Promotion -->
+        <div class="step-card" id="step1SelectProductLine" style="display:none;">
           <div class="step-header open" id="shdr-1">
             <div class="step-badge" id="sbadge-1">Step 1:</div>
             <div class="step-title-text">
-              Select Product <span class="step-required">*</span>
+              Card Details
               <span id="productServiceLabel" class="step-tooltip-trigger" data-step-tooltip-id="product"
-                title="Choose the type of product you want to issue. Each option serves a different purpose."
-                role="button" tabindex="0" aria-label="About this step" onclick="event.stopPropagation()"><i
-                  data-lucide="info" style="width:14px;height:14px;"></i></span>
+                title="Choose the rank for this card." role="button" tabindex="0" aria-label="About this step"
+                onclick="event.stopPropagation()"><i data-lucide="info" style="width:14px;height:14px;"></i></span>
             </div>
             <div class="step-chevron" onclick="toggleStep(1)"><i data-lucide="chevron-down"
                 style="width:16px;height:16px;"></i></div>
           </div>
           <div class="collapse-wrap open" id="scollapse-1">
             <div class="step-body">
-              <div class="card-type-grid" id="cardTypeGrid">
-                <div class="card-type-item active" onclick="selectCardType(this,'Gift Card','0')">
-                  <div class="card-type-icon"><img src="images/issue-digital/icon-gift-card.png" width="48" height="48"></div>
-                  <span>Gift Card</span>
-                </div>
-                <div class="card-type-item" onclick="selectCardType(this,'Membership','2')">
-                  <div class="card-type-icon"><img src="images/issue-digital/icon-membership.png" width="48" height="48"></div>
-                  <span>Membership</span>
-                </div>
-                <div class="card-type-item" onclick="selectCardType(this,'Crypto Card','5')">
-                  <div class="card-type-icon"><img src="images/issue-digital/icon-crypto-card.png" width="48" height="48"></div>
-                  <span>Crypto Card</span>
-                </div>
-                <div class="card-type-item" onclick="selectCardType(this,'Prepaid Card','4')">
-                  <div class="card-type-icon"><img src="images/issue-digital/icon-prepaid.png" width="48" height="48"></div>
-                  <span>Prepaid Card</span>
-                </div>
-                <div class="card-type-item" onclick="selectCardType(this,'Discount','3')">
-                  <div class="card-type-icon"><img src="images/issue-digital/icon-discount.png" width="48" height="48"></div>
-                  <span>Discount</span>
-                </div>
-                <div class="card-type-item" onclick="selectCardType(this,'Promotion','1')">
-                  <div class="card-type-icon"><img src="images/issue-digital/icon-promotion.png" width="48" height="48"></div>
-                  <span>Promotion</span>
-                </div>
-
-              </div>
-
-              <!-- Rank Grid (hidden for PrepaidCard) -->
+              <!-- Rank Grid -->
               <div id="rankSection">
                 <div class="rank-grid" id="rankGrid">
                   <button class="rank-pill" onclick="toggleRank(this)">STARTER</button>
@@ -3889,15 +4052,110 @@
                   </div>
                 </div>
               </div>
+              <div class="mb-step4-divider"></div>
+             
+              <!-- Promotion Value (Promotion type only) -->
+              <div class="mb-step4-sub" id="s1PromotionSection" style="display:none;">
+                <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px;">
+                  <div class="mb-step4-sub-label" style="margin-bottom:0;flex-shrink:0;">Promotion Value</div>
+                  <label class="radio-option">
+                    <input type="radio" name="s1PromoMode" value="amount" checked onchange="setPromoMode(this,'amount')">
+                    <span>By Amount</span>
+                  </label>
+                  <label class="radio-option">
+                    <input type="radio" name="s1PromoMode" value="discount" onchange="setPromoMode(this,'discount')">
+                    <span>By Discount</span>
+                  </label>
+                </div>
+                <div id="s1PromoAmountPreset">
+                  <div class="preset-row">
+                    <button class="preset-btn active" onclick="selectPreset(this,'promoAmount')">$50</button>
+                    <button class="preset-btn" onclick="selectPreset(this,'promoAmount')">$100</button>
+                    <button class="preset-btn" onclick="selectPreset(this,'promoAmount')">$250</button>
+                    <div class="custom-input-row"><span class="symbol">$</span><input type="text" placeholder="Custom"
+                        oninput="clearPresets('promoAmount');updateCardValueBadge();">
+                    </div>
+                  </div>
+                </div>
+                <div id="s1PromoDiscountPreset" style="display:none;">
+                  <div class="preset-row">
+                    <button class="preset-btn active" onclick="selectPreset(this,'promoDisc')">5%</button>
+                    <button class="preset-btn" onclick="selectPreset(this,'promoDisc')">10%</button>
+                    <button class="preset-btn" onclick="selectPreset(this,'promoDisc')">15%</button>
+                    <div class="custom-input-row"><span class="symbol">%</span><input type="text" placeholder="Custom"
+                        oninput="clearPresets('promoDisc');updateCardValueBadge();">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Price + Discount (Discount type only) -->
+              <div class="mb-step4-sub" id="s1PriceDiscountSection">
+                <div class="mb-price-discount-row">
+                  <div class="mb-price-discount-item">
+                    <div class="mb-step4-sub-label" style="margin-bottom:6px;">Package Price</div>
+                    <div class="preset-row" style="margin:0;">
+                      <div class="custom-input-row">
+                        <span class="symbol">$</span>
+                        <input type="text" placeholder="" id="s1CustomPrice" oninput="updateS1SalePrice()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-price-discount-item">
+                    <div class="mb-step4-sub-label" style="margin-bottom:6px;">Discount</div>
+                    <div class="preset-row" id="s1DiscountRow" style="margin:0;">
+                      <div class="custom-input-row">
+                        <span class="symbol">%</span>
+                        <input type="text" id="s1DiscountInput" placeholder="Custom" oninput="document.querySelectorAll('#s1DiscountRow .preset-btn').forEach(b=>b.classList.remove('active'));updateS1SalePrice()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-price-discount-item" id="s1SalePriceWrap" style="display:none;">
+
+                    <div id="s1SalePriceDisplay" class="membership-sale-price" style="margin-top:0;"></div>
+                  </div>
+                </div>
+              </div>
+               <!-- Duration -->
+              <div class="mb-step4-sub" style="margin-top:10px;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <div class="mb-step4-sub-label" style="margin-bottom:0;flex-shrink:0;">Duration</div>
+                  <div class="expiry-row" style="flex:1;margin:0;">
+                    <select class="input-minimal select-minimal expiry-select" id="s1ExpirationSelect"
+                      onchange="onS1ExpirationChange()">
+                      <option value="30" selected>30 Days</option>
+                      <option value="60">60 Days</option>
+                      <option value="90">90 Days</option>
+                      <option value="180">180 Days</option>
+                      <option value="365">365 Days</option>
+                      <option value="custom">Custom Date</option>
+                    </select>
+                    <span id="s1CustomDateWrap" style="display:none;">
+                      <div class="date-input-wrap flatpickr-clear-wrap" style="width:190px;flex-shrink:0;">
+                        <i data-lucide="calendar" class="date-input-icon"></i>
+                        <input type="text" class="input-minimal fp-input date-has-icon" id="s1CustomDate"
+                          placeholder="Pick a date" readonly>
+                        <button type="button" class="date-clear" id="s1CustomDateClear" aria-label="Clear date"
+                          title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                          </svg></button>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- STEP 2: Customer Details -->
+        <!-- STEP 2: Customer Information -->
         <div class="step-card" id="step2Card">
           <div class="step-header open" id="shdr-2">
             <div class="step-badge" id="sbadge-2">Step 2:</div>
-            <div class="step-title-text" id="step2Title"><span id="step2TitleLabel">Customer Details</span>
+            <div class="step-title-text" id="step2Title"><span id="step2TitleLabel">Customer Information</span>
               <span class="step-tooltip-trigger" data-step-tooltip-id="customer" role="button" tabindex="0"
                 aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info"
                   style="width:14px;height:14px;"></i></span>
@@ -3912,6 +4170,10 @@
                 <div class="form-field">
                   <input type="text" class="input-minimal" placeholder="Enter full name" id="holderName"
                     oninput="updateCardHolder(this.value)">
+                </div>
+                 <!-- Email: placeholder changes for Membership -->
+                <div class="form-field" id="emailFieldWrap">
+                  <input type="email" class="input-minimal" placeholder="Enter email address" id="holderEmail">
                 </div>
                 <!-- Birthday: only for Membership -->
                 <div class="form-field" id="birthdayField" style="display:none;">
@@ -3928,11 +4190,6 @@
                       </svg></button>
                     <i data-lucide="calendar" class="date-input-icon-end"></i>
                   </div>
-                </div>
-
-                <!-- Email: placeholder changes for Membership -->
-                <div class="form-field" id="emailFieldWrap">
-                  <input type="email" class="input-minimal" placeholder="Enter email address" id="holderEmail">
                 </div>
               </div>
 
@@ -4002,7 +4259,7 @@
                   <option value="60">60 Days</option>
                   <option value="90">90 Days</option>
                   <option value="180">180 Days</option>
-                   <option value="365">365 Days</option>
+                  <option value="365">365 Days</option>
                   <option value="custom">Custom Date</option>
                 </select>
                 <span id="customDateWrap" style="display:none;">
@@ -4124,6 +4381,98 @@
           </div>
           <div class="collapse-wrap open" id="scollapse-4">
             <div class="step-body">
+              <!-- Membership: Rank + Expiration + Purchase Price merged into Step 4 -->
+              <div id="membershipStep4Extras" style="display:none;">
+                <!-- Rank Section -->
+                <div class="mb-step4-sub" id="mbRankArea">
+                  <div class="rank-grid" style="margin-top: 0;">
+                    <button class="rank-pill" onclick="toggleRank(this)">STARTER</button>
+                    <button class="rank-pill" onclick="toggleRank(this)">BRONZE</button>
+                    <button class="rank-pill" onclick="toggleRank(this)">SILVER</button>
+                    <button class="rank-pill" onclick="toggleRank(this)">GOLD</button>
+                    <button class="rank-pill active" onclick="toggleRank(this)">PLATINUM</button>
+                    <button class="rank-pill" onclick="toggleRank(this)">ELITE</button>
+                    <div class="rank-pill-custom">
+                      <input type="text" placeholder="Custom" oninput="setCustomRank(this.value)"
+                        onfocus="clearRankSelection()">
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-step4-divider"></div>
+                
+                <!-- <div class="mb-step4-divider"></div> -->
+                <!-- Purchase Price -->
+                <div class="mb-step4-sub">
+                  <div class="mb-price-discount-row">
+                    <div class="mb-price-discount-item">
+                      <div class="mb-step4-sub-label" style="margin-bottom:6px;">Package Price</div>
+                      <div class="preset-row" id="mbPriceRow" style="margin:0;">
+                        <!-- <button class="preset-btn active" onclick="selectPreset(this,'price')">$50</button>
+                        <button class="preset-btn" onclick="selectPreset(this,'price')">$100</button>
+                        <button class="preset-btn" onclick="selectPreset(this,'price')">$250</button>
+                        <button class="preset-btn" onclick="selectPreset(this,'price')">$500</button> -->
+                        <div class="custom-input-row">
+                          <span class="symbol">$</span>
+                          <input type="text" placeholder="" id="mbCustomPrice" oninput="clearPresets('price')">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-price-discount-item">
+                      <div class="mb-step4-sub-label" style="margin-bottom:6px;display:flex;align-items:center;gap:4px;">
+                        <iconify-icon icon="material-symbols:percent-discount-rounded" width="14"></iconify-icon>
+                        Discount
+                      </div>
+                      <div class="preset-row" id="mbMembershipDiscountRow" style="margin:0;">
+                        <!-- <button class="preset-btn" onclick="selectMembershipDiscount(5,this)">5%</button>
+                        <button class="preset-btn" onclick="selectMembershipDiscount(10,this)">10%</button>
+                        <button class="preset-btn" onclick="selectMembershipDiscount(15,this)">15%</button>
+                        <button class="preset-btn" onclick="selectMembershipDiscount(20,this)">20%</button> -->
+                        <div class="custom-input-row">
+                          <input type="text" id="mbMembershipDiscountInput" placeholder=""
+                            oninput="onMembershipDiscountInput(this)">
+                            <span class="symbol">%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-price-discount-item" id="mbSalePriceWrap" style="display:none;">
+                      <div id="mbSalePriceDisplay" class="membership-sale-price"></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Expiration Date -->
+                <div class="mb-step4-sub" style="margin-top: 12px;">
+                  <div style="display:flex;align-items:center;gap:12px;">
+                    <div class="mb-step4-sub-label" style="margin-bottom:0;flex-shrink:0;">Expiration</div>
+                    <div class="expiry-row" style="flex:1;margin:0;">
+                      <select class="input-minimal select-minimal expiry-select" id="mbExpirationSelect"
+                        onchange="onMbExpirationChange()">
+                        <option value="30" selected>30 Days</option>
+                        <option value="60">60 Days</option>
+                        <option value="90">90 Days</option>
+                        <option value="180">180 Days</option>
+                        <option value="365">365 Days</option>
+                        <option value="custom">Custom Date</option>
+                      </select>
+                      <span id="mbCustomDateWrap" style="display:none;">
+                        <div class="date-input-wrap flatpickr-clear-wrap" style="width:190px;flex-shrink:0;">
+                          <i data-lucide="calendar" class="date-input-icon"></i>
+                          <input type="text" class="input-minimal fp-input date-has-icon" id="mbCustomDate"
+                            placeholder="Pick a date" readonly>
+                          <button type="button" class="date-clear" id="mbCustomDateClear" aria-label="Clear date"
+                            title="Clear"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round">
+                              <line x1="18" y1="6" x2="6" y2="18" />
+                              <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg></button>
+                          <i data-lucide="calendar" class="date-input-icon-end"></i>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <!-- Gift Card / Prepaid (default) -->
               <div id="valueGroup">
                 <div class="preset-row">
@@ -4140,14 +4489,28 @@
 
               <!-- Discount Group -->
               <div id="discountGroup" style="display:none;">
-                <div class="preset-row">
-                  <button class="preset-btn active" onclick="selectPreset(this,'discount')">5%</button>
-                  <button class="preset-btn" onclick="selectPreset(this,'discount')">10%</button>
-                  <button class="preset-btn" onclick="selectPreset(this,'discount')">15%</button>
-                  <button class="preset-btn" onclick="selectPreset(this,'discount')">20%</button>
-                  <div class="custom-input-row">
-                    <span class="symbol">%</span>
-                    <input type="text" placeholder="Custom" oninput="clearPresets('discount')">
+                <div class="mb-price-discount-row">
+                  <div class="mb-price-discount-item">
+                    <div class="mb-step4-sub-label" style="margin-bottom:6px;">Package Price</div>
+                    <div class="preset-row" id="dgPriceRow" style="margin:0;">
+                      <div class="custom-input-row">
+                        <span class="symbol">$</span>
+                        <input type="text" placeholder="" id="dgCustomPrice" oninput="updateDiscountSalePrice()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-price-discount-item">
+                    <div class="mb-step4-sub-label" style="margin-bottom:6px;">Discount</div>
+                    <div class="preset-row" style="margin:0;">
+                      <div class="custom-input-row">
+                        <span class="symbol">%</span>
+                        <input type="text" id="dgDiscountInput" placeholder="Custom" oninput="clearPresets('discount');updateDiscountSalePrice()">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-price-discount-item" id="dgSalePriceWrap" style="display:none;">
+
+                    <div id="dgSalePriceDisplay" class="membership-sale-price" style="margin-top:0;"></div>
                   </div>
                 </div>
               </div>
@@ -4182,14 +4545,18 @@
 
               <!-- Membership Benefits: Select + Cards -->
               <div id="membershipBenefits" style="display:none;">
-                <div class="mb-select-wrap">
-                  <select class="mb-select" id="mbBenefitSelect" multiple placeholder="Select Benefit"></select>
-                </div>
-                <div class="mb-add-row">
-                  <button class="mb-add-btn" onclick="openAddBenefitModal()">
-                    <i data-lucide="plus" style="width:12px;height:12px;"></i>
-                    Add Benefit
-                  </button>
+               
+                <div class="mb-select-add-row" style="margin-top:12px ;">
+                   <div class="mb-step4-sub-label" style="margin-bottom:0 ;">Benefits</div>
+                  <div class="mb-select-wrap">
+                    <select class="mb-select" id="mbBenefitSelect" multiple placeholder="Select Benefit"></select>
+                  </div>
+                  <div class="mb-add-row">
+                    <button class="mb-add-btn" onclick="openAddBenefitModal()">
+                      <i data-lucide="plus" style="width:12px;height:12px;"></i>
+                      Add
+                    </button>
+                  </div>
                 </div>
                 <div class="mb-selected-area is-empty" id="mbSelectedArea">
                   <div class="mb-selected-label">Selected Benefits</div>
@@ -4253,28 +4620,20 @@
 
         <!-- STEP 6: Terms & Conditions -->
         <div class="step-card">
-          <div class="step-header open" id="shdr-6">
-            <div class="step-badge" id="sbadge-6">Step 6:</div>
-            <div class="step-title-text" id="termsStepTitle">Terms & Conditions
+          <div class="step-header" id="shdr-6">
+            <label class="terms-chk-label" onclick="event.stopPropagation()">
+              <input type="checkbox" id="termsExpandChk" onchange="onTermsCheckChange(this)">
+            </label>
+            <div class="step-title-text" id="termsStepTitle"
+              onclick="document.getElementById('termsExpandChk').click();" style="cursor:pointer;">Terms & Conditions
               <span class="step-tooltip-trigger" data-step-tooltip-id="terms" role="button" tabindex="0"
                 aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info"
                   style="width:14px;height:14px;"></i></span>
             </div>
-            <!-- Terms actions: desktop — in header; mobile — in body -->
-            <div class="terms-actions terms-actions-header" id="termsActions" onclick="event.stopPropagation()">
-              <button class="btn-terms" onclick="loadTerms()">
-                <i data-lucide="folder-open" style="width:13px;height:13px;"></i>
-                Load Terms
-              </button>
-              <button class="btn-terms" onclick="saveTerms()">
-                <i data-lucide="save" style="width:13px;height:13px;"></i>
-                Save Terms
-              </button>
-            </div>
-            <div class="step-chevron" onclick="toggleStep(6)"><i data-lucide="chevron-down"
-                style="width:16px;height:16px;"></i></div>
+            <div class="step-chevron" onclick="document.getElementById('termsExpandChk').click();"><i
+                data-lucide="chevron-down" style="width:16px;height:16px;"></i></div>
           </div>
-          <div class="collapse-wrap open" id="scollapse-6">
+          <div class="collapse-wrap" id="scollapse-6">
             <div class="step-body">
               <div class="crypto-vlp-row" id="cryptoVlpRow" style="display:none;margin-bottom:8px;">
                 <label class="crypto-vlp-check">
@@ -4303,27 +4662,39 @@
                 <textarea class="terms-textarea" id="termsTextarea" rows="3" placeholder="Enter terms and conditions..."
                   oninput="syncTermsToCard()"></textarea>
               </div>
-              <div class="suggested-label" id="suggestedTermsLabel">Suggested Terms</div>
+              <div class="suggested-terms-header">
+                <div class="suggested-label" id="suggestedTermsLabel">Suggested Terms</div>
+                <div class="terms-actions" id="termsActions" onclick="event.stopPropagation()">
+                  <button class="btn-terms" onclick="loadTerms()">
+                    <i data-lucide="folder-open" style="width:13px;height:13px;"></i>
+                    Load Terms
+                  </button>
+                  <button class="btn-terms" onclick="saveTerms()">
+                    <i data-lucide="save" style="width:13px;height:13px;"></i>
+                    Save Terms
+                  </button>
+                </div>
+              </div>
               <div class="suggested-terms" id="suggestedTermsBox">
                 <div class="term-chip" onclick="addTerm('Valid for services only. Not applicable to products.')">
                   <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
-                  Valid for services only.
+                  <span>Valid for services only.</span>
                 </div>
                 <div class="term-chip" onclick="addTerm('No cash value.')">
                   <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
-                  No cash value
+                  <span>No cash value</span>
                 </div>
                 <div class="term-chip" onclick="addTerm('Valid for one-time use per invoice.')">
                   <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
-                  Valid for one-time use per invoice
+                  <span>Valid for one-time use per invoice</span>
                 </div>
                 <div class="term-chip" onclick="addTerm('Please present this card before payment.')">
                   <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
-                  Please present this card before payment
+                  <span>Please present this card before payment</span>
                 </div>
                 <div class="term-chip" onclick="addTerm('Discount and membership credit cannot be used together.')">
                   <i data-lucide="plus" style="width:12px;height:12px;flex-shrink:0"></i>
-                  Discount and membership credit cannot be used together
+                  <span>Discount and membership credit cannot be used together</span>
                 </div>
 
               </div>
@@ -4421,9 +4792,8 @@
               <span class="fee-value" data-fee-display>$0.00</span>
             </div>
 
-            <div id="cryptoFeeDetails" >
-              <div class=" divider">
-              </div>
+            <div id="cryptoFeeDetails">
+              <div class="step-divider"></div>
               <div class="fee-row">
                 <span class="fee-label">Total Fees <span id="reloadTotalFeesTipTrigger" class="reload-summary-info-icon"
                     title="Fees overview">
@@ -4490,7 +4860,7 @@
         selectProductLine: 'Choose the type of product you want to issue. Each option serves a different purpose.',
         customerInformation: 'Enter the customer information.',
         expiration: 'Select how long the membership or card will remain valid.',
-        benefitSetup: 'Configure the benefits included in this membership.',
+        benefitSetup: 'Bạn có thể cấu hình sẵn các gói membership trong <strong>Settings → Membership Packages</strong>. Sau đó chọn nhanh gói phù hợp mỗi lần phát hành thẻ mà không cần nhập lại thông tin.',
         purchasePrice: 'Set the price customers will pay.',
         termsAndConditions: 'Add the terms and conditions that customers should know when using this gift card.',
         paymentMethod: 'Select how the customer will pay for this card.',
@@ -4641,6 +5011,14 @@
       if (sectionId === 'adv-text-colors' && ch) {
         ch.style.transform = opening ? 'rotate(180deg)' : '';
       }
+    }
+
+    function onTermsCheckChange(chk) {
+      const body = document.getElementById('scollapse-6');
+      const hdr = document.getElementById('shdr-6');
+      if (!body || !hdr) return;
+      body.classList.toggle('open', chk.checked);
+      hdr.classList.toggle('open', chk.checked);
     }
 
     function toggleStep(n) {
@@ -5352,6 +5730,15 @@
     var STEP4_TITLE_TOOLTIP_SUFFIX = '<span class="step-tooltip-trigger" data-step-tooltip-id="amount" role="button" tabindex="0" aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info" style="width:14px;height:14px;"></i></span>';
     var TERMS_TITLE_TOOLTIP_SUFFIX = '<span class="step-tooltip-trigger" data-step-tooltip-id="terms" role="button" tabindex="0" aria-label="About this step" onclick="event.stopPropagation()"><i data-lucide="info" style="width:14px;height:14px;"></i></span>';
 
+    function navigateTab(dir) {
+      const items = Array.from(document.querySelectorAll('#cardTypeTabScroll .card-type-item:not(.disabled)'));
+      const activeIdx = items.findIndex(i => i.classList.contains('active'));
+      const nextIdx = activeIdx + dir;
+      if (nextIdx < 0 || nextIdx >= items.length) return;
+      items[nextIdx].click();
+      items[nextIdx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+
     function selectCardType(el, name, typeId) {
       if (el.classList.contains('disabled')) return;
       document.querySelectorAll('.card-type-item').forEach(i => i.classList.remove('active'));
@@ -5379,54 +5766,51 @@
         logoBox.textContent = CARD_TYPE_ICONS[name] || '💳';
       }
 
-      // Show/hide rank (hidden for Gift Card, Prepaid Card & Crypto Card)
+      // Show/hide rank in Step 1 (only for Discount & Promotion; Membership rank is inside Step 4)
       const rankSection = document.getElementById('rankSection');
       const previewRank = document.getElementById('previewRank');
-      if (previewRank) previewRank.style.display = (typeId === '0' || typeId === '4' || typeId === '5') ? 'none' : '';
-      if (rankSection) rankSection.style.display = (typeId === '0' || typeId === '4' || typeId === '5') ? 'none' : '';
+      const rankHidden = (typeId === '0' || typeId === '2' || typeId === '4' || typeId === '5');
+      if (previewRank) previewRank.style.display = rankHidden ? 'none' : '';
+      if (rankSection) rankSection.style.display = rankHidden ? 'none' : '';
+      const step1Card = document.getElementById('step1SelectProductLine');
+      if (step1Card) step1Card.style.display = rankHidden ? 'none' : '';
 
-      // Show/hide Step 3 (Expiration — hidden for GiftCard & PrepaidCard & Crypto)
+      // Step 3 (Expiration): hidden for GiftCard, PrepaidCard, Crypto, Membership, Discount, Promotion
+      // Discount & Promotion: Duration now in Step 1 Card Details
       const step3 = document.getElementById('step3Card');
-      if (step3) step3.style.display = (typeId === '0' || typeId === '4' || typeId === '5') ? 'none' : '';
+      if (step3) step3.style.display = (typeId === '0' || typeId === '1' || typeId === '2' || typeId === '3' || typeId === '4' || typeId === '5') ? 'none' : '';
 
-      // Show/hide Step 4 (Value / Discount / Benefits) — hidden for Crypto
+      // Step 4: hidden for Crypto, Discount, Promotion — all fields now in Step 1
       const step4 = document.getElementById('step4Card');
-      if (step4) step4.style.display = (typeId === '5') ? 'none' : '';
+      if (step4) step4.style.display = (typeId === '5' || typeId === '3' || typeId === '1') ? 'none' : '';
 
-      // Membership: swap Step 3 (Expiry) and Step 4 (Benefits) positions
-      if (step3 && step4 && step3.parentNode) {
-        if (typeId === '2') {
-          // Move step4 before step3 (Benefits at pos 3, Expiry at pos 4)
-          if (step3.previousElementSibling !== step4) {
-            step3.parentNode.insertBefore(step4, step3);
-          }
-          document.getElementById('sbadge-4').textContent = 'Step 3:';
-          document.getElementById('sbadge-3').textContent = 'Step 4:';
-        } else {
-          // Restore original order: Expiry at pos 3, Benefits at pos 4
-          if (step4.previousElementSibling !== step3) {
-            step3.parentNode.insertBefore(step3, step4);
-          }
-          document.getElementById('sbadge-3').textContent = 'Step 3:';
-          document.getElementById('sbadge-4').textContent = 'Step 4:';
-        }
+      // Step 1 sections: show Promotion or Discount block; shared divider before them
+      const s1PromoSection = document.getElementById('s1PromotionSection');
+      const s1PriceSection = document.getElementById('s1PriceDiscountSection');
+      if (s1PromoSection) s1PromoSection.style.display = (typeId === '1') ? '' : 'none';
+      if (s1PriceSection) s1PriceSection.style.display = (typeId === '3') ? '' : 'none';
+      const s1DividerBefore = s1PriceSection && s1PriceSection.previousElementSibling;
+      if (s1DividerBefore && s1DividerBefore.classList.contains('mb-step4-divider')) {
+        s1DividerBefore.style.display = (typeId === '1' || typeId === '3') ? '' : 'none';
       }
 
-      // Show/hide step 5 (Purchase Price — for Membership & Discount)
+      // Restore natural DOM order (step3 before step4) for all types — no swapping needed
+      if (step3 && step4 && step3.parentNode && step4.previousElementSibling !== step3 && step3.style.display !== 'none') {
+        step3.parentNode.insertBefore(step3, step4);
+      }
+      document.getElementById('sbadge-3').textContent = 'Step 3:';
+      document.getElementById('sbadge-4').textContent = 'Step 4:';
+
+      // Step 5 (Purchase Price) hidden — price is now merged into step1 (Discount) or step4 (Membership)
       const step5 = document.getElementById('step5Card');
-      if (step5) step5.style.display = (typeId === '2' || typeId === '3') ? '' : 'none';
-      // Show Discount section inside Purchase Price only for Membership
+      if (step5) step5.style.display = 'none';
+      // Discount section inside step5 shown only for Discount type
       const mbDiscSection = document.getElementById('membershipDiscountSection');
-      if (mbDiscSection) {
-        mbDiscSection.style.display = (typeId === '2') ? '' : 'none';
-        if (typeId !== '2') {
-          document.querySelectorAll('#membershipDiscountRow .preset-btn').forEach(b => b.classList.remove('active'));
-          const mbDiscInput = document.getElementById('membershipDiscountInput');
-          if (mbDiscInput) mbDiscInput.value = '';
-          const mbSaleDisplay = document.getElementById('membershipSalePriceDisplay');
-          if (mbSaleDisplay) mbSaleDisplay.style.display = 'none';
-        }
-      }
+      if (mbDiscSection) mbDiscSection.style.display = 'none';
+
+      // Show/hide merged Membership extras inside Step 4 (rank + expiry + price)
+      const mbExtras = document.getElementById('membershipStep4Extras');
+      if (mbExtras) mbExtras.style.display = (typeId === '2') ? '' : 'none';
 
       // Update Step 4 content
       const vg = document.getElementById('valueGroup');
@@ -5439,10 +5823,26 @@
         vg.style.display = ''; s4t.innerHTML = 'Amount <span class="step-required">*</span>' + STEP4_TITLE_TOOLTIP_SUFFIX;
       } else if (typeId === '3') {
         dg.style.display = ''; s4t.innerHTML = 'Discount Value <span class="step-required">*</span>' + STEP4_TITLE_TOOLTIP_SUFFIX;
+        const s1Price3 = document.getElementById('s1CustomPrice');
+        if (s1Price3 && !s1Price3.value) s1Price3.value = '99';
+        const s1Disc3 = document.getElementById('s1DiscountInput');
+        if (s1Disc3 && !s1Disc3.value) { s1Disc3.value = '5'; document.querySelectorAll('#s1DiscountRow .preset-btn').forEach(b => b.classList.remove('active')); }
+        updateS1SalePrice();
       } else if (typeId === '1') {
         pg.style.display = ''; s4t.innerHTML = 'Promotion Value <span class="step-required">*</span>' + STEP4_TITLE_TOOLTIP_SUFFIX;
+        const s1Price1 = document.getElementById('s1CustomPrice');
+        if (s1Price1 && !s1Price1.value) s1Price1.value = '99';
+        const s1Disc1 = document.getElementById('s1DiscountInput');
+        if (s1Disc1 && !s1Disc1.value) { s1Disc1.value = '5'; document.querySelectorAll('#s1DiscountRow .preset-btn').forEach(b => b.classList.remove('active')); }
+        updateS1SalePrice();
       } else if (typeId === '2') {
-        mb.style.display = ''; s4t.innerHTML = 'Membership Benefits <span class="step-required">*</span>' + STEP4_TITLE_TOOLTIP_SUFFIX;
+        mb.style.display = ''; s4t.innerHTML = 'Membership Package' + STEP4_TITLE_TOOLTIP_SUFFIX;
+        // Set defaults if fields are empty
+        const mbPrice = document.getElementById('mbCustomPrice');
+        if (mbPrice && !mbPrice.value) { mbPrice.value = '99'; }
+        const mbDisc = document.getElementById('mbMembershipDiscountInput');
+        if (mbDisc && !mbDisc.value) { mbDisc.value = '5'; onMembershipDiscountInput(mbDisc); }
+        updateMembershipSalePrice();
       }
 
       // Crypto Step: show only when Crypto Card
@@ -5507,9 +5907,18 @@
       const cbStripe = document.querySelector('.cb-stripe');
       if (cbStripe) cbStripe.style.display = isMembership ? 'none' : '';
 
-      // Show/hide Step 2 (Customer Details — hidden for Crypto Card)
+      // Show/hide Step 2 (Customer Information — hidden for Crypto Card)
       const step2 = document.getElementById('step2Card');
       if (step2) step2.style.display = isCrypto ? 'none' : '';
+
+      // Customer Information always first among all step-cards
+      if (step2 && step2.parentNode && step2.style.display !== 'none') {
+        const panel = step2.parentNode;
+        const firstStep = panel.querySelector('.step-card');
+        if (firstStep && firstStep !== step2) {
+          panel.insertBefore(step2, firstStep);
+        }
+      }
 
       // Step 2 title + fields based on card type
       const nameInput = document.getElementById('holderName');
@@ -5546,19 +5955,20 @@
         if (nameInput) nameInput.placeholder = 'Recipient Name';
         if (emailInput) emailInput.placeholder = 'Recipient Email';
       } else if (isMembership) {
-        if (step2TitleLabel) step2TitleLabel.textContent = 'Customer Details';
-        if (nameInput) nameInput.placeholder = 'Enter full name';
-        if (emailInput) emailInput.placeholder = 'Enter member email';
+        if (step2TitleLabel) step2TitleLabel.textContent = 'Customer Information';
+        if (nameInput) nameInput.placeholder = 'Full name';
+        if (emailInput) emailInput.placeholder = 'Email';
       } else {
-        if (step2TitleLabel) step2TitleLabel.textContent = 'Customer Details';
-        if (nameInput) nameInput.placeholder = 'Enter full name';
-        if (emailInput) emailInput.placeholder = 'Enter email address';
+        if (step2TitleLabel) step2TitleLabel.textContent = 'Customer Information';
+        if (nameInput) nameInput.placeholder = 'Full name';
+        if (emailInput) emailInput.placeholder = 'Email';
       }
 
       // T&C load/save buttons: hidden for Crypto Card, visible for other card types
       if (termsActions) termsActions.style.display = isCrypto ? 'none' : '';
 
       renumberSteps();
+      updateStepDividers();
       updateCardBenefitsLine();
 
       // Update confirm button label for Crypto Card
@@ -5580,6 +5990,23 @@
           if (step1Body && step1Body.classList.contains('open')) toggleStep(1);
         }, 1000);
       }
+    }
+
+    function updateStepDividers() {
+      const panel = document.querySelector('.right-panel');
+      if (!panel) return;
+      panel.querySelectorAll('.step-divider').forEach(d => d.remove());
+      const cards = Array.from(panel.querySelectorAll('.step-card'));
+      let prevVisible = null;
+      cards.forEach(card => {
+        if (card.style.display === 'none') return;
+        if (prevVisible) {
+          const divider = document.createElement('div');
+          divider.className = 'step-divider';
+          card.before(divider);
+        }
+        prevVisible = card;
+      });
     }
 
     function renumberSteps() {
@@ -5637,9 +6064,9 @@
       const pkg = MEMBERSHIP_PACKAGES.find(p => p.name === rankName.toUpperCase());
       if (!pkg) return;
 
-      // Fill Price
-      const priceBtns = Array.from(document.querySelectorAll('#step5Card .collapse-wrap .preset-row:first-child .preset-btn'));
-      const customPriceInput = document.getElementById('customPrice');
+      // Fill Price (inside Step 4 merged section)
+      const priceBtns = Array.from(document.querySelectorAll('#mbPriceRow .preset-btn'));
+      const customPriceInput = document.getElementById('mbCustomPrice');
       priceBtns.forEach(b => b.classList.remove('active'));
       if (customPriceInput) customPriceInput.value = '';
       const matchPriceBtn = priceBtns.find(b => parseFloat(b.textContent.replace(/[^0-9.]/g, '')) === pkg.price);
@@ -5649,9 +6076,9 @@
         customPriceInput.value = pkg.price;
       }
 
-      // Fill Discount
-      const discBtns = Array.from(document.querySelectorAll('#membershipDiscountRow .preset-btn'));
-      const customDiscInput = document.getElementById('membershipDiscountInput');
+      // Fill Discount (inside Step 4 merged section)
+      const discBtns = Array.from(document.querySelectorAll('#mbMembershipDiscountRow .preset-btn'));
+      const customDiscInput = document.getElementById('mbMembershipDiscountInput');
       discBtns.forEach(b => b.classList.remove('active'));
       if (customDiscInput) customDiscInput.value = '';
       if (pkg.discount) {
@@ -5672,8 +6099,8 @@
         pkg.benefits.forEach(b => { mbTomSelect.addItem(b.id, true); });
       }
 
-      // Fill Expiration
-      const expirationSelect = document.getElementById('expirationSelect');
+      // Fill Expiration (inside Step 4 merged section)
+      const expirationSelect = document.getElementById('mbExpirationSelect');
       if (expirationSelect && pkg.periodDays) {
         const optVals = Array.from(expirationSelect.options).map(o => o.value);
         if (optVals.includes(String(pkg.periodDays))) {
@@ -5683,10 +6110,10 @@
           const d = new Date();
           d.setDate(d.getDate() + pkg.periodDays);
           const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).replace(',', '');
-          const customDate = document.getElementById('customDate');
+          const customDate = document.getElementById('mbCustomDate');
           if (customDate) customDate.value = dateStr;
         }
-        onExpirationChange();
+        onMbExpirationChange();
       }
 
       updateCardValueBadge();
@@ -6219,11 +6646,17 @@
       event.target.closest('.preset-row').querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
       updateCardValueBadge();
     }
-    function setPromoMode(btn, mode) {
-      btn.closest('.step-body').querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('promoAmountPreset').style.display = mode === 'amount' ? '' : 'none';
-      document.getElementById('promoDiscountPreset').style.display = mode === 'discount' ? '' : 'none';
+    function setPromoMode(el, mode) {
+      const container = el.closest('.mb-step4-sub') || el.closest('.step-body');
+      // Support preset-btn style (step4) and radio style (step1)
+      if (el.tagName === 'BUTTON') {
+        container.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+      }
+      const amountEl = container.querySelector('[id$="PromoAmountPreset"],[id="promoAmountPreset"]');
+      const discEl = container.querySelector('[id$="PromoDiscountPreset"],[id="promoDiscountPreset"]');
+      if (amountEl) amountEl.style.display = mode === 'amount' ? '' : 'none';
+      if (discEl) discEl.style.display = mode === 'discount' ? '' : 'none';
       updateCardValueBadge();
     }
 
@@ -6231,14 +6664,23 @@
        MEMBERSHIP DISCOUNT (inside Purchase Price step)
     ────────────────────────────────────────────── */
     function getMembershipDiscountPct() {
-      const activeBtn = document.querySelector('#membershipDiscountRow .preset-btn.active');
-      const customInput = document.getElementById('membershipDiscountInput');
+      const activeBtn = document.querySelector('#mbMembershipDiscountRow .preset-btn.active');
+      const customInput = document.getElementById('mbMembershipDiscountInput');
       if (activeBtn) return parseFloat(activeBtn.textContent) || 0;
       if (customInput && customInput.value) return Math.min(100, Math.max(0, parseFloat(customInput.value) || 0));
       return 0;
     }
 
     function getActivePurchasePrice() {
+      if (currentTypeId === '2') {
+        const priceRow = document.getElementById('mbPriceRow');
+        if (!priceRow) return 0;
+        const activeBtn = priceRow.querySelector('.preset-btn.active');
+        const customInput = document.getElementById('mbCustomPrice');
+        if (activeBtn) return parseFloat((activeBtn.textContent || '').replace(/[^0-9.]/g, '')) || 0;
+        if (customInput && customInput.value) return parseFloat(customInput.value) || 0;
+        return 0;
+      }
       const priceRow = document.querySelector('#step5Card .collapse-wrap .preset-row');
       if (!priceRow) return 0;
       const activeBtn = priceRow.querySelector('.preset-btn.active');
@@ -6249,15 +6691,42 @@
     }
 
     function updateMembershipSalePrice() {
-      const display = document.getElementById('membershipSalePriceDisplay');
+      const display = document.getElementById('mbSalePriceDisplay');
+      const wrap = document.getElementById('mbSalePriceWrap');
       if (!display) return;
-      if (currentTypeId !== '2') { display.style.display = 'none'; return; }
+      const hide = () => { if (wrap) wrap.style.display = 'none'; };
+      if (currentTypeId !== '2') { hide(); return; }
       const price = getActivePurchasePrice();
       const discountPct = getMembershipDiscountPct();
-      if (!price || !discountPct) { display.style.display = 'none'; return; }
+      if (!price || !discountPct) { hide(); return; }
       const salePrice = Math.max(0, price * (1 - discountPct / 100));
       const fmt = (n) => '$' + (n % 1 === 0 ? n : n.toFixed(2));
-      display.style.display = '';
+      if (wrap) wrap.style.display = '';
+      display.innerHTML =
+        '<iconify-icon icon="solar:tag-price-bold-duotone" width="18" style="color:var(--c-primary);flex-shrink:0"></iconify-icon>' +
+        '<span class="sale-original">' + fmt(price) + '</span>' +
+        '<span style="color:var(--c-text-3);margin:0 2px">&#8594;</span>' +
+        '<span class="sale-final">' + fmt(salePrice) + '</span>' +
+        '<span class="sale-badge">-' + Math.round(discountPct) + '%</span>';
+    }
+
+    function updateDiscountSalePrice() {
+      const display = document.getElementById('dgSalePriceDisplay');
+      const wrap = document.getElementById('dgSalePriceWrap');
+      if (!display) return;
+      const hide = () => { if (wrap) wrap.style.display = 'none'; };
+      if (currentTypeId !== '3') { hide(); return; }
+      const priceInput = document.getElementById('dgCustomPrice');
+      const price = priceInput ? (parseFloat(priceInput.value) || 0) : 0;
+      const activeBtn = document.querySelector('#discountGroup .preset-btn.active');
+      const customDisc = document.getElementById('dgDiscountInput');
+      let discountPct = 0;
+      if (customDisc && customDisc.value) discountPct = parseFloat(customDisc.value) || 0;
+      else if (activeBtn) discountPct = parseFloat(activeBtn.textContent) || 0;
+      if (!price || !discountPct) { hide(); return; }
+      const salePrice = Math.max(0, price * (1 - discountPct / 100));
+      const fmt = (n) => '$' + (n % 1 === 0 ? n : n.toFixed(2));
+      if (wrap) wrap.style.display = '';
       display.innerHTML =
         '<iconify-icon icon="solar:tag-price-bold-duotone" width="18" style="color:var(--c-primary);flex-shrink:0"></iconify-icon>' +
         '<span class="sale-original">' + fmt(price) + '</span>' +
@@ -6267,15 +6736,15 @@
     }
 
     function selectMembershipDiscount(pct, btn) {
-      document.querySelectorAll('#membershipDiscountRow .preset-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#mbMembershipDiscountRow .preset-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const input = document.getElementById('membershipDiscountInput');
+      const input = document.getElementById('mbMembershipDiscountInput');
       if (input) input.value = '';
       updateMembershipSalePrice();
     }
 
     function onMembershipDiscountInput(input) {
-      document.querySelectorAll('#membershipDiscountRow .preset-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#mbMembershipDiscountRow .preset-btn').forEach(b => b.classList.remove('active'));
       updateMembershipSalePrice();
     }
 
@@ -6535,6 +7004,63 @@
         expiryDateEl.textContent = '—';
       }
     }
+
+    function onMbExpirationChange() {
+      const sel = document.getElementById('mbExpirationSelect');
+      const wrap = document.getElementById('mbCustomDateWrap');
+      if (wrap) wrap.style.display = sel.value === 'custom' ? '' : 'none';
+      const expiryDateEl = document.getElementById('cfExpiryDate');
+      if (!expiryDateEl) return;
+      if (sel.value === 'custom') {
+        const customInput = document.getElementById('mbCustomDate');
+        expiryDateEl.textContent = (customInput && customInput.value) ? customInput.value : '—';
+      } else if (sel.value) {
+        const days = parseInt(sel.value);
+        const d = new Date();
+        d.setDate(d.getDate() + days);
+        expiryDateEl.textContent = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).replace(',', '');
+      } else {
+        expiryDateEl.textContent = '—';
+      }
+    }
+    function onS1ExpirationChange() {
+      const sel = document.getElementById('s1ExpirationSelect');
+      const wrap = document.getElementById('s1CustomDateWrap');
+      if (wrap) wrap.style.display = sel && sel.value === 'custom' ? '' : 'none';
+    }
+
+    function selectS1Discount(btn) {
+      document.querySelectorAll('#s1DiscountRow .preset-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const inp = document.getElementById('s1DiscountInput');
+      if (inp) inp.value = '';
+      updateS1SalePrice();
+    }
+
+    function updateS1SalePrice() {
+      const display = document.getElementById('s1SalePriceDisplay');
+      const wrap = document.getElementById('s1SalePriceWrap');
+      if (!display) return;
+      const hide = () => { if (wrap) wrap.style.display = 'none'; };
+      const priceInput = document.getElementById('s1CustomPrice');
+      const price = priceInput ? (parseFloat(priceInput.value) || 0) : 0;
+      const activeBtn = document.querySelector('#s1DiscountRow .preset-btn.active');
+      const customDisc = document.getElementById('s1DiscountInput');
+      let discountPct = 0;
+      if (customDisc && customDisc.value) discountPct = parseFloat(customDisc.value) || 0;
+      else if (activeBtn) discountPct = parseFloat(activeBtn.textContent) || 0;
+      if (!price || !discountPct) { hide(); return; }
+      const salePrice = Math.max(0, price * (1 - discountPct / 100));
+      const fmt = (n) => '$' + (n % 1 === 0 ? n : n.toFixed(2));
+      if (wrap) wrap.style.display = '';
+      display.innerHTML =
+        '<iconify-icon icon="solar:tag-price-bold-duotone" width="18" style="color:var(--c-primary);flex-shrink:0"></iconify-icon>' +
+        '<span class="sale-original">' + fmt(price) + '</span>' +
+        '<span style="color:var(--c-text-3);margin:0 2px">&#8594;</span>' +
+        '<span class="sale-final">' + fmt(salePrice) + '</span>' +
+        '<span class="sale-badge">-' + Math.round(discountPct) + '%</span>';
+    }
+
     // Mobile: position fixed card below page-header, set left-panel padding to card height
     function updateMobilePreviewCardPadding() {
       var leftPanel = document.querySelector('.left-panel');
@@ -6542,18 +7068,18 @@
       var pageHeader = document.querySelector('.page-header');
       var isMobile = window.innerWidth <= 767;
       if (!leftPanel) return;
-      if (isMobile && previewCard) {
-        // Main has padding-top 88px (global.css), page-header is below that
-        var mainTop = 60;
-        var headerHeight = pageHeader ? pageHeader.offsetHeight : 0;
-        var cardTop = mainTop + headerHeight;
-        previewCard.style.top = cardTop + 'px';
-        var h = previewCard.offsetHeight;
-        leftPanel.style.paddingTop = (h > 0 ? h : 220) + 'px';
-      } else {
-        if (previewCard) previewCard.style.top = '';
-        leftPanel.style.paddingTop = '';
-      }
+      // if (isMobile && previewCard) {
+      //   // Main has padding-top 88px (global.css), page-header is below that
+      //   var mainTop = 60;
+      //   var headerHeight = pageHeader ? pageHeader.offsetHeight : 0;
+      //   var cardTop = mainTop + headerHeight;
+      //   previewCard.style.top = cardTop + 'px';
+      //   var h = previewCard.offsetHeight;
+      //   leftPanel.style.paddingTop = (h > 0 ? h : 220) + 'px';
+      // } else {
+      //   if (previewCard) previewCard.style.top = '';
+      //   leftPanel.style.paddingTop = '';
+      // }
     }
     window.addEventListener('resize', updateMobilePreviewCardPadding);
 
@@ -6579,16 +7105,9 @@
       const birthdayClear = document.getElementById('holderBirthdayClear');
       if (!birthdayInput) return;
 
-      const defaultDate = getBirthdayDefaultDate();
       const maxDate = getBirthdayMaxDate();
-
       if (fpBirthdayInstance) {
         fpBirthdayInstance.set('maxDate', maxDate);
-        if (!birthdayInput.value) {
-          fpBirthdayInstance.setDate(defaultDate, true);
-        }
-      } else if (!birthdayInput.value) {
-        birthdayInput.value = flatpickr.formatDate(defaultDate, 'M j, Y');
       }
 
       if (birthdayClear) {
@@ -6627,13 +7146,51 @@
         if (el) el.textContent = '—';
       });
 
+      // ── Flatpickr: Membership Step 4 Custom Expiry Date ──
+      const fpMbCustom = flatpickr('#mbCustomDate', {
+        dateFormat: 'M j, Y',
+        minDate: 'today',
+        disableMobile: true,
+        allowInput: false,
+        onChange(selectedDates, dateStr) {
+          document.getElementById('mbCustomDate').value = dateStr;
+          document.getElementById('mbCustomDateClear').classList.toggle('visible', !!dateStr);
+          const el = document.getElementById('cfExpiryDate');
+          if (el) el.textContent = dateStr || '—';
+        }
+      });
+      document.getElementById('mbCustomDateClear').addEventListener('click', function () {
+        fpMbCustom.clear();
+        this.classList.remove('visible');
+        const el = document.getElementById('cfExpiryDate');
+        if (el) el.textContent = '—';
+      });
+
+      // ── Flatpickr: Step1 Custom Date (Discount/Promotion) ──
+      const fpS1Custom = flatpickr('#s1CustomDate', {
+        dateFormat: 'M j, Y',
+        minDate: 'today',
+        disableMobile: true,
+        allowInput: false,
+        onChange(selectedDates, dateStr) {
+          document.getElementById('s1CustomDate').value = dateStr;
+          const clr = document.getElementById('s1CustomDateClear');
+          if (clr) clr.classList.toggle('visible', !!dateStr);
+        }
+      });
+      const s1DateClear = document.getElementById('s1CustomDateClear');
+      if (s1DateClear) s1DateClear.addEventListener('click', function () {
+        fpS1Custom.clear();
+        this.classList.remove('visible');
+        document.getElementById('s1CustomDate').value = '';
+      });
+
       const birthdayDefaultDate = getBirthdayDefaultDate();
       const birthdayMaxDate = getBirthdayMaxDate();
 
       // ── Flatpickr: Birthday (must be at least 16 years old) ──
       fpBirthdayInstance = flatpickr('#holderBirthday', {
         dateFormat: 'M j, Y',
-        defaultDate: birthdayDefaultDate,
         maxDate: birthdayMaxDate,
         disableMobile: true,
         allowInput: false,
@@ -6648,26 +7205,31 @@
         this.classList.remove('visible');
       });
 
-      // Detect type from query string (e.g. ?type=crypto-card)
+      // Detect type from query string (e.g. ?type=crypto-card, ?type=membership)
       const params = new URLSearchParams(window.location.search);
       const typeParam = (params.get('type') || '').toLowerCase();
       if (typeParam === 'crypto-card') {
-        const cryptoItem = document.querySelector('.card-type-item:nth-child(3)');
+        const cryptoItem = document.querySelector('#cardTypeTabScroll .card-type-item:nth-child(3)');
         if (cryptoItem) selectCardType(cryptoItem, 'Crypto Card', '5');
+      } else if (typeParam === 'membership') {
+        const membershipItem = document.querySelector('#cardTypeTabScroll .card-type-item:nth-child(2)');
+        if (membershipItem) selectCardType(membershipItem, 'Membership', '2');
       }
       // role=personal: ẩn step Select Product và panel Business Information
       const isRolePersonal = (params.get('role') || '').toLowerCase() === 'personal';
       if (isRolePersonal) {
         const step1 = document.getElementById('step1SelectProductLine');
+        const tabBar = document.getElementById('cardTypeTabBar');
         const bizPanel = document.getElementById('panelCardBusinessInfo');
         const contactInfo = document.getElementById('cbContactInfo');
         if (step1) step1.style.display = 'none';
+        if (tabBar) tabBar.style.display = 'none';
         if (bizPanel) bizPanel.style.display = 'none';
         if (contactInfo) contactInfo.style.display = 'none';
       }
 
       // Init UI state for current card type (default Gift Card unless overridden by query)
-      const activeCardTypeItem = document.querySelector('.card-type-item.active');
+      const activeCardTypeItem = document.querySelector('#cardTypeTabScroll .card-type-item.active');
       if (activeCardTypeItem) selectCardType(activeCardTypeItem, currentCardType, currentTypeId);
       updateCardValueBadge();
       // Init card brand name from default business info
@@ -6697,15 +7259,37 @@
       initFeeTokenSelect();
       initStepHeaderTooltips();
       initGeneralPanelTooltips();
+      initMbPackageTip();
       renderCryptoSummaryCollapse();
       // Init step visibility for current card type
       const step3 = document.getElementById('step3Card');
       const step5 = document.getElementById('step5Card');
-      // Hide Step 3 (Expiration Date) for GiftCard, PrepaidCard, and Crypto Card
-      if (step3) step3.style.display = (currentTypeId === '0' || currentTypeId === '4' || currentTypeId === '5') ? 'none' : '';
-      // Show Step 5 (Purchase Price) only for Membership & Discount
-      if (step5) step5.style.display = (currentTypeId === '2' || currentTypeId === '3') ? '' : 'none';
+      // Step 3 hidden for all except none — Duration now in Step 1 for Discount/Promotion
+      if (step3) step3.style.display = (currentTypeId === '0' || currentTypeId === '1' || currentTypeId === '2' || currentTypeId === '3' || currentTypeId === '4' || currentTypeId === '5') ? 'none' : '';
+      // Step 4 hidden for Discount and Promotion — all fields now in Step 1
+      const step4 = document.getElementById('step4Card');
+      if (step4) step4.style.display = (currentTypeId === '5' || currentTypeId === '3' || currentTypeId === '1') ? 'none' : '';
+      // Step 1 sections
+      const s1PromoSec = document.getElementById('s1PromotionSection');
+      const s1PriceSec = document.getElementById('s1PriceDiscountSection');
+      if (s1PromoSec) s1PromoSec.style.display = (currentTypeId === '1') ? '' : 'none';
+      if (s1PriceSec) s1PriceSec.style.display = (currentTypeId === '3') ? '' : 'none';
+      const s1DivBefore = s1PriceSec && s1PriceSec.previousElementSibling;
+      if (s1DivBefore && s1DivBefore.classList.contains('mb-step4-divider')) {
+        s1DivBefore.style.display = (currentTypeId === '1' || currentTypeId === '3') ? '' : 'none';
+      }
+      // Step 5 hidden — price merged into step1/step4
+      if (step5) step5.style.display = 'none';
+      // Customer Information always first
+      const step2Init = document.getElementById('step2Card');
+      if (step2Init && step2Init.parentNode) {
+        const firstStepInit = step2Init.parentNode.querySelector('.step-card');
+        if (firstStepInit && firstStepInit !== step2Init) {
+          step2Init.parentNode.insertBefore(step2Init, firstStepInit);
+        }
+      }
       renumberSteps();
+      updateStepDividers();
       // Collapse left-panel sections by default
       const isMobile = window.innerWidth <= 767;
       const mobileCollapseIds = [
@@ -7032,6 +7616,23 @@
         showConfirmButton: false
       });
     }
+    function initMbPackageTip() {
+      if (typeof tippy === 'undefined') return;
+      const el = document.getElementById('mbPackageTip');
+      if (!el) return;
+      if (el._tippy) el._tippy.destroy();
+      tippy(el, {
+        content: '<div class="step-header-tooltip-content">Bạn có thể cấu hình sẵn các gói membership trong <strong>Settings → Membership Packages</strong>. Sau đó chọn nhanh gói phù hợp mỗi lần phát hành thẻ mà không cần nhập lại thông tin.</div>',
+        allowHTML: true,
+        trigger: 'mouseenter focus click',
+        interactive: true,
+        theme: 'light',
+        placement: 'top-start',
+        maxWidth: 300,
+        appendTo: document.body
+      });
+    }
+
     function initGeneralPanelTooltips() {
       if (typeof tippy === 'undefined') return;
       var gi = TOOLTIP_COPY.generalInformation;
@@ -7063,7 +7664,7 @@
         var text = getStepTooltipHtml(id);
         if (!text) return;
         tippy(el, {
-          content: '<div class="step-header-tooltip-content">' + escapeTooltipHtml(text) + '</div>',
+          content: '<div class="step-header-tooltip-content">' + text + '</div>',
           allowHTML: true,
           trigger: 'mouseenter focus click',
           interactive: true,
@@ -7187,15 +7788,15 @@
     ];
     const AB_ICON_SYMBOLS = ['$', '↩', '%', '🎂', '👥', '☕', '🏷', '🎁', '🎁'];
     const AB_ICON_SUGGESTIONS = [
-      { name: 'Monthly Credit',  unit: '$'   },
-      { name: 'Cashback',        unit: '%'   },
-      { name: 'Discount',        unit: '%'   },
-      { name: 'Birthday Gift',   unit: '$'   },
-      { name: 'Group Discount',  unit: '%'   },
-      { name: 'Free Lounge',     unit: 'pts' },
-      { name: 'Store Discount',  unit: '%'   },
-      { name: 'Free Gift',       unit: '$'   },
-      { name: 'Gift Voucher',    unit: '$'   },
+      { name: 'Monthly Credit', unit: '$' },
+      { name: 'Cashback', unit: '%' },
+      { name: 'Discount', unit: '%' },
+      { name: 'Birthday Gift', unit: '$' },
+      { name: 'Group Discount', unit: '%' },
+      { name: 'Free Lounge', unit: 'pts' },
+      { name: 'Store Discount', unit: '%' },
+      { name: 'Free Gift', unit: '$' },
+      { name: 'Gift Voucher', unit: '$' },
     ];
 
     function abIconPath(name) {
@@ -8278,21 +8879,15 @@
       background: #007a52;
     }
 
-    /* ── Select + Add button: same row on desktop ── */
-    #membershipBenefits {
+    #membershipBenefits .mb-select-add-row {
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       gap: 8px;
-      align-items: flex-start;
     }
 
-    #membershipBenefits .mb-select-wrap {
+    #membershipBenefits .mb-select-add-row .mb-select-wrap {
       flex: 1;
       min-width: 0;
-    }
-
-    #membershipBenefits .mb-selected-area {
-      flex: 0 0 100%;
     }
 
     /* ── Add More Benefit button ── */
@@ -8956,7 +9551,9 @@
         <div>
           <div class="ab-section-label">
             Benefit Icon
-            <span class="ab-label-tip" data-ab-tip="Choose a preset icon that represents this benefit, or upload your own image." aria-label="More info">
+            <span class="ab-label-tip"
+              data-ab-tip="Choose a preset icon that represents this benefit, or upload your own image."
+              aria-label="More info">
               <iconify-icon icon="mdi:information-outline" width="15" height="15"></iconify-icon>
             </span>
           </div>
@@ -8968,7 +9565,9 @@
         <!-- Benefit Name -->
         <div class="ab-form-group">
           <label class="ab-form-label ab-label-with-tip">Benefit Name <span class="req">*</span>
-            <span class="ab-label-tip" data-ab-tip="A short, descriptive name shown to cardholders on their membership card." aria-label="More info">
+            <span class="ab-label-tip"
+              data-ab-tip="A short, descriptive name shown to cardholders on their membership card."
+              aria-label="More info">
               <iconify-icon icon="mdi:information-outline" width="15" height="15"></iconify-icon>
             </span>
           </label>
@@ -8987,7 +9586,9 @@
         <!-- Benefit Unit -->
         <div class="ab-form-group">
           <label class="ab-form-label ab-label-with-tip">Benefit Unit <span class="req">*</span>
-            <span class="ab-label-tip" data-ab-tip="The measurement unit: USD ($) for monetary values, Percentage (%) for rate-based benefits, or Points for loyalty credits." aria-label="More info">
+            <span class="ab-label-tip"
+              data-ab-tip="The measurement unit: USD ($) for monetary values, Percentage (%) for rate-based benefits, or Points for loyalty credits."
+              aria-label="More info">
               <iconify-icon icon="mdi:information-outline" width="15" height="15"></iconify-icon>
             </span>
           </label>
@@ -9005,7 +9606,9 @@
           <div class="ab-form-group">
             <label class="ab-form-label ab-label-with-tip">
               Rollover Type
-              <span class="ab-label-tip" data-ab-tip="Reset: Unused balance expires at end of cycle. Rollover: Unused balance carries forward to the next cycle." aria-label="More info">
+              <span class="ab-label-tip"
+                data-ab-tip="Reset: Unused balance expires at end of cycle. Rollover: Unused balance carries forward to the next cycle."
+                aria-label="More info">
                 <iconify-icon icon="mdi:information-outline" width="16" height="16"></iconify-icon>
               </span>
             </label>
@@ -9017,7 +9620,9 @@
           </div>
           <div class="ab-form-group">
             <label class="ab-form-label ab-label-with-tip">Cycle
-              <span class="ab-label-tip" data-ab-tip="How often this benefit resets or renews. Requires Rollover Type to be set first." aria-label="More info">
+              <span class="ab-label-tip"
+                data-ab-tip="How often this benefit resets or renews. Requires Rollover Type to be set first."
+                aria-label="More info">
                 <iconify-icon icon="mdi:information-outline" width="15" height="15"></iconify-icon>
               </span>
             </label>

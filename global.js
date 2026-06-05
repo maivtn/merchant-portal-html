@@ -31,6 +31,7 @@
       icon: "solar:widget-bold-duotone",
       iconWidth: 24,
       href: "index.html",
+      desc: "Tổng quan hoạt động kinh doanh",
     },
 
     // ── GIFT CARD CENTER ──────────────────────────────────────────────────────
@@ -44,18 +45,30 @@
         {
           label: "Issue Digital",
           href: "issue-digital.html",
+          desc: "Store issue - bán cho khách hàng trực tiếp",
           relatedPages: ["issue-digital.html"],
+          excludeQuery: "type=membership",
+        },
+
+        {
+          label: "Membership Card",
+          href: "issue-digital.html?type=membership",
+          desc: "Phát hành thẻ membership cho khách hàng",
+          relatedPages: [],
+          requireQuery: "type=membership",
         },
 
         {
           label: "Quick Setup",
           href: "issue-card.html",
+          desc: "Tạo gift card voucher bán online",
           relatedPages: ["issue-card.html"],
         },
 
         {
           label: "Advanced Setup",
           href: "",
+          desc: "Tạo card bán online, tạo được nhiều loại 1 lúc",
           relatedPages: [""],
         },
       ],
@@ -69,6 +82,7 @@
         {
           label: "Product Management",
           href: "product-list.html",
+          desc: "Quản lý danh mục gift card & voucher",
           relatedPages: [
             "gift-card-details.html",
             "voucher-details.html",
@@ -81,6 +95,7 @@
         {
           label: "Cancelled Products",
           href: "cancelled-cards.html",
+          desc: "Danh sách sản phẩm đã huỷ",
           relatedPages: ["cancelled-card-list.html"],
         },
       ],
@@ -92,11 +107,15 @@
       iconWidth: 24,
       children: [
         {
-          label: "Spin Wheel",
+          label: "Marketing Tools",
           href: "marketing-tools.html",
-          relatedPages: ["marketing-edit.html", "marketing-details.html"],
+          desc: "Quản lý chiến dịch quảng cáo & khuyến mãi",
+          relatedPages: ["marketing-edit.html", "marketing-details.html", "marketing-create.html"],
         },
-        { label: "AI Ads", href: "ai-ads.html" ,
+        {
+          label: "AI Ads",
+          href: "ai-ads.html",
+          desc: "Tạo banner quảng cáo bằng AI",
           relatedPages: ["ai-ads.html"],
         },
       ],
@@ -110,11 +129,13 @@
         {
           label: "Pay with Gift Card",
           href: "gift-card-payment.html",
+          desc: "Nhận thanh toán bằng gift card",
           relatedPages: ["gift-card-payment-box.html"],
         },
         {
           label: "Pay with Crypto",
           href: "crypto-payment.html",
+          desc: "Nhận thanh toán bằng tiền điện tử",
           relatedPages: ["crypto-payment-box.html"],
         },
       ],
@@ -128,10 +149,12 @@
         {
           label: "Merchant Payment Setup",
           href: "merchant-payment-setup.html",
+          desc: "Cài đặt phương thức thanh toán cho cửa hàng",
         },
         {
           label: "Benefits Setup",
           href: "benefits-setup.html",
+          desc: "Quản lý gói thành viên & đặc quyền",
           relatedPages: [
             "benefit-package-details.html",
             "benefit-package-view.html",
@@ -152,27 +175,24 @@
         {
           label: "Sales Orders",
           href: "sales-order-list.html",
+          desc: "Danh sách đơn hàng bán gift card & voucher",
           relatedPages: ["sales-order-details.html"],
         },
         {
           label: "Redeem History",
           href: "card-transaction-history-merchant.html",
+          desc: "Lịch sử đổi thẻ tại cửa hàng",
           relatedPages: ["card-transaction-history.html"],
         },
-        { label: "Membership Report", href: "membership-report.html" },
+        {
+          label: "Membership Report",
+          href: "membership-report.html",
+          desc: "Báo cáo chương trình thành viên",
+        },
       ],
     },
 
     // ── APPS ──────────────────────────────────────────────────────────────────
-    // { type: "section", label: "APPS" },
-    // {
-    //   type: "link",
-    //   label: "Notifications",
-    //   icon: "solar:letter-bold-duotone",
-    //   iconWidth: 24,
-    //   href: "#",
-    //   badge: "32+",
-    // },
     {
       type: "link",
       label: "Hỗ trợ",
@@ -265,6 +285,7 @@
       handleResize();
       window.addEventListener("resize", handleResize);
     }
+    renderPageHeader();
     initDatePlaceholders();
   });
 
@@ -295,6 +316,69 @@
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
+  // RENDER PAGE HEADER: remove breadcrumbs, inject description from SIDEBAR_MENU
+  // ═══════════════════════════════════════════════════════════════════════════
+  function renderPageHeader() {
+    // Build flat map: filename → { label, desc, pageAction }
+    const pageMap = {};
+    function collectItem(item) {
+      const normalize = (s) => (s || "").split("/").pop().split("?")[0].split("#")[0].toLowerCase();
+      if (item.href && item.href !== "#" && item.href !== "") {
+        const key = normalize(item.href);
+        if (key && !pageMap[key]) pageMap[key] = { label: item.label, desc: item.desc || "", pageAction: item.pageAction || null };
+      }
+      (item.relatedPages || []).forEach(function (rp) {
+        const key = normalize(rp);
+        if (key && !pageMap[key]) pageMap[key] = { label: item.label, desc: item.desc || "", pageAction: item.pageAction || null };
+      });
+      (item.children || []).forEach(collectItem);
+    }
+    SIDEBAR_MENU.forEach(collectItem);
+
+    const curPage = (
+      (window.SIDEBAR_ACTIVE_PAGE || window.location.pathname.split("/").pop() || "index.html") + ""
+    ).toLowerCase().split("?")[0].split("#")[0];
+
+    const data = pageMap[curPage];
+    if (!data) return;
+
+    // Remove all breadcrumbs on this page
+    document.querySelectorAll(".breadcrumbs").forEach(function (el) { el.remove(); });
+
+    // Inject or update page-description
+    if (!data.desc) return;
+
+    // Re-use existing [data-global-desc] element if already injected
+    let descEl = document.querySelector(".page-description[data-global-desc]");
+    if (descEl) { descEl.textContent = data.desc; return; }
+
+    // If a manually-added .page-description already exists, leave it (page owns it)
+    if (document.querySelector(".page-description")) return;
+
+    // Find h1.page-title and determine insertion point
+    const titleEl = document.querySelector("h1.page-title, .page-title");
+    if (!titleEl) return;
+
+    descEl = document.createElement("p");
+    descEl.className = "page-description";
+    descEl.setAttribute("data-global-desc", "1");
+    descEl.style.margin = "0";
+    descEl.textContent = data.desc;
+
+    const parent = titleEl.parentElement;
+    const pageHeader = parent.closest(".page-header") || (parent.classList.contains("page-header") ? parent : null);
+
+    if (pageHeader && parent === pageHeader) {
+      // h1 is a direct flex child of page-header → insert description after page-header
+      descEl.style.margin = "0 0 16px";
+      pageHeader.insertAdjacentElement("afterend", descEl);
+    } else {
+      // h1 is inside a child div → insert after h1 within that container
+      titleEl.insertAdjacentElement("afterend", descEl);
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
   // RENDER SIDEBAR NAV FROM DATA
   // ═══════════════════════════════════════════════════════════════════════════
   function renderSidebarNav() {
@@ -312,19 +396,34 @@
       .split("?")[0]
       .split("#")[0];
 
+    const curQuery = window.location.search.slice(1).toLowerCase();
+
     // Helper: check if a menu item or any of its relatedPages/children matches current page
     function isItemActive(item) {
       const raw = (item.href || "").split("/").pop().toLowerCase();
       const hrefPage = raw.split("?")[0].split("#")[0];
-      if (hrefPage === curPage) return true;
+      if (hrefPage === curPage) {
+        // If item requires a specific query param, verify it matches
+        if (item.requireQuery) {
+          if (curQuery !== item.requireQuery.toLowerCase()) return false;
+        }
+        // If item excludes a specific query param, skip when that query is active
+        if (item.excludeQuery) {
+          if (curQuery === item.excludeQuery.toLowerCase()) return false;
+        }
+        return true;
+      }
       if (
         item.relatedPages &&
         item.relatedPages.some(
           (p) =>
             (p || "").toLowerCase().split("?")[0].split("#")[0] === curPage,
         )
-      )
+      ) {
+        if (item.excludeQuery && curQuery === item.excludeQuery.toLowerCase())
+          return false;
         return true;
+      }
       if (item.children && item.children.some((c) => isItemActive(c)))
         return true;
       return false;

@@ -1100,7 +1100,7 @@
                     <button onclick="toggleQualityDropdown()" id="quality-trigger"
                       class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500 hover:text-indigo-600 px-2.5 py-1.5 rounded-lg hover:bg-slate-50 border border-transparent hover:border-slate-200 transition-all duration-200">
                       <i data-lucide="settings-2" class="w-3.5 h-3.5"></i>
-                      <span id="quality-trigger-label">Medium · ~30cr</span>
+                      <span id="quality-trigger-label">Medium</span>
                     </button>
                     <!-- Dropdown -->
                     <div id="quality-dropdown"
@@ -1173,8 +1173,7 @@
                 <!-- Gợi ý Prompt Badge (Suggested Prompts) -->
                 <div class="space-y-2.5">
                   <span class="text-xs font-bold text-slate-700 flex items-center gap-1">
-                    <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-amber-500 animate-bounce"></i> Ý tưởng thiết kế
-                    gợi ý từ chuyên gia
+                    <i data-lucide="lightbulb" class="w-3.5 h-3.5 text-amber-500 animate-bounce"></i> Ý tưởng thiết kế gợi ý
                   </span>
                   <div class="flex flex-wrap gap-2" id="suggested-prompts-container">
                     <!-- Được lấp đầy qua Javascript từ spec gợi ý -->
@@ -3038,7 +3037,7 @@
 
       // Cập nhật trigger label
       const trigger = document.getElementById('quality-trigger-label');
-      if (trigger) trigger.textContent = `${labels[quality]} · ${creditShort[quality]}`;
+      if (trigger) trigger.textContent = `${labels[quality]}`;
 
       // Cập nhật active state trong dropdown
       document.querySelectorAll('.quality-btn[data-quality]').forEach(btn => {

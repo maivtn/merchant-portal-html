@@ -179,6 +179,7 @@
       icon: "solar:chat-round-dots-bold-duotone",
       iconWidth: 24,
       href: "#",
+      action: "support-chat",
     },
     { type: "section", label: "ACCOUNT" },
     {
@@ -374,7 +375,8 @@
         const badge = item.badge
           ? `<span class="badge-outlined">${item.badge}</span>`
           : "";
-        html += `<a href="${resolvePortalHref(item.href)}" class="nav-item${active ? " active" : ""}">
+        const actionAttr = item.action ? ` data-action="${item.action}"` : "";
+        html += `<a href="${resolvePortalHref(item.href)}" class="nav-item${active ? " active" : ""}"${actionAttr}>
           <div class="nav-icon"><iconify-icon icon="${item.icon}" width="${item.iconWidth || 24}"></iconify-icon></div>
           <span>${item.label}</span>${badge}
         </a>\n`;
@@ -513,6 +515,12 @@
     sidebar.addEventListener("click", function (e) {
       const navItem = e.target.closest("a.nav-item");
       if (navItem) {
+        if (navItem.dataset.action === "support-chat") {
+          e.preventDefault();
+          window.openGlobalSupportChat();
+          if (window.innerWidth < 1024) closeSidebar();
+          return;
+        }
         const submenu = navItem.nextElementSibling;
         if (submenu && submenu.classList.contains("submenu")) {
           e.preventDefault();
@@ -725,6 +733,152 @@
   }
 
   window.getFeesOverviewPopoverHtml = getFeesOverviewPopoverHtml;
+
+  // ── SUPPORT CHAT PANEL ───────────────────────────────────────────────────────
+  function _buildSupportChatHTML() {
+    const el = document.createElement("div");
+    el.id = "gs-support-chat";
+    el.style.cssText =
+      "position:fixed;bottom:24px;right:24px;z-index:9999;display:none;flex-direction:column;" +
+      "width:360px;max-width:calc(100vw - 2rem);height:520px;max-height:calc(100vh - 6rem);" +
+      "background:#fff;border-radius:24px;box-shadow:0 24px 48px -8px rgba(0,0,0,0.2),0 0 0 1px rgba(0,0,0,0.06);" +
+      "overflow:hidden;font-family:Poppins,sans-serif;font-size:14px;";
+    el.innerHTML = `
+      <div style="background:linear-gradient(135deg,#00a76f,#007867);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <iconify-icon icon="solar:headphones-round-bold-duotone" width="18" style="color:#fff;"></iconify-icon>
+          </div>
+          <div>
+            <p style="color:#fff;font-weight:700;font-size:14px;margin:0;">Hỗ trợ trực tuyến</p>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:3px;">
+              <span style="width:6px;height:6px;border-radius:50%;background:#a7f3d0;display:inline-block;animation:gsChatPulse 1.5s ease-in-out infinite;"></span>
+              <span style="color:rgba(255,255,255,0.75);font-size:11px;">Đang hoạt động</span>
+            </div>
+          </div>
+        </div>
+        <button onclick="window.closeGlobalSupportChat()" style="width:32px;height:32px;border-radius:50%;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.85);flex-shrink:0;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='transparent'">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </button>
+      </div>
+      <div id="gs-chat-messages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:#f8fafc;">
+        <div style="display:flex;align-items:flex-end;gap:8px;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(0,167,111,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <iconify-icon icon="solar:bot-bold-duotone" width="14" style="color:#00a76f;"></iconify-icon>
+          </div>
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;max-width:85%;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+            <p style="font-size:13px;color:#374151;margin:0;">Xin chào! Tôi là trợ lý hỗ trợ của <strong>VLINKPAY</strong>. Chọn câu hỏi bên dưới hoặc nhập trực tiếp để được hỗ trợ. 👋</p>
+            <span style="font-size:10px;color:#9ca3af;margin-top:4px;display:block;">Vừa xong</span>
+          </div>
+        </div>
+        <div style="padding-left:36px;display:flex;flex-direction:column;gap:8px;">
+          <p style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;margin:0;">📋 Hướng dẫn sử dụng</p>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <button onclick="window.gsQuickQuestion(this)" style="font-size:11px;background:#fff;border:1px solid rgba(0,167,111,0.3);color:#00a76f;padding:5px 11px;border-radius:999px;cursor:pointer;line-height:1.4;" onmouseover="this.style.background='rgba(0,167,111,0.06)'" onmouseout="this.style.background='#fff'">Cách tạo Gift Card?</button>
+            <button onclick="window.gsQuickQuestion(this)" style="font-size:11px;background:#fff;border:1px solid rgba(0,167,111,0.3);color:#00a76f;padding:5px 11px;border-radius:999px;cursor:pointer;line-height:1.4;" onmouseover="this.style.background='rgba(0,167,111,0.06)'" onmouseout="this.style.background='#fff'">Cách dùng AI Ads?</button>
+            <button onclick="window.gsQuickQuestion(this)" style="font-size:11px;background:#fff;border:1px solid rgba(0,167,111,0.3);color:#00a76f;padding:5px 11px;border-radius:999px;cursor:pointer;line-height:1.4;" onmouseover="this.style.background='rgba(0,167,111,0.06)'" onmouseout="this.style.background='#fff'">Cách tạo chiến dịch marketing?</button>
+            <button onclick="window.gsQuickQuestion(this)" style="font-size:11px;background:#fff;border:1px solid rgba(0,167,111,0.3);color:#00a76f;padding:5px 11px;border-radius:999px;cursor:pointer;line-height:1.4;" onmouseover="this.style.background='rgba(0,167,111,0.06)'" onmouseout="this.style.background='#fff'">Cách gửi duyệt banner?</button>
+            <button onclick="window.gsQuickQuestion(this)" style="font-size:11px;background:#fff;border:1px solid rgba(0,167,111,0.3);color:#00a76f;padding:5px 11px;border-radius:999px;cursor:pointer;line-height:1.4;" onmouseover="this.style.background='rgba(0,167,111,0.06)'" onmouseout="this.style.background='#fff'">Cách nạp Crypto?</button>
+            <button onclick="window.gsQuickQuestion(this)" style="font-size:11px;background:#fff;border:1px solid rgba(0,167,111,0.3);color:#00a76f;padding:5px 11px;border-radius:999px;cursor:pointer;line-height:1.4;" onmouseover="this.style.background='rgba(0,167,111,0.06)'" onmouseout="this.style.background='#fff'">Cách xuất báo cáo?</button>
+            <button onclick="window.gsQuickQuestion(this)" style="font-size:11px;background:#fff;border:1px solid rgba(0,167,111,0.3);color:#00a76f;padding:5px 11px;border-radius:999px;cursor:pointer;line-height:1.4;" onmouseover="this.style.background='rgba(0,167,111,0.06)'" onmouseout="this.style.background='#fff'">Cách quản lý thành viên?</button>
+          </div>
+          <p style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;margin:4px 0 0;">⚙️ Tài khoản & Hỗ trợ</p>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <button onclick="window.gsQuickQuestion(this)" style="font-size:11px;background:#fff;border:1px solid rgba(0,167,111,0.3);color:#00a76f;padding:5px 11px;border-radius:999px;cursor:pointer;line-height:1.4;" onmouseover="this.style.background='rgba(0,167,111,0.06)'" onmouseout="this.style.background='#fff'">Xem lịch sử giao dịch?</button>
+            <button onclick="window.gsQuickQuestion(this)" style="font-size:11px;background:#fff;border:1px solid rgba(0,167,111,0.3);color:#00a76f;padding:5px 11px;border-radius:999px;cursor:pointer;line-height:1.4;" onmouseover="this.style.background='rgba(0,167,111,0.06)'" onmouseout="this.style.background='#fff'">Thông tin tài khoản?</button>
+            <button onclick="window.gsQuickQuestion(this)" style="font-size:11px;background:#fff;border:1px solid rgba(0,167,111,0.3);color:#00a76f;padding:5px 11px;border-radius:999px;cursor:pointer;line-height:1.4;" onmouseover="this.style.background='rgba(0,167,111,0.06)'" onmouseout="this.style.background='#fff'">Báo lỗi hệ thống?</button>
+            <button onclick="window.gsQuickQuestion(this)" style="font-size:11px;background:#fff;border:1px solid rgba(0,167,111,0.3);color:#00a76f;padding:5px 11px;border-radius:999px;cursor:pointer;line-height:1.4;" onmouseover="this.style.background='rgba(0,167,111,0.06)'" onmouseout="this.style.background='#fff'">Liên hệ kỹ thuật?</button>
+          </div>
+        </div>
+      </div>
+      <div style="padding:10px 14px;border-top:1px solid #e2e8f0;background:#fff;display:flex;align-items:center;gap:8px;flex-shrink:0;">
+        <input id="gs-chat-input" type="text" placeholder="Nhập câu hỏi..." onkeydown="if(event.key==='Enter')window.gsSendMessage()"
+          style="flex:1;background:#f8fafc;font-family:Poppins,sans-serif;font-size:13px;color:#1e293b;padding:9px 14px;border-radius:12px;border:1px solid #e2e8f0;outline:none;"
+          onfocus="this.style.borderColor='#00a76f'" onblur="this.style.borderColor='#e2e8f0'">
+        <button onclick="window.gsSendMessage()" style="width:34px;height:34px;border-radius:10px;background:#00a76f;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;">
+          <iconify-icon icon="solar:arrow-up-bold" width="16"></iconify-icon>
+        </button>
+      </div>
+      <style>@keyframes gsChatPulse{0%,100%{opacity:1}50%{opacity:0.4}}</style>
+    `;
+    return el;
+  }
+
+  function openGlobalSupportChat() {
+    let panel = document.getElementById("gs-support-chat");
+    if (!panel) {
+      panel = _buildSupportChatHTML();
+      document.body.appendChild(panel);
+    }
+    panel.style.display = "flex";
+    const input = panel.querySelector("#gs-chat-input");
+    if (input) setTimeout(() => input.focus(), 50);
+  }
+
+  function closeGlobalSupportChat() {
+    const panel = document.getElementById("gs-support-chat");
+    if (panel) panel.style.display = "none";
+  }
+
+  const GS_ANSWERS = {
+    "Cách tạo Gift Card?": "Để tạo Gift Card, vào menu <strong>Gift Card Center → Issue Digital</strong> hoặc chọn <strong>Create Gift Card</strong>. Điền thông tin mệnh giá, ngày hết hạn và thiết kế, sau đó nhấn <em>Publish</em> để phát hành.",
+    "Cách dùng AI Ads?": "Vào <strong>Marketing Tools → AI Ads</strong>. Tại đây bạn có thể tạo banner bằng AI (nhập prompt mô tả) hoặc tải banner có sẵn lên. Sau khi chọn banner, điền thông tin chiến dịch và nhấn <em>Gửi duyệt</em>.",
+    "Cách tạo chiến dịch marketing?": "Vào <strong>Marketing Tools → Spin Wheel</strong>, nhấn nút <em>Create</em> ở góc phải. Chọn loại chiến dịch, cấu hình phần thưởng, ngày chạy, rồi lưu và kích hoạt.",
+    "Cách gửi duyệt banner?": "Trong màn hình <strong>AI Ads → Manage Banner</strong>, chọn banner ở trạng thái Draft rồi nhấn <em>Gửi duyệt</em>. Banner sẽ chuyển sang trạng thái <em>Pending Review</em> và được xét duyệt trong 1–2 ngày làm việc.",
+    "Cách nạp Crypto?": "Vào <strong>Crypto</strong> trên menu, chọn loại coin muốn nạp rồi sao chép địa chỉ ví. Chuyển crypto từ ví ngoài vào địa chỉ đó. Số dư sẽ cập nhật sau khi giao dịch được xác nhận trên blockchain.",
+    "Cách xuất báo cáo?": "Vào mục <strong>Report</strong> trên menu. Chọn loại báo cáo (Gift Card, Transaction, Membership…), đặt khoảng thời gian, rồi nhấn <em>Export CSV</em> hoặc <em>Export PDF</em>.",
+    "Cách quản lý thành viên?": "Vào <strong>Membership</strong> trên menu. Tại đây bạn xem danh sách thành viên, tìm kiếm theo tên/ID, điều chỉnh hạng mức hoặc gia hạn gói thành viên cho từng tài khoản.",
+    "Xem lịch sử giao dịch?": "Vào <strong>Report → Transaction History</strong> để xem toàn bộ lịch sử. Bạn có thể lọc theo ngày, loại giao dịch và xuất file báo cáo nếu cần.",
+    "Thông tin tài khoản?": "Vào <strong>Account Settings</strong> ở cuối sidebar để xem và cập nhật thông tin cá nhân, đổi mật khẩu, cấu hình bảo mật 2 lớp (2FA).",
+    "Báo lỗi hệ thống?": "Vui lòng mô tả lỗi bạn gặp phải (màn hình nào, thao tác gì, nội dung thông báo lỗi). Đội kỹ thuật sẽ tiếp nhận và phản hồi trong vòng 4 giờ làm việc.",
+    "Liên hệ kỹ thuật?": "Bạn có thể liên hệ đội kỹ thuật qua email <strong>support@vlinkpay.com</strong> hoặc hotline <strong>1800 xxxx</strong> (8:00–18:00, Thứ 2–Thứ 6). Hoặc nhập mô tả vấn đề tại đây, chúng tôi sẽ chuyển tiếp.",
+  };
+
+  function gsSendMessage() {
+    const input = document.getElementById("gs-chat-input");
+    if (!input) return;
+    const text = input.value.trim();
+    if (!text) return;
+    const messages = document.getElementById("gs-chat-messages");
+    if (!messages) return;
+
+    const userMsg = document.createElement("div");
+    userMsg.style.cssText = "display:flex;justify-content:flex-end;";
+    userMsg.innerHTML =
+      `<div style="background:#00a76f;color:#fff;border-radius:16px;border-bottom-right-radius:4px;padding:10px 14px;max-width:80%;font-size:13px;">` +
+      text +
+      `<span style="font-size:10px;opacity:0.75;margin-top:4px;display:block;text-align:right;">Vừa xong</span></div>`;
+    messages.appendChild(userMsg);
+    input.value = "";
+    messages.scrollTop = messages.scrollHeight;
+
+    const reply = GS_ANSWERS[text] || "Cảm ơn bạn đã liên hệ! Đội ngũ hỗ trợ sẽ phản hồi sớm nhất có thể. Nếu cần hỗ trợ gấp, vui lòng email <strong>support@vlinkpay.com</strong>. 🙏";
+
+    setTimeout(function () {
+      const botMsg = document.createElement("div");
+      botMsg.style.cssText = "display:flex;align-items:flex-end;gap:8px;";
+      botMsg.innerHTML =
+        `<div style="width:28px;height:28px;border-radius:50%;background:rgba(0,167,111,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">` +
+        `<iconify-icon icon="solar:bot-bold-duotone" width="14" style="color:#00a76f;"></iconify-icon></div>` +
+        `<div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;max-width:85%;box-shadow:0 1px 3px rgba(0,0,0,0.05);">` +
+        `<p style="font-size:13px;color:#374151;margin:0;line-height:1.5;">${reply}</p>` +
+        `<span style="font-size:10px;color:#9ca3af;margin-top:4px;display:block;">Vừa xong</span></div>`;
+      messages.appendChild(botMsg);
+      messages.scrollTop = messages.scrollHeight;
+      if (window.Iconify) window.Iconify.scan(botMsg);
+    }, 700);
+  }
+
+  function gsQuickQuestion(btn) {
+    const input = document.getElementById("gs-chat-input");
+    if (input) { input.value = btn.textContent.trim(); window.gsSendMessage(); }
+  }
+
+  // Expose to global scope
+  window.openGlobalSupportChat = openGlobalSupportChat;
+  window.closeGlobalSupportChat = closeGlobalSupportChat;
+  window.gsSendMessage = gsSendMessage;
+  window.gsQuickQuestion = gsQuickQuestion;
 
   // Expose to global scope
   window.toggleSidebar = toggleSidebar;

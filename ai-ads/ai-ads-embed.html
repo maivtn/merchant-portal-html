@@ -143,27 +143,33 @@
           class="nav-btn flex items-center gap-2 px-4 py-3.5 text-sm font-semibold whitespace-nowrap text-slate-500 border-b-2 border-transparent hover:text-indigo-600 hover:border-indigo-200 transition-all duration-200 btn-bounce bg-transparent">
           <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Overview
         </button>
-        <button data-screen="manage"
-          class="nav-btn flex items-center gap-2 px-4 py-3.5 text-sm font-semibold whitespace-nowrap text-slate-500 border-b-2 border-transparent hover:text-indigo-600 hover:border-indigo-200 transition-all duration-200 btn-bounce bg-transparent">
-          <i data-lucide="layers" class="w-4 h-4"></i> Manage Banner
-        </button>
         <button data-screen="create-ad"
           class="nav-btn flex items-center gap-2 px-4 py-3.5 text-sm font-semibold whitespace-nowrap text-slate-500 border-b-2 border-transparent hover:text-indigo-600 hover:border-indigo-200 transition-all duration-200 btn-bounce bg-transparent">
           <i data-lucide="plus-circle" class="w-4 h-4"></i> Create Ad
         </button>
-        <button data-screen="transactions"
+        <button data-screen="manage"
           class="nav-btn flex items-center gap-2 px-4 py-3.5 text-sm font-semibold whitespace-nowrap text-slate-500 border-b-2 border-transparent hover:text-indigo-600 hover:border-indigo-200 transition-all duration-200 btn-bounce bg-transparent">
-          <i data-lucide="history" class="w-4 h-4"></i> Transaction History
+          <i data-lucide="layers" class="w-4 h-4"></i> Manage Banner
         </button>
         <button data-screen="buy-package"
           class="nav-btn flex items-center gap-2 px-4 py-3.5 text-sm font-semibold whitespace-nowrap text-slate-500 border-b-2 border-transparent hover:text-indigo-600 hover:border-indigo-200 transition-all duration-200 btn-bounce bg-transparent">
           <i data-lucide="shopping-bag" class="w-4 h-4"></i> Buy Package
+        </button>
+        <button data-screen="notifications"
+          class="nav-btn relative flex items-center gap-2 px-4 py-3.5 text-sm font-semibold whitespace-nowrap text-slate-500 border-b-2 border-transparent hover:text-indigo-600 hover:border-indigo-200 transition-all duration-200 btn-bounce bg-transparent">
+          <i data-lucide="bell" class="w-4 h-4"></i> Thông báo
+          <span id="notif-tab-badge" class="hidden min-w-[16px] h-4 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-0.5">0</span>
+        </button>
+        <button data-screen="transactions"
+          class="nav-btn flex items-center gap-2 px-4 py-3.5 text-sm font-semibold whitespace-nowrap text-slate-500 border-b-2 border-transparent hover:text-indigo-600 hover:border-indigo-200 transition-all duration-200 btn-bounce bg-transparent">
+          <i data-lucide="history" class="w-4 h-4"></i> Transaction History
         </button>
         <!-- <button data-screen="support"
           class="nav-btn flex items-center gap-2 px-4 py-3.5 text-sm font-semibold whitespace-nowrap text-slate-500 border-b-2 border-transparent hover:text-indigo-600 hover:border-indigo-200 transition-all duration-200 btn-bounce bg-transparent">
           <i data-lucide="life-buoy" class="w-4 h-4"></i> Hỗ trợ
         </button> -->
       </div>
+
         <!-- Arrow phải (chỉ mobile) -->
         <button id="tab-arrow-right" onclick="navigateTab(1)"
           class="lg:hidden shrink-0 w-9 self-stretch flex items-center justify-center text-slate-400 hover:text-indigo-600 border-l border-slate-100 transition-colors disabled:opacity-25 bg-white">
@@ -406,10 +412,6 @@
 
         <!-- ================= MÀN HÌNH 2: MANAGE BANNER ================= -->
         <section id="screen-manage" class="screen-section space-y-4 hidden">
-          <div>
-
-          </div>
-
           <!-- Tổng quan thông số -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div
@@ -733,7 +735,12 @@
                   <div>
                     <span class="text-xs font-bold text-slate-400">GÓI HIỆN TẠI</span>
                     <h4 class="text-xl font-extrabold text-slate-900 mt-1">Basic</h4>
-                    <p class="text-xs text-slate-400 mt-3">✓ 1 banner hoạt động</p>
+                    <div class="flex items-baseline gap-1 mt-3">
+                      <span class="text-3xl font-extrabold text-slate-900">$29</span>
+                      <span class="text-xs text-slate-400">/ tháng</span>
+                    </div>
+                    <div class="h-px bg-slate-100 my-3"></div>
+                    <p class="text-xs text-slate-400 mt-2">✓ 1 banner hoạt động</p>
                     <p class="text-xs text-slate-400 mt-2">✕ Không Doanh nghiệp nổi bật</p>
                     <p class="text-xs text-slate-400 mt-2">✓ Duyệt tiêu chuẩn</p>
                     <p class="text-xs text-slate-400 mt-2">✓ 100 AI credit</p>
@@ -752,14 +759,19 @@
                   <div>
                     <span class="text-xs font-bold text-indigo-600">NÂNG CẤP PHÙ HỢP NHẤT</span>
                     <h4 class="text-xl font-extrabold text-slate-900 mt-1">Premium</h4>
-                    <p class="text-xs text-slate-600 mt-3">✓ 3 banner hoạt động</p>
+                    <div class="flex items-baseline gap-1 mt-3">
+                      <span class="text-3xl font-extrabold text-slate-900">$79</span>
+                      <span class="text-xs text-slate-400">/ tháng</span>
+                    </div>
+                    <div class="h-px bg-slate-100 my-3"></div>
+                    <p class="text-xs text-slate-600 mt-2">✓ 3 banner hoạt động</p>
                     <p class="text-xs text-slate-600 mt-2">✓ Có Doanh nghiệp nổi bật</p>
                     <p class="text-xs text-slate-600 mt-2">✓ Ưu tiên kiểm duyệt hàng đầu</p>
                     <p class="text-xs text-slate-600 mt-2">✓ 500 AI credit</p>
                   </div>
                   <button onclick="selectUpgradePackage('Premium')"
                     class="mt-4 lg:mt-6 w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 hover:shadow-btn-indigo-glow hover:scale-[1.02] text-white font-bold text-xs transition-all-300 btn-bounce">
-                    Nâng cấp lên Premium
+                    Nâng cấp lên Premium · $79/tháng
                   </button>
                 </div>
 
@@ -769,14 +781,19 @@
                   <div>
                     <span class="text-xs font-bold text-slate-400">GÓI TỐI ĐA</span>
                     <h4 class="text-xl font-extrabold text-slate-900 mt-1">Platinum</h4>
-                    <p class="text-xs text-slate-600 mt-3">✓ 10 banner hoạt động</p>
+                    <div class="flex items-baseline gap-1 mt-3">
+                      <span class="text-3xl font-extrabold text-slate-900">$199</span>
+                      <span class="text-xs text-slate-400">/ tháng</span>
+                    </div>
+                    <div class="h-px bg-slate-100 my-3"></div>
+                    <p class="text-xs text-slate-600 mt-2">✓ 10 banner hoạt động</p>
                     <p class="text-xs text-slate-600 mt-2">✓ Doanh nghiệp nổi bật VIP</p>
                     <p class="text-xs text-slate-600 mt-2">✓ Ưu tiên kiểm duyệt cao nhất</p>
                     <p class="text-xs text-slate-600 mt-2">✓ 2000 AI credit</p>
                   </div>
                   <button onclick="selectUpgradePackage('Platinum')"
                     class="mt-4 lg:mt-6 w-full py-2.5 rounded-xl bg-slate-50 hover:bg-indigo-600 hover:text-white hover:border-transparent hover:shadow-btn-indigo-glow hover:scale-[1.02] text-slate-800 font-bold text-xs border border-slate-100 transition-all-300 btn-bounce">
-                    Xem Platinum
+                    Nâng cấp lên Platinum · $199/tháng
                   </button>
                 </div>
               </div>
@@ -821,36 +838,6 @@
               </div>
             </div>
 
-            <!-- Thẻ tóm tắt hoá đơn đặt hàng -->
-            <div
-              class="bg-white rounded-3xl p-6 border border-indigo-100 bg-indigo-50/20 shadow-premium max-w-xl hover:shadow-card-hover transition-all-300">
-              <h3 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <i data-lucide="receipt" class="w-5 h-5 text-indigo-600"></i> Tóm tắt đơn hàng nâng cấp
-              </h3>
-
-              <div class="space-y-2.5 text-xs font-medium text-slate-600">
-                <div class="flex justify-between">
-                  <span>Gói nâng cấp mục tiêu:</span>
-                  <span class="font-bold text-slate-900" id="order-target-plan">Premium</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>Phí gói dịch vụ hàng tháng:</span>
-                  <span class="font-bold text-slate-900" id="order-plan-price">$79.00 / tháng</span>
-                </div>
-                <div class="h-px bg-slate-200/60 my-2"></div>
-                <div class="flex justify-between text-sm font-bold">
-                  <span class="text-slate-900">Tổng thanh toán ban đầu:</span>
-                  <span class="text-indigo-600" id="order-total-price">$79.00 / tháng</span>
-                </div>
-              </div>
-
-              <div class="mt-6">
-                <button onclick="confirmUpgradePlan()"
-                  class="w-full sm:w-auto px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 hover:shadow-btn-indigo-glow hover:-translate-y-0.5 text-white font-bold text-xs transition-all duration-300 btn-bounce">
-                  Xác nhận Nâng cấp Gói
-                </button>
-              </div>
-            </div>
           </div>
         </section>
 
@@ -1699,6 +1686,30 @@
           </div>
         </section>
 
+        <!-- ================= MÀN HÌNH: THÔNG BÁO ================= -->
+        <section id="screen-notifications" class="screen-section space-y-4 hidden">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i data-lucide="bell" class="w-4 h-4 text-indigo-600"></i> Thông báo
+              </h2>
+            </div>
+            <button onclick="markAllNotifsRead()" class="text-xs font-semibold text-indigo-600 hover:underline transition-colors">Đánh dấu tất cả đã đọc</button>
+          </div>
+
+          <!-- Danh sách -->
+          <div id="notif-screen-list" class="space-y-2"></div>
+
+          <!-- Empty state -->
+          <div id="notif-screen-empty" class="hidden bg-white rounded-3xl border border-slate-100 shadow-premium flex flex-col items-center justify-center py-16 text-center">
+            <div class="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-4">
+              <i data-lucide="bell-off" class="w-7 h-7 text-slate-300"></i>
+            </div>
+            <p class="text-sm font-semibold text-slate-500">Không có thông báo</p>
+            <p class="text-xs text-slate-400 mt-1">Mọi cập nhật về banner và gói dịch vụ sẽ xuất hiện tại đây.</p>
+          </div>
+        </section>
+
       </div>
     </main>
   </div>
@@ -1848,6 +1859,13 @@
     let tempUploadedImageUrl = "";
     let tempUploadedFileName = "";
 
+    // Thông báo hệ thống
+    let notifications = [
+      { id: 'n1', type: 'approved', title: 'Banner được duyệt', body: '"Promo Hè Rực Rỡ 2026" đã được phê duyệt và đang chạy.', bannerId: 'banner-1', timestamp: '2026-06-04T10:30:00', read: false },
+      { id: 'n2', type: 'rejected', title: 'Banner bị từ chối', body: '"Crypto Payment Banner V2" bị từ chối: nội dung không phù hợp chính sách.', bannerId: 'banner-4', timestamp: '2026-06-03T15:00:00', read: false },
+      { id: 'n3', type: 'expired', title: 'Banner hết hạn', body: '"Bitcoin Nails Grand Opening" đã hết thời hạn hiển thị vào ngày 15/06.', bannerId: 'banner-3', timestamp: '2026-06-02T00:00:00', read: true },
+    ];
+
     // Dữ liệu tạo bằng AI giả lập tạm thời
     let currentAIResultUrl = "";
     let isAIBannerSelected = false;
@@ -1868,6 +1886,9 @@
 
       // Nạp các gợi ý Prompt cho AI
       renderSuggestedPrompts();
+
+      // Cập nhật badge tab thông báo
+      renderNotifications();
 
       // Thiết lập lắng nghe sự kiện
       setupEventListeners();
@@ -1976,16 +1997,18 @@
 
       // (mobile drawer removed in embed version)
 
-      // Khi người dùng chuyển sang trang mua gói cước bằng menu chính, mặc định hiển thị kịch bản mua gói mới
       if (screenId === 'buy-package') {
         togglePackageScenario('unsubscribed');
+      }
+      if (screenId === 'notifications') {
+        renderNotifications();
       }
 
       // Cuộn lên đầu trang
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    const TAB_ORDER = ['hub', 'manage', 'create-ad', 'transactions', 'buy-package'];
+    const TAB_ORDER = ['hub', 'create-ad', 'manage', 'buy-package', 'notifications', 'transactions'];
 
     function navigateTab(dir) {
       const active = document.querySelector('.nav-btn.text-indigo-600');
@@ -2668,33 +2691,15 @@
     }
 
     function buyPackageDirectly(planName) {
-      currentActivePlan = planName;
-
-      const tokensAmount = planName === 'Basic' ? 100 : planName === 'Premium' ? 500 : 2000;
-      currentTokens = tokensAmount;
-
-      showToast(`Chúc mừng! Bạn đã đăng ký thành công gói ${planName}. Nhận ngay ${tokensAmount} AI credit.`);
-      switchScreen('hub');
+      openPaymentModal(planName);
     }
 
     function selectUpgradePackage(planName) {
-      document.getElementById('order-target-plan').innerText = planName;
-      const price = planName === 'Premium' ? '$79.00 / tháng' : '$199.00 / tháng';
-      document.getElementById('order-plan-price').innerText = price;
-      document.getElementById('order-total-price').innerText = price;
-
-      showToast(`Đã chọn nâng cấp mục tiêu lên Gói ${planName}. Vui lòng xác nhận thanh toán phía dưới.`);
+      openPaymentModal(planName);
     }
 
     function confirmUpgradePlan() {
-      const plan = document.getElementById('order-target-plan').innerText;
-      currentActivePlan = plan;
-
-      const tokensAmount = plan === 'Premium' ? 500 : 2000;
-      currentTokens = tokensAmount;
-
-      showToast(`Hệ thống xác nhận! Giao dịch thành công. Tài khoản của bạn được nâng cấp lên gói ${plan}.`);
-      switchScreen('hub');
+      confirmPayment();
     }
 
     /* ================= LOGIC FORM TẢI LÊN BANNER (UPLOAD) ================= */
@@ -2890,6 +2895,91 @@
       document.getElementById('ai-ref-preview-name').textContent = '';
       document.getElementById('ai-ref-dropzone').classList.remove('hidden');
     }
+
+    /* ================= NOTIFICATION CENTER ================= */
+    const NOTIF_CONFIG = {
+      approved: { icon: 'check-circle',    color: 'text-emerald-500', bg: 'bg-emerald-50' },
+      rejected: { icon: 'x-circle',        color: 'text-rose-500',    bg: 'bg-rose-50'    },
+      expired:  { icon: 'clock',           color: 'text-amber-500',   bg: 'bg-amber-50'   },
+      upgrade:  { icon: 'arrow-up-circle', color: 'text-indigo-500',  bg: 'bg-indigo-50'  },
+    };
+
+    function renderNotifications() {
+      const list = document.getElementById('notif-screen-list');
+      const empty = document.getElementById('notif-screen-empty');
+      const badge = document.getElementById('notif-tab-badge');
+
+      // Badge trên tab
+      const unread = notifications.filter(n => !n.read).length;
+      if (badge) {
+        if (unread > 0) { badge.classList.remove('hidden'); badge.textContent = unread > 9 ? '9+' : unread; }
+        else badge.classList.add('hidden');
+      }
+
+      if (!list) return;
+
+      if (notifications.length === 0) {
+        list.innerHTML = '';
+        list.classList.add('hidden');
+        if (empty) empty.classList.remove('hidden');
+        return;
+      }
+      list.classList.remove('hidden');
+      if (empty) empty.classList.add('hidden');
+
+      const fmt = ts => {
+        const d = new Date(ts);
+        return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' }) + ' ' +
+               d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+      };
+
+      list.innerHTML = notifications.map(n => {
+        const cfg = NOTIF_CONFIG[n.type] || NOTIF_CONFIG.approved;
+        return `
+          <div onclick="handleNotifClick('${n.id}')"
+            class="bg-white rounded-2xl border ${n.read ? 'border-slate-100' : 'border-indigo-100'} p-4 flex items-start gap-3 cursor-pointer hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 shadow-premium">
+            <div class="w-9 h-9 rounded-xl ${cfg.bg} flex items-center justify-center shrink-0">
+              <i data-lucide="${cfg.icon}" class="w-4 h-4 ${cfg.color}"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <p class="text-xs font-bold text-slate-900">${n.title}</p>
+                ${!n.read ? '<span class="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0"></span>' : ''}
+                <span class="ml-auto text-[10px] text-slate-400 shrink-0">${fmt(n.timestamp)}</span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-0.5 leading-relaxed">${n.body}</p>
+              ${n.bannerId ? `<p class="text-[11px] text-indigo-600 font-semibold mt-1 flex items-center gap-1"><i data-lucide="arrow-right" class="w-3 h-3"></i> Xem banner liên quan</p>` : ''}
+            </div>
+          </div>`;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function handleNotifClick(id) {
+      const n = notifications.find(x => x.id === id);
+      if (!n) return;
+      n.read = true;
+      renderNotifications();
+      if (n.bannerId) switchScreen('manage');
+    }
+
+    function markAllNotifsRead() {
+      notifications.forEach(n => n.read = true);
+      renderNotifications();
+    }
+
+    function addNotification(type, title, body, bannerId) {
+      notifications.unshift({
+        id: 'n' + Date.now(),
+        type, title, body,
+        bannerId: bannerId || null,
+        timestamp: new Date().toISOString(),
+        read: false,
+      });
+      renderNotifications();
+      showToast(title + ': ' + body, type === 'rejected' ? 'error' : type === 'expired' ? 'warning' : 'success');
+    }
+    /* ================= END NOTIFICATION CENTER ================= */
 
     function toggleRefHistoryPicker() {
       const picker = document.getElementById('ai-ref-history-picker');
@@ -3527,7 +3617,129 @@
       showToast('Đã gửi duyệt banner AI (Advanced) thành công!');
       switchScreen('manage');
     }
+
+    /* ================= PAYMENT MODAL ================= */
+    const PAYMENT_METHODS = [
+      { id: 'USDV', label: 'USDV', available: '79,000.00', image: 'https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/USDV.png' },
+      { id: 'USDT', label: 'USDT', available: '79,000.00', image: 'https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/USDT.png' },
+      { id: 'USD',  label: 'USD',  available: '79,000.00', image: 'https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/Usd.png' },
+      { id: 'BTC',  label: 'BTC',  available: '100,000.25', image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
+      { id: 'VND',  label: 'VND',  available: '50,000,000', image: 'https://raw.githubusercontent.com/vlink-group/VlinkPay/refs/heads/main/icon/assets/new-icon/Dong.png' },
+    ];
+
+    let paymentModalPlan = null;
+    let paymentModalMethod = 'USDV';
+
+    function openPaymentModal(planName) {
+      paymentModalPlan = planName;
+      paymentModalMethod = 'USDV';
+      const price = planName === 'Basic' ? 29 : planName === 'Premium' ? 79 : 199;
+
+      document.getElementById('pm-invoice-plan').innerText = planName;
+      document.getElementById('pm-invoice-total').innerText = `$${price}.00`;
+
+      renderPaymentMethods();
+      document.getElementById('payment-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    function closePaymentModal() {
+      document.getElementById('payment-modal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function renderPaymentMethods() {
+      const container = document.getElementById('pm-method-list');
+      container.innerHTML = PAYMENT_METHODS.map(pm => `
+        <button onclick="selectPaymentMethod('${pm.id}')"
+          class="flex w-full items-center justify-between rounded-xl border px-3 py-1.5 text-left transition-all duration-200 ${paymentModalMethod === pm.id ? 'border-indigo-500 bg-indigo-50 shadow-sm' : 'border-slate-200 hover:border-indigo-300 hover:-translate-y-0.5'}">
+          <div class="flex items-center gap-2">
+            <div class="grid h-3.5 w-3.5 place-items-center rounded-full border-2 ${paymentModalMethod === pm.id ? 'border-indigo-600' : 'border-slate-300'}">
+              ${paymentModalMethod === pm.id ? '<span class="h-1.5 w-1.5 rounded-full bg-indigo-600"></span>' : ''}
+            </div>
+            <div class="grid h-6 w-6 place-items-center overflow-hidden rounded-full border border-slate-200 bg-white">
+              <img src="${pm.image}" alt="${pm.id}" class="h-full w-full object-cover p-0.5">
+            </div>
+            <span class="text-xs font-semibold text-slate-800">${pm.label}</span>
+          </div>
+          <div class="text-right">
+            <p class="text-[9px] text-slate-400 uppercase tracking-wide">Số dư</p>
+            <p class="text-[11px] font-bold text-slate-700">${pm.id === 'BTC' ? '' : '$'}${pm.available}</p>
+          </div>
+        </button>
+      `).join('');
+    }
+
+    function selectPaymentMethod(methodId) {
+      paymentModalMethod = methodId;
+      renderPaymentMethods();
+    }
+
+    function confirmPayment() {
+      if (!paymentModalPlan || !paymentModalMethod) return;
+      closePaymentModal();
+
+      currentActivePlan = paymentModalPlan;
+      currentTokens = paymentModalPlan === 'Premium' ? 500 : paymentModalPlan === 'Platinum' ? 2000 : 100;
+
+      addNotification('upgrade', 'Nâng cấp gói thành công', `Tài khoản đã được nâng cấp lên gói ${paymentModalPlan} qua ${paymentModalMethod}.`, null);
+      showToast(`Thanh toán thành công! Tài khoản nâng cấp lên gói ${paymentModalPlan}.`);
+      switchScreen('hub');
+    }
   </script>
+
+  <!-- Payment Modal -->
+  <div id="payment-modal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
+    <div class="w-full sm:max-w-lg bg-white sm:rounded-3xl rounded-t-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92dvh]">
+
+      <!-- Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 shrink-0">
+        <div>
+          <h3 class="text-base font-bold text-slate-900">Thanh toán gói</h3>
+        </div>
+        <button onclick="closePaymentModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors">
+          <i data-lucide="x" class="w-4 h-4 text-slate-500"></i>
+        </button>
+      </div>
+
+      <!-- Scrollable body -->
+      <div class="overflow-y-auto flex-1 px-6 py-4 space-y-5">
+
+        <!-- Payment methods -->
+        <div>
+          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3">Phương thức thanh toán</p>
+          <div id="pm-method-list" class="space-y-2"></div>
+        </div>
+
+        <!-- Invoice summary -->
+        <div class="rounded-2xl  bg-slate-50/60">
+          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3">Tóm tắt hoá đơn</p>
+          <div class="flex justify-between text-xs text-slate-600">
+            <span>Gói dịch vụ:</span>
+            <span class="font-semibold text-slate-900" id="pm-invoice-plan"></span>
+          </div>
+          
+          <div class="h-px bg-slate-200 my-1"></div>
+          <div class="flex justify-between text-sm font-bold">
+            <span class="text-slate-900">Tổng thanh toán:</span>
+            <span class="text-indigo-600" id="pm-invoice-total"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirm button -->
+      <div class="px-6 py-4 border-t border-slate-100 shrink-0 flex gap-3">
+        <button onclick="closePaymentModal()" class="flex-1 py-3 rounded-2xl border border-slate-200 text-xs font-semibold text-slate-500 hover:text-slate-700 hover:border-slate-300 transition-colors">
+          Huỷ
+        </button>
+        <button onclick="confirmPayment()"
+          class="flex-[2] py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0">
+          Xác nhận thanh toán
+        </button>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

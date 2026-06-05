@@ -245,10 +245,7 @@
     <line x1="3" y1="18" x2="21" y2="18"/>
   </svg>`;
 
-  const CHEVRON_SVG = `<span class="chevron-toggle"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-    viewBox="0 0 24 24" fill="currentColor">
-    <path d="M7 10l5 5 5-5z"/>
-  </svg></span>`;
+  const CHEVRON_SVG = `<span class="chevron-toggle"><iconify-icon icon="solar:alt-arrow-down-linear" width="16" height="16"></iconify-icon></span>`;
 
   // ═══════════════════════════════════════════════════════════════════════════
   // INIT

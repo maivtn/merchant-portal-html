@@ -132,7 +132,13 @@
 
     <!-- TAB NAVIGATION -->
     <nav class="bg-white border-b border-slate-200 sticky top-0 z-30 shrink-0">
-      <div class="flex items-center overflow-x-auto px-2 gap-0.5" style="scrollbar-width:none;">
+      <div class="flex items-center">
+        <!-- Arrow trái (chỉ mobile) -->
+        <button id="tab-arrow-left" onclick="navigateTab(-1)"
+          class="lg:hidden shrink-0 w-9 self-stretch flex items-center justify-center text-slate-400 hover:text-indigo-600 border-r border-slate-100 transition-colors disabled:opacity-25 bg-white">
+          <i data-lucide="chevron-left" class="w-4 h-4"></i>
+        </button>
+      <div id="tab-scroll-container" class="flex items-center overflow-x-auto px-2 gap-0.5 flex-1" style="scrollbar-width:none;-webkit-overflow-scrolling:touch;">
         <button data-screen="hub"
           class="nav-btn flex items-center gap-2 px-4 py-3.5 text-sm font-semibold whitespace-nowrap text-slate-500 border-b-2 border-transparent hover:text-indigo-600 hover:border-indigo-200 transition-all duration-200 btn-bounce bg-transparent">
           <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Overview
@@ -157,6 +163,12 @@
           class="nav-btn flex items-center gap-2 px-4 py-3.5 text-sm font-semibold whitespace-nowrap text-slate-500 border-b-2 border-transparent hover:text-indigo-600 hover:border-indigo-200 transition-all duration-200 btn-bounce bg-transparent">
           <i data-lucide="life-buoy" class="w-4 h-4"></i> Hỗ trợ
         </button> -->
+      </div>
+        <!-- Arrow phải (chỉ mobile) -->
+        <button id="tab-arrow-right" onclick="navigateTab(1)"
+          class="lg:hidden shrink-0 w-9 self-stretch flex items-center justify-center text-slate-400 hover:text-indigo-600 border-l border-slate-100 transition-colors disabled:opacity-25 bg-white">
+          <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        </button>
       </div>
     </nav>
 
@@ -236,7 +248,7 @@
             <div
               class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium hover:shadow-card-hover hover:-translate-y-1 transition-all-300 group">
               <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Hạn ngạch Banner</span>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Số banner sử dụng</span>
                 <div
                   class="w-10 h-10 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-violet-600 group-hover:text-white transition-all duration-300">
                   <i data-lucide="image" class="w-5 h-5"></i>
@@ -699,7 +711,7 @@
                 </div>
                 <div
                   class="p-4 rounded-2xl bg-slate-50 border border-slate-100/80 hover:border-slate-300 transition-colors duration-300">
-                  <span class="text-xs text-slate-400">Hạn ngạch Banner đang sử dụng</span>
+                  <span class="text-xs text-slate-400">Số banner sử dụng đang sử dụng</span>
                   <p class="text-xl font-extrabold text-slate-950 mt-1">1 / 1 Banner</p>
                   <p class="text-[11px] text-amber-500 font-semibold mt-1">Đã dùng hết dung lượng</p>
                 </div>
@@ -1150,14 +1162,13 @@
               <div
                 class="lg:col-span-2 bg-white rounded-3xl p-6 border border-slate-100 shadow-premium space-y-6 hover:shadow-card-hover transition-all duration-300">
                 <h3 class="text-base font-bold text-slate-950 flex items-center gap-2">
-                  <i data-lucide="sparkles" class="w-5 h-5 text-indigo-600 animate-pulse"></i> Trình tạo Banner AI nâng
-                  cao
+                  <i data-lucide="sparkles" class="w-5 h-5 text-indigo-600 animate-pulse"></i> Trình tạo Banner AI 
                 </h3>
 
                 <!-- Upload Ảnh tham chiếu (Reference) -->
                 <div class="space-y-2">
                   <div class="flex justify-between items-center">
-                    <label class="text-xs font-bold text-slate-700">Ảnh mẫu tham chiếu phong cách</label>
+                    <label class="text-xs font-bold text-slate-700">Ảnh mẫu tham chiếu</label>
                     <span class="text-slate-400 text-xs">Tùy chọn</span>
                   </div>
                   <div id="ai-ref-dropzone"
@@ -1170,6 +1181,14 @@
                       id="ai-ref-icon"></i>
                     <span class="text-xs text-slate-500 font-medium" id="ai-ref-text">Tải lên hoặc kéo thả ảnh mẫu tham
                       khảo ở đây</span>
+                  </div>
+                  <!-- Preview ảnh tham chiếu (hiện sau khi upload) -->
+                  <div id="ai-ref-preview-card" class="hidden rounded-2xl border border-indigo-200 bg-indigo-50/20 overflow-hidden relative">
+                    <img id="ai-ref-preview-img" src="" alt="Ảnh tham chiếu" class="w-full object-cover max-h-40">
+                    <div class="flex items-center justify-between px-3 py-2 bg-white border-t border-indigo-100">
+                      <p class="text-[11px] font-semibold text-indigo-700 truncate" id="ai-ref-preview-name"></p>
+                      <button onclick="removeRefImage(event)" class="text-[11px] font-bold text-rose-500 hover:text-rose-700 hover:underline transition-colors shrink-0 ml-2">Xoá</button>
+                    </div>
                   </div>
                 </div>
 
@@ -1282,7 +1301,7 @@
                   class="bg-white rounded-3xl p-6 border border-slate-100 shadow-premium space-y-4 hover:shadow-card-hover transition-shadow duration-300">
                   <div class="flex items-center justify-between">
                     <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                      <span id="quick-result-header-text">Kết quả tối ưu nhất tự động sinh ra</span>
+                      <span id="quick-result-header-text">Kết quả </span>
                     </h3>
                     <span id="quick-result-badge"
                       class="text-[10px] font-bold text-slate-400 bg-slate-50 border px-2 py-0.5 rounded">Khuyên dùng sử
@@ -1971,6 +1990,29 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    const TAB_ORDER = ['hub', 'manage', 'create-ad', 'transactions', 'buy-package'];
+
+    function navigateTab(dir) {
+      const active = document.querySelector('.nav-btn.text-indigo-600');
+      const currentScreen = active ? active.getAttribute('data-screen') : TAB_ORDER[0];
+      const idx = TAB_ORDER.indexOf(currentScreen);
+      const next = TAB_ORDER[Math.max(0, Math.min(TAB_ORDER.length - 1, idx + dir))];
+      if (next !== currentScreen) switchScreen(next);
+    }
+
+    function updateTabArrows(screenId) {
+      const mapped = (screenId === 'upload' || screenId === 'create-ai') ? 'create-ad' : screenId;
+      const idx = TAB_ORDER.indexOf(mapped);
+      const btnLeft = document.getElementById('tab-arrow-left');
+      const btnRight = document.getElementById('tab-arrow-right');
+      if (btnLeft) btnLeft.disabled = idx <= 0;
+      if (btnRight) btnRight.disabled = idx >= TAB_ORDER.length - 1;
+
+      // Cuộn tab đang active vào vùng nhìn thấy
+      const activeBtn = document.querySelector(`.nav-btn[data-screen="${mapped}"]`);
+      if (activeBtn) activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+
     function updateSidebarActiveState(screenId) {
       // Tab navigation
       document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -1986,6 +2028,7 @@
           btn.classList.remove('text-indigo-600', 'border-indigo-600');
         }
       });
+      updateTabArrows(screenId);
     }
 
     /* ================= CẬP NHẬT DỮ LIỆU TOÀN DIỆN TRÊN UI ================= */
@@ -2566,11 +2609,11 @@
       document.getElementById('ai-prompt-input').value = "";
 
       // Xoá tham chiếu ảnh cũ
-      const refBox = document.getElementById('ai-ref-dropzone');
-      refBox.className = "border border-dashed border-slate-200 hover:border-indigo-500 rounded-2xl p-4 flex items-center justify-center gap-3 cursor-pointer transition-colors duration-300";
-      document.getElementById('ai-ref-text').innerText = "Tải lên hoặc kéo thả ảnh mẫu tham khảo ở đây";
-      document.getElementById('ai-ref-icon').className = "w-5 h-5 text-slate-400";
       document.getElementById('ai-ref-file-input').value = "";
+      document.getElementById('ai-ref-preview-card').classList.add('hidden');
+      document.getElementById('ai-ref-preview-img').src = '';
+      document.getElementById('ai-ref-preview-name').textContent = '';
+      document.getElementById('ai-ref-dropzone').classList.remove('hidden');
     }
 
     function goToUpgradeScreen() {
@@ -2795,12 +2838,32 @@
       const file = e.target.files[0];
       if (!file) return;
 
-      const refBox = document.getElementById('ai-ref-dropzone');
-      refBox.className = "border border-indigo-500 bg-indigo-50/20 rounded-2xl p-4 flex items-center justify-center gap-3 cursor-pointer transition-colors duration-300";
-      document.getElementById('ai-ref-text').innerText = `Đã đính kèm ảnh mẫu: ${file.name}`;
-      document.getElementById('ai-ref-icon').className = "w-5 h-5 text-indigo-600";
+      if (file.size > 5 * 1024 * 1024) {
+        showToast("Ảnh tham chiếu vượt quá giới hạn 5MB. Vui lòng chọn ảnh nhỏ hơn.", "error");
+        e.target.value = '';
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        document.getElementById('ai-ref-dropzone').classList.add('hidden');
+        const previewCard = document.getElementById('ai-ref-preview-card');
+        previewCard.classList.remove('hidden');
+        document.getElementById('ai-ref-preview-img').src = ev.target.result;
+        document.getElementById('ai-ref-preview-name').textContent = file.name;
+      };
+      reader.readAsDataURL(file);
 
       showToast(`Đã nhận ảnh mẫu tham chiếu: ${file.name}`);
+    }
+
+    function removeRefImage(e) {
+      e.stopPropagation();
+      document.getElementById('ai-ref-file-input').value = '';
+      document.getElementById('ai-ref-preview-card').classList.add('hidden');
+      document.getElementById('ai-ref-preview-img').src = '';
+      document.getElementById('ai-ref-preview-name').textContent = '';
+      document.getElementById('ai-ref-dropzone').classList.remove('hidden');
     }
 
     function generateAIBanner() {
@@ -2958,7 +3021,7 @@
       // Reset result card header back to pre-selection state
       const ht2 = document.getElementById('quick-result-header-text');
       const rb2 = document.getElementById('quick-result-badge');
-      if (ht2) ht2.textContent = 'Kết quả tối ưu nhất tự động sinh ra';
+      if (ht2) ht2.textContent = 'Kết quả ';
       if (rb2) { rb2.textContent = 'Khuyên dùng sử dụng'; rb2.className = 'text-[10px] font-bold text-slate-400 bg-slate-50 border px-2 py-0.5 rounded'; }
 
       document.getElementById('ai-generator-after').classList.add('hidden');

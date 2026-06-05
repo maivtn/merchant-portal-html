@@ -164,18 +164,18 @@
     },
 
     // ── APPS ──────────────────────────────────────────────────────────────────
-    { type: "section", label: "APPS" },
+    // { type: "section", label: "APPS" },
+    // {
+    //   type: "link",
+    //   label: "Notifications",
+    //   icon: "solar:letter-bold-duotone",
+    //   iconWidth: 24,
+    //   href: "#",
+    //   badge: "32+",
+    // },
     {
       type: "link",
-      label: "Notifications",
-      icon: "solar:letter-bold-duotone",
-      iconWidth: 24,
-      href: "#",
-      badge: "32+",
-    },
-    {
-      type: "link",
-      label: "AI Assistant",
+      label: "Hỗ trợ",
       icon: "solar:chat-round-dots-bold-duotone",
       iconWidth: 24,
       href: "#",

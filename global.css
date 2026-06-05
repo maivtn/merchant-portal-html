@@ -408,13 +408,9 @@ img.sidebar-logo {
   align-items: center;
   height: 48px;
   padding: 0 40px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: calc(100% - var(--sidebar-width));
+  position: static;
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
-  z-index: 90;
   border-bottom: 1px dashed var(--grey-200);
   gap: 12px;
 }
@@ -1140,8 +1136,11 @@ input[type="date"].field-input[data-empty]:not(:focus)::-webkit-datetime-edit {
 
   /* Header: full width, hamburger on left, icons on right */
   .top-header {
+    position: fixed;
+    top: 0;
     left: 0;
     width: 100%;
+    z-index: 90;
     justify-content: space-between;
     gap: 8px;
     height: 48px;

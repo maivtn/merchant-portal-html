@@ -7,16 +7,17 @@
   "use strict";
 
   const sidebarScript = document.currentScript;
-  const PORTAL_BASE_URL = sidebarScript && sidebarScript.src
-    ? new URL("./", sidebarScript.src).href
-    : new URL("./", window.location.href).href;
+  const PORTAL_BASE_URL =
+    sidebarScript && sidebarScript.src
+      ? new URL("./", sidebarScript.src).href
+      : new URL("./", window.location.href).href;
 
   // ═══════════════════════════════════════════════════════════════════════════
   // SIDEBAR MENU DATA  ← Edit here to update sidebar across ALL pages
   // ═══════════════════════════════════════════════════════════════════════════
   const SIDEBAR_MENU = [
     // ── OVERVIEW ─────────────────────────────────────────────────────────────
-    { type: "section", label: "OVERVIEW" },
+    // { type: "section", label: "OVERVIEW" },
     {
       type: "link",
       label: "Homepage",
@@ -33,7 +34,7 @@
     },
 
     // ── GIFT CARD CENTER ──────────────────────────────────────────────────────
-    { type: "section", label: "GIFT CARD CENTER" },
+    // { type: "section", label: "GIFT CARD CENTER" },
     {
       type: "group",
       label: "Create New",
@@ -43,9 +44,7 @@
         {
           label: "Issue Digital",
           href: "issue-digital.html",
-          relatedPages: [ 
-            "issue-digital.html", 
-          ],
+          relatedPages: ["issue-digital.html"],
         },
 
         {
@@ -63,12 +62,12 @@
     },
     {
       type: "group",
-      label: "Product Management",
+      label: "Gift & Voucher",
       icon: "solar:folder-with-files-bold-duotone",
       iconWidth: 26,
       children: [
         {
-          label: "Products",
+          label: "Product Management",
           href: "product-list.html",
           relatedPages: [
             "gift-card-details.html",
@@ -93,25 +92,12 @@
       iconWidth: 24,
       children: [
         {
-          label: "Spiner",
-          children: [
-            { label: "Create Campaign", href: "marketing-create.html" },
-            {
-              label: "Campaign Management",
-              href: "marketing-tools.html",
-              relatedPages: ["marketing-edit.html", "marketing-details.html"],
-            },
-          ],
+          label: "Spin Wheel",
+          href: "marketing-tools.html",
+          relatedPages: ["marketing-edit.html", "marketing-details.html"],
         },
-        {
-          label: "AI Ads Hub",
-          children: [
-            { label: "Create Ads", href: "ai-ads-create.html" },
-            { label: "AI Ads Hub", href: "ai-ads.html" },
-            { label: "Manage Banner", href: "ai-ads-banner.html" },
-            { label: "Buy Package", href: "ai-ads-buy-package.html" },
-            { label: "Transaction History", href: "ai-ads-history.html" }
-          ],
+        { label: "AI Ads", href: "ai-ads.html" ,
+          relatedPages: ["ai-ads.html"],
         },
       ],
     },
@@ -258,10 +244,10 @@
     <line x1="3" y1="18" x2="21" y2="18"/>
   </svg>`;
 
-  const CHEVRON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-    viewBox="0 0 24 24" fill="currentColor" style="margin-left:auto;flex-shrink:0">
+  const CHEVRON_SVG = `<span class="chevron-toggle"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+    viewBox="0 0 24 24" fill="currentColor">
     <path d="M7 10l5 5 5-5z"/>
-  </svg>`;
+  </svg></span>`;
 
   // ═══════════════════════════════════════════════════════════════════════════
   // INIT
@@ -272,6 +258,7 @@
     if (!isViaCardStandaloneMode()) {
       renderSidebarNav();
       updateSidebarUserRole();
+      initSubmenus();
       injectHamburger();
       injectMobileLogo();
       injectOverlay();
@@ -356,7 +343,9 @@
 
     function getGroupHref(item) {
       if (item.href && item.href !== "#") return item.href;
-      const firstChild = (item.children || []).find((child) => child.href && child.href !== "#");
+      const firstChild = (item.children || []).find(
+        (child) => child.href && child.href !== "#",
+      );
       return firstChild ? firstChild.href : "#";
     }
 
@@ -403,7 +392,9 @@
 
         for (const child of item.children || []) {
           if (child.children && child.children.length) {
-            const activeSubChild = child.children.find((sc) => isItemActive(sc));
+            const activeSubChild = child.children.find((sc) =>
+              isItemActive(sc),
+            );
             const subGroupCls = activeSubChild ? " sub-group-active" : "";
             html += `  <div class="sub-group${subGroupCls}">
               <div class="sub-group-header"><span class="dot"></span>${child.label}</div>
@@ -504,10 +495,31 @@
   // ═══════════════════════════════════════════════════════════════════════════
   // SIDEBAR TOGGLE / RESPONSIVE
   // ═══════════════════════════════════════════════════════════════════════════
+  function initSubmenus() {
+    const sidebar = document.querySelector(".sidebar");
+    if (!sidebar) return;
+    sidebar.querySelectorAll("a.nav-item").forEach(function (navItem) {
+      const submenu = navItem.nextElementSibling;
+      if (!submenu || !submenu.classList.contains("submenu")) return;
+      if (!navItem.classList.contains("parent-active")) {
+        navItem.classList.add("collapsed");
+      }
+    });
+  }
+
   function bindNavLinks() {
     const sidebar = document.querySelector(".sidebar");
     if (!sidebar) return;
     sidebar.addEventListener("click", function (e) {
+      const navItem = e.target.closest("a.nav-item");
+      if (navItem) {
+        const submenu = navItem.nextElementSibling;
+        if (submenu && submenu.classList.contains("submenu")) {
+          e.preventDefault();
+          navItem.classList.toggle("collapsed");
+          return;
+        }
+      }
       const link = e.target.closest("a.nav-item, a.sub-item");
       if (link && window.innerWidth < 1024) closeSidebar();
     });

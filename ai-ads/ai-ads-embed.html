@@ -513,9 +513,7 @@
             </div>
 
             <!-- Điều hướng phân trang -->
-            <div class="p-6 flex flex-col sm:flex-row items-center justify-between border-t border-slate-100 gap-4">
-              <span class="text-xs text-slate-400 font-medium" id="pagination-text">Đang hiển thị 1-5 trong tổng số
-                8</span>
+            <div class="p-6 flex flex-col sm:flex-row items-center justify-center border-t border-slate-100 gap-4">
               <div class="flex items-center gap-2">
                 <button onclick="prevPage()" id="btn-prev-page"
                   class="p-2 border border-slate-200 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:hover:bg-transparent transition-all btn-bounce">
@@ -1106,9 +1104,41 @@
               <!-- Khu vực nhập liệu -->
               <div
                 class="lg:col-span-2 bg-white rounded-3xl p-6 border border-slate-100 shadow-premium space-y-6 hover:shadow-card-hover transition-all duration-300">
-                <h3 class="text-base font-bold text-slate-950 flex items-center gap-2">
-                  <i data-lucide="sparkles" class="w-5 h-5 text-indigo-600 animate-pulse"></i> Trình tạo Banner AI 
-                </h3>
+                <div class="flex items-center justify-between">
+                  <h3 class="text-base font-bold text-slate-950 flex items-center gap-2">
+                    <i data-lucide="sparkles" class="w-5 h-5 text-indigo-600 animate-pulse"></i> Trình tạo Banner AI
+                  </h3>
+                  <!-- Quality picker trigger -->
+                  <div class="relative">
+                    <button onclick="toggleQualityDropdown()" id="quality-trigger"
+                      class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500 hover:text-indigo-600 px-2.5 py-1.5 rounded-lg hover:bg-slate-50 border border-transparent hover:border-slate-200 transition-all duration-200">
+                      <i data-lucide="settings-2" class="w-3.5 h-3.5"></i>
+                      <span id="quality-trigger-label">Medium · ~30cr</span>
+                    </button>
+                    <!-- Dropdown -->
+                    <div id="quality-dropdown"
+                      class="hidden absolute right-0 top-full mt-1.5 w-52 bg-white rounded-2xl border border-slate-200 shadow-xl z-20 overflow-hidden">
+                      <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-4 pt-3 pb-1.5">Chất lượng ảnh</p>
+                      <div class="px-2 pb-2 space-y-0.5">
+                        <button onclick="selectAIQuality('low')" data-quality="low"
+                          class="quality-btn w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors">
+                          <span class="flex items-center gap-2"><i data-lucide="gauge" class="w-3.5 h-3.5"></i> Low</span>
+                          <span class="text-slate-400 font-normal">~10 credit / ảnh</span>
+                        </button>
+                        <button onclick="selectAIQuality('medium')" data-quality="medium"
+                          class="quality-btn w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold bg-indigo-50 text-indigo-700 transition-colors">
+                          <span class="flex items-center gap-2"><i data-lucide="gauge" class="w-3.5 h-3.5"></i> Medium</span>
+                          <span class="text-indigo-500 font-normal">~30 credit / ảnh</span>
+                        </button>
+                        <button onclick="selectAIQuality('high')" data-quality="high"
+                          class="quality-btn w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors">
+                          <span class="flex items-center gap-2"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> High</span>
+                          <span class="text-slate-400 font-normal">~60 credit / ảnh</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 <!-- Upload Ảnh tham chiếu (Reference) -->
                 <div class="space-y-2">
@@ -1220,7 +1250,7 @@
               </div>
               <div class="space-y-2">
                 <h3 class="text-lg font-bold text-slate-900">AI đang tiến hành phân tích & thiết kế Banner</h3>
-                <p class="text-xs text-slate-400 max-w-sm mx-auto">Hệ thống đang sử dụng 30 credit để xử lý ý tưởng mô
+                <p class="text-xs text-slate-400 max-w-sm mx-auto" id="ai-loading-cost-text">Hệ thống đang sử dụng 30 credit để xử lý ý tưởng mô
                   tả và tối ưu hóa tệp đồ họa chất lượng cao nhất...</p>
               </div>
               <div class="w-64 bg-slate-100 h-2 rounded-full overflow-hidden">
@@ -1265,9 +1295,18 @@
                     <img id="ai-result-preview-img" src="" alt="AI Generated Banner"
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
 
+                    <!-- Badge chất lượng ảnh -->
+                    <div id="ai-quality-badge"
+                      class="absolute top-3 left-3 backdrop-blur-sm text-[10px] font-bold px-2.5 py-1 rounded-lg shadow flex items-center gap-1.5 bg-slate-900/60 text-white">
+                      <i data-lucide="gauge" class="w-3 h-3" id="ai-quality-badge-icon"></i>
+                      <span id="ai-quality-badge-text">Medium</span>
+                      <span class="opacity-60">·</span>
+                      <span id="ai-quality-badge-res">1280×480</span>
+                    </div>
+
                     <!-- Watermark lựa chọn -->
                     <div id="ai-selected-badge"
-                      class="absolute top-4 right-4 bg-emerald-500/90 text-white backdrop-blur-sm text-xs font-bold px-3 py-1.5 rounded-xl shadow-lg flex items-center gap-1.5 hidden opacity-0 transition-all duration-300">
+                      class="absolute top-3 right-3 bg-emerald-500/90 text-white backdrop-blur-sm text-xs font-bold px-3 py-1.5 rounded-xl shadow-lg flex items-center gap-1.5 hidden opacity-0 transition-all duration-300">
                       <i data-lucide="check-circle" class="w-4 h-4"></i> Đã chọn dùng Banner này
                     </div>
                   </div>
@@ -1812,6 +1851,8 @@
     // Dữ liệu tạo bằng AI giả lập tạm thời
     let currentAIResultUrl = "";
     let isAIBannerSelected = false;
+    let currentAIQuality = 'medium';
+    const AI_QUALITY_COST = { low: 10, medium: 30, high: 60 };
     let aiHistoryList = [
       { id: 'r01', url: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=60' },
       { id: 'r02', url: 'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800&auto=format&fit=crop&q=60' }
@@ -2094,9 +2135,9 @@
       const paginatedItems = filtered.slice(startIndex, endIndex);
 
       // Cập nhật mô tả Phân trang
-      const pagText = document.getElementById('pagination-text');
+      // const pagText = document.getElementById('pagination-text');
       if (totalItems === 0) {
-        pagText.innerText = "Không tìm thấy kết quả nào";
+        // pagText.innerText = "Không tìm thấy kết quả nào";
         tbody.innerHTML = `<tr><td colspan="4" class="py-4 lg:py-6 text-center text-slate-400">Không tìm thấy banner phù hợp với tiêu chí lọc.</td></tr>`;
         document.getElementById('btn-prev-page').disabled = true;
         document.getElementById('btn-next-page').disabled = true;
@@ -2104,7 +2145,7 @@
         return;
       }
 
-      pagText.innerText = `Đang hiển thị ${startIndex + 1}-${endIndex} trong tổng số ${totalItems}`;
+      // pagText.innerText = `Đang hiển thị ${startIndex + 1}-${endIndex} trong tổng số ${totalItems}`;
 
       paginatedItems.forEach(banner => {
         const statusBadge = getStatusBadgeHTML(banner.status);
@@ -2590,6 +2631,7 @@
       document.getElementById('ai-generator-after').classList.add('hidden');
 
       document.getElementById('ai-prompt-input').value = "";
+      selectAIQuality('medium');
 
       // Xoá tham chiếu ảnh cũ
       document.getElementById('ai-ref-file-input').value = "";
@@ -2893,6 +2935,45 @@
       showToast(`Đã chọn ảnh tham chiếu: ${name}`);
     }
 
+    function toggleQualityDropdown() {
+      const dd = document.getElementById('quality-dropdown');
+      dd.classList.toggle('hidden');
+    }
+
+    function selectAIQuality(quality) {
+      currentAIQuality = quality;
+      const cost = AI_QUALITY_COST[quality];
+      const labels = { low: 'Low', medium: 'Medium', high: 'High' };
+      const creditShort = { low: '~10cr', medium: '~30cr', high: '~60cr' };
+
+      // Cập nhật trigger label
+      const trigger = document.getElementById('quality-trigger-label');
+      if (trigger) trigger.textContent = `${labels[quality]} · ${creditShort[quality]}`;
+
+      // Cập nhật active state trong dropdown
+      document.querySelectorAll('.quality-btn[data-quality]').forEach(btn => {
+        const q = btn.getAttribute('data-quality');
+        const isActive = q === quality;
+        const icons = { low: 'gauge', medium: 'gauge', high: 'sparkles' };
+        const creditLabel = { low: '~10 credit / ảnh', medium: '~30 credit / ảnh', high: '~60 credit / ảnh' };
+        btn.className = `quality-btn w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-colors ` +
+          (isActive ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-indigo-50 hover:text-indigo-700');
+        btn.innerHTML = `<span class="flex items-center gap-2"><i data-lucide="${icons[q]}" class="w-3.5 h-3.5"></i> ${labels[q]}</span><span class="${isActive ? 'text-indigo-500' : 'text-slate-400'} font-normal">${creditLabel[q]}</span>`;
+      });
+
+      lucide.createIcons();
+      document.getElementById('quality-dropdown').classList.add('hidden');
+    }
+
+    // Đóng dropdown khi click ngoài
+    document.addEventListener('click', function(e) {
+      const trigger = document.getElementById('quality-trigger');
+      const dd = document.getElementById('quality-dropdown');
+      if (dd && trigger && !trigger.contains(e.target) && !dd.contains(e.target)) {
+        dd.classList.add('hidden');
+      }
+    });
+
     function generateAIBanner() {
       const prompt = document.getElementById('ai-prompt-input').value.trim();
       if (!prompt) {
@@ -2900,10 +2981,16 @@
         return;
       }
 
-      if (currentTokens < 30) {
+      const generationCost = AI_QUALITY_COST[currentAIQuality] || 30;
+      if (currentTokens < generationCost) {
         showToast("Số dư AI credit của bạn không đủ để thực hiện yêu cầu này! Vui lòng mua thêm gói.", "error");
         return;
       }
+
+      // Cập nhật text loading
+      const qualityLabel = { low: 'Low', medium: 'Medium', high: 'High' }[currentAIQuality];
+      const loadingText = document.getElementById('ai-loading-cost-text');
+      if (loadingText) loadingText.textContent = `Hệ thống đang ước tính ~${generationCost} credit (chất lượng ${qualityLabel}) để xử lý ý tưởng mô tả và tối ưu hóa tệp đồ họa...`;
 
       // Ẩn bảng 1 và mở Trình chờ (Loading)
       document.getElementById('ai-generator-before').classList.add('hidden');
@@ -2917,12 +3004,7 @@
         progress.style.width = `${percent}%`;
         if (percent >= 100) {
           clearInterval(interval);
-
-          // Trừ token giả định
-          const generationCost = 30;
           currentTokens -= generationCost;
-
-          // Kết quả tạo ra
           finishAIGeneration(prompt, generationCost);
         }
       }, 300);
@@ -2970,7 +3052,7 @@
       // Đổ lại danh sách Thumbnail Lịch Sử
       renderAIHistory();
 
-      showToast("Sinh ảnh thiết kế thành công! Đã tiêu phí 30 credit.");
+      showToast(`Sinh ảnh thiết kế thành công! Đã tiêu phí ${cost} credit.`);
       refreshAllUIData();
     }
 

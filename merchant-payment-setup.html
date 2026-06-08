@@ -377,6 +377,177 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
+    /* Charity Gift Card toggle row */
+    .charity-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 4px 0;
+    }
+
+    .charity-toggle-text {
+      flex: 1;
+    }
+
+    .charity-toggle-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--grey-800);
+      display: block;
+    }
+
+    .charity-toggle-desc {
+      font-size: 13px;
+      color: var(--grey-500);
+      margin-top: 4px;
+    }
+
+    /* Modal overlay */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px 28px 28px;
+      width: 460px;
+      max-width: calc(100vw - 32px);
+      position: relative;
+      box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.18);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--grey-500);
+      font-size: 20px;
+      line-height: 1;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: 0.2s;
+    }
+
+    .modal-close:hover {
+      background: var(--grey-100);
+      color: var(--grey-800);
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin: 0 0 12px;
+    }
+
+    .modal-desc {
+      font-size: 14px;
+      color: var(--grey-600);
+      line-height: 1.6;
+      margin: 0 0 24px;
+    }
+
+    .modal-checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .modal-checkbox-row input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--grey-400);
+      border-radius: 4px;
+      cursor: pointer;
+      accent-color: var(--primary-main);
+      flex-shrink: 0;
+    }
+
+    .modal-checkbox-row label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--grey-800);
+      cursor: pointer;
+    }
+
+    .modal-terms-link {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-main);
+      text-decoration: none;
+      margin-bottom: 28px;
+    }
+
+    .modal-terms-link:hover {
+      text-decoration: underline;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .modal-btn-cancel {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid var(--grey-300);
+      background: #fff;
+      color: var(--grey-800);
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .modal-btn-cancel:hover {
+      border-color: var(--grey-500);
+    }
+
+    .modal-btn-enable {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: var(--primary-main);
+      color: #fff;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 8px 16px 0 rgba(0, 167, 111, 0.24);
+    }
+
+    .modal-btn-enable:hover:not(:disabled) {
+      background: var(--primary-dark);
+    }
+
+    .modal-btn-enable:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
     /* ─── Responsive: iPad (max-width: 1023px) ─── */
     @media (max-width: 1023px) {
       .card[style] {
@@ -515,6 +686,22 @@
       </div>
     </div>
     <div class="setup-container">
+
+      <div class="settings-card" style="margin-top: 16px;">
+        <div class="charity-toggle-row">
+          <div class="charity-toggle-text">
+            <span class="charity-toggle-label">Accept Charity Gift Cards</span>
+            <p class="charity-toggle-desc">Allow customers to pay using approved Charity Gift Cards at your store.</p>
+          </div>
+          <label class="switch" id="charity-switch-label">
+            <input type="checkbox" id="charityToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+
+      
       <div class="settings-card">
         <p class="page-description">Set up how received crypto will be converted to USDV, with a <b>1.5%</b> swap fee
           applied when converting.</p>
@@ -751,11 +938,33 @@
         <button class="btn-save">Confirm & Save Changes</button>
       </div>
 
+      
+
       <div class="footer-note" style="margin-top: 24px;">
         By saving changes, you agree to the <a href="#">Terms of Service</a>
       </div>
     </div>
   </main>
+
+  <!-- Charity Gift Cards Modal -->
+  <div class="modal-overlay" id="charityModal">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose" aria-label="Close">
+        <iconify-icon icon="solar:close-circle-outline" width="24"></iconify-icon>
+      </button>
+      <h2 class="modal-title">Enable Charity Gift Cards</h2>
+      <p class="modal-desc">Customers will be able to use approved Charity Gift Cards for payments at your store. By enabling this feature, you agree to accept the terms and conditions.</p>
+      <div class="modal-checkbox-row">
+        <input type="checkbox" id="charityAgree">
+        <label for="charityAgree">I agree to the Charity Gift Card Terms &amp; Conditions</label>
+      </div>
+      <a href="#" class="modal-terms-link">View Terms &amp; Conditions</a>
+      <div class="modal-actions">
+        <button class="modal-btn-cancel" id="modalCancel">Cancel</button>
+        <button class="modal-btn-enable" id="modalEnable" disabled>Enable</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     function toggleConversionMode(mode) {
@@ -798,12 +1007,56 @@
     window.onload = () => {
       const activeItem = document.querySelector('.radio-item.active');
       if (activeItem) {
-        // If it's the "preferences" one (3rd item), show it
         if (activeItem.innerText.includes('Set Preferences')) {
           toggleConversionMode('preferences');
         }
       }
+      initCharityToggle();
     };
+
+    // ── Charity Gift Card toggle ──
+    function initCharityToggle() {
+      const toggle = document.getElementById('charityToggle');
+      const enabled = localStorage.getItem('charityGiftCardsEnabled') === 'true';
+      toggle.checked = enabled;
+
+      toggle.addEventListener('change', function () {
+        if (this.checked) {
+          // Prevent the visual check until user confirms
+          this.checked = false;
+          openCharityModal();
+        } else {
+          localStorage.setItem('charityGiftCardsEnabled', 'false');
+        }
+      });
+    }
+
+    function openCharityModal() {
+      document.getElementById('charityModal').classList.add('open');
+      document.getElementById('charityAgree').checked = false;
+      document.getElementById('modalEnable').disabled = true;
+    }
+
+    function closeCharityModal() {
+      document.getElementById('charityModal').classList.remove('open');
+    }
+
+    document.getElementById('charityAgree').addEventListener('change', function () {
+      document.getElementById('modalEnable').disabled = !this.checked;
+    });
+
+    document.getElementById('modalEnable').addEventListener('click', function () {
+      document.getElementById('charityToggle').checked = true;
+      localStorage.setItem('charityGiftCardsEnabled', 'true');
+      closeCharityModal();
+    });
+
+    document.getElementById('modalCancel').addEventListener('click', closeCharityModal);
+    document.getElementById('modalClose').addEventListener('click', closeCharityModal);
+
+    document.getElementById('charityModal').addEventListener('click', function (e) {
+      if (e.target === this) closeCharityModal();
+    });
   </script>
 </body>
 

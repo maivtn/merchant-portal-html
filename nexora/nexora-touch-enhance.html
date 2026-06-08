@@ -844,6 +844,18 @@
       .text-xs {
         /* keep tiny labels readable on mobile without breaking Tailwind utilities too much */
       }
+
+      /* Savings stats labels 80% */
+      [data-i18n="calc-stat-1"],
+      [data-i18n="calc-stat-2"],
+      [data-i18n="calc-stat-3"] {
+        font-size: 0.6rem !important;
+      }
+
+      /* Pro plan badge 80% */
+      [data-i18n="plan-pro-badge"] {
+        font-size: 0.6rem !important;
+      }
     }
 
     @media (max-width: 420px) {
@@ -2177,16 +2189,16 @@
                 <select
                   class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs font-bold text-white focus:outline-none focus:border-purple ds-field ds-select"
                   id="tax-iq-children" onchange="calculateNailTax()">
-                  <option value="0">0 con</option>
-                  <option value="1">1 con (-$2,000 Credit)</option>
-                  <option value="2">2 con (-$4,000 Credit)</option>
-                  <option value="3">3 con (-$6,000 Credit)</option>
+                  <option data-i18n="opt-child-0" value="0">0 con</option>
+                  <option data-i18n="opt-child-1" value="1">1 con (-$2,000 Credit)</option>
+                  <option data-i18n="opt-child-2" value="2">2 con (-$4,000 Credit)</option>
+                  <option data-i18n="opt-child-3" value="3">3 con (-$6,000 Credit)</option>
                 </select>
               </div>
             </div>
             <!-- Tax IQ Search Write-offs Tool -->
             <div class="space-y-1">
-              <label class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">🔍 Tra cứu nhanh các mục
+              <label class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="tax-search-label">🔍 Tra cứu nhanh các mục
                 được miễn trừ thuế</label>
               <input
                 class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-purple placeholder:text-slate-600 font-medium ds-field"
@@ -2200,7 +2212,7 @@
             </div>
             <!-- Interactive Checklist -->
             <div class="bg-slate-900/40 border border-slate-700/30 p-3 rounded-2xl space-y-2">
-              <span class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider">Tích chọn chi phí thực tế
+              <span class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider" data-i18n="tax-checklist-label">Tích chọn chi phí thực tế
                 của bạn để khấu trừ thuế:</span>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                 <label
@@ -2208,8 +2220,8 @@
                   <input checked="" class="rounded text-purple focus:ring-0 focus:ring-offset-0 ds-field"
                     id="chk-deduct-mileage" onchange="calculateNailTax()" type="checkbox" />
                   <div>
-                    <strong class="block text-[10px] text-slate-200">🚗 Mileage (1,500 dặm)</strong>
-                    <span class="text-[8px] text-slate-500">Khấu trừ theo định mức IRS: $1,005</span>
+                    <strong class="block text-[10px] text-slate-200" data-i18n="tax-chk-mileage-title">🚗 Mileage (1,500 dặm)</strong>
+                    <span class="text-[8px] text-slate-500" data-i18n="tax-chk-mileage-desc">Khấu trừ theo định mức IRS: $1,005</span>
                   </div>
                 </label>
                 <label
@@ -2217,8 +2229,8 @@
                   <input checked="" class="rounded text-purple focus:ring-0 focus:ring-offset-0 ds-field"
                     id="chk-deduct-supplies" onchange="calculateNailTax()" type="checkbox" />
                   <div>
-                    <strong class="block text-[10px] text-slate-200">💅 Sơn Gel, Cọ, Đèn sấy</strong>
-                    <span class="text-[8px] text-slate-500">Chi phí mua sắm dụng cụ: $450</span>
+                    <strong class="block text-[10px] text-slate-200" data-i18n="tax-chk-supplies-title">💅 Sơn Gel, Cọ, Đèn sấy</strong>
+                    <span class="text-[8px] text-slate-500" data-i18n="tax-chk-supplies-desc">Chi phí mua sắm dụng cụ: $450</span>
                   </div>
                 </label>
                 <label
@@ -2226,8 +2238,8 @@
                   <input class="rounded text-purple focus:ring-0 focus:ring-offset-0 ds-field" id="chk-deduct-license"
                     onchange="calculateNailTax()" type="checkbox" />
                   <div>
-                    <strong class="block text-[10px] text-slate-200">🎓 Lệ phí bằng State Board</strong>
-                    <span class="text-[8px] text-slate-500">Chi phí học tập, nâng cao: $150</span>
+                    <strong class="block text-[10px] text-slate-200" data-i18n="tax-chk-license-title">🎓 Lệ phí bằng State Board</strong>
+                    <span class="text-[8px] text-slate-500" data-i18n="tax-chk-license-desc">Chi phí học tập, nâng cao: $150</span>
                   </div>
                 </label>
                 <label
@@ -2235,8 +2247,8 @@
                   <input class="rounded text-purple focus:ring-0 focus:ring-offset-0 ds-field" id="chk-deduct-rent"
                     onchange="calculateNailTax()" type="checkbox" />
                   <div>
-                    <strong class="block text-[10px] text-slate-200">🏢 Tiền thuê bàn (Booth rent)</strong>
-                    <span class="text-[8px] text-slate-500">Khấu trừ chi phí mặt bằng: $1,200</span>
+                    <strong class="block text-[10px] text-slate-200" data-i18n="tax-chk-rent-title">🏢 Tiền thuê bàn (Booth rent)</strong>
+                    <span class="text-[8px] text-slate-500" data-i18n="tax-chk-rent-desc">Khấu trừ chi phí mặt bằng: $1,200</span>
                   </div>
                 </label>
               </div>
@@ -2250,7 +2262,7 @@
                   id="tax-iq-final-tax">$1,742.82</strong>
               </div>
               <div class="text-right">
-                <span class="text-[8px] font-bold text-slate-400 uppercase tracking-wider block">TIỀN THUẾ TIẾT KIỆM
+                <span class="text-[8px] font-bold text-slate-400 uppercase tracking-wider block" data-i18n="tax-result-saved">TIỀN THUẾ TIẾT KIỆM
                   ĐƯỢC (SAVED)</span>
                 <strong class="text-lg font-black text-purple tracking-tight transition-all duration-300"
                   id="tax-iq-saved-amount">$223.11</strong>
@@ -3139,6 +3151,21 @@
         "tax-income-label": "Tổng thu nhập năm ước tính ($)",
         "tax-result-refund": "SỐ TIỀN ĐƯỢC HOÀN LẠI (REFUND)",
         "tax-result-due": "THUẾ THỰC TẾ PHẢI NỘP (TAX DUE)",
+        "tax-result-saved": "TIỀN THUẾ TIẾT KIỆM ĐƯỢC (SAVED)",
+        "tax-search-label": "🔍 Tra cứu nhanh các mục được miễn trừ thuế",
+        "tax-checklist-label": "Tích chọn chi phí thực tế của bạn để khấu trừ thuế:",
+        "tax-chk-mileage-title": "🚗 Mileage (1,500 dặm)",
+        "tax-chk-mileage-desc": "Khấu trừ theo định mức IRS: $1,005",
+        "tax-chk-supplies-title": "💅 Sơn Gel, Cọ, Đèn sấy",
+        "tax-chk-supplies-desc": "Chi phí mua sắm dụng cụ: $450",
+        "tax-chk-license-title": "🎓 Lệ phí bằng State Board",
+        "tax-chk-license-desc": "Chi phí học tập, nâng cao: $150",
+        "tax-chk-rent-title": "🏢 Tiền thuê bàn (Booth rent)",
+        "tax-chk-rent-desc": "Khấu trừ chi phí mặt bằng: $1,200",
+        "opt-child-0": "0 con",
+        "opt-child-1": "1 con (-$2,000 Credit)",
+        "opt-child-2": "2 con (-$4,000 Credit)",
+        "opt-child-3": "3 con (-$6,000 Credit)",
         "toast-gift-form-empty": "⚠️ Vui lòng nhập thông tin phần quà khuyến mãi!",
         "toast-b2b-match": "🎯 Khớp mục tiêu B2B! Khách hàng {0} thuộc tệp mục tiêu!",
         "toast-b2b-activated": "🎯 Chiến dịch đã kích hoạt! Hệ thống đã ghi nhận cấu hình.",
@@ -3436,6 +3463,21 @@
         "tax-income-label": "Est. Annual Gross Income ($)",
         "tax-result-refund": "ESTIMATED REFUND AMOUNT",
         "tax-result-due": "ESTIMATED TAX LIABILITY",
+        "tax-result-saved": "TAX SAVINGS (SAVED)",
+        "tax-search-label": "🔍 Quick Search: Deductible Categories",
+        "tax-checklist-label": "Select your actual expenses for tax deductions:",
+        "tax-chk-mileage-title": "🚗 Mileage (1,500 miles)",
+        "tax-chk-mileage-desc": "IRS standard rate deduction: $1,005",
+        "tax-chk-supplies-title": "💅 Gel Polish, Brushes, UV Lamp",
+        "tax-chk-supplies-desc": "Supply purchase expenses: $450",
+        "tax-chk-license-title": "🎓 State Board License Fee",
+        "tax-chk-license-desc": "Education & professional dev: $150",
+        "tax-chk-rent-title": "🏢 Booth Rent",
+        "tax-chk-rent-desc": "Booth rental deduction: $1,200",
+        "opt-child-0": "0 children",
+        "opt-child-1": "1 child (-$2,000 Credit)",
+        "opt-child-2": "2 children (-$4,000 Credit)",
+        "opt-child-3": "3 children (-$6,000 Credit)",
         "toast-gift-form-empty": "⚠️ Please enter the promotional gift details!",
         "toast-b2b-match": "🎯 B2B Target Match! Customer {0} is in the target segment!",
         "toast-b2b-activated": "🎯 Campaign activated! Configuration has been recorded.",

@@ -65,6 +65,10 @@
       color: #FFAB00;
     }
 
+    .payment-option-item:nth-of-type(4) .option-icon-wrapper {
+      color: #FF5630;
+    }
+
     .option-content {
       flex: 1;
     }
@@ -492,6 +496,18 @@
             <div class="option-title">Scan Store Digital Card QR</div>
             <div class="option-description">Accept digital cards issued by the merchant at the store, including gift cards, memberships, prepaid cards, discounts, and promotions.
             </div>
+          </div>
+          <iconify-icon icon="eva:chevron-right-fill" class="option-arrow" width="24"></iconify-icon>
+        </div>
+
+        <!-- Option 4: Scan QR Charity Gift Card -->
+        <div class="payment-option-item" onclick="openCharityGiftCardModal()">
+          <div class="option-icon-wrapper">
+            <img src="app/images/charity-gift-card-payment.png" alt="Scan QR Charity Gift Card" width="80" height="80" style="object-fit:contain;">
+          </div>
+          <div class="option-content">
+            <div class="option-title">Scan QR Charity Gift Card</div>
+            <div class="option-description">Accept charity gift cards issued through VLINKPAY's charity program.</div>
           </div>
           <iconify-icon icon="eva:chevron-right-fill" class="option-arrow" width="24"></iconify-icon>
         </div>
@@ -1059,6 +1075,196 @@
     }
   </style>
 
+  <!-- ═══════════════════════════════════════════════════
+       Modal: Pay with Charity Gift Card (2-step)
+  ════════════════════════════════════════════════════ -->
+  <div id="modal-charity-gift-card" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">Pay with Charity Gift Card</span>
+        <div class="close-btn" onclick="closeCharityGiftCardModal()">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </div>
+      </div>
+
+      <!-- Step 1: Card Number -->
+      <div class="modal-body" id="cgc-step1">
+        <div class="form-group" style="margin-bottom:28px">
+          <label class="form-label sgc-label">
+            Card Number <span style="color:#ff5630">*</span>
+          </label>
+          <div class="input-wrapper">
+            <iconify-icon icon="solar:card-bold-duotone" class="input-icon" width="20"></iconify-icon>
+            <input type="text" class="minimal-input" id="cgcCardInput"
+              placeholder="Enter card number or scan..." oninput="cgcClearError()" />
+            <div class="input-suffix" onclick="cgcSimulateScan()" title="Scan QR">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-main)">
+                <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" />
+                <rect x="7" y="7" width="3" height="3" rx="0.5" />
+                <rect x="14" y="7" width="3" height="3" rx="0.5" />
+                <rect x="7" y="14" width="3" height="3" rx="0.5" />
+                <path d="M14 14h1M14 17h1M17 14h1M17 17h1" />
+              </svg>
+            </div>
+          </div>
+          <div id="cgcCardError" class="sgc-error" style="display:none">Please enter a card number</div>
+        </div>
+        <button class="btn-submit" onclick="cgcContinue()">Continue</button>
+      </div>
+
+      <!-- Step 2: Amount + Card Number (readonly) + Preview + Upload proof + Confirm -->
+      <div class="modal-body" id="cgc-step2" style="display:none">
+        <!-- Amount -->
+        <div class="form-group">
+          <label class="form-label sgc-label">
+            Amount <span style="color:#ff5630">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon" style="font-size:15px;font-weight:600;color:var(--grey-500)">$</span>
+            <input type="number" class="minimal-input" id="cgcAmount" placeholder="0" style="padding-left:32px" min="0" />
+          </div>
+        </div>
+
+        <!-- Card Number (readonly) -->
+        <div class="form-group">
+          <label class="form-label sgc-label">
+            Card Number <span style="color:#ff5630">*</span>
+          </label>
+          <div class="input-wrapper">
+            <iconify-icon icon="solar:card-bold-duotone" class="input-icon" width="20"></iconify-icon>
+            <input type="text" class="minimal-input" id="cgcCardDisplay" readonly />
+            <div class="input-suffix">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary-main)">
+                <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" />
+                <rect x="7" y="7" width="3" height="3" rx="0.5" />
+                <rect x="14" y="7" width="3" height="3" rx="0.5" />
+                <rect x="7" y="14" width="3" height="3" rx="0.5" />
+                <path d="M14 14h1M14 17h1M17 14h1M17 17h1" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charity card preview -->
+        <div class="cgc-card-preview">
+          <div class="cgc-charity-icon">
+            <img src="app/images/charity-gift-card-payment.png" alt="Charity Gift Card" width="48" height="48" style="object-fit:contain;">
+          </div>
+          <div class="cgc-card-info">
+            <div class="cgc-info-row">Balance: <strong>$50.00</strong></div>
+            <div class="cgc-info-row">Times Used: <strong>1</strong></div>
+            <div class="cgc-info-row">Purpose: <strong>Food Support</strong></div>
+          </div>
+        </div>
+
+        <!-- Upload proof -->
+        <div class="cgc-upload-section">
+          <div class="cgc-upload-label">Upload proof <span style="color:var(--grey-500);font-weight:400">(required)</span></div>
+          <div class="cgc-upload-row">
+            <label class="cgc-upload-btn">
+              <iconify-icon icon="solar:camera-bold-duotone" width="22"></iconify-icon>
+              Take photo
+              <input type="file" accept="image/*" capture="environment" style="display:none">
+            </label>
+            <label class="cgc-upload-btn">
+              <iconify-icon icon="solar:folder-open-bold-duotone" width="22"></iconify-icon>
+              Choose file
+              <input type="file" accept="image/*,application/pdf" style="display:none">
+            </label>
+          </div>
+          <div class="cgc-upload-hint">You can either take a picture of your receipt or upload from your device.</div>
+        </div>
+
+        <button class="btn-submit" onclick="cgcConfirmPayment()">Confirm Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .cgc-card-preview {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      background: #f0f2f4;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 20px;
+    }
+
+    .cgc-charity-icon {
+      width: 72px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .cgc-card-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cgc-info-row {
+      font-size: 14px;
+      color: var(--grey-700, #454f5b);
+    }
+
+    .cgc-info-row strong {
+      color: var(--grey-900);
+    }
+
+    .cgc-upload-section {
+      margin-bottom: 24px;
+    }
+
+    .cgc-upload-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 10px;
+    }
+
+    .cgc-upload-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .cgc-upload-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 12px;
+      border: 1.5px dashed var(--grey-300);
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--grey-600);
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #fff;
+    }
+
+    .cgc-upload-btn:hover {
+      border-color: var(--primary-main);
+      color: var(--primary-main);
+      background: rgba(0, 167, 111, 0.04);
+    }
+
+    .cgc-upload-hint {
+      font-size: 12px;
+      color: var(--grey-500);
+      line-height: 1.5;
+    }
+  </style>
+
   <script>
     function openModal(id) {
       document.getElementById(id).style.display = 'flex';
@@ -1107,6 +1313,7 @@
         const id = event.target.id;
         if (id === 'modal-card-details') { ecdClose(); }
         else if (id === 'modal-scan-gift-card') { closeScanGiftCardModal(); }
+        else if (id === 'modal-charity-gift-card') { closeCharityGiftCardModal(); }
         else { closeModal(id); }
       }
     }
@@ -1202,6 +1409,56 @@
       }
       alert('Payment confirmed! Amount: $' + amount.toFixed(2));
       closeScanGiftCardModal();
+    }
+
+    /* ── Pay with Charity Gift Card modal ── */
+    function openCharityGiftCardModal() {
+      document.getElementById('cgcCardInput').value = '';
+      document.getElementById('cgcCardError').style.display = 'none';
+      document.getElementById('cgc-step1').style.display = 'block';
+      document.getElementById('cgc-step2').style.display = 'none';
+      document.getElementById('modal-charity-gift-card').style.display = 'flex';
+      setTimeout(() => document.getElementById('cgcCardInput').focus(), 100);
+    }
+
+    function closeCharityGiftCardModal() {
+      document.getElementById('modal-charity-gift-card').style.display = 'none';
+    }
+
+    function cgcClearError() {
+      document.getElementById('cgcCardError').style.display = 'none';
+    }
+
+    function cgcSimulateScan() {
+      const num = Array.from({ length: 16 }, () => Math.floor(Math.random() * 10)).join('');
+      document.getElementById('cgcCardInput').value = num;
+      cgcClearError();
+    }
+
+    function cgcContinue() {
+      const card = document.getElementById('cgcCardInput').value.trim();
+      if (!card) {
+        document.getElementById('cgcCardError').style.display = 'block';
+        return;
+      }
+      document.getElementById('cgcCardDisplay').value = card;
+      document.getElementById('cgcAmount').value = '';
+      document.getElementById('cgc-step1').style.display = 'none';
+      document.getElementById('cgc-step2').style.display = 'block';
+    }
+
+    function cgcConfirmPayment() {
+      const amount = parseFloat(document.getElementById('cgcAmount').value);
+      if (!amount || amount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+      }
+      if (amount > 50) {
+        alert('Amount exceeds current balance of $50.00.');
+        return;
+      }
+      alert('Charity payment confirmed! Amount: $' + amount.toFixed(2));
+      closeCharityGiftCardModal();
     }
   </script>
 </body>

@@ -1643,20 +1643,29 @@
 
         <!-- ================= MÀN HÌNH BONUS: TRANSACTION HISTORY ================= -->
         <section id="screen-transactions" class="screen-section space-y-4 hidden">
-          <div>
 
+          <!-- Subtab bar -->
+          <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-2xl w-fit">
+            <button id="txn-subtab-packages" onclick="switchTxnSubtab('packages')"
+              class="flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-bold transition-all duration-200 bg-white text-slate-900 shadow-sm">
+              <i data-lucide="shopping-bag" class="w-3.5 h-3.5 text-indigo-600"></i> Lịch sử gói
+            </button>
+            <button id="txn-subtab-credits" onclick="switchTxnSubtab('credits')"
+              class="flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-bold transition-all duration-200 text-slate-500 hover:text-slate-700">
+              <i data-lucide="coins" class="w-3.5 h-3.5"></i> Lịch sử dùng credit
+            </button>
           </div>
 
-          <div class="bg-white rounded-3xl border border-slate-100 shadow-premium overflow-hidden">
+          <!-- Panel 1: Lịch sử gói -->
+          <div id="txn-panel-packages" class="bg-white rounded-3xl border border-slate-100 shadow-premium overflow-hidden">
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse">
                 <thead>
-                  <tr
-                    class="bg-slate-50/80 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <tr class="bg-slate-50/80 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     <th class="py-4 px-6">Mã giao dịch</th>
                     <th class="py-4 px-6">Thời gian</th>
-                    <th class="py-4 px-6">Sự kiện/Mô tả</th>
-                    <th class="py-4 px-6">Loại hình</th>
+                    <th class="py-4 px-6">Mô tả</th>
+                    <th class="py-4 px-6">Trạng thái</th>
                     <th class="py-4 px-6 text-right">Số tiền</th>
                   </tr>
                 </thead>
@@ -1666,8 +1675,7 @@
                     <td class="py-4 px-6 text-slate-400">29 Th05, 2026</td>
                     <td class="py-4 px-6 text-slate-700">Nâng cấp từ Gói Basic lên Gói Premium</td>
                     <td class="py-4 px-6">
-                      <span class="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 text-[10px]">Mua gói dịch
-                        vụ</span>
+                      <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px]">Thành công</span>
                     </td>
                     <td class="py-4 px-6 text-right text-rose-600 font-bold">-$79.00</td>
                   </tr>
@@ -1676,10 +1684,82 @@
                     <td class="py-4 px-6 text-slate-400">15 Th05, 2026</td>
                     <td class="py-4 px-6 text-slate-700">Gia hạn thành viên - Gói Basic tháng 5</td>
                     <td class="py-4 px-6">
-                      <span class="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 text-[10px]">Mua gói dịch
-                        vụ</span>
+                      <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px]">Thành công</span>
                     </td>
                     <td class="py-4 px-6 text-right text-rose-600 font-bold">-$29.00</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="py-4 px-6 font-bold text-slate-900">#TXN-1102</td>
+                    <td class="py-4 px-6 text-slate-400">15 Th04, 2026</td>
+                    <td class="py-4 px-6 text-slate-700">Đăng ký Gói Basic tháng 4</td>
+                    <td class="py-4 px-6">
+                      <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px]">Thành công</span>
+                    </td>
+                    <td class="py-4 px-6 text-right text-rose-600 font-bold">-$29.00</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Panel 2: Lịch sử dùng credit -->
+          <div id="txn-panel-credits" class="hidden bg-white rounded-3xl border border-slate-100 shadow-premium overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50/80 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    <th class="py-4 px-6">Thời gian</th>
+                    <th class="py-4 px-6">Mô tả</th>
+                    <th class="py-4 px-6">Loại</th>
+                    <th class="py-4 px-6 text-right">Credit</th>
+                    <th class="py-4 px-6 text-right">Số dư</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-xs font-semibold text-slate-600">
+                  <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="py-4 px-6 text-slate-400">05 Th06, 2026 — 14:32</td>
+                    <td class="py-4 px-6 text-slate-700">Tạo banner AI — "Promo Hè Rực Rỡ 2026" (Medium)</td>
+                    <td class="py-4 px-6">
+                      <span class="px-2.5 py-0.5 rounded-full bg-violet-50 text-violet-600 text-[10px]">Tạo ảnh AI</span>
+                    </td>
+                    <td class="py-4 px-6 text-right text-rose-600 font-bold">-30</td>
+                    <td class="py-4 px-6 text-right text-slate-500">420</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="py-4 px-6 text-slate-400">03 Th06, 2026 — 09:15</td>
+                    <td class="py-4 px-6 text-slate-700">Tạo banner AI — "Thẻ Tặng Quà Ưu Đãi Lớn" (High)</td>
+                    <td class="py-4 px-6">
+                      <span class="px-2.5 py-0.5 rounded-full bg-violet-50 text-violet-600 text-[10px]">Tạo ảnh AI</span>
+                    </td>
+                    <td class="py-4 px-6 text-right text-rose-600 font-bold">-60</td>
+                    <td class="py-4 px-6 text-right text-slate-500">450</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="py-4 px-6 text-slate-400">29 Th05, 2026 — 11:00</td>
+                    <td class="py-4 px-6 text-slate-700">Nạp credit theo gói Premium</td>
+                    <td class="py-4 px-6">
+                      <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px]">Nạp credit</span>
+                    </td>
+                    <td class="py-4 px-6 text-right text-emerald-600 font-bold">+500</td>
+                    <td class="py-4 px-6 text-right text-slate-500">510</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="py-4 px-6 text-slate-400">20 Th05, 2026 — 16:44</td>
+                    <td class="py-4 px-6 text-slate-700">Tạo banner AI — "Crypto Payment Banner V2" (Medium)</td>
+                    <td class="py-4 px-6">
+                      <span class="px-2.5 py-0.5 rounded-full bg-violet-50 text-violet-600 text-[10px]">Tạo ảnh AI</span>
+                    </td>
+                    <td class="py-4 px-6 text-right text-rose-600 font-bold">-30</td>
+                    <td class="py-4 px-6 text-right text-slate-500">10</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="py-4 px-6 text-slate-400">15 Th05, 2026 — 10:00</td>
+                    <td class="py-4 px-6 text-slate-700">Nạp credit theo gói Basic</td>
+                    <td class="py-4 px-6">
+                      <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px]">Nạp credit</span>
+                    </td>
+                    <td class="py-4 px-6 text-right text-emerald-600 font-bold">+100</td>
+                    <td class="py-4 px-6 text-right text-slate-500">40</td>
                   </tr>
                 </tbody>
               </table>
@@ -3336,6 +3416,32 @@
       'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=900&auto=format&fit=crop&q=80',
       'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=900&auto=format&fit=crop&q=80',
     ];
+
+    function switchTxnSubtab(tab) {
+      const activeClass = ['bg-white', 'text-slate-900', 'shadow-sm'];
+      const inactiveClass = ['text-slate-500', 'hover:text-slate-700'];
+      const tabPkg = document.getElementById('txn-subtab-packages');
+      const tabCrd = document.getElementById('txn-subtab-credits');
+      const panelPkg = document.getElementById('txn-panel-packages');
+      const panelCrd = document.getElementById('txn-panel-credits');
+
+      if (tab === 'packages') {
+        tabPkg.classList.add(...activeClass);
+        tabPkg.classList.remove(...inactiveClass);
+        tabCrd.classList.remove(...activeClass);
+        tabCrd.classList.add(...inactiveClass);
+        panelPkg.classList.remove('hidden');
+        panelCrd.classList.add('hidden');
+      } else {
+        tabCrd.classList.add(...activeClass);
+        tabCrd.classList.remove(...inactiveClass);
+        tabPkg.classList.remove(...activeClass);
+        tabPkg.classList.add(...inactiveClass);
+        panelCrd.classList.remove('hidden');
+        panelPkg.classList.add('hidden');
+      }
+      lucide.createIcons();
+    }
 
     function switchAIMode(mode) {
       advCurrentAIMode = mode;

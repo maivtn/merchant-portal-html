@@ -617,6 +617,18 @@
       box-shadow: 0 12px 24px rgba(108, 77, 246, 0.14) !important;
     }
 
+    #staff-earnings-label {
+      min-height: unset !important;
+    }
+
+    #staff-earnings-label:hover,
+    #staff-earnings-label:focus-visible {
+      transform: none !important;
+      border-color: initial !important;
+      background: initial !important;
+      box-shadow: none !important;
+    }
+
     .tip-btn:hover,
     .tip-btn:focus-visible {
       background-color: var(--nx-color-purple) !important;
@@ -1679,7 +1691,7 @@
                     <div class="flex gap-2">
                       <input class="flex-1 text-xs p-2 border border-slate-200 rounded-xl focus:outline-none ds-field"
                         data-i18n="ph-refer-phone" id="referral-phone" placeholder="(714) 555-0199"
-                        type="tel" />
+                        type="tel" maxlength="14" oninput="maskUSPhone(this)" />
                       <button class="bg-purple text-white px-3 py-2 rounded-xl text-xs font-bold ds-control ds-button"
                         data-i18n="btn-sim-send" onclick="submitReferral()">Gửi</button>
                     </div>
@@ -1688,7 +1700,7 @@
                       <div class="flex items-center gap-1.5">
                         <strong class="text-[10px] text-navy font-mono" id="cust-ref-code-label">REF-HONG</strong>
                         <button
-                          class="bg-purple/10 hover:bg-purple/20 text-purple text-[8px] font-black px-1.5 py-0.5 rounded transition-all ds-control ds-button"
+                          class="bg-purple hover:bg-purple/20 text-black text-[8px] font-black px-1.5 py-0.5 rounded transition-all ds-control ds-button"
                           onclick="copyReferralCode()">COPY</button>
                       </div>
                     </div>
@@ -1760,7 +1772,7 @@
                 <div class="bg-gradient-to-r from-purple to-indigo-600 text-white p-4 rounded-2xl shadow-md space-y-2">
                   <p class="text-[9px] text-indigo-100 font-extrabold uppercase tracking-wider"
                     data-i18n="staff-today-tip">Tổng Tip Hôm Nay (Đã Tiết Kiệm: $14.50)</p>
-                  <div class="flex items-baseline justify-between ds-content-card">
+                  <div class="flex items-baseline justify-between">
                     <h3 class="text-3xl font-black tracking-tight" id="staff-earnings-label">$385.00</h3>
                     <span
                       class="text-[10px] bg-white/20 px-2.5 py-0.5 rounded-full font-extrabold cursor-pointer hover:bg-white/30 transition-all"

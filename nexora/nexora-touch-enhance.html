@@ -10,6 +10,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <!-- Tesseract.js OCR -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -4740,44 +4742,117 @@
       document.getElementById('saved-annual-label').textContent = `$${savedAnnual.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
     }
 
+    const RECEIPT_CATEGORIES = [
+      { id: 'chk-deduct-mileage',  label: '🚗 Mileage',           keywords: ['mileage','gas','fuel','parking','uber','lyft','auto','gasoline'] },
+      { id: 'chk-deduct-supplies', label: '💅 Nail Supplies',      keywords: ['polish','gel','uv','lamp','brush','nail','supply','supplies','acrylic','cuticle','salon','beauty','kit','glitter','powder'] },
+      { id: 'chk-deduct-rent',     label: '🏢 Booth Rent',         keywords: ['rent','booth','lease','studio','space'] },
+      { id: 'chk-deduct-phone',    label: '📱 Phone & Internet',   keywords: ['phone','mobile','wireless','internet','data','cell','at&t','verizon','t-mobile','sprint','boost','monthly plan'] },
+      { id: 'chk-deduct-license',  label: '🎓 License & Cert',     keywords: ['license','permit','certification','board','cosmetology','renewal','fee'] }
+    ];
+    let _scanDetected = [];
+
     function openReceiptScanModal() {
-      const modal = document.getElementById('receipt-scan-modal');
-      modal.classList.add('open');
-      // reset state
-      ['scan-row-1','scan-row-2','scan-row-3','scan-row-4'].forEach(id => {
-        document.getElementById(id).classList.remove('detected');
-      });
-      document.getElementById('scan-status').textContent = 'Scanning receipt…';
-      document.getElementById('scan-progress').style.width = '0%';
-      const beam = document.getElementById('scan-beam');
-      beam.classList.remove('active');
-      // small delay to allow reflow before restarting animation
-      setTimeout(() => {
-        beam.classList.add('active');
-        document.getElementById('scan-progress').style.width = '100%';
-      }, 80);
-      // reveal rows progressively
-      setTimeout(() => document.getElementById('scan-row-1').classList.add('detected'), 600);
-      setTimeout(() => document.getElementById('scan-row-2').classList.add('detected'), 1000);
-      setTimeout(() => document.getElementById('scan-row-3').classList.add('detected'), 1400);
-      setTimeout(() => document.getElementById('scan-row-4').classList.add('detected'), 1750);
-      // apply deductions & close
-      setTimeout(() => {
-        document.getElementById('chk-deduct-supplies').checked = true;
-        document.getElementById('chk-deduct-rent').checked = true;
-        document.getElementById('chk-deduct-phone').checked = true;
-        calculateNailTax();
-        document.getElementById('scan-status').textContent = '✅ 4 deductions detected — $2,472 in write-offs found!';
-        document.getElementById('scan-status').style.color = '#00a76f';
-      }, 2200);
-      setTimeout(() => {
-        showToast('Receipt scanned! 4 deductions detected — Est. $2,472 in write-offs applied');
-        closeReceiptScanModal();
-      }, 4000);
+      document.getElementById('receipt-scan-modal').classList.add('open');
+      _scanShowState('upload');
+      // reset file input
+      const fi = document.getElementById('receipt-file-input');
+      if (fi) fi.value = '';
     }
 
     function closeReceiptScanModal() {
       document.getElementById('receipt-scan-modal').classList.remove('open');
+    }
+
+    function _scanShowState(state) {
+      ['upload','processing','results'].forEach(s => {
+        document.getElementById('scan-state-' + s).style.display = s === state ? '' : 'none';
+      });
+    }
+
+    function triggerReceiptCapture() {
+      const fi = document.getElementById('receipt-file-input');
+      fi.setAttribute('capture', 'environment');
+      fi.click();
+    }
+
+    function triggerReceiptUpload() {
+      const fi = document.getElementById('receipt-file-input');
+      fi.removeAttribute('capture');
+      fi.click();
+    }
+
+    async function handleReceiptFile(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        document.getElementById('scan-preview-img').src = e.target.result;
+        _scanShowState('processing');
+        document.getElementById('scan-ocr-status').textContent = 'Loading OCR engine…';
+        document.getElementById('scan-ocr-bar').style.width = '5%';
+        try {
+          const result = await Tesseract.recognize(file, 'eng', {
+            logger: m => {
+              const statusEl = document.getElementById('scan-ocr-status');
+              const barEl = document.getElementById('scan-ocr-bar');
+              if (m.status === 'loading tesseract core') {
+                statusEl.textContent = 'Loading OCR engine…';
+                barEl.style.width = '15%';
+              } else if (m.status === 'initializing api') {
+                statusEl.textContent = 'Initializing…';
+                barEl.style.width = '30%';
+              } else if (m.status === 'recognizing text') {
+                const pct = Math.round(10 + m.progress * 85);
+                barEl.style.width = pct + '%';
+                statusEl.textContent = `Reading text… ${Math.round(m.progress * 100)}%`;
+              }
+            }
+          });
+          document.getElementById('scan-ocr-bar').style.width = '100%';
+          _scanShowResults(result.data.text);
+        } catch (err) {
+          document.getElementById('scan-ocr-status').textContent = '⚠ OCR error: ' + err.message;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function _parseReceipt(text) {
+      const lower = text.toLowerCase();
+      const detected = RECEIPT_CATEGORIES.filter(c => c.keywords.some(kw => lower.includes(kw)));
+      const amounts = [];
+      const rx = /\$?\s*(\d{1,4}(?:,\d{3})*\.\d{2})/g;
+      let m;
+      while ((m = rx.exec(text)) !== null) {
+        const v = parseFloat(m[1].replace(/,/g, ''));
+        if (v > 0) amounts.push(v);
+      }
+      const total = amounts.reduce((s, v) => s + v, 0);
+      return { detected, total };
+    }
+
+    function _scanShowResults(rawText) {
+      const parsed = _parseReceipt(rawText);
+      _scanDetected = parsed.detected;
+      const list = document.getElementById('scan-results-list');
+      list.innerHTML = parsed.detected.length === 0
+        ? '<p style="font-size:9px;color:#94a3b8;text-align:center;padding:12px 0">No deductible categories detected.<br>Try a clearer photo.</p>'
+        : parsed.detected.map(c => `<div style="display:flex;align-items:center;gap:6px;padding:5px 8px;background:rgba(0,167,111,0.08);border:1px solid rgba(0,167,111,0.25);border-radius:8px;margin-bottom:4px"><span style="color:#00a76f;font-size:11px;line-height:1">✓</span><span style="font-size:9px;color:#e2e8f0;font-weight:700">${c.label}</span></div>`).join('');
+      const tot = document.getElementById('scan-results-total');
+      tot.textContent = parsed.total > 0 ? `$${parsed.total.toLocaleString('en-US',{maximumFractionDigits:2})} detected` : 'Amounts not detected';
+      document.getElementById('scan-raw-text').textContent = rawText.trim().substring(0, 300) + (rawText.length > 300 ? '…' : '');
+      _scanShowState('results');
+    }
+
+    function applyScannedDeductions() {
+      _scanDetected.forEach(c => {
+        const el = document.getElementById(c.id);
+        if (el) el.checked = true;
+      });
+      calculateNailTax();
+      closeReceiptScanModal();
+      const n = _scanDetected.length;
+      showToast(n > 0 ? `✅ ${n} deduction${n>1?'s':''} detected & applied from receipt` : 'No deductions detected — try a clearer image');
     }
   </script>
 

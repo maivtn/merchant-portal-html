@@ -2356,7 +2356,7 @@
               <!-- Header + toggle -->
               <button onclick="toggleTaxSummary()" class="w-full flex items-center justify-between btn-exp-action ds-control">
                 <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">④ Estimated Tax Summary</span>
-                <svg id="tax-summary-chevron" class="w-3 h-3 text-slate-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="tax-summary-chevron" class="w-3 h-3 text-slate-500 transition-transform duration-200" style="transform:rotate(180deg)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"/>
                 </svg>
               </button>
@@ -2366,7 +2366,7 @@
                 <strong class="text-green text-sm font-black transition-all duration-300" id="tax-iq-final-tax">$12,808</strong>
               </div>
               <!-- Collapsible detail — closed by default -->
-              <div id="tax-summary-detail" class="hidden space-y-1.5 text-[9px] border-t border-slate-800 pt-2">
+              <div id="tax-summary-detail" style="display:block" class="space-y-1.5 text-[9px] border-t border-slate-800 pt-2">
                 <div class="flex justify-between">
                   <span class="text-slate-500 font-bold">Gross Income</span>
                   <span class="text-slate-200 font-extrabold" id="tax-iq-gross-income">$55,000</span>
@@ -4485,8 +4485,9 @@
     function toggleTaxSummary() {
       const detail = document.getElementById('tax-summary-detail');
       const chevron = document.getElementById('tax-summary-chevron');
-      const isHidden = detail.classList.toggle('hidden');
-      chevron.style.transform = isHidden ? '' : 'rotate(180deg)';
+      const isHidden = detail.style.display === 'none';
+      detail.style.display = isHidden ? 'block' : 'none';
+      chevron.style.transform = isHidden ? 'rotate(180deg)' : '';
     }
 
     function reviewWithTaxIQ() {

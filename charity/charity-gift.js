@@ -962,19 +962,19 @@ app.addEventListener('click', (event) => {
       confirmButtonText: 'Yes, mark as gifted',
       cancelButtonText: 'Cancel',
       confirmButtonColor: '#d97706',
-      cancelButtonColor: '#374151',
-      background: '#1a1a1a',
-      color: '#f5efe2',
+      cancelButtonColor: '#9ca3af',
+      background: '#ffffff',
+      color: '#111827',
       html: `
-        <p style="font-size:13px;color:#a1a1aa;margin-bottom:16px">This will update the card status to Gifted. This action cannot be undone.</p>
+        <p style="font-size:13px;color:#6b7280;margin-bottom:16px">This will update the card status to Gifted. This action cannot be undone.</p>
         <div style="text-align:left;margin-bottom:6px">
           <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#d97706;margin-bottom:10px">Recipient</label>
           <input id="swal-recipient-name" type="text" placeholder="Name (Optional)"
-            style="width:100%;box-sizing:border-box;background:#111;border:1px solid #2d2d2d;border-radius:8px;padding:10px 14px;font-size:13px;color:#f5efe2;outline:none;margin-bottom:8px"
-            onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='#2d2d2d'">
-          <input id="swal-recipient-email" type="email" placeholder="Email"
-            style="width:100%;box-sizing:border-box;background:#111;border:1px solid #2d2d2d;border-radius:8px;padding:10px 14px;font-size:13px;color:#f5efe2;outline:none"
-            onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='#2d2d2d'">
+            style="width:100%;box-sizing:border-box;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px;font-size:13px;color:#111827;outline:none;margin-bottom:8px"
+            onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='#e5e7eb'">
+          <input id="swal-recipient-email" type="email" placeholder="Email (Optional)"
+            style="width:100%;box-sizing:border-box;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px;font-size:13px;color:#111827;outline:none"
+            onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='#e5e7eb'">
         </div>`,
       preConfirm: () => ({
         name: document.getElementById('swal-recipient-name').value.trim(),

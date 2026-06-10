@@ -2401,12 +2401,12 @@
             <!-- BLOCK 4: Estimated Tax Summary -->
             <div class="bg-slate-950/80 border border-slate-700/50 rounded-xl p-3 space-y-2">
               <!-- Header + toggle -->
-              <a onclick="toggleTaxSummary()" class="w-full flex items-center justify-between btn-exp-action ds-control">
+              <button type="button" onclick="toggleTaxSummary()" class="w-full flex items-center justify-between btn-exp-action ds-control">
                 <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">④ Estimated Tax Summary</span>
-                <svg id="" class="w-3 h-3 text-slate-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="tax-summary-chevron" style="transform:rotate(180deg)" class="w-3 h-3 text-slate-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"/>
                 </svg>
-              </a>
+              </button>
               <!-- Main number — always visible -->
               <div class="flex items-center justify-between text-[9px]">
                 <span class="text-slate-500 font-bold" id="tax-iq-title-due">Est. Tax Liability</span>
@@ -4739,7 +4739,93 @@
       document.getElementById('lost-annual-label').textContent = `$${lostAnnual.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
       document.getElementById('saved-annual-label').textContent = `$${savedAnnual.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
     }
+
+    function openReceiptScanModal() {
+      const modal = document.getElementById('receipt-scan-modal');
+      modal.classList.add('open');
+      // reset state
+      ['scan-row-1','scan-row-2','scan-row-3','scan-row-4'].forEach(id => {
+        document.getElementById(id).classList.remove('detected');
+      });
+      document.getElementById('scan-status').textContent = 'Scanning receipt…';
+      document.getElementById('scan-progress').style.width = '0%';
+      const beam = document.getElementById('scan-beam');
+      beam.classList.remove('active');
+      // small delay to allow reflow before restarting animation
+      setTimeout(() => {
+        beam.classList.add('active');
+        document.getElementById('scan-progress').style.width = '100%';
+      }, 80);
+      // reveal rows progressively
+      setTimeout(() => document.getElementById('scan-row-1').classList.add('detected'), 600);
+      setTimeout(() => document.getElementById('scan-row-2').classList.add('detected'), 1000);
+      setTimeout(() => document.getElementById('scan-row-3').classList.add('detected'), 1400);
+      setTimeout(() => document.getElementById('scan-row-4').classList.add('detected'), 1750);
+      // apply deductions & close
+      setTimeout(() => {
+        document.getElementById('chk-deduct-supplies').checked = true;
+        document.getElementById('chk-deduct-rent').checked = true;
+        document.getElementById('chk-deduct-phone').checked = true;
+        calculateNailTax();
+        document.getElementById('scan-status').textContent = '✅ 4 deductions detected — $2,472 in write-offs found!';
+        document.getElementById('scan-status').style.color = '#00a76f';
+      }, 2200);
+      setTimeout(() => {
+        showToast('Receipt scanned! 4 deductions detected — Est. $2,472 in write-offs applied');
+        closeReceiptScanModal();
+      }, 4000);
+    }
+
+    function closeReceiptScanModal() {
+      document.getElementById('receipt-scan-modal').classList.remove('open');
+    }
   </script>
+
+  <!-- ── Receipt Scan Demo Modal ── -->
+  <div id="receipt-scan-modal" role="dialog" aria-modal="true">
+    <div class="scan-card">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <p class="text-[10px] font-black text-white uppercase tracking-widest">📷 Receipt Scanner</p>
+          <p class="text-[9px] text-slate-400 mt-0.5">AI scanning for deductible expenses…</p>
+        </div>
+        <button type="button" onclick="closeReceiptScanModal()" class="w-7 h-7 flex items-center justify-center rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all ds-control">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div id="receipt-paper">
+        <div id="scan-beam"></div>
+        <div style="text-align:center;font-weight:800;margin-bottom:8px;border-bottom:1px dashed #cbd5e1;padding-bottom:6px;font-size:9px">
+          NAIL PALACE SUPPLY CO.<br>
+          <span style="font-weight:400;font-size:8px;color:#64748b">TAX YEAR 2025 · RECEIPT</span>
+        </div>
+        <div class="receipt-row" id="scan-row-1">
+          <span>Gel Polish Kit (6 colors)</span>
+          <span>$89.50 <span class="detect-badge">✓ Supplies</span></span>
+        </div>
+        <div class="receipt-row" id="scan-row-2">
+          <span>UV Lamp Replacement</span>
+          <span>$45.00 <span class="detect-badge">✓ Supplies</span></span>
+        </div>
+        <div class="receipt-row" id="scan-row-3">
+          <span>Booth Rent – April</span>
+          <span>$600.00 <span class="detect-badge">✓ Rent</span></span>
+        </div>
+        <div class="receipt-row" id="scan-row-4">
+          <span>Business Phone (70%)</span>
+          <span>$56.00 <span class="detect-badge">✓ Phone</span></span>
+        </div>
+        <div style="border-top:1px dashed #cbd5e1;margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-weight:800;font-size:9px">
+          <span>TOTAL</span><span>$790.50</span>
+        </div>
+      </div>
+      <div id="scan-status" style="margin-top:10px;text-align:center;font-size:9px;color:#94a3b8">Scanning receipt…</div>
+      <div style="margin-top:8px;background:#1e293b;border-radius:9999px;height:4px;overflow:hidden">
+        <div id="scan-progress" style="width:0%;height:100%;background:linear-gradient(90deg,#00a76f,#6c4df6);border-radius:9999px;transition:width 1.8s ease-in-out"></div>
+      </div>
+    </div>
+  </div>
+
 </body>
 
 </html>

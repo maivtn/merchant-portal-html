@@ -1166,6 +1166,49 @@
       }
     }
 
+    /* ── Receipt Scan Demo ── */
+    #receipt-scan-modal {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(2,6,23,0.88);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    #receipt-scan-modal.open { opacity: 1; pointer-events: auto; }
+    #receipt-scan-modal .scan-card {
+      background: #0f172a; border: 1px solid rgba(139,92,246,0.3);
+      border-radius: 24px; padding: 24px; width: 320px; max-width: 92vw;
+      box-shadow: 0 32px 80px rgba(108,77,246,0.35);
+    }
+    #receipt-paper {
+      background: #fff; border-radius: 8px; padding: 14px 16px;
+      font-family: 'Courier New', monospace; font-size: 9px; color: #1e293b;
+      position: relative; overflow: hidden; line-height: 1.7;
+      border: 1px solid #e2e8f0;
+    }
+    #scan-beam {
+      position: absolute; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(0,167,111,0.8), rgba(0,167,111,1), rgba(0,167,111,0.8), transparent);
+      box-shadow: 0 0 10px rgba(0,167,111,0.6);
+      top: 0; display: none;
+    }
+    @keyframes scan-sweep {
+      from { top: 0; }
+      to { top: calc(100% - 3px); }
+    }
+    #scan-beam.active {
+      display: block;
+      animation: scan-sweep 1.8s ease-in-out forwards;
+    }
+    .receipt-row { display: flex; justify-content: space-between; align-items: center; padding: 2px 0; }
+    .receipt-row .detect-badge {
+      background: #dcfce7; color: #16a34a; font-size: 7px; font-weight: 800;
+      padding: 1px 5px; border-radius: 4px; opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .receipt-row.detected .detect-badge { opacity: 1; }
+    .receipt-row.detected { background: rgba(0,167,111,0.06); border-radius: 4px; }
+
   </style>
   <meta content="NEXORA TOUCH Design System v1.0 - normalized interactions and component states" name="design-system" />
 </head>
@@ -2265,10 +2308,14 @@
 
             <!-- BLOCK 3: Actual Expenses -->
             <div class="space-y-2">
-              <div class="flex items-center justify-between">
+              <div class="flex items-center justify-between gap-1.5">
                 <span class="block text-[9px] font-bold text-slate-400 uppercase tracking-widest">③ Select Your Actual Expenses</span>
-                <button onclick="showToast('Add Expense: Add Manually · Upload Receipt · Ask Tax IQ')"
-                  class="text-[9px] font-extrabold text-purple border border-purple/40 bg-purple/10 px-2.5 py-1 rounded-full hover:bg-purple/20 transition-all ds-control btn-exp-action">+ Add Expense</button>
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                  <button type="button" onclick="openReceiptScanModal()"
+                    class="text-[9px] font-extrabold text-green border border-green/40 bg-green/10 px-2.5 py-1 rounded-full hover:bg-green/20 transition-all ds-control btn-exp-action">📷 Scan Receipt</button>
+                  <button type="button" onclick="showToast('Add Expense: Add Manually · Upload Receipt · Ask Tax IQ')"
+                    class="text-[9px] font-extrabold text-purple border border-purple/40 bg-purple/10 px-2.5 py-1 rounded-full hover:bg-purple/20 transition-all ds-control btn-exp-action">+ Add</button>
+                </div>
               </div>
               <p class="text-[8px] text-slate-500 leading-relaxed">Choose items you paid for. Tax IQ will check receipts, missing info, and CPA review needs.</p>
               <div class="space-y-2 max-h-[90px] overflow-y-auto pr-1 no-scrollbar">
@@ -2354,12 +2401,12 @@
             <!-- BLOCK 4: Estimated Tax Summary -->
             <div class="bg-slate-950/80 border border-slate-700/50 rounded-xl p-3 space-y-2">
               <!-- Header + toggle -->
-              <button onclick="toggleTaxSummary()" class="w-full flex items-center justify-between btn-exp-action ds-control">
+              <a onclick="toggleTaxSummary()" class="w-full flex items-center justify-between btn-exp-action ds-control">
                 <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">④ Estimated Tax Summary</span>
-                <svg id="tax-summary-chevron" class="w-3 h-3 text-slate-500 transition-transform duration-200" style="transform:rotate(180deg)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="" class="w-3 h-3 text-slate-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"/>
                 </svg>
-              </button>
+              </a>
               <!-- Main number — always visible -->
               <div class="flex items-center justify-between text-[9px]">
                 <span class="text-slate-500 font-bold" id="tax-iq-title-due">Est. Tax Liability</span>
@@ -4484,7 +4531,6 @@
 
     function toggleTaxSummary() {
       const detail = document.getElementById('tax-summary-detail');
-      const chevron = document.getElementById('tax-summary-chevron');
       const isHidden = detail.style.display === 'none';
       detail.style.display = isHidden ? 'block' : 'none';
       chevron.style.transform = isHidden ? 'rotate(180deg)' : '';

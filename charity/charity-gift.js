@@ -550,7 +550,7 @@ function buildDistDetail() {
 
 function buildCardDetail() {
   const card = state.selectedCard;
-  document.getElementById('main-slot').innerHTML = `<div class="animate-fadeUp"><div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury sm:p-8"><h6 class="mb-5 inline-block border-b border-gold/30 pb-2 text-sm font-semibold tracking-[0.16em] text-gold sm:text-base-1">E-Gift Card</h6><div class="space-y-4"><div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Status</span><span class="rounded px-2.5 py-1 text-[10px] font-semibold tracking-[0.12em] sm:text-[12px] ${badgeClasses(card.status)}">${card.status}</span></div>${card.purpose ? `<div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Purpose</span><span class="text-[13px] font-semibold text-gold sm:text-[15px]">${card.purpose}</span></div>` : ''}<div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Card Number</span><span class="text-[13px] font-semibold tracking-widest text-cream sm:text-[15px]">${card.maskedNumber}</span></div><div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Card Value</span><span class="text-[15px] font-semibold text-gold sm:text-lg">${formatNumber(card.value)} ${card.currency}</span></div><div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Created Date</span><span class="text-[13px] font-semibold text-cream sm:text-[15px]">${card.createdDate}</span></div>${(card.status === 'Gifted' || card.status === 'Redeemed') ? `<div class="my-3 h-px bg-line"></div><h6 class="text-[11px] font-bold tracking-[0.14em] text-gold sm:text-[13px]">Recipient</h6><div class="flex items-start justify-between gap-4"><span class="text-sm text-soft sm:text-[15px]">Recipient Name</span><span class="text-right font-semibold text-cream sm:text-[15px]">${card.recipientName || ''}</span></div>${card.recipientEmail ? `<div class="flex items-start justify-between gap-4"><span class="text-sm text-soft sm:text-[15px]">Recipient Email</span><span class="text-right font-semibold text-cream sm:text-[15px]">${card.recipientEmail}</span></div>` : ''}` : ''}${card.status === 'Redeemed' ? `<div class="my-3 h-px bg-line"></div><h6 class="text-[11px] font-bold tracking-[0.14em] text-gold sm:text-[13px]">Redemption Details</h6><div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Redeemer</span><span class="font-semibold text-cream sm:text-[15px]">${card.redeemerName}</span></div><div class="flex items-start justify-between gap-4"><span class="text-sm text-soft sm:text-[15px]">Merchant</span><span class="max-w-[60%] text-right font-semibold text-cream sm:text-[15px]">${card.merchant}</span></div><div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Date</span><span class="font-semibold text-cream sm:text-[15px]">${card.redeemedDate}</span></div><div class="flex items-center justify-between border-t border-line pt-4"><span class="text-sm text-soft sm:text-[15px]">Proof of Redemption</span>${card.hasProof ? `<button data-action="open-proof" data-proof-kind="gift-card" class="text-[12px] font-semibold text-gold hover:underline sm:text-[14px]">[View]</button>` : '<span class="text-[12px] italic text-zinc-500 sm:text-[14px]">Not available</span>'}</div>` : ''}${card.status === 'Available' ? `<button data-action="open-qr" class="btn-action mx-auto mt-6 block rounded-lg px-10 py-3.5 text-[11px] font-extrabold tracking-[0.16em] text-black sm:text-[13px]">Gift via QR</button>` : ''}</div></div></div>`;
+  document.getElementById('main-slot').innerHTML = `<div class="animate-fadeUp"><div class="rounded-2xl border border-line bg-panel p-6 shadow-luxury sm:p-8"><h6 class="mb-5 inline-block border-b border-gold/30 pb-2 text-sm font-semibold tracking-[0.16em] text-gold sm:text-base-1">E-Gift Card</h6><div class="space-y-4"><div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Status</span><span class="rounded px-2.5 py-1 text-[10px] font-semibold tracking-[0.12em] sm:text-[12px] ${badgeClasses(card.status)}">${card.status}</span></div>${card.purpose ? `<div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Purpose</span><span class="text-[13px] font-semibold text-gold sm:text-[15px]">${card.purpose}</span></div>` : ''}<div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Card Number</span><span class="text-[13px] font-semibold tracking-widest text-cream sm:text-[15px]">${card.maskedNumber}</span></div><div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Card Value</span><span class="text-[15px] font-semibold text-gold sm:text-lg">${formatNumber(card.value)} ${card.currency}</span></div><div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Created Date</span><span class="text-[13px] font-semibold text-cream sm:text-[15px]">${card.createdDate}</span></div>${(card.status === 'Gifted' || card.status === 'Redeemed') ? `<div class="my-3 h-px bg-line"></div><h6 class="text-[11px] font-bold tracking-[0.14em] text-gold sm:text-[13px]">Recipient</h6><div class="flex items-start justify-between gap-4"><span class="text-sm text-soft sm:text-[15px]">Recipient Name</span><span class="text-right font-semibold text-cream sm:text-[15px]">${card.recipientName || ''}</span></div>${card.recipientEmail ? `<div class="flex items-start justify-between gap-4"><span class="text-sm text-soft sm:text-[15px]">Recipient Email</span><span class="text-right font-semibold text-cream sm:text-[15px]">${card.recipientEmail}</span></div>` : ''}` : ''}${card.status === 'Redeemed' ? `<div class="my-3 h-px bg-line"></div><h6 class="text-[11px] font-bold tracking-[0.14em] text-gold sm:text-[13px]">Redemption Details</h6><div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Redeemer</span><span class="font-semibold text-cream sm:text-[15px]">${card.redeemerName}</span></div><div class="flex items-start justify-between gap-4"><span class="text-sm text-soft sm:text-[15px]">Merchant</span><span class="max-w-[60%] text-right font-semibold text-cream sm:text-[15px]">${card.merchant}</span></div><div class="flex items-center justify-between"><span class="text-sm text-soft sm:text-[15px]">Date</span><span class="font-semibold text-cream sm:text-[15px]">${card.redeemedDate}</span></div><div class="flex items-center justify-between border-t border-line pt-4"><span class="text-sm text-soft sm:text-[15px]">Proof of Redemption</span>${card.hasProof ? `<button data-action="open-proof" data-proof-kind="gift-card" class="text-[12px] font-semibold text-gold hover:underline sm:text-[14px]">[View]</button>` : '<span class="text-[12px] italic text-zinc-500 sm:text-[14px]">Not available</span>'}</div>` : ''}${card.status === 'Available' ? `<div class="mt-6 flex justify-center gap-3"><button data-action="open-qr" class="btn-action rounded-lg px-8 py-3.5 text-[11px] font-extrabold tracking-[0.16em] text-black sm:text-[13px]">Gift via QR</button><button data-action="mark-as-gifted" class="btn-action-outline rounded-lg px-8 py-3.5 text-[11px] font-extrabold tracking-[0.16em] sm:text-[13px]">Already Gifted</button></div>` : ''}</div></div></div>`;
   safeCreateIcons();
 }
 
@@ -951,6 +951,49 @@ app.addEventListener('click', (event) => {
     return;
   }
   if (action === 'open-qr') { state.viewMode = 'qr'; return renderRoute(true); }
+  if (action === 'mark-as-gifted') {
+    const card = state.selectedCard;
+    if (!card) return;
+    Swal.fire({
+      title: 'Mark as Already Gifted?',
+      customClass: { title: 'swal-sm-title', popup: 'swal-sm-popup' },
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, mark as gifted',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#d97706',
+      cancelButtonColor: '#374151',
+      background: '#1a1a1a',
+      color: '#f5efe2',
+      html: `
+        <p style="font-size:13px;color:#a1a1aa;margin-bottom:16px">This will update the card status to Gifted. This action cannot be undone.</p>
+        <div style="text-align:left;margin-bottom:6px">
+          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#d97706;margin-bottom:10px">Recipient</label>
+          <input id="swal-recipient-name" type="text" placeholder="Name (Optional)"
+            style="width:100%;box-sizing:border-box;background:#111;border:1px solid #2d2d2d;border-radius:8px;padding:10px 14px;font-size:13px;color:#f5efe2;outline:none;margin-bottom:8px"
+            onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='#2d2d2d'">
+          <input id="swal-recipient-email" type="email" placeholder="Email *"
+            style="width:100%;box-sizing:border-box;background:#111;border:1px solid #2d2d2d;border-radius:8px;padding:10px 14px;font-size:13px;color:#f5efe2;outline:none"
+            onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='#2d2d2d'">
+        </div>`,
+      preConfirm: () => ({
+        name: document.getElementById('swal-recipient-name').value.trim(),
+        email: document.getElementById('swal-recipient-email').value.trim(),
+      }),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const idx = mockGiftCards.findIndex(c => c.id === card.id);
+        if (idx !== -1) {
+          mockGiftCards[idx].status = 'Gifted';
+          mockGiftCards[idx].recipientName = result.value.name || '';
+          mockGiftCards[idx].recipientEmail = result.value.email;
+          state.selectedCard = mockGiftCards[idx];
+        }
+        renderRoute(true);
+      }
+    });
+    return;
+  }
   if (action === 'open-proof') {
     state.proofReturnMode = state.viewMode;
     state.proofKind = target.dataset.proofKind || (state.viewMode === 'cardDetail' ? 'gift-card' : 'voucher');

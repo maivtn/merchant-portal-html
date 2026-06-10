@@ -972,7 +972,7 @@ app.addEventListener('click', (event) => {
           <input id="swal-recipient-name" type="text" placeholder="Name (Optional)"
             style="width:100%;box-sizing:border-box;background:#111;border:1px solid #2d2d2d;border-radius:8px;padding:10px 14px;font-size:13px;color:#f5efe2;outline:none;margin-bottom:8px"
             onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='#2d2d2d'">
-          <input id="swal-recipient-email" type="email" placeholder="Email *"
+          <input id="swal-recipient-email" type="email" placeholder="Email"
             style="width:100%;box-sizing:border-box;background:#111;border:1px solid #2d2d2d;border-radius:8px;padding:10px 14px;font-size:13px;color:#f5efe2;outline:none"
             onfocus="this.style.borderColor='#d97706'" onblur="this.style.borderColor='#2d2d2d'">
         </div>`,

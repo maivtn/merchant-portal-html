@@ -152,7 +152,7 @@
           desc: "Cài đặt phương thức thanh toán cho cửa hàng",
         },
         {
-          label: "Benefits Setup",
+          label: "Membership Program Setup",
           href: "benefits-setup.html",
           desc: "Quản lý gói thành viên & đặc quyền",
           relatedPages: [

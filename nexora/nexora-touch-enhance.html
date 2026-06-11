@@ -2216,73 +2216,73 @@
                 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple to-blue flex items-center justify-center text-white font-black text-xs">IQ</div>
                 <div>
                   <h4 class="font-extrabold text-xs text-white">NEXORA TAX IQ</h4>
-                  <span class="block text-[8px] text-slate-400 font-bold uppercase tracking-wider">Quick Deduction Optimizer</span>
+                  <span class="block text-[8px] text-slate-400 font-bold uppercase tracking-wider" data-i18n="tax-iq-app-subtitle">Quick Deduction Optimizer</span>
                 </div>
               </div>
-              <span class="text-[8px] bg-purple/20 text-purple font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider border border-purple/30">AI Assisted</span>
+              <span class="text-[8px] bg-purple/20 text-purple font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider border border-purple/30" data-i18n="tax-iq-badge-ai">AI Assisted</span>
             </div>
 
             <!-- BLOCK 1: Tax Profile -->
             <div class="space-y-2.5">
-              <span class="block text-[9px] font-bold text-slate-400 uppercase tracking-widest">① Tax Profile</span>
+              <span class="block text-[9px] font-bold text-slate-400 uppercase tracking-widest" data-i18n="tax-iq-block1">① Tax Profile</span>
               <!-- Role Selector — first field, drives deduction suggestions -->
               <div class="grid grid-cols-2 gap-2">
                 <button id="role-btn-staff" onclick="selectTaxRole('staff')"
                   class="flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 border-purple bg-purple/10 text-white transition-all ds-control btn-exp-action">
                   <img src="images/icon-staff.png" alt="" class="w-8 h-8 flex-shrink-0 object-contain" />
                   <div class="text-left">
-                    <span class="block text-[11px] font-extrabold leading-tight">Nail Technician</span>
-                    <span class="block text-[9px] leading-tight">Staff / 1099</span>
+                    <span class="block text-[11px] font-extrabold leading-tight" data-i18n="tax-role-staff-title">Nail Technician</span>
+                    <span class="block text-[9px] leading-tight" data-i18n="tax-role-staff-sub">Staff / 1099</span>
                   </div>
                 </button>
                 <button id="role-btn-owner" onclick="selectTaxRole('owner')"
                   class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-700 bg-slate-900/40 text-slate-400 transition-all ds-control btn-exp-action">
                   <img src="images/icon-salon.png" alt="" class="w-8 h-8 flex-shrink-0 object-contain" />
                   <div class="text-left">
-                    <span class="block text-[11px] font-extrabold leading-tight">Salon Owner</span>
-                    <span class="block text-[9px] leading-tight">Owner / Multi-loc</span>
+                    <span class="block text-[11px] font-extrabold leading-tight" data-i18n="tax-role-owner-title">Salon Owner</span>
+                    <span class="block text-[9px] leading-tight" data-i18n="tax-role-owner-sub">Owner / Multi-loc</span>
                   </div>
                 </button>
               </div>
               <!-- Profile Fields -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div class="bg-slate-900/60 border border-slate-700/40 p-2.5 rounded-xl">
-                  <label class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider mb-1">Est. Annual Gross Income</label>
+                  <label class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider mb-1" data-i18n="tax-iq-income-label">Est. Annual Gross Income</label>
                   <input class="w-full bg-black border border-slate-700 rounded-lg p-2 text-xs font-bold text-white focus:outline-none focus:border-purple ds-field"
                     id="tax-iq-custom-income" oninput="calculateNailTax()" type="number" value="55000" />
                 </div>
                 <div class="bg-slate-900/60 border border-slate-700/40 p-2.5 rounded-xl">
                   <label class="block text-[8px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-                    Worker Classification
+                    <span data-i18n="tax-worker-type">Worker Classification</span>
                     <span class="ml-1 text-slate-600 cursor-help" title="This helps estimate tax treatment. Worker classification should be confirmed with a CPA or tax professional.">ⓘ</span>
                   </label>
                   <select class="w-full bg-black border border-slate-700 rounded-lg p-2 text-xs font-bold text-white focus:outline-none focus:border-purple ds-field ds-select"
                     id="tax-iq-worker-type" onchange="calculateNailTax()">
-                    <option value="1099">1099 Independent Contractor</option>
-                    <option value="w2">W2 Employee</option>
-                    <option value="booth">Booth Renter</option>
-                    <option value="owner">Salon Owner</option>
-                    <option value="multi">Multi-location Owner</option>
+                    <option value="1099" data-i18n="tax-type-1099">1099 Independent Contractor</option>
+                    <option value="w2" data-i18n="tax-type-w2">W2 Employee</option>
+                    <option value="booth" data-i18n="tax-type-booth">Booth Renter</option>
+                    <option value="owner" data-i18n="tax-type-owner">Salon Owner</option>
+                    <option value="multi" data-i18n="tax-type-multi">Multi-location Owner</option>
                   </select>
                 </div>
                 <div class="bg-slate-900/40 border border-slate-700/30 p-2.5 rounded-xl opacity-75">
-                  <label class="block text-[8px] font-bold text-slate-500 uppercase tracking-wider mb-1">Filing Status <span class="text-slate-600 normal-case font-medium">(optional)</span></label>
+                  <label class="block text-[8px] font-bold text-slate-500 uppercase tracking-wider mb-1"><span data-i18n="tax-filing-status">Filing Status</span> <span class="text-slate-600 normal-case font-medium" data-i18n="tax-iq-optional">(optional)</span></label>
                   <select class="w-full bg-black border border-slate-700 rounded-lg p-2 text-xs font-bold text-white focus:outline-none focus:border-purple ds-field ds-select"
                     id="tax-iq-filing-status" onchange="calculateNailTax()">
-                    <option value="single" selected>Single</option>
-                    <option value="married">Married Filing Jointly</option>
-                    <option value="married_sep">Married Filing Separately</option>
-                    <option value="hoh">Head of Household</option>
+                    <option value="single" selected data-i18n="tax-status-single">Single</option>
+                    <option value="married" data-i18n="tax-status-married">Married Filing Jointly</option>
+                    <option value="married_sep" data-i18n="tax-status-married-sep">Married Filing Separately</option>
+                    <option value="hoh" data-i18n="tax-status-hoh">Head of Household</option>
                   </select>
                 </div>
                 <div class="bg-slate-900/40 border border-slate-700/30 p-2.5 rounded-xl opacity-75">
-                  <label class="block text-[8px] font-bold text-slate-500 uppercase tracking-wider mb-1">Qualifying Children <span class="text-slate-600 normal-case font-medium">(optional)</span></label>
+                  <label class="block text-[8px] font-bold text-slate-500 uppercase tracking-wider mb-1"><span data-i18n="tax-children-count">Qualifying Children</span> <span class="text-slate-600 normal-case font-medium" data-i18n="tax-iq-optional">(optional)</span></label>
                   <select class="w-full bg-black border border-slate-700 rounded-lg p-2 text-xs font-bold text-white focus:outline-none focus:border-purple ds-field ds-select"
                     id="tax-iq-children" onchange="calculateNailTax()">
-                    <option value="0">0 children</option>
-                    <option value="1">1 child</option>
-                    <option value="2">2 children</option>
-                    <option value="3">3+ children</option>
+                    <option value="0" data-i18n="opt-child-0">0 children</option>
+                    <option value="1" data-i18n="opt-child-1">1 child</option>
+                    <option value="2" data-i18n="opt-child-2">2 children</option>
+                    <option value="3" data-i18n="opt-child-3">3+ children</option>
                   </select>
                 </div>
               </div>
@@ -2290,7 +2290,7 @@
 
             <!-- BLOCK 2: Deduction Search & Suggestions -->
             <div class="space-y-2">
-              <span class="block text-[9px] font-bold text-slate-400 uppercase tracking-widest">② Quick Search: Deductible Categories</span>
+              <span class="block text-[9px] font-bold text-slate-400 uppercase tracking-widest" data-i18n="tax-iq-block2">② Quick Search: Deductible Categories</span>
               <input class="w-full bg-black border border-slate-700 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-purple placeholder:text-slate-600 font-medium ds-field"
                 id="tax-iq-search-input" oninput="filterTaxWriteoffs(this.value)"
                 placeholder="Search deductible items, receipts, or business expenses" type="text" />
@@ -2311,15 +2311,15 @@
             <!-- BLOCK 3: Actual Expenses -->
             <div class="space-y-2">
               <div class="flex items-center justify-between gap-1.5">
-                <span class="block text-[9px] font-bold text-slate-400 uppercase tracking-widest">③ Select Your Actual Expenses</span>
+                <span class="block text-[9px] font-bold text-slate-400 uppercase tracking-widest" data-i18n="tax-iq-block3">③ Select Your Actual Expenses</span>
                 <div class="flex items-center gap-1.5 flex-shrink-0">
                   <button type="button" onclick="openReceiptScanModal()"
-                    class="text-[9px] font-extrabold text-green border border-green/40 bg-green/10 px-2.5 py-1 rounded-full hover:bg-green/20 transition-all ds-control btn-exp-action">📷 Scan Receipt</button>
+                    class="text-[9px] font-extrabold text-green border border-green/40 bg-green/10 px-2.5 py-1 rounded-full hover:bg-green/20 transition-all ds-control btn-exp-action" data-i18n="tax-iq-btn-scan">📷 Scan Receipt</button>
                   <button type="button" onclick="showToast('Add Expense: Add Manually · Upload Receipt · Ask Tax IQ')"
-                    class="text-[9px] font-extrabold text-purple border border-purple/40 bg-purple/10 px-2.5 py-1 rounded-full hover:bg-purple/20 transition-all ds-control btn-exp-action">+ Add</button>
+                    class="text-[9px] font-extrabold text-purple border border-purple/40 bg-purple/10 px-2.5 py-1 rounded-full hover:bg-purple/20 transition-all ds-control btn-exp-action" data-i18n="tax-iq-btn-add">+ Add</button>
                 </div>
               </div>
-              <p class="text-[8px] text-slate-500 leading-relaxed">Choose items you paid for. Tax IQ will check receipts, missing info, and CPA review needs.</p>
+              <p class="text-[8px] text-slate-500 leading-relaxed" data-i18n="tax-iq-expenses-desc">Choose items you paid for. Tax IQ will check receipts, missing info, and CPA review needs.</p>
               <div class="space-y-2 max-h-[90px] overflow-y-auto pr-1 no-scrollbar">
 
                 <!-- Mileage — Needs Mileage Log -->
@@ -2327,12 +2327,12 @@
                   <input class="mt-0.5 flex-shrink-0 rounded text-purple focus:ring-0 focus:ring-offset-0 ds-field" id="chk-deduct-mileage" onchange="calculateNailTax()" type="checkbox" />
                   <div class="flex-1 min-w-0 space-y-0.5">
                     <div class="flex items-center justify-between gap-2 flex-wrap">
-                      <strong class="text-[10px] text-slate-200">🚗 Mileage</strong>
-                      <span data-expense-badge="mileage" class="text-[8px] bg-yellow-500/15 text-yellow-400 border border-yellow-500/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Needs Mileage Log</span>
+                      <strong class="text-[10px] text-slate-200" data-i18n="tax-chk-mileage-title">🚗 Mileage</strong>
+                      <span data-expense-badge="mileage" class="text-[8px] bg-yellow-500/15 text-yellow-400 border border-yellow-500/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap" data-i18n="tax-badge-needs-log">Needs Mileage Log</span>
                     </div>
                     <div class="flex items-center justify-between gap-1">
                       <span class="text-[8px] text-slate-500">1,500 business miles · Est. deduction: $1,005</span>
-                      <button data-expense-action="mileage" onclick="simulateReceiptUpload('mileage')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">Add Trip Details</button>
+                      <button data-expense-action="mileage" onclick="simulateReceiptUpload('mileage')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action" data-i18n="tax-act-add-trip">Add Trip Details</button>
                     </div>
                   </div>
                 </div>
@@ -2342,12 +2342,12 @@
                   <input class="mt-0.5 flex-shrink-0 rounded text-purple focus:ring-0 focus:ring-offset-0 ds-field" id="chk-deduct-supplies" onchange="calculateNailTax()" type="checkbox" />
                   <div class="flex-1 min-w-0 space-y-0.5">
                     <div class="flex items-center justify-between gap-2 flex-wrap">
-                      <strong class="text-[10px] text-slate-200">💅 Gel Polish, Brushes, UV Lamp</strong>
-                      <span data-expense-badge="supplies" class="text-[8px] bg-red-500/15 text-red-400 border border-red-500/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Missing Receipt</span>
+                      <strong class="text-[10px] text-slate-200" data-i18n="tax-chk-supplies-title">💅 Gel Polish, Brushes, UV Lamp</strong>
+                      <span data-expense-badge="supplies" class="text-[8px] bg-red-500/15 text-red-400 border border-red-500/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap" data-i18n="tax-iq-sum-missing">Missing Receipt</span>
                     </div>
                     <div class="flex items-center justify-between gap-1">
                       <span class="text-[8px] text-slate-500">Nail supplies for client services · $450</span>
-                      <button data-expense-action="supplies" onclick="simulateReceiptUpload('supplies')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">Upload Receipt</button>
+                      <button data-expense-action="supplies" onclick="simulateReceiptUpload('supplies')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action" data-i18n="tax-act-upload-receipt">Upload Receipt</button>
                     </div>
                   </div>
                 </div>
@@ -2357,12 +2357,12 @@
                   <input checked class="mt-0.5 flex-shrink-0 rounded text-purple focus:ring-0 focus:ring-offset-0 ds-field" id="chk-deduct-license" onchange="calculateNailTax()" type="checkbox" />
                   <div class="flex-1 min-w-0 space-y-0.5">
                     <div class="flex items-center justify-between gap-2 flex-wrap">
-                      <strong class="text-[10px] text-slate-200">🎓 State Board License Fee</strong>
-                      <span data-expense-badge="license" class="text-[8px] bg-green/15 text-green border border-green/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Ready</span>
+                      <strong class="text-[10px] text-slate-200" data-i18n="tax-chk-license-title">🎓 State Board License Fee</strong>
+                      <span data-expense-badge="license" class="text-[8px] bg-green/15 text-green border border-green/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap" data-i18n="tax-badge-ready">Ready</span>
                     </div>
                     <div class="flex items-center justify-between gap-1">
                       <span class="text-[8px] text-slate-500">Education & professional license · $150</span>
-                      <button data-expense-action="license" onclick="showToast('Receipt on file ✓')" class="text-[8px] text-slate-400 font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">View Receipt</button>
+                      <button data-expense-action="license" onclick="showToast('Receipt on file ✓')" class="text-[8px] text-slate-400 font-bold hover:underline flex-shrink-0 ds-control btn-exp-action" data-i18n="tax-act-view-receipt">View Receipt</button>
                     </div>
                   </div>
                 </div>
@@ -2372,12 +2372,12 @@
                   <input class="mt-0.5 flex-shrink-0 rounded text-purple focus:ring-0 focus:ring-offset-0 ds-field" id="chk-deduct-rent" onchange="calculateNailTax()" type="checkbox" />
                   <div class="flex-1 min-w-0 space-y-0.5">
                     <div class="flex items-center justify-between gap-2 flex-wrap">
-                      <strong class="text-[10px] text-slate-200">🏢 Booth Rent</strong>
-                      <span data-expense-badge="rent" class="text-[8px] bg-red-500/15 text-red-400 border border-red-500/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Missing Proof</span>
+                      <strong class="text-[10px] text-slate-200" data-i18n="tax-chk-rent-title">🏢 Booth Rent</strong>
+                      <span data-expense-badge="rent" class="text-[8px] bg-red-500/15 text-red-400 border border-red-500/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap" data-i18n="tax-badge-missing-proof">Missing Proof</span>
                     </div>
                     <div class="flex items-center justify-between gap-1">
                       <span class="text-[8px] text-slate-500">Booth rental deduction · $1,200</span>
-                      <button data-expense-action="rent" onclick="simulateReceiptUpload('rent')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">Upload Proof</button>
+                      <button data-expense-action="rent" onclick="simulateReceiptUpload('rent')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action" data-i18n="tax-act-upload-proof">Upload Proof</button>
                     </div>
                   </div>
                 </div>
@@ -2387,12 +2387,12 @@
                   <input class="mt-0.5 flex-shrink-0 rounded text-purple focus:ring-0 focus:ring-offset-0 ds-field" id="chk-deduct-phone" onchange="calculateNailTax()" type="checkbox" />
                   <div class="flex-1 min-w-0 space-y-0.5">
                     <div class="flex items-center justify-between gap-2 flex-wrap">
-                      <strong class="text-[10px] text-slate-200">📱 Phone & Internet</strong>
-                      <span data-expense-badge="phone" class="text-[8px] bg-blue/15 text-blue border border-blue/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Partially Deductible</span>
+                      <strong class="text-[10px] text-slate-200" data-i18n="tax-chk-phone-title">📱 Phone & Internet</strong>
+                      <span data-expense-badge="phone" class="text-[8px] bg-blue/15 text-blue border border-blue/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap" data-i18n="tax-badge-partial">Partially Deductible</span>
                     </div>
                     <div class="flex items-center justify-between gap-1">
                       <span class="text-[8px] text-slate-500">70% business-use · $960 annual → $672 deductible</span>
-                      <button data-expense-action="phone" onclick="simulateReceiptUpload('phone')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">Confirm %</button>
+                      <button data-expense-action="phone" onclick="simulateReceiptUpload('phone')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action" data-i18n="tax-act-confirm-pct">Confirm %</button>
                     </div>
                   </div>
                 </div>
@@ -3331,6 +3331,44 @@
         "tax-iq-sum-footnote": "Đây là ước tính dùng để lập kế hoạch, có thể thay đổi sau khi CPA xem xét, tùy tình trạng khai thuế, quy định thuế tiểu bang và thu nhập thực tế cuối kỳ.",
         "tax-iq-btn-review": "Xem Xét Với Tax IQ",
         "tax-iq-disclaimer": "Chỉ là ước tính. Đây không phải tư vấn thuế. Cần được CPA hoặc chuyên gia thuế xem xét trước khi nộp.",
+        "tax-iq-app-subtitle": "Tối Ưu Khoản Khấu Trừ Nhanh",
+        "tax-iq-badge-ai": "Hỗ Trợ Bởi AI",
+        "tax-iq-block1": "① Hồ Sơ Thuế",
+        "tax-role-staff-title": "Kỹ Thuật Viên",
+        "tax-role-staff-sub": "Thợ / 1099",
+        "tax-role-owner-title": "Chủ Tiệm",
+        "tax-role-owner-sub": "Chủ / Nhiều Chi Nhánh",
+        "tax-iq-income-label": "Tổng Thu Nhập Năm Ước Tính",
+        "tax-type-booth": "Người Thuê Bàn",
+        "tax-type-multi": "Chủ Nhiều Chi Nhánh",
+        "tax-status-married-sep": "Gia Đình (Khai Riêng)",
+        "tax-iq-optional": "(tùy chọn)",
+        "tax-iq-block2": "② Tra Cứu Nhanh: Danh Mục Khấu Trừ",
+        "tax-iq-block3": "③ Chọn Chi Phí Thực Tế Của Bạn",
+        "tax-iq-btn-scan": "📷 Quét Biên Lai",
+        "tax-iq-btn-add": "+ Thêm",
+        "tax-iq-expenses-desc": "Chọn các khoản bạn đã chi trả. Tax IQ sẽ kiểm tra biên lai, thông tin thiếu và nhu cầu CPA xem xét.",
+        "tax-chk-phone-title": "📱 Điện Thoại & Internet",
+        "tax-badge-needs-log": "Cần Nhật Ký Số Dặm",
+        "tax-badge-ready": "Sẵn Sàng",
+        "tax-badge-missing-proof": "Thiếu Bằng Chứng",
+        "tax-badge-partial": "Khấu Trừ Một Phần",
+        "tax-act-add-trip": "Thêm Chi Tiết Hành Trình",
+        "tax-act-upload-receipt": "Tải Lên Biên Lai",
+        "tax-act-view-receipt": "Xem Biên Lai",
+        "tax-act-upload-proof": "Tải Lên Bằng Chứng",
+        "tax-act-confirm-pct": "Xác Nhận %",
+        "tax-act-trip-done": "Đã Thêm Nhật Ký ✓",
+        "tax-act-receipt-done": "Biên Lai Đã Xác Minh ✓",
+        "tax-act-ready-done": "Sẵn Sàng ✓",
+        "tax-act-proof-done": "Bằng Chứng Đã Xác Minh ✓",
+        "tax-act-confirmed-done": "Đã Xác Nhận ✓",
+        "tax-act-view-log": "Xem Nhật Ký",
+        "tax-act-view-proof": "Xem Bằng Chứng",
+        "tax-act-view-details": "Xem Chi Tiết",
+        "tax-act-uploading": "Đang Tải Lên…",
+        "tax-act-verifying": "Đang Xác Minh Biên Lai…",
+        "tax-act-verified": "Biên Lai Đã Xác Minh ✓  Khoản Khấu Trừ Đã Xác Nhận.",
         "tax-feat-1-title": "Tự Động Hóa Biểu Mẫu 1099",
         "tax-feat-1-desc": "Liên kết trực tiếp dòng tiền bồi dưỡng để tự xuất các biểu mẫu thuế IRS 1099 cho thợ mà không làm phiền chủ tiệm.",
         "tax-feat-2-title": "Hạn Chế Rủi Ro Kiểm Toán",
@@ -3357,13 +3395,13 @@
         "tax-result-saved": "TIỀN THUẾ TIẾT KIỆM ĐƯỢC (SAVED)",
         "tax-search-label": "🔍 Tra cứu nhanh các mục được miễn trừ thuế",
         "tax-checklist-label": "Tích chọn chi phí thực tế của bạn để khấu trừ thuế:",
-        "tax-chk-mileage-title": "🚗 Mileage (1,500 dặm)",
+        "tax-chk-mileage-title": "🚗 Số Dặm Đi Lại",
         "tax-chk-mileage-desc": "Khấu trừ theo định mức IRS: $1,005",
-        "tax-chk-supplies-title": "💅 Sơn Gel, Cọ, Đèn sấy",
+        "tax-chk-supplies-title": "💅 Sơn Gel, Cọ, Đèn Sấy UV",
         "tax-chk-supplies-desc": "Chi phí mua sắm dụng cụ: $450",
-        "tax-chk-license-title": "🎓 Lệ phí bằng State Board",
+        "tax-chk-license-title": "🎓 Lệ Phí Bằng Tiểu Bang",
         "tax-chk-license-desc": "Chi phí học tập, nâng cao: $150",
-        "tax-chk-rent-title": "🏢 Tiền thuê bàn (Booth rent)",
+        "tax-chk-rent-title": "🏢 Tiền Thuê Bàn",
         "tax-chk-rent-desc": "Khấu trừ chi phí mặt bằng: $1,200",
         "opt-child-0": "0 con",
         "opt-child-1": "1 con (-$2,000 Credit)",
@@ -3657,6 +3695,44 @@
         "tax-iq-sum-footnote": "This estimate is for planning only and may change after CPA review, filing status, state tax rules, and final income adjustments.",
         "tax-iq-btn-review": "Review with Tax IQ",
         "tax-iq-disclaimer": "Estimate only. This is not tax advice. Final tax treatment should be reviewed by a CPA or tax professional.",
+        "tax-iq-app-subtitle": "Quick Deduction Optimizer",
+        "tax-iq-badge-ai": "AI Assisted",
+        "tax-iq-block1": "① Tax Profile",
+        "tax-role-staff-title": "Nail Technician",
+        "tax-role-staff-sub": "Staff / 1099",
+        "tax-role-owner-title": "Salon Owner",
+        "tax-role-owner-sub": "Owner / Multi-loc",
+        "tax-iq-income-label": "Est. Annual Gross Income",
+        "tax-type-booth": "Booth Renter",
+        "tax-type-multi": "Multi-location Owner",
+        "tax-status-married-sep": "Married Filing Separately",
+        "tax-iq-optional": "(optional)",
+        "tax-iq-block2": "② Quick Search: Deductible Categories",
+        "tax-iq-block3": "③ Select Your Actual Expenses",
+        "tax-iq-btn-scan": "📷 Scan Receipt",
+        "tax-iq-btn-add": "+ Add",
+        "tax-iq-expenses-desc": "Choose items you paid for. Tax IQ will check receipts, missing info, and CPA review needs.",
+        "tax-chk-phone-title": "📱 Phone & Internet",
+        "tax-badge-needs-log": "Needs Mileage Log",
+        "tax-badge-ready": "Ready",
+        "tax-badge-missing-proof": "Missing Proof",
+        "tax-badge-partial": "Partially Deductible",
+        "tax-act-add-trip": "Add Trip Details",
+        "tax-act-upload-receipt": "Upload Receipt",
+        "tax-act-view-receipt": "View Receipt",
+        "tax-act-upload-proof": "Upload Proof",
+        "tax-act-confirm-pct": "Confirm %",
+        "tax-act-trip-done": "Trip Log Added ✓",
+        "tax-act-receipt-done": "Receipt Verified ✓",
+        "tax-act-ready-done": "Ready ✓",
+        "tax-act-proof-done": "Proof Verified ✓",
+        "tax-act-confirmed-done": "Confirmed ✓",
+        "tax-act-view-log": "View Log",
+        "tax-act-view-proof": "View Proof",
+        "tax-act-view-details": "View Details",
+        "tax-act-uploading": "Uploading…",
+        "tax-act-verifying": "Verifying receipt…",
+        "tax-act-verified": "Receipt verified ✓  Deduction confirmed.",
         "tax-feat-1-title": "Form 1099 Automated Archiving",
         "tax-feat-1-desc": "Directly links payment endpoints to auto-generate verified seasonal IRS 1099 returns without administrative intervention.",
         "tax-feat-2-title": "Audit Shield Protections",
@@ -3683,7 +3759,7 @@
         "tax-result-saved": "TAX SAVINGS (SAVED)",
         "tax-search-label": "🔍 Quick Search: Deductible Categories",
         "tax-checklist-label": "Select your actual expenses for tax deductions:",
-        "tax-chk-mileage-title": "🚗 Mileage (1,500 miles)",
+        "tax-chk-mileage-title": "🚗 Mileage",
         "tax-chk-mileage-desc": "IRS standard rate deduction: $1,005",
         "tax-chk-supplies-title": "💅 Gel Polish, Brushes, UV Lamp",
         "tax-chk-supplies-desc": "Supply purchase expenses: $450",
@@ -4528,7 +4604,7 @@
 
       const labelTaxDue = document.getElementById('tax-iq-title-due');
       const finalTaxEl = document.getElementById('tax-iq-final-tax');
-      labelTaxDue.textContent = 'Est. Tax Liability';
+      labelTaxDue.textContent = t('tax-iq-sum-liability');
       finalTaxEl.className = "text-green text-sm font-black transition-all duration-300";
       finalTaxEl.textContent = fmt(finalTaxDue);
 
@@ -4556,19 +4632,19 @@
 
     // ── Receipt / Expense state ─────────────────────────────────────────────
     const expenseState = {
-      mileage:  { status: 'needs_log',     amount: 1005, checkboxId: 'chk-deduct-mileage',  doneLabel: 'Trip Log Added ✓',   doneAction: 'View Log' },
-      supplies: { status: 'missing',       amount: 450,  checkboxId: 'chk-deduct-supplies', doneLabel: 'Receipt Verified ✓', doneAction: 'View Receipt' },
-      license:  { status: 'ready',         amount: 150,  checkboxId: 'chk-deduct-license',  doneLabel: 'Ready ✓',            doneAction: 'View Receipt' },
-      rent:     { status: 'missing_proof', amount: 1200, checkboxId: 'chk-deduct-rent',     doneLabel: 'Proof Verified ✓',   doneAction: 'View Proof' },
-      phone:    { status: 'partial',       amount: 672,  checkboxId: 'chk-deduct-phone',    doneLabel: 'Confirmed ✓',        doneAction: 'View Details' },
+      mileage:  { status: 'needs_log',     amount: 1005, checkboxId: 'chk-deduct-mileage',  doneLabelKey: 'tax-act-trip-done',     doneActionKey: 'tax-act-view-log' },
+      supplies: { status: 'missing',       amount: 450,  checkboxId: 'chk-deduct-supplies', doneLabelKey: 'tax-act-receipt-done',  doneActionKey: 'tax-act-view-receipt' },
+      license:  { status: 'ready',         amount: 150,  checkboxId: 'chk-deduct-license',  doneLabelKey: 'tax-act-ready-done',    doneActionKey: 'tax-act-view-receipt' },
+      rent:     { status: 'missing_proof', amount: 1200, checkboxId: 'chk-deduct-rent',     doneLabelKey: 'tax-act-proof-done',    doneActionKey: 'tax-act-view-proof' },
+      phone:    { status: 'partial',       amount: 672,  checkboxId: 'chk-deduct-phone',    doneLabelKey: 'tax-act-confirmed-done',doneActionKey: 'tax-act-view-details' },
     };
 
     function simulateReceiptUpload(key) {
       const exp = expenseState[key];
       if (!exp || exp.status === 'ready') return;
       const btn = document.querySelector(`[data-expense-action="${key}"]`);
-      if (btn) { btn.textContent = 'Uploading…'; btn.disabled = true; }
-      showToast('Verifying receipt…');
+      if (btn) { btn.textContent = t('tax-act-uploading'); btn.disabled = true; }
+      showToast(t('tax-act-verifying'));
       setTimeout(() => {
         exp.status = 'ready';
         updateExpenseBadge(key);
@@ -4576,7 +4652,7 @@
         if (cb && !cb.checked) { cb.checked = true; }
         calculateNailTax();
         updateMissingSummary();
-        showToast('Receipt verified ✓  Deduction confirmed.');
+        showToast(t('tax-act-verified'));
       }, 1200);
     }
 
@@ -4586,13 +4662,13 @@
       const btn   = document.querySelector(`[data-expense-action="${key}"]`);
       if (badge) {
         badge.className = 'text-[8px] bg-green/15 text-green border border-green/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap';
-        badge.textContent = exp.doneLabel;
+        badge.textContent = t(exp.doneLabelKey);
       }
       if (btn) {
-        btn.textContent = exp.doneAction;
+        btn.textContent = t(exp.doneActionKey);
         btn.disabled = false;
         btn.className = btn.className.replace('text-purple', 'text-slate-400');
-        btn.onclick = () => showToast(exp.doneLabel);
+        btn.onclick = () => showToast(t(exp.doneLabelKey));
       }
     }
 

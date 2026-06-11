@@ -2339,7 +2339,7 @@
 
                 <!-- Gel Polish, Brushes, UV Lamp — Missing Receipt -->
                 <div class="bg-slate-900/50 border border-slate-700/50 rounded-xl p-2.5 flex items-start gap-2.5">
-                  <input checked class="mt-0.5 flex-shrink-0 rounded text-purple focus:ring-0 focus:ring-offset-0 ds-field" id="chk-deduct-supplies" onchange="calculateNailTax()" type="checkbox" />
+                  <input class="mt-0.5 flex-shrink-0 rounded text-purple focus:ring-0 focus:ring-offset-0 ds-field" id="chk-deduct-supplies" onchange="calculateNailTax()" type="checkbox" />
                   <div class="flex-1 min-w-0 space-y-0.5">
                     <div class="flex items-center justify-between gap-2 flex-wrap">
                       <strong class="text-[10px] text-slate-200">💅 Gel Polish, Brushes, UV Lamp</strong>
@@ -4898,10 +4898,18 @@
 
     function applyScannedDeductions() {
       _scanDetected.forEach(c => {
+        // check the checkbox
         const el = document.getElementById(c.id);
         if (el) el.checked = true;
+        // update expenseState + badge (strip 'chk-deduct-' prefix to get key)
+        const key = c.id.replace('chk-deduct-', '');
+        if (expenseState[key]) {
+          expenseState[key].status = 'ready';
+          updateExpenseBadge(key);
+        }
       });
       calculateNailTax();
+      updateMissingSummary();
       closeReceiptScanModal();
       const n = _scanDetected.length;
       showToast(n > 0 ? `✅ ${n} deduction${n>1?'s':''} detected & applied from receipt` : 'No deductions detected — try a clearer image');

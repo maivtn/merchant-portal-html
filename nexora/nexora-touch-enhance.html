@@ -2328,11 +2328,11 @@
                   <div class="flex-1 min-w-0 space-y-0.5">
                     <div class="flex items-center justify-between gap-2 flex-wrap">
                       <strong class="text-[10px] text-slate-200">🚗 Mileage</strong>
-                      <span class="text-[8px] bg-yellow-500/15 text-yellow-400 border border-yellow-500/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Needs Mileage Log</span>
+                      <span data-expense-badge="mileage" class="text-[8px] bg-yellow-500/15 text-yellow-400 border border-yellow-500/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Needs Mileage Log</span>
                     </div>
                     <div class="flex items-center justify-between gap-1">
                       <span class="text-[8px] text-slate-500">1,500 business miles · Est. deduction: $1,005</span>
-                      <button onclick="showToast('Opening mileage log...')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">Add Trip Details</button>
+                      <button data-expense-action="mileage" onclick="simulateReceiptUpload('mileage')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">Add Trip Details</button>
                     </div>
                   </div>
                 </div>
@@ -2343,26 +2343,26 @@
                   <div class="flex-1 min-w-0 space-y-0.5">
                     <div class="flex items-center justify-between gap-2 flex-wrap">
                       <strong class="text-[10px] text-slate-200">💅 Gel Polish, Brushes, UV Lamp</strong>
-                      <span class="text-[8px] bg-red-500/15 text-red-400 border border-red-500/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Missing Receipt</span>
+                      <span data-expense-badge="supplies" class="text-[8px] bg-red-500/15 text-red-400 border border-red-500/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Missing Receipt</span>
                     </div>
                     <div class="flex items-center justify-between gap-1">
                       <span class="text-[8px] text-slate-500">Nail supplies for client services · $450</span>
-                      <button onclick="showToast('Upload receipt for nail supplies')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">Upload Receipt</button>
+                      <button data-expense-action="supplies" onclick="simulateReceiptUpload('supplies')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">Upload Receipt</button>
                     </div>
                   </div>
                 </div>
 
                 <!-- State Board License Fee — Ready -->
                 <div class="bg-slate-900/50 border border-slate-700/50 rounded-xl p-2.5 flex items-start gap-2.5">
-                  <input class="mt-0.5 flex-shrink-0 rounded text-purple focus:ring-0 focus:ring-offset-0 ds-field" id="chk-deduct-license" onchange="calculateNailTax()" type="checkbox" />
+                  <input checked class="mt-0.5 flex-shrink-0 rounded text-purple focus:ring-0 focus:ring-offset-0 ds-field" id="chk-deduct-license" onchange="calculateNailTax()" type="checkbox" />
                   <div class="flex-1 min-w-0 space-y-0.5">
                     <div class="flex items-center justify-between gap-2 flex-wrap">
                       <strong class="text-[10px] text-slate-200">🎓 State Board License Fee</strong>
-                      <span class="text-[8px] bg-green/15 text-green border border-green/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Ready</span>
+                      <span data-expense-badge="license" class="text-[8px] bg-green/15 text-green border border-green/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Ready</span>
                     </div>
                     <div class="flex items-center justify-between gap-1">
                       <span class="text-[8px] text-slate-500">Education & professional license · $150</span>
-                      <button onclick="showToast('Viewing license details...')" class="text-[8px] text-slate-400 font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">View Details</button>
+                      <button data-expense-action="license" onclick="showToast('Receipt on file ✓')" class="text-[8px] text-slate-400 font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">View Receipt</button>
                     </div>
                   </div>
                 </div>
@@ -2373,11 +2373,11 @@
                   <div class="flex-1 min-w-0 space-y-0.5">
                     <div class="flex items-center justify-between gap-2 flex-wrap">
                       <strong class="text-[10px] text-slate-200">🏢 Booth Rent</strong>
-                      <span class="text-[8px] bg-red-500/15 text-red-400 border border-red-500/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Missing Proof</span>
+                      <span data-expense-badge="rent" class="text-[8px] bg-red-500/15 text-red-400 border border-red-500/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Missing Proof</span>
                     </div>
                     <div class="flex items-center justify-between gap-1">
                       <span class="text-[8px] text-slate-500">Booth rental deduction · $1,200</span>
-                      <button onclick="showToast('Upload proof for booth rent')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">Upload Proof</button>
+                      <button data-expense-action="rent" onclick="simulateReceiptUpload('rent')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">Upload Proof</button>
                     </div>
                   </div>
                 </div>
@@ -2388,11 +2388,11 @@
                   <div class="flex-1 min-w-0 space-y-0.5">
                     <div class="flex items-center justify-between gap-2 flex-wrap">
                       <strong class="text-[10px] text-slate-200">📱 Phone & Internet</strong>
-                      <span class="text-[8px] bg-blue/15 text-blue border border-blue/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Partially Deductible</span>
+                      <span data-expense-badge="phone" class="text-[8px] bg-blue/15 text-blue border border-blue/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap">Partially Deductible</span>
                     </div>
                     <div class="flex items-center justify-between gap-1">
                       <span class="text-[8px] text-slate-500">70% business-use · $960 annual → $672 deductible</span>
-                      <button onclick="showToast('Confirm business-use % for phone')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">Confirm %</button>
+                      <button data-expense-action="phone" onclick="simulateReceiptUpload('phone')" class="text-[8px] text-purple font-bold hover:underline flex-shrink-0 ds-control btn-exp-action">Confirm %</button>
                     </div>
                   </div>
                 </div>
@@ -2432,13 +2432,13 @@
                   <span class="text-slate-500 font-bold">Est. Savings</span>
                   <strong class="text-purple font-black transition-all duration-300" id="tax-iq-saved-amount">$406</strong>
                 </div>
-                <div class="flex justify-between">
+                <div id="summary-missing-row" class="flex justify-between">
                   <span class="text-red-400 font-bold">Missing Receipt</span>
-                  <span class="text-red-400 font-extrabold">2 items</span>
+                  <span id="summary-missing-count" class="text-red-400 font-extrabold">2 items</span>
                 </div>
-                <div class="flex justify-between">
+                <div id="summary-cpa-row" class="flex justify-between">
                   <span class="text-yellow-400 font-bold">Needs CPA Review</span>
-                  <span class="text-yellow-400 font-extrabold">1 item</span>
+                  <span id="summary-cpa-count" class="text-yellow-400 font-extrabold">1 item</span>
                 </div>
                 <p class="text-[7px] text-slate-600 leading-relaxed border-t border-slate-800 pt-1.5">This estimate is for planning only and may change after CPA review, filing status, state tax rules, and final income adjustments.</p>
               </div>
@@ -4511,6 +4511,7 @@
       finalTaxEl.textContent = fmt(finalTaxDue);
 
       document.getElementById('tax-iq-saved-amount').textContent = fmt(simulatedSaved);
+      updateMissingSummary();
     }
 
     function selectTaxRole(role) {
@@ -4529,6 +4530,57 @@
         workerSelect.innerHTML = '<option value="owner">Salon Owner</option><option value="multi">Multi-location Owner</option><option value="w2staff">Owner with W2 Staff</option><option value="1099staff">Owner with 1099 Contractors</option><option value="mixed">Mixed Staff Model</option>';
       }
       calculateNailTax();
+    }
+
+    // ── Receipt / Expense state ─────────────────────────────────────────────
+    const expenseState = {
+      mileage:  { status: 'needs_log',     amount: 1005, checkboxId: 'chk-deduct-mileage',  doneLabel: 'Trip Log Added ✓',   doneAction: 'View Log' },
+      supplies: { status: 'missing',       amount: 450,  checkboxId: 'chk-deduct-supplies', doneLabel: 'Receipt Verified ✓', doneAction: 'View Receipt' },
+      license:  { status: 'ready',         amount: 150,  checkboxId: 'chk-deduct-license',  doneLabel: 'Ready ✓',            doneAction: 'View Receipt' },
+      rent:     { status: 'missing_proof', amount: 1200, checkboxId: 'chk-deduct-rent',     doneLabel: 'Proof Verified ✓',   doneAction: 'View Proof' },
+      phone:    { status: 'partial',       amount: 672,  checkboxId: 'chk-deduct-phone',    doneLabel: 'Confirmed ✓',        doneAction: 'View Details' },
+    };
+
+    function simulateReceiptUpload(key) {
+      const exp = expenseState[key];
+      if (!exp || exp.status === 'ready') return;
+      const btn = document.querySelector(`[data-expense-action="${key}"]`);
+      if (btn) { btn.textContent = 'Uploading…'; btn.disabled = true; }
+      showToast('Verifying receipt…');
+      setTimeout(() => {
+        exp.status = 'ready';
+        updateExpenseBadge(key);
+        const cb = document.getElementById(exp.checkboxId);
+        if (cb && !cb.checked) { cb.checked = true; }
+        calculateNailTax();
+        updateMissingSummary();
+        showToast('Receipt verified ✓  Deduction confirmed.');
+      }, 1200);
+    }
+
+    function updateExpenseBadge(key) {
+      const exp = expenseState[key];
+      const badge = document.querySelector(`[data-expense-badge="${key}"]`);
+      const btn   = document.querySelector(`[data-expense-action="${key}"]`);
+      if (badge) {
+        badge.className = 'text-[8px] bg-green/15 text-green border border-green/30 font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap';
+        badge.textContent = exp.doneLabel;
+      }
+      if (btn) {
+        btn.textContent = exp.doneAction;
+        btn.disabled = false;
+        btn.className = btn.className.replace('text-purple', 'text-slate-400');
+        btn.onclick = () => showToast(exp.doneLabel);
+      }
+    }
+
+    function updateMissingSummary() {
+      const missing = Object.values(expenseState)
+        .filter(e => e.status === 'missing' || e.status === 'missing_proof').length;
+      const el = document.getElementById('summary-missing-count');
+      const row = document.getElementById('summary-missing-row');
+      if (el) el.textContent = missing + (missing === 1 ? ' item' : ' items');
+      if (row) row.classList.toggle('hidden', missing === 0);
     }
 
     function toggleTaxSummary() {

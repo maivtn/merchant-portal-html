@@ -625,8 +625,8 @@
       <div class="modal-body">
         <div class="form-field">
           <label class="form-label" for="vlinkIdInput">VLINK ID</label>
-          <input type="text" class="form-input" id="vlinkIdInput" placeholder="e.g. VL999001" oninput="previewStaffByVlinkId(this.value)" />
-          <div class="form-hint">Enter a VLINK ID to preview the staff profile before adding. They will be assigned the Cashier role.</div>
+          <input type="text" class="form-input" id="vlinkIdInput" placeholder="e.g. VL100002" oninput="previewStaffByVlinkId(this.value)" />
+          <div class="form-hint">Enter a VLINK ID to preview the staff profile before adding.</div>
           <div class="form-error" id="vlinkIdError"></div>
         </div>
         <div id="vlinkPreview" style="display:none;border:1px solid var(--grey-300);border-radius:8px;padding:14px 16px;background:var(--grey-100);margin-top:4px;">
@@ -637,6 +637,12 @@
             <div><div style="font-size:11px;color:var(--grey-500);">Email</div><div style="font-size:14px;font-weight:500;color:var(--grey-800);" id="pvEmail">–</div></div>
             <div><div style="font-size:11px;color:var(--grey-500);">Phone</div><div style="font-size:14px;font-weight:500;color:var(--grey-800);" id="pvPhone">–</div></div>
           </div>
+        </div>
+        <div class="form-field" style="margin-top:16px;">
+          <label class="form-label" for="addStaffRole">Role</label>
+          <select class="filter-select" id="addStaffRole" style="width:100%;min-width:unset;">
+            <option value="">Select a role...</option>
+          </select>
         </div>
       </div>
       <div class="modal-foot">
@@ -953,7 +959,12 @@
     function closeQrModal() { document.getElementById('qrModal').classList.remove('open'); }
 
     /* Add Staff Modal */
-    function openAddModal() { document.getElementById('addModal').classList.add('open'); }
+    function openAddModal() {
+      const sel = document.getElementById('addStaffRole');
+      sel.innerHTML = '<option value="">Select a role...</option>' +
+        ROLES.map(r => `<option value="${r.name}">${r.name}</option>`).join('');
+      document.getElementById('addModal').classList.add('open');
+    }
     function closeAddModal() {
       document.getElementById('addModal').classList.remove('open');
       document.getElementById('vlinkIdInput').value = '';
@@ -965,8 +976,10 @@
       const val = document.getElementById('vlinkIdInput').value.trim();
       const key = val.toUpperCase();
       const errEl = document.getElementById('vlinkIdError');
+      const selectedRole = document.getElementById('addStaffRole').value;
       if (!val) { errEl.textContent = 'VLINK ID is required.'; errEl.style.display = 'block'; return; }
       if (!/^VL\w{4,}$/i.test(val)) { errEl.textContent = 'Invalid VLINK ID format.'; errEl.style.display = 'block'; return; }
+      if (!selectedRole) { errEl.textContent = 'Please select a role.'; errEl.style.display = 'block'; return; }
       const dup = STAFF.find(s => s.vlinkId.toLowerCase() === key.toLowerCase() && s.status !== 'DELETED');
       if (dup) { errEl.textContent = 'This staff member has already joined this merchant.'; errEl.style.display = 'block'; return; }
       const found = findVlinkProfile(key);
@@ -976,7 +989,7 @@
       STAFF.push({
         id: newId, name: found.name, vlinkId: key,
         email: found.email, phone: found.phone,
-        role: 'Cashier', status: 'ACTIVE',
+        role: selectedRole, status: 'ACTIVE',
         permissions: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false },
         cards: 0, sales: 0, commission: 0, joined: new Date().toISOString().slice(0, 10)
       });
@@ -1058,8 +1071,12 @@
 
     /* Add Staff — VLINK ID preview */
     const VLINK_PREVIEW_DB = {
+      'VL100002': { name: 'Bob Tran',     email: 'bob.tran@email.com',     phone: '+84 908 765 432' },
+      'VL100003': { name: 'Charlie Le',   email: 'charlie.le@email.com',   phone: '+1 415 234 5678' },
+      'VL200001': { name: 'Diana Pham',   email: 'diana.pham@gmail.com',   phone: '+84 903 111 222' },
+      'VL200002': { name: 'Ethan Vo',     email: 'ethan.vo@company.com',   phone: '+1 650 987 6543' },
       'VL999001': { name: 'Pham Thi Dung', email: 'phamthidung@gmail.com', phone: '0908123456' },
-      'VL999002': { name: 'Hoang Van Em', email: 'hoangem@outlook.com', phone: '0937654321' },
+      'VL999002': { name: 'Hoang Van Em',  email: 'hoangem@outlook.com',   phone: '0937654321' },
     };
     function findVlinkProfile(key) {
       return VLINK_PREVIEW_DB[key] || STAFF.find(s => s.vlinkId.toUpperCase() === key);

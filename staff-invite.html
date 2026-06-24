@@ -271,6 +271,38 @@
       margin: 20px 0;
     }
 
+    /* Phone field */
+    .biz-phone-wrap {
+      display: flex;
+      align-items: stretch;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .biz-phone-wrap:focus-within {
+      border-color: #00a76f;
+      box-shadow: 0 0 0 3px rgba(0,167,111,0.1);
+    }
+    .biz-dial-select {
+      border: none; outline: none;
+      background: #f8fafc;
+      font-size: 13px; font-family: 'Poppins', sans-serif;
+      color: #1a1a2e; font-weight: 600;
+      padding: 9px 22px 9px 10px;
+      cursor: pointer; appearance: none; -webkit-appearance: none;
+      min-width: 54px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 6px center;
+    }
+    .biz-phone-divider { width: 1px; background: #e5e7eb; flex-shrink: 0; }
+    .biz-phone-input {
+      flex: 1; border: none; outline: none; background: transparent;
+      font-size: 14px; font-family: 'Poppins', sans-serif;
+      color: #1a1a2e; padding: 9px 12px;
+    }
+
     .powered-by {
       text-align: center;
       font-size: 12px;
@@ -298,6 +330,10 @@
           <iconify-icon icon="solar:shop-bold" width="14"></iconify-icon>
           Bitcoin Nail Bar
         </div>
+        <div id="roleChip" style="display:none;margin-top:10px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);border-radius:30px;padding:4px 14px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
+          <iconify-icon icon="solar:shield-user-bold" width="13"></iconify-icon>
+          Role: <span id="roleChipLabel">—</span>
+        </div>
       </div>
 
       <!-- Body -->
@@ -315,7 +351,7 @@
               type="text"
               id="vlinkInput"
               class="form-control"
-              placeholder="e.g. 123456"
+              placeholder="e.g. VL123456"
               maxlength="12"
               oninput="handleVlinkInput(this.value)"
               autocomplete="off"
@@ -350,7 +386,34 @@
             </div>
             <div class="field-group">
               <label class="field-label">Phone Number</label>
-              <input type="tel" class="field-input" id="fieldPhone" placeholder="+1 000 000 0000" />
+              <div class="biz-phone-wrap">
+                <select class="biz-dial-select" id="fieldPhoneDial">
+                  <option value="+1">+1</option>
+                  <option value="+44">+44</option>
+                  <option value="+61">+61</option>
+                  <option value="+33">+33</option>
+                  <option value="+49">+49</option>
+                  <option value="+81">+81</option>
+                  <option value="+82">+82</option>
+                  <option value="+84" selected>+84</option>
+                  <option value="+86">+86</option>
+                  <option value="+91">+91</option>
+                  <option value="+65">+65</option>
+                  <option value="+60">+60</option>
+                  <option value="+66">+66</option>
+                  <option value="+62">+62</option>
+                  <option value="+63">+63</option>
+                  <option value="+852">+852</option>
+                  <option value="+886">+886</option>
+                  <option value="+971">+971</option>
+                  <option value="+966">+966</option>
+                  <option value="+55">+55</option>
+                  <option value="+52">+52</option>
+                  <option value="+7">+7</option>
+                </select>
+                <div class="biz-phone-divider"></div>
+                <input type="tel" class="biz-phone-input" id="fieldPhone" placeholder="000 000 0000" />
+              </div>
             </div>
 
             <div class="edit-hint">
@@ -386,7 +449,7 @@
               Welcome aboard, <strong id="successName">—</strong>.<br />
               You've successfully joined
               <span class="success-merchant-name">Bitcoin Nail Bar</span>
-              as a Cashier.<br /><br />
+              as a <strong id="successRole">Staff</strong>.<br /><br />
               You can now close this page or log in to VLINKPAY to get started.
             </div>
             <a
@@ -453,7 +516,14 @@
       document.getElementById('avatarInitial').textContent  = data.name.charAt(0).toUpperCase();
       document.getElementById('fieldName').value  = data.name;
       document.getElementById('fieldEmail').value = data.email;
-      document.getElementById('fieldPhone').value = data.phone;
+      const phoneParts = data.phone.match(/^(\+\d+)\s*(.*)$/);
+      if (phoneParts) {
+        const dialOpt = document.querySelector(`#fieldPhoneDial option[value="${phoneParts[1]}"]`);
+        if (dialOpt) document.getElementById('fieldPhoneDial').value = phoneParts[1];
+        document.getElementById('fieldPhone').value = phoneParts[2];
+      } else {
+        document.getElementById('fieldPhone').value = data.phone;
+      }
 
       document.getElementById('stepConfirm').style.display = 'block';
     }
@@ -469,7 +539,7 @@
     function confirmJoin() {
       const name  = document.getElementById('fieldName').value.trim();
       const email = document.getElementById('fieldEmail').value.trim();
-      const phone = document.getElementById('fieldPhone').value.trim();
+      const phone = (document.getElementById('fieldPhoneDial').value + ' ' + document.getElementById('fieldPhone').value).trim();
 
       if (!name || !email || !phone) {
         alert('Please fill in all fields before confirming.');
@@ -487,12 +557,6 @@
       }, 1400);
     }
 
-    /* Auto-fill default VLINK ID on load */
-    window.addEventListener('DOMContentLoaded', () => {
-      const input = document.getElementById('vlinkInput');
-      input.value = '123456';
-      handleVlinkInput('123456');
-    });
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

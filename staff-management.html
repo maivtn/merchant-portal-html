@@ -597,15 +597,20 @@
         </button>
       </div>
       <div class="modal-body" style="text-align:center;">
+        <div style="text-align:left;margin-bottom:18px;">
+          <label class="form-label" for="qrRoleSelect">Role assigned when joining</label>
+          <select class="filter-select" id="qrRoleSelect" style="width:100%;min-width:unset;" onchange="regenerateQr()">
+            <option value="">Select a role...</option>
+          </select>
+        </div>
         <div class="qr-wrap">
           <div id="qrcode" style="display:inline-block;"></div>
         </div>
-        <p class="qr-note">
-          Staff scan this QR code with the VLINK app to join your merchant.<br />
-          They will be assigned the <strong>Cashier</strong> role automatically.<br />
+        <p class="qr-note" id="qrNote" style="display:none;">
+          Staff scan this QR code to join as <strong id="qrRoleLabel">—</strong>.<br />
           <span style="color:var(--grey-400);font-size:12px;">You will receive an email notification when someone joins via QR.</span>
         </p>
-        <button class="btn-outline-sm">
+        <button class="btn-outline-sm" id="qrDownloadBtn" style="display:none;">
           <iconify-icon icon="solar:download-linear" width="16"></iconify-icon>
           Download QR Code
         </button>
@@ -941,20 +946,41 @@
 
     /* QR Modal */
     let _qrInstance = null;
+    function _baseInviteUrl() {
+      return window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/') + 'staff-invite.html';
+    }
     function openQrModal() {
+      const sel = document.getElementById('qrRoleSelect');
+      sel.innerHTML = '<option value="">Select a role...</option>' +
+        ROLES.map(r => `<option value="${r.id}">${r.name}</option>`).join('');
+      document.getElementById('qrcode').innerHTML = '';
+      _qrInstance = null;
+      document.getElementById('qrNote').style.display = 'none';
+      document.getElementById('qrDownloadBtn').style.display = 'none';
       document.getElementById('qrModal').classList.add('open');
+    }
+    function regenerateQr() {
+      const sel = document.getElementById('qrRoleSelect');
+      const roleId = sel.value;
+      const roleName = sel.options[sel.selectedIndex]?.text || '';
       const container = document.getElementById('qrcode');
-      if (!_qrInstance) {
-        const url = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/') + 'staff-invite.html';
-        _qrInstance = new QRCode(container, {
-          text: url,
-          width: 180,
-          height: 180,
-          colorDark: '#212b36',
-          colorLight: '#ffffff',
-          correctLevel: QRCode.CorrectLevel.M,
-        });
+      container.innerHTML = '';
+      _qrInstance = null;
+      if (!roleId) {
+        document.getElementById('qrNote').style.display = 'none';
+        document.getElementById('qrDownloadBtn').style.display = 'none';
+        return;
       }
+      const url = _baseInviteUrl() + '?role=' + encodeURIComponent(roleId);
+      _qrInstance = new QRCode(container, {
+        text: url,
+        width: 180, height: 180,
+        colorDark: '#212b36', colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M,
+      });
+      document.getElementById('qrRoleLabel').textContent = roleName;
+      document.getElementById('qrNote').style.display = 'block';
+      document.getElementById('qrDownloadBtn').style.display = 'inline-flex';
     }
     function closeQrModal() { document.getElementById('qrModal').classList.remove('open'); }
 

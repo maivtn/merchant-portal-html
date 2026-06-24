@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cashier — Role Detail - VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="global.css" />
+  <script src="global.js" defer></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <style>
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--grey-600);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--grey-900); }
+
+    .role-card {
+      background: #fff;
+      border: 1px solid var(--grey-300);
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 720px;
+    }
+    .role-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--grey-200);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .role-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: rgba(0,167,111,0.1);
+      color: var(--primary-main);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .role-name { font-size: 18px; font-weight: 700; color: var(--grey-900); }
+    .role-desc { font-size: 13px; color: var(--grey-600); margin-top: 2px; }
+
+
+    .perm-section {
+      border-bottom: 1px solid var(--grey-200);
+      padding: 20px 24px;
+    }
+    .perm-section:last-child { border-bottom: none; }
+    .perm-section-title {
+      font-size: 11px; font-weight: 700; color: var(--grey-500);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 4px;
+    }
+    .perm-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0; border-bottom: 1px solid var(--grey-100);
+    }
+    .perm-row:last-child { border-bottom: none; }
+    .perm-row-indent { padding-left: 20px; }
+    .perm-label { font-size: 14px; font-weight: 500; color: var(--grey-800); }
+    .perm-sublabel { font-size: 12px; color: var(--grey-500); margin-top: 2px; }
+
+    /* Toggle */
+    .toggle { position: relative; display: inline-flex; align-items: center; cursor: pointer; }
+    .toggle input { display: none; }
+    .toggle-track {
+      width: 40px; height: 22px; border-radius: 11px;
+      background: var(--grey-300); transition: background 0.2s;
+      position: relative; flex-shrink: 0;
+    }
+    .toggle-thumb {
+      position: absolute; top: 3px; left: 3px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #fff; transition: left 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle input:checked ~ .toggle-track { background: var(--primary-main); }
+    .toggle input:checked ~ .toggle-track .toggle-thumb { left: 21px; }
+
+    /* Daily limit */
+    .daily-limit-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+    .daily-limit-input {
+      padding: 8px 12px; border: 1px solid var(--grey-300); border-radius: 8px;
+      font-size: 14px; font-family: inherit; width: 160px;
+      outline: none; transition: border-color 0.2s;
+    }
+    .daily-limit-input:focus { border-color: var(--primary-main); }
+    .daily-limit-unit { font-size: 14px; color: var(--grey-600); font-weight: 500; }
+
+    .save-bar {
+      padding: 16px 24px;
+      background: var(--grey-100);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .btn-save {
+      padding: 10px 24px; background: var(--primary-main); color: #fff;
+      border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
+      font-family: inherit; cursor: pointer; transition: background 0.15s;
+    }
+    .btn-save:hover { background: var(--primary-dark); }
+    .btn-cancel {
+      padding: 10px 20px; border: 1px solid var(--grey-300); border-radius: 8px;
+      background: #fff; color: var(--grey-700); font-size: 14px; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+    }
+    .btn-cancel:hover { background: var(--grey-100); }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg" alt="VLinkPay" />
+    </div>
+    <div class="sidebar-content"></div>
+  </aside>
+
+  <header class="top-header">
+    <div class="header-left">
+      <button class="hamburger hamburger-btn" id="hamburgerBtn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="header-right">
+      <div class="header-info">Jun 24, 2026 10:05:32 AM (UTC)</div>
+    </div>
+  </header>
+
+  <main class="main">
+    <a href="staff-management.html" class="back-link">
+      <iconify-icon icon="solar:arrow-left-linear" width="16"></iconify-icon>
+      Staff Management
+    </a>
+
+    <div class="page-header" style="margin-bottom: 24px;">
+      <h1 class="page-title">Cashier — Role Detail</h1>
+    </div>
+
+    <div class="role-card">
+      <div class="role-header">
+        <div class="role-icon">
+          <iconify-icon icon="solar:shield-user-bold" width="24"></iconify-icon>
+        </div>
+        <div>
+          <div class="role-name">Cashier</div>
+          <div class="role-desc">Default role assigned to all staff. Configure permissions and daily limits below.</div>
+        </div>
+
+      </div>
+
+      <!-- Create Card -->
+      <div class="perm-section">
+        <div class="perm-section-title">Create Card</div>
+        <div class="perm-row">
+          <div>
+            <div class="perm-label">All Card Types</div>
+            <div class="perm-sublabel">Toggle all card types at once</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="chk-all" onchange="toggleAll()" />
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </label>
+        </div>
+        <div class="perm-row perm-row-indent">
+          <div class="perm-label" style="font-weight:400;">Gift Card</div>
+          <label class="toggle"><input type="checkbox" class="card-type-chk" onchange="syncAll()" /><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
+        </div>
+        <div class="perm-row perm-row-indent">
+          <div class="perm-label" style="font-weight:400;">Crypto Card</div>
+          <label class="toggle"><input type="checkbox" class="card-type-chk" onchange="syncAll()" /><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
+        </div>
+        <div class="perm-row perm-row-indent">
+          <div class="perm-label" style="font-weight:400;">Membership</div>
+          <label class="toggle"><input type="checkbox" class="card-type-chk" onchange="syncAll()" /><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
+        </div>
+        <div class="perm-row perm-row-indent">
+          <div class="perm-label" style="font-weight:400;">E-Gift Card</div>
+          <label class="toggle"><input type="checkbox" class="card-type-chk" onchange="syncAll()" /><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
+        </div>
+        <div class="perm-row perm-row-indent">
+          <div class="perm-label" style="font-weight:400;">Voucher</div>
+          <label class="toggle"><input type="checkbox" class="card-type-chk" onchange="syncAll()" /><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
+        </div>
+        <div class="perm-row perm-row-indent">
+          <div class="perm-label" style="font-weight:400;">Promotion</div>
+          <label class="toggle"><input type="checkbox" class="card-type-chk" onchange="syncAll()" /><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
+        </div>
+        <div class="perm-row perm-row-indent">
+          <div class="perm-label" style="font-weight:400;">Discount</div>
+          <label class="toggle"><input type="checkbox" class="card-type-chk" onchange="syncAll()" /><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
+        </div>
+        <div class="perm-row perm-row-indent">
+          <div class="perm-label" style="font-weight:400;">Prepaid Card</div>
+          <label class="toggle"><input type="checkbox" class="card-type-chk" onchange="syncAll()" /><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
+        </div>
+      </div>
+
+      <!-- Payment -->
+      <div class="perm-section">
+        <div class="perm-section-title">Payment</div>
+        <div class="perm-row">
+          <div>
+            <div class="perm-label">Gift Card Payment</div>
+            <div class="perm-sublabel">Allow staff to process Gift Card payments</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="perm-payment-gift" />
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </label>
+        </div>
+        <div class="perm-row">
+          <div>
+            <div class="perm-label">Crypto Card Payment</div>
+            <div class="perm-sublabel">Allow staff to process Crypto Card payments</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="perm-payment-crypto" />
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Reload Card -->
+      <div class="perm-section">
+        <div class="perm-section-title">Reload Card</div>
+        <div class="perm-row">
+          <div>
+            <div class="perm-label">Reload Card</div>
+            <div class="perm-sublabel">Allow staff to reload balances for all supported card types</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="perm-reload" />
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- View Product Management -->
+      <div class="perm-section">
+        <div class="perm-section-title">View Product Management</div>
+        <div class="perm-row">
+          <div>
+            <div class="perm-label">View Product Management</div>
+            <div class="perm-sublabel">Allow staff to view all products and card types in Product Management</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="perm-product-mgmt" />
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Daily Card Creation Limit -->
+      <div class="perm-section">
+        <div class="perm-section-title">Daily Card Creation Limit</div>
+        <div class="perm-row" style="border-bottom:none;">
+          <div>
+            <div class="perm-label">Maximum amount per day</div>
+            <div class="perm-sublabel">Applies to all Cashier staff. Resets daily. Leave empty for no limit.</div>
+          </div>
+        </div>
+        <div class="daily-limit-row">
+          <input type="number" class="daily-limit-input" id="daily-limit" placeholder="e.g. 1000" min="0" value="1000" />
+          <span class="daily-limit-unit">USD / day</span>
+        </div>
+      </div>
+
+      <div class="save-bar">
+        <a href="staff-management.html" class="btn-cancel">Cancel</a>
+        <button class="btn-save" onclick="saveRole()">Save Changes</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function toggleAll() {
+      const val = document.getElementById('chk-all').checked;
+      document.querySelectorAll('.card-type-chk').forEach(el => { el.checked = val; });
+    }
+
+    function syncAll() {
+      const chks = document.querySelectorAll('.card-type-chk');
+      document.getElementById('chk-all').checked = [...chks].every(el => el.checked);
+    }
+
+    function saveRole() {
+      alert('Role settings saved.');
+    }
+  </script>
+</body>
+</html>

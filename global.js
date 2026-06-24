@@ -164,6 +164,12 @@
             "membership-package-details-approved.html",
           ],
         },
+        {
+          label: "Staff Management",
+          href: "staff-management.html",
+          desc: "Quản lý nhân viên & phân quyền",
+          relatedPages: ["cashier-role-detail.html"],
+        },
       ],
     },
     {

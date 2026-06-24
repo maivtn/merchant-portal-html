@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,8 +10,374 @@
   <link rel="stylesheet" href="global.css" />
   <script src="global.js" defer></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-</head>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--grey-200);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 24px;
+      width: fit-content;
+    }
+    .tab-btn {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--grey-600);
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .tab-btn.active {
+      background: #fff;
+      color: var(--grey-900);
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
 
+    /* Stats */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--grey-300);
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .stat-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .stat-icon.total { background: rgba(0,167,111,0.12); color: var(--primary-main); }
+    .stat-icon.si-active { background: rgba(0,167,111,0.12); color: var(--primary-main); }
+    .stat-icon.si-inactive { background: rgba(255,72,66,0.08); color: #ff4842; }
+    .stat-value { font-size: 28px; font-weight: 700; color: var(--grey-900); line-height: 1.2; }
+    .stat-label { font-size: 13px; color: var(--grey-600); margin-top: 2px; }
+
+    /* Action cards */
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .action-card {
+      background: #fff;
+      border: 1px solid var(--grey-300);
+      border-radius: 12px;
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .action-card:hover {
+      border-color: var(--primary-main);
+      box-shadow: 0 4px 16px rgba(0,167,111,0.12);
+      transform: translateY(-2px);
+    }
+    .action-card-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: rgba(0,167,111,0.1);
+      color: var(--primary-main);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .action-card-title { font-size: 15px; font-weight: 600; color: var(--grey-900); margin-bottom: 4px; }
+    .action-card-desc { font-size: 13px; color: var(--grey-600); line-height: 1.5; }
+    .action-card-arrow { margin-left: auto; color: var(--grey-400); flex-shrink: 0; align-self: center; }
+
+    /* Toolbar */
+    .toolbar { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+    .search-wrap { position: relative; width: 220px; flex-shrink: 0; }
+    .search-wrap iconify-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--grey-500); pointer-events: none; }
+    .search-input {
+      width: 100%; padding: 10px 12px 10px 38px;
+      border: 1px solid var(--grey-300); border-radius: 8px;
+      font-size: 14px; font-family: inherit; color: var(--grey-800);
+      outline: none; transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: var(--primary-main); }
+    .filter-select {
+      padding: 10px 36px 10px 12px; border: 1px solid var(--grey-300); border-radius: 8px;
+      font-size: 14px; font-family: inherit; color: var(--grey-800);
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23637381' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center;
+      -webkit-appearance: none; appearance: none;
+      outline: none; cursor: pointer; min-width: 140px;
+    }
+    .filter-select:focus { border-color: var(--primary-main); }
+
+    /* Table */
+    .table-wrap { background: #fff; border: 1px solid var(--grey-300); border-radius: 12px; overflow: hidden; }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    thead th {
+      padding: 12px 16px; text-align: left; font-weight: 600; font-size: 12px;
+      color: var(--grey-600); background: var(--grey-100);
+      border-bottom: 1px solid var(--grey-300); white-space: nowrap;
+    }
+    tbody td {
+      padding: 14px 16px; border-bottom: 1px solid var(--grey-200);
+      color: var(--grey-800); vertical-align: middle;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: var(--grey-100); }
+
+    .staff-name-cell { display: flex; align-items: center; gap: 10px; }
+    .staff-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--primary-lighter); color: var(--primary-dark);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 13px; flex-shrink: 0;
+    }
+    .staff-name { font-weight: 500; color: var(--grey-900); white-space: nowrap; }
+    .staff-vlink { font-size: 12px; color: var(--grey-500); }
+
+    /* Badges */
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 3px 10px; border-radius: 20px;
+      font-size: 12px; font-weight: 600; white-space: nowrap;
+    }
+    .badge-active { background: rgba(0,167,111,0.12); color: #00a76f; }
+    .badge-inactive { background: rgba(255,72,66,0.08); color: #ff4842; }
+    .badge-deleted { background: rgba(99,115,129,0.12); color: var(--grey-600); }
+    .badge-role { background: rgba(59,130,246,0.1); color: #2563eb; }
+
+
+    .perm-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .perm-tag {
+      display: inline-flex; align-items: center;
+      padding: 2px 7px; border-radius: 4px;
+      font-size: 11px; background: var(--grey-200); color: var(--grey-700);
+      white-space: nowrap;
+    }
+
+    /* Action buttons */
+    .action-btns { display: flex; gap: 6px; }
+    .action-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 8px;
+      border: 1px solid var(--grey-300); background: #fff;
+      cursor: pointer; color: var(--grey-600);
+      transition: all 0.15s; text-decoration: none;
+    }
+    .action-btn:hover { border-color: var(--primary-main); color: var(--primary-main); background: rgba(0,167,111,0.06); }
+    .action-btn.danger:hover { border-color: #ff4842; color: #ff4842; background: rgba(255,72,66,0.06); }
+
+    /* Toggle */
+    .toggle { position: relative; display: inline-flex; align-items: center; cursor: pointer; gap: 8px; }
+    .toggle input { display: none; }
+    .toggle-track {
+      width: 40px; height: 22px; border-radius: 11px;
+      background: var(--grey-300); transition: background 0.2s;
+      position: relative; flex-shrink: 0;
+    }
+    .toggle-thumb {
+      position: absolute; top: 3px; left: 3px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #fff; transition: left 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle input:checked ~ .toggle-track { background: var(--primary-main); }
+    .toggle input:checked ~ .toggle-track .toggle-thumb { left: 21px; }
+
+    /* Pagination */
+    .pagination { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-top: 1px solid var(--grey-200); }
+    .pag-info { font-size: 13px; color: var(--grey-600); }
+    .pag-btns { display: flex; gap: 4px; }
+    .pag-btn {
+      width: 32px; height: 32px; border-radius: 8px;
+      border: 1px solid var(--grey-300); background: #fff;
+      color: var(--grey-600); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .pag-btn:hover:not(:disabled) { border-color: var(--primary-main); color: var(--primary-main); }
+    .pag-btn:disabled { opacity: 0.4; cursor: default; }
+
+    /* Role settings */
+    .role-card { background: #fff; border: 1px solid var(--grey-300); border-radius: 12px; overflow: hidden; }
+    .role-header {
+      padding: 20px 24px; border-bottom: 1px solid var(--grey-200);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .role-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: rgba(0,167,111,0.1); color: var(--primary-main);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .role-name { font-size: 16px; font-weight: 700; color: var(--grey-900); }
+    .role-desc { font-size: 13px; color: var(--grey-600); margin-top: 2px; }
+
+    .perm-section { border-bottom: 1px solid var(--grey-200); padding: 20px 24px; }
+    .perm-section:last-child { border-bottom: none; }
+    .perm-section-title {
+      font-size: 11px; font-weight: 700; color: var(--grey-500);
+      text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px;
+    }
+    .perm-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0; border-bottom: 1px solid var(--grey-100);
+    }
+    .perm-row:last-child { border-bottom: none; }
+    .perm-row-indent { padding-left: 20px; }
+    .perm-label { font-size: 14px; font-weight: 500; color: var(--grey-800); }
+    .perm-sublabel { font-size: 12px; color: var(--grey-500); margin-top: 2px; }
+
+    .daily-limit-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+    .daily-limit-input {
+      padding: 8px 12px; border: 1px solid var(--grey-300); border-radius: 8px;
+      font-size: 14px; font-family: inherit; width: 160px;
+      outline: none; transition: border-color 0.2s;
+    }
+    .daily-limit-input:focus { border-color: var(--primary-main); }
+    .daily-limit-unit { font-size: 14px; color: var(--grey-600); font-weight: 500; }
+
+    .save-bar { padding: 16px 24px; background: var(--grey-100); display: flex; justify-content: flex-end; }
+    .btn-save {
+      padding: 10px 24px; background: var(--primary-main); color: #fff;
+      border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
+      font-family: inherit; cursor: pointer; transition: background 0.15s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-save:hover { background: var(--primary-dark); }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.48);
+      z-index: 1000; display: none;
+      align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #fff; border-radius: 16px;
+      width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto;
+    }
+    .modal-box.modal-wide { max-width: 600px; }
+    .modal-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px 16px; border-bottom: 1px solid var(--grey-200);
+      position: sticky; top: 0; background: #fff; z-index: 1;
+    }
+    .modal-title { font-size: 16px; font-weight: 700; color: var(--grey-900); }
+    .modal-close {
+      width: 32px; height: 32px; border-radius: 8px; border: none;
+      background: var(--grey-200); color: var(--grey-600);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s; flex-shrink: 0;
+    }
+    .modal-close:hover { background: var(--grey-300); }
+    .modal-body { padding: 24px; }
+    .modal-foot {
+      padding: 16px 24px; border-top: 1px solid var(--grey-200);
+      display: flex; gap: 10px; justify-content: flex-end;
+      position: sticky; bottom: 0; background: #fff;
+    }
+    .btn-cancel {
+      padding: 10px 20px; border: 1px solid var(--grey-300); border-radius: 8px;
+      background: #fff; color: var(--grey-700); font-size: 14px; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+    }
+    .btn-primary {
+      padding: 10px 20px; border: none; border-radius: 8px;
+      background: var(--primary-main); color: #fff; font-size: 14px; font-weight: 600;
+      font-family: inherit; cursor: pointer; transition: background 0.15s;
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    /* Form */
+    .form-field { margin-bottom: 18px; }
+    .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--grey-700); margin-bottom: 6px; }
+    .form-input {
+      width: 100%; padding: 10px 14px;
+      border: 1px solid var(--grey-300); border-radius: 8px;
+      font-size: 14px; font-family: inherit; color: var(--grey-800);
+      outline: none; transition: border-color 0.2s;
+    }
+    .form-input:focus { border-color: var(--primary-main); }
+    .form-hint { font-size: 12px; color: var(--grey-500); margin-top: 4px; }
+    .form-error { font-size: 12px; color: #ff4842; margin-top: 4px; display: none; }
+
+    /* QR */
+    .qr-wrap {
+      width: 180px; height: 180px; margin: 0 auto 16px;
+      border: 1px solid var(--grey-300); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      background: #fff; padding: 8px;
+    }
+    .qr-note { text-align: center; font-size: 13px; color: var(--grey-600); line-height: 1.6; }
+    .btn-outline-sm {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      margin: 14px auto 0;
+      padding: 9px 18px; border: 1px solid var(--primary-main); border-radius: 8px;
+      background: #fff; color: var(--primary-main); font-size: 14px; font-weight: 600;
+      font-family: inherit; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-outline-sm:hover { background: var(--primary-main); color: #fff; }
+
+    /* Detail modal */
+    .detail-grid {
+      display: grid; grid-template-columns: 130px 1fr;
+      gap: 10px 16px; align-items: center;
+    }
+    .dii-label { font-size: 13px; color: var(--grey-500); font-weight: 500; }
+    .dii-value { font-size: 14px; font-weight: 600; color: var(--grey-800); }
+    .input-pct-wrap {
+      display: flex; align-items: stretch;
+      border: 1px solid var(--grey-300); border-radius: 8px; overflow: hidden;
+    }
+    .input-pct-wrap input {
+      flex: 1; padding: 10px 14px; border: none; outline: none;
+      font-size: 14px; font-family: inherit; color: var(--grey-800);
+      background: #fff; min-width: 0;
+    }
+    .input-pct-wrap input:focus { box-shadow: 0 0 0 2px rgba(0,167,111,0.15); }
+    .input-pct-unit {
+      padding: 0 14px; background: var(--grey-100);
+      border-left: 1px solid var(--grey-200);
+      display: flex; align-items: center;
+      font-size: 14px; font-weight: 600; color: var(--grey-500);
+    }
+    .section-heading {
+      font-size: 11px; font-weight: 700; color: var(--grey-500);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      padding: 10px 14px; background: var(--grey-100);
+    }
+    .perm-block { border: 1px solid var(--grey-200); border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+    .perm-block-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 14px 11px 28px; border-bottom: 1px solid var(--grey-100);
+    }
+    .perm-block-row:last-child { border-bottom: none; }
+    .perm-block-row-label { font-size: 14px; color: var(--grey-800); }
+
+    @media (max-width: 768px) {
+      .stat-grid { grid-template-columns: 1fr; }
+      .action-grid { grid-template-columns: 1fr; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .tabs { overflow-x: auto; width: 100%; }
+    }
+  </style>
+</head>
 <body>
   <aside class="sidebar">
     <div class="sidebar-logo">
@@ -28,17 +393,768 @@
       </button>
     </div>
     <div class="header-right">
-      <div class="header-info">Jan 14, 2026 10:05:32 AM (UTC)</div>
+      <div class="header-info">Jun 24, 2026 10:05:32 AM (UTC)</div>
     </div>
   </header>
 
   <main class="main">
-    <div class="page-header">
+    <div class="page-header" style="margin-bottom: 24px;">
       <h1 class="page-title">Staff Management</h1>
     </div>
 
-    <div class="main-card"></div>
-  </main>
-</body>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('overview')" id="tab-btn-overview">Overview</button>
+      <button class="tab-btn" onclick="switchTab('staff-list')" id="tab-btn-staff-list">Staff List</button>
+      <button class="tab-btn" onclick="switchTab('role-settings')" id="tab-btn-role-settings">Role Settings</button>
+    </div>
 
+    <!-- ── Overview ── -->
+    <div id="tab-overview" class="tab-panel active">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon total">
+            <iconify-icon icon="solar:users-group-rounded-bold" width="24"></iconify-icon>
+          </div>
+          <div>
+            <div class="stat-value" id="stat-total">0</div>
+            <div class="stat-label">Total Staff</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-active">
+            <iconify-icon icon="solar:user-check-rounded-bold" width="24"></iconify-icon>
+          </div>
+          <div>
+            <div class="stat-value" id="stat-active">0</div>
+            <div class="stat-label">Active</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon si-inactive">
+            <iconify-icon icon="solar:user-cross-rounded-bold" width="24"></iconify-icon>
+          </div>
+          <div>
+            <div class="stat-value" id="stat-inactive">0</div>
+            <div class="stat-label">Inactive</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-grid">
+        <div class="action-card" onclick="openQrModal()">
+          <div class="action-card-icon">
+            <iconify-icon icon="solar:qr-code-bold" width="24"></iconify-icon>
+          </div>
+          <div style="flex:1;">
+            <div class="action-card-title">Staff Invite QR Code</div>
+            <div class="action-card-desc">Show the QR code for staff to scan and join your merchant account automatically.</div>
+          </div>
+          <div class="action-card-arrow">
+            <iconify-icon icon="solar:arrow-right-linear" width="20"></iconify-icon>
+          </div>
+        </div>
+        <div class="action-card" onclick="openAddModal()">
+          <div class="action-card-icon">
+            <iconify-icon icon="solar:user-plus-bold" width="24"></iconify-icon>
+          </div>
+          <div style="flex:1;">
+            <div class="action-card-title">Add Staff by VLINK ID</div>
+            <div class="action-card-desc">Directly invite a staff member by entering their VLINK ID.</div>
+          </div>
+          <div class="action-card-arrow">
+            <iconify-icon icon="solar:arrow-right-linear" width="20"></iconify-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Staff List ── -->
+    <div id="tab-staff-list" class="tab-panel">
+      <div class="toolbar">
+        <div class="search-wrap">
+          <iconify-icon icon="solar:magnifer-linear" width="16"></iconify-icon>
+          <input type="text" class="search-input" id="staffSearch" placeholder="Search by name, email, phone..." oninput="currentPage=1;renderStaffTable()" />
+        </div>
+        <select class="filter-select" id="staffStatusFilter" onchange="currentPage=1;renderStaffTable()">
+          <option value="">Active (default)</option>
+          <option value="ACTIVE">Active</option>
+          <option value="INACTIVE">Inactive</option>
+          <option value="DELETED">Deleted</option>
+          <option value="ALL">All Statuses</option>
+        </select>
+        <select class="filter-select" id="staffRoleFilter" onchange="currentPage=1;renderStaffTable()">
+          <option value="">All Roles</option>
+          <option value="Cashier">Cashier</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Staff</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Cards Created</th>
+                <th>Sales (USD)</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="staffTableBody"></tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <div class="pag-info" id="pagInfo">–</div>
+          <div class="pag-btns">
+            <button class="pag-btn" id="btnPrev" onclick="prevPage()" disabled>
+              <iconify-icon icon="solar:arrow-left-linear" width="14"></iconify-icon>
+            </button>
+            <button class="pag-btn" id="btnNext" onclick="nextPage()" disabled>
+              <iconify-icon icon="solar:arrow-right-linear" width="14"></iconify-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Role Settings ── -->
+    <div id="tab-role-settings" class="tab-panel">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+        <button class="btn-save" onclick="openAddRoleModal()">
+          <iconify-icon icon="solar:shield-plus-bold" width="16"></iconify-icon>
+          Add Role
+        </button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Role Name</th>
+                <th>Description</th>
+                <th>Staff Count</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="roleTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Modal: QR Code ── -->
+  <div class="modal-overlay" id="qrModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-title">Staff Invite QR Code</div>
+        <button class="modal-close" onclick="closeQrModal()">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </button>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <div class="qr-wrap">
+          <svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <rect width="160" height="160" fill="#fff"/>
+            <!-- Finder TL -->
+            <rect x="10" y="10" width="46" height="46" rx="4" fill="#212b36"/>
+            <rect x="16" y="16" width="34" height="34" rx="2" fill="#fff"/>
+            <rect x="22" y="22" width="22" height="22" rx="2" fill="#212b36"/>
+            <!-- Finder TR -->
+            <rect x="104" y="10" width="46" height="46" rx="4" fill="#212b36"/>
+            <rect x="110" y="16" width="34" height="34" rx="2" fill="#fff"/>
+            <rect x="116" y="22" width="22" height="22" rx="2" fill="#212b36"/>
+            <!-- Finder BL -->
+            <rect x="10" y="104" width="46" height="46" rx="4" fill="#212b36"/>
+            <rect x="16" y="110" width="34" height="34" rx="2" fill="#fff"/>
+            <rect x="22" y="116" width="22" height="22" rx="2" fill="#212b36"/>
+            <!-- Data modules -->
+            <rect x="64" y="10" width="6" height="6" fill="#212b36"/>
+            <rect x="76" y="10" width="6" height="6" fill="#212b36"/>
+            <rect x="88" y="10" width="6" height="6" fill="#212b36"/>
+            <rect x="64" y="22" width="6" height="6" fill="#212b36"/>
+            <rect x="88" y="22" width="6" height="6" fill="#212b36"/>
+            <rect x="64" y="34" width="6" height="6" fill="#212b36"/>
+            <rect x="76" y="34" width="6" height="6" fill="#212b36"/>
+            <rect x="64" y="46" width="6" height="6" fill="#212b36"/>
+            <rect x="88" y="46" width="6" height="6" fill="#212b36"/>
+            <rect x="64" y="58" width="6" height="6" fill="#212b36"/>
+            <rect x="76" y="58" width="6" height="6" fill="#212b36"/>
+            <rect x="88" y="58" width="6" height="6" fill="#212b36"/>
+            <rect x="10" y="64" width="6" height="6" fill="#212b36"/>
+            <rect x="22" y="64" width="6" height="6" fill="#212b36"/>
+            <rect x="34" y="64" width="6" height="6" fill="#212b36"/>
+            <rect x="46" y="64" width="6" height="6" fill="#212b36"/>
+            <rect x="58" y="64" width="6" height="6" fill="#212b36"/>
+            <rect x="64" y="64" width="6" height="6" fill="#212b36"/>
+            <rect x="76" y="64" width="6" height="6" fill="#212b36"/>
+            <rect x="88" y="64" width="6" height="6" fill="#212b36"/>
+            <rect x="100" y="64" width="6" height="6" fill="#212b36"/>
+            <rect x="112" y="64" width="6" height="6" fill="#212b36"/>
+            <rect x="124" y="64" width="6" height="6" fill="#212b36"/>
+            <rect x="136" y="64" width="6" height="6" fill="#212b36"/>
+            <rect x="148" y="64" width="6" height="6" fill="#212b36"/>
+            <rect x="10" y="76" width="6" height="6" fill="#212b36"/>
+            <rect x="34" y="76" width="6" height="6" fill="#212b36"/>
+            <rect x="58" y="76" width="6" height="6" fill="#212b36"/>
+            <rect x="76" y="76" width="6" height="6" fill="#212b36"/>
+            <rect x="100" y="76" width="6" height="6" fill="#212b36"/>
+            <rect x="124" y="76" width="6" height="6" fill="#212b36"/>
+            <rect x="148" y="76" width="6" height="6" fill="#212b36"/>
+            <rect x="10" y="88" width="6" height="6" fill="#212b36"/>
+            <rect x="22" y="88" width="6" height="6" fill="#212b36"/>
+            <rect x="46" y="88" width="6" height="6" fill="#212b36"/>
+            <rect x="58" y="88" width="6" height="6" fill="#212b36"/>
+            <rect x="64" y="88" width="6" height="6" fill="#212b36"/>
+            <rect x="88" y="88" width="6" height="6" fill="#212b36"/>
+            <rect x="100" y="88" width="6" height="6" fill="#212b36"/>
+            <rect x="112" y="88" width="6" height="6" fill="#212b36"/>
+            <rect x="136" y="88" width="6" height="6" fill="#212b36"/>
+            <rect x="64" y="100" width="6" height="6" fill="#212b36"/>
+            <rect x="76" y="100" width="6" height="6" fill="#212b36"/>
+            <rect x="100" y="100" width="6" height="6" fill="#212b36"/>
+            <rect x="124" y="100" width="6" height="6" fill="#212b36"/>
+            <rect x="148" y="100" width="6" height="6" fill="#212b36"/>
+            <rect x="64" y="112" width="6" height="6" fill="#212b36"/>
+            <rect x="88" y="112" width="6" height="6" fill="#212b36"/>
+            <rect x="112" y="112" width="6" height="6" fill="#212b36"/>
+            <rect x="136" y="112" width="6" height="6" fill="#212b36"/>
+            <rect x="64" y="124" width="6" height="6" fill="#212b36"/>
+            <rect x="76" y="124" width="6" height="6" fill="#212b36"/>
+            <rect x="100" y="124" width="6" height="6" fill="#212b36"/>
+            <rect x="112" y="124" width="6" height="6" fill="#212b36"/>
+            <rect x="124" y="124" width="6" height="6" fill="#212b36"/>
+            <rect x="148" y="124" width="6" height="6" fill="#212b36"/>
+            <rect x="64" y="136" width="6" height="6" fill="#212b36"/>
+            <rect x="88" y="136" width="6" height="6" fill="#212b36"/>
+            <rect x="100" y="136" width="6" height="6" fill="#212b36"/>
+            <rect x="136" y="136" width="6" height="6" fill="#212b36"/>
+            <rect x="64" y="148" width="6" height="6" fill="#212b36"/>
+            <rect x="76" y="148" width="6" height="6" fill="#212b36"/>
+            <rect x="112" y="148" width="6" height="6" fill="#212b36"/>
+            <rect x="124" y="148" width="6" height="6" fill="#212b36"/>
+            <rect x="148" y="148" width="6" height="6" fill="#212b36"/>
+          </svg>
+        </div>
+        <p class="qr-note">
+          Staff scan this QR code with the VLINK app to join your merchant.<br />
+          They will be assigned the <strong>Cashier</strong> role automatically.<br />
+          <span style="color:var(--grey-400);font-size:12px;">You will receive an email notification when someone joins via QR.</span>
+        </p>
+        <button class="btn-outline-sm">
+          <iconify-icon icon="solar:download-linear" width="16"></iconify-icon>
+          Download QR Code
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modal: Add Staff ── -->
+  <div class="modal-overlay" id="addModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-title">Add Staff by VLINK ID</div>
+        <button class="modal-close" onclick="closeAddModal()">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-field">
+          <label class="form-label" for="vlinkIdInput">VLINK ID</label>
+          <input type="text" class="form-input" id="vlinkIdInput" placeholder="e.g. VL123456" oninput="previewStaffByVlinkId(this.value)" />
+          <div class="form-hint">The staff member will be added immediately with the Cashier role. All permissions are off by default.</div>
+          <div class="form-error" id="vlinkIdError"></div>
+        </div>
+        <div id="vlinkPreview" style="display:none;border:1px solid var(--grey-300);border-radius:8px;padding:14px 16px;background:var(--grey-100);margin-top:4px;">
+          <div style="font-size:12px;font-weight:600;color:var(--grey-500);margin-bottom:10px;">STAFF DETAILS</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;">
+            <div><div style="font-size:11px;color:var(--grey-500);">Name</div><div style="font-size:14px;font-weight:500;color:var(--grey-800);" id="pvName">–</div></div>
+            <div><div style="font-size:11px;color:var(--grey-500);">VLINK ID</div><div style="font-size:14px;font-weight:500;color:var(--grey-800);" id="pvId">–</div></div>
+            <div><div style="font-size:11px;color:var(--grey-500);">Email</div><div style="font-size:14px;font-weight:500;color:var(--grey-800);" id="pvEmail">–</div></div>
+            <div><div style="font-size:11px;color:var(--grey-500);">Phone</div><div style="font-size:14px;font-weight:500;color:var(--grey-800);" id="pvPhone">–</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-cancel" onclick="closeAddModal()">Cancel</button>
+        <button class="btn-primary" onclick="submitAddStaff()">Add Staff</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modal: Staff Detail ── -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-box modal-wide">
+      <div class="modal-head">
+        <div class="modal-title" id="detailModalTitle">Staff Detail</div>
+        <button class="modal-close" onclick="closeDetailModal()">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </button>
+      </div>
+      <div class="modal-body" id="detailModalBody"></div>
+      <div class="modal-foot" id="detailModalFoot">
+        <button class="btn-cancel" onclick="closeDetailModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modal: Add Role ── -->
+  <div class="modal-overlay" id="addRoleModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-title">Add Role</div>
+        <button class="modal-close" onclick="closeAddRoleModal()">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-field">
+          <label class="form-label" for="roleNameInput">Role Name</label>
+          <input type="text" class="form-input" id="roleNameInput" placeholder="e.g. Manager" />
+          <div class="form-error" id="roleNameError"></div>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="roleDescInput">Description</label>
+          <input type="text" class="form-input" id="roleDescInput" placeholder="Brief description of this role" />
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-cancel" onclick="closeAddRoleModal()">Cancel</button>
+        <button class="btn-primary" onclick="submitAddRole()">Create Role</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CARD_TYPES = [
+      { key: 'gift_card',   label: 'Gift Card' },
+      { key: 'crypto_card', label: 'Crypto Card' },
+      { key: 'membership',  label: 'Membership' },
+      { key: 'egift',       label: 'E-Gift Card' },
+      { key: 'voucher',     label: 'Voucher' },
+      { key: 'promotion',   label: 'Promotion' },
+      { key: 'discount',    label: 'Discount' },
+      { key: 'prepaid',     label: 'Prepaid Card' },
+    ];
+
+    let STAFF = [
+      {
+        id: 'STF001', name: 'Nguyen Van A', vlinkId: 'VL123456',
+        email: 'nguyenvana@gmail.com', phone: '0912345678',
+        role: 'Cashier', status: 'ACTIVE',
+        permissions: { gift_card:true, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:true, payment_crypto:false, reload:false, product_mgmt:false },
+        cards: 42, sales: 3200, commission: 2.5, joined: '2025-12-01'
+      },
+      {
+        id: 'STF002', name: 'Tran Thi Bich', vlinkId: 'VL654321',
+        email: 'tranthib@gmail.com', phone: '0987654321',
+        role: 'Cashier', status: 'ACTIVE',
+        permissions: { gift_card:true, crypto_card:true, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:true, payment_crypto:true, reload:true, product_mgmt:false },
+        cards: 87, sales: 7500, commission: 3.0, joined: '2025-11-15'
+      },
+      {
+        id: 'STF003', name: 'Le Van Cuong', vlinkId: 'VL789012',
+        email: 'levanc@gmail.com', phone: '0901234567',
+        role: 'Cashier', status: 'INACTIVE',
+        permissions: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false },
+        cards: 15, sales: 900, commission: 1.5, joined: '2025-10-20'
+      },
+    ];
+
+    const ROLES = [
+      {
+        id: 'cashier', name: 'Cashier',
+        desc: 'Default role for staff. Can process card sales, payments, and reloads.',
+        isDefault: true,
+        perms: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false },
+        dailyLimit: 1000
+      }
+    ];
+
+    let currentPage = 1;
+    const ROWS = 10;
+    let currentDetailId = null;
+
+    /* Tabs */
+    function switchTab(name) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab-btn-' + name).classList.add('active');
+      document.getElementById('tab-' + name).classList.add('active');
+      if (name === 'staff-list') renderStaffTable();
+      if (name === 'role-settings') renderRoleTable();
+    }
+
+    /* Stats */
+    function updateStats() {
+      document.getElementById('stat-total').textContent = STAFF.filter(s => s.status !== 'DELETED').length;
+      document.getElementById('stat-active').textContent = STAFF.filter(s => s.status === 'ACTIVE').length;
+      document.getElementById('stat-inactive').textContent = STAFF.filter(s => s.status === 'INACTIVE').length;
+    }
+
+    /* Helpers */
+    function maskEmail(e) {
+      const [u, d] = e.split('@');
+      if (!d) return e;
+      return u[0] + '*'.repeat(Math.max(1, u.length - 2)) + u[u.length - 1] + '@' + d;
+    }
+    function maskPhone(p) { return p.slice(0, 3) + '****' + p.slice(-3); }
+
+    const PERM_LABELS = {
+      gift_card:'Gift Card', crypto_card:'Crypto Card', membership:'Membership',
+      egift:'E-Gift', voucher:'Voucher', promotion:'Promotion', discount:'Discount',
+      prepaid:'Prepaid', payment_gift:'GC Pay', payment_crypto:'Crypto Pay',
+      reload:'Reload', product_mgmt:'Product Mgmt'
+    };
+
+    function permTagsHtml(perms) {
+      const active = Object.entries(perms).filter(([,v]) => v).map(([k]) => PERM_LABELS[k] || k);
+      if (!active.length) return '<span style="color:var(--grey-400);font-size:12px;">None</span>';
+      const shown = active.slice(0, 3).map(l => `<span class="perm-tag">${l}</span>`).join('');
+      const more = active.length > 3 ? `<span class="perm-tag">+${active.length - 3}</span>` : '';
+      return shown + more;
+    }
+
+    /* Staff List */
+    function getFiltered() {
+      const q = (document.getElementById('staffSearch').value || '').toLowerCase();
+      const f = document.getElementById('staffStatusFilter').value;
+      const rf = document.getElementById('staffRoleFilter').value;
+      return STAFF.filter(s => {
+        if (f === 'ALL') { /* show all */ }
+        else if (f === '') { if (s.status !== 'ACTIVE') return false; }
+        else { if (s.status !== f) return false; }
+        if (rf && s.role !== rf) return false;
+        if (q && !`${s.name} ${s.email} ${s.phone}`.toLowerCase().includes(q)) return false;
+        return true;
+      });
+    }
+
+    function renderStaffTable() {
+      const data = getFiltered();
+      const total = data.length;
+      const pages = Math.max(1, Math.ceil(total / ROWS));
+      if (currentPage > pages) currentPage = pages;
+      const start = (currentPage - 1) * ROWS;
+      const rows = data.slice(start, start + ROWS);
+
+      const tbody = document.getElementById('staffTableBody');
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:48px 24px;color:var(--grey-400);">No staff found</td></tr>`;
+      } else {
+        tbody.innerHTML = rows.map(s => {
+          const initials = s.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+          const sb = s.status === 'ACTIVE'
+            ? `<span class="badge badge-active">Active</span>`
+            : s.status === 'INACTIVE'
+            ? `<span class="badge badge-inactive">Inactive</span>`
+            : `<span class="badge badge-deleted">Deleted</span>`;
+          const toggleIcon = s.status === 'ACTIVE' ? 'solar:user-cross-linear' : 'solar:user-check-linear';
+          const toggleTitle = s.status === 'ACTIVE' ? 'Deactivate' : 'Activate';
+          return `<tr>
+            <td>
+              <div class="staff-name-cell">
+                <div class="staff-avatar">${initials}</div>
+                <div>
+                  <div class="staff-name">${s.name}</div>
+                  <div class="staff-vlink">${s.vlinkId}</div>
+                </div>
+              </div>
+            </td>
+            <td style="color:var(--grey-600)">${maskEmail(s.email)}</td>
+            <td style="color:var(--grey-600)">${maskPhone(s.phone)}</td>
+            <td><span class="badge badge-role">${s.role}</span></td>
+            <td>${sb}</td>
+            <td style="font-weight:500;text-align:center">${s.cards}</td>
+            <td style="font-weight:500">$${s.sales.toLocaleString()}</td>
+            <td>
+              <div class="action-btns">
+                <button class="action-btn" title="View Detail" onclick="openDetailModal('${s.id}')" style="color:var(--primary-main);border-color:var(--primary-main);">
+                  <iconify-icon icon="solar:eye-linear" width="15"></iconify-icon>
+                </button>
+                <button class="action-btn" title="${toggleTitle}" onclick="toggleStaffStatus('${s.id}')" style="color:#f59e0b;border-color:#f59e0b;">
+                  <iconify-icon icon="solar:shield-warning-bold-duotone" width="15"></iconify-icon>
+                </button>
+                <button class="action-btn" title="Delete" onclick="deleteStaff('${s.id}')" style="color:#ff4842;border-color:#ff4842;">
+                  <iconify-icon icon="solar:trash-bin-minimalistic-bold" width="15"></iconify-icon>
+                </button>
+              </div>
+            </td>
+          </tr>`;
+        }).join('');
+      }
+
+      const s = total === 0 ? 0 : start + 1;
+      const e = Math.min(start + ROWS, total);
+      document.getElementById('pagInfo').textContent = `${s}–${e} of ${total}`;
+      document.getElementById('btnPrev').disabled = currentPage <= 1;
+      document.getElementById('btnNext').disabled = currentPage >= pages;
+    }
+
+    function prevPage() { if (currentPage > 1) { currentPage--; renderStaffTable(); } }
+    function nextPage() {
+      const pages = Math.ceil(getFiltered().length / ROWS);
+      if (currentPage < pages) { currentPage++; renderStaffTable(); }
+    }
+
+    function toggleStaffStatus(id) {
+      const s = STAFF.find(x => x.id === id);
+      if (!s || s.status === 'DELETED') return;
+      const newStatus = s.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+      const label = newStatus === 'INACTIVE' ? 'deactivate' : 'activate';
+      Swal.fire({
+        title: `${newStatus === 'INACTIVE' ? 'Deactivate' : 'Activate'} staff?`,
+        text: `Are you sure you want to ${label} ${s.name}?`,
+        icon: 'warning', showCancelButton: true,
+        confirmButtonText: newStatus === 'INACTIVE' ? 'Deactivate' : 'Activate',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: newStatus === 'INACTIVE' ? '#f59e0b' : '#00a76f',
+      }).then(r => { if (r.isConfirmed) { s.status = newStatus; updateStats(); renderStaffTable(); } });
+    }
+
+    function confirmSetStatus(id, newStatus) {
+      const s = STAFF.find(x => x.id === id);
+      if (!s) return;
+      const label = newStatus === 'INACTIVE' ? 'Deactivate' : 'Activate';
+      Swal.fire({
+        title: `${label} staff?`,
+        text: `Are you sure you want to ${label.toLowerCase()} ${s.name}?`,
+        icon: 'warning', showCancelButton: true,
+        confirmButtonText: label, cancelButtonText: 'Cancel',
+        confirmButtonColor: newStatus === 'INACTIVE' ? '#f59e0b' : '#00a76f',
+      }).then(r => {
+        if (r.isConfirmed) {
+          s.status = newStatus;
+          updateStats(); closeDetailModal();
+          if (document.getElementById('tab-staff-list').classList.contains('active')) renderStaffTable();
+        }
+      });
+    }
+
+    function deleteStaff(id) {
+      const s = STAFF.find(x => x.id === id);
+      if (!s) return;
+      Swal.fire({
+        title: 'Delete staff member?',
+        text: `${s.name} will be soft-deleted. Their card and payment history will be retained.`,
+        icon: 'warning', showCancelButton: true,
+        confirmButtonText: 'Delete', cancelButtonText: 'Cancel',
+        confirmButtonColor: '#ff4842',
+      }).then(r => { if (r.isConfirmed) { s.status = 'DELETED'; updateStats(); renderStaffTable(); } });
+    }
+
+    function confirmDeleteStaff(id) {
+      const s = STAFF.find(x => x.id === id);
+      if (!s) return;
+      Swal.fire({
+        title: 'Delete staff member?',
+        text: `${s.name} will be soft-deleted. Their history will be retained.`,
+        icon: 'warning', showCancelButton: true,
+        confirmButtonText: 'Delete', cancelButtonText: 'Cancel',
+        confirmButtonColor: '#ff4842',
+      }).then(r => {
+        if (r.isConfirmed) {
+          s.status = 'DELETED';
+          updateStats(); closeDetailModal();
+          if (document.getElementById('tab-staff-list').classList.contains('active')) renderStaffTable();
+        }
+      });
+    }
+
+    /* QR Modal */
+    function openQrModal() { document.getElementById('qrModal').classList.add('open'); }
+    function closeQrModal() { document.getElementById('qrModal').classList.remove('open'); }
+
+    /* Add Staff Modal */
+    function openAddModal() { document.getElementById('addModal').classList.add('open'); }
+    function closeAddModal() {
+      document.getElementById('addModal').classList.remove('open');
+      document.getElementById('vlinkIdInput').value = '';
+      document.getElementById('vlinkIdError').style.display = 'none';
+    }
+    function submitAddStaff() {
+      const val = document.getElementById('vlinkIdInput').value.trim();
+      const errEl = document.getElementById('vlinkIdError');
+      if (!val) { errEl.textContent = 'VLINK ID is required.'; errEl.style.display = 'block'; return; }
+      if (!/^VL\w{4,}$/i.test(val)) { errEl.textContent = 'Invalid VLINK ID format.'; errEl.style.display = 'block'; return; }
+      const dup = STAFF.find(s => s.vlinkId.toLowerCase() === val.toLowerCase() && s.status !== 'DELETED');
+      if (dup) { errEl.textContent = 'This staff member has already joined this merchant.'; errEl.style.display = 'block'; return; }
+      errEl.style.display = 'none';
+      const newId = 'STF' + String(STAFF.length + 1).padStart(3, '0');
+      STAFF.push({
+        id: newId, name: 'New Staff', vlinkId: val.toUpperCase(),
+        email: 'staff@example.com', phone: '0900000000',
+        role: 'Cashier', status: 'ACTIVE',
+        permissions: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false },
+        cards: 0, sales: 0, commission: 0, joined: new Date().toISOString().slice(0, 10)
+      });
+      closeAddModal();
+      updateStats();
+      if (document.getElementById('tab-staff-list').classList.contains('active')) renderStaffTable();
+    }
+
+    /* Detail Modal */
+    function openDetailModal(id) {
+      const s = STAFF.find(x => x.id === id);
+      if (!s) return;
+      currentDetailId = id;
+      document.getElementById('detailModalTitle').textContent = s.name;
+      const role = ROLES.find(r => r.name === s.role) || ROLES[0];
+      const dailyLimit = role ? role.dailyLimit : 0;
+      const dailyUsed = dailyLimit ? Math.min(Math.floor((s.cards * 17) % dailyLimit || 0), dailyLimit) : 0;
+      const usedPct = dailyLimit ? Math.round(dailyUsed / dailyLimit * 100) : 0;
+      const isActive = s.status === 'ACTIVE';
+
+      document.getElementById('detailModalBody').innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="detail-grid">
+            <div class="dii-label">Name</div><div class="dii-value">${s.name}</div>
+            <div class="dii-label">VLINK ID</div><div class="dii-value">${s.vlinkId}</div>
+            <div class="dii-label">Email</div><div class="dii-value">${maskEmail(s.email)}</div>
+            <div class="dii-label">Phone</div><div class="dii-value">${maskPhone(s.phone)}</div>
+            <div class="dii-label">Role</div><div class="dii-value"><span class="badge badge-role">${s.role}</span></div>
+            <div class="dii-label">Status</div><div class="dii-value">${isActive ? '<span class="badge badge-active">Active</span>' : '<span class="badge badge-inactive">Inactive</span>'}</div>
+            <div class="dii-label">Cards Created</div><div class="dii-value">${s.cards}</div>
+            <div class="dii-label">Sales / Payments</div><div class="dii-value">$${s.sales.toLocaleString()}</div>
+          </div>
+          <div style="height:1px;background:var(--grey-200);"></div>
+          <div>
+            <div class="form-label" style="margin-bottom:6px;">Commission percent</div>
+            <div class="input-pct-wrap">
+              <input type="number" id="dp-commission" value="${s.commission}" min="0" step="0.1" placeholder="0.0" />
+              <div class="input-pct-unit">%</div>
+            </div>
+          </div>
+          <div>
+            <div class="form-label" style="margin-bottom:6px;">Cashier card creation limit</div>
+            <div style="padding:10px 14px;border:1px solid var(--grey-300);border-radius:8px;font-size:14px;color:var(--grey-600);background:var(--grey-100);display:flex;align-items:center;justify-content:space-between;">
+              <span>${dailyLimit ? dailyLimit.toLocaleString() + ' USD / day' : 'No limit'}</span>
+              <a href="cashier-role-detail.html" style="font-size:12px;color:var(--primary-main);text-decoration:none;font-weight:500;">Edit role</a>
+            </div>
+          </div>
+          ${dailyLimit ? `
+          <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:12px 14px;">
+            <div style="font-size:12px;font-weight:700;color:#b45309;margin-bottom:4px;">Daily card limit usage</div>
+            <div style="font-size:12px;color:#92400e;margin-bottom:8px;">${s.name} has used $${dailyUsed.toLocaleString()} of the $${dailyLimit.toLocaleString()} Cashier role limit today.</div>
+            <div style="height:6px;border-radius:3px;background:var(--grey-200);overflow:hidden;">
+              <div style="height:100%;width:${usedPct}%;background:#b45309;border-radius:3px;"></div>
+            </div>
+          </div>` : ''}
+        </div>`;
+
+      document.getElementById('detailModalFoot').innerHTML = `
+        <button onclick="confirmDeleteStaff('${s.id}')" style="margin-right:auto;background:none;border:1px solid #ff4842;color:#ff4842;padding:10px 16px;border-radius:8px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;">Delete Staff</button>
+        <button class="btn-cancel" onclick="confirmSetStatus('${s.id}','${isActive ? 'INACTIVE' : 'ACTIVE'}')">${isActive ? 'Set Inactive' : 'Set Active'}</button>
+        <button class="btn-primary" onclick="saveStaffDetail()">Save Changes</button>
+      `;
+      document.getElementById('detailModal').classList.add('open');
+    }
+
+    function closeDetailModal() {
+      document.getElementById('detailModal').classList.remove('open');
+      currentDetailId = null;
+    }
+
+    function saveStaffDetail() {
+      const s = STAFF.find(x => x.id === currentDetailId);
+      if (!s) return;
+      const commEl = document.getElementById('dp-commission');
+      if (commEl) s.commission = Math.max(0, parseFloat(commEl.value) || 0);
+      closeDetailModal();
+      if (document.getElementById('tab-staff-list').classList.contains('active')) renderStaffTable();
+    }
+
+    /* Add Staff — VLINK ID preview */
+    const VLINK_PREVIEW_DB = {
+      'VL999001': { name: 'Pham Thi Dung', email: 'phamthidung@gmail.com', phone: '0908123456' },
+      'VL999002': { name: 'Hoang Van Em', email: 'hoangem@outlook.com', phone: '0937654321' },
+    };
+    function previewStaffByVlinkId(val) {
+      const key = val.trim().toUpperCase();
+      const preview = document.getElementById('vlinkPreview');
+      const found = VLINK_PREVIEW_DB[key];
+      if (found) {
+        document.getElementById('pvName').textContent = found.name;
+        document.getElementById('pvId').textContent = key;
+        document.getElementById('pvEmail').textContent = maskEmail(found.email);
+        document.getElementById('pvPhone').textContent = maskPhone(found.phone);
+        preview.style.display = 'block';
+      } else {
+        preview.style.display = 'none';
+      }
+    }
+
+    /* Role Settings — role list */
+    function renderRoleTable() {
+      const tbody = document.getElementById('roleTableBody');
+      tbody.innerHTML = ROLES.map(r => {
+        const staffCount = STAFF.filter(s => s.role.toLowerCase() === r.id && s.status !== 'DELETED').length;
+        return `<tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:36px;height:36px;border-radius:8px;background:rgba(0,167,111,0.12);color:var(--primary-main);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <iconify-icon icon="solar:shield-user-bold" width="18"></iconify-icon>
+              </div>
+              <div style="font-weight:600;color:var(--grey-900);">${r.name}</div>
+            </div>
+          </td>
+          <td style="color:var(--grey-600);font-size:13px;">${r.desc}</td>
+          <td style="text-align:center;font-weight:500;">${staffCount}</td>
+          <td>
+            <a href="cashier-role-detail.html" class="action-btn" style="width:auto;padding:0 12px;gap:6px;font-size:13px;font-weight:500;color:var(--primary-main);border-color:var(--primary-main);text-decoration:none;">
+              <iconify-icon icon="solar:eye-linear" width="14"></iconify-icon>
+              View Detail
+            </a>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    /* Role Detail Modal */
+    /* Add Role */
+    function openAddRoleModal() { document.getElementById('addRoleModal').classList.add('open'); }
+    function closeAddRoleModal() {
+      document.getElementById('addRoleModal').classList.remove('open');
+      document.getElementById('roleNameInput').value = '';
+      document.getElementById('roleDescInput').value = '';
+      document.getElementById('roleNameError').style.display = 'none';
+    }
+    function submitAddRole() {
+      const name = document.getElementById('roleNameInput').value.trim();
+      const errEl = document.getElementById('roleNameError');
+      if (!name) { errEl.textContent = 'Role name is required.'; errEl.style.display = 'block'; return; }
+      if (ROLES.some(r => r.name.toLowerCase() === name.toLowerCase())) {
+        errEl.textContent = 'A role with this name already exists.'; errEl.style.display = 'block'; return;
+      }
+      errEl.style.display = 'none';
+      const desc = document.getElementById('roleDescInput').value.trim();
+      ROLES.push({
+        id: name.toLowerCase().replace(/\s+/g, '_'),
+        name, desc: desc || 'Custom role.',
+        isDefault: false,
+        perms: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false },
+        dailyLimit: 0
+      });
+      closeAddRoleModal();
+      renderRoleTable();
+    }
+
+    /* Close on backdrop click / Escape */
+    document.getElementById('qrModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeQrModal(); });
+    document.getElementById('addModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAddModal(); });
+    document.getElementById('detailModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeDetailModal(); });
+    document.getElementById('addRoleModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAddRoleModal(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeQrModal(); closeAddModal(); closeDetailModal(); closeAddRoleModal(); }
+    });
+
+    /* Init */
+    updateStats();
+    renderStaffTable();
+    renderRoleTable();
+  </script>
+</body>
 </html>

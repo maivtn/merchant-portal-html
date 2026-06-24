@@ -44,8 +44,7 @@ const TaxIQLayout = (() => {
   const navGroups = [
     ["Overview",["dashboard","analytics"]],
     ["Payroll",["employers","employees","payroll-runs","payouts","connections"]],
-    ["Tax IQ",["ledger","exceptions","jurisdictions","forms","ocr","share-links","gps"]],
-    ["Advisory",["ai-advisor","cpa"]],
+    ["Tax IQ",["ledger","exceptions","jurisdictions","forms","ocr","share-links","gps","cpa","ai-advisor"]],
     ["System",["webhooks","settings"]]
   ];
 

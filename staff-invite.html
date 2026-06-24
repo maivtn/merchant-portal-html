@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Staff Invite — VLINKPAY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f4f6f8;
+      min-height: 100vh;
+    }
+
+    .invite-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .invite-card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+      width: 100%;
+      max-width: 440px;
+      overflow: hidden;
+    }
+
+    .invite-banner {
+      background: linear-gradient(135deg, #00a76f 0%, #007a52 100%);
+      padding: 32px 28px 24px;
+      text-align: center;
+      color: #fff;
+    }
+    .invite-banner .brand-logo {
+      height: 36px;
+      margin-bottom: 16px;
+      filter: brightness(0) invert(1);
+    }
+    .invite-banner .invite-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .invite-banner .invite-sub {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+    .merchant-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 30px;
+      padding: 5px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 14px;
+    }
+
+    .invite-body {
+      padding: 28px 28px 32px;
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #00a76f;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      margin-bottom: 6px;
+    }
+    .step-heading {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+    .step-desc {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+
+    .vlink-input-wrap {
+      position: relative;
+    }
+    .vlink-input-wrap .vlink-prefix {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      font-weight: 700;
+      color: #00a76f;
+      pointer-events: none;
+      user-select: none;
+    }
+    .vlink-input-wrap input {
+      padding-left: 48px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      height: 52px;
+      transition: border-color 0.2s;
+    }
+    .vlink-input-wrap input:focus {
+      border-color: #00a76f;
+      box-shadow: 0 0 0 3px rgba(0,167,111,0.12);
+      outline: none;
+    }
+    .vlink-input-wrap .lookup-status {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+    }
+
+    .info-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-top: 20px;
+    }
+    .info-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .info-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00a76f, #007a52);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .info-vlink-id {
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .info-vlink-id span {
+      font-weight: 600;
+      color: #00a76f;
+    }
+
+    .field-group {
+      margin-bottom: 14px;
+    }
+    .field-group:last-child { margin-bottom: 0; }
+    .field-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .field-input {
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 9px 12px;
+      width: 100%;
+      color: #1a1a2e;
+      background: #fff;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .field-input:focus {
+      border-color: #00a76f;
+      box-shadow: 0 0 0 3px rgba(0,167,111,0.1);
+    }
+
+    .edit-hint {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-confirm {
+      width: 100%;
+      height: 52px;
+      background: #00a76f;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .btn-confirm:hover { background: #007a52; }
+    .btn-confirm:active { transform: scale(0.98); }
+    .btn-confirm:disabled { background: #d1d5db; cursor: not-allowed; transform: none; }
+
+    /* Success state */
+    .success-state {
+      text-align: center;
+      padding: 12px 0;
+    }
+    .success-icon-wrap {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(0,167,111,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .success-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 8px;
+    }
+    .success-desc {
+      font-size: 14px;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+    .success-merchant-name {
+      font-weight: 700;
+      color: #00a76f;
+    }
+
+    /* Loading spinner */
+    .spinner-sm {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(0,167,111,0.3);
+      border-top-color: #00a76f;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #f0f0f0;
+      margin: 20px 0;
+    }
+
+    .powered-by {
+      text-align: center;
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 20px;
+    }
+    .powered-by img { height: 18px; vertical-align: middle; opacity: 0.5; }
+  </style>
+</head>
+<body>
+  <div class="invite-wrapper">
+    <div class="invite-card">
+
+      <!-- Banner -->
+      <div class="invite-banner">
+        <img
+          src="https://staging-merchant.vlinkpay.com/assets/images/homepage/vertical-vlinkpay.svg"
+          alt="VLinkPay"
+          class="brand-logo"
+          onerror="this.style.display='none'"
+        />
+        <div class="invite-title">Staff Invitation</div>
+        <div class="invite-sub">You've been invited to join as a staff member</div>
+        <div class="merchant-chip">
+          <iconify-icon icon="solar:shop-bold" width="14"></iconify-icon>
+          Bitcoin Nail Bar
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="invite-body">
+
+        <!-- Step: Enter VLINK ID -->
+        <div id="stepLookup">
+          <div class="step-label">Step 1 of 2</div>
+          <div class="step-heading">Enter your VLINK ID</div>
+          <div class="step-desc">Your VLINK ID links your account to this merchant portal.</div>
+
+          <div class="vlink-input-wrap">
+            <span class="vlink-prefix"><iconify-icon icon="solar:user-bold" width="18"></iconify-icon></span>
+            <input
+              type="text"
+              id="vlinkInput"
+              class="form-control"
+              placeholder="e.g. 123456"
+              maxlength="12"
+              oninput="handleVlinkInput(this.value)"
+              autocomplete="off"
+            />
+            <span class="lookup-status" id="lookupStatus"></span>
+          </div>
+          <div id="lookupError" class="text-danger mt-2" style="font-size:13px;display:none;"></div>
+        </div>
+
+        <!-- Step: Review & Confirm -->
+        <div id="stepConfirm" style="display:none;">
+          <div class="step-label">Step 2 of 2</div>
+          <div class="step-heading">Review your information</div>
+          <div class="step-desc">Check and adjust if needed, then confirm to connect.</div>
+
+          <div class="info-card">
+            <div class="info-card-header">
+              <div class="info-avatar" id="avatarInitial">?</div>
+              <div>
+                <div style="font-weight:700;font-size:15px;color:#1a1a2e;" id="displayName">—</div>
+                <div class="info-vlink-id">VLINK ID: <span id="displayVlinkId">—</span></div>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Full Name</label>
+              <input type="text" class="field-input" id="fieldName" placeholder="Your full name" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Email</label>
+              <input type="email" class="field-input" id="fieldEmail" placeholder="your@email.com" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Phone Number</label>
+              <input type="tel" class="field-input" id="fieldPhone" placeholder="+1 000 000 0000" />
+            </div>
+
+            <div class="edit-hint">
+              <iconify-icon icon="solar:info-circle-linear" width="13"></iconify-icon>
+              You can update this information before confirming.
+            </div>
+          </div>
+
+          <button class="btn-confirm" id="btnConfirm" onclick="confirmJoin()">
+            <iconify-icon icon="solar:link-bold" width="18"></iconify-icon>
+            Confirm &amp; Connect
+          </button>
+
+          <hr class="divider" />
+          <div style="text-align:center;">
+            <button
+              onclick="resetToLookup()"
+              style="background:none;border:none;font-size:13px;color:#6b7280;font-family:'Poppins',sans-serif;cursor:pointer;text-decoration:underline;"
+            >
+              Use a different VLINK ID
+            </button>
+          </div>
+        </div>
+
+        <!-- Success state -->
+        <div id="stepSuccess" style="display:none;">
+          <div class="success-state">
+            <div class="success-icon-wrap">
+              <iconify-icon icon="solar:check-circle-bold" width="38" style="color:#00a76f;"></iconify-icon>
+            </div>
+            <div class="success-title">You're now connected!</div>
+            <div class="success-desc">
+              Welcome aboard, <strong id="successName">—</strong>.<br />
+              You've successfully joined
+              <span class="success-merchant-name">Bitcoin Nail Bar</span>
+              as a Cashier.<br /><br />
+              You can now close this page or log in to VLINKPAY to get started.
+            </div>
+            <a
+              href="https://staging-merchant.vlinkpay.com"
+              class="btn-confirm"
+              style="text-decoration:none;margin-top:24px;"
+            >
+              <iconify-icon icon="solar:login-bold" width="18"></iconify-icon>
+              Go to VLINKPAY
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="powered-by">
+      Powered by VLINKPAY &nbsp;·&nbsp; Secure connection
+    </div>
+  </div>
+
+  <script>
+    /* Mock VLINK database */
+    const VLINK_DB = {
+      'VL123456': { name: 'Alice Nguyen',   email: 'alice.nguyen@email.com',   phone: '+84 912 345 678' },
+      'VL100002': { name: 'Bob Tran',       email: 'bob.tran@email.com',       phone: '+84 908 765 432' },
+      'VL100003': { name: 'Charlie Le',     email: 'charlie.le@email.com',     phone: '+1 415 234 5678' },
+      'VL200001': { name: 'Diana Pham',     email: 'diana.pham@gmail.com',     phone: '+84 903 111 222' },
+      'VL200002': { name: 'Ethan Vo',       email: 'ethan.vo@company.com',     phone: '+1 650 987 6543' },
+    };
+
+    let lookupTimer = null;
+
+    function handleVlinkInput(val) {
+      clearTimeout(lookupTimer);
+      const statusEl = document.getElementById('lookupStatus');
+      const errorEl  = document.getElementById('lookupError');
+      errorEl.style.display = 'none';
+
+      const clean = val.trim().toUpperCase().replace(/^VL/i, '');
+      if (!clean) { statusEl.innerHTML = ''; return; }
+
+      statusEl.innerHTML = '<span class="spinner-sm"></span>';
+
+      lookupTimer = setTimeout(() => {
+        const key = 'VL' + clean;
+        const found = VLINK_DB[key];
+        if (found) {
+          statusEl.innerHTML = '<iconify-icon icon="solar:check-circle-bold" style="color:#00a76f;" width="20"></iconify-icon>';
+          showConfirmStep(key, found);
+        } else {
+          statusEl.innerHTML = '<iconify-icon icon="solar:close-circle-bold" style="color:#ef4444;" width="20"></iconify-icon>';
+          errorEl.textContent = 'VLINK ID not found. Please check and try again.';
+          errorEl.style.display = 'block';
+        }
+      }, 700);
+    }
+
+    function showConfirmStep(vlinkId, data) {
+      document.getElementById('stepLookup').style.display = 'none';
+
+      document.getElementById('displayName').textContent    = data.name;
+      document.getElementById('displayVlinkId').textContent = vlinkId;
+      document.getElementById('avatarInitial').textContent  = data.name.charAt(0).toUpperCase();
+      document.getElementById('fieldName').value  = data.name;
+      document.getElementById('fieldEmail').value = data.email;
+      document.getElementById('fieldPhone').value = data.phone;
+
+      document.getElementById('stepConfirm').style.display = 'block';
+    }
+
+    function resetToLookup() {
+      document.getElementById('stepConfirm').style.display = 'none';
+      document.getElementById('stepLookup').style.display  = 'block';
+      document.getElementById('vlinkInput').value = '';
+      document.getElementById('lookupStatus').innerHTML = '';
+      document.getElementById('lookupError').style.display = 'none';
+    }
+
+    function confirmJoin() {
+      const name  = document.getElementById('fieldName').value.trim();
+      const email = document.getElementById('fieldEmail').value.trim();
+      const phone = document.getElementById('fieldPhone').value.trim();
+
+      if (!name || !email || !phone) {
+        alert('Please fill in all fields before confirming.');
+        return;
+      }
+
+      const btn = document.getElementById('btnConfirm');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-sm" style="border-color:rgba(255,255,255,0.4);border-top-color:#fff;"></span> Connecting...';
+
+      setTimeout(() => {
+        document.getElementById('stepConfirm').style.display = 'none';
+        document.getElementById('successName').textContent = name;
+        document.getElementById('stepSuccess').style.display = 'block';
+      }, 1400);
+    }
+
+    /* Auto-fill default VLINK ID on load */
+    window.addEventListener('DOMContentLoaded', () => {
+      const input = document.getElementById('vlinkInput');
+      input.value = '123456';
+      handleVlinkInput('123456');
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

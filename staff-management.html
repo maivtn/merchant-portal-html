@@ -7,10 +7,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="global.css" />
   <script src="global.js" defer></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <style>
     .tabs {
       display: flex;
@@ -45,9 +47,6 @@
 
     /* Stats */
     .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
       margin-bottom: 24px;
     }
     .stat-card {
@@ -200,25 +199,19 @@
     .toggle input:checked ~ .toggle-track { background: var(--primary-main); }
     .toggle input:checked ~ .toggle-track .toggle-thumb { left: 21px; }
 
-    /* Pagination */
-    .pagination { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-top: 1px solid var(--grey-200); }
-    .pag-info { font-size: 13px; color: var(--grey-600); }
-    .pag-btns { display: flex; gap: 4px; }
-    .pag-btn {
-      width: 32px; height: 32px; border-radius: 8px;
-      border: 1px solid var(--grey-300); background: #fff;
-      color: var(--grey-600); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s;
-    }
-    .pag-btn:hover:not(:disabled) { border-color: var(--primary-main); color: var(--primary-main); }
-    .pag-btn:disabled { opacity: 0.4; cursor: default; }
-
     /* Role settings */
-    .role-card { background: #fff; border: 1px solid var(--grey-300); border-radius: 12px; overflow: hidden; }
+    .role-card {
+      background: #fff;
+      border: 1px solid var(--grey-300);
+      border-radius: 12px;
+      overflow: hidden;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
     .role-header {
       padding: 20px 24px; border-bottom: 1px solid var(--grey-200);
-      display: flex; align-items: center; gap: 14px;
+      display: flex; align-items: flex-start; gap: 14px;
     }
     .role-icon {
       width: 44px; height: 44px; border-radius: 10px;
@@ -227,6 +220,25 @@
     }
     .role-name { font-size: 16px; font-weight: 700; color: var(--grey-900); }
     .role-desc { font-size: 13px; color: var(--grey-600); margin-top: 2px; }
+    .role-card-body {
+      padding: 16px 24px 20px;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .role-stat-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 14px;
+      background: var(--grey-100);
+      border-radius: 10px;
+    }
+    .role-stat-label { font-size: 12px; font-weight: 600; color: var(--grey-500); }
+    .role-stat-value { font-size: 20px; font-weight: 700; color: var(--grey-900); }
+    .role-card-actions { margin-top: auto; display: flex; justify-content: flex-end; }
 
     .perm-section { border-bottom: 1px solid var(--grey-200); padding: 20px 24px; }
     .perm-section:last-child { border-bottom: none; }
@@ -303,6 +315,10 @@
       font-family: inherit; cursor: pointer; transition: background 0.15s;
     }
     .btn-primary:hover { background: var(--primary-dark); }
+    .btn-primary:disabled {
+      background: var(--grey-400);
+      cursor: not-allowed;
+    }
 
     /* Form */
     .form-field { margin-bottom: 18px; }
@@ -371,9 +387,31 @@
     .perm-block-row-label { font-size: 14px; color: var(--grey-800); }
 
     @media (max-width: 768px) {
-      .stat-grid { grid-template-columns: 1fr; }
+      .stat-card {
+        min-width: 0;
+        padding: 12px 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .stat-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+      }
+      .stat-icon iconify-icon {
+        width: 18px;
+        height: 18px;
+      }
+      .stat-value { font-size: 22px; }
+      .stat-label {
+        font-size: 11px;
+        line-height: 1.3;
+      }
       .action-grid { grid-template-columns: 1fr; }
       .detail-grid { grid-template-columns: 1fr; }
+      .role-header { padding: 16px; }
+      .role-card-body { padding: 14px 16px 16px; }
       .tabs { overflow-x: auto; width: 100%; }
     }
   </style>
@@ -399,7 +437,10 @@
 
   <main class="main">
     <div class="page-header" style="margin-bottom: 24px;">
-      <h1 class="page-title">Staff Management</h1>
+      <div>
+        <h1 class="page-title">Staff Management</h1>
+        <p class="page-description" style="margin:0;">Manage staff members, roles, and permissions.</p>
+      </div>
     </div>
 
     <div class="tabs">
@@ -410,32 +451,38 @@
 
     <!-- ── Overview ── -->
     <div id="tab-overview" class="tab-panel active">
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-icon total">
-            <iconify-icon icon="solar:users-group-rounded-bold" width="24"></iconify-icon>
-          </div>
-          <div>
-            <div class="stat-value" id="stat-total">0</div>
-            <div class="stat-label">Total Staff</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon si-active">
-            <iconify-icon icon="solar:user-check-rounded-bold" width="24"></iconify-icon>
-          </div>
-          <div>
-            <div class="stat-value" id="stat-active">0</div>
-            <div class="stat-label">Active</div>
+      <div class="stat-grid row g-2 g-md-3">
+        <div class="col-4">
+          <div class="stat-card h-100">
+            <div class="stat-icon total">
+              <iconify-icon icon="solar:users-group-rounded-bold" width="24"></iconify-icon>
+            </div>
+            <div>
+              <div class="stat-value" id="stat-total">0</div>
+              <div class="stat-label">Total Staff</div>
+            </div>
           </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon si-inactive">
-            <iconify-icon icon="solar:user-cross-rounded-bold" width="24"></iconify-icon>
+        <div class="col-4">
+          <div class="stat-card h-100">
+            <div class="stat-icon si-active">
+              <iconify-icon icon="solar:user-check-rounded-bold" width="24"></iconify-icon>
+            </div>
+            <div>
+              <div class="stat-value" id="stat-active">0</div>
+              <div class="stat-label">Active</div>
+            </div>
           </div>
-          <div>
-            <div class="stat-value" id="stat-inactive">0</div>
-            <div class="stat-label">Inactive</div>
+        </div>
+        <div class="col-4">
+          <div class="stat-card h-100">
+            <div class="stat-icon si-inactive">
+              <iconify-icon icon="solar:user-cross-rounded-bold" width="24"></iconify-icon>
+            </div>
+            <div>
+              <div class="stat-value" id="stat-inactive">0</div>
+              <div class="stat-label">Inactive</div>
+            </div>
           </div>
         </div>
       </div>
@@ -507,12 +554,20 @@
           </table>
         </div>
         <div class="pagination">
-          <div class="pag-info" id="pagInfo">–</div>
-          <div class="pag-btns">
-            <button class="pag-btn" id="btnPrev" onclick="prevPage()" disabled>
+          <div class="pagination-rows">
+            <span>Rows per page</span>
+            <select class="pagination-select" id="rowsPerPage" onchange="changeRowsPerPage()">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+            </select>
+          </div>
+          <div class="pagination-info" id="pageInfo">0–0 of 0</div>
+          <div class="pagination-arrows">
+            <button type="button" class="pagination-btn" id="btnPrev" onclick="prevPage()" disabled>
               <iconify-icon icon="solar:arrow-left-linear" width="14"></iconify-icon>
             </button>
-            <button class="pag-btn" id="btnNext" onclick="nextPage()" disabled>
+            <button type="button" class="pagination-btn" id="btnNext" onclick="nextPage()" disabled>
               <iconify-icon icon="solar:arrow-right-linear" width="14"></iconify-icon>
             </button>
           </div>
@@ -528,21 +583,7 @@
           Add Role
         </button>
       </div>
-      <div class="table-wrap">
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Role Name</th>
-                <th>Description</th>
-                <th>Staff Count</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="roleTableBody"></tbody>
-          </table>
-        </div>
-      </div>
+      <div class="role-grid row g-3" id="roleCardGrid"></div>
     </div>
   </main>
 
@@ -557,87 +598,7 @@
       </div>
       <div class="modal-body" style="text-align:center;">
         <div class="qr-wrap">
-          <svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-            <rect width="160" height="160" fill="#fff"/>
-            <!-- Finder TL -->
-            <rect x="10" y="10" width="46" height="46" rx="4" fill="#212b36"/>
-            <rect x="16" y="16" width="34" height="34" rx="2" fill="#fff"/>
-            <rect x="22" y="22" width="22" height="22" rx="2" fill="#212b36"/>
-            <!-- Finder TR -->
-            <rect x="104" y="10" width="46" height="46" rx="4" fill="#212b36"/>
-            <rect x="110" y="16" width="34" height="34" rx="2" fill="#fff"/>
-            <rect x="116" y="22" width="22" height="22" rx="2" fill="#212b36"/>
-            <!-- Finder BL -->
-            <rect x="10" y="104" width="46" height="46" rx="4" fill="#212b36"/>
-            <rect x="16" y="110" width="34" height="34" rx="2" fill="#fff"/>
-            <rect x="22" y="116" width="22" height="22" rx="2" fill="#212b36"/>
-            <!-- Data modules -->
-            <rect x="64" y="10" width="6" height="6" fill="#212b36"/>
-            <rect x="76" y="10" width="6" height="6" fill="#212b36"/>
-            <rect x="88" y="10" width="6" height="6" fill="#212b36"/>
-            <rect x="64" y="22" width="6" height="6" fill="#212b36"/>
-            <rect x="88" y="22" width="6" height="6" fill="#212b36"/>
-            <rect x="64" y="34" width="6" height="6" fill="#212b36"/>
-            <rect x="76" y="34" width="6" height="6" fill="#212b36"/>
-            <rect x="64" y="46" width="6" height="6" fill="#212b36"/>
-            <rect x="88" y="46" width="6" height="6" fill="#212b36"/>
-            <rect x="64" y="58" width="6" height="6" fill="#212b36"/>
-            <rect x="76" y="58" width="6" height="6" fill="#212b36"/>
-            <rect x="88" y="58" width="6" height="6" fill="#212b36"/>
-            <rect x="10" y="64" width="6" height="6" fill="#212b36"/>
-            <rect x="22" y="64" width="6" height="6" fill="#212b36"/>
-            <rect x="34" y="64" width="6" height="6" fill="#212b36"/>
-            <rect x="46" y="64" width="6" height="6" fill="#212b36"/>
-            <rect x="58" y="64" width="6" height="6" fill="#212b36"/>
-            <rect x="64" y="64" width="6" height="6" fill="#212b36"/>
-            <rect x="76" y="64" width="6" height="6" fill="#212b36"/>
-            <rect x="88" y="64" width="6" height="6" fill="#212b36"/>
-            <rect x="100" y="64" width="6" height="6" fill="#212b36"/>
-            <rect x="112" y="64" width="6" height="6" fill="#212b36"/>
-            <rect x="124" y="64" width="6" height="6" fill="#212b36"/>
-            <rect x="136" y="64" width="6" height="6" fill="#212b36"/>
-            <rect x="148" y="64" width="6" height="6" fill="#212b36"/>
-            <rect x="10" y="76" width="6" height="6" fill="#212b36"/>
-            <rect x="34" y="76" width="6" height="6" fill="#212b36"/>
-            <rect x="58" y="76" width="6" height="6" fill="#212b36"/>
-            <rect x="76" y="76" width="6" height="6" fill="#212b36"/>
-            <rect x="100" y="76" width="6" height="6" fill="#212b36"/>
-            <rect x="124" y="76" width="6" height="6" fill="#212b36"/>
-            <rect x="148" y="76" width="6" height="6" fill="#212b36"/>
-            <rect x="10" y="88" width="6" height="6" fill="#212b36"/>
-            <rect x="22" y="88" width="6" height="6" fill="#212b36"/>
-            <rect x="46" y="88" width="6" height="6" fill="#212b36"/>
-            <rect x="58" y="88" width="6" height="6" fill="#212b36"/>
-            <rect x="64" y="88" width="6" height="6" fill="#212b36"/>
-            <rect x="88" y="88" width="6" height="6" fill="#212b36"/>
-            <rect x="100" y="88" width="6" height="6" fill="#212b36"/>
-            <rect x="112" y="88" width="6" height="6" fill="#212b36"/>
-            <rect x="136" y="88" width="6" height="6" fill="#212b36"/>
-            <rect x="64" y="100" width="6" height="6" fill="#212b36"/>
-            <rect x="76" y="100" width="6" height="6" fill="#212b36"/>
-            <rect x="100" y="100" width="6" height="6" fill="#212b36"/>
-            <rect x="124" y="100" width="6" height="6" fill="#212b36"/>
-            <rect x="148" y="100" width="6" height="6" fill="#212b36"/>
-            <rect x="64" y="112" width="6" height="6" fill="#212b36"/>
-            <rect x="88" y="112" width="6" height="6" fill="#212b36"/>
-            <rect x="112" y="112" width="6" height="6" fill="#212b36"/>
-            <rect x="136" y="112" width="6" height="6" fill="#212b36"/>
-            <rect x="64" y="124" width="6" height="6" fill="#212b36"/>
-            <rect x="76" y="124" width="6" height="6" fill="#212b36"/>
-            <rect x="100" y="124" width="6" height="6" fill="#212b36"/>
-            <rect x="112" y="124" width="6" height="6" fill="#212b36"/>
-            <rect x="124" y="124" width="6" height="6" fill="#212b36"/>
-            <rect x="148" y="124" width="6" height="6" fill="#212b36"/>
-            <rect x="64" y="136" width="6" height="6" fill="#212b36"/>
-            <rect x="88" y="136" width="6" height="6" fill="#212b36"/>
-            <rect x="100" y="136" width="6" height="6" fill="#212b36"/>
-            <rect x="136" y="136" width="6" height="6" fill="#212b36"/>
-            <rect x="64" y="148" width="6" height="6" fill="#212b36"/>
-            <rect x="76" y="148" width="6" height="6" fill="#212b36"/>
-            <rect x="112" y="148" width="6" height="6" fill="#212b36"/>
-            <rect x="124" y="148" width="6" height="6" fill="#212b36"/>
-            <rect x="148" y="148" width="6" height="6" fill="#212b36"/>
-          </svg>
+          <div id="qrcode" style="display:inline-block;"></div>
         </div>
         <p class="qr-note">
           Staff scan this QR code with the VLINK app to join your merchant.<br />
@@ -664,8 +625,8 @@
       <div class="modal-body">
         <div class="form-field">
           <label class="form-label" for="vlinkIdInput">VLINK ID</label>
-          <input type="text" class="form-input" id="vlinkIdInput" placeholder="e.g. VL123456" oninput="previewStaffByVlinkId(this.value)" />
-          <div class="form-hint">The staff member will be added immediately with the Cashier role. All permissions are off by default.</div>
+          <input type="text" class="form-input" id="vlinkIdInput" placeholder="e.g. VL999001" oninput="previewStaffByVlinkId(this.value)" />
+          <div class="form-hint">Enter a VLINK ID to preview the staff profile before adding. They will be assigned the Cashier role.</div>
           <div class="form-error" id="vlinkIdError"></div>
         </div>
         <div id="vlinkPreview" style="display:none;border:1px solid var(--grey-300);border-radius:8px;padding:14px 16px;background:var(--grey-100);margin-top:4px;">
@@ -680,7 +641,7 @@
       </div>
       <div class="modal-foot">
         <button class="btn-cancel" onclick="closeAddModal()">Cancel</button>
-        <button class="btn-primary" onclick="submitAddStaff()">Add Staff</button>
+        <button class="btn-primary" id="addStaffBtn" onclick="submitAddStaff()" disabled>Add Staff</button>
       </div>
     </div>
   </div>
@@ -767,7 +728,7 @@
     const ROLES = [
       {
         id: 'cashier', name: 'Cashier',
-        desc: 'Default role for staff. Can process card sales, payments, and reloads.',
+        desc: 'Can process card sales, payments, and reloads.',
         isDefault: true,
         perms: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false },
         dailyLimit: 1000
@@ -775,7 +736,7 @@
     ];
 
     let currentPage = 1;
-    const ROWS = 10;
+    let rowsPerPage = 10;
     let currentDetailId = null;
 
     /* Tabs */
@@ -836,10 +797,10 @@
     function renderStaffTable() {
       const data = getFiltered();
       const total = data.length;
-      const pages = Math.max(1, Math.ceil(total / ROWS));
+      const pages = Math.max(1, Math.ceil(total / rowsPerPage));
       if (currentPage > pages) currentPage = pages;
-      const start = (currentPage - 1) * ROWS;
-      const rows = data.slice(start, start + ROWS);
+      const start = (currentPage - 1) * rowsPerPage;
+      const rows = data.slice(start, start + rowsPerPage);
 
       const tbody = document.getElementById('staffTableBody');
       if (!rows.length) {
@@ -872,14 +833,17 @@
             <td style="font-weight:500">$${s.sales.toLocaleString()}</td>
             <td>
               <div class="action-btns">
-                <button class="action-btn" title="View Detail" onclick="openDetailModal('${s.id}')" style="color:var(--primary-main);border-color:var(--primary-main);">
+                <button class="action-btn" title="View Detail" onclick="openDetailModal('${s.id}')" style="width:auto;padding:0 10px;gap:6px;font-size:13px;font-weight:500;color:var(--primary-main);border-color:var(--primary-main);">
                   <iconify-icon icon="solar:eye-linear" width="15"></iconify-icon>
+                  View
                 </button>
-                <button class="action-btn" title="${toggleTitle}" onclick="toggleStaffStatus('${s.id}')" style="color:#f59e0b;border-color:#f59e0b;">
+                <button class="action-btn" title="${toggleTitle}" onclick="toggleStaffStatus('${s.id}')" style="width:auto;padding:0 10px;gap:6px;font-size:13px;font-weight:500;color:#f59e0b;border-color:#f59e0b;">
                   <iconify-icon icon="solar:shield-warning-bold-duotone" width="15"></iconify-icon>
+                  ${toggleTitle}
                 </button>
-                <button class="action-btn" title="Delete" onclick="deleteStaff('${s.id}')" style="color:#ff4842;border-color:#ff4842;">
+                <button class="action-btn" title="Delete" onclick="deleteStaff('${s.id}')" style="width:auto;padding:0 10px;gap:6px;font-size:13px;font-weight:500;color:#ff4842;border-color:#ff4842;">
                   <iconify-icon icon="solar:trash-bin-minimalistic-bold" width="15"></iconify-icon>
+                  Delete
                 </button>
               </div>
             </td>
@@ -888,16 +852,21 @@
       }
 
       const s = total === 0 ? 0 : start + 1;
-      const e = Math.min(start + ROWS, total);
-      document.getElementById('pagInfo').textContent = `${s}–${e} of ${total}`;
+      const e = Math.min(start + rowsPerPage, total);
+      document.getElementById('pageInfo').textContent = `${s}–${e} of ${total}`;
       document.getElementById('btnPrev').disabled = currentPage <= 1;
       document.getElementById('btnNext').disabled = currentPage >= pages;
     }
 
     function prevPage() { if (currentPage > 1) { currentPage--; renderStaffTable(); } }
     function nextPage() {
-      const pages = Math.ceil(getFiltered().length / ROWS);
+      const pages = Math.ceil(getFiltered().length / rowsPerPage);
       if (currentPage < pages) { currentPage++; renderStaffTable(); }
+    }
+    function changeRowsPerPage() {
+      rowsPerPage = Number(document.getElementById('rowsPerPage').value) || 10;
+      currentPage = 1;
+      renderStaffTable();
     }
 
     function toggleStaffStatus(id) {
@@ -965,7 +934,22 @@
     }
 
     /* QR Modal */
-    function openQrModal() { document.getElementById('qrModal').classList.add('open'); }
+    let _qrInstance = null;
+    function openQrModal() {
+      document.getElementById('qrModal').classList.add('open');
+      const container = document.getElementById('qrcode');
+      if (!_qrInstance) {
+        const url = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/') + 'staff-invite.html';
+        _qrInstance = new QRCode(container, {
+          text: url,
+          width: 180,
+          height: 180,
+          colorDark: '#212b36',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.M,
+        });
+      }
+    }
     function closeQrModal() { document.getElementById('qrModal').classList.remove('open'); }
 
     /* Add Staff Modal */
@@ -974,19 +958,24 @@
       document.getElementById('addModal').classList.remove('open');
       document.getElementById('vlinkIdInput').value = '';
       document.getElementById('vlinkIdError').style.display = 'none';
+      document.getElementById('vlinkPreview').style.display = 'none';
+      document.getElementById('addStaffBtn').disabled = true;
     }
     function submitAddStaff() {
       const val = document.getElementById('vlinkIdInput').value.trim();
+      const key = val.toUpperCase();
       const errEl = document.getElementById('vlinkIdError');
       if (!val) { errEl.textContent = 'VLINK ID is required.'; errEl.style.display = 'block'; return; }
       if (!/^VL\w{4,}$/i.test(val)) { errEl.textContent = 'Invalid VLINK ID format.'; errEl.style.display = 'block'; return; }
-      const dup = STAFF.find(s => s.vlinkId.toLowerCase() === val.toLowerCase() && s.status !== 'DELETED');
+      const dup = STAFF.find(s => s.vlinkId.toLowerCase() === key.toLowerCase() && s.status !== 'DELETED');
       if (dup) { errEl.textContent = 'This staff member has already joined this merchant.'; errEl.style.display = 'block'; return; }
+      const found = findVlinkProfile(key);
+      if (!found) { errEl.textContent = 'No VLINK account found for this ID.'; errEl.style.display = 'block'; return; }
       errEl.style.display = 'none';
       const newId = 'STF' + String(STAFF.length + 1).padStart(3, '0');
       STAFF.push({
-        id: newId, name: 'New Staff', vlinkId: val.toUpperCase(),
-        email: 'staff@example.com', phone: '0900000000',
+        id: newId, name: found.name, vlinkId: key,
+        email: found.email, phone: found.phone,
         role: 'Cashier', status: 'ACTIVE',
         permissions: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false },
         cards: 0, sales: 0, commission: 0, joined: new Date().toISOString().slice(0, 10)
@@ -1072,16 +1061,30 @@
       'VL999001': { name: 'Pham Thi Dung', email: 'phamthidung@gmail.com', phone: '0908123456' },
       'VL999002': { name: 'Hoang Van Em', email: 'hoangem@outlook.com', phone: '0937654321' },
     };
+    function findVlinkProfile(key) {
+      return VLINK_PREVIEW_DB[key] || STAFF.find(s => s.vlinkId.toUpperCase() === key);
+    }
     function previewStaffByVlinkId(val) {
       const key = val.trim().toUpperCase();
       const preview = document.getElementById('vlinkPreview');
-      const found = VLINK_PREVIEW_DB[key];
+      const errEl = document.getElementById('vlinkIdError');
+      const addBtn = document.getElementById('addStaffBtn');
+      const found = findVlinkProfile(key);
+      errEl.style.display = 'none';
+      addBtn.disabled = true;
       if (found) {
+        const dup = STAFF.find(s => s.vlinkId.toLowerCase() === key.toLowerCase() && s.status !== 'DELETED');
         document.getElementById('pvName').textContent = found.name;
         document.getElementById('pvId').textContent = key;
         document.getElementById('pvEmail').textContent = maskEmail(found.email);
         document.getElementById('pvPhone').textContent = maskPhone(found.phone);
         preview.style.display = 'block';
+        if (dup) {
+          errEl.textContent = 'This staff member has already joined this merchant.';
+          errEl.style.display = 'block';
+        } else {
+          addBtn.disabled = false;
+        }
       } else {
         preview.style.display = 'none';
       }
@@ -1089,27 +1092,39 @@
 
     /* Role Settings — role list */
     function renderRoleTable() {
-      const tbody = document.getElementById('roleTableBody');
-      tbody.innerHTML = ROLES.map(r => {
-        const staffCount = STAFF.filter(s => s.role.toLowerCase() === r.id && s.status !== 'DELETED').length;
-        return `<tr>
-          <td>
-            <div style="display:flex;align-items:center;gap:10px;">
-              <div style="width:36px;height:36px;border-radius:8px;background:rgba(0,167,111,0.12);color:var(--primary-main);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <iconify-icon icon="solar:shield-user-bold" width="18"></iconify-icon>
+      const grid = document.getElementById('roleCardGrid');
+      grid.innerHTML = ROLES.map(r => {
+        const roleName = r.name.toLowerCase();
+        const roleId = r.id.toLowerCase();
+        const staffCount = STAFF.filter(s => {
+          const staffRole = s.role.toLowerCase();
+          return (staffRole === roleName || staffRole === roleId) && s.status !== 'DELETED';
+        }).length;
+        return `<div class="col-12 col-md-6 col-xl-4">
+          <div class="role-card">
+            <div class="role-header">
+              <div class="role-icon">
+                <iconify-icon icon="solar:shield-user-bold" width="22"></iconify-icon>
               </div>
-              <div style="font-weight:600;color:var(--grey-900);">${r.name}</div>
+              <div>
+                <div class="role-name">${r.name}</div>
+                <div class="role-desc">${r.desc}</div>
+              </div>
             </div>
-          </td>
-          <td style="color:var(--grey-600);font-size:13px;">${r.desc}</td>
-          <td style="text-align:center;font-weight:500;">${staffCount}</td>
-          <td>
-            <a href="cashier-role-detail.html" class="action-btn" style="width:auto;padding:0 12px;gap:6px;font-size:13px;font-weight:500;color:var(--primary-main);border-color:var(--primary-main);text-decoration:none;">
-              <iconify-icon icon="solar:eye-linear" width="14"></iconify-icon>
-              View Detail
-            </a>
-          </td>
-        </tr>`;
+            <div class="role-card-body">
+              <div class="role-stat-row">
+                <div class="role-stat-label">Staff Count</div>
+                <div class="role-stat-value">${staffCount}</div>
+              </div>
+              <div class="role-card-actions">
+                <a href="cashier-role-detail.html" class="action-btn" style="width:auto;padding:0 12px;gap:6px;font-size:13px;font-weight:500;color:var(--primary-main);border-color:var(--primary-main);text-decoration:none;">
+                  <iconify-icon icon="solar:eye-linear" width="14"></iconify-icon>
+                  View Detail
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>`;
       }).join('');
     }
 

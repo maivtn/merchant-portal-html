@@ -1196,8 +1196,10 @@
         perms: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false },
         dailyLimit: 0
       });
+      const roleId = name.toLowerCase().replace(/\s+/g, '_');
       closeAddRoleModal();
       renderRoleTable();
+      window.location.href = 'cashier-role-detail.html?role=' + encodeURIComponent(roleId) + '&name=' + encodeURIComponent(name);
     }
 
     /* Close on backdrop click / Escape */

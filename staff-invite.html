@@ -361,6 +361,23 @@
           <div id="lookupError" class="text-danger mt-2" style="font-size:13px;display:none;"></div>
         </div>
 
+        <div style="margin-top:20px;padding:14px 16px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:12px;font-weight:600;color:#374151;margin-bottom:2px;">Don't have a VLINKPAY account?</div>
+            <div style="font-size:12px;color:#6b7280;">Sign up for free at <span style="color:#00a76f;font-weight:600;">vlinkpay.com</span> to get your VLINK ID.</div>
+          </div>
+          <a
+            href="https://staging-web-app.vlinkpay.com?ref=0D2E1454&parent=0D2E1454&leg=right"
+            target="_blank"
+            rel="noopener"
+            style="flex-shrink:0;display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:#00a76f;color:#fff;border-radius:8px;font-size:13px;font-weight:600;font-family:'Poppins',sans-serif;text-decoration:none;white-space:nowrap;transition:background 0.2s;"
+            onmouseover="this.style.background='#007a52'" onmouseout="this.style.background='#00a76f'"
+          >
+            <iconify-icon icon="solar:user-plus-bold" width="15"></iconify-icon>
+            Sign Up Free
+          </a>
+        </div>
+
         <!-- Step: Review & Confirm -->
         <div id="stepConfirm" style="display:none;">
           <div class="step-label">Step 2 of 2</div>
@@ -472,6 +489,19 @@
   </div>
 
   <script>
+    /* Read role from URL ?role=xxx */
+    const ROLE_LABELS = { cashier: 'Cashier' };
+    (function initRole() {
+      const params = new URLSearchParams(window.location.search);
+      const roleId = params.get('role');
+      if (!roleId) return;
+      const label = ROLE_LABELS[roleId] || roleId.charAt(0).toUpperCase() + roleId.slice(1);
+      const chip = document.getElementById('roleChip');
+      chip.style.display = 'inline-flex';
+      document.getElementById('roleChipLabel').textContent = label;
+      document.getElementById('successRole').textContent = label;
+    })();
+
     /* Mock VLINK database */
     const VLINK_DB = {
       'VL123456': { name: 'Alice Nguyen',   email: 'alice.nguyen@email.com',   phone: '+84 912 345 678' },

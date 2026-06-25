@@ -143,7 +143,8 @@
     <button
       id="sendBtn"
       onclick="sendTip()"
-      class="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-base font-bold rounded-xl shadow-lg shadow-emerald-200 hover:from-emerald-600 hover:to-teal-600 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2"
+      class="w-full py-3 text-white text-base font-bold rounded-xl shadow-lg active:scale-95 transition-all duration-200 flex items-center justify-center gap-2"
+      style="background: linear-gradient(to right, #10b981, #0d9488);"
     >
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
       <span id="sendBtnText">Tôi đã gửi tip qua Zelle rồi</span>
@@ -152,12 +153,12 @@
 
   <script>
     const paymentAccounts = {
-      zelle:    { label: 'Email', value: 'test@example.usvaq',    badge: 'Zelle',      app: 'Zelle',      copyStep: 'Copy email Zelle' },
-      venmo:    { label: '@',     value: '@marys-nail',            badge: 'Venmo',      app: 'Venmo',      copyStep: 'Copy tên Venmo' },
-      cashapp:  { label: 'Tag',   value: '$marynails',             badge: 'Cash App',   app: 'Cash App',   copyStep: 'Copy Cash Tag' },
-      apple:    { label: 'Phone', value: '(555) 123-4567',         badge: 'Apple Cash', app: 'Apple Cash', copyStep: 'Copy số điện thoại' },
-      paypal:   { label: 'Email', value: 'mary@nailstudio.com',    badge: 'PayPal',     app: 'PayPal',     copyStep: 'Copy email PayPal' },
-      vlinkpay: { wallet: 'VLK:0x3f9A8b2C1d4E5f6A7B8C9D0E1F2A3B4C5D6E7F8', badge: 'VLinkPay', app: 'VLinkPay', copyStep: 'Quét QR hoặc copy địa chỉ ví' },
+      zelle:    { label: 'Email', value: 'test@example.usvaq',    badge: 'Zelle',      app: 'Zelle',      copyStep: 'Copy email Zelle',             from: '#7c3aed', to: '#6d28d9' },
+      venmo:    { label: '@',     value: '@marys-nail',            badge: 'Venmo',      app: 'Venmo',      copyStep: 'Copy tên Venmo',               from: '#0ea5e9', to: '#3b82f6' },
+      cashapp:  { label: 'Tag',   value: '$marynails',             badge: 'Cash App',   app: 'Cash App',   copyStep: 'Copy Cash Tag',                from: '#22c55e', to: '#10b981' },
+      apple:    { label: 'Phone', value: '(555) 123-4567',         badge: 'Apple Cash', app: 'Apple Cash', copyStep: 'Copy số điện thoại',           from: '#1f2937', to: '#111827' },
+      paypal:   { label: 'Email', value: 'mary@nailstudio.com',    badge: 'PayPal',     app: 'PayPal',     copyStep: 'Copy email PayPal',            from: '#1d4ed8', to: '#4338ca' },
+      vlinkpay: { wallet: 'VLK:0x3f9A8b2C1d4E5f6A7B8C9D0E1F2A3B4C5D6E7F8', badge: 'VLinkPay', app: 'VLinkPay', copyStep: 'Quét QR hoặc copy địa chỉ ví', from: '#10b981', to: '#0d9488' },
     };
 
     const VLINK_WALLET = 'VLK:0x3f9A8b2C1d4E5f6A7B8C9D0E1F2A3B4C5D6E7F8';
@@ -170,10 +171,12 @@
       const amount = parseFloat(document.getElementById('amountInput').value) || 0;
       const amtStr = amount > 0 ? `$${amount.toFixed(2)}` : '?';
 
-      document.getElementById('step1Text').textContent = `(1) ${acc.copyStep}` ;
+      document.getElementById('step1Text').textContent = `(1) ${acc.copyStep}`;
       document.getElementById('step2Text').textContent = `(2) Mở ${acc.app}`;
       document.getElementById('step3Text').textContent = amtStr;
       document.getElementById('sendBtnText').textContent = `Tôi đã gửi tip qua ${acc.badge} rồi`;
+      document.getElementById('sendBtn').style.background =
+        `linear-gradient(to right, ${acc.from}, ${acc.to})`;
       document.getElementById('stepGuide').classList.remove('hidden');
     }
 

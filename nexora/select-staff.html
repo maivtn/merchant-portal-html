@@ -109,8 +109,8 @@
   </div>
 
   <script>
-    // Set to true when shop has configured their payout methods
-    const SHOP_HAS_PAYOUT = true;
+    // Multi-select enabled by default, disabled only when URL has ?isMulti=0
+    const SHOP_HAS_PAYOUT = new URLSearchParams(window.location.search).get('isMulti') !== '0';
 
     const STAFF = [
       { name: 'David L.',  role: 'Nail Technician',         initial: 'D', from: '#7c3aed', to: '#6d28d9' },

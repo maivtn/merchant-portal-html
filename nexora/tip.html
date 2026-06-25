@@ -144,10 +144,9 @@
     <button
       id="sendBtn"
       onclick="sendTip()"
-      class="w-full py-3 text-white text-base font-bold rounded-xl shadow-lg active:scale-95 transition-all duration-200 flex items-center justify-center gap-2"
-      style="background: linear-gradient(to right, #10b981, #0d9488);"
+      class="w-full py-3 text-white font-bold rounded-xl shadow-lg active:scale-95 transition-all duration-200"
+      style="background: linear-gradient(to right, #10b981, #0d9488); font-size: 0.8rem;"
     >
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
       <span id="sendBtnText">Tôi đã gửi tip qua Zelle rồi</span>
     </button>
   </div>
@@ -188,7 +187,8 @@
       document.getElementById('step1Text').textContent = `(1) ${acc.copyStep}`;
       document.getElementById('step2Text').textContent = `(2) Mở ${acc.app}`;
       document.getElementById('step3Text').textContent = amtStr;
-      document.getElementById('sendBtnText').textContent = `Tôi đã gửi tip qua ${acc.badge} rồi`;
+      const amtLabel = amount > 0 ? `$${amount.toFixed(2)} ` : '';
+      document.getElementById('sendBtnText').textContent = `Tôi đã gửi tip ${amtLabel}cho ${STAFF_NAME} qua ${acc.badge}`;
       document.getElementById('sendBtn').style.background =
         `linear-gradient(to right, ${acc.from}, ${acc.to})`;
       document.getElementById('stepGuide').classList.remove('hidden');

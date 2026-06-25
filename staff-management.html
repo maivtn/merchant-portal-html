@@ -45,85 +45,82 @@
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* Stats */
-    .stat-grid {
-      margin-bottom: 24px;
+    /* Overview labels */
+    .ov-label {
+      font-size: 11px; font-weight: 700; color: var(--grey-400);
+      text-transform: uppercase; letter-spacing: 0.7px;
+      margin-bottom: 12px;
     }
+
+    /* Stats */
     .stat-card {
       background: #fff;
-      border: 1px solid var(--grey-300);
-      border-radius: 12px;
-      padding: 20px 24px;
+      border: 1px solid var(--grey-200);
+      border-radius: 14px;
+      padding: 18px 20px;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
+      transition: box-shadow 0.18s, transform 0.18s;
+      position: relative;
     }
+    .stat-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); transform: translateY(-2px); }
+    .stat-card--total { border-top: 3px solid var(--primary-main); }
+    .stat-card--active { border-top: 3px solid #22c55e; }
+    .stat-card--inactive { border-top: 3px solid #ff4842; }
     .stat-icon {
-      width: 48px; height: 48px;
-      border-radius: 12px;
+      width: 44px; height: 44px;
+      border-radius: 11px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-    .stat-icon.total { background: rgba(0,167,111,0.12); color: var(--primary-main); }
-    .stat-icon.si-active { background: rgba(0,167,111,0.12); color: var(--primary-main); }
+    .stat-icon.total { background: rgba(0,167,111,0.1); color: var(--primary-main); }
+    .stat-icon.si-active { background: rgba(34,197,94,0.1); color: #22c55e; }
     .stat-icon.si-inactive { background: rgba(255,72,66,0.08); color: #ff4842; }
-    .stat-value { font-size: 28px; font-weight: 700; color: var(--grey-900); line-height: 1.2; }
-    .stat-label { font-size: 13px; color: var(--grey-600); margin-top: 2px; }
+    .stat-value { font-size: 26px; font-weight: 700; color: var(--grey-900); line-height: 1.2; }
+    .stat-label { font-size: 12px; color: var(--grey-500); margin-top: 2px; }
 
-    /* Action cards */
-    .action-grid {
+    /* Overview action grid */
+    .ov-actions-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
       margin-bottom: 24px;
     }
-    .action-card {
+    .ov-action-card {
       background: #fff;
       border: 1px solid var(--grey-200);
-      border-radius: 16px;
-      padding: 22px;
-      cursor: pointer;
-      transition: all 0.22s;
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      position: relative;
-      overflow: hidden;
-    }
-    .action-card::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--primary-main), var(--primary-light, #5be49b));
-      opacity: 0;
-      transition: opacity 0.22s;
-    }
-    .action-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.09); transform: translateY(-3px); border-color: var(--grey-300); }
-    .action-card:hover::after { opacity: 1; }
-    .action-card-icon {
-      width: 50px; height: 50px;
       border-radius: 14px;
-      background: linear-gradient(135deg, rgba(0,167,111,0.14) 0%, rgba(0,167,111,0.05) 100%);
-      border: 1px solid rgba(0,167,111,0.15);
-      color: var(--primary-main);
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all 0.2s;
+    }
+    .ov-action-card--link { cursor: pointer; }
+    .ov-action-card--link:hover {
+      border-color: var(--grey-300);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      transform: translateY(-2px);
+    }
+    .ov-action-icon {
+      width: 44px; height: 44px; border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-    .action-card-title { font-size: 15px; font-weight: 700; color: var(--grey-900); margin-bottom: 5px; }
-    .action-card-desc { font-size: 13px; color: var(--grey-500); line-height: 1.55; }
-    .action-card-arrow { margin-left: auto; color: var(--grey-400); flex-shrink: 0; align-self: center; transition: transform 0.2s; }
-    .action-card:hover .action-card-arrow { transform: translateX(3px); color: var(--primary-main); }
-    .action-card--static { cursor: default; }
-    .action-card--static:hover { transform: none; box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
-    .action-card-btns { display: flex; gap: 8px; margin-top: 14px; }
+    .ov-action-title { font-size: 14px; font-weight: 700; color: var(--grey-900); margin-bottom: 3px; }
+    .ov-action-desc { font-size: 12px; color: var(--grey-500); line-height: 1.5; }
+    .ov-action-btns { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
     .invite-btn {
       display: inline-flex; align-items: center; gap: 5px;
       padding: 6px 14px; border: 1.5px solid var(--primary-main); border-radius: 10px;
-      background: #fff; color: var(--primary-main); font-size: 12.5px; font-weight: 600;
+      background: #fff; color: var(--primary-main); font-size: 12px; font-weight: 600;
       font-family: inherit; cursor: pointer; transition: all 0.15s; white-space: nowrap;
     }
     .invite-btn:hover { background: var(--primary-main); color: #fff; }
+
+    /* Keep old action-card for any remaining references */
+    .action-card-btns { display: flex; gap: 8px; margin-top: 14px; }
 
     /* Toolbar */
     .toolbar { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
@@ -432,26 +429,19 @@
     @media (max-width: 768px) {
       .stat-card {
         min-width: 0;
-        padding: 12px 10px;
+        padding: 10px 8px;
         flex-direction: column;
         align-items: flex-start;
-        gap: 8px;
+        gap: 6px;
       }
       .stat-icon {
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
         border-radius: 8px;
       }
-      .stat-icon iconify-icon {
-        width: 18px;
-        height: 18px;
-      }
-      .stat-value { font-size: 22px; }
-      .stat-label {
-        font-size: 11px;
-        line-height: 1.3;
-      }
-      .action-grid { grid-template-columns: 1fr; }
+      .stat-value { font-size: 20px; }
+      .stat-label { font-size: 10px; line-height: 1.3; }
+      .ov-actions-grid { grid-template-columns: 1fr; }
       .detail-grid { grid-template-columns: 1fr; }
       .role-header { padding: 16px; }
       .role-card-body { padding: 14px 16px 16px; }
@@ -494,11 +484,14 @@
 
     <!-- ── Overview ── -->
     <div id="tab-overview" class="tab-panel active">
-      <div class="stat-grid row g-2 g-md-3">
+
+      <!-- Team Summary -->
+      <div class="ov-label">Team Summary</div>
+      <div class="row g-2 g-md-3 mb-4">
         <div class="col-4">
-          <div class="stat-card h-100">
+          <div class="stat-card stat-card--total h-100">
             <div class="stat-icon total">
-              <iconify-icon icon="solar:users-group-rounded-bold" width="24"></iconify-icon>
+              <iconify-icon icon="solar:users-group-rounded-bold" width="20"></iconify-icon>
             </div>
             <div>
               <div class="stat-value" id="stat-total">0</div>
@@ -507,9 +500,9 @@
           </div>
         </div>
         <div class="col-4">
-          <div class="stat-card h-100">
+          <div class="stat-card stat-card--active h-100">
             <div class="stat-icon si-active">
-              <iconify-icon icon="solar:user-check-rounded-bold" width="24"></iconify-icon>
+              <iconify-icon icon="solar:user-check-rounded-bold" width="20"></iconify-icon>
             </div>
             <div>
               <div class="stat-value" id="stat-active">0</div>
@@ -518,9 +511,9 @@
           </div>
         </div>
         <div class="col-4">
-          <div class="stat-card h-100">
+          <div class="stat-card stat-card--inactive h-100">
             <div class="stat-icon si-inactive">
-              <iconify-icon icon="solar:user-cross-rounded-bold" width="24"></iconify-icon>
+              <iconify-icon icon="solar:user-cross-rounded-bold" width="20"></iconify-icon>
             </div>
             <div>
               <div class="stat-value" id="stat-inactive">0</div>
@@ -530,38 +523,67 @@
         </div>
       </div>
 
-      <div class="action-grid">
-        <div class="action-card action-card--static">
-          <div class="action-card-icon">
-            <iconify-icon icon="solar:link-bold" width="24"></iconify-icon>
+      <!-- Quick Actions -->
+      <div class="ov-label">Quick Actions</div>
+      <div class="ov-actions-grid">
+
+        <!-- Invite -->
+        <div class="ov-action-card">
+          <div class="ov-action-icon" style="background:rgba(0,167,111,0.1);color:var(--primary-main);">
+            <iconify-icon icon="solar:link-bold" width="22"></iconify-icon>
           </div>
           <div style="flex:1;min-width:0;">
-            <div class="action-card-title">Staff Invite Link</div>
-            <div class="action-card-desc">Generate an invite link for staff to join your merchant account.</div>
-            <div class="action-card-btns">
+            <div class="ov-action-title">Staff Invite Link</div>
+            <div class="ov-action-desc">Generate a link or QR code for staff to join.</div>
+            <div class="ov-action-btns">
               <button class="invite-btn" onclick="openQrModalQR()">
-                <iconify-icon icon="solar:qr-code-linear" width="16"></iconify-icon>
+                <iconify-icon icon="solar:qr-code-linear" width="14"></iconify-icon>
                 QR Code
               </button>
               <button class="invite-btn" onclick="openInviteEmailModal()">
-                <iconify-icon icon="solar:letter-linear" width="16"></iconify-icon>
-                Invite
+                <iconify-icon icon="solar:letter-linear" width="14"></iconify-icon>
+                Send Email
               </button>
             </div>
           </div>
         </div>
-        <div class="action-card" onclick="openAddModal()">
-          <div class="action-card-icon">
-            <iconify-icon icon="solar:user-plus-bold" width="24"></iconify-icon>
+
+        <!-- Add by VLINK ID -->
+        <div class="ov-action-card ov-action-card--link" onclick="openAddModal()">
+          <div class="ov-action-icon" style="background:rgba(59,130,246,0.1);color:#3b82f6;">
+            <iconify-icon icon="solar:user-plus-bold" width="22"></iconify-icon>
           </div>
-          <div style="flex:1;">
-            <div class="action-card-title">Add Staff by VLINK ID</div>
-            <div class="action-card-desc">Directly invite a staff member by entering their VLINK ID.</div>
+          <div style="flex:1;min-width:0;">
+            <div class="ov-action-title">Add by VLINK ID</div>
+            <div class="ov-action-desc">Add a staff member using their VLINK ID directly.</div>
           </div>
-          <div class="action-card-arrow">
-            <iconify-icon icon="solar:arrow-right-linear" width="20"></iconify-icon>
-          </div>
+          <iconify-icon icon="solar:arrow-right-linear" width="16" style="color:var(--grey-400);flex-shrink:0;"></iconify-icon>
         </div>
+
+        <!-- View Staff List -->
+        <div class="ov-action-card ov-action-card--link" onclick="switchTab('staff-list')">
+          <div class="ov-action-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b;">
+            <iconify-icon icon="solar:users-group-two-rounded-bold" width="22"></iconify-icon>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div class="ov-action-title">View Staff List</div>
+            <div class="ov-action-desc">Browse, search, and manage all staff members.</div>
+          </div>
+          <iconify-icon icon="solar:arrow-right-linear" width="16" style="color:var(--grey-400);flex-shrink:0;"></iconify-icon>
+        </div>
+
+        <!-- Manage Roles -->
+        <div class="ov-action-card ov-action-card--link" onclick="switchTab('role-settings')">
+          <div class="ov-action-icon" style="background:rgba(124,58,237,0.1);color:#7c3aed;">
+            <iconify-icon icon="solar:shield-user-bold" width="22"></iconify-icon>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div class="ov-action-title">Manage Roles</div>
+            <div class="ov-action-desc">Configure roles, permissions, and daily limits.</div>
+          </div>
+          <iconify-icon icon="solar:arrow-right-linear" width="16" style="color:var(--grey-400);flex-shrink:0;"></iconify-icon>
+        </div>
+
       </div>
     </div>
 

@@ -224,42 +224,57 @@
     .role-card {
       background: #fff;
       border: 1px solid var(--grey-300);
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
-      min-height: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
+      transition: box-shadow 0.2s, transform 0.2s;
     }
+    .role-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.09); transform: translateY(-2px); }
     .role-header {
-      padding: 20px 24px; border-bottom: 1px solid var(--grey-200);
+      padding: 18px 20px 16px; border-bottom: 1px solid var(--grey-200);
       display: flex; align-items: flex-start; gap: 14px;
     }
     .role-icon {
-      width: 44px; height: 44px; border-radius: 10px;
+      width: 42px; height: 42px; border-radius: 10px;
       background: rgba(0,167,111,0.1); color: var(--primary-main);
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-    .role-name { font-size: 16px; font-weight: 700; color: var(--grey-900); }
-    .role-desc { font-size: 13px; color: var(--grey-600); margin-top: 2px; }
+    .role-name {
+      font-size: 15px; font-weight: 700; color: var(--grey-900);
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .role-badge-default {
+      font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+      background: rgba(0,167,111,0.12); color: var(--primary-main);
+      text-transform: uppercase; letter-spacing: 0.4px;
+    }
+    .role-desc { font-size: 12px; color: var(--grey-500); margin-top: 3px; line-height: 1.5; }
     .role-card-body {
-      padding: 16px 24px 20px;
+      padding: 16px 20px 18px;
       display: flex;
       flex: 1;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
     }
-    .role-stat-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 12px 14px;
+    .role-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .role-stat-box {
+      padding: 10px 14px;
       background: var(--grey-100);
       border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
-    .role-stat-label { font-size: 12px; font-weight: 600; color: var(--grey-500); }
-    .role-stat-value { font-size: 20px; font-weight: 700; color: var(--grey-900); }
-    .role-card-actions { margin-top: auto; display: flex; justify-content: flex-end; }
+    .role-stat-label { font-size: 11px; font-weight: 600; color: var(--grey-500); text-transform: uppercase; letter-spacing: 0.4px; }
+    .role-stat-value { font-size: 18px; font-weight: 700; color: var(--grey-900); }
+    .role-stat-unit { font-size: 11px; color: var(--grey-400); font-weight: 500; }
+    .role-card-actions { margin-top: auto; }
 
     .perm-section { border-bottom: 1px solid var(--grey-200); padding: 20px 24px; }
     .perm-section:last-child { border-bottom: none; }
@@ -1296,26 +1311,39 @@
           const staffRole = s.role.toLowerCase();
           return (staffRole === roleName || staffRole === roleId) && s.status !== 'DELETED';
         }).length;
+        const limitLabel = r.dailyLimit ? '$' + r.dailyLimit.toLocaleString() : '∞';
+        const limitUnit = r.dailyLimit ? 'USD / day' : 'No limit';
         return `<div class="col-12 col-md-6 col-xl-4">
           <div class="role-card">
             <div class="role-header">
               <div class="role-icon">
                 <iconify-icon icon="solar:shield-user-bold" width="22"></iconify-icon>
               </div>
-              <div>
-                <div class="role-name">${r.name}</div>
+              <div style="flex:1;min-width:0;">
+                <div class="role-name">
+                  ${r.name}
+                  ${r.isDefault ? '<span class="role-badge-default">Default</span>' : ''}
+                </div>
                 <div class="role-desc">${r.desc}</div>
               </div>
             </div>
             <div class="role-card-body">
-              <div class="role-stat-row">
-                <div class="role-stat-label">Staff Count</div>
-                <div class="role-stat-value">${staffCount}</div>
+              <div class="role-stats-grid">
+                <div class="role-stat-box">
+                  <div class="role-stat-label">Staff</div>
+                  <div class="role-stat-value">${staffCount}</div>
+                  <div class="role-stat-unit">members</div>
+                </div>
+                <div class="role-stat-box">
+                  <div class="role-stat-label">Daily Limit</div>
+                  <div class="role-stat-value" style="font-size:15px;margin-top:2px;">${limitLabel}</div>
+                  <div class="role-stat-unit">${limitUnit}</div>
+                </div>
               </div>
               <div class="role-card-actions">
-                <a href="cashier-role-detail.html" class="action-btn" style="width:auto;padding:0 12px;gap:6px;font-size:13px;font-weight:500;color:var(--primary-main);border-color:var(--primary-main);text-decoration:none;">
-                  <iconify-icon icon="solar:eye-linear" width="14"></iconify-icon>
-                  View Detail
+                <a href="cashier-role-detail.html" class="btn-save" style="display:flex;align-items:center;justify-content:center;gap:6px;width:100%;text-decoration:none;font-size:13px;padding:9px 16px;">
+                  <iconify-icon icon="solar:settings-bold" width="15"></iconify-icon>
+                  Manage Role
                 </a>
               </div>
             </div>

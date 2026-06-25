@@ -587,33 +587,55 @@
     </div>
   </main>
 
-  <!-- ── Modal: QR Code ── -->
+  <!-- ── Modal: Invite Link ── -->
   <div class="modal-overlay" id="qrModal">
     <div class="modal-box">
       <div class="modal-head">
-        <div class="modal-title">Staff Invite QR Code</div>
+        <div class="modal-title">Invite Link</div>
         <button class="modal-close" onclick="closeQrModal()">
           <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
         </button>
       </div>
-      <div class="modal-body" style="text-align:center;">
-        <div style="text-align:left;margin-bottom:18px;">
+      <div class="modal-body">
+        <div style="margin-bottom:18px;">
           <label class="form-label" for="qrRoleSelect">Role assigned when joining</label>
           <select class="filter-select" id="qrRoleSelect" style="width:100%;min-width:unset;" onchange="regenerateQr()">
             <option value="">Select a role...</option>
           </select>
         </div>
-        <div class="qr-wrap">
-          <div id="qrcode" style="display:inline-block;"></div>
+        <div id="inviteLinkSection" style="display:none;">
+          <div style="display:flex;align-items:center;gap:8px;background:var(--grey-100);border:1px solid var(--grey-300);border-radius:8px;padding:10px 14px;margin-bottom:14px;">
+            <iconify-icon icon="solar:link-linear" width="16" style="color:var(--grey-500);flex-shrink:0;"></iconify-icon>
+            <span id="inviteLinkText" style="font-size:13px;color:var(--grey-700);word-break:break-all;flex:1;"></span>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+            <button class="btn-outline-sm" id="qrCopyUrlBtn" style="margin:0;" onclick="copyInviteUrl()">
+              <iconify-icon icon="solar:copy-linear" width="16"></iconify-icon>
+              Copy
+            </button>
+            <button class="btn-outline-sm" id="qrToggleBtn" style="margin:0;" onclick="toggleQrCode()">
+              <iconify-icon icon="solar:qr-code-linear" width="16"></iconify-icon>
+              QR Code
+            </button>
+            <button class="btn-outline-sm" style="margin:0;" onclick="inviteViaEmail()">
+              <iconify-icon icon="solar:letter-linear" width="16"></iconify-icon>
+              Invite
+            </button>
+          </div>
+          <div id="qrSection" style="display:none;text-align:center;margin-top:20px;">
+            <div class="qr-wrap">
+              <div id="qrcode" style="display:inline-block;"></div>
+            </div>
+            <p class="qr-note">
+              Staff scan this QR code to join as <strong id="qrRoleLabel">—</strong>.<br />
+              <span style="color:var(--grey-400);font-size:12px;">You will receive an email notification when someone joins via QR.</span>
+            </p>
+            <button class="btn-outline-sm" id="qrDownloadBtn" style="margin-top:12px;">
+              <iconify-icon icon="solar:download-linear" width="16"></iconify-icon>
+              Download QR
+            </button>
+          </div>
         </div>
-        <p class="qr-note" id="qrNote" style="display:none;">
-          Staff scan this QR code to join as <strong id="qrRoleLabel">—</strong>.<br />
-          <span style="color:var(--grey-400);font-size:12px;">You will receive an email notification when someone joins via QR.</span>
-        </p>
-        <button class="btn-outline-sm" id="qrDownloadBtn" style="display:none;">
-          <iconify-icon icon="solar:download-linear" width="16"></iconify-icon>
-          Download QR Code
-        </button>
       </div>
     </div>
   </div>
@@ -944,43 +966,80 @@
       });
     }
 
-    /* QR Modal */
+    /* Invite Link Modal */
     let _qrInstance = null;
     function _baseInviteUrl() {
       return window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/') + 'staff-invite.html';
+    }
+    function _currentInviteUrl() {
+      const sel = document.getElementById('qrRoleSelect');
+      return sel.value ? _baseInviteUrl() + '?role=' + encodeURIComponent(sel.value) : null;
     }
     function openQrModal() {
       const sel = document.getElementById('qrRoleSelect');
       sel.innerHTML = '<option value="">Select a role...</option>' +
         ROLES.map(r => `<option value="${r.id}">${r.name}</option>`).join('');
+      document.getElementById('inviteLinkSection').style.display = 'none';
+      document.getElementById('qrSection').style.display = 'none';
       document.getElementById('qrcode').innerHTML = '';
       _qrInstance = null;
-      document.getElementById('qrNote').style.display = 'none';
-      document.getElementById('qrDownloadBtn').style.display = 'none';
       document.getElementById('qrModal').classList.add('open');
     }
     function regenerateQr() {
       const sel = document.getElementById('qrRoleSelect');
       const roleId = sel.value;
-      const roleName = sel.options[sel.selectedIndex]?.text || '';
-      const container = document.getElementById('qrcode');
-      container.innerHTML = '';
-      _qrInstance = null;
       if (!roleId) {
-        document.getElementById('qrNote').style.display = 'none';
-        document.getElementById('qrDownloadBtn').style.display = 'none';
+        document.getElementById('inviteLinkSection').style.display = 'none';
+        document.getElementById('qrSection').style.display = 'none';
+        document.getElementById('qrcode').innerHTML = '';
+        _qrInstance = null;
         return;
       }
       const url = _baseInviteUrl() + '?role=' + encodeURIComponent(roleId);
-      _qrInstance = new QRCode(container, {
-        text: url,
-        width: 180, height: 180,
-        colorDark: '#212b36', colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.M,
+      document.getElementById('inviteLinkText').textContent = url;
+      document.getElementById('inviteLinkSection').style.display = 'block';
+      document.getElementById('qrSection').style.display = 'none';
+      document.getElementById('qrcode').innerHTML = '';
+      _qrInstance = null;
+    }
+    function toggleQrCode() {
+      const sec = document.getElementById('qrSection');
+      const url = _currentInviteUrl();
+      if (!url) return;
+      if (sec.style.display === 'none') {
+        sec.style.display = 'block';
+        if (!_qrInstance) {
+          const sel = document.getElementById('qrRoleSelect');
+          document.getElementById('qrRoleLabel').textContent = sel.options[sel.selectedIndex]?.text || '—';
+          _qrInstance = new QRCode(document.getElementById('qrcode'), {
+            text: url,
+            width: 180, height: 180,
+            colorDark: '#212b36', colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M,
+          });
+        }
+      } else {
+        sec.style.display = 'none';
+      }
+    }
+    function copyInviteUrl() {
+      const url = _currentInviteUrl();
+      if (!url) return;
+      navigator.clipboard.writeText(url).then(() => {
+        const btn = document.getElementById('qrCopyUrlBtn');
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<iconify-icon icon="solar:check-circle-linear" width="16"></iconify-icon> Copied!';
+        setTimeout(() => { btn.innerHTML = orig; }, 2000);
       });
-      document.getElementById('qrRoleLabel').textContent = roleName;
-      document.getElementById('qrNote').style.display = 'block';
-      document.getElementById('qrDownloadBtn').style.display = 'inline-flex';
+    }
+    function inviteViaEmail() {
+      const url = _currentInviteUrl();
+      if (!url) return;
+      const sel = document.getElementById('qrRoleSelect');
+      const roleName = sel.options[sel.selectedIndex]?.text || 'Staff';
+      const subject = encodeURIComponent('You\'re invited to join as ' + roleName);
+      const body = encodeURIComponent('Hi,\n\nYou have been invited to join our merchant team as ' + roleName + '.\n\nPlease use the link below to accept the invitation:\n' + url + '\n\nThank you.');
+      window.open('mailto:?subject=' + subject + '&body=' + body);
     }
     function closeQrModal() { document.getElementById('qrModal').classList.remove('open'); }
 

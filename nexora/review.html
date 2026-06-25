@@ -25,6 +25,29 @@
     .tag-chip.selected { background-color: #10b981; color: white; border-color: #10b981; }
     .star-btn svg { transition: all 0.1s ease; }
     .star-btn.active svg { fill: #f59e0b; stroke: #f59e0b; }
+
+    /* Nexora brand buttons */
+    .btn-nexora-primary {
+      background: linear-gradient(90deg, #6c4df6 0%, #4f46e5 100%);
+      position: relative;
+    }
+    .btn-nexora-primary:hover { background: #563bd8; }
+    .btn-glow-pulse { position: relative; }
+    .btn-glow-pulse::after {
+      content: '';
+      position: absolute;
+      inset: -2.5px;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, #6c4df6, #16b7ff);
+      z-index: -1;
+      opacity: 0.55;
+      filter: blur(6px);
+      animation: pulseGlow 2.5s infinite alternate;
+    }
+    @keyframes pulseGlow {
+      from { opacity: 0.4; filter: blur(5px); }
+      to   { opacity: 0.75; filter: blur(9px); }
+    }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50">
@@ -132,11 +155,11 @@
 
     <!-- Action Buttons -->
     <div class="flex gap-2 animate-up-3 pb-2">
-      <button onclick="submitReview()" class="flex-1 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-bold rounded-xl shadow-md shadow-emerald-200 hover:from-emerald-600 hover:to-teal-600 active:scale-95 transition-all duration-200 flex items-center justify-center gap-1.5">
+      <button onclick="submitReview()" class="btn-glow-pulse flex-1 relative btn-nexora-primary text-white text-sm font-extrabold py-3 px-6 rounded-full shadow-md transition-all duration-300 hover:scale-[1.04] active:scale-95 flex items-center justify-center gap-1.5">
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
         Gửi đánh giá
       </button>
-      <button onclick="skipReview()" class="px-5 py-3 bg-gray-100 text-gray-600 text-sm font-bold rounded-xl hover:bg-gray-200 active:scale-95 transition-all duration-200">
+      <button onclick="skipReview()" class="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-[#6c4df6] text-sm font-extrabold rounded-full shadow-sm border border-slate-200/80 transition-all duration-300 hover:scale-[1.04] active:scale-95">
         Bỏ qua
       </button>
     </div>

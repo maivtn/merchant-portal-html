@@ -109,8 +109,9 @@
   </div>
 
   <script>
+    const PAGE_PARAMS = new URLSearchParams(window.location.search);
     // Multi-select enabled by default, disabled only when URL has ?isMulti=0
-    const SHOP_HAS_PAYOUT = new URLSearchParams(window.location.search).get('isMulti') !== '0';
+    const SHOP_HAS_PAYOUT = PAGE_PARAMS.get('isMulti') !== '0';
 
     const STAFF = [
       { name: 'David L.',  role: 'Nail Technician',         initial: 'D', from: '#7c3aed', to: '#6d28d9' },
@@ -121,7 +122,15 @@
       { name: 'Lisa N.',   role: 'Gel & Extensions',        initial: 'L', from: '#10b981', to: '#0d9488' },
     ];
 
-    let selectedIndices = new Set();
+    const PRESELECTED_STAFF = (() => {
+      try { return JSON.parse(PAGE_PARAMS.get('staffList') || '[]'); } catch { return []; }
+    })();
+
+    let selectedIndices = new Set(
+      PRESELECTED_STAFF
+        .map(selected => STAFF.findIndex(s => s.name === selected.name && (!selected.role || s.role === selected.role)))
+        .filter(idx => idx >= 0)
+    );
     let filteredStaff = [...STAFF];
 
     function renderList(list) {
@@ -211,6 +220,7 @@
     }
 
     renderList(STAFF);
+    updateNextBtn();
   </script>
 </body>
 </html>

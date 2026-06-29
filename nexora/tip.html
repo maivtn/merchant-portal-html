@@ -19,6 +19,12 @@
     .split-tab.active { background: white; color: #6c4df6; font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .pct-btn { transition: all 0.15s ease; }
+    .pct-btn:active { transform: scale(0.95); }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50">
@@ -39,6 +45,22 @@
 
     <!-- Amount Section — Single -->
     <div id="singleAmountSection" class="bg-white rounded-xl shadow-sm border border-gray-100 p-3">
+      <div class="flex items-center justify-between mb-2">
+        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Số tiền tip</p>
+        <button onclick="toggleAmountGuide(this)" class="flex items-center gap-1 text-xs text-gray-400 hover:text-emerald-600 transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 16v-4m0-4h.01"/></svg>
+          Gợi ý
+        </button>
+      </div>
+      <div id="amountGuide" class="hidden bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-2.5 text-xs text-amber-800">
+        <p class="font-semibold mb-1">💡 Mức tip phổ biến tại nail salon</p>
+        <div class="flex gap-2 flex-wrap">
+          <button onclick="selectAmount(8);toggleAmountGuide(null,'hide')"  class="pct-btn bg-white border border-amber-300 rounded-md px-2 py-1 font-semibold text-amber-700">$8 — 15%</button>
+          <button onclick="selectAmount(10);toggleAmountGuide(null,'hide')" class="pct-btn bg-white border border-amber-300 rounded-md px-2 py-1 font-semibold text-amber-700">$10 — 18%</button>
+          <button onclick="selectAmount(12);toggleAmountGuide(null,'hide')" class="pct-btn bg-white border border-amber-300 rounded-md px-2 py-1 font-semibold text-amber-700">$12 — 20%</button>
+        </div>
+        <p class="mt-1.5 text-amber-600">Trung bình với dịch vụ ~$55–60. Bấm để chọn nhanh.</p>
+      </div>
       <div class="grid grid-cols-4 gap-1.5 mb-2.5">
         <button onclick="selectAmount(5)"  class="quick-amount-btn border-2 border-gray-200 rounded-lg py-1.5 text-sm font-semibold text-gray-700">$5</button>
         <button onclick="selectAmount(10)" class="quick-amount-btn border-2 border-gray-200 rounded-lg py-1.5 text-sm font-semibold text-gray-700">$10</button>
@@ -92,7 +114,10 @@
 
     <!-- Payment Methods -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-3">
-      <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Phương thức thanh toán</p>
+      <div class="flex items-center justify-between mb-2">
+        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Phương thức thanh toán</p>
+        <span class="text-xs text-gray-400">Chọn để xem hướng dẫn</span>
+      </div>
       <div class="grid grid-cols-3 gap-2">
         <button onclick="selectPayment('zelle')"    id="pay-zelle"    class="payment-btn flex flex-col items-center gap-1 p-1.5 rounded-lg border-2 border-gray-100">
           <img src="../atm-qr/icons/zelle.png"    alt="Zelle"      class="w-12 h-12 rounded-full object-cover shadow-sm" />
@@ -104,7 +129,7 @@
         </button>
         <button onclick="selectPayment('cashapp')"  id="pay-cashapp"  class="payment-btn flex flex-col items-center gap-1 p-1.5 rounded-lg border-2 border-gray-100">
           <img src="../atm-qr/icons/cash_app.png" alt="Cash App"   class="w-12 h-12 rounded-full object-cover shadow-sm" />
-          <span class="text-xs font-medium text-gray-600">Cash</span>
+          <span class="text-xs font-medium text-gray-600">Cash App</span>
         </button>
         <button onclick="selectPayment('apple')"    id="pay-apple"    class="payment-btn flex flex-col items-center gap-1 p-1.5 rounded-lg border-2 border-gray-100">
           <img src="../atm-qr/icons/apple_cash.png" alt="Apple Cash" class="w-12 h-12 rounded-full object-cover shadow-sm" />
@@ -114,12 +139,14 @@
           <img src="../atm-qr/icons/paypal.png"   alt="PayPal"     class="w-12 h-12 rounded-full object-cover shadow-sm" />
           <span class="text-xs font-medium text-gray-600">PayPal</span>
         </button>
-        <button onclick="selectPayment('vlinkpay')" id="pay-vlinkpay" class="payment-btn flex flex-col items-center gap-1 p-1.5 rounded-lg border-2 border-gray-100">
-          <img src="../atm-qr/icons/vlinkpay.png" alt="VLinkPay"   class="w-12 h-12 rounded-full object-cover shadow-sm" />
+        <button onclick="selectPayment('vlinkpay')" id="pay-vlinkpay" class="payment-btn relative flex flex-col items-center gap-1 p-1.5 rounded-lg border-2 border-gray-100">
+          <span class="absolute -top-1.5 left-1/2 -translate-x-1/2 text-[9px] font-bold bg-emerald-500 text-white px-1.5 rounded-full whitespace-nowrap">★ Tốt nhất</span>
+          <img src="../atm-qr/icons/vlinkpay.png" alt="VLinkPay"   class="w-12 h-12 rounded-full object-cover shadow-sm mt-1" />
           <span class="text-xs font-medium text-gray-600">VLINKPAY</span>
         </button>
       </div>
     </div>
+
 
     <!-- Account Info — standard -->
     <div id="accountInfo" class="hidden bg-emerald-50 rounded-xl border border-emerald-200 px-3 py-2.5">
@@ -138,10 +165,22 @@
 
     <!-- Account Info — VLinkPay -->
     <div id="vlinkpayInfo" class="hidden bg-emerald-50 rounded-xl border border-emerald-200 p-3">
-      <div class="flex items-center justify-between mb-2">
+      <div class="flex items-center justify-between mb-2.5">
         <p class="text-xs font-semibold text-emerald-700 uppercase tracking-wider">Tài khoản VLinkPay</p>
         <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">VLinkPay</span>
       </div>
+
+      <!-- Asset row -->
+      <div class="flex items-center gap-2 bg-white border border-emerald-200 rounded-lg px-3 py-2 mb-3">
+        <div class="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center shrink-0">
+          <span class="text-white font-bold" style="font-size:9px;">$</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-bold text-gray-800 leading-none">USDV</p>
+        </div>
+        <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">Asset đã chọn</span>
+      </div>
+
       <div class="flex gap-3 items-center">
         <div class="shrink-0 bg-white rounded-lg p-1.5 shadow-sm border border-emerald-100">
           <img id="vlinkQrImg" src="" alt="QR" class="w-20 h-20 rounded" />
@@ -159,8 +198,49 @@
     </div>
 
     <!-- Step guide -->
-    <div id="stepGuide" class="hidden bg-blue-50 border border-blue-100 rounded-lg px-3 py-2 text-xs text-gray-600">
-      <span id="step1Text"></span> <span class="text-blue-300">·</span> <span id="step2Text"></span> &amp; chuyển <span id="step3Text" class="font-semibold text-gray-800"></span> <span class="text-blue-300">·</span> (3) Sau đó nhấn xác nhận bên dưới
+    <div id="stepGuide" class="hidden bg-blue-50 border border-blue-100 rounded-xl p-3">
+      <p class="text-xs font-bold text-blue-700 mb-2.5 flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        <span id="stepGuideTitle">Cách gửi tip</span>
+      </p>
+      <div class="space-y-0">
+
+        <!-- Step 1 -->
+        <div class="flex gap-2.5">
+          <div class="flex flex-col items-center shrink-0">
+            <div class="w-5 h-5 rounded-full bg-blue-500 text-white flex items-center justify-center text-[10px] font-bold">1</div>
+            <div class="w-px flex-1 bg-blue-200 my-1"></div>
+          </div>
+          <div class="flex-1 min-w-0 pb-3">
+            <p class="text-xs font-semibold text-gray-700 leading-tight" id="step1Label"></p>
+            <div id="step1Sub" class="mt-1.5"></div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex gap-2.5">
+          <div class="flex flex-col items-center shrink-0">
+            <div class="w-5 h-5 rounded-full bg-blue-500 text-white flex items-center justify-center text-[10px] font-bold">2</div>
+            <div class="w-px flex-1 bg-blue-200 my-1"></div>
+          </div>
+          <div class="flex-1 min-w-0 pb-3">
+            <p class="text-xs font-semibold text-gray-700 leading-tight" id="step2Label"></p>
+            <p class="text-xs text-gray-500 mt-0.5" id="step2Sub"></p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex gap-2.5">
+          <div class="flex flex-col items-center shrink-0">
+            <div class="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold">3</div>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs font-semibold text-gray-700 leading-tight">Quay lại & xác nhận</p>
+            <p class="text-xs text-gray-500 mt-0.5">Nhấn nút xanh bên dưới để ghi nhận tip đã gửi</p>
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <!-- Send Button -->
@@ -411,12 +491,32 @@
       const acc = (IS_MULTI ? shopAccounts : paymentAccounts)[method];
       const total = getTotalAmount();
       const amtStr = total > 0 ? fmt(total) : '?';
-      document.getElementById('step1Text').textContent = `(1) ${acc.copyStep}`;
-      document.getElementById('step2Text').textContent = `(2) Mở ${acc.app}`;
-      document.getElementById('step3Text').textContent = amtStr;
+
       document.getElementById('sendBtnText').textContent = buildSendBtnText(acc);
       document.getElementById('sendBtn').style.background = `linear-gradient(to right, ${acc.from}, ${acc.to})`;
       document.getElementById('stepGuide').classList.remove('hidden');
+      document.getElementById('stepGuideTitle').textContent = `Cách gửi tip qua ${acc.badge}`;
+
+      if (method === 'vlinkpay') {
+        document.getElementById('step1Label').textContent = 'Quét QR code hoặc sao chép địa chỉ ví';
+        document.getElementById('step1Sub').innerHTML =
+          '<p class="text-xs text-blue-600 font-medium">QR code & địa chỉ ví đã hiển thị ngay phía trên ↑</p>';
+        document.getElementById('step2Label').textContent = `Mở VLINKPAY → chọn asset USDV → gửi ${amtStr}`;
+        document.getElementById('step2Sub').textContent = 'Chọn đúng asset USDV trước khi nhập số tiền. Tip ghi nhận tự động, thợ nhận ngay.';
+      } else {
+        const recipient = IS_MULTI ? 'Bitcoin Nail Bar' : STAFF_NAME;
+        document.getElementById('step1Label').textContent = acc.copyStep;
+        document.getElementById('step1Sub').innerHTML = `
+          <div class="flex items-center gap-2 bg-white border border-blue-200 rounded-lg px-2.5 py-1.5">
+            <span class="text-xs font-mono text-gray-700 truncate flex-1 min-w-0">${acc.value}</span>
+            <button onclick="copyAccount()" class="shrink-0 text-xs font-bold text-blue-600 hover:text-blue-800 transition whitespace-nowrap">Sao chép ↗</button>
+          </div>`;
+        document.getElementById('step2Label').textContent = `Mở ${acc.app} → chuyển ${amtStr} cho ${recipient}`;
+        document.getElementById('step2Sub').textContent =
+          total > 0
+            ? `Nhập đúng số tiền ${amtStr} khi chuyển khoản`
+            : 'Nhập số tiền tip bạn muốn gửi';
+      }
     }
 
     function selectPayment(method) {
@@ -459,6 +559,15 @@
         setTimeout(() => el.classList.add('hidden'), 2000);
       });
     }
+
+    // ── Amount guide toggle ───────────────────────────────────────────────────
+    function toggleAmountGuide(btn, force) {
+      const el = document.getElementById('amountGuide');
+      const hidden = el.classList.contains('hidden');
+      if (force === 'hide' || !hidden) { el.classList.add('hidden'); }
+      else { el.classList.remove('hidden'); }
+    }
+
 
     // ── Send ─────────────────────────────────────────────────────────────────
     function sendTip() {

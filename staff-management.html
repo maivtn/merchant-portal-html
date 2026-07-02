@@ -426,6 +426,49 @@
     .perm-block-row:last-child { border-bottom: none; }
     .perm-block-row-label { font-size: 14px; color: var(--grey-800); }
 
+    /* Sales Orders — summary bar */
+    .orders-summary {
+      display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
+      background: #fff; border: 1px solid var(--grey-200); border-radius: 12px;
+      padding: 14px 20px; margin-bottom: 16px;
+    }
+    .orders-summary-item { display: flex; flex-direction: column; gap: 2px; }
+    .orders-summary-label {
+      font-size: 11px; font-weight: 700; color: var(--grey-400);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .orders-summary-value { font-size: 20px; font-weight: 700; color: var(--grey-900); }
+    .orders-summary-value.money { color: var(--primary-main); }
+
+    /* Sales by Staff leaderboard */
+    .leaderboard {
+      background: #fff; border: 1px solid var(--grey-200); border-radius: 14px;
+      padding: 6px; margin-bottom: 24px;
+    }
+    .lb-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 14px; border-radius: 10px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .lb-row:hover { background: var(--grey-100); }
+    .lb-row.active { background: rgba(0,167,111,0.08); box-shadow: inset 0 0 0 1px rgba(0,167,111,0.25); }
+    .lb-rank { width: 22px; font-size: 13px; font-weight: 700; color: var(--grey-400); text-align: center; flex-shrink: 0; }
+    .lb-info { width: 150px; flex-shrink: 0; min-width: 0; }
+    .lb-name { font-weight: 600; color: var(--grey-900); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .lb-sub { font-size: 12px; color: var(--grey-500); }
+    .lb-bar-wrap { flex: 1; min-width: 60px; height: 8px; background: var(--grey-200); border-radius: 4px; overflow: hidden; }
+    .lb-bar { height: 100%; background: var(--primary-main); border-radius: 4px; transition: width 0.3s; }
+    .lb-count { font-size: 12px; color: var(--grey-500); text-align: right; min-width: 68px; flex-shrink: 0; white-space: nowrap; }
+    .lb-amount { font-size: 15px; font-weight: 700; color: var(--grey-900); text-align: right; min-width: 90px; flex-shrink: 0; white-space: nowrap; }
+
+    /* Order status badges */
+    .badge-completed { background: rgba(0,167,111,0.12); color: #00a76f; }
+    .badge-pending { background: rgba(245,158,11,0.16); color: #b45309; }
+    .badge-refunded { background: rgba(99,115,129,0.14); color: var(--grey-600); }
+
+    .link-sales { color: var(--primary-main); font-weight: 600; cursor: pointer; text-decoration: none; }
+    .link-sales:hover { text-decoration: underline; }
+
     @media (max-width: 768px) {
       .stat-card {
         min-width: 0;
@@ -446,6 +489,12 @@
       .role-header { padding: 16px; }
       .role-card-body { padding: 14px 16px 16px; }
       .tabs { overflow-x: auto; width: 100%; }
+      .lb-bar-wrap { display: none; }
+      .lb-info { width: auto; flex: 1; }
+      .lb-row { gap: 10px; padding: 10px; }
+      .lb-count { display: none; }
+      .orders-summary { gap: 18px; padding: 12px 16px; }
+      .orders-summary-value { font-size: 17px; }
     }
   </style>
 </head>
@@ -479,6 +528,7 @@
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('overview')" id="tab-btn-overview">Overview</button>
       <button class="tab-btn" onclick="switchTab('staff-list')" id="tab-btn-staff-list">Staff List</button>
+      <button class="tab-btn" onclick="switchTab('sales-orders')" id="tab-btn-sales-orders">Sales Orders</button>
       <button class="tab-btn" onclick="switchTab('role-settings')" id="tab-btn-role-settings">Role Settings</button>
     </div>
 
@@ -572,6 +622,18 @@
           <iconify-icon icon="solar:arrow-right-linear" width="16" style="color:var(--grey-400);flex-shrink:0;"></iconify-icon>
         </div>
 
+        <!-- Sales by Staff -->
+        <div class="ov-action-card ov-action-card--link" onclick="switchTab('sales-orders')">
+          <div class="ov-action-icon" style="background:rgba(0,167,111,0.1);color:var(--primary-main);">
+            <iconify-icon icon="solar:chart-2-bold" width="22"></iconify-icon>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div class="ov-action-title">Sales by Staff</div>
+            <div class="ov-action-desc">See sales orders and totals for each staff member.</div>
+          </div>
+          <iconify-icon icon="solar:arrow-right-linear" width="16" style="color:var(--grey-400);flex-shrink:0;"></iconify-icon>
+        </div>
+
         <!-- Manage Roles -->
         <div class="ov-action-card ov-action-card--link" onclick="switchTab('role-settings')">
           <div class="ov-action-icon" style="background:rgba(124,58,237,0.1);color:#7c3aed;">
@@ -640,6 +702,69 @@
               <iconify-icon icon="solar:arrow-left-linear" width="14"></iconify-icon>
             </button>
             <button type="button" class="pagination-btn" id="btnNext" onclick="nextPage()" disabled>
+              <iconify-icon icon="solar:arrow-right-linear" width="14"></iconify-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Sales Orders ── -->
+    <div id="tab-sales-orders" class="tab-panel">
+      <div class="ov-label">Sales by Staff</div>
+      <div class="leaderboard" id="salesLeaderboard"></div>
+
+      <div class="ov-label">Sales Orders</div>
+      <div class="toolbar">
+        <div class="search-wrap">
+          <iconify-icon icon="solar:magnifer-linear" width="16"></iconify-icon>
+          <input type="text" class="search-input" id="orderSearch" placeholder="Search order ID, customer..." oninput="currentOrderPage=1;renderOrdersTable()" />
+        </div>
+        <select class="filter-select" id="orderStaffFilter" onchange="currentOrderPage=1;renderSalesLeaderboard();renderOrdersTable()">
+          <option value="">All Staff</option>
+        </select>
+        <select class="filter-select" id="orderStatusFilter" onchange="currentOrderPage=1;renderOrdersTable()">
+          <option value="">All Statuses</option>
+          <option value="Completed">Completed</option>
+          <option value="Pending">Pending</option>
+          <option value="Refunded">Refunded</option>
+        </select>
+      </div>
+
+      <div class="orders-summary" id="ordersSummary"></div>
+
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Staff</th>
+                <th>Card Type</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody"></tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <div class="pagination-rows">
+            <span>Rows per page</span>
+            <select class="pagination-select" id="orderRowsPerPage" onchange="changeOrderRowsPerPage()">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+            </select>
+          </div>
+          <div class="pagination-info" id="orderPageInfo">0–0 of 0</div>
+          <div class="pagination-arrows">
+            <button type="button" class="pagination-btn" id="orderBtnPrev" onclick="prevOrderPage()" disabled>
+              <iconify-icon icon="solar:arrow-left-linear" width="14"></iconify-icon>
+            </button>
+            <button type="button" class="pagination-btn" id="orderBtnNext" onclick="nextOrderPage()" disabled>
               <iconify-icon icon="solar:arrow-right-linear" width="14"></iconify-icon>
             </button>
           </div>
@@ -860,14 +985,43 @@
         id: 'cashier', name: 'Cashier',
         desc: 'Can process card sales, payments, and reloads.',
         isDefault: true,
-        perms: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false },
+        perms: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false, view_report:false },
         dailyLimit: 1000
       }
+    ];
+
+    /* Sales orders — one row per order, linked to a staff member.
+       A staff member's "Sales (USD)" total equals the sum of their Completed order amounts. */
+    const SALES_ORDERS = [
+      // STF001 — Nguyen Van A (Completed total = 3,200)
+      { id: 'SO-20613', staffId: 'STF001', date: '2026-06-28', cardType: 'Gift Card',      customer: 'James Wilson', amount: 500, status: 'Completed' },
+      { id: 'SO-20598', staffId: 'STF001', date: '2026-06-27', cardType: 'Gift Card',      customer: 'Maria Garcia', amount: 250, status: 'Completed' },
+      { id: 'SO-20571', staffId: 'STF001', date: '2026-06-25', cardType: 'Gift Card',      customer: 'David Lee',    amount: 750, status: 'Completed' },
+      { id: 'SO-20544', staffId: 'STF001', date: '2026-06-23', cardType: 'GC Payment',     customer: 'Susan Clark',  amount: 400, status: 'Completed' },
+      { id: 'SO-20510', staffId: 'STF001', date: '2026-06-20', cardType: 'Gift Card',      customer: 'Robert Kim',   amount: 600, status: 'Completed' },
+      { id: 'SO-20489', staffId: 'STF001', date: '2026-06-18', cardType: 'Gift Card',      customer: 'Emily Zhang',  amount: 700, status: 'Completed' },
+      { id: 'SO-20612', staffId: 'STF001', date: '2026-06-28', cardType: 'Gift Card',      customer: 'Tom Brown',    amount: 150, status: 'Pending' },
+      { id: 'SO-20505', staffId: 'STF001', date: '2026-06-19', cardType: 'Gift Card',      customer: 'Anna White',   amount: 300, status: 'Refunded' },
+      // STF002 — Tran Thi Bich (Completed total = 7,500)
+      { id: 'SO-20620', staffId: 'STF002', date: '2026-06-29', cardType: 'Crypto Card',    customer: 'Kevin Nguyen', amount: 1200, status: 'Completed' },
+      { id: 'SO-20601', staffId: 'STF002', date: '2026-06-27', cardType: 'Gift Card',      customer: 'Lisa Tran',    amount: 900,  status: 'Completed' },
+      { id: 'SO-20588', staffId: 'STF002', date: '2026-06-26', cardType: 'Crypto Payment', customer: 'Mark Davis',   amount: 1500, status: 'Completed' },
+      { id: 'SO-20560', staffId: 'STF002', date: '2026-06-24', cardType: 'Gift Card',      customer: 'Nancy Vo',     amount: 650,  status: 'Completed' },
+      { id: 'SO-20533', staffId: 'STF002', date: '2026-06-22', cardType: 'Reload',         customer: 'Peter Ho',     amount: 800,  status: 'Completed' },
+      { id: 'SO-20500', staffId: 'STF002', date: '2026-06-19', cardType: 'Crypto Card',    customer: 'Grace Pham',   amount: 1450, status: 'Completed' },
+      { id: 'SO-20477', staffId: 'STF002', date: '2026-06-17', cardType: 'Gift Card',      customer: 'Henry Bui',    amount: 1000, status: 'Completed' },
+      { id: 'SO-20619', staffId: 'STF002', date: '2026-06-29', cardType: 'Crypto Card',    customer: 'Olivia Do',    amount: 400,  status: 'Pending' },
+      // STF003 — Le Van Cuong / inactive (Completed total = 900)
+      { id: 'SO-20305', staffId: 'STF003', date: '2026-06-05', cardType: 'Gift Card',      customer: 'Frank Ly',     amount: 500, status: 'Completed' },
+      { id: 'SO-20288', staffId: 'STF003', date: '2026-06-03', cardType: 'Gift Card',      customer: 'Diana Vu',     amount: 400, status: 'Completed' },
+      { id: 'SO-20290', staffId: 'STF003', date: '2026-06-03', cardType: 'Gift Card',      customer: 'Chris Ma',     amount: 200, status: 'Refunded' },
     ];
 
     let currentPage = 1;
     let rowsPerPage = 10;
     let currentDetailId = null;
+    let currentOrderPage = 1;
+    let orderRowsPerPage = 10;
 
     /* Tabs */
     function switchTab(name) {
@@ -876,6 +1030,7 @@
       document.getElementById('tab-btn-' + name).classList.add('active');
       document.getElementById('tab-' + name).classList.add('active');
       if (name === 'staff-list') renderStaffTable();
+      if (name === 'sales-orders') { populateOrderStaffFilter(); renderSalesLeaderboard(); renderOrdersTable(); }
       if (name === 'role-settings') renderRoleTable();
     }
 
@@ -898,7 +1053,7 @@
       gift_card:'Gift Card', crypto_card:'Crypto Card', membership:'Membership',
       egift:'E-Gift', voucher:'Voucher', promotion:'Promotion', discount:'Discount',
       prepaid:'Prepaid', payment_gift:'GC Pay', payment_crypto:'Crypto Pay',
-      reload:'Reload', product_mgmt:'Product Mgmt'
+      reload:'Reload', product_mgmt:'Product Mgmt', view_report:'Report'
     };
 
     function permTagsHtml(perms) {
@@ -960,7 +1115,7 @@
             <td><span class="badge badge-role">${s.role}</span></td>
             <td>${sb}</td>
             <td style="font-weight:500;text-align:center">${s.cards}</td>
-            <td style="font-weight:500">$${s.sales.toLocaleString()}</td>
+            <td style="font-weight:500"><span class="link-sales" title="View sales orders" onclick="viewStaffOrders('${s.id}')">$${s.sales.toLocaleString()}</span></td>
             <td>
               <div class="action-btns">
                 <button class="action-btn" title="View Detail" onclick="openDetailModal('${s.id}')" style="width:auto;padding:0 10px;gap:6px;font-size:13px;font-weight:500;color:var(--primary-main);border-color:var(--primary-main);">
@@ -999,38 +1154,63 @@
       renderStaffTable();
     }
 
+    /* US-5 — disable a departing staff account immediately, without touching any
+       shared password and without affecting other staff. */
+    function refreshOrdersViewIfActive() {
+      if (document.getElementById('tab-sales-orders').classList.contains('active')) {
+        populateOrderStaffFilter();
+        renderSalesLeaderboard();
+        renderOrdersTable();
+      }
+    }
+
+    function promptSetStatus(id, newStatus, opts = {}) {
+      const s = STAFF.find(x => x.id === id);
+      if (!s || s.status === 'DELETED') return;
+      const apply = () => {
+        s.status = newStatus;
+        updateStats();
+        if (opts.closeDetail) closeDetailModal();
+        if (document.getElementById('tab-staff-list').classList.contains('active')) renderStaffTable();
+        refreshOrdersViewIfActive();
+      };
+      if (newStatus === 'INACTIVE') {
+        Swal.fire({
+          title: 'Deactivate this account?',
+          html: `<b>${s.name}</b>'s account will be disabled <b>immediately</b> — they can no longer sign in or process any sales.<br><br>`
+            + `<span style="color:#637381;font-size:13px;">Only this account is affected. No shared password is changed and every other staff member keeps working. The sales history is kept, and you can reactivate the account at any time.</span>`,
+          icon: 'warning', showCancelButton: true,
+          confirmButtonText: 'Deactivate now', cancelButtonText: 'Cancel',
+          confirmButtonColor: '#f59e0b',
+        }).then(r => {
+          if (r.isConfirmed) {
+            apply();
+            Swal.fire({
+              title: 'Account deactivated',
+              text: `${s.name} no longer has access to the merchant portal.`,
+              icon: 'success', timer: 2200, showConfirmButton: false,
+            });
+          }
+        });
+      } else {
+        Swal.fire({
+          title: 'Reactivate this account?',
+          text: `${s.name} will be able to sign in and process sales again.`,
+          icon: 'question', showCancelButton: true,
+          confirmButtonText: 'Activate', cancelButtonText: 'Cancel',
+          confirmButtonColor: '#00a76f',
+        }).then(r => { if (r.isConfirmed) apply(); });
+      }
+    }
+
     function toggleStaffStatus(id) {
       const s = STAFF.find(x => x.id === id);
       if (!s || s.status === 'DELETED') return;
-      const newStatus = s.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
-      const label = newStatus === 'INACTIVE' ? 'deactivate' : 'activate';
-      Swal.fire({
-        title: `${newStatus === 'INACTIVE' ? 'Deactivate' : 'Activate'} staff?`,
-        text: `Are you sure you want to ${label} ${s.name}?`,
-        icon: 'warning', showCancelButton: true,
-        confirmButtonText: newStatus === 'INACTIVE' ? 'Deactivate' : 'Activate',
-        cancelButtonText: 'Cancel',
-        confirmButtonColor: newStatus === 'INACTIVE' ? '#f59e0b' : '#00a76f',
-      }).then(r => { if (r.isConfirmed) { s.status = newStatus; updateStats(); renderStaffTable(); } });
+      promptSetStatus(id, s.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE');
     }
 
     function confirmSetStatus(id, newStatus) {
-      const s = STAFF.find(x => x.id === id);
-      if (!s) return;
-      const label = newStatus === 'INACTIVE' ? 'Deactivate' : 'Activate';
-      Swal.fire({
-        title: `${label} staff?`,
-        text: `Are you sure you want to ${label.toLowerCase()} ${s.name}?`,
-        icon: 'warning', showCancelButton: true,
-        confirmButtonText: label, cancelButtonText: 'Cancel',
-        confirmButtonColor: newStatus === 'INACTIVE' ? '#f59e0b' : '#00a76f',
-      }).then(r => {
-        if (r.isConfirmed) {
-          s.status = newStatus;
-          updateStats(); closeDetailModal();
-          if (document.getElementById('tab-staff-list').classList.contains('active')) renderStaffTable();
-        }
-      });
+      promptSetStatus(id, newStatus, { closeDetail: true });
     }
 
     function deleteStaff(id) {
@@ -1042,7 +1222,7 @@
         icon: 'warning', showCancelButton: true,
         confirmButtonText: 'Delete', cancelButtonText: 'Cancel',
         confirmButtonColor: '#ff4842',
-      }).then(r => { if (r.isConfirmed) { s.status = 'DELETED'; updateStats(); renderStaffTable(); } });
+      }).then(r => { if (r.isConfirmed) { s.status = 'DELETED'; updateStats(); renderStaffTable(); refreshOrdersViewIfActive(); } });
     }
 
     function confirmDeleteStaff(id) {
@@ -1059,8 +1239,162 @@
           s.status = 'DELETED';
           updateStats(); closeDetailModal();
           if (document.getElementById('tab-staff-list').classList.contains('active')) renderStaffTable();
+          refreshOrdersViewIfActive();
         }
       });
+    }
+
+    /* ── Sales Orders (US-4) ── */
+    function staffName(id) {
+      const s = STAFF.find(x => x.id === id);
+      return s ? s.name : 'Unknown';
+    }
+    function formatOrderDate(d) {
+      const [y, m, day] = d.split('-').map(Number);
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return `${months[m - 1]} ${day}, ${y}`;
+    }
+    function orderStatusBadge(status) {
+      if (status === 'Completed') return '<span class="badge badge-completed">Completed</span>';
+      if (status === 'Pending') return '<span class="badge badge-pending">Pending</span>';
+      return '<span class="badge badge-refunded">Refunded</span>';
+    }
+
+    /* Populate the staff filter dropdown, preserving the current selection. */
+    function populateOrderStaffFilter() {
+      const sel = document.getElementById('orderStaffFilter');
+      const prev = sel.value;
+      const options = STAFF.filter(s => s.status !== 'DELETED');
+      sel.innerHTML = '<option value="">All Staff</option>' +
+        options.map(s => `<option value="${s.id}">${s.name}${s.status === 'INACTIVE' ? ' (inactive)' : ''}</option>`).join('');
+      // keep prior selection only if that staff still exists in the list
+      sel.value = options.some(s => s.id === prev) ? prev : '';
+    }
+
+    function getFilteredOrders() {
+      const q = (document.getElementById('orderSearch').value || '').toLowerCase();
+      const sf = document.getElementById('orderStaffFilter').value;
+      const st = document.getElementById('orderStatusFilter').value;
+      return SALES_ORDERS.filter(o => {
+        if (sf && o.staffId !== sf) return false;
+        if (st && o.status !== st) return false;
+        if (q && !`${o.id} ${o.customer} ${staffName(o.staffId)} ${o.cardType}`.toLowerCase().includes(q)) return false;
+        return true;
+      });
+    }
+
+    /* Completed sales + order count per (non-deleted) staff member. */
+    function staffSalesStats() {
+      return STAFF.filter(s => s.status !== 'DELETED').map(s => {
+        const orders = SALES_ORDERS.filter(o => o.staffId === s.id);
+        const sales = orders.filter(o => o.status === 'Completed').reduce((a, o) => a + o.amount, 0);
+        return { id: s.id, name: s.name, role: s.role, status: s.status, orderCount: orders.length, sales };
+      }).sort((a, b) => b.sales - a.sales);
+    }
+
+    function renderSalesLeaderboard() {
+      const container = document.getElementById('salesLeaderboard');
+      const activeFilter = document.getElementById('orderStaffFilter').value;
+      const stats = staffSalesStats();
+      if (!stats.length) {
+        container.innerHTML = `<div style="padding:24px;text-align:center;color:var(--grey-400);">No staff data</div>`;
+        return;
+      }
+      const max = Math.max(1, ...stats.map(s => s.sales));
+      container.innerHTML = stats.map((s, i) => {
+        const pct = Math.round(s.sales / max * 100);
+        const initials = s.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+        return `<div class="lb-row ${activeFilter === s.id ? 'active' : ''}" onclick="toggleLeaderboardStaff('${s.id}')" title="Filter orders by ${s.name}">
+          <div class="lb-rank">${i + 1}</div>
+          <div class="staff-avatar">${initials}</div>
+          <div class="lb-info">
+            <div class="lb-name">${s.name}</div>
+            <div class="lb-sub">${s.role}${s.status === 'INACTIVE' ? ' • Inactive' : ''}</div>
+          </div>
+          <div class="lb-bar-wrap"><div class="lb-bar" style="width:${pct}%;"></div></div>
+          <div class="lb-count">${s.orderCount} order${s.orderCount === 1 ? '' : 's'}</div>
+          <div class="lb-amount">$${s.sales.toLocaleString()}</div>
+        </div>`;
+      }).join('');
+    }
+
+    function renderOrdersSummary(data) {
+      const completedTotal = data.filter(o => o.status === 'Completed').reduce((a, o) => a + o.amount, 0);
+      const sf = document.getElementById('orderStaffFilter').value;
+      const scope = sf ? staffName(sf) : 'All Staff';
+      document.getElementById('ordersSummary').innerHTML = `
+        <div class="orders-summary-item">
+          <span class="orders-summary-label">Staff</span>
+          <span class="orders-summary-value" style="font-size:16px;">${scope}</span>
+        </div>
+        <div class="orders-summary-item">
+          <span class="orders-summary-label">Orders</span>
+          <span class="orders-summary-value">${data.length}</span>
+        </div>
+        <div class="orders-summary-item">
+          <span class="orders-summary-label">Completed Sales</span>
+          <span class="orders-summary-value money">$${completedTotal.toLocaleString()}</span>
+        </div>`;
+    }
+
+    function renderOrdersTable() {
+      const data = getFilteredOrders();
+      renderOrdersSummary(data);
+      const total = data.length;
+      const pages = Math.max(1, Math.ceil(total / orderRowsPerPage));
+      if (currentOrderPage > pages) currentOrderPage = pages;
+      const start = (currentOrderPage - 1) * orderRowsPerPage;
+      const rows = data.slice(start, start + orderRowsPerPage);
+
+      const tbody = document.getElementById('ordersTableBody');
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:48px 24px;color:var(--grey-400);">No sales orders found</td></tr>`;
+      } else {
+        tbody.innerHTML = rows.map(o => `<tr>
+          <td style="font-weight:600;color:var(--grey-900);white-space:nowrap;">${o.id}</td>
+          <td style="color:var(--grey-600);white-space:nowrap;">${formatOrderDate(o.date)}</td>
+          <td style="white-space:nowrap;">${staffName(o.staffId)}</td>
+          <td><span class="badge badge-role">${o.cardType}</span></td>
+          <td style="color:var(--grey-700);">${o.customer}</td>
+          <td style="font-weight:600;white-space:nowrap;">$${o.amount.toLocaleString()}</td>
+          <td>${orderStatusBadge(o.status)}</td>
+        </tr>`).join('');
+      }
+
+      const s = total === 0 ? 0 : start + 1;
+      const e = Math.min(start + orderRowsPerPage, total);
+      document.getElementById('orderPageInfo').textContent = `${s}–${e} of ${total}`;
+      document.getElementById('orderBtnPrev').disabled = currentOrderPage <= 1;
+      document.getElementById('orderBtnNext').disabled = currentOrderPage >= pages;
+    }
+
+    function prevOrderPage() { if (currentOrderPage > 1) { currentOrderPage--; renderOrdersTable(); } }
+    function nextOrderPage() {
+      const pages = Math.ceil(getFilteredOrders().length / orderRowsPerPage);
+      if (currentOrderPage < pages) { currentOrderPage++; renderOrdersTable(); }
+    }
+    function changeOrderRowsPerPage() {
+      orderRowsPerPage = Number(document.getElementById('orderRowsPerPage').value) || 10;
+      currentOrderPage = 1;
+      renderOrdersTable();
+    }
+
+    /* Jump to the Sales Orders tab pre-filtered to one staff member. */
+    function viewStaffOrders(staffId) {
+      switchTab('sales-orders');
+      document.getElementById('orderStaffFilter').value = staffId;
+      currentOrderPage = 1;
+      renderSalesLeaderboard();
+      renderOrdersTable();
+    }
+
+    /* Leaderboard click: filter by that staff, or clear if it's already selected. */
+    function toggleLeaderboardStaff(staffId) {
+      const sel = document.getElementById('orderStaffFilter');
+      sel.value = (sel.value === staffId) ? '' : staffId;
+      currentOrderPage = 1;
+      renderSalesLeaderboard();
+      renderOrdersTable();
     }
 
     /* Invite Link Modal */
@@ -1206,12 +1540,13 @@
         id: newId, name: found.name, vlinkId: key,
         email: found.email, phone: found.phone,
         role: selectedRole, status: 'ACTIVE',
-        permissions: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false },
+        permissions: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false, view_report:false },
         cards: 0, sales: 0, commission: 0, joined: new Date().toISOString().slice(0, 10)
       });
       closeAddModal();
       updateStats();
       if (document.getElementById('tab-staff-list').classList.contains('active')) renderStaffTable();
+      refreshOrdersViewIfActive();
     }
 
     /* Detail Modal */
@@ -1236,8 +1571,13 @@
             <div class="dii-label">Role</div><div class="dii-value"><span class="badge badge-role">${s.role}</span></div>
             <div class="dii-label">Status</div><div class="dii-value">${isActive ? '<span class="badge badge-active">Active</span>' : '<span class="badge badge-inactive">Inactive</span>'}</div>
             <div class="dii-label">Cards Created</div><div class="dii-value">${s.cards}</div>
-            <div class="dii-label">Sales / Payments</div><div class="dii-value">$${s.sales.toLocaleString()}</div>
+            <div class="dii-label">Sales / Payments</div><div class="dii-value"><span class="link-sales" onclick="closeDetailModal();viewStaffOrders('${s.id}')">$${s.sales.toLocaleString()}</span> <span style="font-size:12px;color:var(--grey-400);font-weight:500;">· view orders</span></div>
           </div>
+          ${!isActive ? `
+          <div style="background:#fff4f4;border:1px solid #ffcdc9;border-radius:8px;padding:11px 14px;font-size:12.5px;color:#b71c1c;display:flex;gap:8px;align-items:flex-start;">
+            <iconify-icon icon="solar:lock-keyhole-bold" width="16" style="flex-shrink:0;margin-top:1px;"></iconify-icon>
+            <span>This account is <b>deactivated</b> — ${s.name} cannot sign in or process sales. Other staff and the shared password are unaffected. Reactivate to restore access.</span>
+          </div>` : ''}
           <div style="height:1px;background:var(--grey-200);"></div>
           <div>
             <div class="form-label" style="margin-bottom:6px;">Commission percent</div>
@@ -1396,7 +1736,7 @@
         id: name.toLowerCase().replace(/\s+/g, '_'),
         name, desc: desc || 'Custom role.',
         isDefault: false,
-        perms: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false },
+        perms: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false, view_report:false },
         dailyLimit: 0
       });
       const roleId = name.toLowerCase().replace(/\s+/g, '_');

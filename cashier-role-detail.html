@@ -260,6 +260,42 @@
         </div>
       </div>
 
+      <!-- View Report -->
+      <div class="perm-section">
+        <div class="perm-section-title">View Report</div>
+        <div class="perm-row">
+          <div>
+            <div class="perm-label">All Reports</div>
+            <div class="perm-sublabel">Allow staff to open the Report menu and view every report page</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="chk-all-report" onchange="toggleAllReport()" />
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </label>
+        </div>
+        <div class="perm-row perm-row-indent">
+          <div>
+            <div class="perm-label" style="font-weight:400;">Sales Orders</div>
+            <div class="perm-sublabel">View sales orders, including totals per staff member</div>
+          </div>
+          <label class="toggle"><input type="checkbox" class="report-chk" id="perm-report-sales-orders" onchange="syncAllReport()" /><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
+        </div>
+        <div class="perm-row perm-row-indent">
+          <div>
+            <div class="perm-label" style="font-weight:400;">Redeem History</div>
+            <div class="perm-sublabel">View the card redemption history</div>
+          </div>
+          <label class="toggle"><input type="checkbox" class="report-chk" id="perm-report-redeem-history" onchange="syncAllReport()" /><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
+        </div>
+        <div class="perm-row perm-row-indent">
+          <div>
+            <div class="perm-label" style="font-weight:400;">Membership Report</div>
+            <div class="perm-sublabel">View the membership report</div>
+          </div>
+          <label class="toggle"><input type="checkbox" class="report-chk" id="perm-report-membership" onchange="syncAllReport()" /><div class="toggle-track"><div class="toggle-thumb"></div></div></label>
+        </div>
+      </div>
+
       <!-- Daily Card Creation Limit -->
       <div class="perm-section">
         <div class="perm-section-title">Daily Card Creation Limit</div>
@@ -301,6 +337,16 @@
     function syncAll() {
       const chks = document.querySelectorAll('.card-type-chk');
       document.getElementById('chk-all').checked = [...chks].every(el => el.checked);
+    }
+
+    function toggleAllReport() {
+      const val = document.getElementById('chk-all-report').checked;
+      document.querySelectorAll('.report-chk').forEach(el => { el.checked = val; });
+    }
+
+    function syncAllReport() {
+      const chks = document.querySelectorAll('.report-chk');
+      document.getElementById('chk-all-report').checked = [...chks].every(el => el.checked);
     }
 
     function saveRole() {

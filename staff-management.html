@@ -428,38 +428,23 @@
 
     /* Sales Orders — summary bar */
     .orders-summary {
-      display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
-      background: #fff; border: 1px solid var(--grey-200); border-radius: 12px;
-      padding: 14px 20px; margin-bottom: 16px;
-    }
-    .orders-summary-item { display: flex; flex-direction: column; gap: 2px; }
-    .orders-summary-label {
-      font-size: 11px; font-weight: 700; color: var(--grey-400);
-      text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .orders-summary-value { font-size: 20px; font-weight: 700; color: var(--grey-900); }
-    .orders-summary-value.money { color: var(--primary-main); }
-
-    /* Sales by Staff leaderboard */
-    .leaderboard {
+      display: flex; align-items: stretch; flex-wrap: wrap; gap: 4px;
       background: #fff; border: 1px solid var(--grey-200); border-radius: 14px;
-      padding: 6px; margin-bottom: 24px;
+      padding: 8px; margin-bottom: 20px;
     }
-    .lb-row {
-      display: flex; align-items: center; gap: 14px;
-      padding: 12px 14px; border-radius: 10px; cursor: pointer;
-      transition: background 0.15s;
+    .os-metric { display: flex; align-items: center; gap: 12px; padding: 10px 16px; flex: 1; min-width: 150px; }
+    .os-icon {
+      width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
     }
-    .lb-row:hover { background: var(--grey-100); }
-    .lb-row.active { background: rgba(0,167,111,0.08); box-shadow: inset 0 0 0 1px rgba(0,167,111,0.25); }
-    .lb-rank { width: 22px; font-size: 13px; font-weight: 700; color: var(--grey-400); text-align: center; flex-shrink: 0; }
-    .lb-info { width: 150px; flex-shrink: 0; min-width: 0; }
-    .lb-name { font-weight: 600; color: var(--grey-900); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .lb-sub { font-size: 12px; color: var(--grey-500); }
-    .lb-bar-wrap { flex: 1; min-width: 60px; height: 8px; background: var(--grey-200); border-radius: 4px; overflow: hidden; }
-    .lb-bar { height: 100%; background: var(--primary-main); border-radius: 4px; transition: width 0.3s; }
-    .lb-count { font-size: 12px; color: var(--grey-500); text-align: right; min-width: 68px; flex-shrink: 0; white-space: nowrap; }
-    .lb-amount { font-size: 15px; font-weight: 700; color: var(--grey-900); text-align: right; min-width: 90px; flex-shrink: 0; white-space: nowrap; }
+    .os-icon-staff  { background: rgba(59,130,246,0.1);  color: #3b82f6; }
+    .os-icon-orders { background: rgba(245,158,11,0.12); color: #f59e0b; }
+    .os-icon-sales  { background: rgba(0,167,111,0.1);   color: var(--primary-main); }
+    .os-label { font-size: 11px; font-weight: 700; color: var(--grey-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+    .os-value { font-size: 20px; font-weight: 700; color: var(--grey-900); line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .os-value.money { color: var(--primary-main); }
+    .os-value.name { font-size: 16px; }
+    .os-divider { width: 1px; background: var(--grey-200); margin: 10px 0; flex-shrink: 0; }
 
     /* Order status badges */
     .badge-completed { background: rgba(0,167,111,0.12); color: #00a76f; }
@@ -489,12 +474,11 @@
       .role-header { padding: 16px; }
       .role-card-body { padding: 14px 16px 16px; }
       .tabs { overflow-x: auto; width: 100%; }
-      .lb-bar-wrap { display: none; }
-      .lb-info { width: auto; flex: 1; }
-      .lb-row { gap: 10px; padding: 10px; }
-      .lb-count { display: none; }
-      .orders-summary { gap: 18px; padding: 12px 16px; }
-      .orders-summary-value { font-size: 17px; }
+      .os-metric { padding: 8px 12px; min-width: 120px; gap: 10px; }
+      .os-icon { width: 36px; height: 36px; border-radius: 10px; }
+      .os-divider { display: none; }
+      .os-value { font-size: 17px; }
+      .os-value.name { font-size: 15px; }
     }
   </style>
 </head>
@@ -715,16 +699,12 @@
 
     <!-- ── Sales Orders ── -->
     <div id="tab-sales-orders" class="tab-panel active">
-      <div class="ov-label">Sales by Staff</div>
-      <div class="leaderboard" id="salesLeaderboard"></div>
-
-      <div class="ov-label">Sales Orders</div>
       <div class="toolbar">
         <div class="search-wrap">
           <iconify-icon icon="solar:magnifer-linear" width="16"></iconify-icon>
           <input type="text" class="search-input" id="orderSearch" placeholder="Search order ID, customer..." oninput="currentOrderPage=1;renderOrdersTable()" />
         </div>
-        <select class="filter-select" id="orderStaffFilter" onchange="currentOrderPage=1;renderSalesLeaderboard();renderOrdersTable()">
+        <select class="filter-select" id="orderStaffFilter" onchange="currentOrderPage=1;renderOrdersTable()">
           <option value="">All Staff</option>
         </select>
         <select class="filter-select" id="orderStatusFilter" onchange="currentOrderPage=1;renderOrdersTable()">
@@ -1085,7 +1065,7 @@
       document.getElementById('tab-btn-' + name).classList.add('active');
       document.getElementById('tab-' + name).classList.add('active');
       if (name === 'staff-list') renderStaffTable();
-      if (name === 'sales-orders') { populateOrderStaffFilter(); renderSalesLeaderboard(); renderOrdersTable(); }
+      if (name === 'sales-orders') { populateOrderStaffFilter(); renderOrdersTable(); }
       if (name === 'role-settings') renderRoleTable();
     }
 
@@ -1214,7 +1194,6 @@
     function refreshOrdersViewIfActive() {
       if (document.getElementById('tab-sales-orders').classList.contains('active')) {
         populateOrderStaffFilter();
-        renderSalesLeaderboard();
         renderOrdersTable();
       }
     }
@@ -1338,57 +1317,33 @@
       });
     }
 
-    /* Completed sales + order count per (non-deleted) staff member. */
-    function staffSalesStats() {
-      return STAFF.filter(s => s.status !== 'DELETED').map(s => {
-        const orders = SALES_ORDERS.filter(o => o.staffId === s.id);
-        const sales = orders.filter(o => o.status === 'Completed').reduce((a, o) => a + o.amount, 0);
-        return { id: s.id, name: s.name, role: s.role, status: s.status, orderCount: orders.length, sales };
-      }).sort((a, b) => b.sales - a.sales);
-    }
-
-    function renderSalesLeaderboard() {
-      const container = document.getElementById('salesLeaderboard');
-      const activeFilter = document.getElementById('orderStaffFilter').value;
-      const stats = staffSalesStats();
-      if (!stats.length) {
-        container.innerHTML = `<div style="padding:24px;text-align:center;color:var(--grey-400);">No staff data</div>`;
-        return;
-      }
-      const max = Math.max(1, ...stats.map(s => s.sales));
-      container.innerHTML = stats.map((s, i) => {
-        const pct = Math.round(s.sales / max * 100);
-        const initials = s.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
-        return `<div class="lb-row ${activeFilter === s.id ? 'active' : ''}" onclick="toggleLeaderboardStaff('${s.id}')" title="Filter orders by ${s.name}">
-          <div class="lb-rank">${i + 1}</div>
-          <div class="staff-avatar">${initials}</div>
-          <div class="lb-info">
-            <div class="lb-name">${s.name}</div>
-            <div class="lb-sub">${s.role}${s.status === 'INACTIVE' ? ' • Inactive' : ''}</div>
-          </div>
-          <div class="lb-bar-wrap"><div class="lb-bar" style="width:${pct}%;"></div></div>
-          <div class="lb-count">${s.orderCount} order${s.orderCount === 1 ? '' : 's'}</div>
-          <div class="lb-amount">$${s.sales.toLocaleString()}</div>
-        </div>`;
-      }).join('');
-    }
-
     function renderOrdersSummary(data) {
       const completedTotal = data.filter(o => o.status === 'Completed').reduce((a, o) => a + o.amount, 0);
       const sf = document.getElementById('orderStaffFilter').value;
       const scope = sf ? staffName(sf) : 'All Staff';
       document.getElementById('ordersSummary').innerHTML = `
-        <div class="orders-summary-item">
-          <span class="orders-summary-label">Staff</span>
-          <span class="orders-summary-value" style="font-size:16px;">${scope}</span>
+        <div class="os-metric">
+          <div class="os-icon os-icon-staff"><iconify-icon icon="solar:user-rounded-bold" width="20"></iconify-icon></div>
+          <div style="min-width:0;">
+            <div class="os-label">Staff</div>
+            <div class="os-value name">${scope}</div>
+          </div>
         </div>
-        <div class="orders-summary-item">
-          <span class="orders-summary-label">Orders</span>
-          <span class="orders-summary-value">${data.length}</span>
+        <div class="os-divider"></div>
+        <div class="os-metric">
+          <div class="os-icon os-icon-orders"><iconify-icon icon="solar:bill-list-bold" width="20"></iconify-icon></div>
+          <div>
+            <div class="os-label">Orders</div>
+            <div class="os-value">${data.length}</div>
+          </div>
         </div>
-        <div class="orders-summary-item">
-          <span class="orders-summary-label">Completed Sales</span>
-          <span class="orders-summary-value money">$${completedTotal.toLocaleString()}</span>
+        <div class="os-divider"></div>
+        <div class="os-metric">
+          <div class="os-icon os-icon-sales"><iconify-icon icon="solar:dollar-minimalistic-bold" width="20"></iconify-icon></div>
+          <div>
+            <div class="os-label">Completed Sales</div>
+            <div class="os-value money">$${completedTotal.toLocaleString()}</div>
+          </div>
         </div>`;
     }
 
@@ -1439,16 +1394,6 @@
       switchTab('sales-orders');
       document.getElementById('orderStaffFilter').value = staffId;
       currentOrderPage = 1;
-      renderSalesLeaderboard();
-      renderOrdersTable();
-    }
-
-    /* Leaderboard click: filter by that staff, or clear if it's already selected. */
-    function toggleLeaderboardStaff(staffId) {
-      const sel = document.getElementById('orderStaffFilter');
-      sel.value = (sel.value === staffId) ? '' : staffId;
-      currentOrderPage = 1;
-      renderSalesLeaderboard();
       renderOrdersTable();
     }
 
@@ -1924,7 +1869,6 @@
     renderStaffTable();
     renderRoleTable();
     populateOrderStaffFilter();
-    renderSalesLeaderboard();
     renderOrdersTable();
   </script>
 </body>

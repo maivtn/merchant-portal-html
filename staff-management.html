@@ -526,14 +526,14 @@
     </div>
 
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('overview')" id="tab-btn-overview">Overview</button>
+      <button class="tab-btn" onclick="switchTab('overview')" id="tab-btn-overview" style="display:none;">Overview</button>
+      <button class="tab-btn active" onclick="switchTab('sales-orders')" id="tab-btn-sales-orders">Sales Orders</button>
       <button class="tab-btn" onclick="switchTab('staff-list')" id="tab-btn-staff-list">Staff List</button>
-      <button class="tab-btn" onclick="switchTab('sales-orders')" id="tab-btn-sales-orders">Sales Orders</button>
       <button class="tab-btn" onclick="switchTab('role-settings')" id="tab-btn-role-settings">Role Settings</button>
     </div>
 
     <!-- ── Overview ── -->
-    <div id="tab-overview" class="tab-panel active">
+    <div id="tab-overview" class="tab-panel">
 
       <!-- Team Summary -->
       <div class="ov-label">Team Summary</div>
@@ -667,6 +667,10 @@
           <option value="">All Roles</option>
           <option value="Cashier">Cashier</option>
         </select>
+        <button class="btn-save" style="margin-left:auto;" onclick="openNewStaffModal()">
+          <span style="font-size:18px;line-height:1;font-weight:400;">+</span>
+          Add New Staff
+        </button>
       </div>
 
       <div class="table-wrap">
@@ -710,7 +714,7 @@
     </div>
 
     <!-- ── Sales Orders ── -->
-    <div id="tab-sales-orders" class="tab-panel">
+    <div id="tab-sales-orders" class="tab-panel active">
       <div class="ov-label">Sales by Staff</div>
       <div class="leaderboard" id="salesLeaderboard"></div>
 
@@ -897,6 +901,51 @@
       <div class="modal-foot">
         <button class="btn-cancel" onclick="closeAddModal()">Cancel</button>
         <button class="btn-primary" id="addStaffBtn" onclick="submitAddStaff()" disabled>Add Staff</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modal: Add New Staff (local account) ── -->
+  <div class="modal-overlay" id="newStaffModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div class="modal-title">Add New Staff</div>
+        <button class="modal-close" onclick="closeNewStaffModal()">
+          <iconify-icon icon="eva:close-fill" width="20"></iconify-icon>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-field">
+          <label class="form-label" for="nsDisplayName">Display name</label>
+          <input type="text" class="form-input" id="nsDisplayName" placeholder="e.g. John Smith" />
+          <div class="form-error" id="nsDisplayNameError"></div>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="nsUsername">Username / Email</label>
+          <input type="text" class="form-input" id="nsUsername" placeholder="e.g. john or john@example.com" />
+          <div class="form-hint">Staff will sign in with this username or email.</div>
+          <div class="form-error" id="nsUsernameError"></div>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="nsPassword">Password</label>
+          <div style="position:relative;">
+            <input type="password" class="form-input" id="nsPassword" placeholder="At least 6 characters" style="padding-right:42px;" />
+            <button type="button" onclick="toggleNsPassword()" aria-label="Show password" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;color:var(--grey-500);display:flex;align-items:center;padding:4px;">
+              <iconify-icon id="nsPasswordEye" icon="solar:eye-linear" width="18"></iconify-icon>
+            </button>
+          </div>
+          <div class="form-error" id="nsPasswordError"></div>
+        </div>
+        <div class="form-field" style="margin-bottom:0;">
+          <label class="form-label" for="nsRole">Role</label>
+          <select class="filter-select" id="nsRole" style="width:100%;min-width:unset;">
+            <option value="">Select a role...</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-cancel" onclick="closeNewStaffModal()">Cancel</button>
+        <button class="btn-primary" onclick="submitNewStaff()">Create Staff</button>
       </div>
     </div>
   </div>
@@ -1106,12 +1155,12 @@
                 <div class="staff-avatar">${initials}</div>
                 <div>
                   <div class="staff-name">${s.name}</div>
-                  <div class="staff-vlink">${s.vlinkId}</div>
+                  <div class="staff-vlink">${s.vlinkId || s.username || ''}</div>
                 </div>
               </div>
             </td>
-            <td style="color:var(--grey-600)">${maskEmail(s.email)}</td>
-            <td style="color:var(--grey-600)">${maskPhone(s.phone)}</td>
+            <td style="color:var(--grey-600)">${s.email ? maskEmail(s.email) : '—'}</td>
+            <td style="color:var(--grey-600)">${s.phone ? maskPhone(s.phone) : '—'}</td>
             <td><span class="badge badge-role">${s.role}</span></td>
             <td>${sb}</td>
             <td style="font-weight:500;text-align:center">${s.cards}</td>
@@ -1549,6 +1598,112 @@
       refreshOrdersViewIfActive();
     }
 
+    /* Add New Staff (local account: display name + username/email + password) */
+    function isEmailValue(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+    function openNewStaffModal() {
+      const sel = document.getElementById('nsRole');
+      sel.innerHTML = '<option value="">Select a role...</option>' +
+        ROLES.map(r => `<option value="${r.name}">${r.name}</option>`).join('');
+      sel.value = 'Cashier';
+      ['nsDisplayName', 'nsUsername', 'nsPassword'].forEach(id => { document.getElementById(id).value = ''; });
+      ['nsDisplayNameError', 'nsUsernameError', 'nsPasswordError'].forEach(id => {
+        const e = document.getElementById(id); e.textContent = ''; e.style.display = 'none';
+      });
+      const pw = document.getElementById('nsPassword');
+      pw.type = 'password';
+      document.getElementById('nsPasswordEye').setAttribute('icon', 'solar:eye-linear');
+      document.getElementById('newStaffModal').classList.add('open');
+    }
+    function closeNewStaffModal() { document.getElementById('newStaffModal').classList.remove('open'); }
+    function toggleNsPassword() {
+      const inp = document.getElementById('nsPassword');
+      const eye = document.getElementById('nsPasswordEye');
+      if (inp.type === 'password') { inp.type = 'text'; eye.setAttribute('icon', 'solar:eye-closed-linear'); }
+      else { inp.type = 'password'; eye.setAttribute('icon', 'solar:eye-linear'); }
+    }
+
+    function submitNewStaff() {
+      const name = document.getElementById('nsDisplayName').value.trim();
+      const username = document.getElementById('nsUsername').value.trim();
+      const password = document.getElementById('nsPassword').value;
+      const role = document.getElementById('nsRole').value || 'Cashier';
+      const setErr = (id, msg) => { const e = document.getElementById(id); e.textContent = msg; e.style.display = msg ? 'block' : 'none'; };
+      setErr('nsDisplayNameError', ''); setErr('nsUsernameError', ''); setErr('nsPasswordError', '');
+
+      let ok = true;
+      if (!name) { setErr('nsDisplayNameError', 'Display name is required.'); ok = false; }
+      if (!username) {
+        setErr('nsUsernameError', 'Username or email is required.'); ok = false;
+      } else if (username.includes('@') && !isEmailValue(username)) {
+        setErr('nsUsernameError', 'Please enter a valid email address.'); ok = false;
+      } else if (STAFF.some(s => s.status !== 'DELETED' &&
+        ((s.username || '').toLowerCase() === username.toLowerCase() ||
+         (s.email || '').toLowerCase() === username.toLowerCase()))) {
+        setErr('nsUsernameError', 'This username or email is already in use.'); ok = false;
+      }
+      if (!password || password.length < 6) { setErr('nsPasswordError', 'Password must be at least 6 characters.'); ok = false; }
+      if (!ok) return;
+
+      const isEmail = isEmailValue(username);
+      const newId = 'STF' + String(STAFF.length + 1).padStart(3, '0');
+      STAFF.push({
+        id: newId, name, vlinkId: '', username,
+        email: isEmail ? username : '', phone: '',
+        role, status: 'ACTIVE',
+        permissions: { gift_card:false, crypto_card:false, membership:false, egift:false, voucher:false, promotion:false, discount:false, prepaid:false, payment_gift:false, payment_crypto:false, reload:false, product_mgmt:false, view_report:false },
+        cards: 0, sales: 0, commission: 0, joined: new Date().toISOString().slice(0, 10)
+      });
+
+      closeNewStaffModal();
+      updateStats();
+      currentPage = 1;
+      if (document.getElementById('tab-staff-list').classList.contains('active')) renderStaffTable();
+      refreshOrdersViewIfActive();
+
+      // Success notification + optional login email (email auto-filled if the username was an email).
+      Swal.fire({
+        icon: 'success',
+        title: 'Staff created successfully',
+        html: `<b>${name}</b> has been added as <b>${role}</b> and can now sign in.`,
+        showCancelButton: true,
+        confirmButtonText: '<iconify-icon icon="solar:letter-bold" width="16" style="vertical-align:-3px;margin-right:4px;"></iconify-icon> Send login email',
+        cancelButtonText: 'Done',
+        confirmButtonColor: '#00a76f',
+      }).then(r => {
+        if (r.isConfirmed) sendNewStaffEmail(name, username, isEmail ? username : '');
+      });
+    }
+
+    /* Send account/login details to the new staff. If the username was an email,
+       it is auto-filled into the recipient field. */
+    function sendNewStaffEmail(name, username, prefillEmail) {
+      Swal.fire({
+        title: 'Send login email',
+        input: 'email',
+        inputLabel: 'Send account details to',
+        inputValue: prefillEmail || '',
+        inputPlaceholder: 'staff@example.com',
+        showCancelButton: true,
+        confirmButtonText: 'Send',
+        confirmButtonColor: '#00a76f',
+        inputValidator: (v) => {
+          if (!v || !isEmailValue(v)) return 'Please enter a valid email address.';
+        },
+      }).then(res => {
+        if (!res.isConfirmed || !res.value) return;
+        const to = res.value;
+        const subject = encodeURIComponent('Your VLINKPAY staff account');
+        const body = encodeURIComponent(
+          `Hi ${name},\n\nA staff account has been created for you.\n\n` +
+          `Username: ${username}\nSign in at: ${window.location.origin}\n\n` +
+          `For security, please sign in and change your password.\n\nThank you.`
+        );
+        window.open('mailto:' + encodeURIComponent(to) + '?subject=' + subject + '&body=' + body);
+        Swal.fire({ icon: 'success', title: 'Email sent', text: `Login details sent to ${to}.`, timer: 2200, showConfirmButton: false });
+      });
+    }
+
     /* Detail Modal */
     function openDetailModal(id) {
       const s = STAFF.find(x => x.id === id);
@@ -1565,9 +1720,9 @@
         <div style="display:flex;flex-direction:column;gap:14px;">
           <div class="detail-grid">
             <div class="dii-label">Name</div><div class="dii-value">${s.name}</div>
-            <div class="dii-label">VLINK ID</div><div class="dii-value">${s.vlinkId}</div>
-            <div class="dii-label">Email</div><div class="dii-value">${maskEmail(s.email)}</div>
-            <div class="dii-label">Phone</div><div class="dii-value">${maskPhone(s.phone)}</div>
+            <div class="dii-label">${s.vlinkId ? 'VLINK ID' : 'Username'}</div><div class="dii-value">${s.vlinkId || s.username || '—'}</div>
+            <div class="dii-label">Email</div><div class="dii-value">${s.email ? maskEmail(s.email) : '—'}</div>
+            <div class="dii-label">Phone</div><div class="dii-value">${s.phone ? maskPhone(s.phone) : '—'}</div>
             <div class="dii-label">Role</div><div class="dii-value"><span class="badge badge-role">${s.role}</span></div>
             <div class="dii-label">Status</div><div class="dii-value">${isActive ? '<span class="badge badge-active">Active</span>' : '<span class="badge badge-inactive">Inactive</span>'}</div>
             <div class="dii-label">Cards Created</div><div class="dii-value">${s.cards}</div>
@@ -1749,16 +1904,20 @@
     document.getElementById('qrModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeQrModal(); });
     document.getElementById('inviteEmailModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeInviteEmailModal(); });
     document.getElementById('addModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAddModal(); });
+    document.getElementById('newStaffModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeNewStaffModal(); });
     document.getElementById('detailModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeDetailModal(); });
     document.getElementById('addRoleModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeAddRoleModal(); });
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') { closeQrModal(); closeAddModal(); closeDetailModal(); closeAddRoleModal(); }
+      if (e.key === 'Escape') { closeQrModal(); closeAddModal(); closeNewStaffModal(); closeDetailModal(); closeAddRoleModal(); }
     });
 
     /* Init */
     updateStats();
     renderStaffTable();
     renderRoleTable();
+    populateOrderStaffFilter();
+    renderSalesLeaderboard();
+    renderOrdersTable();
   </script>
 </body>
 </html>

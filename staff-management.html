@@ -446,6 +446,56 @@
     .os-value.name { font-size: 16px; }
     .os-divider { width: 1px; background: var(--grey-200); margin: 10px 0; flex-shrink: 0; }
 
+    /* Sales order rows — type / channel badges + customer & card cells */
+    .tb-badge {
+      display: inline-flex; align-items: center;
+      padding: 3px 11px; border-radius: 20px;
+      font-size: 12px; font-weight: 600; white-space: nowrap;
+    }
+    .tb-giftcard   { background: rgba(0,167,111,0.12);  color: #00875a; }
+    .tb-crypto     { background: rgba(124,58,237,0.12); color: #7c3aed; }
+    .tb-reload     { background: rgba(59,130,246,0.12); color: #2563eb; }
+    .tb-membership { background: rgba(79,70,229,0.12);  color: #4f46e5; }
+    .tb-discount   { background: rgba(245,158,11,0.16); color: #b45309; }
+    .tb-default    { background: var(--grey-200);       color: var(--grey-700); }
+    .chan-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 9px; border-radius: 6px; margin-top: 6px;
+      font-size: 11px; font-weight: 600; white-space: nowrap;
+      background: rgba(59,130,246,0.1); color: #2563eb;
+    }
+    .chan-badge.online { background: rgba(0,167,111,0.1); color: var(--primary-main); }
+    .ord-cust-name { font-weight: 600; color: var(--grey-900); }
+    .ord-cust-line { font-size: 12px; color: var(--grey-500); margin-top: 1px; }
+    .ord-cardno { font-variant-numeric: tabular-nums; letter-spacing: 0.3px; color: var(--grey-700); white-space: nowrap; }
+
+    /* Column visibility toggle */
+    .col-toggle-wrap { position: relative; }
+    .col-toggle-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border: 1px solid var(--grey-300); border-radius: 8px;
+      background: #fff; color: var(--grey-600); cursor: pointer; transition: all 0.15s;
+    }
+    .col-toggle-btn:hover, .col-toggle-btn.active {
+      border-color: var(--primary-main); color: var(--primary-main); background: rgba(0,167,111,0.06);
+    }
+    .col-menu {
+      position: absolute; top: calc(100% + 6px); right: 0; z-index: 60;
+      min-width: 210px; background: #fff; border: 1px solid var(--grey-200);
+      border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.13); padding: 8px; display: none;
+    }
+    .col-menu.open { display: block; }
+    .col-menu-title {
+      font-size: 11px; font-weight: 700; color: var(--grey-400);
+      text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 10px 8px;
+    }
+    .col-menu-item {
+      display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+      border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--grey-800);
+    }
+    .col-menu-item:hover { background: var(--grey-100); }
+    .col-menu-item input { width: 16px; height: 16px; accent-color: var(--primary-main); cursor: pointer; flex-shrink: 0; }
+
     /* Order status badges */
     .badge-completed { background: rgba(0,167,111,0.12); color: #00a76f; }
     .badge-pending { background: rgba(245,158,11,0.16); color: #b45309; }
@@ -700,9 +750,19 @@
     <!-- ── Sales Orders ── -->
     <div id="tab-sales-orders" class="tab-panel active">
       <div class="toolbar">
-        <div class="search-wrap">
+        <select class="filter-select" id="orderSearchBy" onchange="onSearchByChange()" style="min-width:150px;">
+          <option value="cardNumber">Card Number</option>
+          <option value="customer">Customer</option>
+          <option value="email">Email</option>
+          <option value="phone">Phone</option>
+          <option value="id">Order ID</option>
+          <option value="amount">Amount</option>
+          <option value="staff">Staff Name</option>
+          <option value="staffEmail">Staff Email</option>
+        </select>
+        <div class="search-wrap" style="width:240px;">
           <iconify-icon icon="solar:magnifer-linear" width="16"></iconify-icon>
-          <input type="text" class="search-input" id="orderSearch" placeholder="Search order ID, customer..." oninput="currentOrderPage=1;renderOrdersTable()" />
+          <input type="text" class="search-input" id="orderSearch" placeholder="Enter card number..." oninput="currentOrderPage=1;renderOrdersTable()" />
         </div>
         <select class="filter-select" id="orderStaffFilter" onchange="currentOrderPage=1;renderOrdersTable()">
           <option value="">All Staff</option>
@@ -713,6 +773,12 @@
           <option value="Pending">Pending</option>
           <option value="Refunded">Refunded</option>
         </select>
+        <div class="col-toggle-wrap" style="margin-left:auto;">
+          <button class="col-toggle-btn" id="colToggleBtn" onclick="toggleColumnMenu(event)" title="Show / hide columns" aria-label="Show / hide columns">
+            <iconify-icon icon="solar:checklist-minimalistic-linear" width="18"></iconify-icon>
+          </button>
+          <div class="col-menu" id="colMenu"></div>
+        </div>
       </div>
 
       <div class="orders-summary" id="ordersSummary"></div>
@@ -720,17 +786,7 @@
       <div class="table-wrap">
         <div class="table-scroll">
           <table>
-            <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Date</th>
-                <th>Staff</th>
-                <th>Card Type</th>
-                <th>Customer</th>
-                <th>Amount</th>
-                <th>Status</th>
-              </tr>
-            </thead>
+            <thead id="ordersThead"></thead>
             <tbody id="ordersTableBody"></tbody>
           </table>
         </div>
@@ -1029,27 +1085,27 @@
        A staff member's "Sales (USD)" total equals the sum of their Completed order amounts. */
     const SALES_ORDERS = [
       // STF001 — Nguyen Van A (Completed total = 3,200)
-      { id: 'SO-20613', staffId: 'STF001', date: '2026-06-28', cardType: 'Gift Card',      customer: 'James Wilson', amount: 500, status: 'Completed' },
-      { id: 'SO-20598', staffId: 'STF001', date: '2026-06-27', cardType: 'Gift Card',      customer: 'Maria Garcia', amount: 250, status: 'Completed' },
-      { id: 'SO-20571', staffId: 'STF001', date: '2026-06-25', cardType: 'Gift Card',      customer: 'David Lee',    amount: 750, status: 'Completed' },
-      { id: 'SO-20544', staffId: 'STF001', date: '2026-06-23', cardType: 'GC Payment',     customer: 'Susan Clark',  amount: 400, status: 'Completed' },
-      { id: 'SO-20510', staffId: 'STF001', date: '2026-06-20', cardType: 'Gift Card',      customer: 'Robert Kim',   amount: 600, status: 'Completed' },
-      { id: 'SO-20489', staffId: 'STF001', date: '2026-06-18', cardType: 'Gift Card',      customer: 'Emily Zhang',  amount: 700, status: 'Completed' },
-      { id: 'SO-20612', staffId: 'STF001', date: '2026-06-28', cardType: 'Gift Card',      customer: 'Tom Brown',    amount: 150, status: 'Pending' },
-      { id: 'SO-20505', staffId: 'STF001', date: '2026-06-19', cardType: 'Gift Card',      customer: 'Anna White',   amount: 300, status: 'Refunded' },
+      { id: 'SO-20613', staffId: 'STF001', date: '2026-06-28', time: '05:34 PM', cardType: 'Gift Card',      channel: 'Store',  customer: 'James Wilson', email: 'james.w@mailinator.com',  phone: '+1 (832) 799-5853', cardNumber: '2415 **** **** 1325', amount: 500,  status: 'Completed', payment: 'Cash' },
+      { id: 'SO-20598', staffId: 'STF001', date: '2026-06-27', time: '05:03 PM', cardType: 'Gift Card',      channel: 'Store',  customer: 'Maria Garcia', email: 'maria.g@mailinator.com',  phone: '',                  cardNumber: '2529 **** **** 3805', amount: 250,  status: 'Completed', payment: 'Card' },
+      { id: 'SO-20571', staffId: 'STF001', date: '2026-06-25', time: '04:59 PM', cardType: 'Gift Card',      channel: 'Online', customer: 'David Lee',    email: 'david.lee@mailinator.com', phone: '',                  cardNumber: '8120 **** **** 4901', amount: 750,  status: 'Completed', payment: 'Card' },
+      { id: 'SO-20544', staffId: 'STF001', date: '2026-06-23', time: '12:08 PM', cardType: 'GC Payment',     channel: 'Store',  customer: 'Susan Clark',  email: 'susan.c@mailinator.com',  phone: '+1 (038) 547-8857', cardNumber: '7977 **** **** 9211', amount: 400,  status: 'Completed', payment: 'Cash' },
+      { id: 'SO-20510', staffId: 'STF001', date: '2026-06-20', time: '11:25 AM', cardType: 'Gift Card',      channel: 'Store',  customer: 'Robert Kim',   email: 'robert.kim@mailinator.com',phone: '',                  cardNumber: '8933 **** **** 2347', amount: 600,  status: 'Completed', payment: 'Cash' },
+      { id: 'SO-20489', staffId: 'STF001', date: '2026-06-18', time: '04:21 PM', cardType: 'Gift Card',      channel: 'Store',  customer: 'Emily Zhang',  email: 'emily.z@mailinator.com',  phone: '+1 (123) 123-1231', cardNumber: '2437 **** **** 7916', amount: 700,  status: 'Completed', payment: 'Bank Transfer' },
+      { id: 'SO-20612', staffId: 'STF001', date: '2026-06-28', time: '05:10 PM', cardType: 'Gift Card',      channel: 'Store',  customer: 'Tom Brown',    email: 'tom.b@mailinator.com',    phone: '',                  cardNumber: '7573 **** **** 9543', amount: 150,  status: 'Pending',   payment: 'Cash' },
+      { id: 'SO-20505', staffId: 'STF001', date: '2026-06-19', time: '03:33 PM', cardType: 'Gift Card',      channel: 'Online', customer: 'Anna White',   email: 'anna.w@mailinator.com',   phone: '+1 (832) 799-5853', cardNumber: '2895 **** **** 9255', amount: 300,  status: 'Refunded',  payment: 'Card' },
       // STF002 — Tran Thi Bich (Completed total = 7,500)
-      { id: 'SO-20620', staffId: 'STF002', date: '2026-06-29', cardType: 'Crypto Card',    customer: 'Kevin Nguyen', amount: 1200, status: 'Completed' },
-      { id: 'SO-20601', staffId: 'STF002', date: '2026-06-27', cardType: 'Gift Card',      customer: 'Lisa Tran',    amount: 900,  status: 'Completed' },
-      { id: 'SO-20588', staffId: 'STF002', date: '2026-06-26', cardType: 'Crypto Payment', customer: 'Mark Davis',   amount: 1500, status: 'Completed' },
-      { id: 'SO-20560', staffId: 'STF002', date: '2026-06-24', cardType: 'Gift Card',      customer: 'Nancy Vo',     amount: 650,  status: 'Completed' },
-      { id: 'SO-20533', staffId: 'STF002', date: '2026-06-22', cardType: 'Reload',         customer: 'Peter Ho',     amount: 800,  status: 'Completed' },
-      { id: 'SO-20500', staffId: 'STF002', date: '2026-06-19', cardType: 'Crypto Card',    customer: 'Grace Pham',   amount: 1450, status: 'Completed' },
-      { id: 'SO-20477', staffId: 'STF002', date: '2026-06-17', cardType: 'Gift Card',      customer: 'Henry Bui',    amount: 1000, status: 'Completed' },
-      { id: 'SO-20619', staffId: 'STF002', date: '2026-06-29', cardType: 'Crypto Card',    customer: 'Olivia Do',    amount: 400,  status: 'Pending' },
+      { id: 'SO-20620', staffId: 'STF002', date: '2026-06-29', time: '03:33 PM', cardType: 'Crypto Card',    channel: 'Online', customer: 'Kevin Nguyen', email: 'kevin.n@mailinator.com',  phone: '+1 (038) 547-8857', cardNumber: '1749 **** **** 6110', amount: 1200, status: 'Completed', payment: 'Crypto' },
+      { id: 'SO-20601', staffId: 'STF002', date: '2026-06-27', time: '02:15 PM', cardType: 'Gift Card',      channel: 'Store',  customer: 'Lisa Tran',    email: 'lisa.t@mailinator.com',   phone: '',                  cardNumber: '3021 **** **** 8842', amount: 900,  status: 'Completed', payment: 'Cash' },
+      { id: 'SO-20588', staffId: 'STF002', date: '2026-06-26', time: '10:47 AM', cardType: 'Crypto Payment', channel: 'Online', customer: 'Mark Davis',   email: 'mark.d@mailinator.com',   phone: '+1 (650) 987-6543', cardNumber: '4410 **** **** 2201', amount: 1500, status: 'Completed', payment: 'Crypto' },
+      { id: 'SO-20560', staffId: 'STF002', date: '2026-06-24', time: '04:20 PM', cardType: 'Gift Card',      channel: 'Store',  customer: 'Nancy Vo',     email: 'nancy.v@mailinator.com',  phone: '',                  cardNumber: '5567 **** **** 7789', amount: 650,  status: 'Completed', payment: 'Card' },
+      { id: 'SO-20533', staffId: 'STF002', date: '2026-06-22', time: '09:30 AM', cardType: 'Reload',         channel: 'Store',  customer: 'Peter Ho',     email: 'peter.h@mailinator.com',  phone: '+1 (415) 234-5678', cardNumber: '6612 **** **** 3390', amount: 800,  status: 'Completed', payment: 'Cash' },
+      { id: 'SO-20500', staffId: 'STF002', date: '2026-06-19', time: '01:12 PM', cardType: 'Crypto Card',    channel: 'Online', customer: 'Grace Pham',   email: 'grace.p@mailinator.com',  phone: '',                  cardNumber: '7788 **** **** 1120', amount: 1450, status: 'Completed', payment: 'Crypto' },
+      { id: 'SO-20477', staffId: 'STF002', date: '2026-06-17', time: '11:05 AM', cardType: 'Gift Card',      channel: 'Store',  customer: 'Henry Bui',    email: 'henry.b@mailinator.com',  phone: '+1 (903) 111-2220', cardNumber: '8890 **** **** 5540', amount: 1000, status: 'Completed', payment: 'Bank Transfer' },
+      { id: 'SO-20619', staffId: 'STF002', date: '2026-06-29', time: '08:52 AM', cardType: 'Crypto Card',    channel: 'Online', customer: 'Olivia Do',    email: 'olivia.d@mailinator.com', phone: '',                  cardNumber: '9910 **** **** 6678', amount: 400,  status: 'Pending',   payment: 'Crypto' },
       // STF003 — Le Van Cuong / inactive (Completed total = 900)
-      { id: 'SO-20305', staffId: 'STF003', date: '2026-06-05', cardType: 'Gift Card',      customer: 'Frank Ly',     amount: 500, status: 'Completed' },
-      { id: 'SO-20288', staffId: 'STF003', date: '2026-06-03', cardType: 'Gift Card',      customer: 'Diana Vu',     amount: 400, status: 'Completed' },
-      { id: 'SO-20290', staffId: 'STF003', date: '2026-06-03', cardType: 'Gift Card',      customer: 'Chris Ma',     amount: 200, status: 'Refunded' },
+      { id: 'SO-20305', staffId: 'STF003', date: '2026-06-05', time: '04:10 PM', cardType: 'Gift Card',      channel: 'Store',  customer: 'Frank Ly',     email: 'frank.ly@mailinator.com', phone: '',                  cardNumber: '1102 **** **** 3345', amount: 500,  status: 'Completed', payment: 'Cash' },
+      { id: 'SO-20288', staffId: 'STF003', date: '2026-06-03', time: '02:40 PM', cardType: 'Gift Card',      channel: 'Store',  customer: 'Diana Vu',     email: 'diana.vu@mailinator.com', phone: '+1 (908) 765-4321', cardNumber: '2213 **** **** 4456', amount: 400,  status: 'Completed', payment: 'Cash' },
+      { id: 'SO-20290', staffId: 'STF003', date: '2026-06-03', time: '03:05 PM', cardType: 'Gift Card',      channel: 'Store',  customer: 'Chris Ma',     email: 'chris.ma@mailinator.com', phone: '',                  cardNumber: '3324 **** **** 5567', amount: 200,  status: 'Refunded',  payment: 'Card' },
     ];
 
     let currentPage = 1;
@@ -1283,6 +1339,10 @@
       const s = STAFF.find(x => x.id === id);
       return s ? s.name : 'Unknown';
     }
+    function staffEmail(id) {
+      const s = STAFF.find(x => x.id === id);
+      return s ? (s.email || s.username || '') : '';
+    }
     function formatOrderDate(d) {
       const [y, m, day] = d.split('-').map(Number);
       const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -1292,6 +1352,14 @@
       if (status === 'Completed') return '<span class="badge badge-completed">Completed</span>';
       if (status === 'Pending') return '<span class="badge badge-pending">Pending</span>';
       return '<span class="badge badge-refunded">Refunded</span>';
+    }
+    function orderTypeClass(t) {
+      if (t === 'Gift Card' || t === 'GC Payment') return 'tb-giftcard';
+      if (t === 'Crypto Card' || t === 'Crypto Payment') return 'tb-crypto';
+      if (t === 'Reload') return 'tb-reload';
+      if (t === 'Membership') return 'tb-membership';
+      if (t === 'Discount') return 'tb-discount';
+      return 'tb-default';
     }
 
     /* Populate the staff filter dropdown, preserving the current selection. */
@@ -1306,13 +1374,28 @@
     }
 
     function getFilteredOrders() {
-      const q = (document.getElementById('orderSearch').value || '').toLowerCase();
+      const q = (document.getElementById('orderSearch').value || '').trim().toLowerCase();
+      const by = document.getElementById('orderSearchBy').value;
       const sf = document.getElementById('orderStaffFilter').value;
       const st = document.getElementById('orderStatusFilter').value;
       return SALES_ORDERS.filter(o => {
         if (sf && o.staffId !== sf) return false;
         if (st && o.status !== st) return false;
-        if (q && !`${o.id} ${o.customer} ${staffName(o.staffId)} ${o.cardType}`.toLowerCase().includes(q)) return false;
+        if (q) {
+          let hay;
+          switch (by) {
+            case 'cardNumber': hay = o.cardNumber || ''; break;
+            case 'staff':      hay = staffName(o.staffId); break;
+            case 'staffEmail': hay = staffEmail(o.staffId); break;
+            case 'customer':   hay = o.customer || ''; break;
+            case 'email':      hay = o.email || ''; break;
+            case 'phone':      hay = o.phone || ''; break;
+            case 'id':         hay = o.id || ''; break;
+            case 'amount':     hay = String(o.amount || ''); break;
+            default:           hay = `${o.id} ${o.customer} ${o.email || ''} ${o.cardNumber || ''}`;
+          }
+          if (!hay.toLowerCase().includes(q)) return false;
+        }
         return true;
       });
     }
@@ -1347,9 +1430,91 @@
         </div>`;
     }
 
+    /* Column definitions — order + labels; every column is toggleable. */
+    const ORDER_COLUMNS = [
+      { key: 'id',         label: 'Order ID' },
+      { key: 'type',       label: 'Type' },
+      { key: 'customer',   label: 'Customer' },
+      { key: 'cardNumber', label: 'Card Number' },
+      { key: 'staff',      label: 'Staff' },
+      { key: 'date',       label: 'Created Date' },
+      { key: 'amount',     label: 'Amount' },
+      { key: 'payment',    label: 'Payment Method' },
+      { key: 'status',     label: 'Status' },
+    ];
+    const orderColVisible = {};
+    ORDER_COLUMNS.forEach(c => { orderColVisible[c.key] = true; });
+
+    function orderCellHtml(key, o) {
+      switch (key) {
+        case 'id': return `<td style="font-weight:600;color:var(--grey-900);white-space:nowrap;">${o.id}</td>`;
+        case 'type': return `<td>
+            <div><span class="tb-badge ${orderTypeClass(o.cardType)}">${o.cardType}</span></div>
+            <div><span class="chan-badge ${o.channel === 'Online' ? 'online' : ''}">${o.channel === 'Online' ? 'Issued Online' : 'Issued in Store'}</span></div>
+          </td>`;
+        case 'customer': return `<td>
+            <div class="ord-cust-name">${o.customer || '—'}</div>
+            ${o.email ? `<div class="ord-cust-line">${o.email}</div>` : ''}
+            ${o.phone ? `<div class="ord-cust-line">${o.phone}</div>` : ''}
+          </td>`;
+        case 'cardNumber': return `<td class="ord-cardno">${o.cardNumber || '—'}</td>`;
+        case 'staff': return `<td style="white-space:nowrap;">${staffName(o.staffId)}</td>`;
+        case 'date': return `<td style="color:var(--grey-600);white-space:nowrap;">${formatOrderDate(o.date)}${o.time ? ' ' + o.time : ''}</td>`;
+        case 'amount': return `<td style="font-weight:600;white-space:nowrap;">${o.amount ? '$' + o.amount.toLocaleString() : '<span style="color:var(--grey-400);">–</span>'}</td>`;
+        case 'payment': return `<td style="color:var(--grey-700);white-space:nowrap;">${o.payment || '—'}</td>`;
+        case 'status': return `<td>${orderStatusBadge(o.status)}</td>`;
+      }
+      return '';
+    }
+
+    function renderOrderColumnMenu() {
+      document.getElementById('colMenu').innerHTML =
+        '<div class="col-menu-title">Columns</div>' +
+        ORDER_COLUMNS.map(c => `<label class="col-menu-item">
+          <input type="checkbox" ${orderColVisible[c.key] ? 'checked' : ''} onchange="toggleOrderColumn('${c.key}', this.checked)" />
+          <span>${c.label}</span>
+        </label>`).join('');
+    }
+    function toggleOrderColumn(key, visible) {
+      const visibleCount = ORDER_COLUMNS.filter(c => orderColVisible[c.key]).length;
+      if (!visible && visibleCount <= 1) { renderOrderColumnMenu(); return; } // keep at least one column
+      orderColVisible[key] = visible;
+      renderOrdersTable();
+    }
+    function toggleColumnMenu(e) {
+      e.stopPropagation();
+      const open = document.getElementById('colMenu').classList.toggle('open');
+      document.getElementById('colToggleBtn').classList.toggle('active', open);
+    }
+    document.addEventListener('click', e => {
+      const wrap = document.querySelector('.col-toggle-wrap');
+      if (wrap && !wrap.contains(e.target)) {
+        document.getElementById('colMenu').classList.remove('open');
+        document.getElementById('colToggleBtn').classList.remove('active');
+      }
+    });
+
+    function onSearchByChange() {
+      const by = document.getElementById('orderSearchBy').value;
+      const ph = {
+        cardNumber: 'Enter card number...',
+        customer: 'Enter customer name...',
+        email: 'Enter email...', phone: 'Enter phone...',
+        id: 'Enter order ID...', amount: 'Enter amount...',
+        staff: 'Enter staff name...', staffEmail: 'Enter staff email...'
+      };
+      document.getElementById('orderSearch').placeholder = ph[by] || 'Search...';
+      currentOrderPage = 1;
+      renderOrdersTable();
+    }
+
     function renderOrdersTable() {
       const data = getFilteredOrders();
       renderOrdersSummary(data);
+      const cols = ORDER_COLUMNS.filter(c => orderColVisible[c.key]);
+      document.getElementById('ordersThead').innerHTML =
+        '<tr>' + cols.map(c => `<th>${c.label}</th>`).join('') + '</tr>';
+
       const total = data.length;
       const pages = Math.max(1, Math.ceil(total / orderRowsPerPage));
       if (currentOrderPage > pages) currentOrderPage = pages;
@@ -1358,17 +1523,9 @@
 
       const tbody = document.getElementById('ordersTableBody');
       if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:48px 24px;color:var(--grey-400);">No sales orders found</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="${cols.length}" style="text-align:center;padding:48px 24px;color:var(--grey-400);">No sales orders found</td></tr>`;
       } else {
-        tbody.innerHTML = rows.map(o => `<tr>
-          <td style="font-weight:600;color:var(--grey-900);white-space:nowrap;">${o.id}</td>
-          <td style="color:var(--grey-600);white-space:nowrap;">${formatOrderDate(o.date)}</td>
-          <td style="white-space:nowrap;">${staffName(o.staffId)}</td>
-          <td><span class="badge badge-role">${o.cardType}</span></td>
-          <td style="color:var(--grey-700);">${o.customer}</td>
-          <td style="font-weight:600;white-space:nowrap;">$${o.amount.toLocaleString()}</td>
-          <td>${orderStatusBadge(o.status)}</td>
-        </tr>`).join('');
+        tbody.innerHTML = rows.map(o => '<tr>' + cols.map(c => orderCellHtml(c.key, o)).join('') + '</tr>').join('');
       }
 
       const s = total === 0 ? 0 : start + 1;
@@ -1869,6 +2026,7 @@
     renderStaffTable();
     renderRoleTable();
     populateOrderStaffFilter();
+    renderOrderColumnMenu();
     renderOrdersTable();
   </script>
 </body>

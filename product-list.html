@@ -130,6 +130,61 @@
       font-weight: 700;
     }
 
+    /* Chip count badge */
+    .chip-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 20px; height: 20px; padding: 0 6px; margin-left: 6px;
+      border-radius: 10px; font-size: 12px; font-weight: 700; line-height: 1;
+      background: rgba(145, 158, 171, 0.16); color: #637381;
+    }
+    .category-chip.active .chip-count { background: rgba(255, 255, 255, 0.26); color: #fff; }
+
+    /* Customer cell */
+    .cust-name { font-weight: 600; color: #212b36; }
+    .cust-sub { font-size: 12px; color: #637381; margin-top: 1px; }
+
+    /* Platform tab info tooltip */
+    .tab-info {
+      display: inline-flex; align-items: center; margin-left: 5px;
+      color: #919eab; position: relative; vertical-align: middle;
+    }
+    .tab-info i, .tab-info svg { width: 14px; height: 14px; }
+    .tab-info:hover { color: #00a76f; }
+    .tab-info::after {
+      content: attr(data-tip);
+      position: absolute; bottom: calc(100% + 9px); left: 50%; transform: translateX(-50%);
+      width: 190px; background: #212b36; color: #fff; font-size: 12px; font-weight: 400;
+      line-height: 1.4; padding: 8px 10px; border-radius: 8px; text-align: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.15s; z-index: 80;
+    }
+    .tab-info::before {
+      content: ''; position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%);
+      border: 5px solid transparent; border-top-color: #212b36; opacity: 0; transition: opacity 0.15s; z-index: 80;
+    }
+    .tab-info:hover::after, .tab-info:hover::before { opacity: 1; }
+
+    /* Column visibility settings */
+    .col-settings-wrap { position: relative; }
+    .col-settings-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border: 1px solid #dfe3e8; border-radius: 8px;
+      background: #fff; color: #637381; cursor: pointer; transition: all 0.15s;
+    }
+    .col-settings-btn:hover, .col-settings-btn.active {
+      border-color: #00a76f; color: #00a76f; background: rgba(0, 167, 111, 0.06);
+    }
+    .col-vis-menu {
+      position: absolute; top: calc(100% + 6px); right: 0; z-index: 70;
+      min-width: 220px; max-height: 360px; overflow-y: auto;
+      background: #fff; border: 1px solid rgba(145, 158, 171, 0.2); border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.13); padding: 8px; display: none;
+    }
+    .col-vis-menu.open { display: block; }
+    .col-vis-title { font-size: 11px; font-weight: 700; color: #919eab; text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 10px 8px; }
+    .col-vis-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 14px; color: #212b36; }
+    .col-vis-item:hover { background: #f4f6f8; }
+    .col-vis-item input { width: 16px; height: 16px; accent-color: #00a76f; cursor: pointer; flex-shrink: 0; }
+
     /* ===== Filter Bar Desktop ===== */
     .filter-bar {
       display: flex;
@@ -1310,10 +1365,13 @@
 
       <!-- Platform Tabs -->
       <div class="platform-tabs">
-        <button class="platform-tab active" data-platform="all" onclick="setPlatformTab('all', this)">All</button>
+        <button class="platform-tab active" data-platform="all" onclick="setPlatformTab('all', this)">All<span
+            class="tab-info" data-tip="All issued cards across every channel."><i data-lucide="info"></i></span></button>
         <button class="platform-tab" data-platform="VLINKPAY Platform"
-          onclick="setPlatformTab('VLINKPAY Platform', this)">VLINKPAY Platform</button>
-        <button class="platform-tab" data-platform="Store" onclick="setPlatformTab('Store', this)">Store</button>
+          onclick="setPlatformTab('VLINKPAY Platform', this)">VLINKPAY Platform<span class="tab-info"
+            data-tip="Cards issued online through the VLINKPAY platform."><i data-lucide="info"></i></span></button>
+        <button class="platform-tab" data-platform="Store" onclick="setPlatformTab('Store', this)">Store<span
+            class="tab-info" data-tip="Cards issued in-store by your staff."><i data-lucide="info"></i></span></button>
       </div>
 
       <!-- Category Chips -->
@@ -1323,6 +1381,23 @@
 
       <!-- Desktop Filter Bar -->
       <div class="filter-bar">
+        <div class="field-root" style="width:160px;">
+          <label class="field-label">Search by</label>
+          <div class="field-container">
+            <select id="searchByField" class="field-input field-select" onchange="onSearchByChange()">
+              <option value="all">All fields</option>
+              <option value="id">Product ID</option>
+              <option value="name">Product Name</option>
+              <option value="customer">Customer</option>
+              <option value="cardNumber">Card Number</option>
+              <option value="email">Email</option>
+              <option value="phone">Phone</option>
+              <option value="campaignName">Campaign</option>
+              <option value="amount">Amount</option>
+            </select>
+            <i data-lucide="chevron-down" class="field-chevron" style="width:16px;height:16px;"></i>
+          </div>
+        </div>
         <div class="field-root search-field">
           <label class="field-label">Search</label>
           <div class="field-container">
@@ -1385,6 +1460,14 @@
             <i data-lucide="calendar" style="width:16px;height:16px;"></i>
           </div>
         </div>
+
+        <div class="col-settings-wrap" style="margin-left:auto;">
+          <button type="button" class="col-settings-btn" id="colSettingsBtn" onclick="toggleColMenu(event)"
+            title="Show / hide columns" aria-label="Show / hide columns">
+            <i data-lucide="settings-2" style="width:18px;height:18px;"></i>
+          </button>
+          <div class="col-vis-menu" id="colVisMenu"></div>
+        </div>
       </div>
 
       <!-- Mobile Filter Bar -->
@@ -1402,61 +1485,68 @@
         </button>
       </div>
 
+      <!-- Dynamic column-visibility rules (populated by JS) -->
+      <style id="colVisStyle"></style>
+
       <!-- Desktop Table -->
       <div class="table-wrapper" id="tableWrapper">
         <table class="data-table" id="dataTable">
           <thead>
             <tr>
-              <th class="col-issue-mode" style="min-width:160px;">Issue Mode</th>
-              <th class="sortable" style="min-width:120px;" onclick="sortTable('id')">
+              <th class="col-issue-mode col-issueMode" style="min-width:160px;">Issue Mode</th>
+              <th class="sortable col-id" style="min-width:120px;" onclick="sortTable('id')">
                 <div class="th-inner"><span class="th-text">Product ID</span><span id="sort-id"
                     class="th-sort-icon"></span></div>
               </th>
-              <th class="sortable" style="min-width:160px;" onclick="sortTable('name')">
+              <th class="sortable col-name" style="min-width:160px;" onclick="sortTable('name')">
                 <div class="th-inner"><span class="th-text">Product Name</span><span id="sort-name"
                     class="th-sort-icon"></span></div>
               </th>
-              <th class="sortable" style="min-width:170px;" onclick="sortTable('productStatus')">
+              <th class="sortable col-customer" style="min-width:190px;" onclick="sortTable('customer')">
+                <div class="th-inner"><span class="th-text">Customer</span><span id="sort-customer"
+                    class="th-sort-icon"></span></div>
+              </th>
+              <th class="sortable col-productStatus" style="min-width:170px;" onclick="sortTable('productStatus')">
                 <div class="th-inner"><span class="th-text">Product Status</span><span id="sort-productStatus"
                     class="th-sort-icon"></span></div>
               </th>
-              <th class="sortable" style="min-width:110px;" onclick="sortTable('salesStatus')">
+              <th class="sortable col-salesStatus" style="min-width:110px;" onclick="sortTable('salesStatus')">
                 <div class="th-inner"><span class="th-text">Sales Status</span><span id="sort-salesStatus"
                     class="th-sort-icon"></span></div>
               </th>
-              <th class="sortable" style="min-width:170px;" onclick="sortTable('cardNumber')">
+              <th class="sortable col-cardNumber" style="min-width:170px;" onclick="sortTable('cardNumber')">
                 <div class="th-inner"><span class="th-text">Card Number</span><span id="sort-cardNumber"
                     class="th-sort-icon"></span></div>
               </th>
-              <th class="sortable card-lock-hidden" style="min-width:110px;" onclick="sortTable('cardLocked')">
+              <th class="sortable card-lock-hidden col-cardLocked" style="min-width:110px;" onclick="sortTable('cardLocked')">
                 <div class="th-inner"><span class="th-text">Card Locked</span><span id="sort-cardLocked"
                     class="th-sort-icon"></span></div>
               </th>
-              <th class="sortable" style="min-width:100px;" onclick="sortTable('amount')">
+              <th class="sortable col-amount" style="min-width:100px;" onclick="sortTable('amount')">
                 <div class="th-inner"><span class="th-text">Amount</span><span id="sort-amount"
                     class="th-sort-icon"></span></div>
               </th>
-              <th class="sortable" style="min-width:70px;" onclick="sortTable('sold')">
+              <th class="sortable col-sold" style="min-width:70px;" onclick="sortTable('sold')">
                 <div class="th-inner"><span class="th-text">Sold</span><span id="sort-sold" class="th-sort-icon"></span>
                 </div>
               </th>
-              <th class="sortable" style="min-width:80px;" onclick="sortTable('available')">
+              <th class="sortable col-available" style="min-width:80px;" onclick="sortTable('available')">
                 <div class="th-inner"><span class="th-text">Available</span><span id="sort-available"
                     class="th-sort-icon"></span></div>
               </th>
-              <th class="sortable" style="min-width:120px;" onclick="sortTable('expiryTime')">
+              <th class="sortable col-expiryTime" style="min-width:120px;" onclick="sortTable('expiryTime')">
                 <div class="th-inner"><span class="th-text">Expiry Time</span><span id="sort-expiryTime"
                     class="th-sort-icon"></span></div>
               </th>
-              <th class="sortable" style="min-width:150px;" onclick="sortTable('campaignName')">
+              <th class="sortable col-campaignName" style="min-width:150px;" onclick="sortTable('campaignName')">
                 <div class="th-inner"><span class="th-text">Campaign Name</span><span id="sort-campaignName"
                     class="th-sort-icon"></span></div>
               </th>
-              <th class="sortable" style="min-width:120px;" onclick="sortTable('createdDate')">
+              <th class="sortable col-createdDate" style="min-width:120px;" onclick="sortTable('createdDate')">
                 <div class="th-inner"><span class="th-text">Created Date</span><span id="sort-createdDate"
                     class="th-sort-icon"></span></div>
               </th>
-              <th class="sortable" style="min-width:120px;" onclick="sortTable('lastUpdated')">
+              <th class="sortable col-lastUpdated" style="min-width:120px;" onclick="sortTable('lastUpdated')">
                 <div class="th-inner"><span class="th-text">Last Updated</span><span id="sort-lastUpdated"
                     class="th-sort-icon"></span></div>
               </th>
@@ -1781,6 +1871,26 @@
       }
     ];
 
+    // Customer info per product (name / email / phone) — powers the Customer column & search
+    const PRODUCT_CUSTOMERS = {
+      '#PRD-10255': { customer: 'Ha Phan',      email: 'ha.phan@mailinator.com',    phone: '+1 (832) 799-5853' },
+      '#PRD-10256': { customer: 'Mary Smith',   email: 'mary.smith@mailinator.com', phone: '+1 (415) 555-0132' },
+      '#PRD-10257': { customer: 'Jane Doe',     email: 'jane.doe@email.com',        phone: '+1 (650) 987-6543' },
+      '#PRD-10258': { customer: 'Robert Kim',   email: 'robert.kim@mailinator.com', phone: '' },
+      '#PRD-10261': { customer: 'Emily Zhang',  email: 'emily.z@mailinator.com',    phone: '+1 (038) 547-8857' },
+      '#PRD-10259': { customer: 'John Smith',   email: 'john.smith@email.com',      phone: '+1 (123) 123-1231' },
+      '#PRD-10260': { customer: 'David Le',     email: 'member@company.com',        phone: '+1 (903) 111-2220' },
+      '#PRD-10262': { customer: 'Kevin Nguyen', email: 'kevin.n@mailinator.com',    phone: '' },
+      '#PRD-10264': { customer: 'Grace Pham',   email: 'grace.p@mailinator.com',    phone: '+1 (415) 234-5678' },
+      '#PRD-10263': { customer: 'Chris Ma',     email: 'chris.ma@mailinator.com',   phone: '' },
+    };
+    products.forEach(p => {
+      const c = PRODUCT_CUSTOMERS[p.id] || {};
+      p.customer = c.customer || '—';
+      p.email = c.email || (p.redeemBy && p.redeemBy !== '—' ? p.redeemBy : '—');
+      p.phone = c.phone || '—';
+    });
+
     // ===== State =====
     let platformTab = 'all';
     let categoryTab = 'All';
@@ -1792,17 +1902,46 @@
       'Store': ['All', 'Gift card', 'Promotion', 'Discount', 'Membership', 'Prepaid card', 'Crypto Card'],
     };
 
+    function categoryCount(platform, cat) {
+      let data = products;
+      if (platform !== 'all') data = data.filter(p => p.issueMode === platform);
+      if (cat !== 'All') data = data.filter(p => p.category === cat);
+      return data.length;
+    }
+
     function updateCategoryChips(platform) {
       const cats = PLATFORM_CATEGORIES[platform] || PLATFORM_CATEGORIES['all'];
       const container = document.getElementById('categoryChips');
-      container.innerHTML = cats.map(c =>
-        `<button class="category-chip${c === categoryTab ? ' active' : ''}" data-cat="${c}">${c}</button>`
-      ).join('');
+      container.innerHTML = cats.map(c => {
+        const n = categoryCount(platform, c);
+        return `<button class="category-chip${c === categoryTab ? ' active' : ''}" data-cat="${c}">${c}<span class="chip-count">${n}</span></button>`;
+      }).join('');
       updateIssueCardButtonLabel();
     }
     let searchQuery = '';
+    let searchByField = 'all';
     let statusFilter = '';
     let lockedFilter = '';
+
+    // Column visibility (desktop table)
+    const TOGGLEABLE_COLUMNS = [
+      { key: 'issueMode', label: 'Issue Mode' },
+      { key: 'id', label: 'Product ID' },
+      { key: 'name', label: 'Product Name' },
+      { key: 'customer', label: 'Customer' },
+      { key: 'productStatus', label: 'Product Status' },
+      { key: 'salesStatus', label: 'Sales Status' },
+      { key: 'cardNumber', label: 'Card Number' },
+      { key: 'cardLocked', label: 'Card Locked' },
+      { key: 'amount', label: 'Amount' },
+      { key: 'sold', label: 'Sold' },
+      { key: 'available', label: 'Available' },
+      { key: 'expiryTime', label: 'Expiry Time' },
+      { key: 'campaignName', label: 'Campaign Name' },
+      { key: 'createdDate', label: 'Created Date' },
+      { key: 'lastUpdated', label: 'Last Updated' },
+    ];
+    const hiddenColumns = new Set();
     let fromDate = '';
     let toDate = '';
     let sortKey = '';
@@ -1921,14 +2060,27 @@
         data = data.filter(p => p.category === categoryTab);
       }
 
-      // Search
+      // Search (by selected field)
       if (searchQuery) {
         const q = searchQuery.toLowerCase().trim();
-        data = data.filter(p =>
-          p.id.toLowerCase().includes(q) ||
-          p.name.toLowerCase().includes(q) ||
-          p.cardNumber.toLowerCase().includes(q)
-        );
+        data = data.filter(p => {
+          switch (searchByField) {
+            case 'id':           return p.id.toLowerCase().includes(q);
+            case 'name':         return p.name.toLowerCase().includes(q);
+            case 'customer':     return String(p.customer).toLowerCase().includes(q);
+            case 'cardNumber':   return String(p.cardNumber).toLowerCase().includes(q);
+            case 'email':        return String(p.email).toLowerCase().includes(q);
+            case 'phone':        return String(p.phone).toLowerCase().includes(q);
+            case 'campaignName': return String(p.campaignName).toLowerCase().includes(q);
+            case 'amount':       return String(p.amount).includes(q);
+            default:             return p.id.toLowerCase().includes(q)
+              || p.name.toLowerCase().includes(q)
+              || String(p.customer).toLowerCase().includes(q)
+              || String(p.cardNumber).toLowerCase().includes(q)
+              || String(p.email).toLowerCase().includes(q)
+              || String(p.phone).toLowerCase().includes(q);
+          }
+        });
       }
 
       // Product status
@@ -2020,20 +2172,25 @@
         tableEmpty.style.display = 'none';
         tbody.innerHTML = pageData.map(p => `
           <tr>
-            <td class="col-issue-mode">${p.issueMode}</td>
-            <td class="td-id">${p.id}</td>
-            <td class="td-name"><a href="${buildDetailUrl(p)}" style="color:inherit;text-decoration:none;">${p.name}</a></td>
-            <td>${productStatusBadge(p.productStatus)}</td>
-            <td>${salesStatusBadge(p.salesStatus)}</td>
-            <td>${p.cardNumber === '—' ? '<span class="td-dash">—</span>' : `<span class="td-mono">${p.cardNumber}</span>`}</td>
-            <td class="card-lock-hidden">${cardLockedBadge(p.cardLocked)}</td>
-            <td class="td-amount">${p.amountDisplay}</td>
-            <td class="td-secondary">${p.sold === '—' ? '<span class="td-dash">—</span>' : p.sold}</td>
-            <td class="td-secondary">${p.available === '—' ? '<span class="td-dash">—</span>' : p.available}</td>
-            <td>${formatDate(p.expiryTime)}</td>
-            <td>${p.campaignName === '—' ? '<span class="td-dash">—</span>' : `<span style="color:#212b36;max-width:140px;overflow:hidden;text-overflow:ellipsis;display:inline-block;">${p.campaignName}</span>`}</td>
-            <td>${formatDate(p.createdDate)}</td>
-            <td>${formatDate(p.lastUpdated)}</td>
+            <td class="col-issue-mode col-issueMode">${p.issueMode}</td>
+            <td class="td-id col-id">${p.id}</td>
+            <td class="td-name col-name"><a href="${buildDetailUrl(p)}" style="color:inherit;text-decoration:none;">${p.name}</a></td>
+            <td class="col-customer">
+              <div class="cust-name">${p.customer && p.customer !== '—' ? p.customer : '<span class="td-dash">—</span>'}</div>
+              ${p.email && p.email !== '—' ? `<div class="cust-sub">${p.email}</div>` : ''}
+              ${p.phone && p.phone !== '—' ? `<div class="cust-sub">${p.phone}</div>` : ''}
+            </td>
+            <td class="col-productStatus">${productStatusBadge(p.productStatus)}</td>
+            <td class="col-salesStatus">${salesStatusBadge(p.salesStatus)}</td>
+            <td class="col-cardNumber">${p.cardNumber === '—' ? '<span class="td-dash">—</span>' : `<span class="td-mono">${p.cardNumber}</span>`}</td>
+            <td class="card-lock-hidden col-cardLocked">${cardLockedBadge(p.cardLocked)}</td>
+            <td class="td-amount col-amount">${p.amountDisplay}</td>
+            <td class="td-secondary col-sold">${p.sold === '—' ? '<span class="td-dash">—</span>' : p.sold}</td>
+            <td class="td-secondary col-available">${p.available === '—' ? '<span class="td-dash">—</span>' : p.available}</td>
+            <td class="col-expiryTime">${formatDate(p.expiryTime)}</td>
+            <td class="col-campaignName">${p.campaignName === '—' ? '<span class="td-dash">—</span>' : `<span style="color:#212b36;max-width:140px;overflow:hidden;text-overflow:ellipsis;display:inline-block;">${p.campaignName}</span>`}</td>
+            <td class="col-createdDate">${formatDate(p.createdDate)}</td>
+            <td class="col-lastUpdated">${formatDate(p.lastUpdated)}</td>
             <td class="col-actions">${actionButtons(p)}</td>
           </tr>
         `).join('');
@@ -2058,6 +2215,7 @@
               <div class="info-field-value">${p.createdDate}</div>
             </div>
           `;
+          if (p.customer && p.customer !== '—') infoItems += `<div class="info-field"><div class="info-field-label">Customer</div><div class="info-field-value">${p.customer}${p.email && p.email !== '—' ? '<br>' + p.email : ''}${p.phone && p.phone !== '—' ? '<br>' + p.phone : ''}</div></div>`;
           if (p.salesStatus !== '—') infoItems += `<div class="info-field"><div class="info-field-label">Sales Status</div><div class="info-field-value">${salesStatusBadge(p.salesStatus)}</div></div>`;
           if (p.cardNumber !== '—') infoItems += `<div class="info-field"><div class="info-field-label">Card Number</div><div class="info-field-value" style="font-family:monospace;font-size:12px;">${p.cardNumber}</div></div>`;
           if (p.cardLocked !== '—') infoItems += `<div class="info-field card-lock-hidden"><div class="info-field-label">Card Locked</div><div class="info-field-value">${cardLockedBadge(p.cardLocked)}</div></div>`;
@@ -2090,6 +2248,8 @@
     // ===== Filter Functions =====
     function applyFilters() {
       searchQuery = document.getElementById('searchInput').value;
+      const sb = document.getElementById('searchByField');
+      if (sb) searchByField = sb.value;
       statusFilter = document.getElementById('statusFilter').value;
       lockedFilter = document.getElementById('lockedFilter').value;
       fromDate = document.getElementById('fromDate').value;
@@ -2097,6 +2257,54 @@
       currentPage = 1;
       render();
     }
+
+    function onSearchByChange() {
+      searchByField = document.getElementById('searchByField').value;
+      const ph = {
+        all: 'Product ID, Name, Customer, Card Number',
+        id: 'Search Product ID...', name: 'Search Product Name...',
+        customer: 'Search Customer...', cardNumber: 'Search Card Number...',
+        email: 'Search Email...', phone: 'Search Phone...',
+        campaignName: 'Search Campaign...', amount: 'Search Amount...'
+      };
+      const text = ph[searchByField] || 'Search...';
+      document.getElementById('searchInput').placeholder = text;
+      const mob = document.getElementById('searchInputMobile');
+      if (mob) mob.placeholder = text;
+      applyFilters();
+    }
+
+    // ===== Column visibility =====
+    function renderColumnMenu() {
+      document.getElementById('colVisMenu').innerHTML =
+        '<div class="col-vis-title">Columns</div>' +
+        TOGGLEABLE_COLUMNS.map(c => `<label class="col-vis-item">
+          <input type="checkbox" ${hiddenColumns.has(c.key) ? '' : 'checked'} onchange="toggleColumn('${c.key}', this.checked)" />
+          <span>${c.label}</span>
+        </label>`).join('');
+    }
+    function toggleColumn(key, visible) {
+      const visibleCount = TOGGLEABLE_COLUMNS.length - hiddenColumns.size;
+      if (!visible && visibleCount <= 1) { renderColumnMenu(); return; } // keep at least one column
+      if (visible) hiddenColumns.delete(key); else hiddenColumns.add(key);
+      applyColumnVisibility();
+    }
+    function applyColumnVisibility() {
+      document.getElementById('colVisStyle').textContent =
+        [...hiddenColumns].map(k => `.col-${k}{display:none!important;}`).join('');
+    }
+    function toggleColMenu(e) {
+      e.stopPropagation();
+      const open = document.getElementById('colVisMenu').classList.toggle('open');
+      document.getElementById('colSettingsBtn').classList.toggle('active', open);
+    }
+    document.addEventListener('click', function (e) {
+      const wrap = document.querySelector('.col-settings-wrap');
+      if (wrap && !wrap.contains(e.target)) {
+        document.getElementById('colVisMenu').classList.remove('open');
+        document.getElementById('colSettingsBtn').classList.remove('active');
+      }
+    });
 
     function syncMobileSearch() {
       const val = document.getElementById('searchInputMobile').value;
@@ -2309,6 +2517,7 @@
       }
 
       updateCategoryChips('all');
+      renderColumnMenu();
       render();
     });
   </script>

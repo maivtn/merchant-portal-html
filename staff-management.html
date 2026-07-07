@@ -1845,13 +1845,6 @@
           </div>` : ''}
           <div style="height:1px;background:var(--grey-200);"></div>
           <div>
-            <div class="form-label" style="margin-bottom:6px;">Commission percent</div>
-            <div class="input-pct-wrap">
-              <input type="number" id="dp-commission" value="${s.commission}" min="0" step="0.1" placeholder="0.0" />
-              <div class="input-pct-unit">%</div>
-            </div>
-          </div>
-          <div>
             <div class="form-label" style="margin-bottom:6px;">Cashier card creation limit</div>
             <div style="padding:10px 14px;border:1px solid var(--grey-300);border-radius:8px;font-size:14px;color:var(--grey-600);background:var(--grey-100);display:flex;align-items:center;justify-content:space-between;">
               <span>${dailyLimit ? dailyLimit.toLocaleString() + ' USD / day' : 'No limit'}</span>
@@ -1884,8 +1877,6 @@
     function saveStaffDetail() {
       const s = STAFF.find(x => x.id === currentDetailId);
       if (!s) return;
-      const commEl = document.getElementById('dp-commission');
-      if (commEl) s.commission = Math.max(0, parseFloat(commEl.value) || 0);
       closeDetailModal();
       if (document.getElementById('tab-staff-list').classList.contains('active')) renderStaffTable();
     }

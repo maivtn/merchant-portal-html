@@ -751,22 +751,14 @@
     <div id="tab-sales-orders" class="tab-panel active">
       <div class="toolbar">
         <select class="filter-select" id="orderSearchBy" onchange="onSearchByChange()" style="min-width:150px;">
-          <option value="cardNumber">Card Number</option>
-          <option value="customer">Customer</option>
-          <option value="email">Email</option>
-          <option value="phone">Phone</option>
-          <option value="id">Order ID</option>
-          <option value="amount">Amount</option>
           <option value="staff">Staff Name</option>
           <option value="staffEmail">Staff Email</option>
+          <option value="staffPhone">Staff Phone</option>
         </select>
         <div class="search-wrap" style="width:240px;">
           <iconify-icon icon="solar:magnifer-linear" width="16"></iconify-icon>
-          <input type="text" class="search-input" id="orderSearch" placeholder="Enter card number..." oninput="currentOrderPage=1;renderOrdersTable()" />
+          <input type="text" class="search-input" id="orderSearch" placeholder="Enter staff name..." oninput="currentOrderPage=1;renderOrdersTable()" />
         </div>
-        <select class="filter-select" id="orderStaffFilter" onchange="currentOrderPage=1;renderOrdersTable()">
-          <option value="">All Staff</option>
-        </select>
         <select class="filter-select" id="orderStatusFilter" onchange="currentOrderPage=1;renderOrdersTable()">
           <option value="">All Statuses</option>
           <option value="Completed">Completed</option>
@@ -1121,7 +1113,7 @@
       document.getElementById('tab-btn-' + name).classList.add('active');
       document.getElementById('tab-' + name).classList.add('active');
       if (name === 'staff-list') renderStaffTable();
-      if (name === 'sales-orders') { populateOrderStaffFilter(); renderOrdersTable(); }
+      if (name === 'sales-orders') { renderOrdersTable(); }
       if (name === 'role-settings') renderRoleTable();
     }
 
@@ -1249,7 +1241,6 @@
        shared password and without affecting other staff. */
     function refreshOrdersViewIfActive() {
       if (document.getElementById('tab-sales-orders').classList.contains('active')) {
-        populateOrderStaffFilter();
         renderOrdersTable();
       }
     }
@@ -1343,6 +1334,10 @@
       const s = STAFF.find(x => x.id === id);
       return s ? (s.email || s.username || '') : '';
     }
+    function staffPhone(id) {
+      const s = STAFF.find(x => x.id === id);
+      return s ? (s.phone || '') : '';
+    }
     function formatOrderDate(d) {
       const [y, m, day] = d.split('-').map(Number);
       const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -1362,37 +1357,19 @@
       return 'tb-default';
     }
 
-    /* Populate the staff filter dropdown, preserving the current selection. */
-    function populateOrderStaffFilter() {
-      const sel = document.getElementById('orderStaffFilter');
-      const prev = sel.value;
-      const options = STAFF.filter(s => s.status !== 'DELETED');
-      sel.innerHTML = '<option value="">All Staff</option>' +
-        options.map(s => `<option value="${s.id}">${s.name}${s.status === 'INACTIVE' ? ' (inactive)' : ''}</option>`).join('');
-      // keep prior selection only if that staff still exists in the list
-      sel.value = options.some(s => s.id === prev) ? prev : '';
-    }
-
     function getFilteredOrders() {
       const q = (document.getElementById('orderSearch').value || '').trim().toLowerCase();
       const by = document.getElementById('orderSearchBy').value;
-      const sf = document.getElementById('orderStaffFilter').value;
       const st = document.getElementById('orderStatusFilter').value;
       return SALES_ORDERS.filter(o => {
-        if (sf && o.staffId !== sf) return false;
         if (st && o.status !== st) return false;
         if (q) {
           let hay;
           switch (by) {
-            case 'cardNumber': hay = o.cardNumber || ''; break;
             case 'staff':      hay = staffName(o.staffId); break;
             case 'staffEmail': hay = staffEmail(o.staffId); break;
-            case 'customer':   hay = o.customer || ''; break;
-            case 'email':      hay = o.email || ''; break;
-            case 'phone':      hay = o.phone || ''; break;
-            case 'id':         hay = o.id || ''; break;
-            case 'amount':     hay = String(o.amount || ''); break;
-            default:           hay = `${o.id} ${o.customer} ${o.email || ''} ${o.cardNumber || ''}`;
+            case 'staffPhone': hay = staffPhone(o.staffId); break;
+            default:           hay = staffName(o.staffId);
           }
           if (!hay.toLowerCase().includes(q)) return false;
         }
@@ -1402,8 +1379,10 @@
 
     function renderOrdersSummary(data) {
       const completedTotal = data.filter(o => o.status === 'Completed').reduce((a, o) => a + o.amount, 0);
-      const sf = document.getElementById('orderStaffFilter').value;
-      const scope = sf ? staffName(sf) : 'All Staff';
+      // Show the staff name when the current search narrows down to exactly one staff member.
+      const staffIds = [...new Set(data.map(o => o.staffId))];
+      const q = (document.getElementById('orderSearch').value || '').trim();
+      const scope = (q && staffIds.length === 1) ? staffName(staffIds[0]) : 'All Staff';
       document.getElementById('ordersSummary').innerHTML = `
         <div class="os-metric">
           <div class="os-icon os-icon-staff"><iconify-icon icon="solar:user-rounded-bold" width="20"></iconify-icon></div>
@@ -1432,7 +1411,6 @@
 
     /* Column definitions — order + labels; every column is toggleable. */
     const ORDER_COLUMNS = [
-      { key: 'id',         label: 'Order ID' },
       { key: 'type',       label: 'Type' },
       { key: 'customer',   label: 'Customer' },
       { key: 'cardNumber', label: 'Card Number' },
@@ -1447,7 +1425,6 @@
 
     function orderCellHtml(key, o) {
       switch (key) {
-        case 'id': return `<td style="font-weight:600;color:var(--grey-900);white-space:nowrap;">${o.id}</td>`;
         case 'type': return `<td>
             <div><span class="tb-badge ${orderTypeClass(o.cardType)}">${o.cardType}</span></div>
             <div><span class="chan-badge ${o.channel === 'Online' ? 'online' : ''}">${o.channel === 'Online' ? 'Issued Online' : 'Issued in Store'}</span></div>
@@ -1497,11 +1474,9 @@
     function onSearchByChange() {
       const by = document.getElementById('orderSearchBy').value;
       const ph = {
-        cardNumber: 'Enter card number...',
-        customer: 'Enter customer name...',
-        email: 'Enter email...', phone: 'Enter phone...',
-        id: 'Enter order ID...', amount: 'Enter amount...',
-        staff: 'Enter staff name...', staffEmail: 'Enter staff email...'
+        staff: 'Enter staff name...',
+        staffEmail: 'Enter staff email...',
+        staffPhone: 'Enter staff phone...'
       };
       document.getElementById('orderSearch').placeholder = ph[by] || 'Search...';
       currentOrderPage = 1;
@@ -1549,7 +1524,9 @@
     /* Jump to the Sales Orders tab pre-filtered to one staff member. */
     function viewStaffOrders(staffId) {
       switchTab('sales-orders');
-      document.getElementById('orderStaffFilter').value = staffId;
+      document.getElementById('orderSearchBy').value = 'staff';
+      document.getElementById('orderSearch').value = staffName(staffId);
+      document.getElementById('orderSearch').placeholder = 'Enter staff name...';
       currentOrderPage = 1;
       renderOrdersTable();
     }
@@ -2016,7 +1993,6 @@
     updateStats();
     renderStaffTable();
     renderRoleTable();
-    populateOrderStaffFilter();
     renderOrderColumnMenu();
     renderOrdersTable();
   </script>

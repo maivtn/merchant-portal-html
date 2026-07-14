@@ -122,17 +122,8 @@
     /* Keep old action-card for any remaining references */
     .action-card-btns { display: flex; gap: 8px; margin-top: 14px; }
 
-    /* Toolbar */
-    .toolbar { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
-    .search-wrap { position: relative; width: 220px; flex-shrink: 0; }
-    .search-wrap iconify-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--grey-500); pointer-events: none; }
-    .search-input {
-      width: 100%; padding: 10px 12px 10px 38px;
-      border: 1px solid var(--grey-300); border-radius: 8px;
-      font-size: 14px; font-family: inherit; color: var(--grey-800);
-      outline: none; transition: border-color 0.2s;
-    }
-    .search-input:focus { border-color: var(--primary-main); }
+    /* Toolbar — controls use global .field-root floating labels, so keep extra row gap */
+    .toolbar { display: flex; gap: 16px 12px; padding-top: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
 
     /* Staff autocomplete dropdown under the orders search box */
     .staff-suggest {
@@ -703,21 +694,35 @@
     <!-- ── Staff List ── -->
     <div id="tab-staff-list" class="tab-panel">
       <div class="toolbar">
-        <div class="search-wrap">
-          <iconify-icon icon="solar:magnifer-linear" width="16"></iconify-icon>
-          <input type="text" class="search-input" id="staffSearch" placeholder="Search by name, email, phone..." oninput="currentPage=1;renderStaffTable()" />
+        <div class="field-root" style="width:240px;">
+          <label class="field-label">Search</label>
+          <div class="field-container">
+            <iconify-icon icon="solar:magnifer-linear" width="16" style="position:absolute;left:12px;color:var(--grey-500);pointer-events:none;"></iconify-icon>
+            <input type="text" id="staffSearch" class="field-input" style="padding-left:36px;" placeholder="Search by name, email, phone..." oninput="currentPage=1;renderStaffTable()" />
+          </div>
         </div>
-        <select class="filter-select" id="staffStatusFilter" onchange="currentPage=1;renderStaffTable()">
-          <option value="">Active (default)</option>
-          <option value="ACTIVE">Active</option>
-          <option value="INACTIVE">Inactive</option>
-          <option value="DELETED">Deleted</option>
-          <option value="ALL">All Statuses</option>
-        </select>
-        <select class="filter-select" id="staffRoleFilter" onchange="currentPage=1;renderStaffTable()">
-          <option value="">All Roles</option>
-          <option value="Cashier">Cashier</option>
-        </select>
+        <div class="field-root" style="width:160px;">
+          <label class="field-label">Status</label>
+          <div class="field-container">
+            <select id="staffStatusFilter" class="field-input field-select" onchange="currentPage=1;renderStaffTable()">
+              <option value="">Active (default)</option>
+              <option value="ACTIVE">Active</option>
+              <option value="INACTIVE">Inactive</option>
+              <option value="DELETED">Deleted</option>
+              <option value="ALL">All Statuses</option>
+            </select>
+            <iconify-icon icon="solar:alt-arrow-down-linear" width="16" class="field-chevron"></iconify-icon>
+          </div>
+        </div>
+        <div class="field-root" style="width:160px;">
+          <label class="field-label">Role</label>
+          <div class="field-container">
+            <select id="staffRoleFilter" class="field-input field-select" onchange="currentPage=1;renderStaffTable()">
+              <option value="">All Roles</option>
+            </select>
+            <iconify-icon icon="solar:alt-arrow-down-linear" width="16" class="field-chevron"></iconify-icon>
+          </div>
+        </div>
         <button class="btn-save" style="margin-left:auto;" onclick="openNewStaffModal()">
           <span style="font-size:18px;line-height:1;font-weight:400;">+</span>
           Add New Staff
@@ -730,7 +735,7 @@
             <thead>
               <tr>
                 <th>Display Name</th>
-                <th>Email</th>
+                <th>Username / Email</th>
                 <th>Phone</th>
                 <th>Role</th>
                 <th>Status</th>
@@ -767,23 +772,38 @@
     <!-- ── Sales Orders ── -->
     <div id="tab-sales-orders" class="tab-panel active">
       <div class="toolbar">
-        <select class="filter-select" id="orderSearchBy" onchange="onSearchByChange()" style="min-width:150px;">
-          <option value="staff">Staff Name</option>
-          <option value="staffEmail">Staff Email</option>
-          <option value="staffPhone">Staff Phone</option>
-        </select>
-        <div class="search-wrap" style="width:240px;" id="orderSearchWrap">
-          <iconify-icon icon="solar:magnifer-linear" width="16"></iconify-icon>
-          <input type="text" class="search-input" id="orderSearch" placeholder="Enter staff name..." autocomplete="off"
-                 oninput="onOrderSearchInput()" onfocus="renderStaffSuggest()" />
+        <div class="field-root" style="width:160px;">
+          <label class="field-label">Search by</label>
+          <div class="field-container">
+            <select id="orderSearchBy" class="field-input field-select" onchange="onSearchByChange()">
+              <option value="staff">Staff Name</option>
+              <option value="staffEmail">Staff Email</option>
+              <option value="staffPhone">Staff Phone</option>
+            </select>
+            <iconify-icon icon="solar:alt-arrow-down-linear" width="16" class="field-chevron"></iconify-icon>
+          </div>
+        </div>
+        <div class="field-root" style="width:240px;" id="orderSearchWrap">
+          <label class="field-label">Search</label>
+          <div class="field-container">
+            <iconify-icon icon="solar:magnifer-linear" width="16" style="position:absolute;left:12px;color:var(--grey-500);pointer-events:none;"></iconify-icon>
+            <input type="text" id="orderSearch" class="field-input" style="padding-left:36px;" placeholder="Enter staff name..." autocomplete="off"
+                   oninput="onOrderSearchInput()" onfocus="renderStaffSuggest()" />
+          </div>
           <div class="staff-suggest" id="staffSuggest"></div>
         </div>
-        <select class="filter-select" id="orderStatusFilter" onchange="currentOrderPage=1;renderOrdersTable()">
-          <option value="">All Statuses</option>
-          <option value="Completed">Completed</option>
-          <option value="Pending">Pending</option>
-          <option value="Refunded">Refunded</option>
-        </select>
+        <div class="field-root" style="width:160px;">
+          <label class="field-label">Order Status</label>
+          <div class="field-container">
+            <select id="orderStatusFilter" class="field-input field-select" onchange="currentOrderPage=1;renderOrdersTable()">
+              <option value="">All Statuses</option>
+              <option value="Completed">Completed</option>
+              <option value="Pending">Pending</option>
+              <option value="Refunded">Refunded</option>
+            </select>
+            <iconify-icon icon="solar:alt-arrow-down-linear" width="16" class="field-chevron"></iconify-icon>
+          </div>
+        </div>
         <div class="col-toggle-wrap" style="margin-left:auto;">
           <button class="col-toggle-btn" id="colToggleBtn" onclick="toggleColumnMenu(event)" title="Show / hide columns" aria-label="Show / hide columns">
             <iconify-icon icon="solar:checklist-minimalistic-linear" width="18"></iconify-icon>
@@ -1167,6 +1187,15 @@
     }
 
     /* Staff List */
+    /* Populate the role filter from ROLES, preserving the current selection. */
+    function populateStaffRoleFilter() {
+      const sel = document.getElementById('staffRoleFilter');
+      const prev = sel.value;
+      sel.innerHTML = '<option value="">All Roles</option>' +
+        ROLES.map(r => `<option value="${r.name}">${r.name}</option>`).join('');
+      sel.value = ROLES.some(r => r.name === prev) ? prev : '';
+    }
+
     function getFiltered() {
       const q = (document.getElementById('staffSearch').value || '').toLowerCase();
       const f = document.getElementById('staffStatusFilter').value;
@@ -2045,6 +2074,7 @@
       const roleId = name.toLowerCase().replace(/\s+/g, '_');
       closeAddRoleModal();
       renderRoleTable();
+      populateStaffRoleFilter();
       window.location.href = 'cashier-role-detail.html?role=' + encodeURIComponent(roleId) + '&name=' + encodeURIComponent(name);
     }
 
@@ -2061,6 +2091,7 @@
 
     /* Init */
     updateStats();
+    populateStaffRoleFilter();
     renderStaffTable();
     renderRoleTable();
     renderOrderColumnMenu();

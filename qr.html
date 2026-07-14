@@ -209,12 +209,49 @@
     .preview-row {
       display: flex;
       align-items: center;
-      gap: 14px;
+      flex-wrap: wrap;
+      gap: 12px;
       background: var(--grey-100);
       border-radius: 16px;
       padding: 14px 18px;
     }
     .preview-label { font-size: 15px; font-weight: 600; color: var(--grey-600); }
+
+    /* Preview + color: two columns on one row */
+    .pref-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .pref-grid .preview-row { margin-top: 0; }
+
+    /* Color picker tile */
+    .color-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: var(--grey-100);
+      border-radius: 16px;
+      padding: 14px 18px;
+    }
+    .color-input {
+      width: 60px;
+      height: 46px;
+      border: 2px solid var(--grey-200);
+      border-radius: 12px;
+      padding: 4px;
+      cursor: pointer;
+      background: #fff;
+      flex: 0 0 auto;
+    }
+    .color-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--grey-600);
+      text-transform: uppercase;
+    }
     .avatar-preview {
       width: 56px;
       height: 56px;
@@ -376,14 +413,22 @@
             </div>
           </div>
 
-          <!-- Preview -->
-          <div class="preview-row mt-3">
-            <span class="preview-label">Xem trước:</span>
-            <img id="avatarPreview" class="avatar-preview d-none" alt="avatar">
-            <div id="avatarIconChip" class="avatar-chip d-none">
-              <iconify-icon id="avatarIconEl" icon="mdi:link-variant" width="30"></iconify-icon>
+          <!-- Xem trước + Màu QR: 2 cột 1 hàng -->
+          <div class="pref-grid">
+            <div class="preview-row">
+              <span class="preview-label">Xem trước:</span>
+              <img id="avatarPreview" class="avatar-preview d-none" alt="avatar">
+              <div id="avatarIconChip" class="avatar-chip d-none">
+                <iconify-icon id="avatarIconEl" icon="mdi:link-variant" width="30"></iconify-icon>
+              </div>
+              <div id="avatarLetter" class="avatar-chip">V</div>
             </div>
-            <div id="avatarLetter" class="avatar-chip">V</div>
+
+            <div class="color-row">
+              <span class="preview-label">Màu QR:</span>
+              <input type="color" id="qrColor" class="color-input" value="#000000">
+              <span id="colorValue" class="color-value">#000000</span>
+            </div>
           </div>
         </div>
 
@@ -428,6 +473,8 @@
       var imageInput = document.getElementById('imageInput');
       var clearImageBtn = document.getElementById('clearImageBtn');
       var iconPicker = document.getElementById('iconPicker');
+      var qrColor = document.getElementById('qrColor');
+      var colorValue = document.getElementById('colorValue');
 
       var avatarPreview = document.getElementById('avatarPreview');
       var avatarIconChip = document.getElementById('avatarIconChip');
@@ -555,6 +602,10 @@
 
       customText.addEventListener('input', syncPreview);
 
+      qrColor.addEventListener('input', function () {
+        colorValue.textContent = qrColor.value;
+      });
+
       // --- Image upload ---
       imageInput.addEventListener('change', function () {
         var file = imageInput.files && imageInput.files[0];
@@ -662,7 +713,7 @@
         ctx.fillRect(0, 0, size, size);
 
         // Modules
-        ctx.fillStyle = '#000000';
+        ctx.fillStyle = qrColor.value || '#000000';
         for (var r = 0; r < count; r++) {
           for (var c = 0; c < count; c++) {
             if (qr.isDark(r, c)) {
